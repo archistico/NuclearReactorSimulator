@@ -506,20 +506,24 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - coordinated reactor/turbine/electrical low-load guidance remains observational and uses validated rod and speed-governor seams;
 - desktop composition validated with the exact M7.5 session paused; local build and complete tests passed on 2026-07-21.
 
-### M7.6 Power Manoeuvring & Normal Shutdown — BASELINE CANDIDATE
+### M7.6 Power Manoeuvring & Normal Shutdown — VALIDATED
 
 - exact-version `stable-low-load-parallel-operation` v1 with canonical breaker-closed 5 MWe low-load handoff;
 - bounded generator-load raise/lower through existing M4.5 requested electrical power only;
 - coordinated reactor/turbine/electrical manoeuvring through validated M2/M5.3, M5.4 and M4.5 command seams;
 - observational fuel/coolant temperature and void diagnostics, while quantitative xenon remains explicitly unavailable at the current M5.7 operational snapshot boundary;
 - controlled normal-shutdown sequence: unload, breaker open, rod insertion, turbine rundown and post-shutdown main circulation;
-- desktop composition loads the exact M7.6 session paused; next after validation: M7.7 Training Objectives, Procedure Guidance & Evaluation.
+- desktop composition validated with the exact M7.6 session paused; local build and complete tests passed on 2026-07-21.
 
-### M7.7 Training Objectives, Procedure Guidance & Evaluation
+### M7.7 Training Objectives, Procedure Guidance & Evaluation — BASELINE CANDIDATE
 
-- scenario objectives/checkpoints;
-- optional guidance mode separated from physics;
-- deterministic evaluation based on plant state and operator actions.
+- deterministic accepted-operator-action journal at the scenario command boundary; host run/pause/step and rejected commands are excluded;
+- historical first-achievement checkpoints observed on every deterministic fixed step, independent of sparse UI publication stride;
+- generic criteria over checkpoint achievement and ordered accepted-action history mapped to declared scenario objectives;
+- optional Hidden / ChecklistOnly / Guided assistance modes separated completely from physics and score semantics;
+- 100-point integrated normal-operations capstone over validated `stable-low-load-parallel-operation` v1;
+- emergency/protection actions remain physically available while their inappropriate routine use can be scored as a training deviation;
+- after explicit M7.7 validation: M7 gate complete, continue with M8.1 Deterministic Fault-Injection Framework.
 
 ## M8 — Faults, transients and safety scenarios
 

@@ -9,12 +9,14 @@ public sealed class ScenarioSession
         ScenarioDefinition scenario,
         InitialConditionDescriptor initialCondition,
         ControlRoomRuntimeCoordinator coordinator,
-        ScenarioCommandDispatcher commandDispatcher)
+        ScenarioCommandDispatcher commandDispatcher,
+        ScenarioOperatorActionJournal operatorActions)
     {
         Scenario = scenario ?? throw new ArgumentNullException(nameof(scenario));
         InitialCondition = initialCondition ?? throw new ArgumentNullException(nameof(initialCondition));
         Coordinator = coordinator ?? throw new ArgumentNullException(nameof(coordinator));
         CommandDispatcher = commandDispatcher ?? throw new ArgumentNullException(nameof(commandDispatcher));
+        OperatorActions = operatorActions ?? throw new ArgumentNullException(nameof(operatorActions));
     }
 
     public ScenarioDefinition Scenario { get; }
@@ -26,4 +28,6 @@ public sealed class ScenarioSession
     public IControlRoomSnapshotSource SnapshotSource => Coordinator;
 
     public IControlRoomCommandDispatcher CommandDispatcher { get; }
+
+    public ScenarioOperatorActionJournal OperatorActions { get; }
 }

@@ -50,4 +50,4 @@ SCRAM and turbine/generator trips remain available protective actions, but routi
 
 ## Boundary to M7.7
 
-M7.6 provides the physical/procedural operating path only. Formal scenario scoring, training-objective evaluation and richer procedure-assistance semantics belong to M7.7.
+M7.6 provides the validated physical/procedural operating path. M7.7 now overlays formal scenario scoring, training-objective evaluation and optional procedure-assistance semantics without changing that path or its owners.

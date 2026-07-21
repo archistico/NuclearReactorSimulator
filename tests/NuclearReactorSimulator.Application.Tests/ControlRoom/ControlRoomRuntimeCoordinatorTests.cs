@@ -30,16 +30,22 @@ public sealed class ControlRoomRuntimeCoordinatorTests
     {
         var denseEngine = new FakeRuntimeEngine();
         var dense = new ControlRoomRuntimeCoordinator(denseEngine);
+        var denseCompletedSteps = 0;
+        dense.DeterministicStepCompleted += (_, _) => denseCompletedSteps++;
         dense.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.Run));
         var denseResult = dense.AdvanceRunning(25, publicationStride: 1);
 
         var sparseEngine = new FakeRuntimeEngine();
         var sparse = new ControlRoomRuntimeCoordinator(sparseEngine);
+        var sparseCompletedSteps = 0;
+        sparse.DeterministicStepCompleted += (_, _) => sparseCompletedSteps++;
         sparse.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.Run));
         var sparseResult = sparse.AdvanceRunning(25, publicationStride: 10);
 
         Assert.Equal(25, denseEngine.StepCount);
         Assert.Equal(25, sparseEngine.StepCount);
+        Assert.Equal(25, denseCompletedSteps);
+        Assert.Equal(25, sparseCompletedSteps);
         Assert.Equal(dense.Current.LogicalStep, sparse.Current.LogicalStep);
         Assert.Equal(25, denseResult.PublishedSnapshotCount);
         Assert.Equal(3, sparseResult.PublishedSnapshotCount);

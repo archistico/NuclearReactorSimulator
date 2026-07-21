@@ -29,7 +29,17 @@ public sealed class ScenarioSessionFactory
             engine,
             ControlRoomRunState.Paused,
             _executionBudget);
-        var commandDispatcher = new ScenarioCommandDispatcher(scenario, coordinator);
-        return new ScenarioSession(scenario, initialConditionFactory.Descriptor, coordinator, commandDispatcher);
+        var operatorActions = new ScenarioOperatorActionJournal();
+        var commandDispatcher = new ScenarioCommandDispatcher(
+            scenario,
+            coordinator,
+            operatorActions,
+            () => coordinator.Current.LogicalStep);
+        return new ScenarioSession(
+            scenario,
+            initialConditionFactory.Descriptor,
+            coordinator,
+            commandDispatcher,
+            operatorActions);
     }
 }

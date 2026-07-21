@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M7.6 — Power Manoeuvring & Normal Shutdown",
-        "Baseline candidate — M7.5 validated; exact stable-low-load parallel v1 initial condition, bounded load manoeuvring, explicit temperature/void feedback observation, xenon boundary preservation and controlled normal-shutdown guidance");
+        "M7.7 — Training Objectives, Procedure Guidance & Evaluation",
+        "Baseline candidate — M7.6 validated; deterministic historical checkpoints, accepted-action journal, optional guidance modes and observational 100-point training evaluation with no physics ownership");
 }

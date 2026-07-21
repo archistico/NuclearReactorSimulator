@@ -1,6 +1,16 @@
 # Changelog
 
-## M7.6 — Power Manoeuvring & Normal Shutdown (baseline candidate)
+## M7.7 — Training Objectives, Procedure Guidance & Evaluation (baseline candidate)
+
+- Recorded explicit local validation of M7.6: compilation and complete tests passed; M7.6 is now the validated baseline.
+- Added a deterministic accepted-operator-action journal at the scenario command boundary; runtime-host commands and rejected actions are excluded.
+- Added `DeterministicStepCompleted` observation on the Application runtime coordinator so training evaluation sees every fixed simulation step independent of presentation publication stride.
+- Added generic training checkpoints, evaluation criteria, objective scoring, procedure-deviation penalties and optional `Hidden` / `ChecklistOnly` / `Guided` assistance modes.
+- Added historical first-achievement checkpoint tracking and ordered accepted-action sequence evaluation without mutating physics, control, protection or alarms.
+- Added the 100-point `Integrated Normal Operations Training` capstone over the validated M7.6 `stable-low-load-parallel-operation` v1 initial condition.
+- Added desktop training evaluation presentation, M7.7 application tests, ADR 0059 and `docs/TRAINING_OBJECTIVES_GUIDANCE_EVALUATION.md`.
+
+## M7.6 — Power Manoeuvring & Normal Shutdown — VALIDATED
 
 - Recorded explicit local validation of M7.5: compilation and complete tests passed; M7.5 is now the validated baseline.
 - Added exact `stable-low-load-parallel-operation` v1 with canonical breaker-closed 5 MWe low-load handoff.

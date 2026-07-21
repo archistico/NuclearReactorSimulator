@@ -67,7 +67,7 @@ A replay always starts by loading a fresh exact-version initial condition. Runti
 M7.1 itself does not define operational recipe content. M7.2 now provides:
 
 - the concrete exact-version `cold-shutdown-pre-start` v1 recipe through `ColdShutdownInitialConditionFactory`;
-- procedure guidance or objective evaluation — M7.7 owns those semantics;
+- procedure guidance and objective evaluation are owned by M7.7 as observational Application state over deterministic snapshots/actions;
 - deterministic fault activation schedules — M8.1 owns fault scenario inputs;
 - general full-state save/load checkpoints or seek — M9.1 owns recorder/checkpoint evolution.
 

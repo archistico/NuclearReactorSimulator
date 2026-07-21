@@ -13,7 +13,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.3 is locally validated and provides exact `pre-criticality-source-range` v1 plus controlled first-criticality/low-power operation.
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
-- M7.6 is the current baseline candidate and adds exact `stable-low-load-parallel-operation` v1, broader load manoeuvring, explicit temperature/void observation with the xenon boundary preserved, and controlled normal-shutdown guidance without taking ownership from M2/M4/M5.
+- M7.6 is validated. M7.7 is the current baseline candidate and adds deterministic training checkpoints, accepted-action history, optional guidance modes and scoring as Application-only observational state; it never becomes a physical/control/protection owner.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
 
@@ -91,7 +91,7 @@ Validated M6 responsibilities include:
 - validated M7.1 exact-version initial-condition/session registry, scenario command gating and deterministic replay orchestration;
 - validated M7.2 concrete cold-shutdown recipe plus presentation-only pre-start readiness and declarative guidance;
 - validated M7.3 pre-criticality/source-range initial condition, controlled rod permissions and observational criticality/low-power guidance;
-- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated pre-synchronization handoff, M4.5 close-check/breaker path and bounded requested electrical-load seam; M7.6 candidate stable-low-load manoeuvring and normal-shutdown orchestration over the same canonical owners.
+- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 candidate training/evaluation observes deterministic steps and accepted actions over those same canonical owners.
 
 Application may depend on Simulation to coordinate validated runtime seams, but Avalonia must not bypass Application and reference Simulation directly.
 

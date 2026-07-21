@@ -1,7 +1,7 @@
 namespace NuclearReactorSimulator.Application.Scenarios;
 
 /// <summary>
-/// Descriptive training objective. M7.1 stores objective metadata only; deterministic objective evaluation belongs to M7.7.
+/// Descriptive training objective metadata introduced by M7.1. M7.7 maps these stable IDs to separate deterministic observational evaluation criteria without adding physics ownership.
 /// </summary>
 public sealed record ScenarioObjectiveDefinition
 {

@@ -2,9 +2,9 @@
 
 ## Validated baseline
 
-The current validated functional baseline is **M7.5 — Grid Synchronization & Load Increase**.
+The current validated functional baseline is **M7.6 — Power Manoeuvring & Normal Shutdown**.
 
-M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.5 are validated through local build/test execution/approval. The M3, M4, M5 and M6 gates are complete. M7.6 is the current baseline candidate.
+M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.6 are validated through local build/test execution/approval. The M3, M4, M5 and M6 gates are complete. M7.7 is the current baseline candidate.
 
 | Phase | Status | Validated capability |
 |---|---|---|
@@ -15,13 +15,13 @@ M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–
 | M4 | VALIDATED | M4.1–M4.7 validated; manually commanded reactor-to-grid gate complete |
 | M5 | VALIDATED | M5.1–M5.7 validated; integrated automatic-operation gate complete |
 | M6 | VALIDATED | M6.1–M6.7 validated; complete control-room/runtime-integration gate |
-| M7 | IN PROGRESS | M7.1–M7.5 validated; M7.6 Power Manoeuvring & Normal Shutdown baseline candidate |
+| M7 | IN PROGRESS | M7.1–M7.6 validated; M7.7 Training Objectives, Procedure Guidance & Evaluation baseline candidate |
 | M8 | PLANNED | faults, transients and safety scenarios |
 | M9 | PLANNED | advanced analysis, fidelity refinement and historical-inspired scenarios |
 
-## Validated M7.5 / current M7.6 candidate
+## Validated M7.6 / current M7.7 candidate
 
-M7.1 through M7.5 are validated. M7.5 adds exact-version `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded generator-load requests through existing runtime seams. M7.6 is the current candidate for broader load manoeuvring and controlled normal shutdown.
+M7.1 through M7.6 are validated. M7.6 adds exact-version `stable-low-load-parallel-operation` v1, bounded on-grid manoeuvring, explicit temperature/void observation with the xenon boundary preserved, and controlled normal shutdown. M7.7 is the current candidate for deterministic training objectives, optional guidance and observational evaluation over that validated operating path.
 
 ## What the validated engine can already do
 
@@ -67,11 +67,11 @@ The validated core can run headlessly and deterministically with:
 
 ## Current implementation candidate
 
-**M7.5 — Grid Synchronization & Load Increase** is validated and supplies the exact pre-synchronization handoff, canonical M4.5 close-check/breaker path and bounded electrical-load requests.
+**M7.6 — Power Manoeuvring & Normal Shutdown** is validated and supplies the exact stable-low-load parallel handoff, bounded on-grid manoeuvring, explicit temperature/void observation with xenon boundary preservation, and controlled normal shutdown.
 
-**M7.6 — Power Manoeuvring & Normal Shutdown** is the current baseline candidate, adding exact stable-low-load parallel handoff, bounded on-grid manoeuvring, explicit temperature/void observation with xenon boundary preservation, and a controlled unload/disconnect/reactor-shutdown/post-shutdown-cooling procedure.
+**M7.7 — Training Objectives, Procedure Guidance & Evaluation** is the current baseline candidate, adding deterministic historical checkpoints, accepted-action sequencing, optional guidance modes and 100-point observational training evaluation without taking physical/control/protection ownership.
 
-**Restart note:** M7.1 through M7.5 are explicitly validated. M7.6 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
+**Restart note:** M7.1 through M7.6 are explicitly validated. M7.7 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
 
 ## What is intentionally not built yet
 
@@ -83,7 +83,7 @@ The following are planned architecture boundaries, not missing bugs:
 - no detailed HP/IP/LP turbine maps, moisture separation/reheat or wet-steam erosion model;
 - no detailed synchronous-machine transient/reactance model, AVR/excitation dynamics or grid load-flow physics;
 - no persistent disk historian or wall-clock event timestamps; M6.6 history is bounded presentation state indexed only by logical step/event sequence;
-- M7.5 synchronization, breaker closure and initial load increase are validated; M7.6 now owns broader load manoeuvring and normal-shutdown guidance through canonical M2/M4/M5 seams;
+- M7.5 synchronization/load and M7.6 manoeuvring/normal shutdown are validated; M7.7 now owns only observational training objectives/guidance/evaluation semantics over canonical M2/M4/M5 seams;
 - no arbitrary full-state checkpoint/save/seek format yet; M9.1 owns that boundary;
 - no full-scope or licensing-grade thermal hydraulics/neutronics.
 
@@ -160,6 +160,6 @@ A milestone becomes validated only after:
 - documentation reflects the implemented behavior;
 - user validation is explicitly recorded.
 
-## Current M7.6 candidate
+## Current M7.7 candidate
 
-M7.5 Grid Synchronization & Load Increase is locally validated. M7.6 adds exact `stable-low-load-parallel-operation` v1, bounded load raise/lower through canonical M4.5 requested-power inputs, temperature/void observation, explicit xenon unavailability, and controlled unload/disconnect/rod-insertion/post-shutdown-cooling guidance.
+M7.6 Power Manoeuvring & Normal Shutdown is locally validated. M7.7 adds deterministic historical checkpoint tracking on every fixed simulation step, a monotonic journal of scenario-accepted operator actions, optional guidance modes and objective scoring/penalties over the validated M7.6 path. This state is observational Application state only and cannot mutate physics, control, protection or alarms.

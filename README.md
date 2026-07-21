@@ -9,11 +9,11 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-**M7.5 — Grid Synchronization & Load Increase — VALIDATED**
+**M7.6 — Power Manoeuvring & Normal Shutdown — VALIDATED**
 
-M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.5 are validated. The M3, M4, M5 and M6 gates are complete. M7.1 establishes the exact-version initial-condition/scenario/session/replay boundary; M7.2–M7.5 provide the validated cold-start through first-load operating progression.
+M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.6 are validated. The M3, M4, M5 and M6 gates are complete. M7.1 establishes the exact-version initial-condition/scenario/session/replay boundary; M7.2–M7.6 provide the validated cold-start through manoeuvring and controlled normal-shutdown progression.
 
-The current implementation candidate is **M7.6 — Power Manoeuvring & Normal Shutdown**: it adds exact `stable-low-load-parallel-operation` v1, bounded on-grid load manoeuvring, observational temperature/void response with the quantitative-xenon boundary preserved, and controlled unload/disconnect/reactor-shutdown/post-shutdown-cooling guidance.
+The current implementation candidate is **M7.7 — Training Objectives, Procedure Guidance & Evaluation**: it overlays deterministic historical checkpoints, accepted operator-action sequencing, optional guidance modes and a 100-point observational training assessment on the validated M7.6 operating path without taking physical/control/protection ownership.
 
 ## Architectural principles
 
@@ -443,7 +443,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7 and M7.1–M7.5 are **validated**; the M3, M4, M5 and M6 gates are complete. M7.6 is the current **baseline candidate**, adding power manoeuvring, feedback observation and controlled normal shutdown.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7 and M7.1–M7.6 are **validated**; the M3, M4, M5 and M6 gates are complete. M7.7 is the current **baseline candidate**, adding deterministic training objectives, optional procedure guidance and observational evaluation over the validated M7 operating path.
 
 
 ## Generator, grid and synchronization physics (M4.5)

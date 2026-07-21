@@ -6,6 +6,7 @@ using NuclearReactorSimulator.Application.Scenarios.Operations;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Application.Scenarios.Startup;
 using NuclearReactorSimulator.Application.Scenarios.Synchronization;
+using NuclearReactorSimulator.Application.Scenarios.Training;
 
 namespace NuclearReactorSimulator.App.Composition;
 
@@ -25,12 +26,18 @@ internal static class CompositionRoot
             new GridSynchronizationInitialConditionFactory(),
             new PowerManoeuvringInitialConditionFactory(),
         });
-        var session = new ScenarioSessionFactory(registry).Load(PowerManoeuvringNormalShutdownProgram.Scenario);
+        var session = new ScenarioSessionFactory(registry).Load(IntegratedOperationsTrainingProgram.Scenario);
+        var trainingTracker = new ScenarioTrainingTracker(
+            session,
+            IntegratedOperationsTrainingProgram.TrainingPlan,
+            IntegratedOperationsTrainingProgram.CreateCheckpointEvaluator(),
+            TrainingGuidanceMode.Guided);
         var mainWindowViewModel = new MainWindowViewModel(
             descriptor,
             session.SnapshotSource,
             session.CommandDispatcher,
-            powerManoeuvringGuidance: PowerManoeuvringNormalShutdownProgram.Guidance);
+            powerManoeuvringGuidance: IntegratedOperationsTrainingProgram.ProcedureGuidance,
+            trainingTracker: trainingTracker);
 
         return new ApplicationRoot(mainWindowViewModel);
     }

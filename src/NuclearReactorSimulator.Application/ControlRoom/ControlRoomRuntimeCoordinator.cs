@@ -30,6 +30,12 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
 
     public event EventHandler<ControlRoomSnapshotChangedEventArgs>? SnapshotChanged;
 
+    /// <summary>
+    /// Raised once for every deterministic simulation step, regardless of presentation publication stride. Observers may
+    /// use it for training/evaluation history, but must never mutate physical state or influence deterministic stepping.
+    /// </summary>
+    public event EventHandler<ControlRoomSnapshotChangedEventArgs>? DeterministicStepCompleted;
+
     public ControlRoomSnapshot Current
     {
         get
@@ -58,6 +64,7 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
     {
         ArgumentNullException.ThrowIfNull(command);
         ControlRoomSnapshot? publish = null;
+        ControlRoomSnapshot? completedStep = null;
 
         lock (_gate)
         {
@@ -73,7 +80,8 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
                     break;
                 case ControlRoomCommandKind.SingleStep:
                     _runState = ControlRoomRunState.Paused;
-                    publish = SetCurrent(_engine.Step(_runState));
+                    completedStep = _engine.Step(_runState);
+                    publish = SetCurrent(completedStep);
                     break;
                 default:
                     _engine.QueueOperatorCommand(command);
@@ -81,6 +89,7 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
             }
         }
 
+        PublishDeterministicStep(completedStep);
         Publish(publish);
     }
 
@@ -103,6 +112,7 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
         }
 
         var publications = new List<ControlRoomSnapshot>();
+        var completedSteps = new List<ControlRoomSnapshot>();
         var executed = 0;
         ControlRoomRunState finalRunState;
         long finalStep;
@@ -114,6 +124,7 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
                 for (var index = 1; index <= stepCount; index++)
                 {
                     var snapshot = _engine.Step(_runState);
+                    completedSteps.Add(snapshot);
                     executed++;
                     var shouldPublish = index % publicationStride == 0 || index == stepCount;
                     if (shouldPublish)
@@ -125,6 +136,11 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
 
             finalRunState = _runState;
             finalStep = _engine.LogicalStep;
+        }
+
+        foreach (var snapshot in completedSteps)
+        {
+            PublishDeterministicStep(snapshot);
         }
 
         foreach (var snapshot in publications)
@@ -139,6 +155,14 @@ public sealed class ControlRoomRuntimeCoordinator : IControlRoomSnapshotSource, 
     {
         _current = snapshot ?? throw new ArgumentNullException(nameof(snapshot));
         return snapshot;
+    }
+
+    private void PublishDeterministicStep(ControlRoomSnapshot? snapshot)
+    {
+        if (snapshot is not null)
+        {
+            DeterministicStepCompleted?.Invoke(this, new ControlRoomSnapshotChangedEventArgs(snapshot));
+        }
     }
 
     private void Publish(ControlRoomSnapshot? snapshot)

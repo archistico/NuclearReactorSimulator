@@ -42,6 +42,8 @@ Transient commands are cleared after exactly one deterministic step. Controller 
 
 A cooperative `ControlRoomRuntimeExecutionBudget` bounds one batch to 256 simulation steps by default. Hosts can run repeated batches while yielding between them. The batch size and publication stride never change fixed simulation `deltaTime` or solver ordering.
 
+M7.7 adds a separate Application-only `DeterministicStepCompleted` observation event on the coordinator. It is raised for every executed fixed step, including steps omitted by sparse presentation publication, so training/evaluation history cannot depend on UI refresh cadence. The event is observational and does not change `Current`, solver inputs or publication semantics.
+
 ## Initial conditions
 
 M6.7 intentionally did not invent a default live plant state. Validated M7.1 owns exact-version initial-condition/scenario/session creation. M7.2 now supplies `cold-shutdown-pre-start` v1 and the desktop loads that exact runtime paused; pacing/publication semantics remain those of the M6.7 coordinator.

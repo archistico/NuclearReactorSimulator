@@ -9,6 +9,7 @@ using NuclearReactorSimulator.Application.Scenarios.Operations;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Application.Scenarios.Startup;
 using NuclearReactorSimulator.Application.Scenarios.Synchronization;
+using NuclearReactorSimulator.Application.Scenarios.Training;
 
 namespace NuclearReactorSimulator.App.ViewModels;
 
@@ -25,6 +26,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private readonly GridSynchronizationGuidancePlan? _gridSynchronizationGuidance;
     private readonly GridSynchronizationChecklistEvaluator _gridSynchronizationChecklistEvaluator = new();
     private readonly PowerManoeuvringGuidancePlan? _powerManoeuvringGuidance;
+    private readonly ScenarioTrainingTracker? _trainingTracker;
     private readonly PowerManoeuvringChecklistEvaluator _powerManoeuvringChecklistEvaluator = new();
     private ControlRoomWorkspaceDescriptor _selectedWorkspace;
     private ControlRoomSnapshot _snapshot;
@@ -42,7 +44,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         FirstCriticalityGuidancePlan? firstCriticalityGuidance = null,
         HeatUpTurbineStartupGuidancePlan? heatUpTurbineStartupGuidance = null,
         GridSynchronizationGuidancePlan? gridSynchronizationGuidance = null,
-        PowerManoeuvringGuidancePlan? powerManoeuvringGuidance = null)
+        PowerManoeuvringGuidancePlan? powerManoeuvringGuidance = null,
+        ScenarioTrainingTracker? trainingTracker = null)
     {
         ArgumentNullException.ThrowIfNull(descriptor);
         ArgumentNullException.ThrowIfNull(snapshotSource);
@@ -52,7 +55,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _heatUpTurbineStartupGuidance = heatUpTurbineStartupGuidance;
         _gridSynchronizationGuidance = gridSynchronizationGuidance;
         _powerManoeuvringGuidance = powerManoeuvringGuidance;
-        _commandStatus = powerManoeuvringGuidance is not null
+        _trainingTracker = trainingTracker;
+        _commandStatus = trainingTracker is not null
+            ? "M7.7 integrated normal-operations training loaded in PAUSED state. Guidance and deterministic scoring observe snapshots/actions only and never alter physics."
+            : powerManoeuvringGuidance is not null
             ? "M7.6 power-manoeuvring/normal-shutdown scenario loaded in PAUSED state. Manoeuvre load through canonical requests, then unload, disconnect, insert rods and preserve post-shutdown circulation."
             : gridSynchronizationGuidance is not null
             ? "M7.5 grid-synchronization/initial-loading scenario loaded in PAUSED state. Close only on the canonical synchronization permissive, then take load in deliberate increments."
@@ -97,6 +103,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         AlarmResetAllCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.AlarmResetAll));
 
         snapshotSource.SnapshotChanged += OnSnapshotChanged;
+        if (_trainingTracker is not null)
+        {
+            _trainingTracker.AssessmentChanged += OnTrainingAssessmentChanged;
+        }
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -172,6 +182,15 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         get
         {
+            if (_trainingTracker?.GuidanceMode == TrainingGuidanceMode.Hidden)
+            {
+                return "Procedure guidance is hidden. Evaluation continues deterministically from plant checkpoints and accepted operator actions.";
+            }
+            if (_trainingTracker?.GuidanceMode == TrainingGuidanceMode.ChecklistOnly)
+            {
+                return "Checklist-only mode: step-by-step procedure guidance is suppressed. Evaluation semantics are unchanged.";
+            }
+
             if (_powerManoeuvringGuidance is not null)
             {
                 return string.Join(Environment.NewLine, _powerManoeuvringGuidance.Steps.Select(step =>
@@ -230,6 +249,36 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             var results = _firstCriticalityChecklistEvaluator.Evaluate(_snapshot, _firstCriticalityGuidance.Checks);
             return string.Join(Environment.NewLine, results.Select(static result =>
                 $"{(result.IsSatisfied ? "✓" : "○")} {result.Definition.Title}: {result.Observation}"));
+        }
+    }
+
+    public string TrainingGuidanceModeText => _trainingTracker is null
+        ? "No M7.7 training evaluation loaded"
+        : _trainingTracker.GuidanceMode switch
+        {
+            TrainingGuidanceMode.Hidden => "HIDDEN — procedure assistance suppressed; scoring unchanged",
+            TrainingGuidanceMode.ChecklistOnly => "CHECKLIST ONLY — checkpoints visible; step-by-step guidance suppressed",
+            TrainingGuidanceMode.Guided => "GUIDED — procedure steps and checkpoints visible; scoring unchanged",
+            _ => "UNKNOWN",
+        };
+
+    public string TrainingAssessmentText
+    {
+        get
+        {
+            if (_trainingTracker is null)
+            {
+                return "No deterministic training assessment loaded.";
+            }
+
+            var assessment = _trainingTracker.Assessment;
+            var objectiveLines = assessment.Objectives.Select(objective =>
+                $"{(objective.IsAchieved ? "✓" : "○")} {objective.Objective.Title}: {objective.Score}/{objective.MaximumScore}");
+            var penaltyLines = assessment.Penalties.Where(static penalty => penalty.IsTriggered).Select(penalty =>
+                $"−{penalty.Definition.Points} {penalty.Definition.Title}");
+            var details = objectiveLines.Concat(penaltyLines);
+            return $"SCORE {assessment.TotalScore}/{assessment.MaximumScore} · objective {assessment.ObjectiveScore} · penalties {assessment.PenaltyPoints}"
+                + Environment.NewLine + string.Join(Environment.NewLine, details);
         }
     }
 
@@ -727,6 +776,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         {
             CommandStatus = $"Command blocked by the loaded scenario: {exception.Message}";
         }
+    }
+
+    private void OnTrainingAssessmentChanged(object? sender, ScenarioTrainingAssessmentChangedEventArgs e)
+    {
+        OnPropertyChanged(nameof(TrainingAssessmentText));
+        OnPropertyChanged(nameof(TrainingGuidanceModeText));
     }
 
     private void OnSnapshotChanged(object? sender, ControlRoomSnapshotChangedEventArgs e)
