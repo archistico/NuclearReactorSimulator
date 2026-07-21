@@ -18,11 +18,11 @@ For a ready-to-paste new-conversation bootstrap, use `docs/NEW_CHAT_START.md`. F
 
 ### Restart checkpoint
 
-- **Last explicitly locally validated baseline:** `M7.2 — Cold Shutdown & Pre-Startup` (hotfix 1).
+- **Last explicitly locally validated baseline:** `M7.5 — Grid Synchronization & Load Increase`.
 - **M6 gate:** `COMPLETE / VALIDATED`.
-- **Latest implementation package:** `M7.3 — First Criticality & Low-Power Operation` baseline candidate.
-- **M7.3 validation is not recorded yet in this handoff.** Do not mark M7.3 validated until the user explicitly confirms local `dotnet build` and full `dotnet test` success.
-- **Immediate next action:** validate M7.3. If validation passes, record it as validated, then begin `M7.4 — Heat-Up, Steam Raising & Turbine Startup`.
+- **Latest implementation package:** `M7.6 — Power Manoeuvring & Normal Shutdown` baseline candidate.
+- **M7.5 is explicitly validated.** M7.6 must remain a baseline candidate until the user explicitly confirms local `dotnet build` and full `dotnet test` success.
+- **Immediate next action:** validate M7.6. If validation passes, record it as validated, then begin `M7.7 — Training Objectives, Procedure Guidance & Evaluation`.
 
 ### Working-package rule
 
@@ -34,7 +34,7 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 
 ## Current baseline
 
-- Last locally validated baseline: **M7.2 — Cold Shutdown & Pre-Startup** (hotfix 1).
+- Last locally validated baseline: **M7.5 — Grid Synchronization & Load Increase**.
 - M3 gate: **COMPLETE / VALIDATED**.
 - M4.1 main-steam/admission topology: **VALIDATED**.
 - M4.2 turbine expansion/rotor dynamics: **VALIDATED**.
@@ -59,8 +59,11 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 - M6.7 Control-Room Integration & Performance Baseline / M6 gate: **VALIDATED / COMPLETE**.
 - M7.1 Versioned Initial Conditions & Scenario Framework: **VALIDATED**.
 - M7.2 Cold Shutdown & Pre-Startup: **VALIDATED**.
-- Current implementation candidate: **M7.3 — First Criticality & Low-Power Operation**.
-- Next planned milestone after M7.3 validation: **M7.4 — Heat-Up, Steam Raising & Turbine Startup**.
+- M7.3 First Criticality & Low-Power Operation: **VALIDATED**.
+- M7.4 Heat-Up, Steam Raising & Turbine Startup: **VALIDATED**.
+- M7.5 Grid Synchronization & Load Increase: **VALIDATED**.
+- Current implementation candidate: **M7.6 — Power Manoeuvring & Normal Shutdown**.
+- Next planned milestone after M7.6 validation: **M7.7 — Training Objectives, Procedure Guidance & Evaluation**.
 
 ## Current system ownership map
 
@@ -75,7 +78,7 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 | Alarm/annunciator memory | M5.6 | ACK/reset never resets physical protection implicitly. |
 | Integrated automatic operation | M5.7 | Current-step decisions use the committed measured frame; candidate measurements belong to the next step. |
 | Control-room presentation/commands | M6 | Avalonia consumes presentation snapshots and emits typed Application intents only. |
-| Initialized sessions/scenarios | M7.1+ | M7.1 owns exact-version reconstruction/session/replay; M7.2 owns the concrete cold-shutdown/pre-start recipe; M7.3 adds a versioned pre-criticality/source-range handoff and observational first-criticality guidance without taking physical ownership. |
+| Initialized sessions/scenarios | M7.1+ | M7.1 owns exact-version reconstruction/session/replay; M7.2 cold-shutdown/pre-start; M7.3 first-criticality/low-power; M7.4 heat-up/turbine startup; M7.5 synchronization/load; M7.6 manoeuvring/normal-shutdown guidance over canonical M2/M4/M5 seams without taking physical ownership. |
 
 ### Cross-cutting ownership principles
 
@@ -178,6 +181,11 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 89. M7.3 rod INSERT/HOLD/WITHDRAW actions use only the validated M5.3 command/actuator seam; guidance and acceptance checks must never patch rod position, reactivity or neutron population directly.
 90. M7.3 first-criticality/low-power checks consume immutable `ControlRoomSnapshot` data only and remain observational; steam-path opening, turbine acceleration, breaker closure and generator loading remain outside M7.3 permissions.
 91. Quantitative xenon remains explicitly unavailable while canonical M2.8 iodine/xenon state is absent from the M5.7 operational envelope; scenario/UI layers must not synthesize, estimate or privately integrate xenon reactivity.
+92. M7.4 startup lineups are exact versioned initial-condition data composed through canonical M1–M5 owners; scenario/UI layers must not create a second stop-valve, steam-pressure, rotor-speed or inventory owner.
+93. M7.4 turbine roll/acceleration uses only the validated M5.4 turbine-speed controller seam through typed Application intents; guidance must never set governing-valve position or rotor speed directly.
+94. M7.4 heat-up, steam-pressure, drum-inventory and turbine-speed checks consume immutable `ControlRoomSnapshot` data only and remain observational; they must never trim inventories, force pressure/temperature or advance time automatically.
+95. M7.4 scenario permissions fail closed on generator-breaker close and generator-load raise/lower; synchronization, breaker closure and initial loading remain M7.5 ownership.
+96. Missing generator electrical-output measurements remain unavailable and must not be reconstructed from true state in scenario/UI code; breaker isolation may be observed only from the published operational snapshot.
 
 ## Validated progression
 
@@ -208,15 +216,17 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 - M6.7: live M5.7 runtime adapter/coordinator, complete typed operator-command translation, bounded accelerated execution and rendering-cadence-independent publication; M6 gate complete.
 - M7.1: exact-version initial-condition factories/registry, versioned scenario schema, fail-closed action gating, fresh paused sessions and deterministic logical-step replay.
 - M7.2: validated concrete cold-shutdown/pre-start v1 recipe, observational readiness checks, declarative guided preparation and initialized paused desktop composition.
-- M7.3 candidate: exact pre-criticality/source-range v1 handoff, controlled rod permissions, observational criticality/low-power guidance and explicit xenon availability boundary.
+- M7.3: validated exact pre-criticality/source-range v1 handoff, controlled rod permissions, observational criticality/low-power guidance and explicit xenon availability boundary.
+- M7.4 validated: exact low-power-steam-raising v1 handoff, versioned startup steam lineup, observational heat-up/steam/turbine checks and validated turbine-speed governing path.
+- M7.5 validated: exact pre-synchronization-grid-loading v1 handoff, canonical M4.5 close-check/breaker transition, bounded requested electrical-load changes and stable low-load handoff.
 
-## M7.2 validated / M7.3 candidate
+## M7.5 validated / M7.6 candidate
 
-M6.1 through M6.7 are locally validated and the M6 gate is complete. M7.1 and M7.2 are also locally validated. M7.1 owns exact-version initial-condition/session/scenario/replay boundaries; M7.2 supplies the first concrete `cold-shutdown-pre-start` v1 operational recipe and observational pre-start guidance.
+M6.1 through M6.7 are locally validated and the M6 gate is complete. M7.1 through M7.5 are locally validated. M7.1 owns exact-version initial-condition/session/scenario/replay boundaries; M7.2 supplies cold-shutdown/pre-start; M7.3 supplies first-criticality and low-power operation; M7.4 supplies heat-up/steam raising/turbine startup; M7.5 supplies canonical synchronization, breaker closure and initial load increase.
 
-M7.3 adds `pre-criticality-source-range` v1. It reuses the canonical M7.2 construction path, establishes main circulation, supplies a tiny deterministic non-zero kinetics seed required by the homogeneous M2 point-kinetics equations, and enables controlled rod INSERT/HOLD/WITHDRAW through the validated M5.3 command seam. First-criticality and low-power criteria remain observational over immutable presentation snapshots.
+M7.6 adds exact `stable-low-load-parallel-operation` v1 with main circulation established, turbine near synchronous speed, generator breaker already closed and a bounded 5 MWe requested-load handoff. Broader load raise/lower remains only a change to canonical M4.5 requested electrical power; reactor response remains M2/M5.3 ownership and turbine governing remains M5.4 ownership. Temperature and void are observed from published core diagnostics. Quantitative xenon remains explicitly unavailable at the M5.7 operational snapshot boundary and is never reconstructed by Application.
 
-M7.3 deliberately keeps steam admission closed and generator breaker closure/turbine speed/load commands disallowed. Heat-up, steam raising and turbine startup remain M7.4 ownership. Quantitative xenon remains explicitly unavailable until its canonical M2.8 state is promoted into the M5.7 operational envelope.
+Normal shutdown is procedural/orchestrational only: unload generator, open breaker through M4.5, insert rods through M5.3/M2, reduce turbine speed through M5.4 and preserve main circulation for post-shutdown cooling. SCRAM/trips remain available safety actions but are not the routine normal-shutdown mechanism.
 
 ## New-chat implementation protocol
 
@@ -240,10 +250,30 @@ M7.1 — VALIDATED
         ↓
 M7.2 — VALIDATED
         ↓
-M7.3 — BASELINE CANDIDATE, awaiting explicit local validation record
+M7.3 — VALIDATED
+        ↓
+M7.4 — VALIDATED
+        ↓
+M7.5 — VALIDATED
+        ↓
+M7.6 — BASELINE CANDIDATE, awaiting explicit local validation record
         ↓ after successful validation
-M7.4 — Heat-Up, Steam Raising & Turbine Startup
+M7.7 — Training Objectives, Procedure Guidance & Evaluation
 ```
 
-M7.1 establishes validated versioned initial-condition/session/scenario ownership. M7.2 supplies the validated cold-shutdown/pre-start recipe. M7.3 is the current first-criticality/low-power candidate; M7.4 owns heat-up, steam raising and turbine startup after M7.3 validation.
+M7.1 establishes validated versioned initial-condition/session/scenario ownership. M7.2 supplies cold-shutdown/pre-start. M7.3 supplies validated first-criticality/low-power operation. M7.4 supplies validated heat-up/steam-raising/turbine startup. M7.5 supplies validated grid synchronization and initial load. M7.6 is the current power-manoeuvring/normal-shutdown candidate; M7.7 follows only after explicit M7.6 validation.
 
+
+### M7.5 ownership additions
+
+96. M7.5 scenario permission to request generator-breaker closure never replaces the canonical M4.5 synchronization close-check; frequency, phase and voltage permissives remain authoritative below Application.
+97. M7.5 generator load raise/lower changes only bounded canonical M4.5 requested electrical power; Application/UI must never write electromagnetic torque, rotor speed or electrical output directly.
+98. Initial-load coordination remains explicit across existing owners: M4.5 electrical loading, M5.4 turbine-speed governing and M2/M5.3 rod-reactivity-kinetics. Scenario checks are observational only.
+
+
+### M7.6 ownership additions
+
+99. M7.6 generator-load manoeuvring changes only bounded canonical M4.5 requested electrical power; scenario/UI never writes electrical output, electromagnetic torque or rotor speed directly.
+100. M7.6 reactor power changes remain rod-command → M2 reactivity/kinetics/fission-power ownership; normal-shutdown guidance must not directly write thermal MW or reactivity.
+101. M7.6 temperature and void response checks are observational projections only. Quantitative xenon remains explicitly unavailable until promoted through the canonical operational snapshot boundary; Application must not reconstruct it privately.
+102. Normal shutdown is an ordered use of validated seams: unload, breaker open, controlled rod insertion, turbine rundown and continued main circulation. SCRAM/trips remain protection/safety actions and are not redefined as routine procedural owners.

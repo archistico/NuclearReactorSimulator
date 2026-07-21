@@ -9,11 +9,11 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-**M7.2 — Cold Shutdown & Pre-Startup — VALIDATED**
+**M7.5 — Grid Synchronization & Load Increase — VALIDATED**
 
-M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.2 are validated. The M3, M4, M5 and M6 gates are complete. M7.1 establishes the exact-version initial-condition/scenario/session/replay boundary; M7.2 supplies the validated concrete cold-shutdown and pre-start operational baseline.
+M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.5 are validated. The M3, M4, M5 and M6 gates are complete. M7.1 establishes the exact-version initial-condition/scenario/session/replay boundary; M7.2–M7.5 provide the validated cold-start through first-load operating progression.
 
-The current implementation candidate is **M7.3 — First Criticality & Low-Power Operation**: it adds the exact `pre-criticality-source-range` v1 handoff, controlled rod-operation permissions, observational criticality/period/low-power guidance and a paused desktop session loaded through the validated M7.1 boundary. M7.2 hotfix 1 is the current validated baseline.
+The current implementation candidate is **M7.6 — Power Manoeuvring & Normal Shutdown**: it adds exact `stable-low-load-parallel-operation` v1, bounded on-grid load manoeuvring, observational temperature/void response with the quantitative-xenon boundary preserved, and controlled unload/disconnect/reactor-shutdown/post-shutdown-cooling guidance.
 
 ## Architectural principles
 
@@ -443,7 +443,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7 and M7.1–M7.2 are **validated**; the M3, M4, M5 and M6 gates are complete. M7.3 is the current **baseline candidate**, adding the first controlled criticality and educational low-power operating flow.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7 and M7.1–M7.5 are **validated**; the M3, M4, M5 and M6 gates are complete. M7.6 is the current **baseline candidate**, adding power manoeuvring, feedback observation and controlled normal shutdown.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -525,7 +525,7 @@ M6.6 completes the historical/annunciator presentation surface without adding a 
 
 ## M6.7 control-room integration & performance baseline
 
-M6.7 adds `IntegratedAutomaticOperationRuntimeEngine` and `ControlRoomRuntimeCoordinator`, completing the operator path from Avalonia command intents to the validated M5.7 runtime and back to immutable presentation snapshots. Accelerated execution is split into bounded cooperative batches; presentation publication may be sparse without skipping deterministic simulation steps. The desktop does not invent state in Avalonia: validated M7.1 supplies exact-version scenario/session ownership, validated M7.2 supplies the cold-shutdown/pre-start recipe, and M7.3 composes the pre-criticality source-range handoff through those boundaries. See `docs/CONTROL_ROOM_INTEGRATION_PERFORMANCE.md` and ADR 0052.
+M6.7 adds `IntegratedAutomaticOperationRuntimeEngine` and `ControlRoomRuntimeCoordinator`, completing the operator path from Avalonia command intents to the validated M5.7 runtime and back to immutable presentation snapshots. Accelerated execution is split into bounded cooperative batches; presentation publication may be sparse without skipping deterministic simulation steps. The desktop does not invent state in Avalonia: validated M7.1 supplies exact-version scenario/session ownership, validated M7.2 supplies the cold-shutdown/pre-start recipe, validated M7.3 composes the pre-criticality/source-range handoff, and M7.4 adds the warm steam-raising/turbine-startup handoff through those boundaries. See `docs/CONTROL_ROOM_INTEGRATION_PERFORMANCE.md` and ADR 0052.
 
 ## M7.1 versioned initial conditions & scenario framework
 
@@ -536,6 +536,21 @@ M7.1 adds exact `(InitialConditionId, Version)` references, registered factories
 M7.2 registers `cold-shutdown-pre-start` v1 as a deterministic construction recipe over canonical M1–M5 owners. The scenario starts paused with zero modeled fission power, fully inserted modeled rods, main/condensate/feedwater pumps stopped, steam-admission valves closed, turbine stationary and generator breaker open. Pre-start readiness is evaluated only from `ControlRoomSnapshot`; guidance is declarative and may suggest operator commands but never dispatches them automatically. M7.2 hotfix 1 is locally validated. See `docs/COLD_SHUTDOWN_PRESTART.md` and ADR 0054.
 
 
+
+## M7.4 heat-up, steam raising & turbine startup
+
+M7.4 adds exact `low-power-steam-raising` v1 as the warm critical handoff for startup training. The factory reuses the canonical M7.2 construction path, seeds low-power critical kinetics, establishes main circulation and a 120 °C warm primary/steam condition, and records a versioned startup lineup with stop/admission availability while the governing control valve remains closed. Turbine roll uses only `TurbineSpeedRaise/Lower` through the validated M5.4 controller/actuator seam; scenario checks remain observational over `ControlRoomSnapshot`. Generator-breaker close and generator-load commands remain fail-closed for M7.5 synchronization/loading. See `docs/HEAT_UP_STEAM_RAISING_TURBINE_STARTUP.md` and ADR 0056.
+
 ## M7.3 first criticality & low-power operation
 
 M7.3 adds exact `pre-criticality-source-range` v1 as the prepared handoff for first-criticality training. The factory reuses the validated M7.2 construction path, starts main circulation established and provides a tiny deterministic non-zero neutron-population seed required by the homogeneous M2 point-kinetics equations. Rod INSERT/HOLD/WITHDRAW remains operator-commanded through the validated M5.3 seam; scenario permissions continue to block turbine acceleration, generator-breaker closure and load control. Observational guidance covers reactivity approach, first criticality, a 0.01–5 MWth educational low-power band and reactor-period stabilization. Quantitative xenon remains explicitly unavailable because canonical M2.8 state is not yet in the M5.7 operational envelope; M7.3 does not synthesize it. See `docs/FIRST_CRITICALITY_LOW_POWER.md` and ADR 0055.
+
+
+## M7.5 grid synchronization and initial load
+
+M7.5 seeds a breaker-open 3000 rpm phase-matched handoff and relies exclusively on the published M4.5 synchronization permissive for closure. Generator load raise/lower changes canonical requested electrical power in bounded increments; M4.5 owns electromagnetic loading, M5.4 owns speed-governor steam admission, and M2/M5.3 own reactor-power response. See `docs/GRID_SYNCHRONIZATION_LOAD_INCREASE.md` and ADR 0057.
+
+
+## M7.6 power manoeuvring and normal shutdown
+
+M7.6 starts from exact `stable-low-load-parallel-operation` v1 with the generator already paralleled at a bounded 5 MWe requested load. Load raise/lower changes only canonical M4.5 requested electrical power; reactor response remains M2/M5.3 rod-reactivity-kinetics ownership and turbine governing remains M5.4 ownership. Guidance observes published fuel/coolant temperature and void diagnostics while preserving quantitative xenon as explicitly unavailable at the current M5.7 operational boundary. Normal shutdown is ordered as unload → breaker open → controlled rod insertion → turbine rundown → continued main circulation. See `docs/POWER_MANOEUVRING_NORMAL_SHUTDOWN.md` and ADR 0058.

@@ -1,6 +1,6 @@
 # ADR 0055 — First criticality uses a versioned source-range seed and observational guidance
 
-- Status: Accepted for M7.3 baseline candidate
+- Status: Accepted / validated with M7.3
 - Date: 2026-07-21
 
 ## Context

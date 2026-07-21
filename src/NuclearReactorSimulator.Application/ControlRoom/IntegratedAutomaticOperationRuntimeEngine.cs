@@ -2,6 +2,7 @@ using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
+using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Simulation.Physics.Control;
 using NuclearReactorSimulator.Simulation.Physics.Control.Alarms;
 using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
@@ -14,9 +15,9 @@ using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
 namespace NuclearReactorSimulator.Application.ControlRoom;
 
 /// <summary>
-/// Concrete M6.7 adapter from Application operator intents to the validated M5.7 automatic-operation runtime. Persistent
-/// controller/setpoint commands modify only immutable per-step input bundles; trip, breaker and annunciator commands are
-/// one-step pulses cleared after the next deterministic step.
+/// Concrete Application adapter from operator intents to the validated M5.7 automatic-operation runtime. Persistent
+/// controller setpoints and M4.5 requested electrical load modify only immutable per-step input bundles; trip, breaker and
+/// annunciator commands are one-step pulses cleared after the next deterministic step.
 /// </summary>
 public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine
 {
@@ -134,10 +135,10 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
                 AdjustSecondarySetpoint(command, TurbineSecondaryControlLoopKind.TurbineSpeedAdmission, -_policy.TurbineSpeedSetpointIncrementRpm);
                 break;
             case ControlRoomCommandKind.GeneratorLoadRaise:
-                AdjustSecondarySetpoint(command, TurbineSecondaryControlLoopKind.TurbineLoadAdmission, _policy.GeneratorLoadSetpointIncrementWatts);
+                AdjustGeneratorLoadRequest(command, _policy.GeneratorLoadSetpointIncrementWatts);
                 break;
             case ControlRoomCommandKind.GeneratorLoadLower:
-                AdjustSecondarySetpoint(command, TurbineSecondaryControlLoopKind.TurbineLoadAdmission, -_policy.GeneratorLoadSetpointIncrementWatts);
+                AdjustGeneratorLoadRequest(command, -_policy.GeneratorLoadSetpointIncrementWatts);
                 break;
             case ControlRoomCommandKind.GeneratorBreakerClose:
                 SetBreakerCommand(command, close: true);
@@ -293,6 +294,45 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         });
     }
 
+    private void AdjustGeneratorLoadRequest(ControlRoomCommand command, double incrementWatts)
+    {
+        var generatorId = RequireTarget(command, ControlRoomCommandTargetKind.Generator);
+        var existingPlant = _persistentInputs.PlantInputs;
+        var existingGrid = existingPlant.GeneratorGridInputs;
+        var generator = existingGrid.Definition.GetGenerator(generatorId);
+        var found = false;
+        var generatorInputs = existingGrid.GeneratorInputs.Select(input =>
+        {
+            if (!string.Equals(input.GeneratorId, generatorId, StringComparison.Ordinal))
+            {
+                return input;
+            }
+
+            found = true;
+            var requestedWatts = Math.Clamp(
+                input.RequestedElectricalPower.Watts + incrementWatts,
+                0d,
+                generator.MaximumElectricalPower.Watts);
+            return new SynchronousGeneratorInput(
+                input.GeneratorId,
+                input.TerminalLineVoltage,
+                Power.FromWatts(requestedWatts),
+                input.CloseBreakerCommand,
+                input.OpenBreakerCommand);
+        }).ToArray();
+
+        if (!found)
+        {
+            throw new InvalidOperationException($"No canonical M4.5 generator input is bound to '{generatorId}'.");
+        }
+
+        var generatorGridInputs = new GeneratorGridInputs(
+            existingGrid.Definition,
+            existingGrid.CondensateFeedwaterInputs,
+            generatorInputs);
+        ReplacePersistentInputs(plantInputs: new IntegratedSecondaryCycleInputs(existingPlant.Definition, generatorGridInputs));
+    }
+
     private void SetBreakerCommand(ControlRoomCommand command, bool close)
     {
         var breakerId = RequireTarget(command, ControlRoomCommandTargetKind.Breaker);
@@ -330,11 +370,12 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
     }
 
     private void ReplacePersistentInputs(
+        IntegratedSecondaryCycleInputs? plantInputs = null,
         ReactorPrimaryControlInputs? reactorInputs = null,
         TurbineSecondaryControlInputs? secondaryInputs = null)
     {
         _persistentInputs = new IntegratedAutomaticOperationInputs(
-            _persistentInputs.PlantInputs,
+            plantInputs ?? _persistentInputs.PlantInputs,
             reactorInputs ?? _persistentInputs.ReactorPrimaryInputs,
             secondaryInputs ?? _persistentInputs.TurbineSecondaryInputs,
             _persistentInputs.ProtectionInputs,

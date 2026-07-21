@@ -87,10 +87,10 @@
           <Border IsVisible="{Binding IsShellHostWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
             <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
               <StackPanel Spacing="6">
-                <TextBlock Classes="sectionHeading" Text="M7.3 FIRST CRITICALITY &amp; LOW-POWER OPERATION" />
-                <TextBlock FontSize="20" FontWeight="SemiBold" Text="Pre-criticality source-range session loaded" />
+                <TextBlock Classes="sectionHeading" Text="M7.4 HEAT-UP, STEAM RAISING &amp; TURBINE STARTUP" />
+                <TextBlock FontSize="20" FontWeight="SemiBold" Text="Low-power steam-raising session loaded" />
                 <TextBlock MaxWidth="920" Opacity="0.76" TextWrapping="Wrap"
-                           Text="The desktop loads the exact pre-criticality/source-range v1 initial condition through the M7.1 session boundary. Rod motion remains operator-commanded through validated M5.3 seams; guidance observes reactivity, period, power and isolation without forcing outcomes." />
+                           Text="The desktop loads the exact low-power-steam-raising v1 initial condition through the M7.1 session boundary. Heat-up and turbine roll remain operator-commanded through validated control seams; guidance observes steam conditions, rotor speed and generator isolation without forcing outcomes." />
               </StackPanel>
 
               <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="10">
@@ -117,7 +117,7 @@
               <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
                 <Border Padding="18" Background="#11161D" CornerRadius="6">
                   <StackPanel Spacing="8">
-                    <TextBlock Classes="sectionHeading" Text="FIRST-CRITICALITY GUIDANCE" />
+                    <TextBlock Classes="sectionHeading" Text="HEAT-UP &amp; TURBINE STARTUP GUIDANCE" />
                     <TextBlock FontSize="12" Opacity="0.82" TextWrapping="Wrap" Text="{Binding ScenarioGuidanceText}" />
                   </StackPanel>
                 </Border>
@@ -137,7 +137,7 @@
                 <TextBlock Classes="sectionHeading" Text="M6.2 REUSABLE COMPONENT LIBRARY" />
                 <TextBlock FontSize="20" FontWeight="SemiBold" Text="One visual language for instruments and operator controls" />
                 <TextBlock MaxWidth="920" Opacity="0.76" TextWrapping="Wrap"
-                           Text="The validated M6 control room remains presentation-only. M7.3 now supplies a versioned pre-criticality source-range session and declarative first-criticality guidance while preserving deterministic stepping, fail-closed scenario gating and lower-layer physics ownership." />
+                           Text="The validated M6 control room remains presentation-only. M7.4 now supplies a versioned low-power steam-raising/turbine-startup session and declarative startup guidance while preserving deterministic stepping, fail-closed scenario gating and lower-layer physics ownership." />
               </StackPanel>
 
               <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
@@ -966,7 +966,7 @@
 
     <Border Grid.Row="2" Padding="18,9" Background="#171C24" BorderThickness="0,1,0,0" BorderBrush="#303846">
       <Grid ColumnDefinitions="*,Auto">
-        <TextBlock FontSize="12" Opacity="0.72" Text="M7.3 First Criticality &amp; Low-Power Operation · exact-version source-range session · observational guidance · no UI physics" />
+        <TextBlock FontSize="12" Opacity="0.72" Text="M7.4 Heat-Up, Steam Raising &amp; Turbine Startup · exact-version low-power steam-raising session · observational guidance · no UI physics" />
         <TextBlock Grid.Column="1" FontSize="12" Opacity="0.72" Text="Bounded trends · M5.6 annunciator semantics · deterministic event sequence" />
       </Grid>
     </Border>

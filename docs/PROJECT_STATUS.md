@@ -2,9 +2,9 @@
 
 ## Validated baseline
 
-The current validated functional baseline is **M7.2 — Cold Shutdown & Pre-Startup**.
+The current validated functional baseline is **M7.5 — Grid Synchronization & Load Increase**.
 
-M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.2 are validated through local build/test execution/approval. The M3, M4, M5 and M6 gates are complete. M7.3 is the current baseline candidate.
+M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.5 are validated through local build/test execution/approval. The M3, M4, M5 and M6 gates are complete. M7.6 is the current baseline candidate.
 
 | Phase | Status | Validated capability |
 |---|---|---|
@@ -15,13 +15,13 @@ M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–
 | M4 | VALIDATED | M4.1–M4.7 validated; manually commanded reactor-to-grid gate complete |
 | M5 | VALIDATED | M5.1–M5.7 validated; integrated automatic-operation gate complete |
 | M6 | VALIDATED | M6.1–M6.7 validated; complete control-room/runtime-integration gate |
-| M7 | IN PROGRESS | M7.1–M7.2 validated; M7.3 First Criticality & Low-Power Operation baseline candidate |
+| M7 | IN PROGRESS | M7.1–M7.5 validated; M7.6 Power Manoeuvring & Normal Shutdown baseline candidate |
 | M8 | PLANNED | faults, transients and safety scenarios |
 | M9 | PLANNED | advanced analysis, fidelity refinement and historical-inspired scenarios |
 
-## Current M7.3 candidate
+## Validated M7.5 / current M7.6 candidate
 
-M7.1 and M7.2 are validated. M7.3 adds the exact-version `pre-criticality-source-range` v1 handoff, controlled rod-operation permissions, observational approach/criticality/low-power checks and declarative guidance. It reuses the M7.2 canonical construction path, keeps steam/grid startup outside the milestone, and represents the required non-zero source-range neutron population as explicit versioned initial-condition data rather than a hidden kinetics/source owner.
+M7.1 through M7.5 are validated. M7.5 adds exact-version `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded generator-load requests through existing runtime seams. M7.6 is the current candidate for broader load manoeuvring and controlled normal shutdown.
 
 ## What the validated engine can already do
 
@@ -67,11 +67,11 @@ The validated core can run headlessly and deterministically with:
 
 ## Current implementation candidate
 
-**M7.2 — Cold Shutdown & Pre-Startup** is validated and supplies the exact `cold-shutdown-pre-start` v1 runtime recipe, observational readiness checks, declarative guided preparation and paused desktop session loading through the validated M7.1 boundary.
+**M7.5 — Grid Synchronization & Load Increase** is validated and supplies the exact pre-synchronization handoff, canonical M4.5 close-check/breaker path and bounded electrical-load requests.
 
-**M7.3 — First Criticality & Low-Power Operation** is the current baseline candidate. It adds a versioned pre-criticality/source-range handoff, controlled rod operations, observational reactivity/period/low-power checks and an explicit quantitative-xenon availability boundary.
+**M7.6 — Power Manoeuvring & Normal Shutdown** is the current baseline candidate, adding exact stable-low-load parallel handoff, bounded on-grid manoeuvring, explicit temperature/void observation with xenon boundary preservation, and a controlled unload/disconnect/reactor-shutdown/post-shutdown-cooling procedure.
 
-**Restart note:** M7.1 and M7.2 are explicitly validated. M7.3 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
+**Restart note:** M7.1 through M7.5 are explicitly validated. M7.6 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
 
 ## What is intentionally not built yet
 
@@ -83,7 +83,7 @@ The following are planned architecture boundaries, not missing bugs:
 - no detailed HP/IP/LP turbine maps, moisture separation/reheat or wet-steam erosion model;
 - no detailed synchronous-machine transient/reactance model, AVR/excitation dynamics or grid load-flow physics;
 - no persistent disk historian or wall-clock event timestamps; M6.6 history is bounded presentation state indexed only by logical step/event sequence;
-- M7.3 first-criticality/low-power progression is implemented as the current candidate; heat-up, steam raising and turbine startup remain M7.4 ownership;
+- M7.5 synchronization, breaker closure and initial load increase are validated; M7.6 now owns broader load manoeuvring and normal-shutdown guidance through canonical M2/M4/M5 seams;
 - no arbitrary full-state checkpoint/save/seek format yet; M9.1 owns that boundary;
 - no full-scope or licensing-grade thermal hydraulics/neutronics.
 
@@ -159,3 +159,7 @@ A milestone becomes validated only after:
 - relevant deterministic/conservation/invariant tests pass;
 - documentation reflects the implemented behavior;
 - user validation is explicitly recorded.
+
+## Current M7.6 candidate
+
+M7.5 Grid Synchronization & Load Increase is locally validated. M7.6 adds exact `stable-low-load-parallel-operation` v1, bounded load raise/lower through canonical M4.5 requested-power inputs, temperature/void observation, explicit xenon unavailability, and controlled unload/disconnect/rod-insertion/post-shutdown-cooling guidance.

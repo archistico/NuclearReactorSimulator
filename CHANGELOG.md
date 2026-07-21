@@ -1,6 +1,38 @@
 # Changelog
 
-## M7.3 — First Criticality & Low-Power Operation — baseline candidate
+## M7.6 — Power Manoeuvring & Normal Shutdown (baseline candidate)
+
+- Recorded explicit local validation of M7.5: compilation and complete tests passed; M7.5 is now the validated baseline.
+- Added exact `stable-low-load-parallel-operation` v1 with canonical breaker-closed 5 MWe low-load handoff.
+- Extended the canonical operational-seed helper with optional breaker/load seed parameters while preserving all earlier M7 defaults.
+- Added bounded power-manoeuvring guidance using only validated generator-load, rod and turbine-speed command seams.
+- Added observational temperature/void checks and preserved quantitative xenon as explicitly unavailable at the M5.7 operational snapshot boundary.
+- Added controlled normal-shutdown guidance for unload, breaker open, rod insertion, turbine rundown and continued main circulation.
+- Updated desktop composition to load the exact M7.6 session paused.
+- Added M7.6 application tests, ADR 0058 and `docs/POWER_MANOEUVRING_NORMAL_SHUTDOWN.md`.
+
+## M7.5 — Grid Synchronization & Load Increase — VALIDATED
+
+- Added exact `pre-synchronization-grid-loading` v1, reusing canonical M7.2 construction with a 3000 rpm phase-matched breaker-open handoff.
+- Added observational M7.5 synchronization/load checklist and seven-step guidance through the stable low-load M7.6 handoff.
+- Enabled scenario-gated generator breaker close while preserving the authoritative M4.5 synchronization close-check.
+- Completed `GeneratorLoadRaise/Lower` translation through bounded M4.5 requested electrical power; no direct rotor torque/output mutation.
+- Desktop now loads the M7.5 session paused.
+
+## M7.4 — Heat-Up, Steam Raising & Turbine Startup — validated
+
+- Hotfix 1 validated after successful local build and complete tests.
+- Hotfix candidate 1: made saturated steam-space recipe construction robust near the dry-saturated boundary. The existing 0.99 vapor-quality seed is preserved whenever the validated thermodynamic closure resolves it; otherwise initialization deterministically retries at 0.98, remaining inside the same two-phase model envelope without changing the solver.
+- Recorded M7.3 as locally validated after successful build and complete tests.
+- Added exact-version `low-power-steam-raising` v1 through `HeatUpTurbineStartupInitialConditionFactory`.
+- Extended the canonical M7.2 recipe helper with explicit rod-position, primary-temperature and turbine-startup-lineup seed parameters while preserving existing M7.2/M7.3 defaults.
+- Added a versioned startup lineup with stop/admission availability, governing control initially closed and no new direct stop-valve owner.
+- Added observational heat-up, steam-pressure/inventory, turbine-roll/warm-up/near-synchronous and generator-isolation checks.
+- Added declarative M7.4 guidance and fail-closed permissions: turbine speed control is enabled; generator breaker close/load raise/load lower remain blocked for M7.5.
+- Updated desktop composition to load the exact M7.4 session paused and display M7.4 guidance/checks.
+- Added M7.4 application tests, ADR 0056 and `docs/HEAT_UP_STEAM_RAISING_TURBINE_STARTUP.md`.
+
+## M7.3 — First Criticality & Low-Power Operation — VALIDATED
 
 - Recorded explicit local validation of M7.2 hotfix 1: compilation and complete tests passed; M7.2 is now the validated baseline.
 - Added exact-version `pre-criticality-source-range` v1 initial condition reusing the canonical M7.2 construction path with established main circulation and a tiny deterministic non-zero point-kinetics seed.

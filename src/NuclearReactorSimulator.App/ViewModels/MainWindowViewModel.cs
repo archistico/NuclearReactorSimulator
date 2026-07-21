@@ -5,7 +5,10 @@ using NuclearReactorSimulator.App.Commands;
 using NuclearReactorSimulator.Application;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.Criticality;
+using NuclearReactorSimulator.Application.Scenarios.Operations;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
+using NuclearReactorSimulator.Application.Scenarios.Startup;
+using NuclearReactorSimulator.Application.Scenarios.Synchronization;
 
 namespace NuclearReactorSimulator.App.ViewModels;
 
@@ -17,6 +20,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private readonly PreStartupChecklistEvaluator _preStartupChecklistEvaluator = new();
     private readonly FirstCriticalityGuidancePlan? _firstCriticalityGuidance;
     private readonly FirstCriticalityChecklistEvaluator _firstCriticalityChecklistEvaluator = new();
+    private readonly HeatUpTurbineStartupGuidancePlan? _heatUpTurbineStartupGuidance;
+    private readonly HeatUpTurbineStartupChecklistEvaluator _heatUpTurbineStartupChecklistEvaluator = new();
+    private readonly GridSynchronizationGuidancePlan? _gridSynchronizationGuidance;
+    private readonly GridSynchronizationChecklistEvaluator _gridSynchronizationChecklistEvaluator = new();
+    private readonly PowerManoeuvringGuidancePlan? _powerManoeuvringGuidance;
+    private readonly PowerManoeuvringChecklistEvaluator _powerManoeuvringChecklistEvaluator = new();
     private ControlRoomWorkspaceDescriptor _selectedWorkspace;
     private ControlRoomSnapshot _snapshot;
     private int _selectedRodIndex;
@@ -30,16 +39,28 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         IControlRoomSnapshotSource snapshotSource,
         IControlRoomCommandDispatcher commandDispatcher,
         PreStartupGuidancePlan? preStartupGuidance = null,
-        FirstCriticalityGuidancePlan? firstCriticalityGuidance = null)
+        FirstCriticalityGuidancePlan? firstCriticalityGuidance = null,
+        HeatUpTurbineStartupGuidancePlan? heatUpTurbineStartupGuidance = null,
+        GridSynchronizationGuidancePlan? gridSynchronizationGuidance = null,
+        PowerManoeuvringGuidancePlan? powerManoeuvringGuidance = null)
     {
         ArgumentNullException.ThrowIfNull(descriptor);
         ArgumentNullException.ThrowIfNull(snapshotSource);
         _commandDispatcher = commandDispatcher ?? throw new ArgumentNullException(nameof(commandDispatcher));
         _preStartupGuidance = preStartupGuidance;
         _firstCriticalityGuidance = firstCriticalityGuidance;
-        _commandStatus = firstCriticalityGuidance is null
-            ? "M7.2 cold-shutdown/pre-start scenario loaded in PAUSED state. Follow the preparation guidance; scenario permissions fail closed before runtime commands."
-            : "M7.3 first-criticality/low-power scenario loaded in PAUSED state. Use controlled rod motion, observe reactivity/period and preserve steam/grid isolation.";
+        _heatUpTurbineStartupGuidance = heatUpTurbineStartupGuidance;
+        _gridSynchronizationGuidance = gridSynchronizationGuidance;
+        _powerManoeuvringGuidance = powerManoeuvringGuidance;
+        _commandStatus = powerManoeuvringGuidance is not null
+            ? "M7.6 power-manoeuvring/normal-shutdown scenario loaded in PAUSED state. Manoeuvre load through canonical requests, then unload, disconnect, insert rods and preserve post-shutdown circulation."
+            : gridSynchronizationGuidance is not null
+            ? "M7.5 grid-synchronization/initial-loading scenario loaded in PAUSED state. Close only on the canonical synchronization permissive, then take load in deliberate increments."
+            : heatUpTurbineStartupGuidance is not null
+            ? "M7.4 heat-up/steam-raising/turbine-startup scenario loaded in PAUSED state. Preserve generator isolation while using the validated speed-control seam for turbine roll-off."
+            : firstCriticalityGuidance is not null
+                ? "M7.3 first-criticality/low-power scenario loaded in PAUSED state. Use controlled rod motion, observe reactivity/period and preserve steam/grid isolation."
+                : "M7.2 cold-shutdown/pre-start scenario loaded in PAUSED state. Follow the preparation guidance; scenario permissions fail closed before runtime commands.";
 
         Title = descriptor.ProductName;
         Milestone = descriptor.Milestone;
@@ -147,15 +168,60 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
-    public string ScenarioGuidanceText => _firstCriticalityGuidance is null
-        ? PreStartupGuidanceText
-        : string.Join(Environment.NewLine, _firstCriticalityGuidance.Steps.Select(step =>
-            $"{step.Sequence}. {step.Title} — {step.Instruction}"));
+    public string ScenarioGuidanceText
+    {
+        get
+        {
+            if (_powerManoeuvringGuidance is not null)
+            {
+                return string.Join(Environment.NewLine, _powerManoeuvringGuidance.Steps.Select(step =>
+                    $"{step.Sequence}. {step.Title} — {step.Instruction}"));
+            }
+
+            if (_gridSynchronizationGuidance is not null)
+            {
+                return string.Join(Environment.NewLine, _gridSynchronizationGuidance.Steps.Select(step =>
+                    $"{step.Sequence}. {step.Title} — {step.Instruction}"));
+            }
+
+            if (_heatUpTurbineStartupGuidance is not null)
+            {
+                return string.Join(Environment.NewLine, _heatUpTurbineStartupGuidance.Steps.Select(step =>
+                    $"{step.Sequence}. {step.Title} — {step.Instruction}"));
+            }
+
+            return _firstCriticalityGuidance is null
+                ? PreStartupGuidanceText
+                : string.Join(Environment.NewLine, _firstCriticalityGuidance.Steps.Select(step =>
+                    $"{step.Sequence}. {step.Title} — {step.Instruction}"));
+        }
+    }
 
     public string ScenarioChecklistText
     {
         get
         {
+            if (_powerManoeuvringGuidance is not null)
+            {
+                var manoeuvringResults = _powerManoeuvringChecklistEvaluator.Evaluate(_snapshot, _powerManoeuvringGuidance.Checks);
+                return string.Join(Environment.NewLine, manoeuvringResults.Select(static result =>
+                    $"{(result.IsSatisfied ? "✓" : "○")} {result.Definition.Title}: {result.Observation}"));
+            }
+
+            if (_gridSynchronizationGuidance is not null)
+            {
+                var synchronizationResults = _gridSynchronizationChecklistEvaluator.Evaluate(_snapshot, _gridSynchronizationGuidance.Checks);
+                return string.Join(Environment.NewLine, synchronizationResults.Select(static result =>
+                    $"{(result.IsSatisfied ? "✓" : "○")} {result.Definition.Title}: {result.Observation}"));
+            }
+
+            if (_heatUpTurbineStartupGuidance is not null)
+            {
+                var startupResults = _heatUpTurbineStartupChecklistEvaluator.Evaluate(_snapshot, _heatUpTurbineStartupGuidance.Checks);
+                return string.Join(Environment.NewLine, startupResults.Select(static result =>
+                    $"{(result.IsSatisfied ? "✓" : "○")} {result.Definition.Title}: {result.Observation}"));
+            }
+
             if (_firstCriticalityGuidance is null)
             {
                 return PreStartupChecklistText;

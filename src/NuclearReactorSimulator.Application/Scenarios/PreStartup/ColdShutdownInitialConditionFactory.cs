@@ -63,8 +63,32 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
     internal static IControlRoomRuntimeEngine CreateRuntimeEngineForOperationalSeed(
         NeutronPopulation initialNeutronPopulation,
         bool mainCirculationRunning)
+        => CreateRuntimeEngineForOperationalSeed(
+            initialNeutronPopulation,
+            mainCirculationRunning,
+            ControlRodPosition.FullyInserted,
+            initialPrimaryTemperatureCelsius: 50d,
+            turbineStartupLineup: false);
+
+    internal static IControlRoomRuntimeEngine CreateRuntimeEngineForOperationalSeed(
+        NeutronPopulation initialNeutronPopulation,
+        bool mainCirculationRunning,
+        ControlRodPosition initialRodPosition,
+        double initialPrimaryTemperatureCelsius,
+        bool turbineStartupLineup,
+        double initialRotorSpeedRpm = 0d,
+        bool initialGeneratorBreakerClosed = false,
+        double initialRequestedElectricalPowerMegawatts = 0d)
     {
-        var recipe = BuildRecipe(initialNeutronPopulation, mainCirculationRunning);
+        var recipe = BuildRecipe(
+            initialNeutronPopulation,
+            mainCirculationRunning,
+            initialRodPosition,
+            initialPrimaryTemperatureCelsius,
+            turbineStartupLineup,
+            initialRotorSpeedRpm,
+            initialGeneratorBreakerClosed,
+            initialRequestedElectricalPowerMegawatts);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -87,8 +111,44 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
 
     private static Recipe BuildRecipe(
         NeutronPopulation initialNeutronPopulation,
-        bool mainCirculationRunning)
+        bool mainCirculationRunning,
+        ControlRodPosition initialRodPosition,
+        double initialPrimaryTemperatureCelsius,
+        bool turbineStartupLineup,
+        double initialRotorSpeedRpm,
+        bool initialGeneratorBreakerClosed,
+        double initialRequestedElectricalPowerMegawatts)
     {
+        if (!double.IsFinite(initialPrimaryTemperatureCelsius) || initialPrimaryTemperatureCelsius < 40d || initialPrimaryTemperatureCelsius > 300d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialPrimaryTemperatureCelsius),
+                initialPrimaryTemperatureCelsius,
+                "Operational seed primary temperature must be finite and between 40 and 300 °C.");
+        }
+        if (!double.IsFinite(initialRotorSpeedRpm) || initialRotorSpeedRpm < 0d || initialRotorSpeedRpm > 3_300d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialRotorSpeedRpm),
+                initialRotorSpeedRpm,
+                "Operational seed rotor speed must be finite and between 0 and 3300 rpm.");
+        }
+        if (!double.IsFinite(initialRequestedElectricalPowerMegawatts)
+            || initialRequestedElectricalPowerMegawatts < 0d
+            || initialRequestedElectricalPowerMegawatts > 1_000d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialRequestedElectricalPowerMegawatts),
+                initialRequestedElectricalPowerMegawatts,
+                "Operational seed requested electrical power must be finite and between 0 and 1000 MWe.");
+        }
+        if (initialRequestedElectricalPowerMegawatts > 0d && !initialGeneratorBreakerClosed)
+        {
+            throw new ArgumentException(
+                "A non-zero operational-seed electrical load requires the generator breaker to be initially closed.",
+                nameof(initialRequestedElectricalPowerMegawatts));
+        }
+
         var thermodynamicModel = new SimplifiedWaterSteamThermodynamicModel();
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to, double resistance = 100_000d) => new(
@@ -136,10 +196,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             Array.Empty<HeatTransferDefinition>(),
             Array.Empty<HeatSourceDefinition>());
 
-        var primaryLiquid = CreateSubcooledLiquid(plant, "suction", thermodynamicModel, 50d);
+        var primaryLiquid = CreateSubcooledLiquid(plant, "suction", thermodynamicModel, initialPrimaryTemperatureCelsius);
         var primaryLiquidPressure = primaryLiquid.Pressure;
-        FluidNodeState PrimaryLiquid(string id) => CreateSubcooledLiquid(plant, id, thermodynamicModel, 50d);
-        FluidNodeState SteamSpace(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, 50d);
+        FluidNodeState PrimaryLiquid(string id) => CreateSubcooledLiquid(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius);
+        FluidNodeState SteamSpace(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius);
         FluidNodeState CondenserSteam(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, 40d);
         FluidNodeState Condensate(string id) => CreateSubcooledLiquid(plant, id, thermodynamicModel, 40d);
 
@@ -155,17 +215,17 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 SteamSpace("steam"),
                 SteamSpace("header"),
                 SteamSpace("stop-out"),
-                SteamSpace("control-out"),
-                SteamSpace("turbine-inlet"),
+                turbineStartupLineup ? CondenserSteam("control-out") : SteamSpace("control-out"),
+                turbineStartupLineup ? CondenserSteam("turbine-inlet") : SteamSpace("turbine-inlet"),
                 CondenserSteam("exhaust"),
                 hotwell,
                 Condensate("feedwater-inventory"),
             },
             new[]
             {
-                new ValveState("stop", ValvePosition.Closed),
+                new ValveState("stop", turbineStartupLineup ? ValvePosition.FullyOpen : ValvePosition.Closed),
                 new ValveState("control", ValvePosition.Closed),
-                new ValveState("admission", ValvePosition.Closed),
+                new ValveState("admission", turbineStartupLineup ? ValvePosition.FullyOpen : ValvePosition.Closed),
             },
             new[]
             {
@@ -178,8 +238,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             },
             new[]
             {
-                ThermalBodyState.FromTemperature(plant.GetThermalBody("fuel"), Temperature.FromDegreesCelsius(50d)),
-                ThermalBodyState.FromTemperature(plant.GetThermalBody("structure"), Temperature.FromDegreesCelsius(50d)),
+                ThermalBodyState.FromTemperature(plant.GetThermalBody("fuel"), Temperature.FromDegreesCelsius(initialPrimaryTemperatureCelsius)),
+                ThermalBodyState.FromTemperature(plant.GetThermalBody("structure"), Temperature.FromDegreesCelsius(initialPrimaryTemperatureCelsius)),
             },
             Array.Empty<HeatSourceState>());
 
@@ -267,8 +327,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         var fullPlantState = new FullPlantState(
             fullPlantDefinition,
             plantState,
-            new TurbineExpansionState(turbine, new[] { new TurbineRotorState("rotor", AngularSpeed.Zero) }),
-            new GeneratorGridState(generatorGrid, PhaseAngle.Zero, new[] { new SynchronousGeneratorState("generator", PhaseAngle.Zero, breakerClosed: false) }));
+            new TurbineExpansionState(
+                turbine,
+                new[] { new TurbineRotorState("rotor", AngularSpeed.FromRevolutionsPerMinute(initialRotorSpeedRpm)) }),
+            new GeneratorGridState(generatorGrid, PhaseAngle.Zero, new[]
+            {
+                new SynchronousGeneratorState("generator", PhaseAngle.Zero, breakerClosed: initialGeneratorBreakerClosed),
+            }));
 
         var instrumentation = new InstrumentationSystemDefinition("instrumentation", new[]
         {
@@ -278,6 +343,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             Channel("pressure", "steam-drum/drum-a/pressure", "Pa"),
             Channel("level", "steam-drum/drum-a/level", "fraction"),
             Channel("hotwell", "condenser/condenser/hotwell-mass", "kg"),
+            Channel("generator-output", "generator/generator/electrical-output", "W"),
+            Channel("gross-generator-output", "plant/generator/gross-electrical-output", "W"),
         });
 
         var reactorControl = new ControlSystemDefinition("reactor-control", instrumentation, new[]
@@ -407,13 +474,17 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             new[]
             {
                 new SynchronousGeneratorInput(
-                    "generator", ElectricPotential.FromKilovolts(400d), Power.Zero, closeBreakerCommand: false, openBreakerCommand: false),
+                    "generator",
+                    ElectricPotential.FromKilovolts(400d),
+                    Power.FromMegawatts(initialRequestedElectricalPowerMegawatts),
+                    closeBreakerCommand: false,
+                    openBreakerCommand: false),
             });
         var plantInputs = new IntegratedSecondaryCycleInputs(fullPlantDefinition, generatorInputs);
 
         var reactorState = ReactorPrimaryControlState.CreateInitial(
             reactorDefinition,
-            new ControlRodSystemState(new[] { new ControlRodState("rod-1", ControlRodPosition.FullyInserted) }),
+            new ControlRodSystemState(new[] { new ControlRodState("rod-1", initialRodPosition) }),
             PointKineticsState.CreateCriticalEquilibrium(kineticsParameters, initialNeutronPopulation));
         var secondaryState = TurbineSecondaryControlState.CreateInitial(secondaryDefinition);
         var reactorInputs = new ReactorPrimaryControlInputs(
@@ -432,20 +503,38 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             secondaryDefinition,
             new ControllerInputs(secondaryControl, new[]
             {
-                new ControllerInput("speed-control", ControllerMode.Manual, 0d, 0d),
-                new ControllerInput("pressure-control", ControllerMode.Manual, 0d, 0d),
-                new ControllerInput("level-control", ControllerMode.Manual, 0d, 0d),
-                new ControllerInput("hotwell-control", ControllerMode.Manual, 0d, 0d),
+                new ControllerInput(
+                    "speed-control",
+                    turbineStartupLineup ? ControllerMode.Automatic : ControllerMode.Manual,
+                    initialRotorSpeedRpm,
+                    0d),
+                new ControllerInput(
+                    "pressure-control",
+                    ControllerMode.Manual,
+                    0d,
+                    turbineStartupLineup ? 100d : 0d),
+                new ControllerInput(
+                    "level-control",
+                    turbineStartupLineup ? ControllerMode.Automatic : ControllerMode.Manual,
+                    1d,
+                    0d),
+                new ControllerInput(
+                    "hotwell-control",
+                    turbineStartupLineup ? ControllerMode.Automatic : ControllerMode.Manual,
+                    hotwell.Mass.Kilograms,
+                    0d),
             }));
 
         var measuredSignals = new MeasuredSignalFrame(instrumentation, new[]
         {
             Signal("power", "W", 0d),
             Signal("flow", "kg/s", 0d),
-            Signal("speed", "rpm", 0d),
+            Signal("speed", "rpm", initialRotorSpeedRpm),
             Signal("pressure", "Pa", primaryLiquidPressure.Pascals),
             Signal("level", "fraction", 1d),
             Signal("hotwell", "kg", hotwell.Mass.Kilograms),
+            Signal("generator-output", "W", 0d),
+            Signal("gross-generator-output", "W", 0d),
         });
         var state = new IntegratedAutomaticOperationState(
             fullPlantDefinition,
@@ -504,8 +593,36 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         SimplifiedWaterSteamThermodynamicModel thermodynamicModel,
         double temperatureCelsius)
     {
-        const double vaporQualityFraction = 0.99d;
+        try
+        {
+            return CreateSaturatedSteamSpaceAtQuality(
+                plant,
+                nodeId,
+                thermodynamicModel,
+                temperatureCelsius,
+                vaporQualityFraction: 0.99d);
+        }
+        catch (WaterSteamStateOutOfRangeException)
+        {
+            // Near the dry-saturated boundary, the simplified closure can lose the root bracket between
+            // scan segments. Preserve the established 0.99 recipe where it resolves, but deterministically
+            // move the initialization slightly inside the two-phase envelope when required.
+            return CreateSaturatedSteamSpaceAtQuality(
+                plant,
+                nodeId,
+                thermodynamicModel,
+                temperatureCelsius,
+                vaporQualityFraction: 0.98d);
+        }
+    }
 
+    private static FluidNodeState CreateSaturatedSteamSpaceAtQuality(
+        PlantDefinition plant,
+        string nodeId,
+        SimplifiedWaterSteamThermodynamicModel thermodynamicModel,
+        double temperatureCelsius,
+        double vaporQualityFraction)
+    {
         var definition = plant.GetFluidNode(nodeId);
         var temperature = Temperature.FromDegreesCelsius(temperatureCelsius);
         var saturation = thermodynamicModel.GetSaturationProperties(temperature);

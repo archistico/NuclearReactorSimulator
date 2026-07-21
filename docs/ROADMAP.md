@@ -479,32 +479,41 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - desktop composition loads the exact v1 operational session paused through the M7.1 registry/session boundary;
 - local build and complete tests explicitly confirmed successful on 2026-07-21; M7.2 hotfix 1 is the validated baseline for M7.3.
 
-### M7.3 First Criticality & Low-Power Operation — BASELINE CANDIDATE
+### M7.3 First Criticality & Low-Power Operation — VALIDATED
 
 - exact-version `pre-criticality-source-range` v1 handoff reusing the validated M7.2 construction path with established main circulation and a tiny deterministic non-zero kinetics seed;
 - controlled rod INSERT/HOLD/WITHDRAW through the validated M5.3 command seam, with fail-closed exclusion of turbine acceleration, breaker close and generator loading;
 - observational approach-to-criticality, criticality, low-power-band and reactor-period checks over immutable `ControlRoomSnapshot`;
 - explicit modeling boundary: the source-range seed is initial-condition data, not a hidden external-neutron-source solver;
 - explicit xenon training boundary: quantitative xenon remains unavailable until canonical M2.8 state is promoted into the M5.7 operational envelope;
-- desktop composition loads the exact M7.3 session paused; next after validation: M7.4 Heat-Up, Steam Raising & Turbine Startup.
+- local build and complete tests explicitly confirmed successful on 2026-07-21; M7.3 is the validated baseline for M7.4.
 
-### M7.4 Heat-Up, Steam Raising & Turbine Startup
+### M7.4 Heat-Up, Steam Raising & Turbine Startup — VALIDATED
 
-- primary heat-up and circulation management;
-- steam-drum inventory/pressure management;
-- turbine warm-up and acceleration.
+- exact-version `low-power-steam-raising` v1 warm critical handoff reusing the canonical M7.2 construction path;
+- versioned startup steam lineup with stop/admission availability and governing control valve initially closed, without creating a second stop-valve command owner;
+- observational heat-up, steam-drum pressure/inventory and turbine-speed checks over immutable `ControlRoomSnapshot`;
+- turbine roll/acceleration through the validated M5.4 `TurbineSpeedRaise/Lower` controller seam only;
+- fail-closed scenario permissions continue to reject generator-breaker close and generator-load raise/lower;
+- desktop composition validated with the exact M7.4 session paused; local build and complete tests passed for hotfix 1 on 2026-07-21.
 
-### M7.5 Grid Synchronization & Load Increase
+### M7.5 Grid Synchronization & Load Increase — VALIDATED
 
-- synchronization procedure;
-- breaker closure and initial loading;
-- coordinated reactor/turbine power increase.
+- exact-version `pre-synchronization-grid-loading` v1 with canonical 3000 rpm/phase-matched breaker-open handoff;
+- synchronization procedure observes the existing M4.5 frequency/phase/voltage close-check and never fabricates a permissive;
+- breaker closure remains a one-step canonical M4.5 command;
+- generator load raise/lower updates only bounded canonical requested electrical power in 5 MWe increments;
+- coordinated reactor/turbine/electrical low-load guidance remains observational and uses validated rod and speed-governor seams;
+- desktop composition validated with the exact M7.5 session paused; local build and complete tests passed on 2026-07-21.
 
-### M7.6 Power Manoeuvring & Normal Shutdown
+### M7.6 Power Manoeuvring & Normal Shutdown — BASELINE CANDIDATE
 
-- load changes;
-- xenon/temperature/void response during manoeuvres;
-- controlled shutdown and post-shutdown cooling.
+- exact-version `stable-low-load-parallel-operation` v1 with canonical breaker-closed 5 MWe low-load handoff;
+- bounded generator-load raise/lower through existing M4.5 requested electrical power only;
+- coordinated reactor/turbine/electrical manoeuvring through validated M2/M5.3, M5.4 and M4.5 command seams;
+- observational fuel/coolant temperature and void diagnostics, while quantitative xenon remains explicitly unavailable at the current M5.7 operational snapshot boundary;
+- controlled normal-shutdown sequence: unload, breaker open, rod insertion, turbine rundown and post-shutdown main circulation;
+- desktop composition loads the exact M7.6 session paused; next after validation: M7.7 Training Objectives, Procedure Guidance & Evaluation.
 
 ### M7.7 Training Objectives, Procedure Guidance & Evaluation
 
