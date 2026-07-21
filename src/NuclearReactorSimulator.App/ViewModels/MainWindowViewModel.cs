@@ -513,12 +513,20 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         ? ControlRoomVisualState.Unavailable
         : TurbineSecondary.TurbineTripActive ? ControlRoomVisualState.Trip : ControlRoomVisualState.Normal;
 
+    public ControlRoomVisualState GeneratorSelectionState =>
+        _snapshot.RunState == ControlRoomRunState.ShellOnly || Electrical.Generators.Count == 0
+            ? ControlRoomVisualState.Unavailable
+            : ControlRoomVisualState.Normal;
+
     public ControlRoomVisualState GeneratorTripCommandState => _snapshot.RunState == ControlRoomRunState.ShellOnly
         ? ControlRoomVisualState.Unavailable
         : Electrical.GeneratorTripActive ? ControlRoomVisualState.Trip : ControlRoomVisualState.Normal;
 
     public ControlRoomVisualState TurbineSpeedCommandState =>
-        _snapshot.RunState == ControlRoomRunState.ShellOnly || Electrical.Generators.Count == 0 || Electrical.GeneratorTripActive
+        _snapshot.RunState == ControlRoomRunState.ShellOnly
+        || Electrical.Generators.Count == 0
+        || TurbineSecondary.TurbineTripActive
+        || Electrical.GeneratorTripActive
             ? ControlRoomVisualState.Unavailable
             : ControlRoomVisualState.Normal;
 
@@ -874,6 +882,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(TurbineSpeedCommandState));
         OnPropertyChanged(nameof(GeneratorLoadCommandState));
         OnPropertyChanged(nameof(TurbineTripCommandState));
+        OnPropertyChanged(nameof(GeneratorSelectionState));
         OnPropertyChanged(nameof(GeneratorTripCommandState));
         OnPropertyChanged(nameof(BreakerCloseCommandState));
         OnPropertyChanged(nameof(BreakerOpenCommandState));

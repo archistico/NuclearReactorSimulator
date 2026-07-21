@@ -20,6 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.App
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Infrastructure.Tests", "tests\NuclearReactorSimulator.Infrastructure.Tests\NuclearReactorSimulator.Infrastructure.Tests.csproj", "{0A7E632E-1499-4602-A179-F5D438C7530E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.App.Tests", "tests\NuclearReactorSimulator.App.Tests\NuclearReactorSimulator.App.Tests.csproj", "{F8ABF7A4-75E7-405A-8D12-806896D9A3CB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,5 +64,9 @@ Global
 		{0A7E632E-1499-4602-A179-F5D438C7530E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A7E632E-1499-4602-A179-F5D438C7530E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A7E632E-1499-4602-A179-F5D438C7530E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8ABF7A4-75E7-405A-8D12-806896D9A3CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8ABF7A4-75E7-405A-8D12-806896D9A3CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8ABF7A4-75E7-405A-8D12-806896D9A3CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8ABF7A4-75E7-405A-8D12-806896D9A3CB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

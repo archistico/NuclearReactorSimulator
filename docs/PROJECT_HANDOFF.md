@@ -21,7 +21,7 @@ For a ready-to-paste new-conversation bootstrap, use `docs/NEW_CHAT_START.md`. F
 - **Last explicitly locally validated baseline:** `M8.1 — Deterministic Fault-Injection Framework` hotfix 1.
 - **M6 gate:** `COMPLETE / VALIDATED`.
 - **M7 gate:** `COMPLETE / VALIDATED`.
-- **Latest implementation package:** `M8.2 — Hydraulic Component Faults` baseline candidate.
+- **Latest implementation package:** `M8.2 — Hydraulic Component Faults` baseline candidate hotfix 1.
 - **M8.1 is explicitly validated.** Local build and complete tests passed; the deterministic fault-orchestration boundary is now baseline.
 - **Immediate next action:** validate M8.2. If validation passes, record M8.2 as validated and continue with `M8.3 — Instrumentation & Control Faults`.
 
@@ -66,7 +66,7 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 - M7.6 Power Manoeuvring & Normal Shutdown: **VALIDATED**.
 - M7.7 Training Objectives, Procedure Guidance & Evaluation / M7 gate: **VALIDATED / COMPLETE**.
 - M8.1 Deterministic Fault-Injection Framework: **VALIDATED**.
-- Current implementation candidate: **M8.2 — Hydraulic Component Faults**.
+- Current implementation candidate: **M8.2 — Hydraulic Component Faults — hotfix 1**.
 - Next planned milestone after M8.2 validation: **M8.3 — Instrumentation & Control Faults**.
 
 ## Current system ownership map
@@ -235,6 +235,8 @@ M6.1 through M6.7 are locally validated and the M6 gate is complete. M7.1 throug
 M8.1 is locally validated and owns explicit fault declarations, exact logical-step or committed-snapshot condition triggers, deterministic `Pending → Active → Cleared` lifecycle, fail-closed applicator/evaluator registries, snapshot projection, schema-v2 persistence and replay reconstruction.
 
 M8.2 is the current candidate and supplies the first concrete typed applicators: pump trip/degradation, valve fail-open/fail-closed/stuck, valve-controlled path restriction/blockage and bounded selected node leaks. Component faults constrain canonical `PumpState`/`ValveState` only before existing solvers; leaks enter as signed `PlantNetworkSourceTerms` so `PlantNetworkOrchestrator` remains the sole inventory integrator. Arbitrary raw-pipe break physics remains M8.5.
+
+Candidate hotfix 1 also hardens the M6.5-era electrical presentation seam discovered during external review: generator target selection is visually neutral, turbine speed/load controls fail closed on turbine trip, and a dedicated headless `NuclearReactorSimulator.App.Tests` project now covers the ViewModel/XAML command-state boundary. No M8.2 hydraulic physics changed.
 
 ## New-chat implementation protocol
 

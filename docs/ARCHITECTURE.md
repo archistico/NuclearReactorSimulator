@@ -14,6 +14,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
 - M7.6 and M7.7 are validated; the M7 gate is complete. M8.1 deterministic fault orchestration is validated. M8.2 is the current baseline candidate and adds typed hydraulic component constraints plus selected audited leaks without becoming a second hydraulic/control/protection owner.
+- M8.2 candidate hotfix 1 adds a headless `NuclearReactorSimulator.App.Tests` boundary for ViewModel/XAML interaction contracts. These tests may reference `App`, but production dependency direction is unchanged: `App` still has no `Simulation` reference and owns no physics.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
 

@@ -538,7 +538,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - concrete hydraulic/instrumentation/control/transient fault effects remain M8.2+ ownership;
 - local build and complete tests explicitly confirmed successful on 2026-07-21.
 
-### M8.2 Hydraulic Component Faults — BASELINE CANDIDATE
+### M8.2 Hydraulic Component Faults — BASELINE CANDIDATE / HOTFIX 1
 
 - pump trip and deterministic capacity degradation through canonical `PumpState` constraints before the existing pump solver;
 - valve fail-open/fail-closed/stuck-at-activation-position through canonical `ValveState`;
@@ -546,6 +546,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - selected bounded fluid-node leaks as signed mass + carried-energy `PlantNetworkSourceTerms` integrated exactly once by `PlantNetworkOrchestrator`;
 - built-in fail-closed hydraulic applicator registration and deterministic demonstration scenario pack;
 - arbitrary raw-pipe break/resistance mutation remains M8.5 rather than being hidden inside M8.2.
+- candidate hotfix 1 adds presentation regression hardening and a headless App test project; it does not broaden M8.2 physical scope.
 
 ### M8.3 Instrumentation & Control Faults
 

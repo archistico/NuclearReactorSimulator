@@ -4,7 +4,7 @@
 
 The current validated functional baseline is **M8.1 — Deterministic Fault-Injection Framework** hotfix 1.
 
-M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7 and M8.1 are validated through local build/test execution/approval. The M3, M4, M5, M6 and M7 gates are complete. M8.2 is the current baseline candidate.
+M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7 and M8.1 are validated through local build/test execution/approval. The M3, M4, M5, M6 and M7 gates are complete. M8.2 hotfix 1 is the current baseline candidate.
 
 | Phase | Status | Validated capability |
 |---|---|---|
@@ -74,9 +74,11 @@ The validated core can run headlessly and deterministically with:
 
 **M8.1 — Deterministic Fault-Injection Framework** is validated.
 
-**M8.2 — Hydraulic Component Faults** is the current baseline candidate. It adds runtime-bound hydraulic fault effects over canonical pump/valve state and selected node leaks through the existing plant-network source-term boundary, without a second hydraulic solver or inventory owner.
+**M8.2 — Hydraulic Component Faults hotfix 1** is the current baseline candidate. It adds runtime-bound hydraulic fault effects over canonical pump/valve state and selected node leaks through the existing plant-network source-term boundary, without a second hydraulic solver or inventory owner.
 
 **Restart note:** M8.1 is explicitly validated. M8.2 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
+
+The current hotfix also adds the first dedicated headless `NuclearReactorSimulator.App.Tests` coverage for `MainWindowViewModel` and XAML command-state wiring; this is presentation regression hardening only and does not change M8.2 hydraulic fault semantics.
 
 ## What is intentionally not built yet
 

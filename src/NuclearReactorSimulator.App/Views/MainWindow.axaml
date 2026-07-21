@@ -523,7 +523,7 @@
               <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
                 <StackPanel Spacing="12">
                   <TextBlock Classes="sectionHeading" Text="GENERATOR / BREAKER CONTROL" />
-                  <controls:ControlRoomSelector Label="GENERATOR TARGET" OptionsText="{Binding GeneratorOptionsText}" SelectedIndex="{Binding SelectedGeneratorIndex, Mode=TwoWay}" State="{Binding GeneratorTripCommandState}" />
+                  <controls:ControlRoomSelector Label="GENERATOR TARGET" OptionsText="{Binding GeneratorOptionsText}" SelectedIndex="{Binding SelectedGeneratorIndex, Mode=TwoWay}" State="{Binding GeneratorSelectionState}" />
                   <TextBlock FontSize="12" Opacity="0.72" Text="{Binding SelectedGeneratorSynchronizationText}" />
                   <TextBlock FontSize="12" Opacity="0.72" Text="{Binding SelectedBreakerId}" />
                   <Grid ColumnDefinitions="*,*" ColumnSpacing="8">

@@ -8,5 +8,5 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
         "M8.2 — Hydraulic Component Faults",
-        "Baseline candidate — M8.1 validated; deterministic pump/valve/path/leak fault effects reuse canonical hydraulic seams and the single plant-network integration boundary");
+        "Baseline candidate hotfix 1 — M8.1 validated; M8.2 hydraulic fault semantics unchanged; control-room generator selection/trip gating hardened with headless App regression coverage");
 }

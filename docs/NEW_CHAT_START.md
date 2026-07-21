@@ -20,7 +20,7 @@ Current recorded checkpoint:
 - last explicitly locally validated baseline: M7.7 — Training Objectives, Procedure Guidance & Evaluation;
 - M7 gate: COMPLETE / VALIDATED;
 - last explicitly locally validated baseline: M8.1 — Deterministic Fault-Injection Framework hotfix 1;
-- current implementation candidate: M8.2 — Hydraulic Component Faults;
+- current implementation candidate: M8.2 — Hydraulic Component Faults hotfix 1;
 - M8.2 must not be marked validated until I explicitly confirm local build and complete tests pass;
 - after M8.2 validation, continue with M8.3 — Instrumentation & Control Faults.
 
@@ -38,7 +38,7 @@ For every milestone: make the smallest architecture-consistent change, add/updat
 
 ## What to upload or make available
 
-Prefer the latest **complete** project ZIP, not a partial patch. For the checkpoint represented by this repository, that is the complete M8.2 candidate package or a later locally validated hotfix derived from it.
+Prefer the latest **complete** project ZIP, not a partial patch. For the checkpoint represented by this repository, that is the complete M8.2 hotfix-1 candidate package or a later locally validated hotfix derived from it.
 
 ## What the new conversation should not assume
 

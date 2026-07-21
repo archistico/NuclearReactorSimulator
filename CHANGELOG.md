@@ -1,5 +1,9 @@
 ## M8.2 — Hydraulic Component Faults (baseline candidate)
 
+- Hotfix candidate 2: corrected the new App regression test to use the xUnit `Assert.Single(collection, predicate)` overload required by analyzer rule xUnit2031; production code and M8.2 behavior are unchanged.
+- Hotfix candidate 1: corrected the electrical `GENERATOR TARGET` selector to use a neutral `GeneratorSelectionState` instead of inheriting the generator-trip visual state.
+- Hotfix candidate 1: made turbine speed/load operator controls fail closed when either the turbine trip or generator trip is active; physical protection ownership remains unchanged.
+- Hotfix candidate 1: added the first headless `NuclearReactorSimulator.App.Tests` project with ViewModel regression tests for generator selection, turbine-trip gating, breaker-close permissives, target-index clamping, typed dispatch and the XAML generator-selector binding contract.
 - Recorded M8.1 hotfix 1 as locally validated after successful build and complete test suite.
 - Added typed M8.2 hydraulic fault applicators for pump trip/degradation, valve fail-open/fail-closed/stuck, valve-controlled path restriction/blockage and selected node leaks.
 - Added immutable `HydraulicComponentFaultInputs` consumed inside the existing protected full-plant step; no second pump/valve/network solver is introduced.

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>NuclearReactorSimulator.App.Tests</RootNamespace>
+    <AssemblyName>NuclearReactorSimulator.App.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NuclearReactorSimulator.App\NuclearReactorSimulator.App.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\src\NuclearReactorSimulator.App\Views\MainWindow.axaml" Link="MainWindow.axaml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

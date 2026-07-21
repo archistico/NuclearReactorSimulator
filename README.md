@@ -13,7 +13,9 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.7 are validated. The M3, M4, M5, M6 and M7 gates are complete. M7.1 establishes exact-version initial-condition/scenario/session/replay ownership; M7.2–M7.6 provide the validated normal operating path and M7.7 adds deterministic observational training/guidance/evaluation.
 
-The current implementation candidate is **M8.2 — Hydraulic Component Faults**. M8.1 fault scheduling/lifecycle is validated; M8.2 adds deterministic pump/valve/valve-controlled-path constraints and selected audited node leaks through canonical hydraulic seams without a second physical integrator.
+The current implementation candidate is **M8.2 — Hydraulic Component Faults hotfix 1**. M8.1 fault scheduling/lifecycle is validated; M8.2 adds deterministic pump/valve/valve-controlled-path constraints and selected audited node leaks through canonical hydraulic seams without a second physical integrator.
+
+The hotfix also introduces `NuclearReactorSimulator.App.Tests`, a headless regression suite for control-room ViewModel/XAML command-state wiring; it does not add UI-side physics or change hydraulic fault behavior.
 
 ## Architectural principles
 
