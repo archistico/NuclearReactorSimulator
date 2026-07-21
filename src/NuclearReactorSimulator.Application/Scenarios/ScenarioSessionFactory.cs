@@ -1,5 +1,6 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.Faults;
+using NuclearReactorSimulator.Application.Scenarios.Faults.Hydraulics;
 
 namespace NuclearReactorSimulator.Application.Scenarios;
 
@@ -23,7 +24,7 @@ public sealed class ScenarioSessionFactory
     {
         _initialConditions = initialConditions ?? throw new ArgumentNullException(nameof(initialConditions));
         _executionBudget = executionBudget ?? ControlRoomRuntimeExecutionBudget.DesktopDefault;
-        _faultApplicators = faultApplicators ?? ScenarioFaultApplicatorRegistry.Empty;
+        _faultApplicators = faultApplicators ?? new ScenarioFaultApplicatorRegistry(HydraulicFaultApplicatorFactory.CreateBuiltIns());
         _faultConditions = faultConditions ?? ScenarioFaultConditionRegistry.Empty;
     }
 

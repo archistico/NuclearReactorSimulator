@@ -4,6 +4,7 @@ using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Simulation.Physics.Control.Protection;
+using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
 using NuclearReactorSimulator.Simulation.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Simulation.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
@@ -49,6 +50,24 @@ public sealed class AlarmedProtectedAutomaticFullPlantSolver
         ProtectionSystemInputs protectionInputs,
         AlarmSystemInputs alarmInputs,
         TimeSpan deltaTime)
+        => Step(measuredSignals, committedPlantState, committedReactorControlState, committedSecondaryControlState,
+            committedProtectionState, committedAlarmState, basePlantInputs, reactorInputs, secondaryInputs, protectionInputs,
+            alarmInputs, deltaTime, HydraulicComponentFaultInputs.Empty);
+
+    public AlarmedProtectedAutomaticFullPlantStepResult Step(
+        MeasuredSignalFrame measuredSignals,
+        FullPlantState committedPlantState,
+        ReactorPrimaryControlState committedReactorControlState,
+        TurbineSecondaryControlState committedSecondaryControlState,
+        ProtectionSystemState committedProtectionState,
+        AlarmSystemState committedAlarmState,
+        IntegratedSecondaryCycleInputs basePlantInputs,
+        ReactorPrimaryControlInputs reactorInputs,
+        TurbineSecondaryControlInputs secondaryInputs,
+        ProtectionSystemInputs protectionInputs,
+        AlarmSystemInputs alarmInputs,
+        TimeSpan deltaTime,
+        HydraulicComponentFaultInputs hydraulicFaultInputs)
     {
         var protectedStep = _protectedSolver.Step(
             measuredSignals,
@@ -60,7 +79,8 @@ public sealed class AlarmedProtectedAutomaticFullPlantSolver
             reactorInputs,
             secondaryInputs,
             protectionInputs,
-            deltaTime);
+            deltaTime,
+            hydraulicFaultInputs);
         var alarmStep = _alarmSolver.Step(measuredSignals, protectedStep.Snapshot.Protection, committedAlarmState, alarmInputs);
         return new AlarmedProtectedAutomaticFullPlantStepResult(
             protectedStep,

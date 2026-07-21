@@ -1,6 +1,8 @@
+using NuclearReactorSimulator.Application.Scenarios.Faults.Hydraulics;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Simulation.Physics.Control;
@@ -19,7 +21,7 @@ namespace NuclearReactorSimulator.Application.ControlRoom;
 /// controller setpoints and M4.5 requested electrical load modify only immutable per-step input bundles; trip, breaker and
 /// annunciator commands are one-step pulses cleared after the next deterministic step.
 /// </summary>
-public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine
+public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine, IHydraulicComponentFaultTarget
 {
     private readonly IntegratedAutomaticOperationSolver _solver;
     private readonly TimeSpan _deltaTime;
@@ -38,6 +40,10 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
     private readonly HashSet<string> _acknowledgeAlarmIds = new(StringComparer.Ordinal);
     private readonly HashSet<string> _resetAlarmIds = new(StringComparer.Ordinal);
     private readonly Dictionary<string, bool> _breakerCloseById = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, PumpHydraulicFaultInput> _hydraulicPumpFaults = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, ValveHydraulicFaultInput> _hydraulicValveFaults = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, HydraulicPathRestrictionInput> _hydraulicPathRestrictions = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, HydraulicLeakInput> _hydraulicLeaks = new(StringComparer.Ordinal);
 
     public IntegratedAutomaticOperationRuntimeEngine(
         IntegratedAutomaticOperationSolver solver,
@@ -169,6 +175,89 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         }
     }
 
+    public void ActivatePumpTrip(string faultId, string pumpId)
+        => SetPumpFault(faultId, pumpId, forceTrip: true, capacityFraction: 0d);
+
+    public void ActivatePumpDegradation(string faultId, string pumpId, double capacityFraction)
+        => SetPumpFault(faultId, pumpId, forceTrip: false, capacityFraction);
+
+    public void ActivateValveFailOpen(string faultId, string valveId)
+        => SetValveFault(faultId, valveId, HydraulicValveFaultMode.FailOpen, ValvePosition.FullyOpen);
+
+    public void ActivateValveFailClosed(string faultId, string valveId)
+        => SetValveFault(faultId, valveId, HydraulicValveFaultMode.FailClosed, ValvePosition.Closed);
+
+    public void ActivateValveStuck(string faultId, string valveId)
+    {
+        ValidateFaultId(faultId);
+        var valve = _state.PlantState.PlantState.GetValve(valveId);
+        SetValveFault(faultId, valveId, HydraulicValveFaultMode.Stuck, valve.Position);
+    }
+
+    public void ActivatePathRestriction(string faultId, string valveId, double maximumOpenFraction)
+    {
+        ValidateFaultId(faultId);
+        _ = _state.PlantState.PlantState.Definition.GetValve(valveId);
+        _hydraulicPathRestrictions[faultId] = new HydraulicPathRestrictionInput(faultId, valveId, maximumOpenFraction);
+    }
+
+    public void ActivateLeak(string faultId, string fluidNodeId, MassFlowRate massFlowRate)
+    {
+        ValidateFaultId(faultId);
+        _ = _state.PlantState.PlantState.GetFluidNode(fluidNodeId);
+        _hydraulicLeaks[faultId] = new HydraulicLeakInput(faultId, fluidNodeId, massFlowRate);
+    }
+
+    public void ClearHydraulicFault(string faultId)
+    {
+        ValidateFaultId(faultId);
+        _hydraulicPumpFaults.Remove(faultId);
+        _hydraulicValveFaults.Remove(faultId);
+        _hydraulicPathRestrictions.Remove(faultId);
+        _hydraulicLeaks.Remove(faultId);
+    }
+
+    private void SetPumpFault(string faultId, string pumpId, bool forceTrip, double capacityFraction)
+    {
+        ValidateFaultId(faultId);
+        _ = _state.PlantState.PlantState.Definition.GetPump(pumpId);
+        EnsureNoOtherPumpFault(faultId, pumpId);
+        _hydraulicPumpFaults[faultId] = new PumpHydraulicFaultInput(faultId, pumpId, forceTrip, capacityFraction);
+    }
+
+    private void SetValveFault(string faultId, string valveId, HydraulicValveFaultMode mode, ValvePosition stuckPosition)
+    {
+        ValidateFaultId(faultId);
+        _ = _state.PlantState.PlantState.Definition.GetValve(valveId);
+        EnsureNoOtherValveFault(faultId, valveId);
+        _hydraulicValveFaults[faultId] = new ValveHydraulicFaultInput(faultId, valveId, mode, stuckPosition);
+    }
+
+    private void EnsureNoOtherPumpFault(string faultId, string pumpId)
+    {
+        var conflict = _hydraulicPumpFaults.Values.FirstOrDefault(x => !string.Equals(x.FaultId, faultId, StringComparison.Ordinal)
+            && string.Equals(x.PumpId, pumpId, StringComparison.Ordinal));
+        if (conflict is not null)
+        {
+            throw new InvalidOperationException($"Pump '{pumpId}' already has active hydraulic fault '{conflict.FaultId}'.");
+        }
+    }
+
+    private void EnsureNoOtherValveFault(string faultId, string valveId)
+    {
+        var conflict = _hydraulicValveFaults.Values.FirstOrDefault(x => !string.Equals(x.FaultId, faultId, StringComparison.Ordinal)
+            && string.Equals(x.ValveId, valveId, StringComparison.Ordinal));
+        if (conflict is not null)
+        {
+            throw new InvalidOperationException($"Valve '{valveId}' already has active hydraulic fault '{conflict.FaultId}'.");
+        }
+    }
+
+    private static void ValidateFaultId(string faultId) => ArgumentException.ThrowIfNullOrWhiteSpace(faultId);
+
+    private HydraulicComponentFaultInputs BuildHydraulicFaultInputs()
+        => new(_hydraulicPumpFaults.Values, _hydraulicValveFaults.Values, _hydraulicPathRestrictions.Values, _hydraulicLeaks.Values);
+
     private IntegratedAutomaticOperationInputs BuildStepInputs()
     {
         var plantInputs = BuildPlantInputs();
@@ -191,7 +280,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
             _persistentInputs.TurbineSecondaryInputs,
             protectionInputs,
             alarmInputs,
-            _persistentInputs.InstrumentationInputs);
+            _persistentInputs.InstrumentationInputs,
+            BuildHydraulicFaultInputs());
     }
 
     private IntegratedSecondaryCycleInputs BuildPlantInputs()

@@ -527,7 +527,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M8 — Faults, transients and safety scenarios
 
-### M8.1 Deterministic Fault-Injection Framework — BASELINE CANDIDATE
+### M8.1 Deterministic Fault-Injection Framework — VALIDATED
 
 - faults are explicit immutable versioned-scenario inputs with stable fault/type/target IDs and deterministic parameters; never hidden randomness;
 - activation/deactivation scheduling occurs only at committed boundaries by exact logical step or named committed-snapshot plant condition;
@@ -535,13 +535,17 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - deterministic single-pass `Pending → Active → Cleared` lifecycle with logical-step stamps and monotonic transition sequence;
 - fault lifecycle state is projected into `ControlRoomSnapshot` and reconstructed by normal M7.1 replay from the same scenario definition;
 - scenario JSON schema v2 persists fault schedules while v0/v1 migration preserves exact initial-condition identity and invents no faults;
-- concrete hydraulic/instrumentation/control/transient fault effects remain M8.2+ ownership.
+- concrete hydraulic/instrumentation/control/transient fault effects remain M8.2+ ownership;
+- local build and complete tests explicitly confirmed successful on 2026-07-21.
 
-### M8.2 Hydraulic Component Faults
+### M8.2 Hydraulic Component Faults — BASELINE CANDIDATE
 
-- pump trip/degradation;
-- valve fail/open/closed/stuck behaviours;
-- blocked/restricted paths and selected leaks.
+- pump trip and deterministic capacity degradation through canonical `PumpState` constraints before the existing pump solver;
+- valve fail-open/fail-closed/stuck-at-activation-position through canonical `ValveState`;
+- blocked/restricted **valve-controlled** paths via deterministic opening clamps, without a second topology/resistance owner;
+- selected bounded fluid-node leaks as signed mass + carried-energy `PlantNetworkSourceTerms` integrated exactly once by `PlantNetworkOrchestrator`;
+- built-in fail-closed hydraulic applicator registration and deterministic demonstration scenario pack;
+- arbitrary raw-pipe break/resistance mutation remains M8.5 rather than being hidden inside M8.2.
 
 ### M8.3 Instrumentation & Control Faults
 

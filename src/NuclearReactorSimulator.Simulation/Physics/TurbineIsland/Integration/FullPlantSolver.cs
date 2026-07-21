@@ -1,5 +1,6 @@
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Integration;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
+using NuclearReactorSimulator.Simulation.Plant;
 
 namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
 
@@ -27,9 +28,17 @@ public sealed class FullPlantSolver
         FullPlantState committedState,
         IntegratedSecondaryCycleInputs inputs,
         TimeSpan deltaTime)
+        => Step(committedState, inputs, deltaTime, PlantNetworkSourceTerms.Empty);
+
+    public FullPlantStepResult Step(
+        FullPlantState committedState,
+        IntegratedSecondaryCycleInputs inputs,
+        TimeSpan deltaTime,
+        PlantNetworkSourceTerms supplementalSourceTerms)
     {
         ArgumentNullException.ThrowIfNull(committedState);
         ArgumentNullException.ThrowIfNull(inputs);
+        ArgumentNullException.ThrowIfNull(supplementalSourceTerms);
 
         if (!ReferenceEquals(committedState.Definition, _definition))
         {
@@ -46,7 +55,8 @@ public sealed class FullPlantSolver
             committedState.TurbineState,
             committedState.ElectricalState,
             inputs,
-            deltaTime);
+            deltaTime,
+            supplementalSourceTerms);
         var candidateState = new FullPlantState(
             _definition,
             cycleStep.CandidatePlantState,

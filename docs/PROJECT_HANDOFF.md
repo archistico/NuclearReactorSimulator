@@ -18,12 +18,12 @@ For a ready-to-paste new-conversation bootstrap, use `docs/NEW_CHAT_START.md`. F
 
 ### Restart checkpoint
 
-- **Last explicitly locally validated baseline:** `M7.7 — Training Objectives, Procedure Guidance & Evaluation`.
+- **Last explicitly locally validated baseline:** `M8.1 — Deterministic Fault-Injection Framework` hotfix 1.
 - **M6 gate:** `COMPLETE / VALIDATED`.
 - **M7 gate:** `COMPLETE / VALIDATED`.
-- **Latest implementation package:** `M8.1 — Deterministic Fault-Injection Framework` baseline candidate.
-- **M7.7 is explicitly validated.** Local build and complete tests passed; the M7 gate is closed.
-- **Immediate next action:** validate M8.1. If validation passes, record M8.1 as validated and continue with `M8.2 — Hydraulic Component Faults`.
+- **Latest implementation package:** `M8.2 — Hydraulic Component Faults` baseline candidate.
+- **M8.1 is explicitly validated.** Local build and complete tests passed; the deterministic fault-orchestration boundary is now baseline.
+- **Immediate next action:** validate M8.2. If validation passes, record M8.2 as validated and continue with `M8.3 — Instrumentation & Control Faults`.
 
 ### Working-package rule
 
@@ -35,7 +35,7 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 
 ## Current baseline
 
-- Last locally validated baseline: **M7.7 — Training Objectives, Procedure Guidance & Evaluation**.
+- Last locally validated baseline: **M8.1 — Deterministic Fault-Injection Framework** hotfix 1.
 - M3 gate: **COMPLETE / VALIDATED**.
 - M4.1 main-steam/admission topology: **VALIDATED**.
 - M4.2 turbine expansion/rotor dynamics: **VALIDATED**.
@@ -65,8 +65,9 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 - M7.5 Grid Synchronization & Load Increase: **VALIDATED**.
 - M7.6 Power Manoeuvring & Normal Shutdown: **VALIDATED**.
 - M7.7 Training Objectives, Procedure Guidance & Evaluation / M7 gate: **VALIDATED / COMPLETE**.
-- Current implementation candidate: **M8.1 — Deterministic Fault-Injection Framework**.
-- Next planned milestone after M8.1 validation: **M8.2 — Hydraulic Component Faults**.
+- M8.1 Deterministic Fault-Injection Framework: **VALIDATED**.
+- Current implementation candidate: **M8.2 — Hydraulic Component Faults**.
+- Next planned milestone after M8.2 validation: **M8.3 — Instrumentation & Control Faults**.
 
 ## Current system ownership map
 
@@ -82,7 +83,8 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 | Integrated automatic operation | M5.7 | Current-step decisions use the committed measured frame; candidate measurements belong to the next step. |
 | Control-room presentation/commands | M6 | Avalonia consumes presentation snapshots and emits typed Application intents only. |
 | Initialized sessions/scenarios/training | M7.1+ | M7.1 exact-version reconstruction/session/replay; M7.2–M7.6 validated operating paths; M7.7 observational checkpoints, accepted-action history, guidance and evaluation over canonical owners. |
-| Fault orchestration/lifecycle | M8.1 | Explicit versioned scenario fault declarations, deterministic trigger/lifecycle state and fail-closed typed applicator binding only; concrete subsystem effects remain M8.2+. |
+| Fault orchestration/lifecycle | M8.1 | Explicit versioned scenario fault declarations, deterministic trigger/lifecycle state and fail-closed typed applicator binding. |
+| Hydraulic component fault effects | M8.2 candidate | Pump/valve/valve-controlled-path constraints and selected audited node leaks; no second hydraulic integrator/topology. |
 
 ### Cross-cutting ownership principles
 
@@ -226,13 +228,13 @@ A milestone is only `VALIDATED` after the user explicitly reports that the local
 - M7.6 validated: exact stable-low-load-parallel-operation v1, bounded manoeuvring, observational feedback checks and controlled normal shutdown.
 - M7.7 validated: deterministic per-step training checkpoints, accepted-operator-action journal, optional guidance and observational objective scoring; M7 gate complete.
 
-## M7.7 validated / M8.1 candidate
+## M8.1 validated / M8.2 candidate
 
 M6.1 through M6.7 are locally validated and the M6 gate is complete. M7.1 through M7.7 are locally validated and the M7 gate is complete. M7.1 owns exact-version initial-condition/session/scenario/replay boundaries; M7.2–M7.6 provide the validated normal operating path; M7.7 adds deterministic observational training/guidance/evaluation only.
 
-M8.1 adds the first M8 ownership boundary: explicit fault declarations embedded in versioned scenario definitions, exact logical-step or named committed-snapshot condition triggers, deterministic `Pending → Active → Cleared` lifecycle state, fail-closed applicator/evaluator registries, snapshot projection and replay reconstruction. Scenario schema v2 persists the fault schedule while v0/v1 migration preserves exact initial-condition identity and invents no faults.
+M8.1 is locally validated and owns explicit fault declarations, exact logical-step or committed-snapshot condition triggers, deterministic `Pending → Active → Cleared` lifecycle, fail-closed applicator/evaluator registries, snapshot projection, schema-v2 persistence and replay reconstruction.
 
-M8.1 deliberately implements no concrete pump, valve, sensor, controller, turbine, generator or leak fault physics. Those effects begin in M8.2+ and must bind through the typed applicator seam to existing canonical subsystem owners. The M7.7 desktop training session remains the physical/session baseline until a later M8 milestone supplies an actual fault pack.
+M8.2 is the current candidate and supplies the first concrete typed applicators: pump trip/degradation, valve fail-open/fail-closed/stuck, valve-controlled path restriction/blockage and bounded selected node leaks. Component faults constrain canonical `PumpState`/`ValveState` only before existing solvers; leaks enter as signed `PlantNetworkSourceTerms` so `PlantNetworkOrchestrator` remains the sole inventory integrator. Arbitrary raw-pipe break physics remains M8.5.
 
 ## New-chat implementation protocol
 
@@ -254,12 +256,14 @@ M6.7 — VALIDATED / M6 GATE COMPLETE
         ↓
 M7.1–M7.7 — VALIDATED / M7 GATE COMPLETE
         ↓
-M8.1 — BASELINE CANDIDATE, awaiting explicit local validation record
+M8.1 — VALIDATED
+        ↓
+M8.2 — BASELINE CANDIDATE — Hydraulic Component Faults
         ↓ after successful validation
-M8.2 — Hydraulic Component Faults
+M8.3 — Instrumentation & Control Faults
 ```
 
-M7.1–M7.7 are fully validated and the M7 gate is complete. M8.1 is the current deterministic fault-orchestration/lifecycle candidate; concrete hydraulic fault effects begin only after M8.1 validation in M8.2.
+M7.1–M7.7 are fully validated and the M7 gate is complete. M8.1 is locally validated. M8.2 is the current hydraulic-fault candidate; instrumentation/control faults remain M8.3 ownership.
 
 
 ### M7.5 ownership additions
@@ -294,5 +298,9 @@ M7.1–M7.7 are fully validated and the M7 gate is complete. M8.1 is the current
 111. Fault-type applicator binding is exact-ID and fail-closed. M8.1 owns scheduling/lifecycle only; concrete M8.2+ applicators must reuse existing canonical subsystem input/command seams and must not create second integrators/state owners.
 112. Declared fault lifecycle is deterministic single-pass `Pending → Active → Cleared`; reactivation requires a distinct explicit scenario fault declaration.
 113. Fault lifecycle state is projected into immutable presentation snapshots with logical-step stamps and deterministic transition sequence; it is observational metadata, not a replacement for physical state.
+114. M8.2 pump/valve faults constrain canonical component state only after normal/protection command arbitration and before the one authoritative physical step; they never write flow, pressure or derived outputs directly.
+115. M8.2 selected leaks enter only as signed `PlantNetworkSourceTerms` carrying mass and source-node internal energy into the existing single `PlantNetworkOrchestrator` integration/audit boundary.
+116. M8.2 path restriction/blockage is limited to canonical valve-controlled paths; arbitrary pipe-definition mutation or break-flow models remain later milestone ownership.
+117. Fault clearance removes forcing only; it must not restore hidden saved physical state or teleport equipment to a pre-fault condition.
 114. Scenario schema v2 may persist fault schedules, but v0/v1 migration must preserve exact initial-condition identity and add no implicit faults.
 115. M7.1 replay reconstructs fault scheduling from the same versioned scenario definition; no separate wall-clock/probabilistic fault trace may influence replay results.

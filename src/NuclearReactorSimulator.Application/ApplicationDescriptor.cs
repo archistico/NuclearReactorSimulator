@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M8.1 — Deterministic Fault-Injection Framework",
-        "Baseline candidate — M7.7 validated / M7 complete; explicit versioned fault schedules, logical-step or committed-condition triggers, fail-closed applicator binding and replay-visible fault lifecycle state");
+        "M8.2 — Hydraulic Component Faults",
+        "Baseline candidate — M8.1 validated; deterministic pump/valve/path/leak fault effects reuse canonical hydraulic seams and the single plant-network integration boundary");
 }

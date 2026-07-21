@@ -1,6 +1,6 @@
 # ADR 0060 — Fault injection is explicit deterministic scenario state
 
-**Status:** Accepted for M8.1 baseline candidate
+**Status:** Accepted / validated with M8.1
 
 ## Context
 

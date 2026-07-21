@@ -2,9 +2,9 @@
 
 ## Validated baseline
 
-The current validated functional baseline is **M7.7 — Training Objectives, Procedure Guidance & Evaluation**.
+The current validated functional baseline is **M8.1 — Deterministic Fault-Injection Framework** hotfix 1.
 
-M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.7 are validated through local build/test execution/approval. The M3, M4, M5, M6 and M7 gates are complete. M8.1 is the current baseline candidate.
+M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7 and M8.1 are validated through local build/test execution/approval. The M3, M4, M5, M6 and M7 gates are complete. M8.2 is the current baseline candidate.
 
 | Phase | Status | Validated capability |
 |---|---|---|
@@ -16,12 +16,12 @@ M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–
 | M5 | VALIDATED | M5.1–M5.7 validated; integrated automatic-operation gate complete |
 | M6 | VALIDATED | M6.1–M6.7 validated; complete control-room/runtime-integration gate |
 | M7 | VALIDATED | M7.1–M7.7 validated; versioned sessions, normal operating path and deterministic training/evaluation gate complete |
-| M8 | IN PROGRESS | M8.1 Deterministic Fault-Injection Framework baseline candidate |
+| M8 | IN PROGRESS | M8.1 validated; M8.2 Hydraulic Component Faults baseline candidate |
 | M9 | PLANNED | advanced analysis, fidelity refinement and historical-inspired scenarios |
 
-## Validated M7.7 / current M8.1 candidate
+## Validated M8.1 / current M8.2 candidate
 
-M7.1 through M7.7 are validated and the M7 gate is complete. M7.7 adds deterministic per-fixed-step training checkpoints, accepted operator-action history, optional guidance and observational evaluation over the validated operating path. M8.1 is the current candidate for explicit deterministic scenario fault declarations, trigger/lifecycle orchestration, fail-closed applicator binding, snapshot projection and replay reconstruction.
+M7.1 through M7.7 are validated and the M7 gate is complete. M8.1 is now validated and owns deterministic fault declaration/scheduling/lifecycle orchestration. M8.2 is the current candidate for concrete pump/valve/valve-controlled-path constraints plus selected audited node-leak effects through canonical runtime seams.
 
 ## What the validated engine can already do
 
@@ -65,15 +65,18 @@ The validated core can run headlessly and deterministically with:
 - validated M6.6 bounded logical-step trends, M5.6 annunciator/first-out presentation and deterministic sequence-ordered event timeline;
 - validated M6.7 live runtime coordination and M7.1 exact-version initial-condition/scenario/session/replay framework;
 - validated M7.2–M7.7 normal operating/training progression through deterministic observational evaluation and a complete M7 gate;
-- M8.1 candidate scenario-fault schema v2, exact logical-step/committed-condition triggers, fail-closed applicator/evaluator binding and snapshot-visible deterministic lifecycle state;
+- validated M8.1 scenario-fault schema v2, exact logical-step/committed-condition triggers, fail-closed applicator/evaluator binding and snapshot-visible deterministic lifecycle state;
+- M8.2 candidate concrete pump trip/degradation, valve fail/stuck, valve-controlled path restriction/blockage and selected audited fluid-node leaks;
 
 ## Current implementation candidate
 
 **M7.7 — Training Objectives, Procedure Guidance & Evaluation** is validated and closes the M7 gate over the exact-version scenario/session/replay boundary plus validated operating procedures and observational training evaluation.
 
-**M8.1 — Deterministic Fault-Injection Framework** is the current baseline candidate. It adds explicit versioned fault declarations, exact logical-step or named committed-snapshot condition triggers, deterministic `Pending → Active → Cleared` lifecycle state, fail-closed typed applicator/evaluator binding, scenario schema v2 persistence and replay-visible fault state. It intentionally adds no concrete equipment/sensor/control fault physics yet.
+**M8.1 — Deterministic Fault-Injection Framework** is validated.
 
-**Restart note:** M7.1 through M7.7 are explicitly validated and the M7 gate is complete. M8.1 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
+**M8.2 — Hydraulic Component Faults** is the current baseline candidate. It adds runtime-bound hydraulic fault effects over canonical pump/valve state and selected node leaks through the existing plant-network source-term boundary, without a second hydraulic solver or inventory owner.
+
+**Restart note:** M8.1 is explicitly validated. M8.2 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
 
 ## What is intentionally not built yet
 
@@ -85,7 +88,7 @@ The following are planned architecture boundaries, not missing bugs:
 - no detailed HP/IP/LP turbine maps, moisture separation/reheat or wet-steam erosion model;
 - no detailed synchronous-machine transient/reactance model, AVR/excitation dynamics or grid load-flow physics;
 - no persistent disk historian or wall-clock event timestamps; M6.6 history is bounded presentation state indexed only by logical step/event sequence;
-- M7.1–M7.7 are validated and the M7 gate is complete; M8.1 currently owns only deterministic fault declaration/scheduling/lifecycle orchestration, while concrete hydraulic/instrumentation/control/transient effects remain M8.2+;
+- M7.1–M7.7 are validated and the M7 gate is complete; M8.1 fault orchestration is validated; M8.2 currently owns concrete hydraulic component constraints and selected bounded leaks, while instrumentation/control/transient effects remain M8.3+;
 - no arbitrary full-state checkpoint/save/seek format yet; M9.1 owns that boundary;
 - no full-scope or licensing-grade thermal hydraulics/neutronics.
 
@@ -169,6 +172,6 @@ A milestone becomes validated only after:
 - documentation reflects the implemented behavior;
 - user validation is explicitly recorded.
 
-## Current M8.1 candidate
+## Current M8.2 candidate
 
-M7.7 Training Objectives, Procedure Guidance & Evaluation is locally validated and closes the M7 gate. M8.1 adds explicit deterministic scenario fault declarations, logical-step/committed-condition scheduling, fail-closed typed handler binding, replay-visible lifecycle state and schema-v2 persistence. Concrete fault effects remain M8.2+ and M8.1 does not mutate canonical subsystem physics directly.
+M8.1 Deterministic Fault-Injection Framework is locally validated. M8.2 adds concrete deterministic hydraulic component effects through typed runtime seams: pump trip/degradation, valve fail/stuck behavior, valve-controlled path restriction/blockage and selected signed mass/energy leaks. Canonical M3/M4/M5 owners remain authoritative and `PlantNetworkOrchestrator` remains the sole inventory integrator.

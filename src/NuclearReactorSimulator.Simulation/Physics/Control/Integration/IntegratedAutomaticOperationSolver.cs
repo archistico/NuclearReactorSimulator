@@ -94,7 +94,8 @@ public sealed class IntegratedAutomaticOperationSolver
             inputs.TurbineSecondaryInputs,
             inputs.ProtectionInputs,
             inputs.AlarmInputs,
-            deltaTime);
+            deltaTime,
+            inputs.HydraulicFaultInputs);
 
         var physicalSnapshot = controlledStep.ProtectedStep.FullPlantStep.Snapshot;
         var instrumentationStep = _instrumentationSolver.Step(

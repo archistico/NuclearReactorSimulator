@@ -13,7 +13,7 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.7 are validated. The M3, M4, M5, M6 and M7 gates are complete. M7.1 establishes exact-version initial-condition/scenario/session/replay ownership; M7.2–M7.6 provide the validated normal operating path and M7.7 adds deterministic observational training/guidance/evaluation.
 
-The current implementation candidate is **M8.1 — Deterministic Fault-Injection Framework**: it adds explicit versioned fault declarations, exact logical-step or named committed-snapshot condition triggers, deterministic lifecycle state, fail-closed typed handler binding, scenario schema v2 persistence and replay-visible fault state without implementing concrete subsystem failure physics.
+The current implementation candidate is **M8.2 — Hydraulic Component Faults**. M8.1 fault scheduling/lifecycle is validated; M8.2 adds deterministic pump/valve/valve-controlled-path constraints and selected audited node leaks through canonical hydraulic seams without a second physical integrator.
 
 ## Architectural principles
 
@@ -443,7 +443,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7 and M7.1–M7.7 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.1 is the current **baseline candidate**, adding deterministic scenario fault declaration/scheduling/lifecycle infrastructure without concrete M8.2+ fault effects.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7 and M8.1 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.2 is the current **baseline candidate**, adding concrete deterministic hydraulic fault effects over the validated M8.1 lifecycle framework.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -562,4 +562,4 @@ M7.7 closes the M7 gate with deterministic first-achievement checkpoints observe
 
 ## M8.1 deterministic fault-injection framework
 
-M8.1 adds explicit `ScenarioFaultDefinition` entries to versioned scenario schema v2. Faults activate/deactivate only at committed logical-step boundaries, either by exact step or named `ControlRoomSnapshot` plant condition. Exact-ID applicator/evaluator registries fail closed, lifecycle state is projected into control-room snapshots, and M7.1 replay reconstructs the same fault schedule from scenario data. M8.1 intentionally owns no concrete pump/valve/sensor/control/transient fault physics; those begin in M8.2+. See `docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md` and ADR 0060.
+M8.1 adds explicit `ScenarioFaultDefinition` entries to versioned scenario schema v2. Faults activate/deactivate only at committed logical-step boundaries, either by exact step or named `ControlRoomSnapshot` plant condition. Exact-ID applicator/evaluator registries fail closed, lifecycle state is projected into control-room snapshots, and M7.1 replay reconstructs the same fault schedule from scenario data. M8.1 owns no concrete fault physics and is validated. M8.2 adds pump trip/degradation, valve fail/stuck behavior, valve-controlled path restriction/blockage and selected node leaks through typed runtime seams. See `docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md`, `docs/HYDRAULIC_COMPONENT_FAULTS.md`, ADR 0060 and ADR 0061.

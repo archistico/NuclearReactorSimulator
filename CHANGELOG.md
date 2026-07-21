@@ -1,3 +1,12 @@
+## M8.2 — Hydraulic Component Faults (baseline candidate)
+
+- Recorded M8.1 hotfix 1 as locally validated after successful build and complete test suite.
+- Added typed M8.2 hydraulic fault applicators for pump trip/degradation, valve fail-open/fail-closed/stuck, valve-controlled path restriction/blockage and selected node leaks.
+- Added immutable `HydraulicComponentFaultInputs` consumed inside the existing protected full-plant step; no second pump/valve/network solver is introduced.
+- Added selected leak mass + carried internal-energy removal through signed `PlantNetworkSourceTerms`, preserving the one `PlantNetworkOrchestrator` integration/audit boundary.
+- Added `HydraulicComponentFaultScenarioPack.Demonstration`, built-in hydraulic applicator registration and end-to-end Application tests over real canonical plant state.
+- Added ADR 0061, `docs/HYDRAULIC_COMPONENT_FAULTS.md` and M8.2 milestone/handoff/status/roadmap updates.
+
 # Changelog
 
 ## M8.1 — Deterministic Fault-Injection Framework (baseline candidate)

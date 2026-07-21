@@ -19,15 +19,16 @@ Preserve all non-negotiable ownership and determinism rules from the handoff. Do
 Current recorded checkpoint:
 - last explicitly locally validated baseline: M7.7 — Training Objectives, Procedure Guidance & Evaluation;
 - M7 gate: COMPLETE / VALIDATED;
-- current implementation candidate: M8.1 — Deterministic Fault-Injection Framework;
-- M8.1 must not be marked validated until I explicitly confirm local build and complete tests pass;
-- after M8.1 validation, continue with M8.2 — Hydraulic Component Faults.
+- last explicitly locally validated baseline: M8.1 — Deterministic Fault-Injection Framework hotfix 1;
+- current implementation candidate: M8.2 — Hydraulic Component Faults;
+- M8.2 must not be marked validated until I explicitly confirm local build and complete tests pass;
+- after M8.2 validation, continue with M8.3 — Instrumentation & Control Faults.
 
-M8.1 boundary:
+M8.1/M8.2 boundary:
 - faults are explicit immutable scenario data; no hidden randomness;
 - activation/deactivation occurs only at committed logical-step boundaries by exact step or named committed-snapshot condition;
 - missing fault-type applicators or condition evaluators fail session loading closed;
-- M8.1 owns scheduling/lifecycle only; concrete hydraulic/instrumentation/control/transient effects remain M8.2+ and must reuse canonical subsystem seams;
+- M8.1 owns validated scheduling/lifecycle; M8.2 adds only typed hydraulic component constraints and selected audited leaks through canonical seams; instrumentation/control/transient effects remain M8.3+;
 - fault lifecycle state is snapshot/replay-visible but is not a second physical state owner.
 
 Use the latest complete source ZIP/tree I provide as the working package. If its source/doc status conflicts with this checkpoint, stop advancement, reconcile the discrepancy, and keep the last explicitly validated milestone as the baseline.
@@ -37,12 +38,13 @@ For every milestone: make the smallest architecture-consistent change, add/updat
 
 ## What to upload or make available
 
-Prefer the latest **complete** project ZIP, not a partial patch. For the checkpoint represented by this repository, that is the complete M8.1 candidate package or a later locally validated hotfix derived from it.
+Prefer the latest **complete** project ZIP, not a partial patch. For the checkpoint represented by this repository, that is the complete M8.2 candidate package or a later locally validated hotfix derived from it.
 
 ## What the new conversation should not assume
 
-- Do not assume M8.1 is validated unless explicit user confirmation exists.
-- Do not assume generic M8.1 fault declarations already implement pump/valve/sensor/control physical failure semantics.
+- M8.1 is validated; do not regress its deterministic scheduling/lifecycle semantics.
+- Do not assume M8.2 is validated unless explicit user confirmation exists.
+- M8.2 hydraulic fault semantics do not imply sensor/control/turbine/electrical fault semantics.
 - Do not infer missing fault handlers or condition evaluators; fault-enabled scenario loading fails closed.
 - Do not infer missing model state in the UI or fault layer.
 - Do not use wall-clock time, random numbers, UI refresh cadence or publication stride to change deterministic simulation/fault behavior or event ordering.
@@ -50,4 +52,4 @@ Prefer the latest **complete** project ZIP, not a partial patch. For the checkpo
 
 ## First action after restart
 
-If M8.1 has not yet been explicitly validated, inspect the local validation result first. Only after successful validation should documentation be advanced to `M8.1 VALIDATED` and implementation begin on M8.2 Hydraulic Component Faults.
+If M8.2 has not yet been explicitly validated, inspect the local validation result first. Only after successful validation should documentation be advanced to `M8.2 VALIDATED` and implementation begin on M8.3 Instrumentation & Control Faults.

@@ -3,6 +3,7 @@ using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Electrical;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Turbine;
+using NuclearReactorSimulator.Simulation.Plant;
 
 namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
 
@@ -32,11 +33,21 @@ public sealed class IntegratedSecondaryCycleSolver
         GeneratorGridState committedElectricalState,
         IntegratedSecondaryCycleInputs inputs,
         TimeSpan deltaTime)
+        => Step(committedPlantState, committedTurbineState, committedElectricalState, inputs, deltaTime, PlantNetworkSourceTerms.Empty);
+
+    public IntegratedSecondaryCycleStepResult Step(
+        PlantState committedPlantState,
+        TurbineExpansionState committedTurbineState,
+        GeneratorGridState committedElectricalState,
+        IntegratedSecondaryCycleInputs inputs,
+        TimeSpan deltaTime,
+        PlantNetworkSourceTerms supplementalSourceTerms)
     {
         ArgumentNullException.ThrowIfNull(committedPlantState);
         ArgumentNullException.ThrowIfNull(committedTurbineState);
         ArgumentNullException.ThrowIfNull(committedElectricalState);
         ArgumentNullException.ThrowIfNull(inputs);
+        ArgumentNullException.ThrowIfNull(supplementalSourceTerms);
 
         if (deltaTime <= TimeSpan.Zero)
         {
@@ -68,7 +79,8 @@ public sealed class IntegratedSecondaryCycleSolver
             committedTurbineState,
             committedElectricalState,
             inputs.GeneratorGridInputs,
-            deltaTime);
+            deltaTime,
+            supplementalSourceTerms);
         var heatBalance = BuildHeatBalance(generatorGridStep.Snapshot, deltaTime);
         var snapshot = new IntegratedSecondaryCycleSnapshot(_definition, generatorGridStep.Snapshot, heatBalance);
 

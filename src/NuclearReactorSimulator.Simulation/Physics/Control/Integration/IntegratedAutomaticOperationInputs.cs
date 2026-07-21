@@ -16,7 +16,8 @@ public sealed class IntegratedAutomaticOperationInputs
         TurbineSecondaryControlInputs turbineSecondaryInputs,
         ProtectionSystemInputs protectionInputs,
         AlarmSystemInputs alarmInputs,
-        InstrumentationInputs instrumentationInputs)
+        InstrumentationInputs instrumentationInputs,
+        HydraulicComponentFaultInputs? hydraulicFaultInputs = null)
     {
         PlantInputs = plantInputs ?? throw new ArgumentNullException(nameof(plantInputs));
         ReactorPrimaryInputs = reactorPrimaryInputs ?? throw new ArgumentNullException(nameof(reactorPrimaryInputs));
@@ -24,6 +25,7 @@ public sealed class IntegratedAutomaticOperationInputs
         ProtectionInputs = protectionInputs ?? throw new ArgumentNullException(nameof(protectionInputs));
         AlarmInputs = alarmInputs ?? throw new ArgumentNullException(nameof(alarmInputs));
         InstrumentationInputs = instrumentationInputs ?? throw new ArgumentNullException(nameof(instrumentationInputs));
+        HydraulicFaultInputs = hydraulicFaultInputs ?? HydraulicComponentFaultInputs.Empty;
 
         if (!ReferenceEquals(reactorPrimaryInputs.Definition.PlantDefinition, plantInputs.Definition)
             || !ReferenceEquals(turbineSecondaryInputs.Definition.PlantDefinition, plantInputs.Definition)
@@ -53,4 +55,5 @@ public sealed class IntegratedAutomaticOperationInputs
     public ProtectionSystemInputs ProtectionInputs { get; }
     public AlarmSystemInputs AlarmInputs { get; }
     public InstrumentationInputs InstrumentationInputs { get; }
+    public HydraulicComponentFaultInputs HydraulicFaultInputs { get; }
 }

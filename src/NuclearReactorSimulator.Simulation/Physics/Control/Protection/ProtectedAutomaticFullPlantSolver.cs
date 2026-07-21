@@ -5,16 +5,19 @@ using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Control.ReactorPrimary;
+using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
 using NuclearReactorSimulator.Simulation.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Simulation.Physics.Electrical;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
 using NuclearReactorSimulator.Simulation.Physics.Reactor.PrimaryCircuit.Integration;
+using NuclearReactorSimulator.Simulation.Physics.Thermal;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Condenser;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Feedwater;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.MainSteam;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Turbine;
+using NuclearReactorSimulator.Simulation.Plant;
 
 namespace NuclearReactorSimulator.Simulation.Physics.Control.Protection;
 
@@ -72,8 +75,25 @@ public sealed class ProtectedAutomaticFullPlantSolver
         TurbineSecondaryControlInputs secondaryInputs,
         ProtectionSystemInputs protectionInputs,
         TimeSpan deltaTime)
+        => Step(measuredSignals, committedPlantState, committedReactorControlState, committedSecondaryControlState,
+            committedProtectionState, basePlantInputs, reactorInputs, secondaryInputs, protectionInputs, deltaTime,
+            HydraulicComponentFaultInputs.Empty);
+
+    public ProtectedAutomaticFullPlantStepResult Step(
+        MeasuredSignalFrame measuredSignals,
+        FullPlantState committedPlantState,
+        ReactorPrimaryControlState committedReactorControlState,
+        TurbineSecondaryControlState committedSecondaryControlState,
+        ProtectionSystemState committedProtectionState,
+        IntegratedSecondaryCycleInputs basePlantInputs,
+        ReactorPrimaryControlInputs reactorInputs,
+        TurbineSecondaryControlInputs secondaryInputs,
+        ProtectionSystemInputs protectionInputs,
+        TimeSpan deltaTime,
+        HydraulicComponentFaultInputs hydraulicFaultInputs)
     {
         ArgumentNullException.ThrowIfNull(basePlantInputs);
+        ArgumentNullException.ThrowIfNull(hydraulicFaultInputs);
         if (!ReferenceEquals(basePlantInputs.Definition, _secondaryDefinition.PlantDefinition))
         {
             throw new ArgumentException("Plant inputs do not use the M5.5 canonical full-plant definition.", nameof(basePlantInputs));
@@ -102,18 +122,20 @@ public sealed class ProtectedAutomaticFullPlantSolver
             secondaryStep.CommandedFullPlantState.PlantState,
             protection,
             out var forcedStopValves);
+        var faultedPlantState = ApplyHydraulicFaultOverrides(protectedPlantState, hydraulicFaultInputs);
         var protectedFullPlantState = new FullPlantState(
             _secondaryDefinition.PlantDefinition,
-            protectedPlantState,
+            faultedPlantState,
             secondaryStep.CommandedFullPlantState.TurbineState,
             secondaryStep.CommandedFullPlantState.ElectricalState);
 
         var effectiveInputs = BuildEffectivePlantInputs(
             basePlantInputs,
             reactorStep.Snapshot.FissionPower.TotalFissionThermalPower,
-            protectedPlantState,
+            faultedPlantState,
             protection);
-        var fullPlantStep = _fullPlantSolver.Step(protectedFullPlantState, effectiveInputs, deltaTime);
+        var leakSourceTerms = BuildHydraulicLeakSourceTerms(faultedPlantState, hydraulicFaultInputs);
+        var fullPlantStep = _fullPlantSolver.Step(protectedFullPlantState, effectiveInputs, deltaTime, leakSourceTerms);
 
         var arbitration = new ProtectionArbitrationSnapshot(
             protection.ReactorScramActive,
@@ -178,6 +200,85 @@ public sealed class ProtectedAutomaticFullPlantSolver
             normalCommandedPlantState.Pumps,
             normalCommandedPlantState.ThermalBodies,
             normalCommandedPlantState.HeatSources);
+    }
+
+    private static PlantState ApplyHydraulicFaultOverrides(PlantState state, HydraulicComponentFaultInputs faults)
+    {
+        var pumpById = faults.PumpFaults.ToDictionary(static x => x.PumpId, StringComparer.Ordinal);
+        var valveById = faults.ValveFaults.ToDictionary(static x => x.ValveId, StringComparer.Ordinal);
+        var restrictions = faults.PathRestrictions
+            .GroupBy(static x => x.ValveId, StringComparer.Ordinal)
+            .ToDictionary(static g => g.Key, static g => g.Min(static x => x.MaximumOpenFraction), StringComparer.Ordinal);
+
+        foreach (var pumpId in pumpById.Keys)
+        {
+            _ = state.Definition.GetPump(pumpId);
+        }
+        foreach (var valveId in valveById.Keys.Concat(restrictions.Keys).Distinct(StringComparer.Ordinal))
+        {
+            _ = state.Definition.GetValve(valveId);
+        }
+
+        var pumps = state.Pumps.Select(pump =>
+        {
+            if (!pumpById.TryGetValue(pump.PumpId, out var fault))
+            {
+                return pump;
+            }
+            var running = pump.IsRunning && !fault.ForceTrip && fault.CapacityFraction > 0d;
+            var speed = PumpSpeed.FromFraction(pump.Speed.Fraction * fault.CapacityFraction);
+            return new PumpState(pump.PumpId, speed, running);
+        }).ToArray();
+
+        var valves = state.Valves.Select(valve =>
+        {
+            var position = valve.Position;
+            if (valveById.TryGetValue(valve.ValveId, out var fault))
+            {
+                position = fault.Mode switch
+                {
+                    HydraulicValveFaultMode.FailOpen => ValvePosition.FullyOpen,
+                    HydraulicValveFaultMode.FailClosed => ValvePosition.Closed,
+                    HydraulicValveFaultMode.Stuck => fault.StuckPosition,
+                    _ => throw new ArgumentOutOfRangeException(nameof(faults), fault.Mode, "Unknown hydraulic valve-fault mode."),
+                };
+            }
+            if (restrictions.TryGetValue(valve.ValveId, out var maximumOpenFraction))
+            {
+                position = ValvePosition.FromFraction(Math.Min(position.Fraction, maximumOpenFraction));
+            }
+            return position == valve.Position ? valve : new ValveState(valve.ValveId, position, valve.IsFailSafeActive);
+        }).ToArray();
+
+        return new PlantState(state.Definition, state.FluidNodes, valves, pumps, state.ThermalBodies, state.HeatSources);
+    }
+
+    private static PlantNetworkSourceTerms BuildHydraulicLeakSourceTerms(PlantState state, HydraulicComponentFaultInputs faults)
+    {
+        if (faults.Leaks.Count == 0)
+        {
+            return PlantNetworkSourceTerms.Empty;
+        }
+
+        var balances = new Dictionary<string, FluidNodeBalance>(StringComparer.Ordinal);
+        var totalLeak = MassFlowRate.Zero;
+        var externalPower = Power.Zero;
+        foreach (var leak in faults.Leaks.OrderBy(static x => x.FaultId, StringComparer.Ordinal))
+        {
+            var node = state.GetFluidNode(leak.FluidNodeId);
+            var removalMass = MassFlowRate.FromKilogramsPerSecond(-leak.MassFlowRate.KilogramsPerSecond);
+            var removalPower = node.SpecificInternalEnergy * removalMass;
+            var balance = new FluidNodeBalance(removalMass, removalPower);
+            balances[node.Id] = balances.TryGetValue(node.Id, out var existing) ? existing + balance : balance;
+            totalLeak += removalMass;
+            externalPower += removalPower;
+        }
+
+        return new PlantNetworkSourceTerms(
+            balances,
+            new Dictionary<string, ThermalEnergyBalance>(StringComparer.Ordinal),
+            totalLeak,
+            externalPower);
     }
 
     private IntegratedSecondaryCycleInputs BuildEffectivePlantInputs(

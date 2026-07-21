@@ -13,7 +13,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.3 is locally validated and provides exact `pre-criticality-source-range` v1 plus controlled first-criticality/low-power operation.
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
-- M7.6 and M7.7 are validated; the M7 gate is complete. M8.1 is the current baseline candidate and adds explicit deterministic scenario fault declarations, logical-step/committed-condition scheduling, fail-closed typed applicator/evaluator binding and snapshot/replay-visible lifecycle state without becoming a physical/control/protection owner.
+- M7.6 and M7.7 are validated; the M7 gate is complete. M8.1 deterministic fault orchestration is validated. M8.2 is the current baseline candidate and adds typed hydraulic component constraints plus selected audited leaks without becoming a second hydraulic/control/protection owner.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
 
@@ -91,9 +91,11 @@ Validated M6 responsibilities include:
 - validated M7.1 exact-version initial-condition/session registry, scenario command gating and deterministic replay orchestration;
 - validated M7.2 concrete cold-shutdown recipe plus presentation-only pre-start readiness and declarative guidance;
 - validated M7.3 pre-criticality/source-range initial condition, controlled rod permissions and observational criticality/low-power guidance;
-- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 validated training/evaluation observes deterministic steps and accepted actions; M8.1 candidate adds deterministic fault orchestration/lifecycle only, with concrete effects delegated to later typed applicators over canonical owners.
+- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 validated training/evaluation observes deterministic steps and accepted actions; M8.1 validated deterministic fault orchestration/lifecycle; M8.2 candidate binds concrete hydraulic applicators to canonical component/input seams and the existing plant-network source-term boundary.
 
 M8.1 fault orchestration remains Application state. `ScenarioFaultRuntimeEngine` decorates the existing runtime at committed step boundaries, while `IScenarioFaultApplicator` implementations own only typed adaptation into validated subsystem seams. Plant-condition evaluators consume `ControlRoomSnapshot` only. Neither scheduler nor evaluator may traverse authoritative true state or create a second integrator.
+
+M8.2 hydraulic effects are represented as immutable per-step `HydraulicComponentFaultInputs`. The Application runtime exposes only a typed `IHydraulicComponentFaultTarget`; scenario applicators never receive `PlantState`. Pump/valve constraints are applied after canonical control/protection command arbitration and before the existing physical solvers. Selected leaks become signed `PlantNetworkSourceTerms` that traverse the existing M4→M3 composition and are integrated exactly once by `PlantNetworkOrchestrator`.
 
 Application may depend on Simulation to coordinate validated runtime seams, but Avalonia must not bypass Application and reference Simulation directly.
 
