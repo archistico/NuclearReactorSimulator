@@ -9,13 +9,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-**M7.7 — Training Objectives, Procedure Guidance & Evaluation — VALIDATED / M7 GATE COMPLETE**
+**M8.2 — Hydraulic Component Faults hotfix 2 — VALIDATED**
 
-M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.7 are validated. The M3, M4, M5, M6 and M7 gates are complete. M7.1 establishes exact-version initial-condition/scenario/session/replay ownership; M7.2–M7.6 provide the validated normal operating path and M7.7 adds deterministic observational training/guidance/evaluation.
+M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7, M8.1 and M8.2 hotfix 2 are validated. The M3, M4, M5, M6 and M7 gates are complete. M8.1 owns deterministic fault scheduling/lifecycle and M8.2 adds validated hydraulic component fault effects through canonical seams.
 
-The current implementation candidate is **M8.2 — Hydraulic Component Faults hotfix 1**. M8.1 fault scheduling/lifecycle is validated; M8.2 adds deterministic pump/valve/valve-controlled-path constraints and selected audited node leaks through canonical hydraulic seams without a second physical integrator.
+The current implementation candidate is **M8.3 — Instrumentation & Control Faults**. M8.1 deterministic scheduling/lifecycle and M8.2 hydraulic component faults hotfix 2 are validated; M8.3 adds deterministic sensor, controller-output and actuator-command failures through the existing M5 measured-signal/control/protection seams.
 
-The hotfix also introduces `NuclearReactorSimulator.App.Tests`, a headless regression suite for control-room ViewModel/XAML command-state wiring; it does not add UI-side physics or change hydraulic fault behavior.
+M8.2 hotfix 2 also introduced `NuclearReactorSimulator.App.Tests`, a headless regression suite for control-room ViewModel/XAML command-state wiring; M8.3 preserves that boundary and adds no UI-side physics.
 
 ## Architectural principles
 
@@ -445,7 +445,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7 and M8.1 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.2 is the current **baseline candidate**, adding concrete deterministic hydraulic fault effects over the validated M8.1 lifecycle framework.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1 and M8.2 hotfix 2 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.3 is the current **baseline candidate**, adding concrete deterministic instrumentation/control fault effects over canonical M5 seams.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -564,4 +564,4 @@ M7.7 closes the M7 gate with deterministic first-achievement checkpoints observe
 
 ## M8.1 deterministic fault-injection framework
 
-M8.1 adds explicit `ScenarioFaultDefinition` entries to versioned scenario schema v2. Faults activate/deactivate only at committed logical-step boundaries, either by exact step or named `ControlRoomSnapshot` plant condition. Exact-ID applicator/evaluator registries fail closed, lifecycle state is projected into control-room snapshots, and M7.1 replay reconstructs the same fault schedule from scenario data. M8.1 owns no concrete fault physics and is validated. M8.2 adds pump trip/degradation, valve fail/stuck behavior, valve-controlled path restriction/blockage and selected node leaks through typed runtime seams. See `docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md`, `docs/HYDRAULIC_COMPONENT_FAULTS.md`, ADR 0060 and ADR 0061.
+M8.1 adds explicit `ScenarioFaultDefinition` entries to versioned scenario schema v2 and is validated. M8.2 hotfix 2 is validated and adds pump trip/degradation, valve fail/stuck behavior, valve-controlled path restriction/blockage and selected node leaks through typed runtime seams. M8.3 adds M5.1 sensor bias/freeze/failure modes plus bounded controller-output and actuator-command faults without true-state fallback or direct physical writes. See `docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md`, `docs/HYDRAULIC_COMPONENT_FAULTS.md`, `docs/INSTRUMENTATION_CONTROL_FAULTS.md`, ADR 0060–0062.

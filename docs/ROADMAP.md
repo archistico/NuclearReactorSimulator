@@ -538,7 +538,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - concrete hydraulic/instrumentation/control/transient fault effects remain M8.2+ ownership;
 - local build and complete tests explicitly confirmed successful on 2026-07-21.
 
-### M8.2 Hydraulic Component Faults — BASELINE CANDIDATE / HOTFIX 1
+### M8.2 Hydraulic Component Faults — VALIDATED / HOTFIX 2
 
 - pump trip and deterministic capacity degradation through canonical `PumpState` constraints before the existing pump solver;
 - valve fail-open/fail-closed/stuck-at-activation-position through canonical `ValveState`;
@@ -546,13 +546,16 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - selected bounded fluid-node leaks as signed mass + carried-energy `PlantNetworkSourceTerms` integrated exactly once by `PlantNetworkOrchestrator`;
 - built-in fail-closed hydraulic applicator registration and deterministic demonstration scenario pack;
 - arbitrary raw-pipe break/resistance mutation remains M8.5 rather than being hidden inside M8.2.
-- candidate hotfix 1 adds presentation regression hardening and a headless App test project; it does not broaden M8.2 physical scope.
+- hotfix 2 adds presentation regression hardening and a headless App test project; local build and complete tests explicitly passed; it does not broaden M8.2 physical scope.
 
-### M8.3 Instrumentation & Control Faults
+### M8.3 Instrumentation & Control Faults — BASELINE CANDIDATE
 
-- sensor bias/freeze/failure;
-- actuator/control-loop failures;
-- interlock/protection diagnostic scenarios.
+- deterministic M5.1 sensor bias/freeze/failed-low/failed-high/unavailable applicators with exact canonical channel binding;
+- controller-output freeze/fail-low/fail-high as temporary bounded canonical `ControllerInput` overlays;
+- actuator-command freeze/fail-low/fail-high with fail-closed one-controller/one-actuator target resolution;
+- protection/interlock diagnostics remain causal consequences of the same committed faulted `MeasuredSignalFrame`; protection state is never injected directly;
+- built-in demonstration and protection fail-safe diagnostic scenario definitions;
+- local build and complete tests required before validation.
 
 ### M8.4 Turbine/Generator/Feedwater/Condenser Transients
 

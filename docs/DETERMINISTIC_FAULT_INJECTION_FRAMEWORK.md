@@ -72,7 +72,7 @@ produces the same fault lifecycle history/state without a separate wall-clock fa
 ## Ownership boundary for later M8 milestones
 
 - M8.2: pump, valve, restriction/blockage and selected hydraulic/leak applicators;
-- M8.3: sensor and control/actuator/interlock diagnostic applicators;
+- M8.3: sensor and control/actuator diagnostic applicators over canonical M5.1–M5.5 seams (current candidate);
 - M8.4: turbine/generator/feedwater/condenser transient scenarios;
 - M8.5/M8.6: larger educational leak/LOCA and electrical-loss/SBO-class scenarios.
 

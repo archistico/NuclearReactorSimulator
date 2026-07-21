@@ -1,3 +1,13 @@
+## M8.3 — Instrumentation & Control Faults (baseline candidate)
+
+- M8.2 Hydraulic Component Faults hotfix 2 promoted to validated baseline after explicit local build/test success.
+- Added built-in deterministic sensor bias/freeze/failed-low/failed-high/unavailable applicators reusing the canonical M5.1 `SensorFaultInput` seam.
+- Added controller-output freeze/fail-low/fail-high and actuator-command freeze/fail-low/fail-high as bounded temporary overlays on canonical controller inputs; no direct physical state writes.
+- Added fail-closed canonical target/conflict validation and one-controller/one-actuator ambiguity checks for actuator-specific command faults.
+- Added `InstrumentationControlFaultScenarioPack` demonstration and protection fail-safe diagnostic scenarios.
+- Added M8.3 regression tests for measured-signal semantics, committed-frame protection ordering, control-command forcing/clearance, actuator-command freeze and built-in registry binding.
+- Added ADR 0062, `docs/INSTRUMENTATION_CONTROL_FAULTS.md` and M8.3 milestone/handoff/status/roadmap updates.
+
 ## M8.2 — Hydraulic Component Faults (baseline candidate)
 
 - Hotfix candidate 2: corrected the new App regression test to use the xUnit `Assert.Single(collection, predicate)` overload required by analyzer rule xUnit2031; production code and M8.2 behavior are unchanged.

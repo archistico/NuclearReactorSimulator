@@ -57,7 +57,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _powerManoeuvringGuidance = powerManoeuvringGuidance;
         _trainingTracker = trainingTracker;
         _commandStatus = trainingTracker is not null
-            ? "M8.2 hydraulic fault effects are available over the validated M8.1 scheduler. The default desktop session remains the validated M7.7 normal-operations training scenario and declares no faults; load the M8.2 hydraulic demonstration scenario to exercise the fault pack."
+            ? "M8.2 hydraulic faults are validated and M8.3 instrumentation/control fault effects are available over the same deterministic scheduler. The default desktop session remains the validated M7.7 normal-operations training scenario and declares no faults; load an explicit M8.2/M8.3 diagnostic scenario to exercise fault packs."
             : powerManoeuvringGuidance is not null
             ? "M7.6 power-manoeuvring/normal-shutdown scenario loaded in PAUSED state. Manoeuvre load through canonical requests, then unload, disconnect, insert rods and preserve post-shutdown circulation."
             : gridSynchronizationGuidance is not null

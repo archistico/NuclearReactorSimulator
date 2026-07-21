@@ -1,8 +1,10 @@
 using NuclearReactorSimulator.Application.Scenarios.Faults.Hydraulics;
+using NuclearReactorSimulator.Application.Scenarios.Faults.InstrumentationControl;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
+using NuclearReactorSimulator.Domain.Physics.Instrumentation;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Simulation.Physics.Control;
@@ -12,6 +14,7 @@ using NuclearReactorSimulator.Simulation.Physics.Control.Protection;
 using NuclearReactorSimulator.Simulation.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Simulation.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Simulation.Physics.Electrical;
+using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
 
 namespace NuclearReactorSimulator.Application.ControlRoom;
@@ -21,8 +24,12 @@ namespace NuclearReactorSimulator.Application.ControlRoom;
 /// controller setpoints and M4.5 requested electrical load modify only immutable per-step input bundles; trip, breaker and
 /// annunciator commands are one-step pulses cleared after the next deterministic step.
 /// </summary>
-public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine, IHydraulicComponentFaultTarget
+public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine, IHydraulicComponentFaultTarget, IInstrumentationControlFaultTarget
 {
+    private sealed record ControlCommandFaultOverride(
+        string FaultId,
+        string ControllerId,
+        double ManualOutput);
     private readonly IntegratedAutomaticOperationSolver _solver;
     private readonly TimeSpan _deltaTime;
     private readonly ControlRoomRuntimeCommandPolicy _policy;
@@ -44,6 +51,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
     private readonly Dictionary<string, ValveHydraulicFaultInput> _hydraulicValveFaults = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HydraulicPathRestrictionInput> _hydraulicPathRestrictions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HydraulicLeakInput> _hydraulicLeaks = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, SensorFaultInput> _instrumentationFaults = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, ControlCommandFaultOverride> _controlCommandFaults = new(StringComparer.Ordinal);
 
     public IntegratedAutomaticOperationRuntimeEngine(
         IntegratedAutomaticOperationSolver solver,
@@ -217,6 +226,196 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         _hydraulicLeaks.Remove(faultId);
     }
 
+    public void ActivateSensorBias(string faultId, string channelId, double biasEngineeringUnits)
+        => SetSensorFault(faultId, channelId, SensorFaultMode.Bias, biasEngineeringUnits);
+
+    public void ActivateSensorFreeze(string faultId, string channelId)
+        => SetSensorFault(faultId, channelId, SensorFaultMode.Freeze);
+
+    public void ActivateSensorFailedLow(string faultId, string channelId)
+        => SetSensorFault(faultId, channelId, SensorFaultMode.FailedLow);
+
+    public void ActivateSensorFailedHigh(string faultId, string channelId)
+        => SetSensorFault(faultId, channelId, SensorFaultMode.FailedHigh);
+
+    public void ActivateSensorUnavailable(string faultId, string channelId)
+        => SetSensorFault(faultId, channelId, SensorFaultMode.Unavailable);
+
+    public void ActivateControllerOutputFreeze(string faultId, string controllerId)
+    {
+        var (_, state) = ResolveController(controllerId);
+        SetControlCommandFault(faultId, controllerId, state.LastOutput);
+    }
+
+    public void ActivateControllerOutputFailLow(string faultId, string controllerId)
+    {
+        var (definition, _) = ResolveController(controllerId);
+        SetControlCommandFault(faultId, controllerId, definition.OutputRange.Minimum);
+    }
+
+    public void ActivateControllerOutputFailHigh(string faultId, string controllerId)
+    {
+        var (definition, _) = ResolveController(controllerId);
+        SetControlCommandFault(faultId, controllerId, definition.OutputRange.Maximum);
+    }
+
+    public void ActivateActuatorCommandFreeze(string faultId, string actuatorId)
+    {
+        var (definition, state, siblingCount) = ResolveActuator(actuatorId);
+        EnsureActuatorSpecificControlFaultIsUnambiguous(actuatorId, definition.ControllerId, siblingCount);
+        SetControlCommandFault(faultId, definition.ControllerId, state.LastControllerOutput);
+    }
+
+    public void ActivateActuatorCommandFailLow(string faultId, string actuatorId)
+    {
+        var (definition, _, siblingCount) = ResolveActuator(actuatorId);
+        EnsureActuatorSpecificControlFaultIsUnambiguous(actuatorId, definition.ControllerId, siblingCount);
+        SetControlCommandFault(faultId, definition.ControllerId, definition.InputRange.Minimum);
+    }
+
+    public void ActivateActuatorCommandFailHigh(string faultId, string actuatorId)
+    {
+        var (definition, _, siblingCount) = ResolveActuator(actuatorId);
+        EnsureActuatorSpecificControlFaultIsUnambiguous(actuatorId, definition.ControllerId, siblingCount);
+        SetControlCommandFault(faultId, definition.ControllerId, definition.InputRange.Maximum);
+    }
+
+    public void ClearInstrumentationControlFault(string faultId)
+    {
+        ValidateFaultId(faultId);
+        _instrumentationFaults.Remove(faultId);
+        _controlCommandFaults.Remove(faultId);
+    }
+
+    private static void EnsureActuatorSpecificControlFaultIsUnambiguous(
+        string actuatorId,
+        string controllerId,
+        int siblingCount)
+    {
+        if (siblingCount != 1)
+        {
+            throw new InvalidOperationException(
+                $"Actuator '{actuatorId}' shares controller '{controllerId}' with another actuator; an actuator-specific command fault would be ambiguous.");
+        }
+    }
+
+    private void SetSensorFault(
+        string faultId,
+        string channelId,
+        SensorFaultMode mode,
+        double biasEngineeringUnits = 0d)
+    {
+        ValidateFaultId(faultId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(channelId);
+        _ = _persistentInputs.InstrumentationInputs.Definition.GetChannel(channelId);
+        var baseline = _persistentInputs.InstrumentationInputs.GetSensorFault(channelId);
+        if (baseline.Mode != SensorFaultMode.None)
+        {
+            throw new InvalidOperationException(
+                $"Instrumentation channel '{channelId}' already has persistent sensor fault mode '{baseline.Mode}'.");
+        }
+
+        var conflict = _instrumentationFaults.Values.FirstOrDefault(input =>
+            string.Equals(input.ChannelId, channelId, StringComparison.Ordinal));
+        if (conflict is not null && !_instrumentationFaults.ContainsKey(faultId))
+        {
+            throw new InvalidOperationException(
+                $"Instrumentation channel '{channelId}' already has an active scenario sensor fault.");
+        }
+
+        _instrumentationFaults[faultId] = new SensorFaultInput(channelId, mode, biasEngineeringUnits);
+    }
+
+    private void SetControlCommandFault(string faultId, string controllerId, double manualOutput)
+    {
+        ValidateFaultId(faultId);
+        if (!double.IsFinite(manualOutput))
+        {
+            throw new ArgumentOutOfRangeException(nameof(manualOutput), manualOutput, "Control-fault manual output must be finite.");
+        }
+
+        var (definition, _) = ResolveController(controllerId);
+        var conflict = _controlCommandFaults.Values.FirstOrDefault(effect =>
+            !string.Equals(effect.FaultId, faultId, StringComparison.Ordinal)
+            && string.Equals(effect.ControllerId, controllerId, StringComparison.Ordinal));
+        if (conflict is not null)
+        {
+            throw new InvalidOperationException(
+                $"Controller '{controllerId}' already has active control fault '{conflict.FaultId}'.");
+        }
+
+        _controlCommandFaults[faultId] = new ControlCommandFaultOverride(
+            faultId,
+            controllerId,
+            definition.OutputRange.Clamp(manualOutput));
+    }
+
+    private (PidControllerDefinition Definition, ControllerChannelState State) ResolveController(string controllerId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(controllerId);
+        var reactorDefinitions = _persistentInputs.ReactorPrimaryInputs.Definition.ActuatorSystem.ControlSystem.Controllers
+            .Where(item => string.Equals(item.Id, controllerId, StringComparison.Ordinal))
+            .ToArray();
+        var secondaryDefinitions = _persistentInputs.TurbineSecondaryInputs.Definition.ActuatorSystem.ControlSystem.Controllers
+            .Where(item => string.Equals(item.Id, controllerId, StringComparison.Ordinal))
+            .ToArray();
+        if (reactorDefinitions.Length + secondaryDefinitions.Length == 0)
+        {
+            throw new KeyNotFoundException($"Unknown canonical controller '{controllerId}'.");
+        }
+        if (reactorDefinitions.Length + secondaryDefinitions.Length != 1)
+        {
+            throw new InvalidOperationException($"Controller id '{controllerId}' is not globally unique across canonical control systems.");
+        }
+
+        if (reactorDefinitions.Length == 1)
+        {
+            return (
+                reactorDefinitions[0],
+                _state.ReactorPrimaryControlState.ControlAndActuator.Controllers.GetController(controllerId));
+        }
+
+        return (
+            secondaryDefinitions[0],
+            _state.TurbineSecondaryControlState.ControlAndActuator.Controllers.GetController(controllerId));
+    }
+
+    private (ActuatorDefinition Definition, ActuatorCommandState State, int SiblingCount) ResolveActuator(string actuatorId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(actuatorId);
+        var reactorActuators = _persistentInputs.ReactorPrimaryInputs.Definition.ActuatorSystem.Actuators
+            .Where(item => string.Equals(item.Id, actuatorId, StringComparison.Ordinal))
+            .ToArray();
+        var secondaryActuators = _persistentInputs.TurbineSecondaryInputs.Definition.ActuatorSystem.Actuators
+            .Where(item => string.Equals(item.Id, actuatorId, StringComparison.Ordinal))
+            .ToArray();
+        if (reactorActuators.Length + secondaryActuators.Length == 0)
+        {
+            throw new KeyNotFoundException($"Unknown canonical actuator '{actuatorId}'.");
+        }
+        if (reactorActuators.Length + secondaryActuators.Length != 1)
+        {
+            throw new InvalidOperationException($"Actuator id '{actuatorId}' is not globally unique across canonical actuator systems.");
+        }
+
+        if (reactorActuators.Length == 1)
+        {
+            var definition = reactorActuators[0];
+            var state = _state.ReactorPrimaryControlState.ControlAndActuator.Actuators.Actuators.Single(item =>
+                string.Equals(item.ActuatorId, actuatorId, StringComparison.Ordinal));
+            var siblingCount = _persistentInputs.ReactorPrimaryInputs.Definition.ActuatorSystem.Actuators.Count(item =>
+                string.Equals(item.ControllerId, definition.ControllerId, StringComparison.Ordinal));
+            return (definition, state, siblingCount);
+        }
+
+        var secondaryDefinition = secondaryActuators[0];
+        var secondaryState = _state.TurbineSecondaryControlState.ControlAndActuator.Actuators.Actuators.Single(item =>
+            string.Equals(item.ActuatorId, actuatorId, StringComparison.Ordinal));
+        var secondarySiblingCount = _persistentInputs.TurbineSecondaryInputs.Definition.ActuatorSystem.Actuators.Count(item =>
+            string.Equals(item.ControllerId, secondaryDefinition.ControllerId, StringComparison.Ordinal));
+        return (secondaryDefinition, secondaryState, secondarySiblingCount);
+    }
+
     private void SetPumpFault(string faultId, string pumpId, bool forceTrip, double capacityFraction)
     {
         ValidateFaultId(faultId);
@@ -276,12 +475,72 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
 
         return new IntegratedAutomaticOperationInputs(
             plantInputs,
-            _persistentInputs.ReactorPrimaryInputs,
-            _persistentInputs.TurbineSecondaryInputs,
+            BuildReactorPrimaryInputs(),
+            BuildTurbineSecondaryInputs(),
             protectionInputs,
             alarmInputs,
-            _persistentInputs.InstrumentationInputs,
+            BuildInstrumentationInputs(),
             BuildHydraulicFaultInputs());
+    }
+
+    private InstrumentationInputs BuildInstrumentationInputs()
+    {
+        var baseline = _persistentInputs.InstrumentationInputs;
+        if (_instrumentationFaults.Count == 0)
+        {
+            return baseline;
+        }
+
+        var activeByChannel = _instrumentationFaults.Values.ToDictionary(
+            static input => input.ChannelId,
+            StringComparer.Ordinal);
+        return new InstrumentationInputs(
+            baseline.Definition,
+            baseline.SensorFaults.Select(input => activeByChannel.GetValueOrDefault(input.ChannelId) ?? input));
+    }
+
+    private ReactorPrimaryControlInputs BuildReactorPrimaryInputs()
+    {
+        var baseline = _persistentInputs.ReactorPrimaryInputs;
+        return new ReactorPrimaryControlInputs(
+            baseline.Definition,
+            BuildControllerInputs(baseline.Controllers),
+            baseline.NonRodReactivity);
+    }
+
+    private TurbineSecondaryControlInputs BuildTurbineSecondaryInputs()
+    {
+        var baseline = _persistentInputs.TurbineSecondaryInputs;
+        return new TurbineSecondaryControlInputs(
+            baseline.Definition,
+            BuildControllerInputs(baseline.Controllers));
+    }
+
+    private ControllerInputs BuildControllerInputs(ControllerInputs baseline)
+    {
+        if (_controlCommandFaults.Count == 0)
+        {
+            return baseline;
+        }
+
+        var activeByController = _controlCommandFaults.Values.ToDictionary(
+            static effect => effect.ControllerId,
+            StringComparer.Ordinal);
+        return new ControllerInputs(
+            baseline.Definition,
+            baseline.Controllers.Select(input =>
+            {
+                if (!activeByController.TryGetValue(input.ControllerId, out var effect))
+                {
+                    return input;
+                }
+
+                return new ControllerInput(
+                    input.ControllerId,
+                    ControllerMode.Manual,
+                    input.Setpoint,
+                    effect.ManualOutput);
+            }));
     }
 
     private IntegratedSecondaryCycleInputs BuildPlantInputs()

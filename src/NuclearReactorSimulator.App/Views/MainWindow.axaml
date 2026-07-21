@@ -87,10 +87,10 @@
           <Border IsVisible="{Binding IsShellHostWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
             <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
               <StackPanel Spacing="6">
-                <TextBlock Classes="sectionHeading" Text="M8.1 DETERMINISTIC FAULT-INJECTION FRAMEWORK" />
+                <TextBlock Classes="sectionHeading" Text="M8.3 DETERMINISTIC FAULT &amp; DIAGNOSTIC FRAMEWORK" />
                 <TextBlock FontSize="20" FontWeight="SemiBold" Text="Integrated normal-operations training loaded" />
                 <TextBlock MaxWidth="920" Opacity="0.76" TextWrapping="Wrap"
-                           Text="The desktop retains the validated M7.7 normal-operations training session while M8.1 adds explicit deterministic fault definitions, logical-step/committed-condition scheduling and replay-visible lifecycle state. Concrete equipment and instrumentation fault effects begin in M8.2/M8.3." />
+                           Text="The desktop retains the validated M7.7 normal-operations training session. M8.1 scheduling/lifecycle and M8.2 hydraulic fault effects are validated; M8.3 adds explicit sensor, controller-output and actuator-command diagnostic faults through the existing M5 measured-signal/control/protection seams." />
               </StackPanel>
 
               <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="10">
