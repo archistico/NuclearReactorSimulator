@@ -78,7 +78,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool turbineStartupLineup,
         double initialRotorSpeedRpm = 0d,
         bool initialGeneratorBreakerClosed = false,
-        double initialRequestedElectricalPowerMegawatts = 0d)
+        double initialRequestedElectricalPowerMegawatts = 0d,
+        double initialCondenserCoolingPowerMegawatts = 0d)
     {
         var recipe = BuildRecipe(
             initialNeutronPopulation,
@@ -88,7 +89,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             turbineStartupLineup,
             initialRotorSpeedRpm,
             initialGeneratorBreakerClosed,
-            initialRequestedElectricalPowerMegawatts);
+            initialRequestedElectricalPowerMegawatts,
+            initialCondenserCoolingPowerMegawatts);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -117,8 +119,17 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool turbineStartupLineup,
         double initialRotorSpeedRpm,
         bool initialGeneratorBreakerClosed,
-        double initialRequestedElectricalPowerMegawatts)
+        double initialRequestedElectricalPowerMegawatts,
+        double initialCondenserCoolingPowerMegawatts)
     {
+        if (!double.IsFinite(initialCondenserCoolingPowerMegawatts) || initialCondenserCoolingPowerMegawatts < 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialCondenserCoolingPowerMegawatts),
+                initialCondenserCoolingPowerMegawatts,
+                "Initial condenser cooling power must be finite and non-negative.");
+        }
+
         if (!double.IsFinite(initialPrimaryTemperatureCelsius) || initialPrimaryTemperatureCelsius < 40d || initialPrimaryTemperatureCelsius > 300d)
         {
             throw new ArgumentOutOfRangeException(
@@ -463,7 +474,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         var condenserInputs = new CondenserSystemInputs(
             condensers,
             turbineInputs,
-            new[] { new CondenserCoolingBoundaryInput("cooling", Power.Zero) });
+            new[]
+            {
+                new CondenserCoolingBoundaryInput(
+                    "cooling",
+                    Power.FromMegawatts(initialCondenserCoolingPowerMegawatts)),
+            });
         var feedwaterInputs = new CondensateFeedwaterSystemInputs(
             feedwater,
             condenserInputs,

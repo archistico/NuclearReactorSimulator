@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M8.3 — Instrumentation & Control Faults",
-        "Baseline candidate — M8.2 hotfix 2 validated; M8.3 adds deterministic sensor, controller-output and actuator-command faults through canonical M5 seams");
+        "M8.4 — Turbine / Generator / Feedwater / Condenser Transients",
+        "Baseline candidate — M8.3 validated; M8.4 adds deterministic secondary-system transient packs through canonical M4/M5 and M8 fault seams");
 }

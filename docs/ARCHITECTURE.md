@@ -13,7 +13,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.3 is locally validated and provides exact `pre-criticality-source-range` v1 plus controlled first-criticality/low-power operation.
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
-- M7.6 and M7.7 are validated; the M7 gate is complete. M8.1 deterministic fault orchestration and M8.2 hydraulic component faults hotfix 2 are validated. M8.3 is the current baseline candidate and adds typed sensor/controller/actuator-command fault overlays without becoming a second instrumentation/control/protection owner.
+- M7.6 and M7.7 are validated; the M7 gate is complete. M8.1 deterministic fault orchestration, M8.2 hydraulic component faults hotfix 2 and M8.3 instrumentation/control faults are validated. M8.4 is the current baseline candidate and composes deterministic secondary-system transients through existing M4/M5/M8 seams without adding duplicate physical owners.
 - M8.2 hotfix 2 introduced a headless `NuclearReactorSimulator.App.Tests` boundary for ViewModel/XAML interaction contracts. These tests may reference `App`, but production dependency direction is unchanged: `App` still has no `Simulation` reference and owns no physics.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
@@ -92,13 +92,15 @@ Validated M6 responsibilities include:
 - validated M7.1 exact-version initial-condition/session registry, scenario command gating and deterministic replay orchestration;
 - validated M7.2 concrete cold-shutdown recipe plus presentation-only pre-start readiness and declarative guidance;
 - validated M7.3 pre-criticality/source-range initial condition, controlled rod permissions and observational criticality/low-power guidance;
-- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 validated training/evaluation; M8.1 validated deterministic fault orchestration/lifecycle; M8.2 validated hydraulic applicators; M8.3 candidate binds sensor/control fault applicators to canonical measured-signal and command-input seams.
+- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 validated training/evaluation; M8.1 validated deterministic fault orchestration/lifecycle; M8.2 validated hydraulic applicators; M8.3 validated sensor/control fault applicators; M8.4 candidate composes turbine/generator/feedwater/condenser transient scenarios through canonical protection, hydraulic and cooling-boundary seams.
 
 M8.1 fault orchestration remains Application state. `ScenarioFaultRuntimeEngine` decorates the existing runtime at committed step boundaries, while `IScenarioFaultApplicator` implementations own only typed adaptation into validated subsystem seams. Plant-condition evaluators consume `ControlRoomSnapshot` only. Neither scheduler nor evaluator may traverse authoritative true state or create a second integrator.
 
 M8.2 hydraulic effects are represented as immutable per-step `HydraulicComponentFaultInputs`. The Application runtime exposes only a typed `IHydraulicComponentFaultTarget`; scenario applicators never receive `PlantState`. Pump/valve constraints are applied after canonical control/protection command arbitration and before the existing physical solvers. Selected leaks become signed `PlantNetworkSourceTerms` that traverse the existing M4→M3 composition and are integrated exactly once by `PlantNetworkOrchestrator`.
 
 M8.3 instrumentation/control effects bind through `IInstrumentationControlFaultTarget`. Sensor effects replace only canonical per-step `SensorFaultInput` entries and remain owned by `InstrumentationSolver`. Controller/actuator-command effects are temporary bounded `ControllerInput` overlays that still traverse `ControllerSystemSolver` and `ActuatorSystemSolver`; no fault writes physical actuator state or protection latches directly. Faulted measurements reach M5.5 only through the same committed `MeasuredSignalFrame` ordering used in normal operation.
+
+M8.4 secondary-system transient effects bind through `ISecondaryTransientFaultTarget`. Turbine/generator trip events become one-shot canonical protection inputs; feedwater degradation/loss reuses M8.2 pump constraints; condenser degradation/loss scales only the existing M4.3 `CondenserCoolingBoundaryInput`. Trip latches, breaker state, rotor response, feedwater inventory and condenser pressure/vacuum remain owned by M4/M5 and the single plant-network integration boundary.
 
 Application may depend on Simulation to coordinate validated runtime seams, but Avalonia must not bypass Application and reference Simulation directly.
 

@@ -2,6 +2,7 @@ using NuclearReactorSimulator.App.ViewModels;
 using NuclearReactorSimulator.Application;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Criticality;
+using NuclearReactorSimulator.Application.Scenarios.Faults.SecondaryTransients;
 using NuclearReactorSimulator.Application.Scenarios.Operations;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Application.Scenarios.Startup;
@@ -25,6 +26,7 @@ internal static class CompositionRoot
             new HeatUpTurbineStartupInitialConditionFactory(),
             new GridSynchronizationInitialConditionFactory(),
             new PowerManoeuvringInitialConditionFactory(),
+            new SecondaryTransientInitialConditionFactory(),
         });
         var session = new ScenarioSessionFactory(registry).Load(IntegratedOperationsTrainingProgram.Scenario);
         var trainingTracker = new ScenarioTrainingTracker(

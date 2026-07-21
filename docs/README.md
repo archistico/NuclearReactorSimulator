@@ -12,7 +12,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault decisions are ADR 0046–0062.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault decisions are ADR 0046–0063.
 
 ## Milestone records
 
@@ -20,7 +20,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Domain documents
 
-The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults and M8.3 instrumentation/control faults.
+The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults and M8.4 secondary-system transients.
 
 When modifying a subsystem, update its domain document together with the milestone/ADR/handoff documents rather than leaving architecture knowledge only in source comments or chat history.
 
@@ -31,7 +31,8 @@ At this documentation refresh:
 - M7.7 Training Objectives, Procedure Guidance & Evaluation is validated and the M7 gate is complete.
 - M8.1 Deterministic Fault-Injection Framework is validated.
 - M8.2 Hydraulic Component Faults hotfix 2 is validated.
-- M8.3 Instrumentation & Control Faults is the current baseline candidate.
-- After explicit M8.3 validation, continue with M8.4 Turbine/Generator/Feedwater/Condenser Transients.
+- M8.3 Instrumentation & Control Faults is validated.
+- M8.4 Turbine/Generator/Feedwater/Condenser Transients is the current baseline candidate.
+- After explicit M8.4 validation, continue with M8.5 Educational Leak/LOCA-Class Scenarios.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.

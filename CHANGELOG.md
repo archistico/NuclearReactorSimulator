@@ -1,4 +1,19 @@
-## M8.3 — Instrumentation & Control Faults (baseline candidate)
+# Changelog
+
+## M8.4 — Turbine / Generator / Feedwater / Condenser Transients (baseline candidate / hotfix 2)
+
+- Hotfix 2 scales the transient-ready condenser cooling seed from 20 MW to 0.1 MW so the compact conserved exhaust inventory remains inside the simplified water/steam closure envelope during deterministic seed/runtime steps; fault semantics and canonical M4.3 ownership are unchanged.
+
+- Hotfix candidate 1: added the missing Simulation condenser/feedwater namespace imports in `IntegratedAutomaticOperationRuntimeEngine`; no transient, fault, solver or scenario semantics changed.
+- Recorded explicit local validation of M8.3: compilation and complete tests passed; M8.3 is now the validated baseline.
+- Added exact `secondary-transient-ready` v1 initial condition reusing canonical M7 owners with finite 0.1 MW M4.3 condenser cooling-boundary capacity scaled to the compact educational exhaust inventory.
+- Added deterministic turbine-trip and generator-trip/load-rejection fault applicators that feed existing M5.5 protection inputs rather than writing valves, breakers, rotor speed or electrical power directly.
+- Added condenser cooling degradation/loss as a bounded per-step overlay on canonical `CondenserCoolingBoundaryInput.AvailableHeatRejectionPower`; condenser pressure/vacuum remain derived from conserved state.
+- Added feedwater degradation/loss scenarios by composing validated M8.2 `hydraulic.pump-degradation` and `hydraulic.pump-trip` effects on the canonical feedwater pump.
+- Added four M8.4 scenario definitions, built-in applicator registration, fail-closed target validation and Application regression tests.
+- Added ADR 0063, `docs/SECONDARY_SYSTEM_TRANSIENTS.md` and M8.4 milestone/handoff/status/roadmap updates.
+
+## M8.3 — Instrumentation & Control Faults — VALIDATED
 
 - M8.2 Hydraulic Component Faults hotfix 2 promoted to validated baseline after explicit local build/test success.
 - Added built-in deterministic sensor bias/freeze/failed-low/failed-high/unavailable applicators reusing the canonical M5.1 `SensorFaultInput` seam.
@@ -8,7 +23,7 @@
 - Added M8.3 regression tests for measured-signal semantics, committed-frame protection ordering, control-command forcing/clearance, actuator-command freeze and built-in registry binding.
 - Added ADR 0062, `docs/INSTRUMENTATION_CONTROL_FAULTS.md` and M8.3 milestone/handoff/status/roadmap updates.
 
-## M8.2 — Hydraulic Component Faults (baseline candidate)
+## M8.2 — Hydraulic Component Faults — VALIDATED / HOTFIX 2
 
 - Hotfix candidate 2: corrected the new App regression test to use the xUnit `Assert.Single(collection, predicate)` overload required by analyzer rule xUnit2031; production code and M8.2 behavior are unchanged.
 - Hotfix candidate 1: corrected the electrical `GENERATOR TARGET` selector to use a neutral `GeneratorSelectionState` instead of inheriting the generator-trip visual state.
@@ -21,9 +36,7 @@
 - Added `HydraulicComponentFaultScenarioPack.Demonstration`, built-in hydraulic applicator registration and end-to-end Application tests over real canonical plant state.
 - Added ADR 0061, `docs/HYDRAULIC_COMPONENT_FAULTS.md` and M8.2 milestone/handoff/status/roadmap updates.
 
-# Changelog
-
-## M8.1 — Deterministic Fault-Injection Framework (baseline candidate)
+## M8.1 — Deterministic Fault-Injection Framework — VALIDATED / HOTFIX 1
 
 - Hotfix candidate 1: corrected the scenario-v2 deserializer fallback for fault parameters so both operands of the null-coalescing expression are `SortedDictionary<string, string>`; no schema, ordering or fault semantics changed.
 - Recorded explicit local validation of M7.7: compilation and complete tests passed; M7.7 is now the validated baseline and the M7 gate is complete.

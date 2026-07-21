@@ -548,21 +548,23 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - arbitrary raw-pipe break/resistance mutation remains M8.5 rather than being hidden inside M8.2.
 - hotfix 2 adds presentation regression hardening and a headless App test project; local build and complete tests explicitly passed; it does not broaden M8.2 physical scope.
 
-### M8.3 Instrumentation & Control Faults — BASELINE CANDIDATE
+### M8.3 Instrumentation & Control Faults — VALIDATED
 
 - deterministic M5.1 sensor bias/freeze/failed-low/failed-high/unavailable applicators with exact canonical channel binding;
 - controller-output freeze/fail-low/fail-high as temporary bounded canonical `ControllerInput` overlays;
 - actuator-command freeze/fail-low/fail-high with fail-closed one-controller/one-actuator target resolution;
 - protection/interlock diagnostics remain causal consequences of the same committed faulted `MeasuredSignalFrame`; protection state is never injected directly;
 - built-in demonstration and protection fail-safe diagnostic scenario definitions;
+- local build and complete tests explicitly passed; M8.3 is validated.
+
+### M8.4 Turbine/Generator/Feedwater/Condenser Transients — BASELINE CANDIDATE
+
+- turbine trip through canonical M5.5 protection and M4 steam/rotor ownership;
+- generator trip/load rejection through canonical M5.5/M4.5 breaker and electromagnetic-loading ownership;
+- feedwater loss/degradation by composing validated M8.2 pump-fault effects;
+- condenser-vacuum degradation/loss by reducing only canonical M4.3 cooling-boundary heat-rejection capacity;
+- dedicated versioned transient-ready initial condition and four deterministic scenario definitions;
 - local build and complete tests required before validation.
-
-### M8.4 Turbine/Generator/Feedwater/Condenser Transients
-
-- turbine trip;
-- generator trip/load rejection;
-- feedwater loss/degradation;
-- condenser-vacuum degradation/loss.
 
 ### M8.5 Educational Leak/LOCA-Class Scenarios
 

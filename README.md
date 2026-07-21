@@ -9,13 +9,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-**M8.2 — Hydraulic Component Faults hotfix 2 — VALIDATED**
+**M8.3 — Instrumentation & Control Faults — VALIDATED**
 
-M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7, M8.1 and M8.2 hotfix 2 are validated. The M3, M4, M5, M6 and M7 gates are complete. M8.1 owns deterministic fault scheduling/lifecycle and M8.2 adds validated hydraulic component fault effects through canonical seams.
+M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7, M8.1, M8.2 hotfix 2 and M8.3 are validated. The M3, M4, M5, M6 and M7 gates are complete. M8.1 owns deterministic fault scheduling/lifecycle, M8.2 adds validated hydraulic fault effects and M8.3 adds validated instrumentation/control fault effects through canonical seams.
 
-The current implementation candidate is **M8.3 — Instrumentation & Control Faults**. M8.1 deterministic scheduling/lifecycle and M8.2 hydraulic component faults hotfix 2 are validated; M8.3 adds deterministic sensor, controller-output and actuator-command failures through the existing M5 measured-signal/control/protection seams.
+The current implementation candidate is **M8.4 — Turbine / Generator / Feedwater / Condenser Transients**. It composes turbine/generator trip paths, validated M8.2 feedwater-pump faults and bounded M4.3 condenser cooling-capacity degradation without creating duplicate physical state.
 
-M8.2 hotfix 2 also introduced `NuclearReactorSimulator.App.Tests`, a headless regression suite for control-room ViewModel/XAML command-state wiring; M8.3 preserves that boundary and adds no UI-side physics.
+M8.2 hotfix 2 also introduced `NuclearReactorSimulator.App.Tests`, a headless regression suite for control-room ViewModel/XAML command-state wiring; M8.3 and M8.4 preserve that boundary and add no UI-side physics.
 
 ## Architectural principles
 
@@ -445,7 +445,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1 and M8.2 hotfix 2 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.3 is the current **baseline candidate**, adding concrete deterministic instrumentation/control fault effects over canonical M5 seams.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1, M8.2 hotfix 2 and M8.3 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.4 is the current **baseline candidate**, adding deterministic turbine/generator/feedwater/condenser transient packs over canonical M4/M5/M8 seams.
 
 
 ## Generator, grid and synchronization physics (M4.5)

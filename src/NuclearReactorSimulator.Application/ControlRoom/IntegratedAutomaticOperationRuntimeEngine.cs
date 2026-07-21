@@ -1,5 +1,6 @@
 using NuclearReactorSimulator.Application.Scenarios.Faults.Hydraulics;
 using NuclearReactorSimulator.Application.Scenarios.Faults.InstrumentationControl;
+using NuclearReactorSimulator.Application.Scenarios.Faults.SecondaryTransients;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
@@ -15,6 +16,8 @@ using NuclearReactorSimulator.Simulation.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Simulation.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Simulation.Physics.Electrical;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
+using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Condenser;
+using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Feedwater;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
 
 namespace NuclearReactorSimulator.Application.ControlRoom;
@@ -24,12 +27,17 @@ namespace NuclearReactorSimulator.Application.ControlRoom;
 /// controller setpoints and M4.5 requested electrical load modify only immutable per-step input bundles; trip, breaker and
 /// annunciator commands are one-step pulses cleared after the next deterministic step.
 /// </summary>
-public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine, IHydraulicComponentFaultTarget, IInstrumentationControlFaultTarget
+public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine, IHydraulicComponentFaultTarget, IInstrumentationControlFaultTarget, ISecondaryTransientFaultTarget
 {
     private sealed record ControlCommandFaultOverride(
         string FaultId,
         string ControllerId,
         double ManualOutput);
+
+    private sealed record CondenserCoolingFaultOverride(
+        string FaultId,
+        string BoundaryId,
+        double CapacityFraction);
     private readonly IntegratedAutomaticOperationSolver _solver;
     private readonly TimeSpan _deltaTime;
     private readonly ControlRoomRuntimeCommandPolicy _policy;
@@ -53,6 +61,7 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
     private readonly Dictionary<string, HydraulicLeakInput> _hydraulicLeaks = new(StringComparer.Ordinal);
     private readonly Dictionary<string, SensorFaultInput> _instrumentationFaults = new(StringComparer.Ordinal);
     private readonly Dictionary<string, ControlCommandFaultOverride> _controlCommandFaults = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, CondenserCoolingFaultOverride> _condenserCoolingFaults = new(StringComparer.Ordinal);
 
     public IntegratedAutomaticOperationRuntimeEngine(
         IntegratedAutomaticOperationSolver solver,
@@ -285,6 +294,61 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         ValidateFaultId(faultId);
         _instrumentationFaults.Remove(faultId);
         _controlCommandFaults.Remove(faultId);
+    }
+
+    public void ActivateTurbineTrip(string faultId, string turbineRotorId)
+    {
+        ValidateFaultId(faultId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(turbineRotorId);
+        _ = _persistentInputs.PlantInputs.Definition.GeneratorGridSystem.CondensateFeedwaterSystem.CondenserSystem
+            .TurbineExpansionSystem.GetRotor(turbineRotorId);
+        _manualTurbineTrip = true;
+    }
+
+    public void ActivateGeneratorTrip(string faultId, string generatorId)
+    {
+        ValidateFaultId(faultId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(generatorId);
+        _ = _persistentInputs.PlantInputs.GeneratorGridInputs.Definition.GetGenerator(generatorId);
+        _manualGeneratorTrip = true;
+    }
+
+    public void ActivateCondenserCoolingDegradation(string faultId, string coolingBoundaryId, double capacityFraction)
+        => SetCondenserCoolingFault(faultId, coolingBoundaryId, capacityFraction);
+
+    public void ActivateCondenserCoolingLoss(string faultId, string coolingBoundaryId)
+        => SetCondenserCoolingFault(faultId, coolingBoundaryId, 0d);
+
+    public void ClearSecondaryTransientFault(string faultId)
+    {
+        ValidateFaultId(faultId);
+        _condenserCoolingFaults.Remove(faultId);
+    }
+
+    private void SetCondenserCoolingFault(string faultId, string coolingBoundaryId, double capacityFraction)
+    {
+        ValidateFaultId(faultId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(coolingBoundaryId);
+        if (!double.IsFinite(capacityFraction) || capacityFraction < 0d || capacityFraction > 1d)
+        {
+            throw new ArgumentOutOfRangeException(nameof(capacityFraction));
+        }
+
+        var condenserInputs = _persistentInputs.PlantInputs.GeneratorGridInputs.CondensateFeedwaterInputs.CondenserInputs;
+        _ = condenserInputs.Definition.GetCoolingBoundary(coolingBoundaryId);
+        var conflict = _condenserCoolingFaults.Values.FirstOrDefault(effect =>
+            !string.Equals(effect.FaultId, faultId, StringComparison.Ordinal)
+            && string.Equals(effect.BoundaryId, coolingBoundaryId, StringComparison.Ordinal));
+        if (conflict is not null)
+        {
+            throw new InvalidOperationException(
+                $"Condenser cooling boundary '{coolingBoundaryId}' already has active transient '{conflict.FaultId}'.");
+        }
+
+        _condenserCoolingFaults[faultId] = new CondenserCoolingFaultOverride(
+            faultId,
+            coolingBoundaryId,
+            capacityFraction);
     }
 
     private static void EnsureActuatorSpecificControlFaultIsUnambiguous(
@@ -545,32 +609,67 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
 
     private IntegratedSecondaryCycleInputs BuildPlantInputs()
     {
-        var baseline = _persistentInputs.PlantInputs.GeneratorGridInputs;
-        if (_breakerCloseById.Count == 0)
+        var plantInputs = _persistentInputs.PlantInputs;
+        var gridInputs = plantInputs.GeneratorGridInputs;
+
+        if (_condenserCoolingFaults.Count > 0)
         {
-            return _persistentInputs.PlantInputs;
+            var feedwaterInputs = gridInputs.CondensateFeedwaterInputs;
+            var condenserInputs = feedwaterInputs.CondenserInputs;
+            var activeByBoundary = _condenserCoolingFaults.Values.ToDictionary(
+                static effect => effect.BoundaryId,
+                StringComparer.Ordinal);
+            var coolingInputs = condenserInputs.CoolingBoundaryInputs.Select(input =>
+            {
+                if (!activeByBoundary.TryGetValue(input.BoundaryId, out var effect))
+                {
+                    return input;
+                }
+
+                return new CondenserCoolingBoundaryInput(
+                    input.BoundaryId,
+                    Power.FromWatts(input.AvailableHeatRejectionPower.Watts * effect.CapacityFraction));
+            }).ToArray();
+            var faultedCondenserInputs = new CondenserSystemInputs(
+                condenserInputs.Definition,
+                condenserInputs.TurbineExpansionInputs,
+                coolingInputs);
+            var faultedFeedwaterInputs = new CondensateFeedwaterSystemInputs(
+                feedwaterInputs.Definition,
+                faultedCondenserInputs,
+                feedwaterInputs.TrainInputs);
+            gridInputs = new GeneratorGridInputs(
+                gridInputs.Definition,
+                faultedFeedwaterInputs,
+                gridInputs.GeneratorInputs);
         }
 
-        var generatorInputs = baseline.GeneratorInputs.Select(input =>
+        if (_breakerCloseById.Count > 0)
         {
-            var definition = baseline.Definition.GetGenerator(input.GeneratorId);
-            if (!_breakerCloseById.TryGetValue(definition.BreakerId, out var close))
+            var generatorInputs = gridInputs.GeneratorInputs.Select(input =>
             {
-                return input;
-            }
+                var definition = gridInputs.Definition.GetGenerator(input.GeneratorId);
+                if (!_breakerCloseById.TryGetValue(definition.BreakerId, out var close))
+                {
+                    return input;
+                }
 
-            return new SynchronousGeneratorInput(
-                input.GeneratorId,
-                input.TerminalLineVoltage,
-                input.RequestedElectricalPower,
-                closeBreakerCommand: close,
-                openBreakerCommand: !close);
-        }).ToArray();
-        var generatorGridInputs = new GeneratorGridInputs(
-            baseline.Definition,
-            baseline.CondensateFeedwaterInputs,
-            generatorInputs);
-        return new IntegratedSecondaryCycleInputs(_persistentInputs.PlantInputs.Definition, generatorGridInputs);
+                return new SynchronousGeneratorInput(
+                    input.GeneratorId,
+                    input.TerminalLineVoltage,
+                    input.RequestedElectricalPower,
+                    closeBreakerCommand: close,
+                    openBreakerCommand: !close);
+            }).ToArray();
+            gridInputs = new GeneratorGridInputs(
+                gridInputs.Definition,
+                gridInputs.CondensateFeedwaterInputs,
+                generatorInputs);
+        }
+
+        return ReferenceEquals(gridInputs, plantInputs.GeneratorGridInputs)
+            ? plantInputs
+            : new IntegratedSecondaryCycleInputs(plantInputs.Definition, gridInputs);
     }
 
     private void SetRodManualCommand(ControlRoomCommand command, ControlRodMotion motion)
