@@ -87,10 +87,10 @@
           <Border IsVisible="{Binding IsShellHostWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
             <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
               <StackPanel Spacing="6">
-                <TextBlock Classes="sectionHeading" Text="M7.7 TRAINING OBJECTIVES, PROCEDURE GUIDANCE &amp; EVALUATION" />
+                <TextBlock Classes="sectionHeading" Text="M8.1 DETERMINISTIC FAULT-INJECTION FRAMEWORK" />
                 <TextBlock FontSize="20" FontWeight="SemiBold" Text="Integrated normal-operations training loaded" />
                 <TextBlock MaxWidth="920" Opacity="0.76" TextWrapping="Wrap"
-                           Text="The desktop loads the exact stable-low-load-parallel-operation v1 initial condition through the M7.1 session boundary. M7.7 guidance and scoring observe deterministic plant checkpoints plus accepted operator actions; neither can mutate physics, protection or control state." />
+                           Text="The desktop retains the validated M7.7 normal-operations training session while M8.1 adds explicit deterministic fault definitions, logical-step/committed-condition scheduling and replay-visible lifecycle state. Concrete equipment and instrumentation fault effects begin in M8.2/M8.3." />
               </StackPanel>
 
               <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="10">
@@ -131,6 +131,7 @@
                   <StackPanel Spacing="8">
                     <TextBlock Classes="sectionHeading" Text="TRAINING EVALUATION" />
                     <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding TrainingGuidanceModeText}" />
+                    <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding FaultLifecycleText}" />
                     <TextBlock FontSize="12" Opacity="0.88" TextWrapping="Wrap" Text="{Binding TrainingAssessmentText}" />
                   </StackPanel>
                 </Border>
@@ -144,7 +145,7 @@
                 <TextBlock Classes="sectionHeading" Text="M6.2 REUSABLE COMPONENT LIBRARY" />
                 <TextBlock FontSize="20" FontWeight="SemiBold" Text="One visual language for instruments and operator controls" />
                 <TextBlock MaxWidth="920" Opacity="0.76" TextWrapping="Wrap"
-                           Text="The validated M6 control room remains presentation-only. M7.7 now overlays optional procedure guidance and deterministic objective evaluation on the validated M7 operating path while preserving fixed-step execution, fail-closed command gating and all lower-layer physics ownership." />
+                           Text="The validated control room remains presentation-only. M8.1 adds scenario-level fault orchestration without owning subsystem physics: schedules bind fail-closed to typed applicators, fixed-step execution remains authoritative and the M7.7 training layer stays observational." />
               </StackPanel>
 
               <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
@@ -973,7 +974,7 @@
 
     <Border Grid.Row="2" Padding="18,9" Background="#171C24" BorderThickness="0,1,0,0" BorderBrush="#303846">
       <Grid ColumnDefinitions="*,Auto">
-        <TextBlock FontSize="12" Opacity="0.72" Text="M7.7 Training Objectives, Procedure Guidance &amp; Evaluation · deterministic checkpoints/actions · optional guidance · no UI physics" />
+        <TextBlock FontSize="12" Opacity="0.72" Text="M8.1 Deterministic Fault-Injection Framework · explicit schedules/state · replay-visible · no hidden randomness · no UI physics" />
         <TextBlock Grid.Column="1" FontSize="12" Opacity="0.72" Text="Bounded trends · M5.6 annunciator semantics · deterministic event sequence" />
       </Grid>
     </Border>

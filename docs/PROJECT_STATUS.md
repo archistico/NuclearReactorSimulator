@@ -2,9 +2,9 @@
 
 ## Validated baseline
 
-The current validated functional baseline is **M7.6 — Power Manoeuvring & Normal Shutdown**.
+The current validated functional baseline is **M7.7 — Training Objectives, Procedure Guidance & Evaluation**.
 
-M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.6 are validated through local build/test execution/approval. The M3, M4, M5 and M6 gates are complete. M7.7 is the current baseline candidate.
+M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.7 are validated through local build/test execution/approval. The M3, M4, M5, M6 and M7 gates are complete. M8.1 is the current baseline candidate.
 
 | Phase | Status | Validated capability |
 |---|---|---|
@@ -15,13 +15,13 @@ M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–
 | M4 | VALIDATED | M4.1–M4.7 validated; manually commanded reactor-to-grid gate complete |
 | M5 | VALIDATED | M5.1–M5.7 validated; integrated automatic-operation gate complete |
 | M6 | VALIDATED | M6.1–M6.7 validated; complete control-room/runtime-integration gate |
-| M7 | IN PROGRESS | M7.1–M7.6 validated; M7.7 Training Objectives, Procedure Guidance & Evaluation baseline candidate |
-| M8 | PLANNED | faults, transients and safety scenarios |
+| M7 | VALIDATED | M7.1–M7.7 validated; versioned sessions, normal operating path and deterministic training/evaluation gate complete |
+| M8 | IN PROGRESS | M8.1 Deterministic Fault-Injection Framework baseline candidate |
 | M9 | PLANNED | advanced analysis, fidelity refinement and historical-inspired scenarios |
 
-## Validated M7.6 / current M7.7 candidate
+## Validated M7.7 / current M8.1 candidate
 
-M7.1 through M7.6 are validated. M7.6 adds exact-version `stable-low-load-parallel-operation` v1, bounded on-grid manoeuvring, explicit temperature/void observation with the xenon boundary preserved, and controlled normal shutdown. M7.7 is the current candidate for deterministic training objectives, optional guidance and observational evaluation over that validated operating path.
+M7.1 through M7.7 are validated and the M7 gate is complete. M7.7 adds deterministic per-fixed-step training checkpoints, accepted operator-action history, optional guidance and observational evaluation over the validated operating path. M8.1 is the current candidate for explicit deterministic scenario fault declarations, trigger/lifecycle orchestration, fail-closed applicator binding, snapshot projection and replay reconstruction.
 
 ## What the validated engine can already do
 
@@ -64,14 +64,16 @@ The validated core can run headlessly and deterministically with:
 - validated M6.3 Reactor/Core, M6.4 Primary-Circuit and M6.5 Turbine/Secondary/Electrical operating workspaces with measured-versus-diagnostic separation;
 - validated M6.6 bounded logical-step trends, M5.6 annunciator/first-out presentation and deterministic sequence-ordered event timeline;
 - validated M6.7 live runtime coordination and M7.1 exact-version initial-condition/scenario/session/replay framework;
+- validated M7.2–M7.7 normal operating/training progression through deterministic observational evaluation and a complete M7 gate;
+- M8.1 candidate scenario-fault schema v2, exact logical-step/committed-condition triggers, fail-closed applicator/evaluator binding and snapshot-visible deterministic lifecycle state;
 
 ## Current implementation candidate
 
-**M7.6 — Power Manoeuvring & Normal Shutdown** is validated and supplies the exact stable-low-load parallel handoff, bounded on-grid manoeuvring, explicit temperature/void observation with xenon boundary preservation, and controlled normal shutdown.
+**M7.7 — Training Objectives, Procedure Guidance & Evaluation** is validated and closes the M7 gate over the exact-version scenario/session/replay boundary plus validated operating procedures and observational training evaluation.
 
-**M7.7 — Training Objectives, Procedure Guidance & Evaluation** is the current baseline candidate, adding deterministic historical checkpoints, accepted-action sequencing, optional guidance modes and 100-point observational training evaluation without taking physical/control/protection ownership.
+**M8.1 — Deterministic Fault-Injection Framework** is the current baseline candidate. It adds explicit versioned fault declarations, exact logical-step or named committed-snapshot condition triggers, deterministic `Pending → Active → Cleared` lifecycle state, fail-closed typed applicator/evaluator binding, scenario schema v2 persistence and replay-visible fault state. It intentionally adds no concrete equipment/sensor/control fault physics yet.
 
-**Restart note:** M7.1 through M7.6 are explicitly validated. M7.7 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
+**Restart note:** M7.1 through M7.7 are explicitly validated and the M7 gate is complete. M8.1 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
 
 ## What is intentionally not built yet
 
@@ -83,7 +85,7 @@ The following are planned architecture boundaries, not missing bugs:
 - no detailed HP/IP/LP turbine maps, moisture separation/reheat or wet-steam erosion model;
 - no detailed synchronous-machine transient/reactance model, AVR/excitation dynamics or grid load-flow physics;
 - no persistent disk historian or wall-clock event timestamps; M6.6 history is bounded presentation state indexed only by logical step/event sequence;
-- M7.5 synchronization/load and M7.6 manoeuvring/normal shutdown are validated; M7.7 now owns only observational training objectives/guidance/evaluation semantics over canonical M2/M4/M5 seams;
+- M7.1–M7.7 are validated and the M7 gate is complete; M8.1 currently owns only deterministic fault declaration/scheduling/lifecycle orchestration, while concrete hydraulic/instrumentation/control/transient effects remain M8.2+;
 - no arbitrary full-state checkpoint/save/seek format yet; M9.1 owns that boundary;
 - no full-scope or licensing-grade thermal hydraulics/neutronics.
 
@@ -111,6 +113,9 @@ The following are planned architecture boundaries, not missing bugs:
 - do not mix sensor/filter memory into `PlantState`, rotor state or electrical state.
 - do not hide range violations by clamping without degraded signal quality.
 - do not introduce random sensor faults or scenario scheduling inside the M5.1 solver.
+- do not use wall clock, timers, random generators or UI publication cadence to activate/deactivate M8 faults; scheduling is logical-step/committed-condition only.
+- do not implement concrete M8.2+ fault physics inside the generic M8.1 scheduler; typed applicators must reuse canonical subsystem seams.
+- do not infer missing fault applicators/conditions or silently ignore unknown fault types; fault-enabled session loading fails closed.
 
 - do not map reactor-power controller output directly to thermal MW; M5.3 must traverse rods → reactivity → point kinetics → fission-power calibration;
 - do not use newly commanded rod positions as if they had already existed in the committed state; current-step kinetics uses committed rod reactivity;
@@ -146,9 +151,13 @@ Automatic controls, interlocks and protection are deterministic and testable hea
 
 Every operator action visible in the control room maps to application commands; no physics is implemented in Views/ViewModels. M6.7 local build and complete tests were explicitly confirmed successful on 2026-07-21.
 
-### Gate after M7/M8
+### Gate after M7 — COMPLETE
 
-Training and fault scenarios are defined as initial conditions, commands and explicit faults over the physical plant. Scenario scripts must never force a predetermined physical outcome.
+Versioned initial conditions, deterministic normal-operation procedures, guidance and observational training evaluation are validated. Local build and complete tests for M7.7 were explicitly confirmed on 2026-07-21.
+
+### Gate after M8
+
+Fault and transient scenarios are defined as explicit deterministic fault inputs plus commands over the physical plant. Scenario scripts must never force a predetermined physical outcome.
 
 ## Baseline discipline
 
@@ -160,6 +169,6 @@ A milestone becomes validated only after:
 - documentation reflects the implemented behavior;
 - user validation is explicitly recorded.
 
-## Current M7.7 candidate
+## Current M8.1 candidate
 
-M7.6 Power Manoeuvring & Normal Shutdown is locally validated. M7.7 adds deterministic historical checkpoint tracking on every fixed simulation step, a monotonic journal of scenario-accepted operator actions, optional guidance modes and objective scoring/penalties over the validated M7.6 path. This state is observational Application state only and cannot mutate physics, control, protection or alarms.
+M7.7 Training Objectives, Procedure Guidance & Evaluation is locally validated and closes the M7 gate. M8.1 adds explicit deterministic scenario fault declarations, logical-step/committed-condition scheduling, fail-closed typed handler binding, replay-visible lifecycle state and schema-v2 persistence. Concrete fault effects remain M8.2+ and M8.1 does not mutate canonical subsystem physics directly.

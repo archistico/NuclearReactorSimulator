@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M7.7 — Training Objectives, Procedure Guidance & Evaluation",
-        "Baseline candidate — M7.6 validated; deterministic historical checkpoints, accepted-action journal, optional guidance modes and observational 100-point training evaluation with no physics ownership");
+        "M8.1 — Deterministic Fault-Injection Framework",
+        "Baseline candidate — M7.7 validated / M7 complete; explicit versioned fault schedules, logical-step or committed-condition triggers, fail-closed applicator binding and replay-visible fault lifecycle state");
 }

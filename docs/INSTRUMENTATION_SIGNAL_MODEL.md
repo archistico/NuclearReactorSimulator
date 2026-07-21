@@ -93,7 +93,7 @@ M5.1 defines deterministic sensor behavior modes:
 - `FailedHigh`;
 - `Unavailable`.
 
-The seam is explicit input, not hidden randomness. M5.1 does not schedule faults. Scenario activation, conditional timing and fault orchestration remain deferred to M8.
+The seam is explicit input, not hidden randomness. M5.1 does not schedule faults. M8.1 now owns deterministic scenario activation, committed-condition timing and fault lifecycle orchestration; concrete sensor-fault applicators remain M8.3 ownership and must reuse this M5.1 seam.
 
 ## Full-plant composition
 

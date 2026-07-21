@@ -9,11 +9,11 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-**M7.6 — Power Manoeuvring & Normal Shutdown — VALIDATED**
+**M7.7 — Training Objectives, Procedure Guidance & Evaluation — VALIDATED / M7 GATE COMPLETE**
 
-M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.6 are validated. The M3, M4, M5 and M6 gates are complete. M7.1 establishes the exact-version initial-condition/scenario/session/replay boundary; M7.2–M7.6 provide the validated cold-start through manoeuvring and controlled normal-shutdown progression.
+M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7 and M7.1–M7.7 are validated. The M3, M4, M5, M6 and M7 gates are complete. M7.1 establishes exact-version initial-condition/scenario/session/replay ownership; M7.2–M7.6 provide the validated normal operating path and M7.7 adds deterministic observational training/guidance/evaluation.
 
-The current implementation candidate is **M7.7 — Training Objectives, Procedure Guidance & Evaluation**: it overlays deterministic historical checkpoints, accepted operator-action sequencing, optional guidance modes and a 100-point observational training assessment on the validated M7.6 operating path without taking physical/control/protection ownership.
+The current implementation candidate is **M8.1 — Deterministic Fault-Injection Framework**: it adds explicit versioned fault declarations, exact logical-step or named committed-snapshot condition triggers, deterministic lifecycle state, fail-closed typed handler binding, scenario schema v2 persistence and replay-visible fault state without implementing concrete subsystem failure physics.
 
 ## Architectural principles
 
@@ -443,7 +443,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7 and M7.1–M7.6 are **validated**; the M3, M4, M5 and M6 gates are complete. M7.7 is the current **baseline candidate**, adding deterministic training objectives, optional procedure guidance and observational evaluation over the validated M7 operating path.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7 and M7.1–M7.7 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.1 is the current **baseline candidate**, adding deterministic scenario fault declaration/scheduling/lifecycle infrastructure without concrete M8.2+ fault effects.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -554,3 +554,12 @@ M7.5 seeds a breaker-open 3000 rpm phase-matched handoff and relies exclusively 
 ## M7.6 power manoeuvring and normal shutdown
 
 M7.6 starts from exact `stable-low-load-parallel-operation` v1 with the generator already paralleled at a bounded 5 MWe requested load. Load raise/lower changes only canonical M4.5 requested electrical power; reactor response remains M2/M5.3 rod-reactivity-kinetics ownership and turbine governing remains M5.4 ownership. Guidance observes published fuel/coolant temperature and void diagnostics while preserving quantitative xenon as explicitly unavailable at the current M5.7 operational boundary. Normal shutdown is ordered as unload → breaker open → controlled rod insertion → turbine rundown → continued main circulation. See `docs/POWER_MANOEUVRING_NORMAL_SHUTDOWN.md` and ADR 0058.
+
+
+## M7.7 training objectives, procedure guidance & evaluation
+
+M7.7 closes the M7 gate with deterministic first-achievement checkpoints observed on every fixed step, a journal of scenario-accepted operator actions, optional Hidden/ChecklistOnly/Guided assistance and observational objective scoring/penalties. Training state never mutates physics, controls, protection or alarms, and sparse UI publication cannot change evaluation results. See `docs/TRAINING_OBJECTIVES_GUIDANCE_EVALUATION.md` and ADR 0059.
+
+## M8.1 deterministic fault-injection framework
+
+M8.1 adds explicit `ScenarioFaultDefinition` entries to versioned scenario schema v2. Faults activate/deactivate only at committed logical-step boundaries, either by exact step or named `ControlRoomSnapshot` plant condition. Exact-ID applicator/evaluator registries fail closed, lifecycle state is projected into control-room snapshots, and M7.1 replay reconstructs the same fault schedule from scenario data. M8.1 intentionally owns no concrete pump/valve/sensor/control/transient fault physics; those begin in M8.2+. See `docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md` and ADR 0060.

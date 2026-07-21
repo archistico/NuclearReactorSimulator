@@ -33,7 +33,7 @@ A scenario contains:
 
 Run, pause and single-step are runtime host controls and are not scenario operator permissions.
 
-The Infrastructure JSON adapter writes canonical schema version `1`. It also retains a deterministic migration from legacy schema `0` to `1`. Migration may reshape metadata, but it must preserve the exact initial-condition ID/version and may never reinterpret a scenario against a newer initial condition.
+M7.1 originally introduced canonical schema version `1`. M8.1 advances the canonical document to schema version `2` by adding explicit deterministic fault declarations/schedules. The Infrastructure adapter retains deterministic v0 and v1 migrations. Migration may reshape metadata, but it must preserve the exact initial-condition ID/version, invent no faults for pre-M8 documents and may never reinterpret a scenario against a newer initial condition.
 
 Unknown future schema versions fail closed.
 
@@ -43,8 +43,9 @@ Unknown future schema versions fail closed.
 
 1. resolves the exact initial-condition version;
 2. creates a fresh runtime engine;
-3. creates a `ControlRoomRuntimeCoordinator` in `Paused` state;
-4. wraps command dispatch with `ScenarioCommandDispatcher`.
+3. when M8.1 faults are declared, binds every exact fault-type applicator and named plant-condition evaluator fail-closed and decorates the runtime with deterministic fault scheduling/lifecycle;
+4. creates a `ControlRoomRuntimeCoordinator` in `Paused` state;
+5. wraps command dispatch with `ScenarioCommandDispatcher`.
 
 This is the canonical M7.1 initialized-session boundary. Scenario metadata never patches physical state after construction.
 
@@ -68,7 +69,7 @@ M7.1 itself does not define operational recipe content. M7.2 now provides:
 
 - the concrete exact-version `cold-shutdown-pre-start` v1 recipe through `ColdShutdownInitialConditionFactory`;
 - procedure guidance and objective evaluation are owned by M7.7 as observational Application state over deterministic snapshots/actions;
-- deterministic fault activation schedules — M8.1 owns fault scenario inputs;
+- deterministic fault activation schedules — M8.1 now owns explicit scenario fault declarations, trigger/lifecycle state, fail-closed binding and snapshot/replay projection; concrete fault effects remain M8.2+;
 - general full-state save/load checkpoints or seek — M9.1 owns recorder/checkpoint evolution.
 
 M7.2 now uses this validated seam in production: the desktop composition registers `ColdShutdownInitialConditionFactory` and loads `cold-shutdown-pre-start` v1 paused through `ScenarioSessionFactory`. Avalonia still does not construct or patch the physical object graph. See `COLD_SHUTDOWN_PRESTART.md`.

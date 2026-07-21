@@ -54,4 +54,4 @@ Switching modes cannot change objective criteria, checkpoint history, accepted a
 
 ## Boundary to M8
 
-M8.1 owns deterministic fault injection and fault state. M7.7 does not schedule faults, inject failures, add hidden randomness or encode incident outcomes. Future abnormal-scenario evaluation may reuse the M7.7 training framework once M8 supplies explicit deterministic fault inputs.
+M8.1 now owns deterministic fault declaration, scheduling and lifecycle state. M7.7 remains purely observational and does not inject failures, add hidden randomness or encode incident outcomes. Future M8.2+ abnormal-scenario evaluation may reuse the M7.7 training framework while concrete fault effects remain explicit typed inputs over canonical subsystem owners.

@@ -57,7 +57,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _powerManoeuvringGuidance = powerManoeuvringGuidance;
         _trainingTracker = trainingTracker;
         _commandStatus = trainingTracker is not null
-            ? "M7.7 integrated normal-operations training loaded in PAUSED state. Guidance and deterministic scoring observe snapshots/actions only and never alter physics."
+            ? "M8.1 fault-injection framework candidate loaded over the validated M7.7 normal-operations training session. No concrete fault pack is injected yet; scheduling/state remain explicit and deterministic."
             : powerManoeuvringGuidance is not null
             ? "M7.6 power-manoeuvring/normal-shutdown scenario loaded in PAUSED state. Manoeuvre load through canonical requests, then unload, disconnect, insert rods and preserve post-shutdown circulation."
             : gridSynchronizationGuidance is not null
@@ -253,7 +253,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     }
 
     public string TrainingGuidanceModeText => _trainingTracker is null
-        ? "No M7.7 training evaluation loaded"
+        ? "No M7.7/M8.1 training evaluation loaded"
         : _trainingTracker.GuidanceMode switch
         {
             TrainingGuidanceMode.Hidden => "HIDDEN — procedure assistance suppressed; scoring unchanged",
@@ -307,6 +307,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public string ProtectionSummary => _snapshot.AnyTripActive
         ? BuildProtectionSummary(_snapshot)
         : "No latched reactor/turbine/generator trip in presentation snapshot";
+
+    public string FaultLifecycleText => _snapshot.Faults.Faults.Count == 0
+        ? "No M8 fault declarations in the loaded training scenario"
+        : $"{_snapshot.Faults.ActiveCount} active · {_snapshot.Faults.PendingCount} pending · {_snapshot.Faults.ClearedCount} cleared";
 
     public string PrimaryContextText => PrimaryCircuit.Loops.Count == 0
         ? "No primary-circuit presentation snapshot published yet"
@@ -834,6 +838,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(LogicalStepText));
         OnPropertyChanged(nameof(UnacknowledgedAlarmVisualState));
         OnPropertyChanged(nameof(ProtectionSummary));
+        OnPropertyChanged(nameof(FaultLifecycleText));
         OnPropertyChanged(nameof(PreStartupChecklistText));
         OnPropertyChanged(nameof(ScenarioChecklistText));
         OnPropertyChanged(nameof(PrimaryContextText));

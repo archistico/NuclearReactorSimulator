@@ -13,7 +13,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.3 is locally validated and provides exact `pre-criticality-source-range` v1 plus controlled first-criticality/low-power operation.
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
-- M7.6 is validated. M7.7 is the current baseline candidate and adds deterministic training checkpoints, accepted-action history, optional guidance modes and scoring as Application-only observational state; it never becomes a physical/control/protection owner.
+- M7.6 and M7.7 are validated; the M7 gate is complete. M8.1 is the current baseline candidate and adds explicit deterministic scenario fault declarations, logical-step/committed-condition scheduling, fail-closed typed applicator/evaluator binding and snapshot/replay-visible lifecycle state without becoming a physical/control/protection owner.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
 
@@ -91,7 +91,9 @@ Validated M6 responsibilities include:
 - validated M7.1 exact-version initial-condition/session registry, scenario command gating and deterministic replay orchestration;
 - validated M7.2 concrete cold-shutdown recipe plus presentation-only pre-start readiness and declarative guidance;
 - validated M7.3 pre-criticality/source-range initial condition, controlled rod permissions and observational criticality/low-power guidance;
-- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 candidate training/evaluation observes deterministic steps and accepted actions over those same canonical owners.
+- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 validated training/evaluation observes deterministic steps and accepted actions; M8.1 candidate adds deterministic fault orchestration/lifecycle only, with concrete effects delegated to later typed applicators over canonical owners.
+
+M8.1 fault orchestration remains Application state. `ScenarioFaultRuntimeEngine` decorates the existing runtime at committed step boundaries, while `IScenarioFaultApplicator` implementations own only typed adaptation into validated subsystem seams. Plant-condition evaluators consume `ControlRoomSnapshot` only. Neither scheduler nor evaluator may traverse authoritative true state or create a second integrator.
 
 Application may depend on Simulation to coordinate validated runtime seams, but Avalonia must not bypass Application and reference Simulation directly.
 
@@ -793,7 +795,7 @@ Architecture rules:
 - `InstrumentationState` contains only sensor/filter memory and is not a conserved plant inventory;
 - range, scale, lag, validity and quality are deterministic simulation semantics;
 - diagnostic snapshots may expose source truth for verification, but controller-facing measured signals do not;
-- sensor faults enter as explicit deterministic inputs; M8 owns scenario scheduling and activation logic;
+- sensor faults enter as explicit deterministic inputs; M8.1 owns generic deterministic scenario scheduling/lifecycle, while M8.3 owns concrete sensor-fault applicators over the existing M5.1 seam;
 - `InstrumentedFullPlantSolver` delegates physical evolution to M4.7 exactly once, then observes the immutable candidate snapshot.
 
 M5.1 does not introduce controller, actuator, trip, SCRAM, alarm or automatic synchronization behavior.

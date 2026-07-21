@@ -116,6 +116,42 @@ public sealed class ArchitectureRulesTests
         }
     }
 
+
+    [Fact]
+    public void FaultScheduling_DoesNotUseWallClockOrRandomApis()
+    {
+        var repositoryRoot = FindRepositoryRoot();
+        var faultRoot = Path.Combine(
+            repositoryRoot.FullName,
+            "src",
+            "NuclearReactorSimulator.Application",
+            "Scenarios",
+            "Faults");
+
+        var forbiddenTokens = new[]
+        {
+            "DateTime.Now",
+            "DateTime.UtcNow",
+            "DateTimeOffset.Now",
+            "DateTimeOffset.UtcNow",
+            "Stopwatch",
+            "Random(",
+            "Random.Shared",
+            "Guid.NewGuid",
+        };
+
+        foreach (var sourceFile in Directory.EnumerateFiles(faultRoot, "*.cs", SearchOption.AllDirectories))
+        {
+            var content = File.ReadAllText(sourceFile);
+            foreach (var forbiddenToken in forbiddenTokens)
+            {
+                Assert.False(
+                    content.Contains(forbiddenToken, StringComparison.Ordinal),
+                    $"M8.1 fault scheduling must remain deterministic; forbidden token '{forbiddenToken}' found in {sourceFile}.");
+            }
+        }
+    }
+
     [Fact]
     public void SimulationProject_DoesNotUseWallClockTimerOrDelayApis()
     {

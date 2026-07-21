@@ -1,6 +1,19 @@
 # Changelog
 
-## M7.7 — Training Objectives, Procedure Guidance & Evaluation (baseline candidate)
+## M8.1 — Deterministic Fault-Injection Framework (baseline candidate)
+
+- Hotfix candidate 1: corrected the scenario-v2 deserializer fallback for fault parameters so both operands of the null-coalescing expression are `SortedDictionary<string, string>`; no schema, ordering or fault semantics changed.
+- Recorded explicit local validation of M7.7: compilation and complete tests passed; M7.7 is now the validated baseline and the M7 gate is complete.
+- Added explicit immutable scenario fault declarations with stable fault/type/target IDs, deterministic parameters and activation/optional deactivation triggers.
+- Added exact logical-step and named committed-`ControlRoomSnapshot` plant-condition trigger semantics with no wall-clock/random scheduling.
+- Added fail-closed exact-ID registries for runtime-bound fault applicators and plant-condition evaluators.
+- Added deterministic single-pass `Pending → Active → Cleared` lifecycle state with logical-step stamps and monotonic transition sequence.
+- Added `ScenarioFaultRuntimeEngine` as a scheduling/lifecycle decorator around the canonical runtime; M8.1 itself adds no concrete subsystem fault physics.
+- Added fault lifecycle projection to `ControlRoomSnapshot` and deterministic replay reconstruction from the same versioned scenario definition.
+- Advanced scenario JSON persistence to schema v2 with deterministic v0/v1 migration that preserves exact initial-condition identity and invents no faults.
+- Added M8.1 application/infrastructure tests, ADR 0060 and `docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md`.
+
+## M7.7 — Training Objectives, Procedure Guidance & Evaluation — VALIDATED
 
 - Recorded explicit local validation of M7.6: compilation and complete tests passed; M7.6 is now the validated baseline.
 - Added a deterministic accepted-operator-action journal at the scenario command boundary; runtime-host commands and rejected actions are excluded.

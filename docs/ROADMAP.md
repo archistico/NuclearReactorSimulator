@@ -515,7 +515,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - controlled normal-shutdown sequence: unload, breaker open, rod insertion, turbine rundown and post-shutdown main circulation;
 - desktop composition validated with the exact M7.6 session paused; local build and complete tests passed on 2026-07-21.
 
-### M7.7 Training Objectives, Procedure Guidance & Evaluation — BASELINE CANDIDATE
+### M7.7 Training Objectives, Procedure Guidance & Evaluation — VALIDATED
 
 - deterministic accepted-operator-action journal at the scenario command boundary; host run/pause/step and rejected commands are excluded;
 - historical first-achievement checkpoints observed on every deterministic fixed step, independent of sparse UI publication stride;
@@ -523,15 +523,19 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - optional Hidden / ChecklistOnly / Guided assistance modes separated completely from physics and score semantics;
 - 100-point integrated normal-operations capstone over validated `stable-low-load-parallel-operation` v1;
 - emergency/protection actions remain physically available while their inappropriate routine use can be scored as a training deviation;
-- after explicit M7.7 validation: M7 gate complete, continue with M8.1 Deterministic Fault-Injection Framework.
+- local build and complete tests explicitly confirmed successful on 2026-07-21; M7 gate complete.
 
 ## M8 — Faults, transients and safety scenarios
 
-### M8.1 Deterministic Fault-Injection Framework
+### M8.1 Deterministic Fault-Injection Framework — BASELINE CANDIDATE
 
-- faults as explicit scenario inputs/state, never hidden randomness;
-- activation/deactivation scheduling by logical step or plant condition;
-- fault state included in snapshots and replay.
+- faults are explicit immutable versioned-scenario inputs with stable fault/type/target IDs and deterministic parameters; never hidden randomness;
+- activation/deactivation scheduling occurs only at committed boundaries by exact logical step or named committed-snapshot plant condition;
+- fail-closed exact-ID binding for runtime fault applicators and plant-condition evaluators;
+- deterministic single-pass `Pending → Active → Cleared` lifecycle with logical-step stamps and monotonic transition sequence;
+- fault lifecycle state is projected into `ControlRoomSnapshot` and reconstructed by normal M7.1 replay from the same scenario definition;
+- scenario JSON schema v2 persists fault schedules while v0/v1 migration preserves exact initial-condition identity and invents no faults;
+- concrete hydraulic/instrumentation/control/transient fault effects remain M8.2+ ownership.
 
 ### M8.2 Hydraulic Component Faults
 

@@ -19,7 +19,8 @@ public sealed record ControlRoomSnapshot
         PrimaryCircuitPanelSnapshot? primaryCircuit = null,
         TurbineSecondaryPanelSnapshot? turbineSecondary = null,
         ElectricalPanelSnapshot? electrical = null,
-        AlarmEventsPanelSnapshot? alarmEvents = null)
+        AlarmEventsPanelSnapshot? alarmEvents = null,
+        ControlRoomFaultStateSnapshot? faults = null)
     {
         if (logicalStep < 0)
         {
@@ -60,6 +61,7 @@ public sealed record ControlRoomSnapshot
         TurbineSecondary = turbineSecondary ?? TurbineSecondaryPanelSnapshot.Unavailable;
         Electrical = electrical ?? ElectricalPanelSnapshot.Unavailable;
         AlarmEvents = alarmEvents ?? AlarmEventsPanelSnapshot.Unavailable;
+        Faults = faults ?? ControlRoomFaultStateSnapshot.Empty;
     }
 
     public static ControlRoomSnapshot ShellOnly { get; } = new(
@@ -105,6 +107,29 @@ public sealed record ControlRoomSnapshot
     public ElectricalPanelSnapshot Electrical { get; }
 
     public AlarmEventsPanelSnapshot AlarmEvents { get; }
+
+    public ControlRoomFaultStateSnapshot Faults { get; }
+
+    public ControlRoomSnapshot WithFaultState(ControlRoomFaultStateSnapshot faults)
+    {
+        ArgumentNullException.ThrowIfNull(faults);
+        return new ControlRoomSnapshot(
+            LogicalStep,
+            RunState,
+            TotalMeasuredSignalCount,
+            InvalidMeasuredSignalCount,
+            AnnunciatedAlarmCount,
+            UnacknowledgedAlarmCount,
+            ReactorScramActive,
+            TurbineTripActive,
+            GeneratorTripActive,
+            ReactorCore,
+            PrimaryCircuit,
+            TurbineSecondary,
+            Electrical,
+            AlarmEvents,
+            faults);
+    }
 
     public int ValidMeasuredSignalCount => TotalMeasuredSignalCount - InvalidMeasuredSignalCount;
 

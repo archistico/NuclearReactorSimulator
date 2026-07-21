@@ -1,15 +1,17 @@
 using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.Scenarios.Faults;
 
 namespace NuclearReactorSimulator.Application.Scenarios;
 
 /// <summary>
-/// Immutable M7.1 training-scenario definition. It selects one exact versioned initial condition and declares presentation-
-/// level metadata/objectives plus the operator command kinds permitted by the scenario. It never encodes forced outcomes.
+/// Immutable versioned scenario definition. M7.1 owns exact initial-condition/objective/action metadata; M8.1 extends the
+/// same document with explicit deterministic fault declarations. Scenario data never encodes forced physical outcomes.
 /// </summary>
 public sealed class ScenarioDefinition
 {
     private readonly IReadOnlyList<ScenarioObjectiveDefinition> _objectives;
     private readonly IReadOnlySet<ControlRoomCommandKind> _allowedOperatorActions;
+    private readonly IReadOnlyList<ScenarioFaultDefinition> _faults;
 
     public ScenarioDefinition(
         string scenarioId,
@@ -17,7 +19,8 @@ public sealed class ScenarioDefinition
         string description,
         InitialConditionReference initialCondition,
         IEnumerable<ScenarioObjectiveDefinition>? objectives = null,
-        IEnumerable<ControlRoomCommandKind>? allowedOperatorActions = null)
+        IEnumerable<ControlRoomCommandKind>? allowedOperatorActions = null,
+        IEnumerable<ScenarioFaultDefinition>? faults = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(scenarioId);
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
@@ -49,8 +52,20 @@ public sealed class ScenarioDefinition
                 nameof(allowedOperatorActions));
         }
 
+        var faultArray = (faults ?? Array.Empty<ScenarioFaultDefinition>()).ToArray();
+        if (faultArray.Any(static fault => fault is null))
+        {
+            throw new ArgumentException("Scenario faults cannot contain null entries.", nameof(faults));
+        }
+        if (faultArray.Select(static fault => fault.FaultId).Distinct(StringComparer.Ordinal).Count() != faultArray.Length)
+        {
+            throw new ArgumentException("Scenario fault IDs must be unique.", nameof(faults));
+        }
+        faultArray = faultArray.OrderBy(static fault => fault.FaultId, StringComparer.Ordinal).ToArray();
+
         _objectives = Array.AsReadOnly(objectiveArray);
         _allowedOperatorActions = actionSet;
+        _faults = Array.AsReadOnly(faultArray);
     }
 
     public string ScenarioId { get; }
@@ -64,6 +79,8 @@ public sealed class ScenarioDefinition
     public IReadOnlyList<ScenarioObjectiveDefinition> Objectives => _objectives;
 
     public IReadOnlySet<ControlRoomCommandKind> AllowedOperatorActions => _allowedOperatorActions;
+
+    public IReadOnlyList<ScenarioFaultDefinition> Faults => _faults;
 
     internal static bool IsRuntimeHostCommand(ControlRoomCommandKind kind)
         => kind is ControlRoomCommandKind.Run or ControlRoomCommandKind.Pause or ControlRoomCommandKind.SingleStep;
