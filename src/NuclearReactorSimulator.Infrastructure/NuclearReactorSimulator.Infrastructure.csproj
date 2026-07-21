@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>NuclearReactorSimulator.Infrastructure</RootNamespace>
+    <AssemblyName>NuclearReactorSimulator.Infrastructure</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NuclearReactorSimulator.Domain\NuclearReactorSimulator.Domain.csproj" />
+    <ProjectReference Include="..\NuclearReactorSimulator.Application\NuclearReactorSimulator.Application.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>NuclearReactorSimulator.Domain</RootNamespace>
+    <AssemblyName>NuclearReactorSimulator.Domain</AssemblyName>
+  </PropertyGroup>
+</Project>

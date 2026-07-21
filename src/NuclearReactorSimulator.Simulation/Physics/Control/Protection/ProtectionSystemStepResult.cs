@@ -1,0 +1,3 @@
+namespace NuclearReactorSimulator.Simulation.Physics.Control.Protection;
+
+public sealed record ProtectionSystemStepResult(ProtectionSystemState CandidateState, ProtectionSystemSnapshot Snapshot);

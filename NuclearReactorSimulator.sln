@@ -1,0 +1,66 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Domain", "src\NuclearReactorSimulator.Domain\NuclearReactorSimulator.Domain.csproj", "{7A77E951-E0CF-4A7B-B0AA-7E7DEB6CE801}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Simulation", "src\NuclearReactorSimulator.Simulation\NuclearReactorSimulator.Simulation.csproj", "{C87DB858-5574-45A8-AEC1-DB850803D561}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Application", "src\NuclearReactorSimulator.Application\NuclearReactorSimulator.Application.csproj", "{C9434DE5-4168-4186-88AC-B13DC59159F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Infrastructure", "src\NuclearReactorSimulator.Infrastructure\NuclearReactorSimulator.Infrastructure.csproj", "{A20CA30A-0E15-464A-A89A-F048E19D13D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.App", "src\NuclearReactorSimulator.App\NuclearReactorSimulator.App.csproj", "{B924DF59-24F4-43F5-9952-C6C30167A931}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Domain.Tests", "tests\NuclearReactorSimulator.Domain.Tests\NuclearReactorSimulator.Domain.Tests.csproj", "{B4B2BA68-6559-4A43-B71E-54C4B2B69E9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Simulation.Tests", "tests\NuclearReactorSimulator.Simulation.Tests\NuclearReactorSimulator.Simulation.Tests.csproj", "{7452516D-AC9C-4770-AEF6-C1F8A0473AA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Application.Tests", "tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj", "{1F65507C-A170-4094-9C75-EF2498FA2DBB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NuclearReactorSimulator.Infrastructure.Tests", "tests\NuclearReactorSimulator.Infrastructure.Tests\NuclearReactorSimulator.Infrastructure.Tests.csproj", "{0A7E632E-1499-4602-A179-F5D438C7530E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7A77E951-E0CF-4A7B-B0AA-7E7DEB6CE801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A77E951-E0CF-4A7B-B0AA-7E7DEB6CE801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A77E951-E0CF-4A7B-B0AA-7E7DEB6CE801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A77E951-E0CF-4A7B-B0AA-7E7DEB6CE801}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C87DB858-5574-45A8-AEC1-DB850803D561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C87DB858-5574-45A8-AEC1-DB850803D561}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C87DB858-5574-45A8-AEC1-DB850803D561}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C87DB858-5574-45A8-AEC1-DB850803D561}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9434DE5-4168-4186-88AC-B13DC59159F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9434DE5-4168-4186-88AC-B13DC59159F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9434DE5-4168-4186-88AC-B13DC59159F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9434DE5-4168-4186-88AC-B13DC59159F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A20CA30A-0E15-464A-A89A-F048E19D13D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A20CA30A-0E15-464A-A89A-F048E19D13D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A20CA30A-0E15-464A-A89A-F048E19D13D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A20CA30A-0E15-464A-A89A-F048E19D13D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B924DF59-24F4-43F5-9952-C6C30167A931}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B924DF59-24F4-43F5-9952-C6C30167A931}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B924DF59-24F4-43F5-9952-C6C30167A931}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B924DF59-24F4-43F5-9952-C6C30167A931}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4B2BA68-6559-4A43-B71E-54C4B2B69E9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4B2BA68-6559-4A43-B71E-54C4B2B69E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4B2BA68-6559-4A43-B71E-54C4B2B69E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4B2BA68-6559-4A43-B71E-54C4B2B69E9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7452516D-AC9C-4770-AEF6-C1F8A0473AA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7452516D-AC9C-4770-AEF6-C1F8A0473AA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7452516D-AC9C-4770-AEF6-C1F8A0473AA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7452516D-AC9C-4770-AEF6-C1F8A0473AA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F65507C-A170-4094-9C75-EF2498FA2DBB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F65507C-A170-4094-9C75-EF2498FA2DBB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F65507C-A170-4094-9C75-EF2498FA2DBB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F65507C-A170-4094-9C75-EF2498FA2DBB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A7E632E-1499-4602-A179-F5D438C7530E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A7E632E-1499-4602-A179-F5D438C7530E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A7E632E-1499-4602-A179-F5D438C7530E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A7E632E-1499-4602-A179-F5D438C7530E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

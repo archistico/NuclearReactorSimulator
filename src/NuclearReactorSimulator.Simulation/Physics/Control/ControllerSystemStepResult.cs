@@ -1,0 +1,3 @@
+namespace NuclearReactorSimulator.Simulation.Physics.Control;
+
+public sealed record ControllerSystemStepResult(ControllerSystemState CandidateState, ControllerSystemSnapshot Snapshot);

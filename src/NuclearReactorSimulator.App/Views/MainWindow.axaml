@@ -1,0 +1,974 @@
+<Window
+    x:Class="NuclearReactorSimulator.App.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:NuclearReactorSimulator.App.ViewModels"
+    xmlns:controlRoom="using:NuclearReactorSimulator.Application.ControlRoom"
+    xmlns:controls="using:NuclearReactorSimulator.App.Controls"
+    x:DataType="vm:MainWindowViewModel"
+    Width="1440"
+    Height="900"
+    MinWidth="1100"
+    MinHeight="700"
+    Title="{Binding Title}">
+  <Window.Styles>
+    <Style Selector="TextBlock.sectionHeading">
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="Opacity" Value="0.72" />
+    </Style>
+    <Style Selector="TextBlock.metricValue">
+      <Setter Property="FontSize" Value="24" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+    <Style Selector="Button.shellCommand">
+      <Setter Property="MinWidth" Value="92" />
+      <Setter Property="Padding" Value="14,8" />
+    </Style>
+  </Window.Styles>
+
+  <Grid RowDefinitions="Auto,*,Auto">
+    <Border Grid.Row="0" Padding="22,16" Background="#171C24">
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel Spacing="4">
+          <TextBlock FontSize="24" FontWeight="SemiBold" Text="{Binding Title}" />
+          <StackPanel Orientation="Horizontal" Spacing="12">
+            <TextBlock FontSize="14" Text="{Binding Milestone}" />
+            <TextBlock Opacity="0.62" Text="·" />
+            <TextBlock Opacity="0.74" Text="{Binding RuntimeState}" />
+          </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
+          <Button Classes="shellCommand" Command="{Binding RunCommand}" Content="Run" />
+          <Button Classes="shellCommand" Command="{Binding PauseCommand}" Content="Pause" />
+          <Button Classes="shellCommand" Command="{Binding SingleStepCommand}" Content="Single step" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Row="1" ColumnDefinitions="240,*,320" Background="#0F1319">
+      <Border Grid.Column="0" Padding="16" BorderThickness="0,0,1,0" BorderBrush="#303846">
+        <Grid RowDefinitions="Auto,*,Auto">
+          <StackPanel Spacing="5">
+            <TextBlock Classes="sectionHeading" Text="WORKSPACES" />
+            <TextBlock FontSize="12" Opacity="0.62" Text="M6 control-room navigation" />
+          </StackPanel>
+
+          <ListBox
+              Grid.Row="1"
+              ItemsSource="{Binding Workspaces}"
+              SelectedItem="{Binding SelectedWorkspace, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+              <DataTemplate x:DataType="controlRoom:ControlRoomWorkspaceDescriptor">
+                <Border Padding="12,10" CornerRadius="5" HorizontalAlignment="Stretch">
+                  <TextBlock FontWeight="SemiBold" Text="{Binding ShortTitle}" />
+                </Border>
+              </DataTemplate>
+            </ListBox.ItemTemplate>
+          </ListBox>
+
+          <Border Grid.Row="2" Padding="12" Background="#171C24" CornerRadius="6">
+            <StackPanel Spacing="5">
+              <TextBlock Classes="sectionHeading" Text="UI PERFORMANCE BUDGET" />
+              <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding PerformanceBudgetText}" />
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Border>
+
+      <ScrollViewer Grid.Column="1" Padding="28">
+        <StackPanel Spacing="22">
+          <StackPanel Spacing="7">
+            <TextBlock FontSize="30" FontWeight="SemiBold" Text="{Binding SelectedWorkspaceTitle}" />
+            <TextBlock MaxWidth="900" FontSize="15" Opacity="0.74" TextWrapping="Wrap" Text="{Binding SelectedWorkspaceDescription}" />
+          </StackPanel>
+
+          <Border IsVisible="{Binding IsShellHostWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+            <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
+              <StackPanel Spacing="6">
+                <TextBlock Classes="sectionHeading" Text="M7.3 FIRST CRITICALITY &amp; LOW-POWER OPERATION" />
+                <TextBlock FontSize="20" FontWeight="SemiBold" Text="Pre-criticality source-range session loaded" />
+                <TextBlock MaxWidth="920" Opacity="0.76" TextWrapping="Wrap"
+                           Text="The desktop loads the exact pre-criticality/source-range v1 initial condition through the M7.1 session boundary. Rod motion remains operator-commanded through validated M5.3 seams; guidance observes reactivity, period, power and isolation without forcing outcomes." />
+              </StackPanel>
+
+              <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Border Padding="18" Background="#11161D" CornerRadius="6">
+                  <StackPanel Spacing="6">
+                    <TextBlock Classes="sectionHeading" Text="LOGICAL STEP" />
+                    <TextBlock Classes="metricValue" Text="{Binding LogicalStep}" />
+                  </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Padding="18" Background="#11161D" CornerRadius="6">
+                  <StackPanel Spacing="6">
+                    <TextBlock Classes="sectionHeading" Text="MEASURED SIGNALS" />
+                    <TextBlock FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding SignalHealthText}" />
+                  </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Padding="18" Background="#11161D" CornerRadius="6">
+                  <StackPanel Spacing="6">
+                    <TextBlock Classes="sectionHeading" Text="PROTECTION" />
+                    <TextBlock FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding ProtectionSummary}" />
+                  </StackPanel>
+                </Border>
+              </Grid>
+
+              <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Border Padding="18" Background="#11161D" CornerRadius="6">
+                  <StackPanel Spacing="8">
+                    <TextBlock Classes="sectionHeading" Text="FIRST-CRITICALITY GUIDANCE" />
+                    <TextBlock FontSize="12" Opacity="0.82" TextWrapping="Wrap" Text="{Binding ScenarioGuidanceText}" />
+                  </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Padding="18" Background="#11161D" CornerRadius="6">
+                  <StackPanel Spacing="8">
+                    <TextBlock Classes="sectionHeading" Text="OPERATIONAL CHECKS" />
+                    <TextBlock FontSize="12" Opacity="0.82" TextWrapping="Wrap" Text="{Binding ScenarioChecklistText}" />
+                  </StackPanel>
+                </Border>
+              </Grid>
+            </Grid>
+          </Border>
+
+          <Border IsVisible="{Binding IsOverviewWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+            <StackPanel Spacing="16">
+              <StackPanel Spacing="6">
+                <TextBlock Classes="sectionHeading" Text="M6.2 REUSABLE COMPONENT LIBRARY" />
+                <TextBlock FontSize="20" FontWeight="SemiBold" Text="One visual language for instruments and operator controls" />
+                <TextBlock MaxWidth="920" Opacity="0.76" TextWrapping="Wrap"
+                           Text="The validated M6 control room remains presentation-only. M7.3 now supplies a versioned pre-criticality source-range session and declarative first-criticality guidance while preserving deterministic stepping, fail-closed scenario gating and lower-layer physics ownership." />
+              </StackPanel>
+
+              <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
+                <controls:ControlRoomIndicatorLamp Grid.Column="0" Label="Plant condition" State="Normal" />
+                <controls:ControlRoomIndicatorLamp Grid.Column="1" Label="Approach limit" State="Warning" />
+                <controls:ControlRoomIndicatorLamp Grid.Column="2" Label="Protection active" State="Trip" />
+                <controls:ControlRoomIndicatorLamp Grid.Column="3" Label="Channel quality" State="Unavailable" />
+              </Grid>
+            </StackPanel>
+          </Border>
+
+
+          <StackPanel IsVisible="{Binding IsPrimaryWorkspaceSelected}" Spacing="18">
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="M6.4 PRIMARY-CIRCUIT MNEMONIC" />
+                  <TextBlock FontSize="20" FontWeight="SemiBold" Text="Main circulation → channel groups → steam drums → recirculation" />
+                  <TextBlock Opacity="0.72" TextWrapping="Wrap"
+                             Text="Loop total flow, header ΔP, drum pressure and drum level are M5.1 measured instruments. Header absolute pressures, MCP/branch details, drum temperature and boundary flows are explicitly labelled model diagnostics." />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                  <controls:ControlRoomNumericIndicator Grid.Column="0" Label="PRIMARY INVENTORY · MODEL DIAGNOSTIC"
+                      ValueText="{Binding PrimaryCircuit.TotalPrimaryMass.ValueText}" Unit="{Binding PrimaryCircuit.TotalPrimaryMass.Unit}" State="{Binding PrimaryCircuit.TotalPrimaryMass.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="1" Label="FEEDWATER TOTAL · MODEL DIAGNOSTIC"
+                      ValueText="{Binding PrimaryCircuit.TotalFeedwaterFlow.ValueText}" Unit="{Binding PrimaryCircuit.TotalFeedwaterFlow.Unit}" State="{Binding PrimaryCircuit.TotalFeedwaterFlow.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="2" Label="STEAM EXPORT TOTAL · MODEL DIAGNOSTIC"
+                      ValueText="{Binding PrimaryCircuit.TotalSteamExportFlow.ValueText}" Unit="{Binding PrimaryCircuit.TotalSteamExportFlow.Unit}" State="{Binding PrimaryCircuit.TotalSteamExportFlow.State}" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding PrimaryCircuit.Loops}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="controlRoom:PrimaryCircuitLoopPresentationSnapshot">
+                  <Border Margin="0,0,0,14" Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                    <StackPanel Spacing="14">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Spacing="3">
+                          <TextBlock Classes="sectionHeading" Text="MAIN CIRCULATION LOOP" />
+                          <TextBlock FontSize="22" FontWeight="SemiBold" Text="{Binding LoopId}" />
+                        </StackPanel>
+                        <Border Grid.Column="1" Padding="12,7" Background="#11161D" CornerRadius="5">
+                          <TextBlock FontWeight="SemiBold" Text="{Binding FlowDirection}" />
+                        </Border>
+                      </Grid>
+
+                      <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="TOTAL MCP FLOW · MEASURED" ValueText="{Binding TotalPumpFlow.ValueText}" Unit="{Binding TotalPumpFlow.Unit}" State="{Binding TotalPumpFlow.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="HEADER ΔP · MEASURED" ValueText="{Binding HeaderPressureRise.ValueText}" Unit="{Binding HeaderPressureRise.Unit}" State="{Binding HeaderPressureRise.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="SUCTION HEADER · MODEL" ValueText="{Binding SuctionHeaderPressure.ValueText}" Unit="{Binding SuctionHeaderPressure.Unit}" State="{Binding SuctionHeaderPressure.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="3" Label="PRESSURE HEADER · MODEL" ValueText="{Binding PressureHeaderPressure.ValueText}" Unit="{Binding PressureHeaderPressure.Unit}" State="{Binding PressureHeaderPressure.State}" />
+                      </Grid>
+
+                      <TextBlock Classes="sectionHeading" Text="MAIN CIRCULATION PUMPS · MODEL DIAGNOSTICS" />
+                      <ItemsControl ItemsSource="{Binding Pumps}">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate x:DataType="controlRoom:PrimaryCircuitPumpPresentationSnapshot">
+                            <Border Margin="0,0,0,6" Padding="12" Background="#11161D" CornerRadius="5">
+                              <Grid ColumnDefinitions="1.2*,Auto,*,*,*" ColumnSpacing="12">
+                                <TextBlock FontWeight="SemiBold" Text="{Binding PumpId}" />
+                                <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{Binding OperatingText}" />
+                                <TextBlock Grid.Column="2" Text="{Binding SpeedText}" />
+                                <TextBlock Grid.Column="3" Text="{Binding MassFlowText}" />
+                                <TextBlock Grid.Column="4" Text="{Binding PressureBoostText}" />
+                              </Grid>
+                            </Border>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+
+                      <TextBlock Classes="sectionHeading" Text="FUEL-CHANNEL GROUP PATHS · MODEL DIAGNOSTICS" />
+                      <ItemsControl ItemsSource="{Binding Branches}">
+                        <ItemsControl.ItemTemplate>
+                          <DataTemplate x:DataType="controlRoom:PrimaryCircuitBranchPresentationSnapshot">
+                            <Border Margin="0,0,0,6" Padding="12" Background="#11161D" CornerRadius="5">
+                              <Grid ColumnDefinitions="1.3*,Auto,*,*,*,Auto" ColumnSpacing="10">
+                                <StackPanel>
+                                  <TextBlock FontWeight="SemiBold" Text="{Binding FuelChannelGroupId}" />
+                                  <TextBlock FontSize="11" Opacity="0.62" Text="{Binding RepresentedChannelsText}" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{Binding FlowDirection}" />
+                                <TextBlock Grid.Column="2" Text="{Binding ChannelFlowText}" />
+                                <TextBlock Grid.Column="3" Text="{Binding ReturnFlowText}" />
+                                <TextBlock Grid.Column="4" Text="{Binding PressureDifferenceText}" />
+                                <StackPanel Grid.Column="5">
+                                  <TextBlock Text="{Binding OutletPhase}" />
+                                  <TextBlock FontSize="11" Opacity="0.62" Text="{Binding VoidText}" />
+                                </StackPanel>
+                              </Grid>
+                            </Border>
+                          </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                      </ItemsControl>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <TextBlock Classes="sectionHeading" Text="STEAM DRUMS" />
+                <ItemsControl ItemsSource="{Binding PrimaryCircuit.SteamDrums}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="controlRoom:PrimaryCircuitSteamDrumPresentationSnapshot">
+                      <Border Margin="0,0,0,10" Padding="14" Background="#11161D" CornerRadius="6">
+                        <StackPanel Spacing="10">
+                          <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding DrumId}" />
+                            <TextBlock Grid.Column="1" Opacity="0.66" Text="{Binding LoopId}" />
+                          </Grid>
+                          <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="8">
+                            <controls:ControlRoomNumericIndicator Grid.Column="0" Label="PRESSURE · MEASURED" ValueText="{Binding Pressure.ValueText}" Unit="{Binding Pressure.Unit}" State="{Binding Pressure.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="1" Label="LEVEL · MEASURED" ValueText="{Binding Level.ValueText}" Unit="{Binding Level.Unit}" State="{Binding Level.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="2" Label="TEMPERATURE · MODEL" ValueText="{Binding Temperature.ValueText}" Unit="{Binding Temperature.Unit}" State="{Binding Temperature.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="3" Label="STEAM FLOW · MODEL" ValueText="{Binding SteamFlow.ValueText}" Unit="{Binding SteamFlow.Unit}" State="{Binding SteamFlow.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="4" Label="RECIRCULATION · MODEL" ValueText="{Binding RecirculationFlow.ValueText}" Unit="{Binding RecirculationFlow.Unit}" State="{Binding RecirculationFlow.State}" />
+                          </Grid>
+                          <TextBlock FontSize="12" Opacity="0.68" Text="{Binding PhaseText}" />
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+
+            <Grid ColumnDefinitions="1.2*,1*" ColumnSpacing="14">
+              <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="12">
+                  <TextBlock Classes="sectionHeading" Text="PRIMARY-BOUNDARY VALVES · MODEL STATE" />
+                  <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="Only canonical valves hydraulically connected to primary-circuit nodes are shown. An empty list means no such valve exists in the current topology; the UI does not invent one." />
+                  <ItemsControl ItemsSource="{Binding PrimaryCircuit.Valves}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="controlRoom:PrimaryCircuitValvePresentationSnapshot">
+                        <Border Margin="0,0,0,6" Padding="10" Background="#11161D" CornerRadius="5">
+                          <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                            <StackPanel>
+                              <TextBlock FontWeight="SemiBold" Text="{Binding ValveId}" />
+                              <TextBlock FontSize="11" Opacity="0.62" Text="{Binding StateText}" />
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" Text="{Binding PositionText}" />
+                            <TextBlock Grid.Column="2" Opacity="0.62" Text="{Binding EndpointText}" />
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+
+              <Border Grid.Column="1" Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="12">
+                  <TextBlock Classes="sectionHeading" Text="MCP OPERATOR INTENT" />
+                  <controls:ControlRoomSelector Label="PUMP TARGET" OptionsText="{Binding PumpOptionsText}" SelectedIndex="{Binding SelectedPumpIndex, Mode=TwoWay}" State="{Binding PumpCommandState}" />
+                  <TextBlock FontSize="12" Opacity="0.68" Text="{Binding SelectedPumpText}" />
+                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="START / RUN" State="{Binding PumpCommandState}" Command="{Binding PumpStartCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="STOP" State="{Binding PumpCommandState}" Command="{Binding PumpStopCommand}" />
+                  </Grid>
+                  <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="These controls emit typed Application pump intents only. M5.3 remains the owner of canonical pump command arbitration and M3 remains the sole hydraulic integrator." />
+                </StackPanel>
+              </Border>
+            </Grid>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsTurbineWorkspaceSelected}" Spacing="18">
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="M6.5 TURBINE &amp; SECONDARY CYCLE" />
+                  <TextBlock FontSize="20" FontWeight="SemiBold" Text="Main steam → admission → turbine → condenser → condensate/feedwater" />
+                  <TextBlock Opacity="0.72" TextWrapping="Wrap"
+                             Text="Rotor speed, condenser pressure/vacuum/hotwell and plant shaft/heat-rejection instruments come from M5.1 measured signals. Steam-path, valve, stage and feedwater details are explicitly labelled model diagnostics." />
+                </StackPanel>
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                  <controls:ControlRoomNumericIndicator Grid.Column="0" Label="TURBINE SHAFT POWER · MEASURED"
+                      ValueText="{Binding TurbineSecondary.TotalTurbineShaftPower.ValueText}" Unit="{Binding TurbineSecondary.TotalTurbineShaftPower.Unit}" State="{Binding TurbineSecondary.TotalTurbineShaftPower.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="1" Label="STEAM ADMISSION · MODEL DIAGNOSTIC"
+                      ValueText="{Binding TurbineSecondary.TotalSteamFlow.ValueText}" Unit="{Binding TurbineSecondary.TotalSteamFlow.Unit}" State="{Binding TurbineSecondary.TotalSteamFlow.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="2" Label="CONDENSER HEAT REJECTION · MEASURED"
+                      ValueText="{Binding TurbineSecondary.TotalCondenserHeatRejection.ValueText}" Unit="{Binding TurbineSecondary.TotalCondenserHeatRejection.Unit}" State="{Binding TurbineSecondary.TotalCondenserHeatRejection.State}" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                  <StackPanel Spacing="4">
+                    <TextBlock Classes="sectionHeading" Text="TURBINE PROTECTION" />
+                    <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding TurbineSecondary.ProtectionText}" />
+                  </StackPanel>
+                  <controls:ControlRoomPushButton Grid.Column="1" Label="TURBINE TRIP" State="{Binding TurbineTripCommandState}" Command="{Binding TurbineTripCommand}" />
+                </Grid>
+                <controls:ControlRoomIndicatorLamp Label="TURBINE TRIP LATCH" State="{Binding TurbineSecondary.ProtectionState}" />
+              </StackPanel>
+            </Border>
+
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="12">
+                <TextBlock Classes="sectionHeading" Text="MAIN STEAM LINES · MODEL DIAGNOSTICS" />
+                <ItemsControl ItemsSource="{Binding TurbineSecondary.SteamLines}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="controlRoom:MainSteamLinePresentationSnapshot">
+                      <Border Margin="0,0,0,6" Padding="12" Background="#11161D" CornerRadius="5">
+                        <Grid ColumnDefinitions="1.2*,1.5*,Auto,Auto" ColumnSpacing="14">
+                          <TextBlock FontWeight="SemiBold" Text="{Binding LineId}" />
+                          <TextBlock Grid.Column="1" Opacity="0.72" Text="{Binding EndpointText}" />
+                          <TextBlock Grid.Column="2" Text="{Binding MassFlow.ValueText}" />
+                          <TextBlock Grid.Column="3" FontWeight="SemiBold" Text="{Binding FlowDirection}" />
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+
+            <ItemsControl ItemsSource="{Binding TurbineSecondary.AdmissionTrains}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="controlRoom:TurbineAdmissionTrainPresentationSnapshot">
+                  <Border Margin="0,0,0,12" Padding="18" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                    <StackPanel Spacing="10">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <StackPanel Spacing="3">
+                          <TextBlock Classes="sectionHeading" Text="TURBINE ADMISSION TRAIN" />
+                          <TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding TrainId}" />
+                          <TextBlock FontSize="12" Opacity="0.68" Text="{Binding EndpointText}" />
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{Binding TurbineInletPhase}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <TextBlock Grid.Column="0" Text="{Binding StopValveText}" />
+                        <TextBlock Grid.Column="1" Text="{Binding ControlValveText}" />
+                        <TextBlock Grid.Column="2" Text="{Binding AdmissionValveText}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="ADMISSION FLOW · MODEL" ValueText="{Binding AdmissionFlow.ValueText}" Unit="{Binding AdmissionFlow.Unit}" State="{Binding AdmissionFlow.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="INLET PRESSURE · MODEL" ValueText="{Binding TurbineInletPressure.ValueText}" Unit="{Binding TurbineInletPressure.Unit}" State="{Binding TurbineInletPressure.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="INLET TEMPERATURE · MODEL" ValueText="{Binding TurbineInletTemperature.ValueText}" Unit="{Binding TurbineInletTemperature.Unit}" State="{Binding TurbineInletTemperature.State}" />
+                      </Grid>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+              <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="12">
+                  <TextBlock Classes="sectionHeading" Text="ROTORS" />
+                  <ItemsControl ItemsSource="{Binding TurbineSecondary.Rotors}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="controlRoom:TurbineRotorPresentationSnapshot">
+                        <Border Margin="0,0,0,8" Padding="12" Background="#11161D" CornerRadius="5">
+                          <StackPanel Spacing="7">
+                            <Grid ColumnDefinitions="*,Auto">
+                              <TextBlock FontWeight="SemiBold" Text="{Binding RotorId}" />
+                              <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{Binding ProtectionText}" />
+                            </Grid>
+                            <controls:ControlRoomNumericIndicator Label="ROTOR SPEED · MEASURED" ValueText="{Binding Speed.ValueText}" Unit="{Binding Speed.Unit}" State="{Binding State}" />
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                              <TextBlock Text="{Binding ShaftPower.ValueText}" />
+                              <TextBlock Grid.Column="1" Text="{Binding NetTorque.ValueText}" />
+                            </Grid>
+                          </StackPanel>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+
+              <Border Grid.Column="1" Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="12">
+                  <TextBlock Classes="sectionHeading" Text="TURBINE STAGE GROUPS · MODEL DIAGNOSTICS" />
+                  <ItemsControl ItemsSource="{Binding TurbineSecondary.StageGroups}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="controlRoom:TurbineStageGroupPresentationSnapshot">
+                        <Border Margin="0,0,0,8" Padding="12" Background="#11161D" CornerRadius="5">
+                          <StackPanel Spacing="5">
+                            <Grid ColumnDefinitions="*,Auto">
+                              <TextBlock FontWeight="SemiBold" Text="{Binding StageGroupId}" />
+                              <TextBlock Grid.Column="1" Opacity="0.68" Text="{Binding RotorId}" />
+                            </Grid>
+                            <TextBlock FontSize="12" Opacity="0.68" Text="{Binding EndpointText}" />
+                            <TextBlock Text="{Binding SteamFlow.ValueText}" />
+                            <TextBlock Text="{Binding ShaftPower.ValueText}" />
+                          </StackPanel>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding TurbineSecondary.Condensers}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="controlRoom:CondenserPresentationSnapshot">
+                  <Border Margin="0,0,0,12" Padding="18" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                    <StackPanel Spacing="10">
+                      <TextBlock Classes="sectionHeading" Text="CONDENSER / HOTWELL" />
+                      <TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding CondenserId}" />
+                      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="PRESSURE · MEASURED" ValueText="{Binding Pressure.ValueText}" Unit="{Binding Pressure.Unit}" State="{Binding Pressure.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="VACUUM · MEASURED" ValueText="{Binding Vacuum.ValueText}" Unit="{Binding Vacuum.Unit}" State="{Binding Vacuum.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="HOTWELL MASS · MEASURED" ValueText="{Binding HotwellMass.ValueText}" Unit="{Binding HotwellMass.Unit}" State="{Binding HotwellMass.State}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <TextBlock Text="{Binding CondensationFlow.ValueText}" />
+                        <TextBlock Grid.Column="1" Text="{Binding HeatRejectionPower.ValueText}" />
+                        <TextBlock Grid.Column="2" Text="{Binding SteamSpacePhase}" />
+                      </Grid>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="12">
+                <TextBlock Classes="sectionHeading" Text="CONDENSATE / FEEDWATER TRAINS · MODEL DIAGNOSTICS" />
+                <ItemsControl ItemsSource="{Binding TurbineSecondary.FeedwaterTrains}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="controlRoom:FeedwaterTrainPresentationSnapshot">
+                      <Border Margin="0,0,0,8" Padding="12" Background="#11161D" CornerRadius="5">
+                        <StackPanel Spacing="7">
+                          <TextBlock FontWeight="SemiBold" Text="{Binding TrainId}" />
+                          <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                            <StackPanel Spacing="3">
+                              <TextBlock FontWeight="SemiBold" Text="CONDENSATE PUMP" />
+                              <TextBlock Text="{Binding CondensatePump.PumpId}" />
+                              <TextBlock Text="{Binding CondensatePump.OperatingText}" />
+                              <TextBlock Text="{Binding CondensatePump.MassFlow.ValueText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Spacing="3">
+                              <TextBlock FontWeight="SemiBold" Text="FEEDWATER PUMP" />
+                              <TextBlock Text="{Binding FeedwaterPump.PumpId}" />
+                              <TextBlock Text="{Binding FeedwaterPump.OperatingText}" />
+                              <TextBlock Text="{Binding FeedwaterPump.MassFlow.ValueText}" />
+                            </StackPanel>
+                          </Grid>
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsElectricalWorkspaceSelected}" Spacing="18">
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="M6.5 GENERATOR &amp; ELECTRICAL" />
+                  <TextBlock FontSize="20" FontWeight="SemiBold" Text="Generator synchronization, breaker state and grid-facing output" />
+                  <TextBlock Opacity="0.72" TextWrapping="Wrap"
+                             Text="Generator frequency and electrical output are M5.1 measured instruments. Grid reference, terminal voltage, phase difference, synchronization gate and conversion diagnostics are explicit model diagnostics from M4.5." />
+                </StackPanel>
+                <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
+                  <controls:ControlRoomNumericIndicator Grid.Column="0" Label="GROSS OUTPUT · MEASURED" ValueText="{Binding Electrical.GrossElectricalOutput.ValueText}" Unit="{Binding Electrical.GrossElectricalOutput.Unit}" State="{Binding Electrical.GrossElectricalOutput.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="1" Label="GRID FREQUENCY · MODEL" ValueText="{Binding Electrical.Grid.Frequency.ValueText}" Unit="{Binding Electrical.Grid.Frequency.Unit}" State="{Binding Electrical.Grid.Frequency.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="2" Label="GRID VOLTAGE · MODEL" ValueText="{Binding Electrical.Grid.LineVoltage.ValueText}" Unit="{Binding Electrical.Grid.LineVoltage.Unit}" State="{Binding Electrical.Grid.LineVoltage.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="3" Label="GRID PHASE · MODEL" ValueText="{Binding Electrical.Grid.PhaseAngle.ValueText}" Unit="{Binding Electrical.Grid.PhaseAngle.Unit}" State="{Binding Electrical.Grid.PhaseAngle.State}" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <Grid ColumnDefinitions="1.25*,1*" ColumnSpacing="14">
+              <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="12">
+                  <TextBlock Classes="sectionHeading" Text="GENERATOR / BREAKER CONTROL" />
+                  <controls:ControlRoomSelector Label="GENERATOR TARGET" OptionsText="{Binding GeneratorOptionsText}" SelectedIndex="{Binding SelectedGeneratorIndex, Mode=TwoWay}" State="{Binding GeneratorTripCommandState}" />
+                  <TextBlock FontSize="12" Opacity="0.72" Text="{Binding SelectedGeneratorSynchronizationText}" />
+                  <TextBlock FontSize="12" Opacity="0.72" Text="{Binding SelectedBreakerId}" />
+                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="SPEED LOWER" State="{Binding TurbineSpeedCommandState}" Command="{Binding TurbineSpeedLowerCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="SPEED RAISE" State="{Binding TurbineSpeedCommandState}" Command="{Binding TurbineSpeedRaiseCommand}" />
+                  </Grid>
+                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="LOAD LOWER" State="{Binding GeneratorLoadCommandState}" Command="{Binding GeneratorLoadLowerCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="LOAD RAISE" State="{Binding GeneratorLoadCommandState}" Command="{Binding GeneratorLoadRaiseCommand}" />
+                  </Grid>
+                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="CLOSE BREAKER" State="{Binding BreakerCloseCommandState}" Command="{Binding GeneratorBreakerCloseCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="OPEN BREAKER" State="{Binding BreakerOpenCommandState}" Command="{Binding GeneratorBreakerOpenCommand}" />
+                  </Grid>
+                  <controls:ControlRoomPushButton Label="GENERATOR TRIP" State="{Binding GeneratorTripCommandState}" Command="{Binding GeneratorTripCommand}" />
+                  <TextBlock FontSize="11" Opacity="0.62" TextWrapping="Wrap" Text="Breaker close fails closed in the UI when the published synchronization permissive is false or generator trip is active. M4.5 remains the authoritative synchronization and breaker owner." />
+                </StackPanel>
+              </Border>
+
+              <Border Grid.Column="1" Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="10">
+                  <TextBlock Classes="sectionHeading" Text="ELECTRICAL PROTECTION" />
+                  <controls:ControlRoomIndicatorLamp Label="GENERATOR TRIP LATCH" State="{Binding Electrical.ProtectionState}" />
+                  <TextBlock FontWeight="SemiBold" Text="{Binding Electrical.ProtectionText}" />
+                  <TextBlock TextWrapping="Wrap" Opacity="0.72" Text="{Binding ElectricalContextText}" />
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <ItemsControl ItemsSource="{Binding Electrical.Generators}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="controlRoom:GeneratorPresentationSnapshot">
+                  <Border Margin="0,0,0,12" Padding="18" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                    <StackPanel Spacing="10">
+                      <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                        <StackPanel Spacing="3">
+                          <TextBlock Classes="sectionHeading" Text="SYNCHRONOUS GENERATOR" />
+                          <TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding GeneratorId}" />
+                          <TextBlock FontSize="12" Opacity="0.68" Text="{Binding RotorId}" />
+                        </StackPanel>
+                        <controls:ControlRoomIndicatorLamp Grid.Column="1" Label="SYNC" State="{Binding SynchronizationState}" />
+                        <controls:ControlRoomIndicatorLamp Grid.Column="2" Label="BREAKER" State="{Binding BreakerState}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="FREQUENCY · MEASURED" ValueText="{Binding Frequency.ValueText}" Unit="{Binding Frequency.Unit}" State="{Binding Frequency.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="ELECTRICAL OUTPUT · MEASURED" ValueText="{Binding ElectricalOutput.ValueText}" Unit="{Binding ElectricalOutput.Unit}" State="{Binding ElectricalOutput.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="TERMINAL VOLTAGE · MODEL" ValueText="{Binding TerminalVoltage.ValueText}" Unit="{Binding TerminalVoltage.Unit}" State="{Binding TerminalVoltage.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="3" Label="PHASE DIFFERENCE · MODEL" ValueText="{Binding PhaseDifference.ValueText}" Unit="{Binding PhaseDifference.Unit}" State="{Binding PhaseDifference.State}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <TextBlock Text="{Binding SynchronizationText}" />
+                        <TextBlock Grid.Column="1" Text="{Binding BreakerText}" />
+                        <TextBlock Grid.Column="2" Text="{Binding BreakerId}" />
+                      </Grid>
+                    </StackPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsReactorWorkspaceSelected}" Spacing="18">
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="M6.3 REACTOR INSTRUMENTATION" />
+                  <TextBlock FontSize="20" FontWeight="SemiBold" Text="Reactor power, kinetics and reactivity" />
+                  <TextBlock Opacity="0.72" TextWrapping="Wrap"
+                             Text="Thermal power is an M5.1 measured instrument. Period/reactivity are explicitly labelled model diagnostics projected by Application; Avalonia never traverses Simulation state directly." />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                  <controls:ControlRoomNumericIndicator Grid.Row="0" Grid.Column="0"
+                      Label="REACTOR THERMAL POWER · MEASURED"
+                      ValueText="{Binding ReactorCore.ReactorThermalPower.ValueText}"
+                      Unit="{Binding ReactorCore.ReactorThermalPower.Unit}"
+                      State="{Binding ReactorCore.ReactorThermalPower.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Row="0" Grid.Column="1"
+                      Label="REACTOR PERIOD · MODEL DIAGNOSTIC"
+                      ValueText="{Binding ReactorCore.ReactorPeriod.ValueText}"
+                      Unit="{Binding ReactorCore.ReactorPeriod.Unit}"
+                      State="{Binding ReactorCore.ReactorPeriod.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Row="0" Grid.Column="2"
+                      Label="TOTAL REACTIVITY · MODEL DIAGNOSTIC"
+                      ValueText="{Binding ReactorCore.TotalReactivity.ValueText}"
+                      Unit="{Binding ReactorCore.TotalReactivity.Unit}"
+                      State="{Binding ReactorCore.TotalReactivity.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Row="1" Grid.Column="0"
+                      Label="ROD REACTIVITY"
+                      ValueText="{Binding ReactorCore.RodReactivity.ValueText}"
+                      Unit="{Binding ReactorCore.RodReactivity.Unit}"
+                      State="{Binding ReactorCore.RodReactivity.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Row="1" Grid.Column="1"
+                      Label="NON-ROD REACTIVITY"
+                      ValueText="{Binding ReactorCore.NonRodReactivity.ValueText}"
+                      Unit="{Binding ReactorCore.NonRodReactivity.Unit}"
+                      State="{Binding ReactorCore.NonRodReactivity.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Row="1" Grid.Column="2"
+                      Label="AVERAGE ROD WITHDRAWAL"
+                      ValueText="{Binding ReactorCore.AverageRodWithdrawal.ValueText}"
+                      Unit="{Binding ReactorCore.AverageRodWithdrawal.Unit}"
+                      State="{Binding ReactorCore.AverageRodWithdrawal.State}" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="CORE-ZONE DIAGNOSTIC MAP" />
+                  <TextBlock FontSize="20" FontWeight="SemiBold" Text="Aggregated spatial core state" />
+                  <TextBlock Opacity="0.72" TextWrapping="Wrap"
+                             Text="Each tile is one canonical M3 core zone. These are model diagnostics for educational spatial awareness, not substitute instrument channels or protection inputs." />
+                </StackPanel>
+
+                <ItemsControl ItemsSource="{Binding ReactorCore.Zones}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="controlRoom:ReactorCoreZonePresentationSnapshot">
+                      <Border Width="210" MinHeight="150" Margin="0,0,10,10" Padding="14" Background="#11161D" CornerRadius="6" BorderThickness="1" BorderBrush="#303846">
+                        <StackPanel Spacing="5">
+                          <Grid ColumnDefinitions="*,Auto">
+                            <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding ZoneId}" />
+                            <TextBlock Grid.Column="1" FontSize="11" Opacity="0.58" Text="ZONE" />
+                          </Grid>
+                          <TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding PowerText}" />
+                          <TextBlock FontSize="11" Opacity="0.68" Text="{Binding PowerFractionText}" />
+                          <TextBlock FontSize="12" Text="{Binding FuelTemperatureText}" />
+                          <TextBlock FontSize="12" Text="{Binding CoolantTemperatureText}" />
+                          <TextBlock FontSize="12" Text="{Binding VoidText}" />
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <TextBlock FontSize="12" Opacity="0.62" TextWrapping="Wrap"
+                           Text="If no runtime snapshot is connected, the map remains empty rather than synthesizing a decorative core state." />
+              </StackPanel>
+            </Border>
+
+            <Grid ColumnDefinitions="1.2*,1*" ColumnSpacing="14">
+              <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="14">
+                  <StackPanel Spacing="5">
+                    <TextBlock Classes="sectionHeading" Text="CONTROL RODS" />
+                    <TextBlock FontSize="20" FontWeight="SemiBold" Text="Canonical rod target and command seam" />
+                  </StackPanel>
+
+                  <controls:ControlRoomSelector
+                      Label="ROD TARGET"
+                      OptionsText="{Binding RodOptionsText}"
+                      SelectedIndex="{Binding SelectedRodIndex, Mode=TwoWay}"
+                      State="{Binding RodCommandState}" />
+
+                  <StackPanel Orientation="Horizontal" Spacing="4">
+                    <TextBlock FontSize="12" Opacity="0.68" Text="Selected canonical target:" />
+                    <TextBlock FontSize="12" Opacity="0.68" FontWeight="SemiBold" Text="{Binding SelectedRodId}" />
+                  </StackPanel>
+
+                  <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="INSERT" State="{Binding RodCommandState}" Command="{Binding RodInsertCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="HOLD" State="{Binding RodCommandState}" Command="{Binding RodHoldCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="2" Label="WITHDRAW" State="{Binding RodWithdrawCommandState}" Command="{Binding RodWithdrawCommand}" />
+                  </Grid>
+
+                  <ItemsControl ItemsSource="{Binding ReactorCore.Rods}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="controlRoom:ReactorRodPresentationSnapshot">
+                        <Border Margin="0,0,0,6" Padding="10" Background="#11161D" CornerRadius="5">
+                          <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                            <TextBlock FontWeight="SemiBold" Text="{Binding RodId}" />
+                            <TextBlock Grid.Column="1" Text="{Binding PositionText}" />
+                            <TextBlock Grid.Column="2" Opacity="0.68" Text="{Binding Motion}" />
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+
+              <StackPanel Grid.Column="1" Spacing="14">
+                <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                  <StackPanel Spacing="12">
+                    <TextBlock Classes="sectionHeading" Text="REACTOR PROTECTION" />
+                    <controls:ControlRoomIndicatorLamp Label="REACTOR SCRAM" State="{Binding ReactorCore.ProtectionState}" />
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding ReactorCore.ProtectionText}" />
+                    <controls:ControlRoomIndicatorLamp Label="ROD WITHDRAWAL INTERLOCK" State="{Binding ReactorCore.RodWithdrawalInterlockState}" />
+                    <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="{Binding ReactorCore.RodWithdrawalInterlockText}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                      <controls:ControlRoomPushButton Grid.Column="0" Label="SCRAM" State="{Binding ScramCommandState}" Command="{Binding ReactorScramCommand}" />
+                      <controls:ControlRoomPushButton Grid.Column="1" Label="PROTECTION RESET" State="{Binding ReactorCommandState}" Command="{Binding ProtectionResetCommand}" />
+                    </Grid>
+                  </StackPanel>
+                </Border>
+
+                <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                  <StackPanel Spacing="10">
+                    <TextBlock Classes="sectionHeading" Text="IODINE / XENON" />
+                    <controls:ControlRoomNumericIndicator
+                        Label="XENON REACTIVITY"
+                        ValueText="{Binding ReactorCore.XenonReactivity.ValueText}"
+                        Unit="{Binding ReactorCore.XenonReactivity.Unit}"
+                        State="{Binding ReactorCore.XenonReactivity.State}" />
+                    <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="{Binding XenonAvailabilityText}" />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Grid>
+          </StackPanel>
+
+
+          <StackPanel IsVisible="{Binding IsAlarmsWorkspaceSelected}" Spacing="18">
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="M6.6 TRENDS · ALARMS · EVENT TIMELINE" />
+                  <TextBlock FontSize="20" FontWeight="SemiBold" Text="Deterministic operator history over immutable presentation snapshots" />
+                  <TextBlock Opacity="0.72" TextWrapping="Wrap"
+                             Text="Trend samples are indexed by logical step. Alarm events preserve the M5.6 monotonic sequence number. No wall-clock timestamp, rendering cadence or hidden true-state polling participates in the history." />
+                </StackPanel>
+
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                  <controls:ControlRoomNumericIndicator Grid.Column="0" Label="ANNUNCIATED" ValueText="{Binding AnnunciatedAlarmCountText}" Unit="alarms" State="Normal" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="1" Label="UNACKNOWLEDGED" ValueText="{Binding UnacknowledgedAlarmCountText}" Unit="alarms" State="{Binding UnacknowledgedAlarmVisualState}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="2" Label="LOGICAL STEP" ValueText="{Binding LogicalStepText}" Unit="step" State="Normal" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel Spacing="4">
+                    <TextBlock Classes="sectionHeading" Text="CONFIGURED LIVE TRENDS" />
+                    <TextBlock FontSize="12" Opacity="0.68" Text="Bounded Application-side history; default sources are configurable without changing simulation state." />
+                  </StackPanel>
+                  <TextBlock Grid.Column="1" FontSize="12" Opacity="0.68" VerticalAlignment="Center" Text="sparkline: oldest → newest" />
+                </Grid>
+                <ItemsControl ItemsSource="{Binding OperationalHistory.TrendSeries}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="controlRoom:ControlRoomTrendSeriesSnapshot">
+                      <Border Margin="0,0,0,8" Padding="12" Background="#11161D" CornerRadius="5">
+                        <Grid ColumnDefinitions="1.1*,2*,Auto" ColumnSpacing="12">
+                          <StackPanel Spacing="3">
+                            <TextBlock FontWeight="SemiBold" Text="{Binding Title}" />
+                            <TextBlock FontSize="11" Opacity="0.62" Text="{Binding Provenance}" />
+                            <TextBlock FontSize="10" Opacity="0.5" Text="{Binding SourceId}" />
+                          </StackPanel>
+                          <TextBlock Grid.Column="1" FontFamily="Consolas" FontSize="19" VerticalAlignment="Center" Text="{Binding SparklineText}" />
+                          <StackPanel Grid.Column="2" MinWidth="190" Spacing="2">
+                            <TextBlock FontWeight="SemiBold" Text="{Binding CurrentText}" />
+                            <TextBlock FontSize="11" Opacity="0.68" Text="{Binding MinimumLabel}" />
+                            <TextBlock FontSize="11" Opacity="0.68" Text="{Binding MaximumLabel}" />
+                            <TextBlock FontSize="11" Opacity="0.55" Text="{Binding SampleCountText}" />
+                          </StackPanel>
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+
+            <Grid ColumnDefinitions="1.55*,1*" ColumnSpacing="14">
+              <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                <StackPanel Spacing="12">
+                  <TextBlock Classes="sectionHeading" Text="ANNUNCIATOR · M5.6 OPERATOR MEMORY" />
+                  <ItemsControl ItemsSource="{Binding AlarmEvents.Alarms}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="controlRoom:ControlRoomAlarmPresentationSnapshot">
+                        <Border Margin="0,0,0,8" Padding="12" Background="#11161D" CornerRadius="5">
+                          <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                            <controls:ControlRoomIndicatorLamp Label="{Binding SeverityText}" State="{Binding VisualState}" />
+                            <StackPanel Grid.Column="1" Spacing="2">
+                              <TextBlock FontWeight="SemiBold" Text="{Binding Title}" />
+                              <TextBlock FontSize="11" Opacity="0.62" Text="{Binding AlarmId}" />
+                              <TextBlock FontSize="12" Text="{Binding AnnunciatorText}" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="2" HorizontalAlignment="Right" Spacing="3">
+                              <TextBlock FontSize="11" FontWeight="SemiBold" Text="{Binding FirstOutText}" />
+                              <TextBlock FontSize="11" Opacity="0.62" Text="{Binding ActivationSequenceText}" />
+                            </StackPanel>
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+
+              <StackPanel Grid.Column="1" Spacing="14">
+                <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                  <StackPanel Spacing="10">
+                    <TextBlock Classes="sectionHeading" Text="ANNUNCIATOR COMMANDS" />
+                    <controls:ControlRoomSelector Label="ALARM TARGET" OptionsText="{Binding AlarmOptionsText}" SelectedIndex="{Binding SelectedAlarmIndex, Mode=TwoWay}" State="{Binding AlarmSelectionState}" />
+                    <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="{Binding SelectedAlarmStatusText}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                      <controls:ControlRoomPushButton Grid.Column="0" Label="ACKNOWLEDGE" State="{Binding AlarmAcknowledgeCommandState}" Command="{Binding AlarmAcknowledgeCommand}" />
+                      <controls:ControlRoomPushButton Grid.Column="1" Label="RESET" State="{Binding AlarmResetCommandState}" Command="{Binding AlarmResetCommand}" />
+                    </Grid>
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                      <controls:ControlRoomPushButton Grid.Column="0" Label="ACK ALL" State="{Binding AlarmAcknowledgeAllCommandState}" Command="{Binding AlarmAcknowledgeAllCommand}" />
+                      <controls:ControlRoomPushButton Grid.Column="1" Label="RESET ALL" State="{Binding AlarmResetAllCommandState}" Command="{Binding AlarmResetAllCommand}" />
+                    </Grid>
+                    <TextBlock FontSize="11" Opacity="0.62" TextWrapping="Wrap" Text="ACK/RESET affect M5.6 annunciator memory only. They never clear M5.5 SCRAM, turbine/generator trips or interlocks." />
+                  </StackPanel>
+                </Border>
+
+                <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+                  <StackPanel Spacing="10">
+                    <TextBlock Classes="sectionHeading" Text="FIRST-OUT GROUPS" />
+                    <ItemsControl ItemsSource="{Binding AlarmEvents.FirstOutGroups}">
+                      <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="controlRoom:ControlRoomFirstOutGroupPresentationSnapshot">
+                          <Border Margin="0,0,0,7" Padding="10" Background="#11161D" CornerRadius="5">
+                            <StackPanel Spacing="3">
+                              <TextBlock FontWeight="SemiBold" Text="{Binding GroupId}" />
+                              <TextBlock Text="{Binding FirstOutText}" />
+                              <TextBlock FontSize="11" Opacity="0.62" TextWrapping="Wrap" Text="{Binding AnnunciatedText}" />
+                            </StackPanel>
+                          </Border>
+                        </DataTemplate>
+                      </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Grid>
+
+            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="12">
+                <TextBlock Classes="sectionHeading" Text="DETERMINISTIC EVENT TIMELINE" />
+                <TextBlock FontSize="12" Opacity="0.68" Text="Newest first · ordered by M5.6 logical sequence, with the logical simulation step captured when the presentation snapshot was published." />
+                <ItemsControl ItemsSource="{Binding OperationalHistory.Events}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="controlRoom:ControlRoomAlarmEventPresentationSnapshot">
+                      <Border Margin="0,0,0,6" Padding="10" Background="#11161D" CornerRadius="4">
+                        <Grid ColumnDefinitions="90,100,120,*,Auto" ColumnSpacing="10">
+                          <TextBlock FontFamily="Consolas" FontWeight="SemiBold" Text="{Binding SequenceText}" />
+                          <TextBlock Grid.Column="1" FontFamily="Consolas" Text="{Binding LogicalStepText}" />
+                          <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="{Binding KindText}" />
+                          <TextBlock Grid.Column="3" Text="{Binding AlarmTitle}" />
+                          <TextBlock Grid.Column="4" FontSize="11" Opacity="0.62" Text="{Binding AlarmId}" />
+                        </Grid>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <Border Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+            <StackPanel Spacing="10">
+              <TextBlock Classes="sectionHeading" Text="ARCHITECTURE CONTRACT" />
+              <TextBlock FontSize="18" FontWeight="SemiBold" Text="Measured state in. Explicit diagnostics in. Commands out. Physics stays below Application." />
+              <TextBlock Opacity="0.74" TextWrapping="Wrap"
+                         Text="M6 domain panels bind only to Application presentation records. Operator controls dispatch typed intents; unavailable runtime/target/permissive state disables commands fail-closed. No reactor, hydraulic, turbine, condenser, generator, synchronization or protection physics exists in Avalonia." />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+
+      <Border Grid.Column="2" Padding="20" BorderThickness="1,0,0,0" BorderBrush="#303846">
+        <ScrollViewer>
+          <StackPanel Spacing="18">
+            <StackPanel Spacing="5">
+              <TextBlock Classes="sectionHeading" Text="OPERATING SUMMARY" />
+              <TextBlock FontSize="20" FontWeight="SemiBold" Text="Snapshot status" />
+            </StackPanel>
+
+            <Border Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="8">
+                <TextBlock Classes="sectionHeading" Text="ANNUNCIATOR" />
+                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                  <TextBlock Text="Annunciated" />
+                  <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{Binding AnnunciatedAlarmCount}" />
+                  <TextBlock Grid.Row="1" Text="Unacknowledged" />
+                  <TextBlock Grid.Row="1" Grid.Column="1" FontWeight="SemiBold" Text="{Binding UnacknowledgedAlarmCount}" />
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <Border IsVisible="{Binding IsReactorWorkspaceSelected}" Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="sectionHeading" Text="REACTOR CONTEXT" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding ReactorCore.ProtectionText}" />
+                <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="{Binding ReactorCore.RodWithdrawalInterlockText}" />
+              </StackPanel>
+            </Border>
+
+            <Border IsVisible="{Binding IsPrimaryWorkspaceSelected}" Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="sectionHeading" Text="PRIMARY CONTEXT" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding PrimaryContextText}" />
+                <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="Measured loop/drum instruments remain distinct from model diagnostics." />
+              </StackPanel>
+            </Border>
+
+            <Border IsVisible="{Binding IsTurbineWorkspaceSelected}" Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="sectionHeading" Text="TURBINE / SECONDARY CONTEXT" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding TurbineContextText}" />
+                <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="Measured rotor/condenser instruments remain distinct from steam-path and feedwater model diagnostics." />
+              </StackPanel>
+            </Border>
+
+            <Border IsVisible="{Binding IsElectricalWorkspaceSelected}" Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="sectionHeading" Text="ELECTRICAL CONTEXT" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding ElectricalContextText}" />
+                <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="Synchronization permissives and breaker ownership remain authoritative in M4.5/M5.5." />
+              </StackPanel>
+            </Border>
+
+            <Border IsVisible="{Binding IsAlarmsWorkspaceSelected}" Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="sectionHeading" Text="ALARMS / EVENTS CONTEXT" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding AlarmContextText}" />
+                <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="Sequence ordering is deterministic; acknowledgement/reset remains separate from protection." />
+              </StackPanel>
+            </Border>
+
+            <Border Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="sectionHeading" Text="COMMAND DISPATCH" />
+                <TextBlock TextWrapping="Wrap" Text="{Binding CommandStatus}" />
+              </StackPanel>
+            </Border>
+
+            <Border Padding="16" Background="#171C24" CornerRadius="6">
+              <StackPanel Spacing="7">
+                <TextBlock Classes="sectionHeading" Text="BASELINE" />
+                <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding Milestone}" />
+                <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="{Binding Status}" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+      </Border>
+    </Grid>
+
+    <Border Grid.Row="2" Padding="18,9" Background="#171C24" BorderThickness="0,1,0,0" BorderBrush="#303846">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock FontSize="12" Opacity="0.72" Text="M7.3 First Criticality &amp; Low-Power Operation · exact-version source-range session · observational guidance · no UI physics" />
+        <TextBlock Grid.Column="1" FontSize="12" Opacity="0.72" Text="Bounded trends · M5.6 annunciator semantics · deterministic event sequence" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

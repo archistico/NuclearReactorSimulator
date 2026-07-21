@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <IsPackable>false</IsPackable>
+    <RootNamespace>NuclearReactorSimulator.Infrastructure.Tests</RootNamespace>
+    <AssemblyName>NuclearReactorSimulator.Infrastructure.Tests</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\NuclearReactorSimulator.Infrastructure\NuclearReactorSimulator.Infrastructure.csproj" />
+  </ItemGroup>
+</Project>
