@@ -359,9 +359,11 @@
                   <controls:ControlRoomSelector Label="PUMP TARGET" OptionsText="{Binding PumpOptionsText}" SelectedIndex="{Binding SelectedPumpIndex, Mode=TwoWay}" State="{Binding PumpCommandState}" />
                   <TextBlock FontSize="12" Opacity="0.68" Text="{Binding SelectedPumpText}" />
                   <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="START / RUN" State="{Binding PumpCommandState}" Command="{Binding PumpStartCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="STOP" State="{Binding PumpCommandState}" Command="{Binding PumpStopCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="START / RUN" State="{Binding PumpCommandState}" IsActive="{Binding PumpStartCommandActive}" IsCommandEnabled="{Binding PumpStartCommandEnabled}" Command="{Binding PumpStartCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="STOP" State="{Binding PumpCommandState}" IsActive="{Binding PumpStopCommandActive}" IsCommandEnabled="{Binding PumpStopCommandEnabled}" Command="{Binding PumpStopCommand}" />
                   </Grid>
+                  <TextBlock FontSize="11" Opacity="0.78" TextWrapping="Wrap" Text="The filled button is the ACTUAL committed pump state. START/RUN and STOP are mutually exclusive persistent states; the already-satisfied command is disabled. An accepted command may become filled only after the next fixed step confirms the new state." />
+                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding LastControlActionText}" />
                   <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="These controls emit typed Application pump intents only. M5.3 remains the owner of canonical pump command arbitration and M3 remains the sole hydraulic integrator." />
                 </StackPanel>
               </Border>
@@ -592,10 +594,12 @@
                     <controls:ControlRoomPushButton Grid.Column="1" Label="LOAD RAISE" State="{Binding GeneratorLoadCommandState}" Command="{Binding GeneratorLoadRaiseCommand}" />
                   </Grid>
                   <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="CLOSE BREAKER" State="{Binding BreakerCloseCommandState}" Command="{Binding GeneratorBreakerCloseCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="OPEN BREAKER" State="{Binding BreakerOpenCommandState}" Command="{Binding GeneratorBreakerOpenCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="CLOSE BREAKER" State="{Binding BreakerCloseCommandState}" IsActive="{Binding BreakerCloseCommandActive}" IsCommandEnabled="{Binding BreakerCloseCommandEnabled}" Command="{Binding GeneratorBreakerCloseCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="OPEN BREAKER" State="{Binding BreakerOpenCommandState}" IsActive="{Binding BreakerOpenCommandActive}" IsCommandEnabled="{Binding BreakerOpenCommandEnabled}" Command="{Binding GeneratorBreakerOpenCommand}" />
                   </Grid>
                   <controls:ControlRoomPushButton Label="{Binding GeneratorTripCommandLabel}" State="{Binding GeneratorTripCommandState}" IsCommandEnabled="{Binding GeneratorTripCommandEnabled}" Command="{Binding GeneratorTripCommand}" />
+                  <TextBlock FontSize="11" Opacity="0.78" TextWrapping="Wrap" Text="SPEED ± and LOAD ± are MOMENTARY setpoint steps: they flash when pressed and never remain latched. CLOSE/OPEN BREAKER show the ACTUAL committed breaker state; the active side stays filled and cannot be re-issued. After an accepted breaker command, the fill changes only when a later fixed step confirms the new state." />
+                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding LastControlActionText}" />
                   <TextBlock FontSize="11" Opacity="0.62" TextWrapping="Wrap" Text="Breaker close fails closed in the UI when the published synchronization permissive is false or generator trip is active. M4.5 remains the authoritative synchronization and breaker owner." />
                 </StackPanel>
               </Border>
@@ -747,12 +751,15 @@
                     <TextBlock FontSize="12" Opacity="0.68" Text="Selected canonical target:" />
                     <TextBlock FontSize="12" Opacity="0.68" FontWeight="SemiBold" Text="{Binding SelectedRodId}" />
                   </StackPanel>
+                  <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding SelectedRodMotionText}" />
 
                   <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="INSERT" State="{Binding RodCommandState}" Command="{Binding RodInsertCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="HOLD" State="{Binding RodCommandState}" Command="{Binding RodHoldCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="2" Label="WITHDRAW" State="{Binding RodWithdrawCommandState}" Command="{Binding RodWithdrawCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="INSERT" State="{Binding RodCommandState}" IsActive="{Binding RodInsertCommandActive}" IsCommandEnabled="{Binding RodInsertCommandEnabled}" Command="{Binding RodInsertCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="HOLD" State="{Binding RodCommandState}" IsActive="{Binding RodHoldCommandActive}" IsCommandEnabled="{Binding RodHoldCommandEnabled}" Command="{Binding RodHoldCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="2" Label="WITHDRAW" State="{Binding RodWithdrawCommandState}" IsActive="{Binding RodWithdrawCommandActive}" IsCommandEnabled="{Binding RodWithdrawCommandEnabled}" Command="{Binding RodWithdrawCommand}" />
                   </Grid>
+                  <TextBlock FontSize="11" Opacity="0.78" TextWrapping="Wrap" Text="The filled button is the ACTUAL committed motion mode of the selected rod/group. INSERT, HOLD and WITHDRAW remain active until another rod-motion command changes the canonical state. MIXED means group members do not share one motion. After an accepted command, the fill changes only when the next fixed step publishes the new motion." />
+                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding LastControlActionText}" />
 
                   <ItemsControl ItemsSource="{Binding ReactorCore.Rods}">
                     <ItemsControl.ItemTemplate>

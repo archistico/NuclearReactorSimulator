@@ -233,6 +233,52 @@ public sealed class MainWindowViewModelAdvancedTests
     }
 
     [Fact]
+    public void PersistentRodAndPumpButtons_ReflectCanonicalPublishedState_NotLastClick()
+    {
+        var runningHold = CreateViewModel(CreateSnapshot(
+            rodTargetCount: 1,
+            rodMotion: "HOLD",
+            pumpCount: 1,
+            pumpRunning: true), new RecordingDispatcher());
+
+        Assert.True(runningHold.RodHoldCommandActive);
+        Assert.False(runningHold.RodHoldCommandEnabled);
+        Assert.False(runningHold.RodInsertCommandActive);
+        Assert.False(runningHold.RodWithdrawCommandActive);
+        Assert.Contains("HOLD", runningHold.SelectedRodMotionText);
+        Assert.True(runningHold.PumpStartCommandActive);
+        Assert.False(runningHold.PumpStartCommandEnabled);
+        Assert.False(runningHold.PumpStopCommandActive);
+        Assert.True(runningHold.PumpStopCommandEnabled);
+        Assert.Contains("RUNNING", runningHold.SelectedPumpText);
+
+        var stoppedInsert = CreateViewModel(CreateSnapshot(
+            rodTargetCount: 1,
+            rodMotion: "INSERT",
+            pumpCount: 1,
+            pumpRunning: false), new RecordingDispatcher());
+
+        Assert.True(stoppedInsert.RodInsertCommandActive);
+        Assert.False(stoppedInsert.RodInsertCommandEnabled);
+        Assert.True(stoppedInsert.PumpStopCommandActive);
+        Assert.False(stoppedInsert.PumpStopCommandEnabled);
+        Assert.True(stoppedInsert.PumpStartCommandEnabled);
+    }
+
+    [Fact]
+    public void MomentaryElectricalCommands_ReportAcceptedActionWithoutBecomingPersistentState()
+    {
+        var dispatcher = new RecordingDispatcher();
+        var viewModel = CreateViewModel(CreateSnapshot(generatorCount: 1, breakerClosed: true), dispatcher);
+
+        viewModel.TurbineSpeedRaiseCommand.Execute(null);
+
+        Assert.Contains("ACCEPTED", viewModel.LastControlActionText);
+        Assert.Contains("TURBINE SPEED RAISE", viewModel.LastControlActionText);
+        Assert.Equal(ControlRoomVisualState.Normal, viewModel.TurbineSpeedCommandState);
+    }
+
+    [Fact]
     public void TripAndInterlockStates_DisableOnlyTheAffectedNormalControls()
     {
         var viewModel = CreateViewModel(CreateSnapshot(
@@ -244,12 +290,15 @@ public sealed class MainWindowViewModelAdvancedTests
             generatorTripActive: true), new RecordingDispatcher());
 
         Assert.Equal(ControlRoomVisualState.Normal, viewModel.RodCommandState);
-        Assert.Equal(ControlRoomVisualState.Unavailable, viewModel.RodWithdrawCommandState);
+        Assert.Equal(ControlRoomVisualState.Warning, viewModel.RodWithdrawCommandState);
+        Assert.False(viewModel.RodWithdrawCommandEnabled);
         Assert.Equal(ControlRoomVisualState.Trip, viewModel.TurbineTripCommandState);
         Assert.Equal(ControlRoomVisualState.Trip, viewModel.GeneratorTripCommandState);
         Assert.Equal(ControlRoomVisualState.Unavailable, viewModel.TurbineSpeedCommandState);
         Assert.Equal(ControlRoomVisualState.Unavailable, viewModel.GeneratorLoadCommandState);
-        Assert.Equal(ControlRoomVisualState.Unavailable, viewModel.BreakerCloseCommandState);
+        Assert.Equal(ControlRoomVisualState.Normal, viewModel.BreakerCloseCommandState);
+        Assert.True(viewModel.BreakerCloseCommandActive);
+        Assert.False(viewModel.BreakerCloseCommandEnabled);
     }
 
     [Fact]
@@ -290,7 +339,9 @@ public sealed class MainWindowViewModelAdvancedTests
         bool generatorTripActive = false,
         bool rodWithdrawalInhibited = false,
         int rodTargetCount = 0,
+        string rodMotion = "UNAVAILABLE",
         int pumpCount = 0,
+        bool pumpRunning = false,
         int generatorCount = 0,
         bool breakerClosed = false,
         int alarmCount = 0,
@@ -298,7 +349,10 @@ public sealed class MainWindowViewModelAdvancedTests
     {
         var normal = new ControlRoomValueSnapshot("0", string.Empty, 0d, ControlRoomVisualState.Normal);
         var rodTargets = Enumerable.Range(1, rodTargetCount)
-            .Select(index => new ReactorRodTargetPresentationSnapshot($"rod-target-{index}", ControlRoomCommandTargetKind.ControlRodGroup))
+            .Select(index => new ReactorRodTargetPresentationSnapshot($"rod-target-{index}", ControlRoomCommandTargetKind.ControlRodGroup)
+            {
+                EffectiveMotion = rodMotion,
+            })
             .ToArray();
         var reactor = new ReactorCorePanelSnapshot(
             normal,
@@ -318,7 +372,7 @@ public sealed class MainWindowViewModelAdvancedTests
             .Select(index => new PrimaryCircuitPumpPresentationSnapshot(
                 $"pump-{index}",
                 "loop-1",
-                false,
+                pumpRunning,
                 normal,
                 normal,
                 normal,

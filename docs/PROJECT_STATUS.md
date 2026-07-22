@@ -1,6 +1,6 @@
 # Project Status
 
-M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.7 are VALIDATED**. The user first validated the cumulative M10.2→M10.6 Hotfix 1 chain, then separately confirmed M10.7 Hotfix 1 compiled successfully and the complete automated suite passed. **M10.7 — Session, Checkpoint, Replay & Save Workspace is the current validated baseline. M10.7.1 — Operator Control-State & Synchronization Usability Hotfix is the current implementation candidate before M10.8.**
+M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.7 are VALIDATED**. The user first validated the cumulative M10.2→M10.6 Hotfix 1 chain, then separately confirmed M10.7 Hotfix 1 compiled successfully and the complete automated suite passed. **M10.7 — Session, Checkpoint, Replay & Save Workspace is the current validated baseline. M10.7.1 Hotfix 2 — Operator Control-State & Synchronization Usability is the current implementation candidate before M10.8.**
 
 
 | Phase | Status | Validated capability |
@@ -36,7 +36,7 @@ M9.5 is **VALIDATED**: optional `HistoricalContext` provenance/fidelity metadata
 
 M9.7 is **VALIDATED** and the M9 gate is complete. The user confirmed local compilation and **760/760 automated tests passed** after hotfix 5, including 6,000-step / 60-second direct-session and desktop-pump endurance. The final manual center-workspace clipping/overlap issue was corrected in the user-supplied `MainWindow.axaml`, now integrated as the authoritative layout baseline.
 
-M10.1 through M10.7 are **VALIDATED**. M10.2 provides GUIDANCE/INFO/DIAGNOSTICS, M10.3 ALARMS/LOG, M10.4 contextual COMMANDS, M10.5 the independent assistance/control-authority model, M10.6 deterministic M5-owned bounded supervisory operation, and M10.7 explicit opt-in recording plus replay-backed checkpoint/save/load/restore without opaque state dumps. M10.7.1 is the current **implementation candidate**, closing operator-facing trip/reset/synchronization ambiguity and adding canonical next-action/startup-to-power guidance before M10.8.
+M10.1 through M10.7 are **VALIDATED**. M10.2 provides GUIDANCE/INFO/DIAGNOSTICS, M10.3 ALARMS/LOG, M10.4 contextual COMMANDS, M10.5 the independent assistance/control-authority model, M10.6 deterministic M5-owned bounded supervisory operation, and M10.7 explicit opt-in recording plus replay-backed checkpoint/save/load/restore without opaque state dumps. M10.7.1 Hotfix 2 is the current **implementation candidate**, closing operator-facing trip/reset/synchronization ambiguity, adding canonical next-action/startup-to-power guidance, and making rod/pump/breaker persistent state visibly distinct from momentary speed/load command feedback before M10.8.
 
 ## What the validated engine can already do
 

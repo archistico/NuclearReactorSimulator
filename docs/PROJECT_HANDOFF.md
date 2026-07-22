@@ -31,7 +31,7 @@ M10.6 — Supervisory Automatic Operation — VALIDATED
         ↓
 M10.7 — Session, Checkpoint, Replay & Save Workspace — VALIDATED / OFFICIAL BASELINE
         ↓
-M10.7.1 — Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE
+M10.7.1 Hotfix 2 — Operator Control-State & Synchronization Usability — IMPLEMENTATION CANDIDATE
 ```
 
 ### Validated M10.7 boundary / current M10.7.1 candidate
@@ -58,6 +58,7 @@ M10.7.1 is the current usability-hotfix candidate before M10.8. It preserves all
 - exposing the same canonical `ProtectionReset` near reactor/turbine/electrical trip indications with M5.5-derived reset readiness/blockers;
 - presenting synchronization as a pre-close breaker check only and `PARALLELED` after closure;
 - adding current-condition, next-action and cold-shutdown-to-first-output guidance composed from validated M7 procedures without automatic dispatch.
+- extending the same state/availability distinction to rod motion, main-circulation pumps and generator breaker position, while speed/load setpoint steps remain visibly momentary and never fake a persistent active state.
 
 See `docs/milestones/M10.7.1.md` and `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`.
 

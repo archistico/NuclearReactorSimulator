@@ -13,7 +13,7 @@ The current explicitly validated baseline is **M10.7 — Session, Checkpoint, Re
 
 The underlying **M9 phase gate remains COMPLETE / VALIDATED**. M9.7 hotfix 5 previously passed the full gate, including the long 6,000-step / 60-second endurance runs and direct saturation/superheat boundary regressions; the user-supplied corrected `MainWindow.axaml` remains the authoritative validated layout baseline.
 
-The current working package is **M10.7.1 — Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE**. It clarifies latched protection controls/reset readiness, corrects breaker-aware synchronization presentation and adds canonical next-action/startup-to-power guidance before M10.8.
+The current working package is **M10.7.1 — Operator Control-State & Synchronization Usability Hotfix, Hotfix 2 — IMPLEMENTATION CANDIDATE**. It preserves the trip/reset/synchronization corrections and adds consistent actual-state feedback for rods, main-circulation pumps and breaker position, while momentary speed/load commands provide explicit press/last-action feedback without pretending to stay latched.
 
 See `docs/milestones/M10.7.1.md`, `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`, `docs/milestones/M10.7.md`, ADR 0070 and ADR 0074. Final product release hardening remains M11 after M10.
 

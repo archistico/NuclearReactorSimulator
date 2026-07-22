@@ -46,6 +46,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private int _selectedGeneratorIndex;
     private int _selectedAlarmIndex;
     private string _commandStatus;
+    private string _lastControlActionText = "LAST CONTROL ACTION · none issued yet";
     private bool _runtimeSubscriptionsDetached;
 
     public MainWindowViewModel(
@@ -527,19 +528,35 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
             OnPropertyChanged(nameof(SelectedPumpId));
             OnPropertyChanged(nameof(SelectedPumpText));
+            OnPropertyChanged(nameof(PumpStartCommandActive));
+            OnPropertyChanged(nameof(PumpStopCommandActive));
+            OnPropertyChanged(nameof(PumpStartCommandEnabled));
+            OnPropertyChanged(nameof(PumpStopCommandEnabled));
         }
     }
 
-    public string SelectedPumpId => CommandablePumps.Count == 0
-        ? "—"
-        : CommandablePumps[Math.Clamp(_selectedPumpIndex, 0, CommandablePumps.Count - 1)].PumpId;
+    private PrimaryCircuitPumpPresentationSnapshot? SelectedPump => CommandablePumps.Count == 0
+        ? null
+        : CommandablePumps[Math.Clamp(_selectedPumpIndex, 0, CommandablePumps.Count - 1)];
 
-    public string SelectedPumpText => $"Selected canonical pump: {SelectedPumpId}";
+    public string SelectedPumpId => SelectedPump?.PumpId ?? "—";
+
+    public string SelectedPumpText => SelectedPump is null
+        ? "Selected canonical pump: —"
+        : $"Selected canonical pump: {SelectedPump.PumpId} · ACTUAL STATE: {SelectedPump.OperatingText}";
 
     public ControlRoomVisualState PumpCommandState =>
         _snapshot.RunState == ControlRoomRunState.ShellOnly || CommandablePumps.Count == 0
             ? ControlRoomVisualState.Unavailable
             : ControlRoomVisualState.Normal;
+
+    public bool PumpStartCommandActive => SelectedPump?.IsRunning == true;
+
+    public bool PumpStopCommandActive => SelectedPump is { IsRunning: false };
+
+    public bool PumpStartCommandEnabled => PumpCommandState != ControlRoomVisualState.Unavailable && !PumpStartCommandActive;
+
+    public bool PumpStopCommandEnabled => PumpCommandState != ControlRoomVisualState.Unavailable && !PumpStopCommandActive;
 
     public string GeneratorOptionsText => Electrical.Generators.Count == 0
         ? "NO GENERATOR TARGETS"
@@ -568,16 +585,20 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(TurbineSpeedCommandState));
             OnPropertyChanged(nameof(GeneratorLoadCommandState));
             OnPropertyChanged(nameof(BreakerOpenCommandState));
+            OnPropertyChanged(nameof(BreakerCloseCommandActive));
+            OnPropertyChanged(nameof(BreakerCloseCommandEnabled));
+            OnPropertyChanged(nameof(BreakerOpenCommandActive));
+            OnPropertyChanged(nameof(BreakerOpenCommandEnabled));
         }
     }
 
-    public string SelectedGeneratorId => Electrical.Generators.Count == 0
-        ? "—"
-        : Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)].GeneratorId;
+    private GeneratorPresentationSnapshot? SelectedGenerator => Electrical.Generators.Count == 0
+        ? null
+        : Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)];
 
-    public string SelectedBreakerId => Electrical.Generators.Count == 0
-        ? "—"
-        : Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)].BreakerId;
+    public string SelectedGeneratorId => SelectedGenerator?.GeneratorId ?? "—";
+
+    public string SelectedBreakerId => SelectedGenerator?.BreakerId ?? "—";
 
     public string SelectedGeneratorSynchronizationText => Electrical.Generators.Count == 0
         ? "No generator selected"
@@ -638,31 +659,42 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         get
         {
-            if (_snapshot.RunState == ControlRoomRunState.ShellOnly || Electrical.Generators.Count == 0 || Electrical.GeneratorTripActive)
+            if (_snapshot.RunState == ControlRoomRunState.ShellOnly || SelectedGenerator is null)
             {
                 return ControlRoomVisualState.Unavailable;
             }
 
-            var generator = Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)];
-            return generator.BreakerClosed || !generator.SynchronizationConditionsSatisfied
-                ? ControlRoomVisualState.Unavailable
-                : ControlRoomVisualState.Normal;
-        }
-    }
+            if (SelectedGenerator.BreakerClosed)
+            {
+                return ControlRoomVisualState.Normal;
+            }
 
-    public ControlRoomVisualState BreakerOpenCommandState
-    {
-        get
-        {
-            if (_snapshot.RunState == ControlRoomRunState.ShellOnly || Electrical.Generators.Count == 0)
+            if (Electrical.GeneratorTripActive)
             {
                 return ControlRoomVisualState.Unavailable;
             }
 
-            var generator = Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)];
-            return generator.BreakerClosed ? ControlRoomVisualState.Normal : ControlRoomVisualState.Unavailable;
+            return SelectedGenerator.SynchronizationConditionsSatisfied
+                ? ControlRoomVisualState.Normal
+                : ControlRoomVisualState.Warning;
         }
     }
+
+    public bool BreakerCloseCommandActive => SelectedGenerator?.BreakerClosed == true;
+
+    public bool BreakerCloseCommandEnabled =>
+        BreakerCloseCommandState == ControlRoomVisualState.Normal
+        && !BreakerCloseCommandActive
+        && !Electrical.GeneratorTripActive;
+
+    public ControlRoomVisualState BreakerOpenCommandState =>
+        _snapshot.RunState == ControlRoomRunState.ShellOnly || SelectedGenerator is null
+            ? ControlRoomVisualState.Unavailable
+            : ControlRoomVisualState.Normal;
+
+    public bool BreakerOpenCommandActive => SelectedGenerator is { BreakerClosed: false };
+
+    public bool BreakerOpenCommandEnabled => BreakerOpenCommandState != ControlRoomVisualState.Unavailable && !BreakerOpenCommandActive;
 
     public string RodOptionsText => ReactorCore.RodTargets.Count == 0
         ? "NO ROD TARGETS"
@@ -684,16 +716,33 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
             OnPropertyChanged(nameof(SelectedRodId));
             OnPropertyChanged(nameof(SelectedRodTargetKind));
+            OnPropertyChanged(nameof(SelectedRodMotionText));
+            OnPropertyChanged(nameof(RodInsertCommandActive));
+            OnPropertyChanged(nameof(RodHoldCommandActive));
+            OnPropertyChanged(nameof(RodWithdrawCommandActive));
+            OnPropertyChanged(nameof(RodInsertCommandEnabled));
+            OnPropertyChanged(nameof(RodHoldCommandEnabled));
+            OnPropertyChanged(nameof(RodWithdrawCommandEnabled));
         }
     }
 
-    public string SelectedRodId => ReactorCore.RodTargets.Count == 0
-        ? "—"
-        : ReactorCore.RodTargets[Math.Clamp(_selectedRodIndex, 0, ReactorCore.RodTargets.Count - 1)].TargetId;
-
-    public ControlRoomCommandTargetKind? SelectedRodTargetKind => ReactorCore.RodTargets.Count == 0
+    private ReactorRodTargetPresentationSnapshot? SelectedRodTarget => ReactorCore.RodTargets.Count == 0
         ? null
-        : ReactorCore.RodTargets[Math.Clamp(_selectedRodIndex, 0, ReactorCore.RodTargets.Count - 1)].TargetKind;
+        : ReactorCore.RodTargets[Math.Clamp(_selectedRodIndex, 0, ReactorCore.RodTargets.Count - 1)];
+
+    public string SelectedRodId => SelectedRodTarget?.TargetId ?? "—";
+
+    public ControlRoomCommandTargetKind? SelectedRodTargetKind => SelectedRodTarget?.TargetKind;
+
+    public string SelectedRodMotionText => SelectedRodTarget is null
+        ? "ACTUAL MOTION · unavailable"
+        : $"ACTUAL MOTION · {SelectedRodTarget.EffectiveMotion}";
+
+    public bool RodInsertCommandActive => string.Equals(SelectedRodTarget?.EffectiveMotion, "INSERT", StringComparison.Ordinal);
+
+    public bool RodHoldCommandActive => string.Equals(SelectedRodTarget?.EffectiveMotion, "HOLD", StringComparison.Ordinal);
+
+    public bool RodWithdrawCommandActive => string.Equals(SelectedRodTarget?.EffectiveMotion, "WITHDRAW", StringComparison.Ordinal);
 
     public ControlRoomVisualState ReactorCommandState => _snapshot.RunState == ControlRoomRunState.ShellOnly
         ? ControlRoomVisualState.Unavailable
@@ -720,9 +769,17 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         : ControlRoomVisualState.Normal;
 
     public ControlRoomVisualState RodWithdrawCommandState =>
-        RodCommandState == ControlRoomVisualState.Unavailable || ReactorCore.RodWithdrawalInhibited
+        RodCommandState == ControlRoomVisualState.Unavailable
             ? ControlRoomVisualState.Unavailable
-            : ControlRoomVisualState.Normal;
+            : ReactorCore.RodWithdrawalInhibited
+                ? ControlRoomVisualState.Warning
+                : ControlRoomVisualState.Normal;
+
+    public bool RodInsertCommandEnabled => RodCommandState != ControlRoomVisualState.Unavailable && !RodInsertCommandActive;
+
+    public bool RodHoldCommandEnabled => RodCommandState != ControlRoomVisualState.Unavailable && !RodHoldCommandActive;
+
+    public bool RodWithdrawCommandEnabled => RodWithdrawCommandState == ControlRoomVisualState.Normal && !RodWithdrawCommandActive;
 
     public string XenonAvailabilityText => ReactorCore.XenonReactivity.State == ControlRoomVisualState.Unavailable
         ? "Canonical iodine/xenon state is unavailable for this runtime configuration; no value is fabricated."
@@ -750,6 +807,21 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             }
 
             _commandStatus = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string LastControlActionText
+    {
+        get => _lastControlActionText;
+        private set
+        {
+            if (string.Equals(_lastControlActionText, value, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _lastControlActionText = value;
             OnPropertyChanged();
         }
     }
@@ -899,6 +971,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private static string CommandDisplayName(ControlRoomCommandKind kind) => kind switch
     {
         ControlRoomCommandKind.MainCirculationPumpStart => "START MAIN CIRCULATION PUMP",
+        ControlRoomCommandKind.MainCirculationPumpStop => "STOP MAIN CIRCULATION PUMP",
+        ControlRoomCommandKind.ReactorScram => "REACTOR SCRAM",
+        ControlRoomCommandKind.TurbineTrip => "TURBINE TRIP",
+        ControlRoomCommandKind.GeneratorTrip => "GENERATOR TRIP",
         ControlRoomCommandKind.ControlRodWithdraw => "CONTROL ROD WITHDRAW",
         ControlRoomCommandKind.ControlRodHold => "CONTROL ROD HOLD",
         ControlRoomCommandKind.ControlRodInsert => "CONTROL ROD INSERT",
@@ -1078,11 +1154,21 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         {
             _commandDispatcher.Dispatch(command);
             CommandStatus = successMessage;
+            LastControlActionText = DescribeLastControlAction(command, accepted: true, reason: null);
         }
         catch (InvalidOperationException exception)
         {
             CommandStatus = $"Command blocked by the loaded scenario: {exception.Message}";
+            LastControlActionText = DescribeLastControlAction(command, accepted: false, reason: exception.Message);
         }
+    }
+
+    private static string DescribeLastControlAction(ControlRoomCommand command, bool accepted, string? reason)
+    {
+        var target = string.IsNullOrWhiteSpace(command.TargetId) ? string.Empty : $" · {command.TargetId}";
+        var prefix = accepted ? "LAST CONTROL ACTION · ACCEPTED" : "LAST CONTROL ACTION · BLOCKED";
+        var description = $"{prefix} · {CommandDisplayName(command.Kind)}{target}";
+        return accepted || string.IsNullOrWhiteSpace(reason) ? description : $"{description} · {reason}";
     }
 
 
@@ -1259,6 +1345,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(SelectedPumpId));
         OnPropertyChanged(nameof(SelectedPumpText));
         OnPropertyChanged(nameof(PumpCommandState));
+        OnPropertyChanged(nameof(PumpStartCommandActive));
+        OnPropertyChanged(nameof(PumpStopCommandActive));
+        OnPropertyChanged(nameof(PumpStartCommandEnabled));
+        OnPropertyChanged(nameof(PumpStopCommandEnabled));
         OnPropertyChanged(nameof(GeneratorOptionsText));
         OnPropertyChanged(nameof(SelectedGeneratorIndex));
         OnPropertyChanged(nameof(SelectedGeneratorId));
@@ -1277,10 +1367,21 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(GeneratorTripCommandLabel));
         OnPropertyChanged(nameof(BreakerCloseCommandState));
         OnPropertyChanged(nameof(BreakerOpenCommandState));
+        OnPropertyChanged(nameof(BreakerCloseCommandActive));
+        OnPropertyChanged(nameof(BreakerCloseCommandEnabled));
+        OnPropertyChanged(nameof(BreakerOpenCommandActive));
+        OnPropertyChanged(nameof(BreakerOpenCommandEnabled));
         OnPropertyChanged(nameof(RodOptionsText));
         OnPropertyChanged(nameof(SelectedRodIndex));
         OnPropertyChanged(nameof(SelectedRodId));
         OnPropertyChanged(nameof(SelectedRodTargetKind));
+        OnPropertyChanged(nameof(SelectedRodMotionText));
+        OnPropertyChanged(nameof(RodInsertCommandActive));
+        OnPropertyChanged(nameof(RodHoldCommandActive));
+        OnPropertyChanged(nameof(RodWithdrawCommandActive));
+        OnPropertyChanged(nameof(RodInsertCommandEnabled));
+        OnPropertyChanged(nameof(RodHoldCommandEnabled));
+        OnPropertyChanged(nameof(RodWithdrawCommandEnabled));
         OnPropertyChanged(nameof(ReactorCommandState));
         OnPropertyChanged(nameof(ScramCommandState));
         OnPropertyChanged(nameof(ScramCommandEnabled));

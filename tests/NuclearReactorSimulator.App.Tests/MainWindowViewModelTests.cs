@@ -84,11 +84,30 @@ public sealed class MainWindowViewModelTests
     }
 
     [Fact]
-    public void BreakerCloseCommandState_IsUnavailable_OutsideSynchronizationWindow()
+    public void BreakerCloseCommandState_IsWarningAndDisabled_OutsideSynchronizationWindow()
     {
         var viewModel = CreateViewModel(CreateSnapshot(synchronizationConditionsSatisfied: false, breakerClosed: false));
 
-        Assert.Equal(ControlRoomVisualState.Unavailable, viewModel.BreakerCloseCommandState);
+        Assert.Equal(ControlRoomVisualState.Warning, viewModel.BreakerCloseCommandState);
+        Assert.False(viewModel.BreakerCloseCommandEnabled);
+        Assert.True(viewModel.BreakerOpenCommandActive);
+        Assert.False(viewModel.BreakerOpenCommandEnabled);
+    }
+
+    [Fact]
+    public void BreakerButtons_ReflectActualPersistentBreakerState()
+    {
+        var closed = CreateViewModel(CreateSnapshot(synchronizationConditionsSatisfied: false, breakerClosed: true));
+        Assert.True(closed.BreakerCloseCommandActive);
+        Assert.False(closed.BreakerCloseCommandEnabled);
+        Assert.False(closed.BreakerOpenCommandActive);
+        Assert.True(closed.BreakerOpenCommandEnabled);
+
+        var open = CreateViewModel(CreateSnapshot(synchronizationConditionsSatisfied: true, breakerClosed: false));
+        Assert.False(open.BreakerCloseCommandActive);
+        Assert.True(open.BreakerCloseCommandEnabled);
+        Assert.True(open.BreakerOpenCommandActive);
+        Assert.False(open.BreakerOpenCommandEnabled);
     }
 
     [Fact]

@@ -34,7 +34,7 @@ Read first:
 - M7, M8 and M9 gates: **COMPLETE / VALIDATED**.
 - **M10.1–M10.7: VALIDATED**. The cumulative M10.2→M10.6 Hotfix 1 chain passed first; the user then confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed.
 - **Official application baseline:** `M10.7 — Session, Checkpoint, Replay & Save Workspace`.
-- **Current implementation candidate:** `M10.7.1 — Operator Control-State & Synchronization Usability Hotfix`.
+- **Current implementation candidate:** `M10.7.1 Hotfix 2 — Operator Control-State & Synchronization Usability`.
 - Next after explicit M10.7.1 validation: `M10.8 — Integrated Operator Computer UI`.
 
 ## Validated M10.7 boundary / current M10.7.1 candidate
@@ -50,6 +50,8 @@ M10.7 is validated and adds F8 SESSION over canonical owners only:
 - training tracker reconstruction by attaching it before deterministic replay.
 
 No opaque solver-state dump, second checkpoint owner, second fault trace or UI-owned restore logic is introduced.
+
+M10.7.1 Hotfix 2 additionally standardizes normal-control feedback: persistent rod/pump/breaker states are filled only from committed canonical snapshots, while speed/load raise/lower remain momentary pulse commands with explicit last-action feedback.
 
 ## Non-negotiable architecture rules
 

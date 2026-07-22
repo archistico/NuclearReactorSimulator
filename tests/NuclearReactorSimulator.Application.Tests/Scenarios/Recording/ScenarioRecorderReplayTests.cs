@@ -188,6 +188,39 @@ public sealed class ScenarioRecorderReplayTests
         Assert.Equal(ControlRoomSnapshotFingerprint.Compute(left), ControlRoomSnapshotFingerprint.Compute(right));
     }
 
+    [Fact]
+    public void FingerprintV1_IgnoresM10712PresentationOnlyRodTargetEffectiveMotion()
+    {
+        var normal = new ControlRoomValueSnapshot("0", string.Empty, 0d, ControlRoomVisualState.Normal);
+        var leftTarget = new ReactorRodTargetPresentationSnapshot("all-rods", ControlRoomCommandTargetKind.ControlRodGroup)
+        {
+            EffectiveMotion = "HOLD",
+        };
+        var rightTarget = leftTarget with
+        {
+            EffectiveMotion = "WITHDRAW",
+        };
+
+        ReactorCorePanelSnapshot Reactor(ReactorRodTargetPresentationSnapshot target) => new(
+            normal,
+            normal,
+            normal,
+            normal,
+            normal,
+            normal,
+            ControlRoomValueSnapshot.Unavailable("pcm"),
+            Array.Empty<ReactorCoreZonePresentationSnapshot>(),
+            Array.Empty<ReactorRodPresentationSnapshot>(),
+            new[] { target },
+            false,
+            false);
+
+        var left = new ControlRoomSnapshot(8, ControlRoomRunState.Paused, 0, 0, 0, 0, false, false, false, reactorCore: Reactor(leftTarget));
+        var right = new ControlRoomSnapshot(8, ControlRoomRunState.Paused, 0, 0, 0, 0, false, false, false, reactorCore: Reactor(rightTarget));
+
+        Assert.Equal(ControlRoomSnapshotFingerprint.Compute(left), ControlRoomSnapshotFingerprint.Compute(right));
+    }
+
     private static ScenarioSessionFactory CreateFactory()
         => new(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {

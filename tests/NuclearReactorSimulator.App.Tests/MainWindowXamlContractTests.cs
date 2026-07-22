@@ -42,6 +42,29 @@ public sealed class MainWindowXamlContractTests
 
 
     [Fact]
+    public void PersistentOperationalButtons_BindActualStateSeparatelyFromCommandAvailability()
+    {
+        var document = LoadMainWindow();
+        var buttons = document.Descendants()
+            .Where(static element => element.Name.LocalName == "ControlRoomPushButton")
+            .ToArray();
+
+        AssertPersistent(buttons, "START / RUN", "{Binding PumpStartCommandActive}", "{Binding PumpStartCommandEnabled}");
+        AssertPersistent(buttons, "STOP", "{Binding PumpStopCommandActive}", "{Binding PumpStopCommandEnabled}");
+        AssertPersistent(buttons, "INSERT", "{Binding RodInsertCommandActive}", "{Binding RodInsertCommandEnabled}");
+        AssertPersistent(buttons, "HOLD", "{Binding RodHoldCommandActive}", "{Binding RodHoldCommandEnabled}");
+        AssertPersistent(buttons, "WITHDRAW", "{Binding RodWithdrawCommandActive}", "{Binding RodWithdrawCommandEnabled}");
+        AssertPersistent(buttons, "CLOSE BREAKER", "{Binding BreakerCloseCommandActive}", "{Binding BreakerCloseCommandEnabled}");
+        AssertPersistent(buttons, "OPEN BREAKER", "{Binding BreakerOpenCommandActive}", "{Binding BreakerOpenCommandEnabled}");
+
+        foreach (var label in new[] { "SPEED LOWER", "SPEED RAISE", "LOAD LOWER", "LOAD RAISE" })
+        {
+            var button = Assert.Single(buttons, element => (string?)element.Attribute("Label") == label);
+            Assert.Null(button.Attribute("IsActive"));
+        }
+    }
+
+    [Fact]
     public void ProtectionTripButtons_SeparateLatchedVisualStateFromCommandAvailability()
     {
         var document = LoadMainWindow();
@@ -265,6 +288,17 @@ public sealed class MainWindowXamlContractTests
                 element => element.Name.LocalName == "KeyBinding" && (string?)element.Attribute("Gesture") == pair.Key);
             Assert.Equal(pair.Value, (string?)binding.Attribute("Command"));
         }
+    }
+
+    private static void AssertPersistent(
+        IEnumerable<XElement> buttons,
+        string label,
+        string activeBinding,
+        string enabledBinding)
+    {
+        var button = Assert.Single(buttons, element => (string?)element.Attribute("Label") == label);
+        Assert.Equal(activeBinding, (string?)button.Attribute("IsActive"));
+        Assert.Equal(enabledBinding, (string?)button.Attribute("IsCommandEnabled"));
     }
 
     private static XDocument LoadMainWindow()

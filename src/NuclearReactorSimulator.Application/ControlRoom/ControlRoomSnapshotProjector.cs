@@ -119,12 +119,24 @@ public static class ControlRoomSnapshotProjector
 
         var rodTargets = reactorControl.Definition.ActuatorSystem.Actuators
             .Where(static actuator => actuator.TargetKind == NuclearReactorSimulator.Domain.Physics.Control.ActuatorTargetKind.ControlRod)
-            .Select(static actuator => new ReactorRodTargetPresentationSnapshot(
-                actuator.TargetId,
-                actuator.RodTargetKind == NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods.ControlRodCommandTargetKind.Rod
+            .Select(actuator =>
+            {
+                var targetKind = actuator.RodTargetKind == NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods.ControlRodCommandTargetKind.Rod
                     ? ControlRoomCommandTargetKind.ControlRod
-                    : ControlRoomCommandTargetKind.ControlRodGroup))
-            .Distinct()
+                    : ControlRoomCommandTargetKind.ControlRodGroup;
+                var effectiveMotion = ResolveRodTargetMotion(
+                    reactorControl.Definition.ControlRods,
+                    rods,
+                    actuator.TargetId,
+                    targetKind);
+
+                return new ReactorRodTargetPresentationSnapshot(actuator.TargetId, targetKind)
+                {
+                    EffectiveMotion = effectiveMotion,
+                };
+            })
+            .GroupBy(static target => (target.TargetKind, target.TargetId))
+            .Select(static group => group.First())
             .OrderBy(static target => target.TargetKind)
             .ThenBy(static target => target.TargetId, StringComparer.Ordinal)
             .ToArray();
@@ -166,6 +178,30 @@ public static class ControlRoomSnapshotProjector
             protection.RodWithdrawalInhibited);
     }
 
+
+    private static string ResolveRodTargetMotion(
+        NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods.ControlRodSystemDefinition definition,
+        IReadOnlyList<ReactorRodPresentationSnapshot> rods,
+        string targetId,
+        ControlRoomCommandTargetKind targetKind)
+    {
+        IEnumerable<string> rodIds = targetKind == ControlRoomCommandTargetKind.ControlRod
+            ? new[] { targetId }
+            : definition.GetGroup(targetId).RodIds;
+
+        var motions = rodIds
+            .Select(rodId => rods.FirstOrDefault(rod => string.Equals(rod.RodId, rodId, StringComparison.Ordinal))?.Motion)
+            .Where(static motion => !string.IsNullOrWhiteSpace(motion))
+            .Distinct(StringComparer.Ordinal)
+            .ToArray();
+
+        return motions.Length switch
+        {
+            0 => "UNAVAILABLE",
+            1 => motions[0]!,
+            _ => "MIXED",
+        };
+    }
 
     private static PrimaryCircuitPanelSnapshot ProjectPrimaryCircuit(IntegratedAutomaticOperationSnapshot snapshot)
     {

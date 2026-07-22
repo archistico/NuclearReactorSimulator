@@ -1,3 +1,18 @@
+## M10.7.1 Hotfix 3 — Committed breaker-state regression expectation — IMPLEMENTATION CANDIDATE
+
+- Updated the single stale App regression exposed by Hotfix 2: when a snapshot reports the generator breaker as physically CLOSED while a generator trip is active, `CLOSE BREAKER` must still present the committed CLOSED/active state rather than becoming visually `Unavailable`.
+- The already-satisfied/affected close command remains non-clickable (`BreakerCloseCommandEnabled = false`), so the test now verifies the intended separation between committed-state feedback and command availability.
+- Test-only correction; no production ViewModel, command-dispatch, physics, protection, replay, archive, or UI behavior changed.
+
+## M10.7.1 Hotfix 2 — Persistent control-state and momentary-command feedback — IMPLEMENTATION CANDIDATE
+
+- Extended `ControlRoomPushButton` with a presentation-only `IsActive` state and a short click-feedback pulse; active normal controls use a filled green background with dark text while command availability remains a separate concern.
+- Reactor `INSERT / HOLD / WITHDRAW` now reflect the actual committed motion of the selected canonical rod/group; group targets report `MIXED` when member motions differ, and the already-active motion command is disabled.
+- Primary `START / RUN` and `STOP` now reflect the actual committed selected-pump state and disable the already-satisfied command.
+- Electrical `CLOSE BREAKER` and `OPEN BREAKER` now reflect the actual committed breaker position and disable the already-satisfied side; close remains warning/blocked when the canonical synchronization permissive is not satisfied.
+- `SPEED LOWER / SPEED RAISE / LOAD LOWER / LOAD RAISE` remain explicitly momentary setpoint-step commands: they flash on press, never latch visually, and the UI retains a `LAST CONTROL ACTION · ACCEPTED/BLOCKED` status so the operator can distinguish click feedback from committed state.
+- Added presentation-only rod-target effective-motion projection excluded from fingerprint-v1 serialization, plus App/Application/XAML/replay regressions protecting actual-state semantics and historical replay compatibility.
+
 ## M10.7.1 — Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE
 
 - Recorded M10.7 Hotfix 1 as VALIDATED after the user confirmed successful compilation and the complete automated suite passed; M10.7 is the new official baseline.
