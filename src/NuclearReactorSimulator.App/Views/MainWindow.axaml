@@ -168,7 +168,31 @@
             </Grid>
           </Border>
 
-          <Border IsVisible="{Binding IsOverviewWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+          <StackPanel IsVisible="{Binding IsOverviewWorkspaceSelected}" Spacing="16">
+            <Border Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <StackPanel Spacing="14">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="OPERATOR ACTION PLAN · CANONICAL GUIDANCE" />
+                  <TextBlock FontSize="20" FontWeight="SemiBold" Text="What is active, what to do next, and how to reach electrical output" />
+                  <TextBlock FontSize="12" Opacity="0.78" TextWrapping="Wrap" Text="{Binding OperatorCurrentConditionText}" />
+                </StackPanel>
+                <Border Padding="16" Background="#11161D" CornerRadius="6">
+                  <StackPanel Spacing="6">
+                    <TextBlock Classes="sectionHeading" Text="NEXT REQUIRED ACTION" />
+                    <TextBlock FontSize="13" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding OperatorNextActionText}" />
+                  </StackPanel>
+                </Border>
+                <Border Padding="16" Background="#11161D" CornerRadius="6">
+                  <StackPanel Spacing="6">
+                    <TextBlock Classes="sectionHeading" Text="COLD SHUTDOWN → FIRST ELECTRICAL OUTPUT · COMMAND MAP" />
+                    <TextBlock FontSize="11" Opacity="0.78" TextWrapping="Wrap" Text="{Binding StartupToPowerCommandPathText}" />
+                    <TextBlock FontSize="11" Opacity="0.62" TextWrapping="Wrap" Text="This map is composed from the validated M7 procedure guidance. It is not an automatic sequence: stabilize and satisfy the canonical checks before each next command." />
+                  </StackPanel>
+                </Border>
+              </StackPanel>
+            </Border>
+
+            <Border Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
             <StackPanel Spacing="16">
               <StackPanel Spacing="6">
                 <TextBlock Classes="sectionHeading" Text="M6.2 REUSABLE COMPONENT LIBRARY" />
@@ -184,7 +208,8 @@
                 <controls:ControlRoomIndicatorLamp Grid.Column="3" Label="Channel quality" State="Unavailable" />
               </Grid>
             </StackPanel>
-          </Border>
+            </Border>
+          </StackPanel>
 
 
           <StackPanel IsVisible="{Binding IsPrimaryWorkspaceSelected}" Spacing="18">
@@ -370,9 +395,11 @@
                     <TextBlock Classes="sectionHeading" Text="TURBINE PROTECTION" />
                     <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding TurbineSecondary.ProtectionText}" />
                   </StackPanel>
-                  <controls:ControlRoomPushButton Grid.Column="1" Label="TURBINE TRIP" State="{Binding TurbineTripCommandState}" Command="{Binding TurbineTripCommand}" />
+                  <controls:ControlRoomPushButton Grid.Column="1" Label="{Binding TurbineTripCommandLabel}" State="{Binding TurbineTripCommandState}" IsCommandEnabled="{Binding TurbineTripCommandEnabled}" Command="{Binding TurbineTripCommand}" />
                 </Grid>
                 <controls:ControlRoomIndicatorLamp Label="TURBINE TRIP LATCH" State="{Binding TurbineSecondary.ProtectionState}" />
+                <controls:ControlRoomPushButton Label="RESET PROTECTION" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
+                <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding ProtectionResetStatusText}" />
               </StackPanel>
             </Border>
 
@@ -553,7 +580,8 @@
                 <StackPanel Spacing="12">
                   <TextBlock Classes="sectionHeading" Text="GENERATOR / BREAKER CONTROL" />
                   <controls:ControlRoomSelector Label="GENERATOR TARGET" OptionsText="{Binding GeneratorOptionsText}" SelectedIndex="{Binding SelectedGeneratorIndex, Mode=TwoWay}" State="{Binding GeneratorSelectionState}" />
-                  <TextBlock FontSize="12" Opacity="0.72" Text="{Binding SelectedGeneratorSynchronizationText}" />
+                  <TextBlock FontSize="12" Opacity="0.82" TextWrapping="Wrap" Text="{Binding SelectedGeneratorSynchronizationText}" />
+                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding SelectedGeneratorSynchronizationDetailText}" />
                   <TextBlock FontSize="12" Opacity="0.72" Text="{Binding SelectedBreakerId}" />
                   <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                     <controls:ControlRoomPushButton Grid.Column="0" Label="SPEED LOWER" State="{Binding TurbineSpeedCommandState}" Command="{Binding TurbineSpeedLowerCommand}" />
@@ -567,7 +595,7 @@
                     <controls:ControlRoomPushButton Grid.Column="0" Label="CLOSE BREAKER" State="{Binding BreakerCloseCommandState}" Command="{Binding GeneratorBreakerCloseCommand}" />
                     <controls:ControlRoomPushButton Grid.Column="1" Label="OPEN BREAKER" State="{Binding BreakerOpenCommandState}" Command="{Binding GeneratorBreakerOpenCommand}" />
                   </Grid>
-                  <controls:ControlRoomPushButton Label="GENERATOR TRIP" State="{Binding GeneratorTripCommandState}" Command="{Binding GeneratorTripCommand}" />
+                  <controls:ControlRoomPushButton Label="{Binding GeneratorTripCommandLabel}" State="{Binding GeneratorTripCommandState}" IsCommandEnabled="{Binding GeneratorTripCommandEnabled}" Command="{Binding GeneratorTripCommand}" />
                   <TextBlock FontSize="11" Opacity="0.62" TextWrapping="Wrap" Text="Breaker close fails closed in the UI when the published synchronization permissive is false or generator trip is active. M4.5 remains the authoritative synchronization and breaker owner." />
                 </StackPanel>
               </Border>
@@ -577,6 +605,8 @@
                   <TextBlock Classes="sectionHeading" Text="ELECTRICAL PROTECTION" />
                   <controls:ControlRoomIndicatorLamp Label="GENERATOR TRIP LATCH" State="{Binding Electrical.ProtectionState}" />
                   <TextBlock FontWeight="SemiBold" Text="{Binding Electrical.ProtectionText}" />
+                  <controls:ControlRoomPushButton Label="RESET PROTECTION" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
+                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding ProtectionResetStatusText}" />
                   <TextBlock TextWrapping="Wrap" Opacity="0.72" Text="{Binding ElectricalContextText}" />
                 </StackPanel>
               </Border>
@@ -593,7 +623,7 @@
                           <TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding GeneratorId}" />
                           <TextBlock FontSize="12" Opacity="0.68" Text="{Binding RotorId}" />
                         </StackPanel>
-                        <controls:ControlRoomIndicatorLamp Grid.Column="1" Label="SYNC" State="{Binding SynchronizationState}" />
+                        <controls:ControlRoomIndicatorLamp Grid.Column="1" Label="{Binding SynchronizationLabel}" State="{Binding DisplaySynchronizationState}" />
                         <controls:ControlRoomIndicatorLamp Grid.Column="2" Label="BREAKER" State="{Binding BreakerState}" />
                       </Grid>
                       <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
@@ -602,10 +632,11 @@
                         <controls:ControlRoomNumericIndicator Grid.Column="2" Label="TERMINAL VOLTAGE · MODEL" ValueText="{Binding TerminalVoltage.ValueText}" Unit="{Binding TerminalVoltage.Unit}" State="{Binding TerminalVoltage.State}" />
                         <controls:ControlRoomNumericIndicator Grid.Column="3" Label="PHASE DIFFERENCE · MODEL" ValueText="{Binding PhaseDifference.ValueText}" Unit="{Binding PhaseDifference.Unit}" State="{Binding PhaseDifference.State}" />
                       </Grid>
-                      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                        <TextBlock Text="{Binding SynchronizationText}" />
-                        <TextBlock Grid.Column="1" Text="{Binding BreakerText}" />
-                        <TextBlock Grid.Column="2" Text="{Binding BreakerId}" />
+                      <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding DisplaySynchronizationText}" />
+                      <TextBlock FontSize="11" Opacity="0.66" TextWrapping="Wrap" Text="{Binding SynchronizationDetailText}" />
+                      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <TextBlock Text="{Binding BreakerText}" />
+                        <TextBlock Grid.Column="1" Text="{Binding BreakerId}" />
                       </Grid>
                     </StackPanel>
                   </Border>
@@ -748,9 +779,10 @@
                     <controls:ControlRoomIndicatorLamp Label="ROD WITHDRAWAL INTERLOCK" State="{Binding ReactorCore.RodWithdrawalInterlockState}" />
                     <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="{Binding ReactorCore.RodWithdrawalInterlockText}" />
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                      <controls:ControlRoomPushButton Grid.Column="0" Label="SCRAM" State="{Binding ScramCommandState}" Command="{Binding ReactorScramCommand}" />
-                      <controls:ControlRoomPushButton Grid.Column="1" Label="PROTECTION RESET" State="{Binding ReactorCommandState}" Command="{Binding ProtectionResetCommand}" />
+                      <controls:ControlRoomPushButton Grid.Column="0" Label="{Binding ScramCommandLabel}" State="{Binding ScramCommandState}" IsCommandEnabled="{Binding ScramCommandEnabled}" Command="{Binding ReactorScramCommand}" />
+                      <controls:ControlRoomPushButton Grid.Column="1" Label="PROTECTION RESET" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
                     </Grid>
+                    <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding ProtectionResetStatusText}" />
                   </StackPanel>
                 </Border>
 

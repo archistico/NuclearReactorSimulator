@@ -6,16 +6,16 @@ namespace NuclearReactorSimulator.Application.Tests;
 public sealed class ApplicationDescriptorTests
 {
     [Fact]
-    public void Current_DescribesM107CandidateOnValidatedM106Baseline()
+    public void Current_DescribesM1071CandidateOnValidatedM107Baseline()
     {
         var descriptor = ApplicationDescriptor.Current;
 
         Assert.Equal("Nuclear Reactor Simulator", descriptor.ProductName);
-        Assert.Contains("M10.7", descriptor.Milestone);
+        Assert.Contains("M10.7.1", descriptor.Milestone);
         Assert.Contains("Implementation candidate", descriptor.Status);
-        Assert.Contains("M10.6", descriptor.Status);
+        Assert.Contains("validated M10.7 baseline", descriptor.Status);
         Assert.Contains("validated", descriptor.Status.ToLowerInvariant());
-        Assert.Contains("replay-backed", descriptor.Status.ToLowerInvariant());
-        Assert.Contains("save/load", descriptor.Status.ToLowerInvariant());
+        Assert.Contains("protection-reset", descriptor.Status.ToLowerInvariant());
+        Assert.Contains("synchronization", descriptor.Status.ToLowerInvariant());
     }
 }

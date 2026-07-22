@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M10.7 — Session, Checkpoint, Replay & Save Workspace",
-        "Implementation candidate — M10.7 on validated M10.6 baseline; adds explicit opt-in M9.1 recording, replay-backed checkpoints, compact versioned session archives, exact-version save/load/restore through ScenarioFullReplayRunner, and continuation recording after verified restore without opaque solver-state dumps");
+        "M10.7.1 — Operator Control-State & Synchronization Usability Hotfix",
+        "Implementation candidate — M10.7.1 on validated M10.7 baseline; separates latched trip indication from command availability, exposes canonical protection-reset readiness, makes synchronization presentation breaker-aware, and adds canonical next-action/startup-to-power operator guidance before M10.8");
 }

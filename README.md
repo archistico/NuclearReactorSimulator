@@ -9,13 +9,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The current explicitly validated baseline is **M10.6 — Supervisory Automatic Operation — VALIDATED**. The user confirmed the cumulative M10.2→M10.6 Hotfix 1 package compiled successfully and the complete automated suite passed, therefore M10.2, M10.3, M10.4, the incorporated M10.5 prerequisite and M10.6 are promoted in sequence.
+The current explicitly validated baseline is **M10.7 — Session, Checkpoint, Replay & Save Workspace — VALIDATED**. The user confirmed M10.7 Hotfix 1 compiled successfully and the complete automated suite passed.
 
 The underlying **M9 phase gate remains COMPLETE / VALIDATED**. M9.7 hotfix 5 previously passed the full gate, including the long 6,000-step / 60-second endurance runs and direct saturation/superheat boundary regressions; the user-supplied corrected `MainWindow.axaml` remains the authoritative validated layout baseline.
 
-The current working package is **M10.7 — Session, Checkpoint, Replay & Save Workspace — IMPLEMENTATION CANDIDATE**. It activates F8 SESSION using existing M7/M9 owners, adds compact versioned replay-backed archives, checkpoint creation/listing, full replay verification, file save/load and verified checkpoint restore. Ordinary desktop startup keeps full M9.1 recording opt-in to avoid hidden every-fixed-step overhead.
+The current working package is **M10.7.1 — Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE**. It clarifies latched protection controls/reset readiness, corrects breaker-aware synchronization presentation and adds canonical next-action/startup-to-power guidance before M10.8.
 
-See `docs/milestones/M10.7.md`, `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`, `docs/milestones/M10.6.md`, ADR 0070 and ADR 0074. Final product release hardening remains M11 after M10.
+See `docs/milestones/M10.7.1.md`, `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`, `docs/milestones/M10.7.md`, ADR 0070 and ADR 0074. Final product release hardening remains M11 after M10.
 
 ## Architectural principles
 
@@ -448,7 +448,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.6 are validated; M10.6 is the current official baseline and M10.7 is the current implementation candidate.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.7 are validated; M10.7 is the current official baseline and M10.7.1 is the current usability-hotfix candidate before M10.8.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -575,4 +575,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.6 are validated; M10.7 Session, Checkpoint, Replay & Save Workspace is the current implementation candidate.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.7 are validated; M10.7.1 Operator Control-State & Synchronization Usability Hotfix is the current implementation candidate before M10.8.

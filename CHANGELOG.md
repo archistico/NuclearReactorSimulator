@@ -1,3 +1,20 @@
+## M10.7.1 — Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE
+
+- Recorded M10.7 Hotfix 1 as VALIDATED after the user confirmed successful compilation and the complete automated suite passed; M10.7 is the new official baseline.
+- Separated `ControlRoomPushButton` visual state from command availability so latched SCRAM/turbine/generator trips remain strongly filled/visible while the one-shot trip command is disabled.
+- Added contextual `RESET PROTECTION` access in reactor, turbine and electrical areas plus presentation-only canonical M5.5 reset readiness/blocker projection; F4 COMMANDS now uses the same readiness/blocker state instead of advertising every active-trip reset as available.
+- Made M4.5 synchronization presentation breaker-aware: open breaker shows detailed Δf/Δphase/ΔV close-check status; closed breaker shows `PARALLELED`/normal rather than a stale synchronization warning.
+- Added Overview operator action guidance: current condition, next canonical procedure action and a cold-shutdown-to-first-electrical-output command map composed from validated M7 guidance.
+- Kept new reset/synchronization diagnostics excluded from `ControlRoomSnapshotFingerprint` v1 so replay/checkpoint identity remains unchanged.
+- Added App/Application/XAML/fingerprint regression coverage and `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`.
+
+## M10.7.1 Hotfix 1 — Fingerprint-v1 compatibility and descriptor regression fix
+
+- Fixed the stale `ApplicationDescriptorTests` expectation so M10.7.1 is correctly asserted on the validated M10.7 baseline.
+- Preserved the exact M10.7 serialized semantics of `GeneratorPresentationSnapshot.SynchronizationState` and `SynchronizationText` used by `ControlRoomSnapshotFingerprint` v1.
+- Moved the new breaker-aware synchronization UX to `[JsonIgnore]` presentation-only `DisplaySynchronizationState` / `DisplaySynchronizationText` properties; the new label/detail diagnostics are also excluded from fingerprint serialization.
+- Strengthened replay regression coverage so presentation-only reset/synchronization diagnostics cannot change fingerprint-v1 output.
+
 ## M10.7 Hotfix 1 — xUnit analyzer compliance
 
 - Replaced the single `Where(...)+Assert.Single(...)` pattern in `ScenarioSessionArchiveReplayTests` with the predicate overload of `Assert.Single`, satisfying xUnit analyzer rule `xUnit2031` under warnings-as-errors.

@@ -2,9 +2,9 @@
 
 ## Status
 
-**APPROVED ARCHITECTURE / ROADMAP PLAN — M10 IN PROGRESS; M10.1 VALIDATED; M10.2 implementation candidate delivered.**
+**APPROVED ARCHITECTURE / ROADMAP PLAN — M10 IN PROGRESS; M10.1–M10.7 VALIDATED; M10.7.1 USABILITY HOTFIX CANDIDATE.**
 
-This document records the approved design direction for M10. M10.1–M10.6 are validated. M10.7 is the current implementation candidate adding replay-backed session/checkpoint/save/load lifecycle over the existing M7/M9 owners. M10.8–M10.9 remain governed by this plan.
+This document records the approved design direction for M10. M10.1–M10.7 are validated, including replay-backed session/checkpoint/save/load lifecycle over existing M7/M9 owners. M10.7.1 is the current operator-control/synchronization usability hotfix candidate; M10.8–M10.9 remain governed by this plan.
 
 ## Purpose
 

@@ -8,9 +8,9 @@ This document is the **authoritative continuity checkpoint** for restarting the 
 
 The last explicitly locally validated application milestone is:
 
-**M10.6 — Supervisory Automatic Operation — VALIDATED**
+**M10.7 — Session, Checkpoint, Replay & Save Workspace — VALIDATED**
 
-The user confirmed the cumulative M10.2→M10.6 Hotfix 1 package compiled successfully and the complete automated suite passed. Therefore M10.2, M10.3, M10.4, the incorporated M10.5 prerequisite and M10.6 are validated in sequence.
+The user confirmed M10.7 Hotfix 1 compiled successfully and the complete automated suite passed. The earlier cumulative M10.2→M10.6 Hotfix 1 gate had already validated M10.2, M10.3, M10.4, the incorporated M10.5 prerequisite and M10.6 in sequence.
 
 The underlying M9 phase gate remains **COMPLETE / VALIDATED** with the user-corrected `MainWindow.axaml` as the authoritative validated layout baseline.
 
@@ -27,14 +27,16 @@ M10.4 — Contextual Command Console — VALIDATED
         ↓
 M10.5 — Dual Assistance & Control-Authority Model — VALIDATED
         ↓
-M10.6 — Supervisory Automatic Operation — VALIDATED / OFFICIAL BASELINE
+M10.6 — Supervisory Automatic Operation — VALIDATED
         ↓
-M10.7 — Session, Checkpoint, Replay & Save Workspace — IMPLEMENTATION CANDIDATE
+M10.7 — Session, Checkpoint, Replay & Save Workspace — VALIDATED / OFFICIAL BASELINE
+        ↓
+M10.7.1 — Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE
 ```
 
-### Current M10.7 candidate boundary
+### Validated M10.7 boundary / current M10.7.1 candidate
 
-M10.7 activates F8 SESSION by packaging existing M7/M9 owners rather than introducing a second state owner:
+M10.7 is validated and activates F8 SESSION by packaging existing M7/M9 owners rather than introducing a second state owner:
 
 - normal desktop startup keeps M9.1 full recording **inactive** to avoid hidden every-fixed-step fingerprint/frame overhead;
 - `START RECORDED SESSION` reloads the exact versioned desktop initial condition at STEP 0 with a recorder attached;
@@ -45,9 +47,19 @@ M10.7 activates F8 SESSION by packaging existing M7/M9 owners rather than introd
 - after verified load/restore, `ScenarioRecorder` resumes from the verified prefix so the session can continue one deterministic trace;
 - the built-in training tracker is attached before replay so training checkpoint/scoring state is reconstructed rather than reset at the final snapshot.
 
-Routine desktop/full-plant endurance tests are reduced in this candidate from 6,000 to 1,000 steps / 10 simulated seconds. The historical M9.7 60-second validation evidence remains authoritative, and direct `drum`/`exhaust` thermodynamic boundary regressions remain mandatory.
+Routine desktop/full-plant endurance tests were reduced in M10.7 from 6,000 to 1,000 steps / 10 simulated seconds. The historical M9.7 60-second validation evidence remains authoritative, and direct `drum`/`exhaust` thermodynamic boundary regressions remain mandatory.
 
 See `docs/milestones/M10.7.md`, `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`, ADR 0067, ADR 0070 and ADR 0074.
+
+
+M10.7.1 is the current usability-hotfix candidate before M10.8. It preserves all M10.7 replay/session ownership while:
+
+- separating latched protection visual state from one-shot command availability;
+- exposing the same canonical `ProtectionReset` near reactor/turbine/electrical trip indications with M5.5-derived reset readiness/blockers;
+- presenting synchronization as a pre-close breaker check only and `PARALLELED` after closure;
+- adding current-condition, next-action and cold-shutdown-to-first-output guidance composed from validated M7 procedures without automatic dispatch.
+
+See `docs/milestones/M10.7.1.md` and `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`.
 
 ---
 
@@ -307,7 +319,7 @@ Validation result: local compilation and all 760 automated tests passed, includi
 
 See `docs/milestones/M9.7.md`, `docs/M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md`, `docs/M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, plus the M9.1–M9.6 milestone/domain documents.
 
-M10.1–M10.6 are validated after the cumulative M10.6 Hotfix 1 package compiled and the complete automated suite passed. M10.6 is the official application baseline; M10.7 is the current implementation candidate. Final release hardening remains M11 after M10.
+M10.1–M10.7 are validated: the cumulative M10.6 Hotfix 1 gate validated M10.2–M10.6, and the user subsequently confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed. M10.7 is the official application baseline; M10.7.1 is the current usability-hotfix candidate before M10.8. Final release hardening remains M11 after M10.
 
 ---
 
@@ -320,8 +332,9 @@ Approved sequence:
 3. M10.3 Alarm, Log & Incident Workstation — VALIDATED
 4. M10.4 Contextual Command Console — VALIDATED
 5. M10.5 Dual Assistance & Control-Authority Model — VALIDATED
-6. M10.6 Supervisory Automatic Operation — VALIDATED / official baseline
-7. M10.7 Session, Checkpoint, Replay & Save Workspace — current implementation candidate
+6. M10.6 Supervisory Automatic Operation — VALIDATED
+7. M10.7 Session, Checkpoint, Replay & Save Workspace — VALIDATED / official baseline
+7.1. M10.7.1 Operator Control-State & Synchronization Usability Hotfix — current implementation candidate
 8. M10.8 Integrated Operator Computer UI
 9. M10.9 Integrated Human-Automation Validation Gate
 

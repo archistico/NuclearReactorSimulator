@@ -53,9 +53,11 @@ public static class OperatorComputerCommandConsoleProjector
         commands.Add(snapshot.ReactorScramActive
             ? Blocked("protection-scram", OperatorComputerCommandGroup.Protection, "REACTOR SCRAM", ControlRoomCommandKind.ReactorScram, "SCRAM ACTIVE", "Reactor SCRAM is already latched.")
             : Available("protection-scram", OperatorComputerCommandGroup.Protection, "REACTOR SCRAM", ControlRoomCommandKind.ReactorScram, "SCRAM CLEAR"));
-        commands.Add(snapshot.AnyTripActive
-            ? Available("protection-reset", OperatorComputerCommandGroup.Protection, "PROTECTION RESET", ControlRoomCommandKind.ProtectionReset, "TRIP ACTIVE · runtime revalidates reset permissives")
-            : Blocked("protection-reset", OperatorComputerCommandGroup.Protection, "PROTECTION RESET", ControlRoomCommandKind.ProtectionReset, "PROTECTION CLEAR", "No latched trip is active."));
+        commands.Add(!snapshot.AnyTripActive
+            ? Blocked("protection-reset", OperatorComputerCommandGroup.Protection, "PROTECTION RESET", ControlRoomCommandKind.ProtectionReset, "PROTECTION CLEAR", "No latched trip is active.")
+            : snapshot.ProtectionReset.CanResetNow
+                ? Available("protection-reset", OperatorComputerCommandGroup.Protection, "PROTECTION RESET", ControlRoomCommandKind.ProtectionReset, "RESET AVAILABLE · runtime revalidates canonical M5.5 conditions")
+                : Blocked("protection-reset", OperatorComputerCommandGroup.Protection, "PROTECTION RESET", ControlRoomCommandKind.ProtectionReset, "RESET BLOCKED", snapshot.ProtectionReset.StatusText));
         commands.Add(snapshot.TurbineTripActive
             ? Blocked("protection-turbine-trip", OperatorComputerCommandGroup.Protection, "TURBINE TRIP", ControlRoomCommandKind.TurbineTrip, "TURBINE TRIP ACTIVE", "Turbine trip is already latched.")
             : Available("protection-turbine-trip", OperatorComputerCommandGroup.Protection, "TURBINE TRIP", ControlRoomCommandKind.TurbineTrip, "TURBINE TRIP CLEAR"));
@@ -163,11 +165,11 @@ public static class OperatorComputerCommandConsoleProjector
             }
             else if (!generator.SynchronizationConditionsSatisfied)
             {
-                commands.Add(Blocked(generatorPrefix + "-breaker-close", OperatorComputerCommandGroup.Electrical, "CLOSE GENERATOR BREAKER", closeCommand, generator.SynchronizationText, "Synchronization permissive is not satisfied."));
+                commands.Add(Blocked(generatorPrefix + "-breaker-close", OperatorComputerCommandGroup.Electrical, "CLOSE GENERATOR BREAKER", closeCommand, generator.DisplaySynchronizationText, "Synchronization permissive is not satisfied."));
             }
             else
             {
-                commands.Add(Available(generatorPrefix + "-breaker-close", OperatorComputerCommandGroup.Electrical, "CLOSE GENERATOR BREAKER", closeCommand, generator.SynchronizationText));
+                commands.Add(Available(generatorPrefix + "-breaker-close", OperatorComputerCommandGroup.Electrical, "CLOSE GENERATOR BREAKER", closeCommand, generator.DisplaySynchronizationText));
             }
 
             var openCommand = new ControlRoomCommand(ControlRoomCommandKind.GeneratorBreakerOpen, generator.BreakerId, ControlRoomCommandTargetKind.Breaker);

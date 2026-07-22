@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace NuclearReactorSimulator.Application.ControlRoom;
 
 /// <summary>
@@ -20,7 +22,8 @@ public sealed record ControlRoomSnapshot
         TurbineSecondaryPanelSnapshot? turbineSecondary = null,
         ElectricalPanelSnapshot? electrical = null,
         AlarmEventsPanelSnapshot? alarmEvents = null,
-        ControlRoomFaultStateSnapshot? faults = null)
+        ControlRoomFaultStateSnapshot? faults = null,
+        ProtectionResetPresentationSnapshot? protectionReset = null)
     {
         if (logicalStep < 0)
         {
@@ -62,6 +65,7 @@ public sealed record ControlRoomSnapshot
         Electrical = electrical ?? ElectricalPanelSnapshot.Unavailable;
         AlarmEvents = alarmEvents ?? AlarmEventsPanelSnapshot.Unavailable;
         Faults = faults ?? ControlRoomFaultStateSnapshot.Empty;
+        ProtectionReset = protectionReset ?? ProtectionResetPresentationSnapshot.Unavailable;
     }
 
     public static ControlRoomSnapshot ShellOnly { get; } = new(
@@ -110,6 +114,9 @@ public sealed record ControlRoomSnapshot
 
     public ControlRoomFaultStateSnapshot Faults { get; }
 
+    [JsonIgnore]
+    public ProtectionResetPresentationSnapshot ProtectionReset { get; }
+
     public ControlRoomSnapshot WithFaultState(ControlRoomFaultStateSnapshot faults)
     {
         ArgumentNullException.ThrowIfNull(faults);
@@ -128,7 +135,8 @@ public sealed record ControlRoomSnapshot
             TurbineSecondary,
             Electrical,
             AlarmEvents,
-            faults);
+            faults,
+            ProtectionReset);
     }
 
     public int ValidMeasuredSignalCount => TotalMeasuredSignalCount - InvalidMeasuredSignalCount;

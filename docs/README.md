@@ -20,7 +20,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Domain documents
 
-The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.6 operator-computer/supervisory-automation capabilities, current M10.7 session/checkpoint/replay/save workspace candidate and the approved remaining M10 supervisory-automation architecture.
+The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.7 operator-computer/supervisory/session capabilities, current M10.7.1 operator-control/synchronization usability hotfix candidate and the approved remaining M10 supervisory-automation architecture.
 
 When modifying a subsystem, update its domain document together with the milestone/ADR/handoff documents rather than leaving architecture knowledge only in source comments or chat history.
 
@@ -32,8 +32,10 @@ At this documentation refresh:
 - M8.1–M8.7 hotfix 2 are validated and the M8 gate is complete.
 - M9.1–M9.7 are validated and the M9 gate is complete.
 - M9 gate: COMPLETE / VALIDATED.
-- Validated application baseline: M10.1 Operator Computer Contracts & Terminal Shell.
-- Current implementation candidate: M10.2 Unified Information, Guidance & Diagnostics.
+- M10.1–M10.7 are validated.
+- Validated application baseline: M10.7 Session, Checkpoint, Replay & Save Workspace.
+- Current implementation candidate: M10.7.1 Operator Control-State & Synchronization Usability Hotfix.
+- Next after explicit M10.7.1 validation: M10.8 Integrated Operator Computer UI.
 - M10 is IN PROGRESS under the approved Operator Computer & Supervisory Automation architecture.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.

@@ -48,6 +48,50 @@ public sealed class OperatorComputerM104CommandConsoleTests
         Assert.Contains("No latched trip", reset.BlockReason!);
     }
 
+
+    [Fact]
+    public void ProtectionReset_UsesCanonicalPublishedReadinessInsteadOfTreatingEveryTripAsAvailable()
+    {
+        var blockedSnapshot = new ControlRoomSnapshot(
+            logicalStep: 12,
+            runState: ControlRoomRunState.Paused,
+            totalMeasuredSignalCount: 0,
+            invalidMeasuredSignalCount: 0,
+            annunciatedAlarmCount: 0,
+            unacknowledgedAlarmCount: 0,
+            reactorScramActive: false,
+            turbineTripActive: true,
+            generatorTripActive: false,
+            protectionReset: new ProtectionResetPresentationSnapshot(
+                anyTripActive: true,
+                resetConditionsSatisfied: false,
+                lastResetRequested: false,
+                lastResetAccepted: false,
+                blockers: new[] { "turbine-trip: reset condition not safe" }));
+        var availableSnapshot = new ControlRoomSnapshot(
+            logicalStep: 13,
+            runState: ControlRoomRunState.Paused,
+            totalMeasuredSignalCount: 0,
+            invalidMeasuredSignalCount: 0,
+            annunciatedAlarmCount: 0,
+            unacknowledgedAlarmCount: 0,
+            reactorScramActive: false,
+            turbineTripActive: true,
+            generatorTripActive: false,
+            protectionReset: new ProtectionResetPresentationSnapshot(
+                anyTripActive: true,
+                resetConditionsSatisfied: true,
+                lastResetRequested: false,
+                lastResetAccepted: false));
+
+        var blocked = Entry(OperatorComputerCommandConsoleProjector.Project(blockedSnapshot), ControlRoomCommandKind.ProtectionReset);
+        var available = Entry(OperatorComputerCommandConsoleProjector.Project(availableSnapshot), ControlRoomCommandKind.ProtectionReset);
+
+        Assert.Equal(OperatorComputerCommandAvailability.Blocked, blocked.Availability);
+        Assert.Contains("reset condition not safe", blocked.BlockReason!, StringComparison.OrdinalIgnoreCase);
+        Assert.Equal(OperatorComputerCommandAvailability.Available, available.Availability);
+    }
+
     [Fact]
     public void IntegratedLowLoadSnapshot_ExpandsCanonicalTargetsWithoutInventingTargetKinds()
     {

@@ -668,7 +668,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.6 are VALIDATED after the cumulative M10.6 Hotfix 1 build/test gate passed. M10.7 is the current implementation candidate. The phase combines a unified operator terminal with a separately owned supervisory-control capability. The terminal is never a new physics/control owner: presentation aggregation lives in Application/App, while real plant automation extends the canonical M5 control domain.
+M10 is **IN PROGRESS**. M10.1–M10.7 are VALIDATED; the user confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed. M10.7 is the current official baseline, and M10.7.1 is the current operator-usability hotfix candidate before M10.8. The phase combines a unified operator terminal with a separately owned supervisory-control capability. The terminal is never a new physics/control owner: presentation aggregation lives in Application/App, while real plant automation extends the canonical M5 control domain.
 
 Two independent axes are mandatory:
 
@@ -722,12 +722,19 @@ Two independent axes are mandatory:
 - support requested/effective/degraded state and fail-closed degradation when required measurements or equipment become unavailable;
 - manual takeover must stop new supervisory decisions and hand authority back deterministically without artificial state jumps.
 
-### M10.7 Session, Checkpoint, Replay & Save Workspace — IMPLEMENTATION CANDIDATE
+### M10.7 Session, Checkpoint, Replay & Save Workspace — VALIDATED
 
 - expose exact-version scenario load, recorder state, checkpoint creation/listing, verified seek and full replay through existing M7/M9 owners;
 - add a versioned persistent session archive only as packaging around exact scenario identity, recording/action history, checkpoints and metadata;
 - restoration remains replay-backed through `ScenarioFullReplayRunner`/checkpoint fingerprint verification, never an opaque solver-memory dump;
 - do not create a second historian, checkpoint owner or fault trace.
+
+### M10.7.1 Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE
+
+- make latched SCRAM/turbine/generator trips persistently visible while disabling repeated one-shot trip dispatch;
+- expose the same canonical protection reset near affected panels with M5.5-derived reset readiness/blockers;
+- make synchronization breaker-aware: detailed pre-close Δf/Δphase/ΔV checks while open, `PARALLELED` once closed;
+- expose current condition, next canonical action and a cold-shutdown-to-first-electrical-output command map composed from validated M7 guidance without introducing new automation.
 
 ### M10.8 Integrated Operator Computer UI
 

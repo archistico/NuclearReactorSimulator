@@ -45,7 +45,39 @@ public static class ControlRoomSnapshotProjector
             ProjectPrimaryCircuit(snapshot),
             ProjectTurbineSecondary(snapshot),
             ProjectElectrical(snapshot),
-            ProjectAlarmEvents(logicalStep, alarms));
+            ProjectAlarmEvents(logicalStep, alarms),
+            protectionReset: ProjectProtectionReset(protection));
+    }
+
+    private static ProtectionResetPresentationSnapshot ProjectProtectionReset(
+        NuclearReactorSimulator.Simulation.Physics.Control.Protection.ProtectionSystemSnapshot protection)
+    {
+        var blockers = new List<string>();
+        foreach (var function in protection.Functions)
+        {
+            if (function.TriggerActive)
+            {
+                blockers.Add($"{function.FunctionId}: trip condition still active");
+            }
+            else if (!function.ResetConditionSafe)
+            {
+                blockers.Add($"{function.FunctionId}: reset condition not safe");
+            }
+        }
+
+        foreach (var permissive in protection.ResetPermissives.Where(static permissive => !permissive.IsSatisfied))
+        {
+            blockers.Add($"{permissive.PermissiveId}: reset permissive not satisfied");
+        }
+
+        var resetConditionsSatisfied = protection.Functions.All(static function => !function.TriggerActive && function.ResetConditionSafe)
+            && protection.ResetPermissives.All(static permissive => permissive.IsSatisfied);
+        return new ProtectionResetPresentationSnapshot(
+            protection.ReactorScramActive || protection.TurbineTripActive || protection.GeneratorTripActive,
+            resetConditionsSatisfied,
+            protection.ResetRequested,
+            protection.ResetAccepted,
+            blockers);
     }
 
     private static ReactorCorePanelSnapshot ProjectReactorCore(IntegratedAutomaticOperationSnapshot snapshot)
@@ -417,31 +449,41 @@ public static class ControlRoomSnapshotProjector
 
         var generators = generatorGrid.Generators
             .OrderBy(static generator => generator.GeneratorId, StringComparer.Ordinal)
-            .Select(generator => new GeneratorPresentationSnapshot(
-                generator.GeneratorId,
-                generator.RotorId,
-                generator.BreakerId,
-                ProjectMeasuredSource(
-                    measuredFrame,
-                    $"generator/{generator.GeneratorId}/frequency",
-                    "Hz",
-                    1d,
-                    "0.000"),
-                ProjectMeasuredSource(
-                    measuredFrame,
-                    $"generator/{generator.GeneratorId}/electrical-output",
-                    "MWe",
-                    1d / 1_000_000d,
-                    "0.0"),
-                Value(generator.TerminalLineVoltage.Kilovolts, "kV", "0.0"),
-                Value(generator.GridLineVoltage.Kilovolts, "kV", "0.0"),
-                Value(generator.FinalPhaseDifference.Degrees, "°", "0.00"),
-                Value(generator.MechanicalInputPower.Megawatts, "MW", "0.0"),
-                Value(generator.ConversionLossPower.Megawatts, "MW", "0.000"),
-                generator.SynchronizationConditionsSatisfied,
-                generator.BreakerFinallyClosed,
-                generator.CloseCommandAccepted,
-                generator.CloseCommandRejected))
+            .Select(generator =>
+            {
+                var definition = generatorGrid.Definition.GetGenerator(generator.GeneratorId);
+                return new GeneratorPresentationSnapshot(
+                    generator.GeneratorId,
+                    generator.RotorId,
+                    generator.BreakerId,
+                    ProjectMeasuredSource(
+                        measuredFrame,
+                        $"generator/{generator.GeneratorId}/frequency",
+                        "Hz",
+                        1d,
+                        "0.000"),
+                    ProjectMeasuredSource(
+                        measuredFrame,
+                        $"generator/{generator.GeneratorId}/electrical-output",
+                        "MWe",
+                        1d / 1_000_000d,
+                        "0.0"),
+                    Value(generator.TerminalLineVoltage.Kilovolts, "kV", "0.0"),
+                    Value(generator.GridLineVoltage.Kilovolts, "kV", "0.0"),
+                    Value(generator.FinalPhaseDifference.Degrees, "°", "0.00"),
+                    Value(generator.MechanicalInputPower.Megawatts, "MW", "0.0"),
+                    Value(generator.ConversionLossPower.Megawatts, "MW", "0.000"),
+                    generator.SynchronizationConditionsSatisfied,
+                    generator.BreakerFinallyClosed,
+                    generator.CloseCommandAccepted,
+                    generator.CloseCommandRejected,
+                    generator.FrequencyDifferenceAtCloseCheck.Hertz,
+                    definition.MaximumSynchronizationFrequencyDifference.Hertz,
+                    generator.InitialPhaseDifference.Degrees,
+                    definition.MaximumSynchronizationPhaseDifference.Degrees,
+                    generator.VoltageDifferenceAtCloseCheck.Kilovolts,
+                    definition.MaximumSynchronizationVoltageDifference.Kilovolts);
+            })
             .ToArray();
 
         return new ElectricalPanelSnapshot(

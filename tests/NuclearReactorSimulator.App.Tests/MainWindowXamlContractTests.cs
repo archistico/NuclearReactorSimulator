@@ -13,19 +13,15 @@ public sealed class MainWindowXamlContractTests
         {
             ["START / RUN"] = ("{Binding PumpStartCommand}", "{Binding PumpCommandState}"),
             ["STOP"] = ("{Binding PumpStopCommand}", "{Binding PumpCommandState}"),
-            ["TURBINE TRIP"] = ("{Binding TurbineTripCommand}", "{Binding TurbineTripCommandState}"),
             ["SPEED LOWER"] = ("{Binding TurbineSpeedLowerCommand}", "{Binding TurbineSpeedCommandState}"),
             ["SPEED RAISE"] = ("{Binding TurbineSpeedRaiseCommand}", "{Binding TurbineSpeedCommandState}"),
             ["LOAD LOWER"] = ("{Binding GeneratorLoadLowerCommand}", "{Binding GeneratorLoadCommandState}"),
             ["LOAD RAISE"] = ("{Binding GeneratorLoadRaiseCommand}", "{Binding GeneratorLoadCommandState}"),
             ["CLOSE BREAKER"] = ("{Binding GeneratorBreakerCloseCommand}", "{Binding BreakerCloseCommandState}"),
             ["OPEN BREAKER"] = ("{Binding GeneratorBreakerOpenCommand}", "{Binding BreakerOpenCommandState}"),
-            ["GENERATOR TRIP"] = ("{Binding GeneratorTripCommand}", "{Binding GeneratorTripCommandState}"),
             ["INSERT"] = ("{Binding RodInsertCommand}", "{Binding RodCommandState}"),
             ["HOLD"] = ("{Binding RodHoldCommand}", "{Binding RodCommandState}"),
             ["WITHDRAW"] = ("{Binding RodWithdrawCommand}", "{Binding RodWithdrawCommandState}"),
-            ["SCRAM"] = ("{Binding ReactorScramCommand}", "{Binding ScramCommandState}"),
-            ["PROTECTION RESET"] = ("{Binding ProtectionResetCommand}", "{Binding ReactorCommandState}"),
             ["ACKNOWLEDGE"] = ("{Binding AlarmAcknowledgeCommand}", "{Binding AlarmAcknowledgeCommandState}"),
             ["RESET"] = ("{Binding AlarmResetCommand}", "{Binding AlarmResetCommandState}"),
             ["ACK ALL"] = ("{Binding AlarmAcknowledgeAllCommand}", "{Binding AlarmAcknowledgeAllCommandState}"),
@@ -42,6 +38,68 @@ public sealed class MainWindowXamlContractTests
             Assert.Equal(pair.Value.Command, (string?)button.Attribute("Command"));
             Assert.Equal(pair.Value.State, (string?)button.Attribute("State"));
         }
+    }
+
+
+    [Fact]
+    public void ProtectionTripButtons_SeparateLatchedVisualStateFromCommandAvailability()
+    {
+        var document = LoadMainWindow();
+        var buttons = document.Descendants()
+            .Where(static element => element.Name.LocalName == "ControlRoomPushButton")
+            .ToArray();
+
+        var turbineTrip = Assert.Single(buttons, static element => (string?)element.Attribute("Command") == "{Binding TurbineTripCommand}");
+        Assert.Equal("{Binding TurbineTripCommandLabel}", (string?)turbineTrip.Attribute("Label"));
+        Assert.Equal("{Binding TurbineTripCommandState}", (string?)turbineTrip.Attribute("State"));
+        Assert.Equal("{Binding TurbineTripCommandEnabled}", (string?)turbineTrip.Attribute("IsCommandEnabled"));
+
+        var generatorTrip = Assert.Single(buttons, static element => (string?)element.Attribute("Command") == "{Binding GeneratorTripCommand}");
+        Assert.Equal("{Binding GeneratorTripCommandLabel}", (string?)generatorTrip.Attribute("Label"));
+        Assert.Equal("{Binding GeneratorTripCommandState}", (string?)generatorTrip.Attribute("State"));
+        Assert.Equal("{Binding GeneratorTripCommandEnabled}", (string?)generatorTrip.Attribute("IsCommandEnabled"));
+
+        var scram = Assert.Single(buttons, static element => (string?)element.Attribute("Command") == "{Binding ReactorScramCommand}");
+        Assert.Equal("{Binding ScramCommandLabel}", (string?)scram.Attribute("Label"));
+        Assert.Equal("{Binding ScramCommandEnabled}", (string?)scram.Attribute("IsCommandEnabled"));
+
+        var resets = buttons.Where(static element => (string?)element.Attribute("Command") == "{Binding ProtectionResetCommand}").ToArray();
+        Assert.Equal(3, resets.Length);
+        Assert.All(resets, static reset =>
+        {
+            Assert.Equal("{Binding ProtectionResetCommandState}", (string?)reset.Attribute("State"));
+            Assert.Equal("{Binding ProtectionResetCommandEnabled}", (string?)reset.Attribute("IsCommandEnabled"));
+        });
+    }
+
+    [Fact]
+    public void ElectricalWorkspace_UsesParalleledAwareSynchronizationPresentation()
+    {
+        var document = LoadMainWindow();
+
+        var synchronizationLamp = Assert.Single(
+            document.Descendants(),
+            static element => element.Name.LocalName == "ControlRoomIndicatorLamp"
+                && (string?)element.Attribute("Label") == "{Binding SynchronizationLabel}");
+        Assert.Equal("{Binding DisplaySynchronizationState}", (string?)synchronizationLamp.Attribute("State"));
+
+        Assert.Contains(
+            document.Descendants(),
+            static element => (string?)element.Attribute("Text") == "{Binding SelectedGeneratorSynchronizationDetailText}");
+    }
+
+    [Fact]
+    public void Overview_ExposesCanonicalNextActionAndStartupToPowerCommandMap()
+    {
+        var document = LoadMainWindow();
+        var textBindings = document.Descendants()
+            .Select(static element => (string?)element.Attribute("Text"))
+            .Where(static text => text is not null)
+            .ToHashSet(StringComparer.Ordinal);
+
+        Assert.Contains("{Binding OperatorCurrentConditionText}", textBindings);
+        Assert.Contains("{Binding OperatorNextActionText}", textBindings);
+        Assert.Contains("{Binding StartupToPowerCommandPathText}", textBindings);
     }
 
     [Fact]

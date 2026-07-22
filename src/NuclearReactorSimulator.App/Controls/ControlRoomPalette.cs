@@ -19,6 +19,23 @@ internal static class ControlRoomPalette
 
     public static IBrush TextMuted { get; } = Brush.Parse("#A7B0BC");
 
+    public static IBrush ActiveControlText { get; } = Brush.Parse("#171C24");
+
+    private static IBrush WarningFill { get; } = Brush.Parse("#F3D98A");
+
+    private static IBrush TripFill { get; } = Brush.Parse("#FFB4B4");
+
+    public static IBrush ControlBackground(ControlRoomVisualState state) => state switch
+    {
+        ControlRoomVisualState.Warning => WarningFill,
+        ControlRoomVisualState.Trip => TripFill,
+        _ => Brushes.Transparent,
+    };
+
+    public static IBrush ControlForeground(ControlRoomVisualState state) => state is ControlRoomVisualState.Warning or ControlRoomVisualState.Trip
+        ? ActiveControlText
+        : Brushes.White;
+
     public static IBrush Accent(ControlRoomVisualState state) => state switch
     {
         ControlRoomVisualState.Normal => NormalAccent,

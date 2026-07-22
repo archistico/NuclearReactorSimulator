@@ -10,34 +10,36 @@ Read first:
 2. `docs/PROJECT_STATUS.md`
 3. `docs/ROADMAP.md`
 4. `docs/ARCHITECTURE.md`
-5. `docs/milestones/M10.7.md`
-6. `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`
-7. `docs/milestones/M10.6.md`
-8. `docs/milestones/M10.5.md`
-9. `docs/SUPERVISORY_AUTOMATIC_OPERATION.md`
-10. `docs/DUAL_ASSISTANCE_CONTROL_AUTHORITY.md`
-11. `docs/milestones/M10.4.md`
-12. `docs/OPERATOR_COMPUTER_CONTEXTUAL_COMMAND_CONSOLE.md`
-13. `docs/milestones/M10.3.md`
-14. `docs/OPERATOR_COMPUTER_ALARM_LOG_INCIDENT_WORKSTATION.md`
-15. `docs/milestones/M10.2.md`
-16. `docs/OPERATOR_COMPUTER_INFORMATION_GUIDANCE_DIAGNOSTICS.md`
-17. `docs/milestones/M10.1.md`
-18. `docs/OPERATOR_COMPUTER_TERMINAL_SHELL.md`
-19. `docs/OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`
-20. ADR 0070, ADR 0074 and relevant M9 ADRs 0067–0073
+5. `docs/milestones/M10.7.1.md`
+6. `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`
+7. `docs/milestones/M10.7.md`
+8. `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`
+9. `docs/milestones/M10.6.md`
+10. `docs/milestones/M10.5.md`
+11. `docs/SUPERVISORY_AUTOMATIC_OPERATION.md`
+12. `docs/DUAL_ASSISTANCE_CONTROL_AUTHORITY.md`
+13. `docs/milestones/M10.4.md`
+14. `docs/OPERATOR_COMPUTER_CONTEXTUAL_COMMAND_CONSOLE.md`
+15. `docs/milestones/M10.3.md`
+16. `docs/OPERATOR_COMPUTER_ALARM_LOG_INCIDENT_WORKSTATION.md`
+17. `docs/milestones/M10.2.md`
+18. `docs/OPERATOR_COMPUTER_INFORMATION_GUIDANCE_DIAGNOSTICS.md`
+19. `docs/milestones/M10.1.md`
+20. `docs/OPERATOR_COMPUTER_TERMINAL_SHELL.md`
+21. `docs/OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`
+22. ADR 0070, ADR 0074 and relevant M9 ADRs 0067–0073
 
 ## Exact current checkpoint
 
 - M7, M8 and M9 gates: **COMPLETE / VALIDATED**.
-- **M10.1–M10.6: VALIDATED**. The user confirmed the cumulative M10.2→M10.6 Hotfix 1 package compiled and the complete automated suite passed.
-- **Official application baseline:** `M10.6 — Supervisory Automatic Operation`.
-- **Current implementation candidate:** `M10.7 — Session, Checkpoint, Replay & Save Workspace`.
-- Next after explicit M10.7 validation: `M10.8 — Integrated Operator Computer UI`.
+- **M10.1–M10.7: VALIDATED**. The cumulative M10.2→M10.6 Hotfix 1 chain passed first; the user then confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed.
+- **Official application baseline:** `M10.7 — Session, Checkpoint, Replay & Save Workspace`.
+- **Current implementation candidate:** `M10.7.1 — Operator Control-State & Synchronization Usability Hotfix`.
+- Next after explicit M10.7.1 validation: `M10.8 — Integrated Operator Computer UI`.
 
-## Current M10.7 candidate boundary
+## Validated M10.7 boundary / current M10.7.1 candidate
 
-M10.7 adds F8 SESSION over canonical owners only:
+M10.7 is validated and adds F8 SESSION over canonical owners only:
 
 - explicit opt-in M9.1 recording rather than hidden recorder overhead on normal desktop startup;
 - replay-backed checkpoint create/list/restore;
@@ -65,7 +67,7 @@ Preserve:
 - real supervisory automation remains M5-owned;
 - no free-form/NLP terminal command prompt.
 
-## Validation action for M10.7
+## Validation action for M10.7.1
 
 Run:
 
@@ -76,12 +78,11 @@ dotnet build --no-restore
 dotnet test --no-build
 ```
 
-Then manually verify F8 SESSION:
+Then manually verify M10.7.1 usability:
 
-- ordinary startup shows recorder `INACTIVE`;
-- `START RECORDED SESSION` restarts at STEP 0 paused with recorder active;
-- run some steps, pause, create a checkpoint and verify replay;
-- save `.nrs-session.json`, load it, confirm restored logical step/state and continued recording;
-- restore the selected checkpoint and confirm exact checkpoint step/fingerprint reconstruction;
-- continue after restore and create/save another checkpoint/archive;
-- verify M10.2–M10.6 pages/commands/modes remain operational and MainWindow layout remains unchanged.
+- SCRAM / TURBINE TRIP / GENERATOR TRIP become filled `— ACTIVE` indications after latching and cannot be issued again while active;
+- the same canonical `RESET PROTECTION` is discoverable near affected panels and shows `RESET AVAILABLE` or a real M5.5-derived blocking reason;
+- with generator breaker closed, synchronization shows `PARALLELED` / normal rather than a stale warning;
+- with breaker open, synchronization shows Δfrequency / Δphase / Δvoltage and per-dimension OK/WAIT against canonical M4.5 limits;
+- Overview shows current condition, next canonical action and the cold-shutdown-to-first-electrical-output command map without dispatching automatically;
+- existing M10.7 SESSION save/load/checkpoint/replay behavior still passes automated regressions.

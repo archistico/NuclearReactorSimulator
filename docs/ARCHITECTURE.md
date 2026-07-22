@@ -13,7 +13,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.3 is locally validated and provides exact `pre-criticality-source-range` v1 plus controlled first-criticality/low-power operation.
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
-- M7, M8 and M9 gates are complete. M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; M9.7 hotfix 5 passed all 760 automated tests and the final user-corrected `MainWindow.axaml` is integrated as the validated GUI layout baseline. M10.1–M10.6 are validated; M10.6 Supervisory Automatic Operation is the official application baseline and M10.7 Session, Checkpoint, Replay & Save Workspace is the current implementation candidate.
+- M7, M8 and M9 gates are complete. M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; M9.7 hotfix 5 passed all 760 automated tests and the final user-corrected `MainWindow.axaml` is integrated as the validated GUI layout baseline. M10.1–M10.7 are validated; M10.7 Session, Checkpoint, Replay & Save Workspace is the official application baseline and M10.7.1 Operator Control-State & Synchronization Usability Hotfix is the current implementation candidate before M10.8.
 - M8.2 hotfix 2 introduced a headless `NuclearReactorSimulator.App.Tests` boundary for ViewModel/XAML interaction contracts. These tests may reference `App`, but production dependency direction is unchanged: `App` still has no `Simulation` reference and owns no physics.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.

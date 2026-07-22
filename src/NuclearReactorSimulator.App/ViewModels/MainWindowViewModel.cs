@@ -19,6 +19,8 @@ namespace NuclearReactorSimulator.App.ViewModels;
 
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
+    private static readonly string StartupToPowerCommandPath = BuildStartupToPowerCommandPath();
+
     private readonly IControlRoomSnapshotSource _snapshotSource;
     private readonly IControlRoomCommandDispatcher _commandDispatcher;
     private readonly IPlantControlAuthorityDispatcher? _plantControlAuthorityDispatcher;
@@ -560,6 +562,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(SelectedGeneratorId));
             OnPropertyChanged(nameof(SelectedBreakerId));
             OnPropertyChanged(nameof(SelectedGeneratorSynchronizationText));
+            OnPropertyChanged(nameof(SelectedGeneratorSynchronizationDetailText));
             OnPropertyChanged(nameof(SelectedGeneratorRotorId));
             OnPropertyChanged(nameof(BreakerCloseCommandState));
             OnPropertyChanged(nameof(TurbineSpeedCommandState));
@@ -578,7 +581,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public string SelectedGeneratorSynchronizationText => Electrical.Generators.Count == 0
         ? "No generator selected"
-        : Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)].SynchronizationText;
+        : Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)].DisplaySynchronizationText;
+
+    public string SelectedGeneratorSynchronizationDetailText => Electrical.Generators.Count == 0
+        ? "No generator selected"
+        : Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)].SynchronizationDetailText;
 
     public string SelectedGeneratorRotorId => Electrical.Generators.Count == 0
         ? "—"
@@ -588,6 +595,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         ? ControlRoomVisualState.Unavailable
         : TurbineSecondary.TurbineTripActive ? ControlRoomVisualState.Trip : ControlRoomVisualState.Normal;
 
+    public bool TurbineTripCommandEnabled => _snapshot.RunState != ControlRoomRunState.ShellOnly && !TurbineSecondary.TurbineTripActive;
+
+    public string TurbineTripCommandLabel => TurbineSecondary.TurbineTripActive ? "TURBINE TRIP — ACTIVE" : "TURBINE TRIP";
+
     public ControlRoomVisualState GeneratorSelectionState =>
         _snapshot.RunState == ControlRoomRunState.ShellOnly || Electrical.Generators.Count == 0
             ? ControlRoomVisualState.Unavailable
@@ -596,6 +607,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public ControlRoomVisualState GeneratorTripCommandState => _snapshot.RunState == ControlRoomRunState.ShellOnly
         ? ControlRoomVisualState.Unavailable
         : Electrical.GeneratorTripActive ? ControlRoomVisualState.Trip : ControlRoomVisualState.Normal;
+
+    public bool GeneratorTripCommandEnabled => _snapshot.RunState != ControlRoomRunState.ShellOnly && !Electrical.GeneratorTripActive;
+
+    public string GeneratorTripCommandLabel => Electrical.GeneratorTripActive ? "GENERATOR TRIP — ACTIVE" : "GENERATOR TRIP";
 
     public ControlRoomVisualState TurbineSpeedCommandState =>
         _snapshot.RunState == ControlRoomRunState.ShellOnly
@@ -688,6 +703,18 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         ? ControlRoomVisualState.Unavailable
         : ReactorCore.ReactorScramActive ? ControlRoomVisualState.Trip : ControlRoomVisualState.Normal;
 
+    public bool ScramCommandEnabled => _snapshot.RunState != ControlRoomRunState.ShellOnly && !ReactorCore.ReactorScramActive;
+
+    public string ScramCommandLabel => ReactorCore.ReactorScramActive ? "SCRAM — ACTIVE" : "SCRAM";
+
+    public ControlRoomVisualState ProtectionResetCommandState => _snapshot.RunState == ControlRoomRunState.ShellOnly
+        ? ControlRoomVisualState.Unavailable
+        : _snapshot.ProtectionReset.State;
+
+    public bool ProtectionResetCommandEnabled => _snapshot.RunState != ControlRoomRunState.ShellOnly && _snapshot.ProtectionReset.CanResetNow;
+
+    public string ProtectionResetStatusText => _snapshot.ProtectionReset.StatusText;
+
     public ControlRoomVisualState RodCommandState => _snapshot.RunState == ControlRoomRunState.ShellOnly || ReactorCore.RodTargets.Count == 0
         ? ControlRoomVisualState.Unavailable
         : ControlRoomVisualState.Normal;
@@ -700,6 +727,17 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public string XenonAvailabilityText => ReactorCore.XenonReactivity.State == ControlRoomVisualState.Unavailable
         ? "Canonical iodine/xenon state is unavailable for this runtime configuration; no value is fabricated."
         : "Canonical M2.8 xenon reactivity is promoted through the operational snapshot; negative values indicate modeled poisoning worth.";
+
+    public string OperatorCurrentConditionText => BuildOperatorCurrentConditionText();
+
+    public string OperatorNextActionText => BuildOperatorNextActionText();
+
+    public string StartupToPowerCommandPathText => _trainingTracker?.GuidanceMode switch
+    {
+        TrainingGuidanceMode.Hidden => "Procedure guidance is hidden. The startup-to-power command map is intentionally suppressed.",
+        TrainingGuidanceMode.ChecklistOnly => "Checklist-only assistance is active. The step-by-step startup-to-power command map is intentionally suppressed.",
+        _ => StartupToPowerCommandPath,
+    };
 
     public string CommandStatus
     {
@@ -746,6 +784,168 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public ICommand OpenOperatorComputerDiagnosticsPageCommand { get; }
     public ICommand OpenOperatorComputerLogPageCommand { get; }
     public ICommand OpenOperatorComputerSessionPageCommand { get; }
+
+    private string BuildOperatorCurrentConditionText()
+    {
+        if (_snapshot.RunState == ControlRoomRunState.ShellOnly)
+        {
+            return "NO INTEGRATED PLANT SESSION";
+        }
+
+        var generator = Electrical.Generators.FirstOrDefault();
+        var generatorState = generator is null
+            ? "GENERATOR UNAVAILABLE"
+            : generator.BreakerClosed
+                ? "GENERATOR PARALLELED"
+                : "GENERATOR ISOLATED";
+        var protection = _snapshot.AnyTripActive ? $"PROTECTION ACTIVE: {BuildProtectionSummary(_snapshot)}" : "PROTECTION CLEAR";
+        return $"{generatorState} · {protection} · GROSS OUTPUT {Electrical.GrossElectricalOutput.ValueText} {Electrical.GrossElectricalOutput.Unit}";
+    }
+
+    private string BuildOperatorNextActionText()
+    {
+        if (_trainingTracker?.GuidanceMode == TrainingGuidanceMode.Hidden)
+        {
+            return "Procedure guidance is hidden. Use plant indications and protection status only; no next-action recommendation is shown.";
+        }
+
+        if (_trainingTracker?.GuidanceMode == TrainingGuidanceMode.ChecklistOnly)
+        {
+            return "Checklist-only assistance is active. Use OPERATIONAL CHECKS / F6 DIAGNOSTICS; step-by-step next-action recommendations are suppressed.";
+        }
+
+        if (_snapshot.AnyTripActive)
+        {
+            return $"1. Stabilize the plant and verify why {BuildProtectionSummary(_snapshot)} is latched.{Environment.NewLine}" +
+                   $"2. When safe, use PROTECTION RESET. M5.5 will accept it only when canonical reset conditions and permissives are satisfied.{Environment.NewLine}" +
+                   "3. Do not re-issue an already latched TRIP/SCRAM command.";
+        }
+
+        if (_powerManoeuvringGuidance is not null)
+        {
+            var results = _powerManoeuvringChecklistEvaluator.Evaluate(_snapshot, _powerManoeuvringGuidance.Checks)
+                .ToDictionary(static result => result.Definition.CheckId, StringComparer.Ordinal);
+            var step = SelectCurrentPowerManoeuvringStep(results);
+            if (step is not null)
+            {
+                var blockers = step.RequiredCheckIds
+                    .Where(id => results.TryGetValue(id, out var result) && !result.IsSatisfied)
+                    .Select(id => results[id].Observation)
+                    .Take(3)
+                    .ToArray();
+                var suggested = step.SuggestedOperatorAction.HasValue
+                    ? CommandDisplayName(step.SuggestedOperatorAction.Value)
+                    : "OBSERVE / HOLD";
+                return $"CURRENT OBJECTIVE: {step.Sequence}. {step.Title}{Environment.NewLine}" +
+                       $"NEXT COMMAND/ACTION: {suggested}{Environment.NewLine}" +
+                       $"{step.Instruction}" +
+                       (blockers.Length == 0 ? string.Empty : $"{Environment.NewLine}WAIT / VERIFY: {string.Join(" · ", blockers)}");
+            }
+        }
+
+        var generator = Electrical.Generators.FirstOrDefault();
+        if (generator is not null && generator.BreakerClosed)
+        {
+            return "Generator is already PARALLELED. Raise electrical load in one bounded GENERATOR LOAD RAISE increment, observe turbine speed/reactor power, stabilize, then coordinate further load with deliberate rod WITHDRAW/HOLD as required.";
+        }
+
+        if (generator is not null)
+        {
+            return generator.SynchronizationConditionsSatisfied
+                ? "SYNC READY. Issue CLOSE BREAKER once, then verify PARALLELED before applying electrical load."
+                : $"SYNC NOT READY. {generator.SynchronizationDetailText} Use small TURBINE SPEED RAISE/LOWER corrections only as needed and wait for all three close-check dimensions to be OK.";
+        }
+
+        return "Use F1 GUIDANCE and F6 DIAGNOSTICS to follow the loaded canonical procedure. No generator target is currently published.";
+    }
+
+    private PowerManoeuvringStepDefinition? SelectCurrentPowerManoeuvringStep(
+        IReadOnlyDictionary<string, PowerManoeuvringCheckResult> results)
+    {
+        if (_powerManoeuvringGuidance is null)
+        {
+            return null;
+        }
+
+        if (_trainingTracker?.Assessment is { } assessment)
+        {
+            var checkpoints = assessment.Checkpoints.ToDictionary(
+                static checkpoint => checkpoint.Definition.CheckpointId,
+                static checkpoint => checkpoint.IsSatisfied,
+                StringComparer.Ordinal);
+
+            bool Satisfied(string checkpointId)
+                => checkpoints.TryGetValue(checkpointId, out var satisfied) && satisfied;
+
+            var stepId = !Satisfied("stable-low-load") ? "verify-handoff"
+                : !Satisfied("increased-load") ? "raise-load"
+                : !Satisfied("temperature-feedback") || !Satisfied("void-feedback") || !Satisfied("xenon-boundary") ? "observe-feedback"
+                : !Satisfied("reduced-load") ? "reduce-load"
+                : !Satisfied("generator-unloaded") ? "unload"
+                : !Satisfied("generator-disconnected") ? "disconnect"
+                : !Satisfied("reactor-shutdown") ? "shutdown-reactor"
+                : !Satisfied("post-shutdown-cooling") ? "post-shutdown"
+                : null;
+
+            return stepId is null
+                ? null
+                : _powerManoeuvringGuidance.Steps.Single(step => string.Equals(step.StepId, stepId, StringComparison.Ordinal));
+        }
+
+        return _powerManoeuvringGuidance.Steps.FirstOrDefault(candidate =>
+            candidate.RequiredCheckIds.Any(id => !results.TryGetValue(id, out var result) || !result.IsSatisfied));
+    }
+
+    private static string CommandDisplayName(ControlRoomCommandKind kind) => kind switch
+    {
+        ControlRoomCommandKind.MainCirculationPumpStart => "START MAIN CIRCULATION PUMP",
+        ControlRoomCommandKind.ControlRodWithdraw => "CONTROL ROD WITHDRAW",
+        ControlRoomCommandKind.ControlRodHold => "CONTROL ROD HOLD",
+        ControlRoomCommandKind.ControlRodInsert => "CONTROL ROD INSERT",
+        ControlRoomCommandKind.TurbineSpeedRaise => "TURBINE SPEED RAISE",
+        ControlRoomCommandKind.TurbineSpeedLower => "TURBINE SPEED LOWER",
+        ControlRoomCommandKind.GeneratorBreakerClose => "CLOSE GENERATOR BREAKER",
+        ControlRoomCommandKind.GeneratorBreakerOpen => "OPEN GENERATOR BREAKER",
+        ControlRoomCommandKind.GeneratorLoadRaise => "GENERATOR LOAD RAISE",
+        ControlRoomCommandKind.GeneratorLoadLower => "GENERATOR LOAD LOWER",
+        ControlRoomCommandKind.ProtectionReset => "PROTECTION RESET",
+        _ => kind.ToString().ToUpperInvariant(),
+    };
+
+    private static string BuildStartupToPowerCommandPath()
+    {
+        static string Actions<TStep>(IEnumerable<TStep> steps, Func<TStep, int> sequence, Func<TStep, ControlRoomCommandKind?> action)
+            => string.Join(
+                " → ",
+                steps.OrderBy(sequence)
+                    .Select(step => action(step))
+                    .Where(static value => value.HasValue)
+                    .Select(static value => CommandDisplayName(value.GetValueOrDefault()))
+                    .Distinct(StringComparer.Ordinal));
+
+        var preStartup = Actions(
+            ColdShutdownPreStartupProgram.Guidance.Steps,
+            static step => step.Sequence,
+            static step => step.SuggestedOperatorAction);
+        var criticality = Actions(
+            FirstCriticalityLowPowerProgram.Guidance.Steps,
+            static step => step.Sequence,
+            static step => step.SuggestedOperatorAction);
+        var heatUp = Actions(
+            HeatUpTurbineStartupProgram.Guidance.Steps,
+            static step => step.Sequence,
+            static step => step.SuggestedOperatorAction);
+        var synchronization = Actions(
+            GridSynchronizationLoadProgram.Guidance.Steps,
+            static step => step.Sequence,
+            static step => step.SuggestedOperatorAction);
+
+        return $"1 PREPARE / CIRCULATION  {preStartup}{Environment.NewLine}" +
+               $"2 FIRST CRITICALITY      {criticality}{Environment.NewLine}" +
+               $"3 STEAM / TURBINE ROLL   {heatUp}{Environment.NewLine}" +
+               $"4 SYNCHRONIZE / LOAD     {synchronization}{Environment.NewLine}" +
+               "5 ON GRID                 GENERATOR LOAD RAISE → CONTROL ROD WITHDRAW/HOLD → STABILIZE → REPEAT IN SMALL INCREMENTS";
+    }
 
     private static string BuildProtectionSummary(ControlRoomSnapshot snapshot)
     {
@@ -962,6 +1162,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         OnPropertyChanged(nameof(TrainingGuidanceModeText));
+        OnPropertyChanged(nameof(OperatorNextActionText));
+        OnPropertyChanged(nameof(StartupToPowerCommandPathText));
     }
 
     private void OnPlantControlAuthorityChanged(object? sender, PlantControlAuthorityChangedEventArgs e)
@@ -974,6 +1176,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         OnPropertyChanged(nameof(TrainingAssessmentText));
         OnPropertyChanged(nameof(TrainingGuidanceModeText));
+        OnPropertyChanged(nameof(OperatorNextActionText));
     }
 
     private void OnSnapshotChanged(object? sender, ControlRoomSnapshotChangedEventArgs e)
@@ -1061,12 +1264,17 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(SelectedGeneratorId));
         OnPropertyChanged(nameof(SelectedBreakerId));
         OnPropertyChanged(nameof(SelectedGeneratorSynchronizationText));
+        OnPropertyChanged(nameof(SelectedGeneratorSynchronizationDetailText));
         OnPropertyChanged(nameof(SelectedGeneratorRotorId));
         OnPropertyChanged(nameof(TurbineSpeedCommandState));
         OnPropertyChanged(nameof(GeneratorLoadCommandState));
         OnPropertyChanged(nameof(TurbineTripCommandState));
+        OnPropertyChanged(nameof(TurbineTripCommandEnabled));
+        OnPropertyChanged(nameof(TurbineTripCommandLabel));
         OnPropertyChanged(nameof(GeneratorSelectionState));
         OnPropertyChanged(nameof(GeneratorTripCommandState));
+        OnPropertyChanged(nameof(GeneratorTripCommandEnabled));
+        OnPropertyChanged(nameof(GeneratorTripCommandLabel));
         OnPropertyChanged(nameof(BreakerCloseCommandState));
         OnPropertyChanged(nameof(BreakerOpenCommandState));
         OnPropertyChanged(nameof(RodOptionsText));
@@ -1075,6 +1283,13 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(SelectedRodTargetKind));
         OnPropertyChanged(nameof(ReactorCommandState));
         OnPropertyChanged(nameof(ScramCommandState));
+        OnPropertyChanged(nameof(ScramCommandEnabled));
+        OnPropertyChanged(nameof(ScramCommandLabel));
+        OnPropertyChanged(nameof(ProtectionResetCommandState));
+        OnPropertyChanged(nameof(ProtectionResetCommandEnabled));
+        OnPropertyChanged(nameof(ProtectionResetStatusText));
+        OnPropertyChanged(nameof(OperatorCurrentConditionText));
+        OnPropertyChanged(nameof(OperatorNextActionText));
         OnPropertyChanged(nameof(RodCommandState));
         OnPropertyChanged(nameof(RodWithdrawCommandState));
         OnPropertyChanged(nameof(XenonAvailabilityText));

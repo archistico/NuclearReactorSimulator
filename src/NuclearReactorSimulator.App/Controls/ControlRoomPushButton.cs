@@ -15,6 +15,9 @@ public sealed class ControlRoomPushButton : Button
     public static readonly StyledProperty<ControlRoomVisualState> StateProperty =
         AvaloniaProperty.Register<ControlRoomPushButton, ControlRoomVisualState>(nameof(State), ControlRoomVisualState.Normal);
 
+    public static readonly StyledProperty<bool> IsCommandEnabledProperty =
+        AvaloniaProperty.Register<ControlRoomPushButton, bool>(nameof(IsCommandEnabled), true);
+
     public ControlRoomPushButton()
     {
         MinWidth = 150;
@@ -23,7 +26,7 @@ public sealed class ControlRoomPushButton : Button
         HorizontalAlignment = HorizontalAlignment.Stretch;
         HorizontalContentAlignment = HorizontalAlignment.Center;
         VerticalContentAlignment = VerticalAlignment.Center;
-        Background = ControlRoomPalette.SurfaceInset;
+        Background = Brushes.Transparent;
         Cursor = new Cursor(StandardCursorType.Hand);
         UpdateVisuals();
     }
@@ -40,11 +43,17 @@ public sealed class ControlRoomPushButton : Button
         set => SetValue(StateProperty, value);
     }
 
+    public bool IsCommandEnabled
+    {
+        get => GetValue(IsCommandEnabledProperty);
+        set => SetValue(IsCommandEnabledProperty, value);
+    }
+
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property == LabelProperty || change.Property == StateProperty)
+        if (change.Property == LabelProperty || change.Property == StateProperty || change.Property == IsCommandEnabledProperty)
         {
             UpdateVisuals();
         }
@@ -55,6 +64,10 @@ public sealed class ControlRoomPushButton : Button
         Content = Label;
         BorderBrush = ControlRoomPalette.Accent(State);
         BorderThickness = new Thickness(2);
-        IsEnabled = State != ControlRoomVisualState.Unavailable;
+        Background = ControlRoomPalette.ControlBackground(State);
+        Foreground = ControlRoomPalette.ControlForeground(State);
+        IsEnabled = State != ControlRoomVisualState.Unavailable && IsCommandEnabled;
+        Opacity = 1d;
+        Cursor = new Cursor(IsEnabled ? StandardCursorType.Hand : StandardCursorType.Arrow);
     }
 }

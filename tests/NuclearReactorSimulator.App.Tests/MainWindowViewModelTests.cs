@@ -18,6 +18,43 @@ public sealed class MainWindowViewModelTests
     }
 
     [Fact]
+    public void LatchedTrip_IsVisuallyActiveButCannotBeIssuedAgain_AndEnablesProtectionReset()
+    {
+        var viewModel = CreateViewModel(CreateSnapshot(generatorTripActive: true, turbineTripActive: true));
+
+        Assert.Equal(ControlRoomVisualState.Trip, viewModel.TurbineTripCommandState);
+        Assert.False(viewModel.TurbineTripCommandEnabled);
+        Assert.Contains("ACTIVE", viewModel.TurbineTripCommandLabel);
+        Assert.Equal(ControlRoomVisualState.Trip, viewModel.GeneratorTripCommandState);
+        Assert.False(viewModel.GeneratorTripCommandEnabled);
+        Assert.Contains("ACTIVE", viewModel.GeneratorTripCommandLabel);
+        Assert.True(viewModel.ProtectionResetCommandEnabled);
+        Assert.Equal(ControlRoomVisualState.Normal, viewModel.ProtectionResetCommandState);
+    }
+
+    [Fact]
+    public void ProtectionReset_IsUnavailable_WhenProtectionIsClear()
+    {
+        var viewModel = CreateViewModel(CreateSnapshot());
+
+        Assert.False(viewModel.ProtectionResetCommandEnabled);
+        Assert.Equal(ControlRoomVisualState.Unavailable, viewModel.ProtectionResetCommandState);
+        Assert.Contains("PROTECTION CLEAR", viewModel.ProtectionResetStatusText);
+    }
+
+    [Fact]
+    public void SynchronizationPresentation_BecomesParalleledNormal_WhenBreakerIsClosed()
+    {
+        var viewModel = CreateViewModel(CreateSnapshot(synchronizationConditionsSatisfied: false, breakerClosed: true));
+        var generator = Assert.Single(viewModel.Electrical.Generators);
+
+        Assert.Equal(ControlRoomVisualState.Normal, generator.DisplaySynchronizationState);
+        Assert.Equal("PARALLELED", generator.SynchronizationLabel);
+        Assert.Contains("PARALLELED", generator.DisplaySynchronizationText);
+        Assert.Contains("BREAKER CLOSED", generator.SynchronizationDetailText);
+    }
+
+    [Fact]
     public void GeneratorSelectionState_IsUnavailable_WhenNoGeneratorExists()
     {
         var viewModel = CreateViewModel(CreateSnapshot(generatorCount: 0));
@@ -148,7 +185,12 @@ public sealed class MainWindowViewModelTests
             turbineTripActive: turbineTripActive,
             generatorTripActive: generatorTripActive,
             turbineSecondary: turbine,
-            electrical: electrical);
+            electrical: electrical,
+            protectionReset: new ProtectionResetPresentationSnapshot(
+                anyTripActive: turbineTripActive || generatorTripActive,
+                resetConditionsSatisfied: true,
+                lastResetRequested: false,
+                lastResetAccepted: false));
     }
 
     private sealed class RecordingDispatcher : IControlRoomCommandDispatcher

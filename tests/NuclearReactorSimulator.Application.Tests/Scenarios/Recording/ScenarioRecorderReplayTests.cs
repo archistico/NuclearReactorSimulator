@@ -148,6 +148,46 @@ public sealed class ScenarioRecorderReplayTests
         Assert.Throws<InvalidOperationException>(() => recorder.Complete());
     }
 
+    [Fact]
+    public void FingerprintV1_IgnoresM1071PresentationOnlyResetAndSynchronizationDiagnostics()
+    {
+        var normal = new ControlRoomValueSnapshot("0", string.Empty, 0d, ControlRoomVisualState.Normal);
+        var leftGenerator = new GeneratorPresentationSnapshot(
+            "generator", "rotor", "breaker", normal, normal, normal, normal, normal, normal, normal,
+            false, false, false, false,
+            0.05d, 0.2d, 2d, 10d, 1d, 10d);
+        var rightGenerator = leftGenerator with
+        {
+            CloseCheckFrequencyDifferenceHz = 99d,
+            CloseCheckPhaseDifferenceDegrees = 99d,
+            CloseCheckVoltageDifferenceKilovolts = 99d,
+        };
+
+        Assert.Equal(ControlRoomVisualState.Warning, leftGenerator.SynchronizationState);
+        Assert.Equal("OUTSIDE SYNCHRONIZATION WINDOW", leftGenerator.SynchronizationText);
+        Assert.Equal(ControlRoomVisualState.Warning, leftGenerator.DisplaySynchronizationState);
+        Assert.Contains("SYNC NOT READY", leftGenerator.DisplaySynchronizationText);
+
+        var left = new ControlRoomSnapshot(
+            7, ControlRoomRunState.Paused, 0, 0, 0, 0, false, true, false,
+            electrical: new ElectricalPanelSnapshot(
+                ElectricalGridPresentationSnapshot.Unavailable,
+                new[] { leftGenerator },
+                normal,
+                false),
+            protectionReset: new ProtectionResetPresentationSnapshot(true, false, true, false, new[] { "blocked-a" }));
+        var right = new ControlRoomSnapshot(
+            7, ControlRoomRunState.Paused, 0, 0, 0, 0, false, true, false,
+            electrical: new ElectricalPanelSnapshot(
+                ElectricalGridPresentationSnapshot.Unavailable,
+                new[] { rightGenerator },
+                normal,
+                false),
+            protectionReset: new ProtectionResetPresentationSnapshot(true, true, true, true));
+
+        Assert.Equal(ControlRoomSnapshotFingerprint.Compute(left), ControlRoomSnapshotFingerprint.Compute(right));
+    }
+
     private static ScenarioSessionFactory CreateFactory()
         => new(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
