@@ -1,57 +1,87 @@
 # New Chat Start — Nuclear Reactor Simulator
 
-Use this document when restarting development in a new ChatGPT conversation.
+We are continuing the **Nuclear Reactor Simulator** project.
 
-## Copy/paste bootstrap
+## Authoritative restart order
+
+Read first:
+
+1. `docs/PROJECT_HANDOFF.md`
+2. `docs/PROJECT_STATUS.md`
+3. `docs/ROADMAP.md`
+4. `docs/ARCHITECTURE.md`
+5. `docs/milestones/M10.7.md`
+6. `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`
+7. `docs/milestones/M10.6.md`
+8. `docs/milestones/M10.5.md`
+9. `docs/SUPERVISORY_AUTOMATIC_OPERATION.md`
+10. `docs/DUAL_ASSISTANCE_CONTROL_AUTHORITY.md`
+11. `docs/milestones/M10.4.md`
+12. `docs/OPERATOR_COMPUTER_CONTEXTUAL_COMMAND_CONSOLE.md`
+13. `docs/milestones/M10.3.md`
+14. `docs/OPERATOR_COMPUTER_ALARM_LOG_INCIDENT_WORKSTATION.md`
+15. `docs/milestones/M10.2.md`
+16. `docs/OPERATOR_COMPUTER_INFORMATION_GUIDANCE_DIAGNOSTICS.md`
+17. `docs/milestones/M10.1.md`
+18. `docs/OPERATOR_COMPUTER_TERMINAL_SHELL.md`
+19. `docs/OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`
+20. ADR 0070, ADR 0074 and relevant M9 ADRs 0067–0073
+
+## Exact current checkpoint
+
+- M7, M8 and M9 gates: **COMPLETE / VALIDATED**.
+- **M10.1–M10.6: VALIDATED**. The user confirmed the cumulative M10.2→M10.6 Hotfix 1 package compiled and the complete automated suite passed.
+- **Official application baseline:** `M10.6 — Supervisory Automatic Operation`.
+- **Current implementation candidate:** `M10.7 — Session, Checkpoint, Replay & Save Workspace`.
+- Next after explicit M10.7 validation: `M10.8 — Integrated Operator Computer UI`.
+
+## Current M10.7 candidate boundary
+
+M10.7 adds F8 SESSION over canonical owners only:
+
+- explicit opt-in M9.1 recording rather than hidden recorder overhead on normal desktop startup;
+- replay-backed checkpoint create/list/restore;
+- compact versioned `ScenarioSessionArchive` JSON persistence;
+- exact-version load and full replay verification through `ScenarioFullReplayRunner`;
+- persistence of operator actions plus separate M10.5/M10.6 automation intents;
+- resumed recording after verified archive/checkpoint restore;
+- training tracker reconstruction by attaching it before deterministic replay.
+
+No opaque solver-state dump, second checkpoint owner, second fault trace or UI-owned restore logic is introduced.
+
+## Non-negotiable architecture rules
+
+Preserve:
+
+- deterministic fixed timestep independent of wall clock/UI cadence;
+- immutable committed/candidate semantics;
+- each conserved inventory integrated exactly once by its canonical owner;
+- M2 reactor physics, M3 primary thermohydraulics, M4 secondary/electrical and M5 instrumentation/control/protection/alarm ownership;
+- UI consumes presentation contracts and dispatches typed intents only; no UI physics;
+- unavailable values remain unavailable; no fabricated zero or true-state fallback;
+- guidance/checklist criteria remain owned by their M7 scenario contracts/evaluators;
+- runtime permissives/interlocks remain authoritative even when DIAGNOSTICS says READY;
+- training assistance and plant control authority remain independent axes;
+- real supervisory automation remains M5-owned;
+- no free-form/NLP terminal command prompt.
+
+## Validation action for M10.7
+
+Run:
 
 ```text
-We are continuing the Nuclear Reactor Simulator project.
-
-Treat docs/PROJECT_HANDOFF.md as the authoritative continuity document. Before changing code, read in order:
-1. docs/PROJECT_HANDOFF.md
-2. docs/PROJECT_STATUS.md
-3. docs/ROADMAP.md
-4. docs/ARCHITECTURE.md
-5. the current milestone file and linked ADR/domain documentation.
-
-Preserve all non-negotiable ownership and determinism rules from the handoff. Do not recreate physics/state owners in UI, control, protection, scenario, fault or diagnostic layers. Compose through existing validated seams.
-
-Current recorded checkpoint:
-- M7 gate: COMPLETE / VALIDATED;
-- M8.1 deterministic fault scheduling/lifecycle: VALIDATED;
-- last explicitly locally validated baseline: M8.3 — Instrumentation & Control Faults;
-- current implementation candidate: M8.4 — Turbine/Generator/Feedwater/Condenser Transients;
-- M8.4 must not be marked validated until I explicitly confirm local build and complete tests pass;
-- after M8.4 validation, continue with M8.5 — Educational Leak/LOCA-Class Scenarios.
-
-M8.1–M8.3 boundary:
-- faults are explicit immutable scenario data; no hidden randomness;
-- activation/deactivation occurs only at committed logical-step boundaries by exact step or named committed-snapshot condition;
-- missing fault-type applicators or condition evaluators fail session loading closed;
-- M8.1 owns validated scheduling/lifecycle; M8.2 validated hydraulic component constraints/leaks; M8.3 validated typed M5.1 sensor and M5.2–M5.4 command-path fault overlays; M8.4 adds only secondary-system transient composition through canonical M4/M5/M8 seams; leak/LOCA-class extensions remain M8.5+;
-- fault lifecycle state is snapshot/replay-visible but is not a second physical state owner.
-
-Use the latest complete source ZIP/tree I provide as the working package. If its source/doc status conflicts with this checkpoint, stop advancement, reconcile the discrepancy, and keep the last explicitly validated milestone as the baseline.
-
-For every milestone: make the smallest architecture-consistent change, add/update tests and docs, deliver a complete ZIP, and wait for my local build/test validation before marking it validated.
+dotnet clean
+dotnet restore
+dotnet build --no-restore
+dotnet test --no-build
 ```
 
-## What to upload or make available
+Then manually verify F8 SESSION:
 
-Prefer the latest **complete** project ZIP, not a partial patch. For the checkpoint represented by this repository, that is the complete M8.4 candidate package or a later locally validated hotfix derived from it.
-
-## What the new conversation should not assume
-
-- M8.1 is validated; do not regress its deterministic scheduling/lifecycle semantics.
-- M8.2 hotfix 2 is explicitly validated. Do not regress its hydraulic or App-test behavior.
-- M8.3 is explicitly validated; do not regress its sensor/control fault semantics.
-- Do not assume M8.4 is validated unless explicit user confirmation exists.
-- M8.4 secondary-system transient semantics do not imply leak/LOCA or station-blackout ownership.
-- Do not infer missing fault handlers or condition evaluators; fault-enabled scenario loading fails closed.
-- Do not infer missing model state in the UI or fault layer.
-- Do not use wall-clock time, random numbers, UI refresh cadence or publication stride to change deterministic simulation/fault behavior or event ordering.
-- Do not bypass `MeasuredSignalFrame` where instrumentation ownership applies.
-
-## First action after restart
-
-If M8.4 has not yet been explicitly validated, inspect the local validation result first. Only after successful validation should documentation be advanced to `M8.4 VALIDATED` and implementation begin on M8.5 Educational Leak/LOCA-Class Scenarios.
+- ordinary startup shows recorder `INACTIVE`;
+- `START RECORDED SESSION` restarts at STEP 0 paused with recorder active;
+- run some steps, pause, create a checkpoint and verify replay;
+- save `.nrs-session.json`, load it, confirm restored logical step/state and continued recording;
+- restore the selected checkpoint and confirm exact checkpoint step/fingerprint reconstruction;
+- continue after restore and create/save another checkpoint/archive;
+- verify M10.2–M10.6 pages/commands/modes remain operational and MainWindow layout remains unchanged.

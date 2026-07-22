@@ -50,7 +50,7 @@ A selected leak is a bounded prescribed outflow from a canonical fluid node. Eac
 - negative external mass flow;
 - negative node energy flow equal to the removed mass flow times the committed source-node specific internal energy.
 
-These terms are combined with existing staged source terms before the single plant-network integration. Mass and energy therefore remain visible in the existing audit. M8.5 owns larger educational break/LOCA-class models, depressurization refinements and explicit break-flow limitations.
+These terms are combined with existing staged source terms before the single plant-network integration. Mass and energy therefore remain visible in the existing audit. M8.5 owns the current bounded pressure-driven educational break/LOCA-class model, depressurization consequences and explicit break-flow limitations.
 
 ## Clearance semantics
 

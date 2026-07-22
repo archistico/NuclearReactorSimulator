@@ -1,5 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Layout;
 using Avalonia.Media;
 using NuclearReactorSimulator.Application.ControlRoom;
 
@@ -16,7 +18,13 @@ public sealed class ControlRoomPushButton : Button
     public ControlRoomPushButton()
     {
         MinWidth = 150;
+        MinHeight = 44;
         Padding = new Thickness(14, 10);
+        HorizontalAlignment = HorizontalAlignment.Stretch;
+        HorizontalContentAlignment = HorizontalAlignment.Center;
+        VerticalContentAlignment = VerticalAlignment.Center;
+        Background = ControlRoomPalette.SurfaceInset;
+        Cursor = new Cursor(StandardCursorType.Hand);
         UpdateVisuals();
     }
 

@@ -64,4 +64,4 @@ Both are deterministic scenario definitions. They do not force expected outcomes
 
 ## Limits
 
-M8.3 is not an electronics reliability simulator. It does not add stochastic noise, random drift, relay hardware failure probabilities or arbitrary protection-logic corruption. Turbine/generator/feedwater/condenser transient scenarios are implemented by the current M8.4 candidate, while larger leak/LOCA and electrical-loss/SBO classes remain M8.5/M8.6.
+M8.3 is not an electronics reliability simulator. It does not add stochastic noise, random drift, relay hardware failure probabilities or arbitrary protection-logic corruption. Turbine/generator/feedwater/condenser transient scenarios are validated by M8.4 hotfix 2. M8.5 remains an unvalidated bounded educational leak/LOCA-class candidate; M8.6 is now a stacked electrical-loss/SBO-class candidate composed through existing seams.

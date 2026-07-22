@@ -72,6 +72,12 @@ u = (1 - x) uf + x ug
 
 A deterministic bracket scan plus fixed-iteration bisection finds the temperature where both conserved specific volume and conserved specific internal energy are satisfied.
 
+### Saturation-boundary bracketing robustness
+
+The original coarse scan spans the complete supported saturation-temperature range. Near quality endpoints (`x → 0` or `x → 1`), the temperature interval in which a fixed specific volume is physically admissible can end between two coarse samples. A valid two-phase root can therefore exist in a narrow terminal interval without producing a sampled sign change.
+
+The resolver preserves the original fast paths, but before failing out of range it now performs a deterministic boundary-aware saturated-mixture fallback: it first locates the upper temperature at which the node's specific volume still lies between saturated-liquid and saturated-vapor specific volumes, then rescans only that mathematically admissible interval and uses the same fixed-iteration bisection. This closes numerical root-bracketing gaps without clamping conserved state, widening the declared thermodynamic envelope or introducing a new property correlation.
+
 ## Subcooled/compressed liquid closure
 
 For dense states below the saturation-volume boundary:
@@ -90,6 +96,12 @@ For low-density/high-energy states:
 - superheat adds internal energy using the effective vapor `cv`.
 
 A deterministic root solve finds the temperature consistent with the conserved inventory and fixed volume.
+
+### Superheated phase-boundary bracketing robustness
+
+The superheated branch has the same numerical boundary hazard as the saturated branch. For a fixed specific volume, the first temperature that satisfies the branch's pressure/saturation admissibility test can lie between two coarse full-range scan samples. A valid superheated root may then exist in the narrow interval immediately above that onset while the first sampled valid point already lies beyond the residual sign change.
+
+The resolver therefore preserves the original superheated fast path and, only before final out-of-range failure, locates the exact contiguous temperature interval in which the existing superheated equations are admissible. It injects those valid interval endpoints into a deterministic rescan and reuses the existing bisection/equations. The fallback does not clamp conserved state, interpolate across a correlation gap or widen the declared envelope; states for which neither the saturated nor superheated equations contain a real root still fail closed.
 
 ## Supported envelope
 

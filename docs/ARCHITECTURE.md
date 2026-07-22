@@ -13,7 +13,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.3 is locally validated and provides exact `pre-criticality-source-range` v1 plus controlled first-criticality/low-power operation.
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
-- M7.6 and M7.7 are validated; the M7 gate is complete. M8.1 deterministic fault orchestration, M8.2 hydraulic component faults hotfix 2 and M8.3 instrumentation/control faults are validated. M8.4 is the current baseline candidate and composes deterministic secondary-system transients through existing M4/M5/M8 seams without adding duplicate physical owners.
+- M7, M8 and M9 gates are complete. M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; M9.7 hotfix 5 passed all 760 automated tests and the final user-corrected `MainWindow.axaml` is integrated as the validated GUI layout baseline. M10.1–M10.6 are validated; M10.6 Supervisory Automatic Operation is the official application baseline and M10.7 Session, Checkpoint, Replay & Save Workspace is the current implementation candidate.
 - M8.2 hotfix 2 introduced a headless `NuclearReactorSimulator.App.Tests` boundary for ViewModel/XAML interaction contracts. These tests may reference `App`, but production dependency direction is unchanged: `App` still has no `Simulation` reference and owns no physics.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
@@ -92,7 +92,7 @@ Validated M6 responsibilities include:
 - validated M7.1 exact-version initial-condition/session registry, scenario command gating and deterministic replay orchestration;
 - validated M7.2 concrete cold-shutdown recipe plus presentation-only pre-start readiness and declarative guidance;
 - validated M7.3 pre-criticality/source-range initial condition, controlled rod permissions and observational criticality/low-power guidance;
-- M7.4 validated low-power steam-raising/turbine-startup flow; M7.5 validated synchronization/load; M7.6 validated stable-low-load manoeuvring/normal shutdown; M7.7 validated training/evaluation; M8.1 validated deterministic fault orchestration/lifecycle; M8.2 validated hydraulic applicators; M8.3 validated sensor/control fault applicators; M8.4 candidate composes turbine/generator/feedwater/condenser transient scenarios through canonical protection, hydraulic and cooling-boundary seams.
+- M7.4–M7.7 and M8.1–M8.7 are validated; the M7 and M8 gates are complete. M9.1 adds only observational recording, versioned replay-backed checkpoints and deterministic full replay/seek verification over existing owners.
 
 M8.1 fault orchestration remains Application state. `ScenarioFaultRuntimeEngine` decorates the existing runtime at committed step boundaries, while `IScenarioFaultApplicator` implementations own only typed adaptation into validated subsystem seams. Plant-condition evaluators consume `ControlRoomSnapshot` only. Neither scheduler nor evaluator may traverse authoritative true state or create a second integrator.
 
@@ -101,6 +101,10 @@ M8.2 hydraulic effects are represented as immutable per-step `HydraulicComponent
 M8.3 instrumentation/control effects bind through `IInstrumentationControlFaultTarget`. Sensor effects replace only canonical per-step `SensorFaultInput` entries and remain owned by `InstrumentationSolver`. Controller/actuator-command effects are temporary bounded `ControllerInput` overlays that still traverse `ControllerSystemSolver` and `ActuatorSystemSolver`; no fault writes physical actuator state or protection latches directly. Faulted measurements reach M5.5 only through the same committed `MeasuredSignalFrame` ordering used in normal operation.
 
 M8.4 secondary-system transient effects bind through `ISecondaryTransientFaultTarget`. Turbine/generator trip events become one-shot canonical protection inputs; feedwater degradation/loss reuses M8.2 pump constraints; condenser degradation/loss scales only the existing M4.3 `CondenserCoolingBoundaryInput`. Trip latches, breaker state, rotor response, feedwater inventory and condenser pressure/vacuum remain owned by M4/M5 and the single plant-network integration boundary.
+
+M8.5 leak/LOCA-class effects bind through `ILossOfCoolantFaultTarget`. A `loca.pressure-driven-break` is stored as immutable per-step `PressureDrivenBreakInput`; the protected full-plant composition derives bounded discharge from committed source-node pressure and emits only negative mass plus carried-internal-energy source terms. `PlantNetworkOrchestrator` remains the single inventory integrator, and thermodynamic pressure/temperature/phase remain derived state. The per-step inventory bound is an explicit educational-model validity guard, not ECCS/containment physics or a scripted accident correction.
+
+M8.6 electrical-loss effects bind through `IElectricalLossFaultTarget`. `electrical.external-supply-loss` constrains only the existing M4.5 `GeneratorGridInputs` so breaker-open forcing dominates close requests while active; M4.5 remains the sole breaker/electrical/rotor owner. Station-blackout-class scenarios declare pump trips and powered command-path losses as explicit M8.2/M8.3 faults rather than inferring consequences from an unmodeled bus network. M2.5 stateful decay heat remains outside the current M5.7 integrated runtime envelope, so M8.6 must not fabricate scenario-owned constant decay heat.
 
 Application may depend on Simulation to coordinate validated runtime seams, but Avalonia must not bypass Application and reference Simulation directly.
 
@@ -563,6 +567,65 @@ M3 initially keeps global point kinetics and introduces coarse zones only as con
 See `docs/PROJECT_STATUS.md`, `docs/PRIMARY_CIRCUIT_PLAN.md` and ADR 0023.
 
 
+## M9.4 quasi-spatial refinement over the aggregated-core boundary
+
+M9.4 preserves the M3.3/M2 ownership split and adds an optional refinement layer rather than a second reactor model:
+
+```text
+committed canonical per-zone fuel/coolant domains
+        +
+committed AggregatedCoreState power shares
+        ↓
+existing linear M2 fuel/coolant/void feedback equations
+        ↓
+local zone feedbacks
+        ├── power-share weighted scalar → existing non-rod seam → global PointKineticsSolver
+        └── explicit configured zone coupling → deterministic candidate power shape
+```
+
+The candidate shape is normalized `AggregatedCoreState` only and applies on the following committed step. Coupling affects only shape-driving signals; it is not neutron diffusion. Logical coordinates never imply adjacency. Configurations without `QuasiSpatialCoreFeedbackDefinition` retain the prior path exactly and are not silently upgraded. Higher-resolution full-plant profiles must still provide matching canonical M3 topology/channel groups rather than duplicating physical inventories. See `SPATIAL_QUASI_SPATIAL_FIDELITY.md` and ADR 0071.
+
+## M9.5 historical-inspired provenance and fidelity boundary
+
+M9.5 extends the existing M7/M8 scenario document with optional descriptive provenance metadata; it does not create a new simulation owner:
+
+```text
+ScenarioDefinition schema v3
+        ├─ exact initial-condition/objective/action/fault data (existing owners)
+        └─ optional HistoricalScenarioContextDefinition
+                ├─ declared sources
+                ├─ DocumentedFact / EducationalApproximation / SimulatorSpecificAssumption claims
+                ├─ required validated model-capability IDs
+                └─ deliberate non-claims
+                        ↓
+HistoricalScenarioFidelityReviewer
+                        ↓ fail closed before runtime creation
+ScenarioSessionFactory
+                        ↓
+existing canonical scenario/runtime owners
+```
+
+Historical metadata is immutable Application-layer description. It may not write physical state, add hidden historical physics, script a target trajectory or turn chronological evidence into causal inference. JSON schema v3 persists the context; v0/v1/v2 migration always yields no historical context rather than inventing provenance. `ScenarioSessionFactory` gates historical-inspired content against an explicit capability set before resolving the runtime. A passed review means only that declared simulator capabilities are available; it is not quantitative historical calibration or proof of historical truth. See `HISTORICAL_INSPIRED_SCENARIO_FRAMEWORK.md` and ADR 0072.
+
+## M9.6 reference-validation and M9.7 integration-gate boundary
+
+M9.6 observes immutable presentation/canonical solver evidence through versioned reference cases and explicit tolerance budgets. It never fits parameters automatically or reclassifies internal regression numbers as historical measurements.
+
+M9.7 is verification-only and introduces no new runtime owner:
+
+```text
+M9.1 replay evidence ─┐
+M9.2 analysis evidence ├─→ M9.7 integration tests / gate documents
+M9.3 xenon state ──────┤
+M9.4 spatial feedback ─┤
+M9.5 fidelity metadata ┤
+M9.6 reference evidence┘
+```
+
+Cross-feature tests may compose existing owners, but production state still belongs to the original M2–M5/M7–M9 contracts. In particular, simultaneous xenon and quasi-spatial feedback must still feed one global point-kinetics solve exactly once. Real-runtime App tests verify the presentation/command boundary without moving state ownership into the ViewModel. The final manual GUI checklist is phase-gate evidence only; it does not create a new runtime behavior.
+
+See `M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md` and `milestones/M9.7.md`.
+
 ## Aggregated core-zone projection (M3.3)
 
 M3.3 adds a spatial identity/projection layer above the validated global point kinetics and composed plant state.
@@ -961,7 +1024,9 @@ The panel distinguishes **measured instruments** from **model diagnostics**. Rea
 
 Operator actions remain one-way intents: rod insert/hold/withdraw commands carry a canonical target id through `ControlRoomCommand`, while SCRAM and protection-reset intents use the same dispatcher. Views/ViewModels never mutate rods, reactivity, point kinetics or protection state. Runtime-dependent controls are disabled when the operational coordinator is unavailable.
 
-M2.8 iodine/xenon physics is validated but is not currently included in the M5.7 operational snapshot. The M6.3 xenon presentation is therefore explicitly `Unavailable`; presentation code must not reconstruct hidden physical state. See ADR 0048.
+Historically, M2.8 iodine/xenon physics was validated but not included in the M5.7 operational snapshot. The M6.3/M7 v1 presentation therefore correctly exposed xenon as `Unavailable`; presentation code must never reconstruct hidden physical state. See ADR 0048.
+
+M9.3 adds an opt-in versioned integration seam rather than retroactively changing those exact-version configurations. `ReactorPrimaryControlSystemDefinition` may carry the canonical M2.8 `IodineXenonDefinition`; the corresponding `ReactorPrimaryControlState` then carries `IodineXenonState`, and `ReactorPrimaryControlSolver` invokes the existing M2.8 solver. Committed xenon worth is added to the explicit external non-rod-reactivity seam before point kinetics, and the committed poison snapshot is promoted through `ControlRoomSnapshotProjector`. Configurations without the definition remain explicitly unavailable. Existing M7 v1 seeds stay xenon-disabled to preserve M9.1 exact-version replay identity. See ADR 0069 and `ADVANCED_XENON_LOW_POWER_TRANSIENTS.md`.
 
 
 ## M6.4 Primary-Circuit mnemonic boundary
@@ -1079,7 +1144,7 @@ Rules:
 - run/pause/single-step are runtime-host controls, while physical/operator actions must be explicitly whitelisted by the scenario;
 - Infrastructure owns the JSON scenario representation and schema migration; migration preserves exact initial-condition identity/version and unknown future versions fail closed;
 - `ScenarioReplayRunner` reuses the M0 `SimulationCommandTrace<ControlRoomCommand>` and advances one explicit fixed logical step at a time;
-- full arbitrary checkpoints/seek remain deferred to M9.1.
+- Validated M9.1 provides versioned replay-backed checkpoints/seek; opaque arbitrary private-state dump/restore remains deliberately absent.
 
 M7.1 supplies the validated ownership/framework seam. M7.2 composes its concrete factory in Application, where Simulation composition is already an allowed dependency, while Infrastructure remains responsible for scenario persistence/schema adapters.
 
@@ -1094,3 +1159,171 @@ See `docs/INITIAL_CONDITIONS_SCENARIO_FRAMEWORK.md` and ADR 0053.
 The production desktop composition loads the exact v1 scenario paused through `VersionedInitialConditionRegistry` and `ScenarioSessionFactory`. Avalonia receives snapshot/command/guidance boundaries only. Rod withdrawal and breaker closure are excluded from M7.2 permissions so first criticality and synchronization remain later milestone ownership.
 
 See `docs/COLD_SHUTDOWN_PRESTART.md` and ADR 0054.
+
+
+## M8.7 safety-response composition boundary
+
+M8.7 is an Application/training composition layer only. `SafetyResponseScenarioPack` reuses exact prior M8 fault declarations and registered applicators; `SafetyResponseCheckpointEvaluator` reads committed presentation snapshots; `SafetyResponseEvaluationSession` combines the M7.7 assessment tracker with the existing accepted-operator-action journal. None of these types may own physical state, protection latches, controller outputs or fault-effect integration.
+
+Acceptance/scoring and debrief timelines are observational and replay-compatible. UI publication cadence, wall clock and random state cannot change checkpoint first-achievement, scoring or operator-action ordering.
+
+
+## M9.1 recorder/checkpoint/full-replay boundary
+
+M9.1 is an Application/Infrastructure observability and reconstruction layer. `ScenarioRecorder` subscribes to `DeterministicStepCompleted` plus the accepted-action journal and retains one immutable `ControlRoomSnapshot` frame per logical step. It may derive recorder events from committed alarm/fault/protection presentation state but must never feed those events back into simulation.
+
+`ScenarioCheckpoint` schema v1 is a versioned replay anchor containing exact scenario/initial-condition identity, logical step, accepted-action prefix and a versioned snapshot fingerprint. It is not an authoritative physical-state serialization. `ScenarioFullReplayRunner` reconstructs through `ScenarioSessionFactory`, replays accepted operator actions at exact step boundaries, lets M8.1 reconstruct fault lifecycle from scenario data, verifies every frame fingerprint and fails closed at first divergence. Host run/pause state and UI publication stride remain outside physical replay identity.
+
+
+## M9.2 post-incident analysis boundary
+
+Post-incident analysis is an Application-layer observer over immutable M9.1 `ScenarioRecording` artifacts.
+
+Ownership rules:
+
+- analysis never mutates or integrates physical state;
+- analysis never bypasses M9.1 replay/checkpoint verification;
+- windows and response latencies use logical steps only, never wall-clock time;
+- event order is preserved from the recorder monotonic sequence;
+- temporal precedence must not be silently presented as physical causality;
+- persisted debrief reports are derived artifacts and are not authoritative simulation state.
+
+
+## Planned M10 operator-computer and supervisory-automation boundary
+
+M10 introduces two deliberately separate concepts:
+
+```text
+Training assistance                     Plant control authority
+Hidden / ChecklistOnly / Guided         Manual / Assisted / Supervisory Automatic
+        │                                         │
+presentation/training only                       physical-operation authority
+        └──────── independent axes ───────────────┘
+```
+
+The operator computer is an Application aggregation contract with an App presenter. It may project guidance, measured/model-diagnostic information, alarms, contextual command availability, training/control modes, procedure diagnostics, history, recorder/replay/analysis and session lifecycle state. It does not become authoritative for any of them.
+
+Real supervisory automation is owned below the presentation boundary:
+
+```text
+OperatorComputer / other operator surface
+        ↓ typed intent
+Application boundary
+        ↓
+M5 supervisory coordinator
+        ↓
+existing controller modes + setpoints + typed canonical commands
+        ↓
+M5.2/M5.3/M5.4 local controllers
+        ↓
+canonical actuators → M2/M3/M4 physics
+```
+
+Rules:
+
+- App/UI never owns control algorithms, physical setpoints as source-of-truth, deterministic timing or automation state;
+- supervisory automation never directly assigns derived plant outcomes;
+- measured-signal consumers never fall back silently to true internal state;
+- M5.5 protection/interlocks always arbitrate above supervisory normal control;
+- requested/effective/degraded mode are explicit; invalid required measurements/equipment availability cause deterministic fail-closed degradation;
+- Manual takeover is deterministic and bumpless, reusing M5.2 semantics;
+- plant commands, training/presentation intents and session lifecycle intents remain distinct typed seams;
+- M10 session persistence packages exact scenario identity + M9.1 recording/checkpoint evidence and restores through replay/fingerprint verification, never opaque private-state dumps;
+- terminal navigation is fixed-page/menu based, deterministic and keyboard-operable; no free-form NLP/LLM command interpretation.
+
+See ADR 0070 and `OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`.
+
+
+## M10.1 operator-computer shell ownership
+
+M10.1 adds a presentation aggregation seam only:
+
+```text
+ControlRoomSnapshot
+        ↓
+OperatorComputerSnapshotProjector
+        ↓
+immutable OperatorComputerSnapshot
+        ↓
+OperatorComputerViewModel
+        ↓
+ControlRoomComputerControl
+```
+
+The fixed page set is GUIDANCE / INFO / ALARMS / COMMANDS / MODES / DIAGNOSTICS / LOG / SESSION. Page selection and keyboard focus are App-only presentation state. M10.1 does not own guidance rules, alarms, plant commands, control authority, history, recorder/replay or session persistence. M10.1 established shell-only pages. M10.2 promotes only GUIDANCE, INFO and DIAGNOSTICS through generic immutable Application projections; the other pages remain staged until their owning milestones.
+
+
+## M10.2 information/guidance/diagnostics projection ownership
+
+M10.2 activates three operator-computer pages without moving their source-of-truth ownership:
+
+```text
+M7 guidance plan + canonical checklist evaluator
+M6 ControlRoomSnapshot / panel presentation contracts
+        ↓
+Application generic immutable operator-computer projections
+        ↓
+App terminal formatting only
+```
+
+GUIDANCE never owns procedure rules; DIAGNOSTICS never invents readiness criteria; INFO never reaches into private Simulation state. `Unavailable` remains explicit and is never replaced with zero or true-state fallback. Training assistance remains a presentation-only `TrainingGuidanceMode` axis. Runtime permissives/interlocks remain authoritative even when a checklist diagnostic reports readiness.
+
+
+### M10.3 alarm/log/incident projection boundary
+
+M10.3 remains presentation-only. `OperatorComputerAlarmLogProjector` may consume canonical M5.6/M6.6 alarm state/history, optional M9.1 `ScenarioRecordingEvent` evidence and optional immutable M9.2 `PostIncidentAnalysisReport` data. It never owns alarm state, history storage, recorder lifecycle, replay restoration or causal inference. Default desktop composition does not auto-enable full `ScenarioRecorder` capture merely to populate the terminal.
+
+
+### M10.4 contextual command-console boundary
+
+M10.4 remains an Application/App interaction surface. `OperatorComputerCommandConsoleProjector` may derive contextual command rows only from already-published `ControlRoomSnapshot` presentation state. The resulting AVAILABLE/BLOCKED/UNAVAILABLE state is advisory/presentational and is not a new permissive/interlock owner. Exact `ControlRoomCommand` intents are dispatched only through `IControlRoomCommandDispatcher`; scenario/runtime validation remains authoritative and fail-closed. Training-assistance intents and session-lifecycle intents remain separate from `ControlRoomCommandKind`.
+
+
+## M10.5/M10.6 control-authority and supervisory ownership
+
+Training assistance and physical control authority are independent. `TrainingGuidanceMode` remains presentation/training state; `PlantControlAuthorityMode` is a distinct M5-facing authority seam. Application exposes typed intents and immutable requested/effective/health/per-loop presentation snapshots, but the deterministic `SupervisoryOperationCoordinator` lives in Simulation/M5.
+
+```text
+training intent --------------------------> guidance presentation only
+
+plant authority/objective intent
+        ↓
+Application typed seam
+        ↓
+M5 SupervisoryOperationCoordinator
+        ↓
+existing controller modes/setpoints
+        ↓
+existing M5.3/M5.4 control + canonical actuators/physics
+```
+
+Required supervisory feedback comes only from `MeasuredSignalFrame`. Invalid/unavailable required measurements degrade fail-closed; no true-state fallback is allowed. Canonical SCRAM/turbine/generator trips suspend supervisory decisions. Manual takeover uses committed controller `LastOutput` values as manual outputs for deterministic bumpless handover.
+
+Authority/objective changes are not `ControlRoomCommandKind` values. `ScenarioAutomationIntentJournal` records those semantic intents separately and M9.1 replay reapplies them at the `N -> N+1` boundary. This preserves existing snapshot fingerprint v1 while keeping automation-using sessions replayable. See ADR 0074.
+
+
+## M10.7 replay-backed session persistence
+
+M10.7 does not serialize private solver memory. A persistent session archive is packaging around existing deterministic owners:
+
+```text
+exact ScenarioDefinition / InitialCondition version
+        +
+per-step ControlRoomSnapshot fingerprint evidence
+        +
+operator-action journal
+        +
+M10.5/M10.6 automation-intent journal
+        +
+recorder events + M9.1 checkpoints
+        ↓
+ScenarioSessionArchive v1
+        ↓
+ScenarioFullReplayRunner
+        ↓
+verified reconstructed session
+```
+
+Normal desktop startup does not silently enable `ScenarioRecorder`; the operator must explicitly restart as a recorded session before checkpoint/save operations. Load and checkpoint restore always replay exact inputs and verify fingerprints fail-closed. A verified restored prefix may be reattached to `ScenarioRecorder` for continuation, but the recorder verifies scenario identity, logical step, fingerprint and journals before accepting the prefix.
+
+Avalonia owns only file-picker/presentation orchestration. It never restores physics directly.

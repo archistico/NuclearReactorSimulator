@@ -12,7 +12,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault decisions are ADR 0046–0063.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation decisions are ADR 0046–0073.
 
 ## Milestone records
 
@@ -20,7 +20,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Domain documents
 
-The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults and M8.4 secondary-system transients.
+The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.6 operator-computer/supervisory-automation capabilities, current M10.7 session/checkpoint/replay/save workspace candidate and the approved remaining M10 supervisory-automation architecture.
 
 When modifying a subsystem, update its domain document together with the milestone/ADR/handoff documents rather than leaving architecture knowledge only in source comments or chat history.
 
@@ -28,11 +28,42 @@ When modifying a subsystem, update its domain document together with the milesto
 
 At this documentation refresh:
 
-- M7.7 Training Objectives, Procedure Guidance & Evaluation is validated and the M7 gate is complete.
-- M8.1 Deterministic Fault-Injection Framework is validated.
-- M8.2 Hydraulic Component Faults hotfix 2 is validated.
-- M8.3 Instrumentation & Control Faults is validated.
-- M8.4 Turbine/Generator/Feedwater/Condenser Transients is the current baseline candidate.
-- After explicit M8.4 validation, continue with M8.5 Educational Leak/LOCA-Class Scenarios.
+- M7 gate is complete / validated.
+- M8.1–M8.7 hotfix 2 are validated and the M8 gate is complete.
+- M9.1–M9.7 are validated and the M9 gate is complete.
+- M9 gate: COMPLETE / VALIDATED.
+- Validated application baseline: M10.1 Operator Computer Contracts & Terminal Shell.
+- Current implementation candidate: M10.2 Unified Information, Guidance & Diagnostics.
+- M10 is IN PROGRESS under the approved Operator Computer & Supervisory Automation architecture.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
+
+- `SAFETY_RESPONSE_SCENARIO_PACK.md` — M8.7 capstone safety-response scenarios, acceptance/scoring and logical operator-action debrief boundary.
+
+- `RECORDER_CHECKPOINT_FULL_REPLAY.md` — M9.1 every-step recorder, versioned replay-backed checkpoints, fingerprint contract and full replay/seek boundary.
+
+- `POST_INCIDENT_ANALYSIS.md` — M9.2 deterministic evidence windows, response metrics, checkpoint linkage and debrief-report semantics.
+
+- `ADVANCED_XENON_LOW_POWER_TRANSIENTS.md` — M9.3 canonical M2.8 poison runtime integration, exact-version compatibility and xenon/low-power scenario boundaries.
+
+- `SPATIAL_QUASI_SPATIAL_FIDELITY.md` — validated M9.4 opt-in committed-state local feedback weighting, explicit zone coupling and deterministic aggregated-core power-shape refinement.
+
+- `HISTORICAL_INSPIRED_SCENARIO_FRAMEWORK.md` — M9.5 versioned provenance, claim classification, capability review and fail-closed historical-inspired scenario loading.
+
+- `OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md` — approved M10 fixed-page terminal, dual assistance/control-authority model, M5 supervisory ownership, degraded/manual-takeover and replay-backed session-persistence plan.
+
+- `CALIBRATION_REFERENCE_VALIDATION.md` — M9.6 versioned reference cases, tolerance budgets, model-version tracking and sensitivity reports
+- `MANUAL_GUI_VALIDATION_CHECKLIST.md` — M9.6-origin manual desktop checklist, now carried into the final M9.7 phase-gate evidence
+
+- `M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md` — M9.7 cross-feature replay/fidelity/calibration/UI integration invariants and phase-gate semantics.
+- `M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md` — final desktop GUI validation evidence required before M9 gate completion and M10.
+
+- `OPERATOR_COMPUTER_INFORMATION_GUIDANCE_DIAGNOSTICS.md` — M10.2 canonical GUIDANCE/INFO/DIAGNOSTICS projection contract.
+- `milestones/M10.2.md` — M10.2 implementation-candidate milestone record.
+
+- `OPERATOR_COMPUTER_ALARM_LOG_INCIDENT_WORKSTATION.md` — M10.3 read-only alarm, bounded live history, optional M9.1 session evidence and optional M9.2 incident workstation contracts.
+- `OPERATOR_COMPUTER_CONTEXTUAL_COMMAND_CONSOLE.md` — M10.4 contextual typed-command catalog, advisory availability/block reasons and canonical dispatcher boundary.
+- `DUAL_ASSISTANCE_CONTROL_AUTHORITY.md` — M10.5 independent training-assistance vs physical plant-control-authority model and replay semantics.
+- `SUPERVISORY_AUTOMATIC_OPERATION.md` — M10.6 M5-owned bounded supervisory objectives, measured-signal degradation, protection priority and bumpless takeover.
+
+- `OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md` — M10.7 replay-backed session/checkpoint/save/load workspace.

@@ -38,9 +38,9 @@ The current shell dispatcher still records commands only. Until a runtime coordi
 
 ## Xenon diagnostic honesty
 
-The M2.8 iodine/xenon model is validated, but its state is not currently promoted into the M5.7 automatic-operation snapshot envelope. M6.3 therefore displays xenon reactivity as `Unavailable` with an explicit explanation instead of reconstructing or inventing a value in the UI/application layer.
+At the original validated M6.3/M7 v1 boundary, the M2.8 iodine/xenon model was not promoted into the automatic-operation snapshot, so xenon correctly displayed as `Unavailable` rather than being reconstructed in Application/UI.
 
-A later runtime-envelope milestone may promote the validated xenon state through an explicit immutable presentation seam. That change must not be implemented as hidden UI physics.
+M9.3 introduces an opt-in canonical promotion path for new versioned xenon-enabled runtime configurations: the M5 reactor/primary snapshot carries the immutable committed M2.8 poison diagnostic and `ControlRoomSnapshotProjector` exposes its xenon reactivity. Legacy exact-version configurations that do not own M2.8 poison state still display `Unavailable`. The UI never integrates iodine/xenon state and never infers xenon from power, time, rods or scenario metadata.
 
 ## Non-goals
 

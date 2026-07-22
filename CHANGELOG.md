@@ -1,6 +1,271 @@
+## M10.7 Hotfix 1 — xUnit analyzer compliance
+
+- Replaced the single `Where(...)+Assert.Single(...)` pattern in `ScenarioSessionArchiveReplayTests` with the predicate overload of `Assert.Single`, satisfying xUnit analyzer rule `xUnit2031` under warnings-as-errors.
+- Test-only correction; no production, archive, replay, serializer, UI, runtime, or physics behavior changed.
+
+## M10.7 — Session, Checkpoint, Replay & Save Workspace — IMPLEMENTATION CANDIDATE
+
+- Promoted the cumulative M10.2–M10.6 Hotfix 1 chain to VALIDATED after the user confirmed successful compilation and complete automated tests; M10.6 is the new official baseline.
+- Added replay-backed `ScenarioSessionArchive` schema v1 with compact per-step fingerprint/event evidence, exact embedded scenario identity, operator actions, M10.5/M10.6 automation intents, recorder events and M9.1 checkpoints.
+- Added JSON archive persistence plus canonical `ScenarioFullReplayRunner` archive replay/seek verification; no opaque solver-state dump or second checkpoint/restore owner.
+- Added exact checkpoint-prefix event reconstruction so operator-action evidence accepted between committed frames is retained iff that action belongs to the applied replay prefix.
+- Added `ScenarioRecorder.Capture()` and verified-prefix resume support so loaded/restored sessions continue one deterministic recording trace.
+- Activated F8 SESSION with explicit recorded-session restart, checkpoint creation/listing, replay verification, file save/load and selected-checkpoint restore.
+- Kept normal desktop recording opt-in to avoid hidden per-step fingerprint/frame overhead.
+- Reduced routine desktop/full-plant endurance regressions from 6,000 to 1,000 steps / 10 simulated seconds after the original thermodynamic failures were isolated by dedicated direct resolver regressions; historical M9.7 60-second validation evidence remains unchanged.
+- Added `docs/milestones/M10.7.md` and `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`.
+
+## M10.6 Hotfix 1 — Automation replay test compilation
+
+- Added the missing `NuclearReactorSimulator.Application.Scenarios.Recording` import to `ScenarioAutomationReplayTests`.
+- Changed the recorder-completion exception assertion to an explicit `Action` block so xUnit v3 selects the synchronous `Assert.Throws<T>` overload unambiguously.
+- Test-only correction: no production runtime, supervisory-control, authority, recorder, replay, or checkpoint behavior changed.
+
+## M10.6 — Supervisory Automatic Operation — IMPLEMENTATION CANDIDATE
+
+- Preserved M10.1 as the last explicitly validated M10 baseline; M10.2–M10.4 remain unvalidated candidates. M10.5 is included as the minimum prerequisite and M10.6 is the current candidate layered on that chain.
+- Added independent training-assistance and physical plant-control-authority axes with requested/effective/health/degraded presentation state.
+- Added deterministic M5-owned `SupervisoryOperationCoordinator` with bounded Hold Reactor Power, Hold Turbine Speed and Hold Current Operating Point objectives over existing local controller modes/setpoints only.
+- Added measured-signal-only supervisory validation, fail-closed degradation, canonical protection suspension and deterministic bumpless Manual takeover using committed controller outputs.
+- Activated the MODES terminal page for training assistance, MANUAL/ASSISTED/SUPERVISORY selection, current-operating-point hold and per-loop mode/status visibility.
+- Added separate scenario automation-intent journaling and M9.1 full-replay/checkpoint reconstruction without changing the versioned `ControlRoomSnapshot` fingerprint schema or recasting automation intents as physical `ControlRoomCommandKind` values.
+- Added M10.5/M10.6 integration, protection, invalid-measurement, replay and App/ViewModel/XAML regression coverage.
+- Added `docs/milestones/M10.5.md`, `docs/milestones/M10.6.md`, `docs/DUAL_ASSISTANCE_CONTROL_AUTHORITY.md`, `docs/SUPERVISORY_AUTOMATIC_OPERATION.md` and ADR 0074.
+
+## M10.4 — Contextual Command Console — IMPLEMENTATION CANDIDATE
+
+- Preserved M10.1 as the last explicitly validated M10 baseline; M10.2 and M10.3 remain unvalidated, with M10.4 layered on that candidate chain.
+- Activated the fixed COMMANDS terminal page with immutable Application-layer command catalog contracts.
+- Added contextual expansion of canonical typed commands by exact target (rod/group, MCP, rotor, generator, breaker, alarm) plus runtime/protection/global commands.
+- Added explicit AVAILABLE / BLOCKED / UNAVAILABLE presentation states, current-state text and blocking reasons without creating a second permissive/interlock owner.
+- Added keyboard/list selection and Enter/explicit execute dispatch through the existing `IControlRoomCommandDispatcher`; blocked commands are not dispatched and runtime/scenario rejection remains authoritative/fail-closed.
+- Kept training/presentation intents and session lifecycle intents outside `ControlRoomCommandKind`, preserving ADR 0070 ownership boundaries.
+- Added Application/App/XAML regression coverage and `docs/OPERATOR_COMPUTER_CONTEXTUAL_COMMAND_CONSOLE.md` / `docs/milestones/M10.4.md`.
+
 # Changelog
 
-## M8.4 — Turbine / Generator / Feedwater / Condenser Transients (baseline candidate / hotfix 2)
+## M10.3 — Alarm, Log & Incident Workstation — IMPLEMENTATION CANDIDATE
+
+- Preserved M10.1 as the last explicitly validated M10 baseline; M10.2 remains unvalidated and M10.3 is layered on that candidate.
+- Added immutable operator-computer alarm/log/incident presentation contracts and `OperatorComputerAlarmLogProjector`.
+- Activated the ALARMS terminal page as a read-only projection over canonical M5.6/M6.6 annunciator state and bounded logical-step alarm-event history; no terminal ACK/RESET action is introduced before M10.4.
+- Activated the LOG page with explicit LIVE / SESSION / INCIDENT evidence scopes: bounded M6.6 trends/events, optional M9.1 recorder events, and optional immutable M9.2 post-incident reports.
+- Kept default desktop operation free of hidden full-recorder overhead: M9.1 evidence is shown only when a recorder is explicitly supplied by a session owner.
+- Reordered MainWindow history observation before operator-computer reprojection so the terminal sees the same committed snapshot/history step instead of lagging one publication.
+- Added Application/App regressions for annunciator projection, bounded event ordering, M6.6 trend reuse, optional M9.1 evidence, optional M9.2 incident projection and read-only desktop terminal behavior.
+- Added `docs/OPERATOR_COMPUTER_ALARM_LOG_INCIDENT_WORKSTATION.md` and `docs/milestones/M10.3.md`; no new ADR is required because ownership follows ADR 0070 and validated M5.6/M6.6/M9.1/M9.2 boundaries.
+
+## M10.2 — Unified Information, Guidance & Diagnostics — IMPLEMENTATION CANDIDATE
+
+- Recorded explicit local validation of M10.1: compilation and the complete automated suite passed and the terminal shell worked correctly.
+- Added generic immutable operator-computer content contracts for information, guidance steps and procedure diagnostics.
+- Added `OperatorComputerInformationProjector`, sourcing only already-published `ControlRoomSnapshot`/M6 panel values and preserving explicit `[MEASURED]`, `[MODEL]`, `[STATE]` and `[UNAVAILABLE]` provenance.
+- Added `OperatorComputerScenarioContentProjector` adapters for the existing M7.2–M7.6 guidance/checklist families; canonical evaluator results remain the only readiness criteria.
+- Activated GUIDANCE/INFO/DIAGNOSTICS terminal content while leaving ALARMS/LOG, COMMANDS, MODES and SESSION staged for their planned M10 milestones.
+- Preserved `TrainingGuidanceMode`: Hidden/ChecklistOnly suppress step-by-step guidance without changing diagnostic evaluation or scoring semantics.
+- Added Application/App/XAML regressions for unavailable-value preservation, canonical checklist reuse, guidance-mode suppression, page staging and real desktop-scenario terminal integration.
+
+## M10.1 — Operator Computer Contracts & Terminal Shell — VALIDATED
+
+- Recorded explicit validation of M9.7 hotfix 5 and the M9 phase gate: local compilation succeeded and all 760 automated tests passed.
+- Integrated the user-supplied `MainWindow.axaml` as the authoritative validated layout basis; the manual corrections remove the previous center-workspace overlap/clipping behavior without restoring the discarded synthetic minimum-width/horizontal-scroll workaround.
+- Added immutable Application-layer operator-computer page/status/snapshot contracts and a fixed eight-page catalog: GUIDANCE, INFO, ALARMS, COMMANDS, MODES, DIAGNOSTICS, LOG and SESSION.
+- Added `OperatorComputerSnapshotProjector`, projecting only already-published `ControlRoomSnapshot` shell status; all page content remains explicitly `ShellOnly` in M10.1.
+- Added `OperatorComputerViewModel`, seventh `Computer` workspace, monospace HUD-style `ControlRoomComputerControl`, fixed status line and global F1–F8 page navigation. Page selection/focus remain App presentation state and dispatch no plant commands.
+- Added Application/App/XAML regressions for fixed page-set immutability, status projection, selection persistence, keyboard navigation, dedicated terminal binding and preservation of the user-validated MainWindow layout contract.
+- No M10.2+ guidance/info/diagnostic content, alarm/log aggregation, command catalog, control-authority model, supervisory automation or session persistence is implemented yet.
+
+## M9.7 — Advanced Fidelity Integration Gate — VALIDATED / M9 GATE COMPLETE
+
+- User confirmed local compilation and complete automated validation: **760/760 tests passed** after hotfix 5.
+- The 6,000-step / 60-second Application and real desktop-pump endurance gates pass, including the boundary-aware saturated and superheated root-bracketing regressions.
+- Final manual GUI layout corrections were supplied and validated by the user in `MainWindow.axaml`; that file is integrated as the authoritative M9.7 layout baseline.
+- M9.7 and the full M9 phase gate are complete; M10.1 begins on this validated baseline.
+
+## M9.7 — Advanced Fidelity Integration Gate — IMPLEMENTATION CANDIDATE
+
+### M9.7 hotfix 5 — superheated phase-boundary root bracketing
+
+- Extended the M1.7 numerical root-search correction symmetrically to the superheated-vapor branch after the 60-second endurance gate exposed `exhaust` at `v=65.477888248812704 m^3/kg`, `u=2434381.9782870663 J/kg`.
+- Verified that the conserved state has a genuine solution inside the existing superheated closure (about 17.907 °C and 2.052 kPa); the fixed 512-segment scan missed it because the first admissible superheated temperature lies between coarse samples.
+- Added a deterministic boundary-aware superheated fallback that locates the exact admissible temperature interval, injects its valid endpoints, and reuses the existing superheated equations/bisection. No state clamp, envelope widening or new thermodynamic correlation is introduced.
+- Added direct regression coverage for the observed low-pressure `exhaust` state and a negative regression proving that a true correlation gap with no root still fails closed.
+- Retained the 6,000-step / 60-second direct-session and real desktop-pump endurance gates unchanged.
+
+### M9.7 hotfix 4 — saturation-boundary thermodynamic root bracketing
+
+- Investigated the 60-second endurance failures at `drum` and `exhaust` and confirmed a structural numerical gap in the simplified water/steam closure rather than another seed-only defect. The fixed 512-point full-range saturated-mixture scan could miss a valid root when the admissible saturation interval terminated between two samples near quality 0 or quality 1.
+- Preserved the long-validated resolver order/fast paths. Only after saturated-mixture, subcooled-liquid and superheated-vapor resolution all fail, a deterministic boundary-aware saturated-mixture fallback computes the exact upper temperature of the physically valid specific-volume interval and rescans that interval before declaring the state unsupported.
+- Added direct regressions using the exact conserved `(v,u)` states observed in manual/endurance failures: the `drum` case resolves near quality 0 at about 120 °C, while the `exhaust` case resolves as wet steam near quality 0.990 at about 39.93 °C. No arbitrary phase clamp or broadened thermodynamic envelope is introduced.
+- Removed reliance on the desktop-only inflated `0.001` liquid-compression override; the M9.7 desktop seed returns to the shared historical default margin while retaining its separately versioned balanced 5 MWe / finite-condenser-cooling steam-path lineup.
+- Updated stale M9.7 descriptor lineage text and made runtime-pump tests report an actual host failure before generic null/step-count assertions.
+- Hotfix 3 layout, full-session reset and 6,000-step/60-second endurance requirements remain intact and must be revalidated locally.
+
+### M9.7 hotfix 3 — workspace viewport, deterministic session reset and extended desktop endurance
+
+- Recorded successful local compilation and complete automated-suite validation of M9.7 hotfix 2.
+- Reworked the center workspace viewport so padding belongs to scrollable content rather than the `ScrollViewer` viewport, added explicit horizontal scrolling for wide dashboard grids, a clipped center-column host and a trailing scroll extent so the final card remains fully reachable above the fixed footer.
+- Added an explicit `Reset session` desktop action that reconstructs the exact versioned M9.7 desktop scenario through the composition root instead of mutating or partially zeroing live physical state. The old ViewModel unsubscribes from runtime/training events before replacement.
+- Extended both the Application-level desktop integration endurance regression and the real App `DesktopControlRoomRuntimePump` path to 6,000 fixed steps (60 simulated seconds), deliberately crossing the manually observed step-3111 block. The candidate desktop seed now uses the validated low-load 5 MWe handoff, a small finite 0.1 MW condenser cooling boundary and a 0.001 compressed-liquid margin; validated M7 identities/defaults remain unchanged.
+- Added a fresh-session reload regression proving reset semantics return to logical step 0, PAUSED host mode and the exact original snapshot fingerprint.
+- Added XAML contract coverage for the reset action, bidirectional center scrolling, inner scroll padding and explicit trailing extent.
+
+### M9.7 hotfix 2 — desktop drum thermodynamic-margin correction
+
+- Preserved the hotfix-1 continuous-RUN regression at 1,000 logical steps rather than weakening the test after it exposed a second real desktop-seed weakness at the primary steam drum.
+- Added an optional primary-liquid compression-margin parameter to the shared operational-seed factory with the exact historical default (`0.000001`) preserved for all previously validated M7/M8/M9 initial-condition call sites.
+- The separately versioned M9.7 desktop seed alone opts into a modest `0.0001` density-compression fraction, moving its primary liquid inventories deterministically inside the simplified subcooled-liquid envelope instead of starting effectively on the saturation boundary.
+- The thermodynamic resolver/envelope, canonical M3 ownership, historical versioned seeds and scenario physics are unchanged.
+
+### M9.7 hotfix 1 — desktop runtime/manual-GUI gate corrections
+
+- Updated the stale `ApplicationDescriptorTests` expectation from M9.6 to the actual M9.7 integration-gate descriptor.
+- Added a real App-layer `DispatcherTimer`/`DesktopControlRoomRuntimePump` so RUN advances bounded deterministic fixed-step batches; PAUSE stops host advancement and SINGLE STEP remains exact. Wall-clock cadence remains outside physics.
+- Added a separately versioned `DesktopIntegratedOperationsInitialConditionFactory` / desktop scenario wrapper instead of mutating validated M7 v1 identities. The new seed uses a turbine steam-path inventory aligned with the upstream steam-space condition plus explicit governor droop/opening, with a regression that advances 1,000 logical steps (10 simulated seconds) past the former step-5 `control-out` failure.
+- Hardened `ControlRoomPushButton` hit targets with a non-null surface, full stretch/content alignment, minimum height and pointer cursor so the complete visual button rectangle is interactive.
+- Added a RUNNING/PAUSED + logical-step progress indicator beside the host controls and in the footer.
+- Clipped the center workspace row above the footer and added bottom scroll breathing room so the final `ARCHITECTURE CONTRACT` content can be scrolled fully above the status bar.
+- Added App/Application regression coverage for continuous desktop RUN, pause behavior, runtime progress bindings and footer-safe scrolling.
+
+- Recorded successful local compilation and complete automated-suite validation of M9.6 hotfix 1; M9.6 is the validated code baseline for M9.7.
+- Added a cross-feature Simulation regression proving M9.3 canonical xenon and M9.4 quasi-spatial feedback compose exactly once through the single global point-kinetics/non-rod-reactivity seam.
+- Added a real M9.3 xenon-session integration test spanning M9.1 recorder/checkpoint/full replay, M9.2 post-incident analysis and M9.6 immutable snapshot metric extraction with identical original/replay evidence.
+- Added M9.5/M9.6 fidelity-evidence consistency checks that preserve the explicit distinction between validated model capabilities and external historical calibration claims.
+- Added real-runtime App/ViewModel integration tests for xenon availability, legacy `Unavailable` semantics and RUN/PAUSE/SINGLE STEP synchronization through the canonical scenario/coordinator boundary.
+- Added `docs/M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md`, `docs/M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md` and `docs/milestones/M9.7.md`.
+- M9.7 introduces no new physics. Final M9 promotion requires local clean build/tests plus explicit completion of the manual GUI checklist before M10 starts.
+
+### M9.6 hotfix 1 — advanced GUI test compilation fix
+
+- Replaced an invalid object-initializer syntax applied to the `CreateViewModel(...)` factory result in `MainWindowViewModelAdvancedTests.SelectionIndices_ClampWhenRodPumpGeneratorAndAlarmCollectionsShrink` with explicit property assignments.
+- Test-compilation-only correction: no App/ViewModel production code, GUI behavior, M9.6 reference validation, physics, runtime, scenario, replay, or ownership semantics changed.
+
+## M9.6 — Calibration & Reference Validation Suite — IMPLEMENTATION CANDIDATE
+
+- Recorded explicit local validation of M9.5: compilation and the complete automated suite passed; M9.5 is now the official validated baseline.
+- Added versioned steady-state/transient reference-validation contracts with exact logical-step targets, explicit absolute/relative tolerance budgets, model-version tracking and fail-closed missing-evidence semantics.
+- Added stable `ControlRoomSnapshot` reference metric IDs/extraction and curated internal regression baselines for cold shutdown, pre-synchronization and first generator loading; these are explicitly not external historical measurements.
+- Added deterministic sensitivity/regression reports for explicit parameter perturbations, including a real `FissionPowerCalibration` sensitivity regression.
+- Expanded `NuclearReactorSimulator.App.Tests` with advanced workspace, snapshot-refresh, target-clamping, typed-command routing, alarm/protection/interlock and XAML binding/provenance contract tests before M10.
+- Added `docs/CALIBRATION_REFERENCE_VALIDATION.md`, `docs/MANUAL_GUI_VALIDATION_CHECKLIST.md`, `docs/milestones/M9.6.md` and ADR 0073.
+- M9.6 remains a candidate until local clean build/complete automated tests and the requested manual GUI validation are explicitly confirmed. M9.5 remains the official validated baseline until then.
+
+## M9.5 — Historical-Inspired Scenario Framework — VALIDATED
+
+- Local compilation and the complete automated suite passed; M9.5 is the official validated baseline for M9.6.
+- The implementation content below is unchanged from the previously delivered M9.5 candidate.
+
+- Recorded explicit local validation of M9.4 after hotfix 1: compilation and the complete automated suite passed; M9.4 is now the official validated baseline.
+- Added optional versioned `ScenarioDefinition.HistoricalContext` with explicit source references, claim classification (`DocumentedFact`, `EducationalApproximation`, `SimulatorSpecificAssumption`), required model-capability IDs, fidelity statement and deliberate non-claims.
+- Added deterministic fail-closed `HistoricalScenarioFidelityReviewer` and `HistoricalScenarioFidelityException`; `ScenarioSessionFactory` now blocks historical-inspired content before runtime creation when declared validated capabilities are missing.
+- Advanced JSON scenario persistence to schema v3; v0/v1/v2 migration preserves existing scenario/initial-condition semantics and never invents historical metadata.
+- Added `docs/HISTORICAL_INSPIRED_SCENARIO_FRAMEWORK.md`, `docs/milestones/M9.5.md` and ADR 0072.
+- M9.5 introduces no named historical reconstruction, source-network access, calibration or scenario-owned physical outcome.
+
+### M9.4 hotfix 1 — test namespace compilation fix
+
+- Added the missing `NuclearReactorSimulator.Domain.Physics.Fluids` namespace import to `ReactorPrimaryControlSolverTests`, allowing the M9.4 quasi-spatial regression to resolve the canonical `VoidFraction` value object.
+- Test-compilation-only correction: no production physics, runtime integration, scenario, initial-condition, replay, or M9.4 ownership semantics changed.
+
+## M9.4 — Spatial/Quasi-Spatial Fidelity Refinement — VALIDATED
+
+- Built on the validated M9.3 baseline without changing existing versioned M7/M8/M9.3 scenarios or initial conditions.
+- Added opt-in `QuasiSpatialCoreFeedbackDefinition` over the validated M3.3 aggregated-core boundary; arbitrary zone identifiers/coordinates remain supported and adjacency is never inferred from coordinates.
+- Reused the existing M2 fuel-temperature, coolant-temperature and void feedback solvers per committed core zone, then reduced local contributions to one current-power-share-weighted global reactivity contribution through the existing non-rod/global point-kinetics seam.
+- Added explicit symmetric zone-coupling definitions that smooth only the power-shape-driving signal; coupling does not create local neutron populations, duplicate kinetics, new conserved inventories or implicit grid topology.
+- Added deterministic normalized power-shape relaxation with explicit sensitivity and time constant. Candidate zone shares affect the next committed full-plant step; the existing single global point-kinetics owner is preserved.
+- Added domain/simulation regressions for definition invariants, weighted feedback, explicit coupling, shape closure/evolution, determinism, zero-sensitivity behavior, and opt-in integration through `ReactorPrimaryControlSolver`.
+- Added `docs/SPATIAL_QUASI_SPATIAL_FIDELITY.md`, `docs/milestones/M9.4.md` and ADR 0071.
+- Local compilation and the complete automated suite subsequently passed after hotfix 1; M9.4 became the official validated baseline for M9.5.
+
+## M9.3 — Advanced Xenon & Low-Power Transients — VALIDATED
+
+- Recorded explicit local validation after hotfix 2: compilation and the complete automated suite passed; M9.3 is the official validated baseline.
+- Approved future M10 `Operator Computer, Supervisory Automation & Human-Machine Integration` architecture and roadmap: fixed menu terminal, independent training-assistance/control-authority axes, M5-owned supervisory automation, fail-closed degradation, bumpless manual takeover, intent taxonomy and replay-backed session archive direction.
+- Added `docs/OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`, planned `docs/milestones/M10.md` and ADR 0070.
+- Renamed planned M9.7 to `Advanced Fidelity Integration Gate` and moved final release hardening/packaging to M11 after M10.
+- Hotfix candidate 2: bounded the Application-level restart-seed determinism regression to a short end-to-end window; the previous 200-step full-plant loop accidentally coupled an M2.8 wiring assertion to the unrelated simplified M3 drum water/steam envelope. No production physics, seed data, scenario semantics or replay/versioning contracts changed.
+- Hotfix candidate 1: added the missing Simulation iodine/xenon namespace import in `ReactorPrimaryControlSolverTests`; this is test-compilation-only and does not change production physics, runtime behavior, scenario semantics or replay/versioning contracts.
+- The implementation package was subsequently validated locally after the two test-only hotfixes; M9.3 is now the official validated baseline.
+- Promoted the canonical validated M2.8 I-135/Xe-135 state into the M5 reactor/primary runtime through an optional `IodineXenonDefinition` / `IodineXenonState` seam rather than introducing Application/scenario physics.
+- Composed committed xenon reactivity through the existing explicit non-rod-reactivity seam before point kinetics and advanced poison inventories with the existing M2.8 solver after candidate kinetics/fission power.
+- Promoted only immutable committed M2.8 xenon diagnostics through the control-room presentation boundary; configurations without canonical poison state remain explicitly `Unavailable`.
+- Preserved exact-version compatibility by leaving existing M7 v1 initial conditions xenon-disabled instead of silently changing prior replay/checkpoint semantics.
+- Added versioned post-shutdown restart and poisoned low-power initial conditions plus `AdvancedXenonScenarioPack`; scenarios use existing typed rods, circulation, alarm and protection commands and do not script xenon/power trajectories or recovery outcomes.
+- Added deterministic Simulation/Application regression coverage, M9.3 milestone/domain documentation and ADR 0069.
+
+
+## M9.2 validated handoff maintenance checkpoint
+
+- Recorded explicit local validation of M9.2: compilation and the complete automated test suite passed; M9.2 is the official functional baseline.
+- Synchronized authoritative status/roadmap/architecture/readme documentation for the transition to M9.3.
+- Rebuilt `docs/PROJECT_HANDOFF.md` and `docs/NEW_CHAT_START.md` as the authoritative restart pair for a new project chat.
+- Performed conservative dead-code review across production/test symbols. Removed `ShellControlRoomCommandDispatcher`, an internal legacy shell fallback with zero production/test references; retained low-reference serializer interfaces and scenario packs because they are deliberate public/architectural seams.
+- The cleanup changes occur after the already validated M9.2 run; run a clean restore/build/test on this maintenance package before treating the cleanup delta as revalidated or beginning M9.3 implementation.
+
+
+## M9.2 — Post-Incident Analysis (baseline candidate)
+
+- Recorded M9.1 as locally validated after successful build and complete test suite.
+- Added deterministic `ScenarioPostIncidentAnalyzer` over immutable M9.1 recordings.
+- Added exact/automatic incident anchors, logical-step pre/post windows, ordered evidence timeline and start/anchor/end state summaries.
+- Added observed response metrics for alarms, protection activation, operator action, fault clearance and peak signal/alarm/fault indicators.
+- Added nearest preceding replay-backed checkpoint linkage without creating a second restore mechanism.
+- Added versioned `PostIncidentAnalysisReport` schema v1 plus JSON serializer with fail-closed unknown-schema handling.
+- Added ADR 0068 formalizing that temporal ordering is evidence and must not be silently promoted to causal inference.
+- Added regression tests and updated handoff/status/roadmap documentation.
+
+
+
+## M9.1 — Recorder, Checkpoints & Full Replay (baseline candidate)
+
+- Recorded explicit local validation of the exact M8.5 hotfix 2 → M8.6 → M8.7 hotfix 2 chain after `dotnet clean`, restore/build and the complete automated suite passed; M8.7 hotfix 2 is now the official validated baseline and the M8 gate is complete.
+- Added `ScenarioRecorder` capturing the initial frame plus every deterministic fixed step independently from presentation publication stride.
+- Added immutable `ScenarioRecording` with retained control-room frames, accepted typed operator actions and a monotonic recorder event stream for operator actions, alarm events, fault transitions and protection transitions.
+- Added versioned `ControlRoomSnapshotFingerprint` v1 and replay-backed `ScenarioCheckpoint` schema v1; checkpoints never serialize or own private physical solver state.
+- Added `ScenarioFullReplayRunner` with exact scenario/initial-condition reconstruction, accepted-action replay, per-frame fail-closed fingerprint verification, event-stream verification and deterministic seek-to-checkpoint verification.
+- Added `JsonScenarioCheckpointSerializer` with explicit unsupported-schema rejection.
+- Added M9.1 Application/Infrastructure regression tests, ADR 0067 and `docs/RECORDER_CHECKPOINT_FULL_REPLAY.md`.
+
+
+## M8.7 stacked baseline candidate / hotfix 2 — M8.5 committed-node thermodynamic-admissibility guard
+
+- Fixed the only failing stacked-chain regression: an intentionally extreme pressure-driven break could respect `MaximumInventoryFractionPerStep` yet still move a near-saturated liquid node outside the simplified water/steam state envelope.
+- Pressure-driven breaks now use a deterministic committed-node admissibility probe and further cap only the M8.5 mass/energy removal when required by the existing thermodynamic closure; no second full-plant predictor step is performed.
+- The declared inventory fraction remains a strict upper bound; the guard never adds inventory, mutates committed state, relaxes the thermodynamic model or changes M3 single-integration ownership.
+- The existing severe-break regression now verifies both positive additional loss and compliance with the declared maximum without causing `WaterSteamStateOutOfRangeException`.
+- M8.5, M8.6 and M8.7 remain unvalidated stacked candidates; the last official validated baseline remains M8.4 hotfix 2.
+
+
+## M8.7 — Safety-Response Scenario Pack (stacked baseline candidate)
+
+- M8.5 and M8.6 remain unvalidated stacked candidates because the user is temporarily away from the validation environment; M8.7 is intentionally stacked on that exact chain and does not change the official validated baseline (M8.4 hotfix 2).
+- Added three capstone safety-response exercises reusing exact M8.3/M8.5/M8.6 fault declarations: protection fail-safe, large-break-class response and station-blackout-class response.
+- Added `SafetyResponseCheckpointEvaluator` with committed-presentation-only acceptance checks and 100-point M7.7 training plans; acceptance criteria never inject physical/protection outcomes.
+- Added `SafetyResponseEvaluationSession`, exposing deterministic assessment plus the existing accepted-operator-action logical timeline for debrief.
+- Added M8.7 regression tests, ADR 0066, `docs/SAFETY_RESPONSE_SCENARIO_PACK.md` and stacked-candidate handoff/status/roadmap updates.
+
+## M8.6 — Electrical Loss & Station Blackout-Class Scenarios (stacked baseline candidate)
+
+- M8.5 remains unvalidated because the user is temporarily away from the validation environment; M8.6 is intentionally stacked on that candidate and does not change the official validated baseline (M8.4 hotfix 2).
+- Added `electrical.external-supply-loss`, bound fail-closed to the exact canonical M4.5 grid id. While active it forces canonical generator breakers open through `GeneratorGridInputs` and overrides close requests without writing breaker state directly.
+- Added deterministic external-supply-loss and station-blackout-class scenario definitions.
+- Station-blackout-class consequences are explicit composition of validated M8.2 pump trips, M8.3 powered actuator-command fail-low faults and M8.4 turbine/generator trips; no synthetic AC/DC bus, diesel, battery or ECCS electrical model is introduced.
+- Fault clearance removes external-supply forcing only; generator reconnection remains a deliberate synchronization/close operation.
+- Documented that M2.5 stateful decay heat is not yet promoted into the M5.7 integrated operational runtime and deliberately avoided fabricating a fixed post-shutdown heat source.
+- Added M8.6 Application regression tests, ADR 0065, `docs/ELECTRICAL_LOSS_STATION_BLACKOUT_SCENARIOS.md` and stacked-candidate handoff/status/roadmap updates.
+
+## M8.5 — Educational Leak/LOCA-Class Scenarios (baseline candidate)
+
+- Recorded explicit local validation of M8.4 hotfix 2: compilation and complete tests passed; M8.4 is now the validated baseline.
+- Added `loca.pressure-driven-break`, a deterministic bounded break boundary driven only by committed canonical node pressure and immutable scenario parameters.
+- Added conservative break mass plus carried internal-energy removal through existing `PlantNetworkSourceTerms`; `PlantNetworkOrchestrator` remains the sole fluid/thermal inventory integrator.
+- Added an explicit per-step inventory-removal bound as a lumped-model validity/numerical guard; it does not represent ECCS, containment response or scripted accident correction.
+- Added small primary leak, large break-class and steam-space leak/depressurization deterministic scenario definitions over the validated M7.6 operating initial condition.
+- Added fail-closed target/parameter/conflict validation and regression tests for mass/energy loss, relative depressurization, zero driving-pressure flow, inventory bounds and built-in registry binding.
+- Added ADR 0064, `docs/EDUCATIONAL_LEAK_LOCA_SCENARIOS.md` and M8.5 milestone/handoff/status/roadmap updates with explicit non-licensing fidelity limits.
+
+## M8.4 — Turbine / Generator / Feedwater / Condenser Transients — VALIDATED / HOTFIX 2
 
 - Hotfix 2 scales the transient-ready condenser cooling seed from 20 MW to 0.1 MW so the compact conserved exhaust inventory remains inside the simplified water/steam closure envelope during deterministic seed/runtime steps; fault semantics and canonical M4.3 ownership are unchanged.
 

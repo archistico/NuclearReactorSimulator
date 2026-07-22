@@ -1,10 +1,7 @@
 # Project Status
 
-## Validated baseline
+M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.6 are now VALIDATED**: the user confirmed the cumulative M10.2→M10.6 Hotfix 1 package compiled and the complete automated suite passed, promoting GUIDANCE/INFO/DIAGNOSTICS, ALARMS/LOG, COMMANDS, the dual assistance/control-authority prerequisite and M5-owned supervisory operation in sequence. **M10.6 — Supervisory Automatic Operation is the current validated baseline. M10.7 — Session, Checkpoint, Replay & Save Workspace is the current implementation candidate.**
 
-The current validated functional baseline is **M8.3 — Instrumentation & Control Faults**.
-
-M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7, M8.1, M8.2 hotfix 2 and M8.3 are validated through local build/test execution/approval. The M3, M4, M5, M6 and M7 gates are complete. M8.4 is the current baseline candidate.
 
 | Phase | Status | Validated capability |
 |---|---|---|
@@ -16,12 +13,30 @@ M0, M1, M2, the complete M3 phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–
 | M5 | VALIDATED | M5.1–M5.7 validated; integrated automatic-operation gate complete |
 | M6 | VALIDATED | M6.1–M6.7 validated; complete control-room/runtime-integration gate |
 | M7 | VALIDATED | M7.1–M7.7 validated; versioned sessions, normal operating path and deterministic training/evaluation gate complete |
-| M8 | IN PROGRESS | M8.1–M8.3 validated; M8.4 Turbine/Generator/Feedwater/Condenser Transients baseline candidate |
-| M9 | PLANNED | advanced analysis, fidelity refinement and historical-inspired scenarios |
+| M8 | VALIDATED | M8.1–M8.7 validated; deterministic fault/scenario/safety-response gate complete |
+| M9 | COMPLETE / VALIDATED | M9.1–M9.7 validated; 760/760 tests passed and final GUI layout integrated |
 
-## Validated M8.1–M8.3 / current M8.4 candidate
+## Validated M8 fault/scenario gate
 
-M7.1 through M7.7 are validated and the M7 gate is complete. M8.1 owns validated deterministic fault declaration/scheduling/lifecycle orchestration. M8.2 hotfix 2 is validated for concrete pump/valve/path/leak effects. M8.3 is validated for deterministic sensor, controller-output and actuator-command faults through canonical M5 seams. M8.4 is the current candidate for deterministic turbine/generator/feedwater/condenser transient packs over canonical M4/M5 owners.
+M8.1 owns deterministic fault declaration/scheduling/lifecycle orchestration. M8.2 hotfix 2 validates hydraulic component constraints and conservative leaks. M8.3 validates instrumentation/control fault overlays. M8.4 hotfix 2 validates turbine/generator/feedwater/condenser transients. M8.5 hotfix 2 validates bounded pressure-driven educational break scenarios with thermodynamic-admissibility guarding. M8.6 validates external-supply-loss and station-blackout-class composition. M8.7 hotfix 2 validates capstone safety-response acceptance/scoring and deterministic operator-action debrief timelines.
+
+The complete M8 chain passed local clean restore/build and the complete automated suite. **M8 is COMPLETE / VALIDATED.**
+
+## Validated M9.1–M9.5
+
+M9.1 is validated and provides deterministic per-step recording, replay-backed checkpoints and fail-closed full replay/seek verification. M9.2 is validated and adds evidence-based post-incident windows, synchronized presentation trends, event timelines, logical-step response metrics and versioned debrief reports over those immutable artifacts. Analysis remains observational and cannot own or restore private physical state directly.
+
+M9.3 is **validated**. It connects the already validated M2.8 iodine/xenon owner to the integrated M5 reactor/primary runtime through optional versioned configuration/state, composes committed xenon worth through the existing non-rod-reactivity seam, promotes the committed diagnostic through the presentation snapshot, and adds two versioned xenon/low-power scenario seeds. Existing M7 v1 initial conditions remain xenon-disabled so exact-version replay semantics are not silently changed. Local compilation and the complete automated suite passed after two test-only hotfixes that did not alter production physics or replay/versioning semantics.
+
+### Validated M9 gate / M10.1–M10.6 validated / current M10.7 candidate
+
+M9.4 is **validated**. It adds an opt-in quasi-spatial refinement over the M3.3 aggregated-core boundary, evaluates existing M2 fuel-temperature/coolant-temperature/void feedback equations on committed zone domains, reduces them to one current-power-share-weighted scalar for the existing global point-kinetics seam, and evolves only normalized `AggregatedCoreState` power shares for the next committed step. Explicit symmetric zone couplings smooth only the shape-driving signal; coordinates do not imply adjacency and no local neutron populations or conserved inventories are introduced. Local compilation and the complete automated suite passed after one test-compilation-only namespace hotfix.
+
+M9.5 is **VALIDATED**: optional `HistoricalContext` provenance/fidelity metadata, schema-v3 persistence, explicit fact/approximation/assumption separation and fail-closed capability review passed local compilation and the complete automated suite. M9.6 also passed local compilation and the complete automated suite after one test-compilation-only hotfix; it adds explicit versioned reference cases/tolerance budgets/model-version tracking, sensitivity/regression reports and stronger App/UI automated regression coverage. Bundled reference cases remain explicitly internal validated regression baselines, not external historical measurements.
+
+M9.7 is **VALIDATED** and the M9 gate is complete. The user confirmed local compilation and **760/760 automated tests passed** after hotfix 5, including 6,000-step / 60-second direct-session and desktop-pump endurance. The final manual center-workspace clipping/overlap issue was corrected in the user-supplied `MainWindow.axaml`, now integrated as the authoritative layout baseline.
+
+M10.1 through M10.6 are **VALIDATED**. M10.2 provides GUIDANCE/INFO/DIAGNOSTICS, M10.3 ALARMS/LOG, M10.4 contextual COMMANDS, M10.5 the independent assistance/control-authority model, and M10.6 deterministic M5-owned bounded supervisory operation. M10.7 is the current **implementation candidate**, adding explicit opt-in recording plus replay-backed checkpoint/save/load/restore without opaque state dumps.
 
 ## What the validated engine can already do
 
@@ -68,9 +83,12 @@ The validated core can run headlessly and deterministically with:
 - validated M8.1 scenario-fault schema v2, exact logical-step/committed-condition triggers, fail-closed applicator/evaluator binding and snapshot-visible deterministic lifecycle state;
 - validated M8.2 hotfix 2 concrete pump trip/degradation, valve fail/stuck, valve-controlled path restriction/blockage and selected audited fluid-node leaks;
 - validated M8.3 deterministic sensor bias/freeze/failure plus controller-output and actuator-command freeze/fail-low/fail-high through canonical M5 seams;
-- M8.4 candidate turbine trip, generator trip/load rejection, feedwater degradation/loss and condenser cooling/vacuum degradation/loss through canonical M4/M5/M8 seams;
+- validated M8.4 hotfix 2 turbine trip, generator trip/load rejection, feedwater degradation/loss and condenser cooling/vacuum degradation/loss through canonical M4/M5/M8 seams;
+- validated M8.5 hotfix 2 bounded pressure-driven break/leak scenarios with conservative mass/energy loss, deterministic thermodynamic-admissibility capping and explicit non-licensing fidelity limits;
+- validated M8.6 explicit external-grid connection loss and station-blackout-class composition through canonical M4.5/M8.2/M8.3/M8.4 seams, with no synthetic station electrical distribution model;
+- validated M8.7 hotfix 2 capstone safety-response exercises with deterministic acceptance/scoring and logical operator-action timeline capture over existing fault/protection/control owners;
 
-## Current implementation candidate
+## Current continuation point
 
 **M7.7 — Training Objectives, Procedure Guidance & Evaluation** is validated and closes the M7 gate over the exact-version scenario/session/replay boundary plus validated operating procedures and observational training evaluation.
 
@@ -78,11 +96,19 @@ The validated core can run headlessly and deterministically with:
 
 **M8.3 — Instrumentation & Control Faults** is validated.
 
-**M8.4 — Turbine / Generator / Feedwater / Condenser Transients** is the current baseline candidate. It composes canonical M5.5 turbine/generator trip paths, validated M8.2 feedwater-pump faults and a bounded M4.3 condenser cooling-capacity overlay; it does not create duplicate physical state.
+**M8.4 — Turbine / Generator / Feedwater / Condenser Transients hotfix 2** is validated. It composes canonical M5.5 turbine/generator trip paths, validated M8.2 feedwater-pump faults and a bounded M4.3 condenser cooling-capacity overlay without duplicate physical state.
 
-**Restart note:** M8.1, M8.2 hotfix 2 and M8.3 are explicitly validated. M8.4 remains a baseline candidate until local build and the complete test suite are explicitly confirmed. See `PROJECT_HANDOFF.md` and `NEW_CHAT_START.md`.
+**M8.5 — Educational Leak/LOCA-Class Scenarios hotfix 2** is validated.
 
-M8.2 hotfix 2 also established the first dedicated headless `NuclearReactorSimulator.App.Tests` coverage for `MainWindowViewModel` and XAML command-state wiring; that presentation regression boundary remains validated and unchanged by M8.3.
+**M8.6 — Electrical Loss & Station Blackout-Class Scenarios** is validated. It adds exact external-grid connection loss plus explicit pump/control/turbine/generator consequences through existing typed fault seams.
+
+**M8.7 — Safety-Response Scenario Pack hotfix 2** is validated and closes the M8 gate. It adds no new fault physics; it composes deterministic acceptance/scoring, protection/control response checks and logical operator-action debrief timelines over existing scenario/runtime owners.
+
+**M9.3 — Advanced Xenon & Low-Power Transients** is validated. It composes canonical M2.8 poison state through an explicit opt-in seam into the integrated reactor/primary runtime, preserves legacy exact-version M7 v1 semantics, promotes committed xenon diagnostics through the presentation boundary, and adds two versioned xenon/low-power scenario seeds. **M9.4–M9.7 are also validated and the M9 phase gate is complete**; M9.7 hotfix 5 passed 760/760 automated tests and the final user-corrected GUI layout is integrated.
+
+**Continuation note:** M8.1–M8.7, M9.1–M9.7 and M10.1–M10.6 are validated. M10.7 is the current implementation candidate; see `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `docs/milestones/M10.7.md` and `OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`.
+
+M8.2 hotfix 2 also established the first dedicated headless `NuclearReactorSimulator.App.Tests` coverage for `MainWindowViewModel` and XAML command-state wiring; that presentation regression boundary remains validated and unchanged by M8.3–M8.7.
 
 ## What is intentionally not built yet
 
@@ -94,9 +120,17 @@ The following are planned architecture boundaries, not missing bugs:
 - no detailed HP/IP/LP turbine maps, moisture separation/reheat or wet-steam erosion model;
 - no detailed synchronous-machine transient/reactance model, AVR/excitation dynamics or grid load-flow physics;
 - no persistent disk historian or wall-clock event timestamps; M6.6 history is bounded presentation state indexed only by logical step/event sequence;
-- M7.1–M7.7 are validated and the M7 gate is complete; M8.1 fault orchestration, M8.2 hydraulic effects and M8.3 instrumentation/control faults are validated; M8.4 currently owns turbine/generator/feedwater/condenser transient packs;
-- no arbitrary full-state checkpoint/save/seek format yet; M9.1 owns that boundary;
-- no full-scope or licensing-grade thermal hydraulics/neutronics.
+- M7 and M8 gates are complete; M8.1–M8.7 fault/scenario/safety-response capabilities are validated;
+- no opaque arbitrary full-state dump/restore format; validated M9.1 provides versioned replay-backed checkpoints and deterministic seek/full replay instead;
+- no full-scope or licensing-grade thermal hydraulics/neutronics;
+- M8.5 pressure-driven breaks are bounded educational source-term models only: no critical/choked two-phase discharge, detailed rupture mechanics, containment, ECCS, fuel damage or severe-accident progression.
+- M8.6 does not model station AC/DC buses, diesels, batteries, transfer logic, ECCS electrical trains or quantitative decay-heat coastdown; powered consequences are explicit scenario declarations over modeled seams.
+
+## Approved future M10 architecture
+
+M10 is **IN PROGRESS** as **Operator Computer, Supervisory Automation & Human-Machine Integration**. M10.1–M10.6 are validated and M10.7 is the current implementation candidate. The operator computer is an Application/App aggregation/presentation surface, while real Manual / Assisted / Supervisory Automatic plant control extends canonical M5 ownership. Training assistance (`TrainingGuidanceMode`) remains a separate independent axis.
+
+Approved constraints include fixed menu/pages with no free-form prompt, measured-signal-only supervisory consumers, protection priority, fail-closed degraded operation, deterministic bumpless manual takeover, separation of plant/training/session intents, and replay-backed session persistence built on M9.1 rather than opaque solver-state dumps. See `OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`, `milestones/M10.md` and ADR 0070.
 
 ## Architecture debt to avoid going forward
 
@@ -164,7 +198,7 @@ Every operator action visible in the control room maps to application commands; 
 
 Versioned initial conditions, deterministic normal-operation procedures, guidance and observational training evaluation are validated. Local build and complete tests for M7.7 were explicitly confirmed on 2026-07-21.
 
-### Gate after M8
+### Gate after M8 — COMPLETE
 
 Fault and transient scenarios are defined as explicit deterministic fault inputs plus commands over the physical plant. Scenario scripts must never force a predetermined physical outcome.
 
@@ -178,6 +212,6 @@ A milestone becomes validated only after:
 - documentation reflects the implemented behavior;
 - user validation is explicitly recorded.
 
-## Current M8.4 candidate
+## Validated M9 gate / M10.1–M10.6 validated / current M10.7 candidate
 
-M8.1 Deterministic Fault-Injection Framework, M8.2 Hydraulic Component Faults hotfix 2 and M8.3 Instrumentation & Control Faults are locally validated. M8.4 adds deterministic secondary-system transient scenario packs while preserving canonical M4/M5 ownership: turbine/generator trips use protection/electrical seams, feedwater loss/degradation reuses M8.2 pump faults, and condenser degradation/loss changes only M4.3 cooling-boundary capacity.
+M8.1–M8.7 are validated and the M8 gate is complete. M9.1–M9.7 are validated and the M9 gate is complete; M9.7 remains the validated M9 phase-gate baseline. The user confirmed 760/760 automated tests passed after hotfix 5, and the final corrected `MainWindow.axaml` is integrated. **M10.1–M10.6 are VALIDATED** after the cumulative M10.6 Hotfix 1 gate passed; **M10.6 is the current validated application baseline**. **M10.7 is the current implementation candidate**; M10.8–M10.9 remain planned under the approved M10 architecture.

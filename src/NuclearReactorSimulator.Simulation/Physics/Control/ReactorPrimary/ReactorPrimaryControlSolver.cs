@@ -2,11 +2,14 @@ using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Instrumentation;
+using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Control;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
 using NuclearReactorSimulator.Simulation.Physics.Reactor.ControlRods;
+using NuclearReactorSimulator.Simulation.Physics.Reactor.IodineXenon;
+using NuclearReactorSimulator.Simulation.Physics.Reactor.Core.Spatial;
 using NuclearReactorSimulator.Simulation.Physics.Reactor.Neutronics;
 using NuclearReactorSimulator.Simulation.Physics.Reactor.ThermalPower;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
@@ -15,7 +18,9 @@ namespace NuclearReactorSimulator.Simulation.Physics.Control.ReactorPrimary;
 
 /// <summary>
 /// M5.3 plant-specific control layer. Controllers consume measured signals only. Existing M2 rod/point-kinetics solvers
-/// remain the authoritative neutronic dynamics; MCP commands replace only canonical pump operational state before the M4.7 physics step.
+/// remain the authoritative neutronic dynamics; optional M9.4 quasi-spatial refinement contributes one committed-state weighted
+/// feedback scalar and next-step normalized power shape without adding local kinetics. MCP commands replace only canonical pump
+/// operational state before the M4.7 physics step.
 /// </summary>
 public sealed class ReactorPrimaryControlSolver
 {
@@ -25,6 +30,8 @@ public sealed class ReactorPrimaryControlSolver
     private readonly ControlRodReactivitySolver _rodReactivitySolver;
     private readonly PointKineticsSolver _pointKineticsSolver;
     private readonly FissionPowerSolver _fissionPowerSolver;
+    private readonly IodineXenonSolver? _iodineXenonSolver;
+    private readonly QuasiSpatialCoreFeedbackSolver? _quasiSpatialCoreFeedbackSolver;
 
     public ReactorPrimaryControlSolver(ReactorPrimaryControlSystemDefinition definition)
     {
@@ -34,6 +41,14 @@ public sealed class ReactorPrimaryControlSolver
         _rodReactivitySolver = new ControlRodReactivitySolver(definition.ControlRods);
         _pointKineticsSolver = new PointKineticsSolver(definition.PointKineticsParameters);
         _fissionPowerSolver = new FissionPowerSolver(definition.FissionPowerDefinition);
+        var iodineXenonDefinition = definition.IodineXenonDefinition;
+        _iodineXenonSolver = iodineXenonDefinition is null
+            ? null
+            : new IodineXenonSolver(iodineXenonDefinition);
+        var quasiSpatialDefinition = definition.QuasiSpatialCoreFeedbackDefinition;
+        _quasiSpatialCoreFeedbackSolver = quasiSpatialDefinition is null
+            ? null
+            : new QuasiSpatialCoreFeedbackSolver(quasiSpatialDefinition);
     }
 
     public ReactorPrimaryControlStepResult Step(
@@ -86,12 +101,30 @@ public sealed class ReactorPrimaryControlSolver
             throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "M5.3 timestep must be positive.");
         }
 
-        // Physics reads the committed rod state. Commands generated this step advance rods for the next committed state.
+        // Physics reads committed rod and poison state. Commands generated this step advance rods for the next committed
+        // state; M2.8 xenon reactivity is composed explicitly into the same non-rod seam before point kinetics.
         var committedRodReactivity = _rodReactivitySolver.Evaluate(committedControlState.ControlRods);
-        var totalReactivityUsed = committedRodReactivity.Total + inputs.NonRodReactivity;
+        var committedFissionPower = _fissionPowerSolver.Solve(committedControlState.PointKinetics.NeutronPopulation);
+        var committedIodineXenon = _iodineXenonSolver?.CreateSnapshot(
+            committedControlState.IodineXenon,
+            committedFissionPower.TotalFissionThermalPower,
+            committedControlState.PointKinetics.NeutronPopulation);
+        var xenonReactivity = committedIodineXenon?.XenonReactivity ?? Reactivity.Zero;
+        var quasiSpatialStep = _quasiSpatialCoreFeedbackSolver?.Step(
+            committedControlState.CoreState,
+            committedFullPlantState.PlantState,
+            deltaTime);
+        var quasiSpatialReactivity = quasiSpatialStep?.Snapshot.PowerWeightedFeedbackReactivity ?? Reactivity.Zero;
+        var nonRodReactivity = inputs.NonRodReactivity + xenonReactivity + quasiSpatialReactivity;
+        var totalReactivityUsed = committedRodReactivity.Total + nonRodReactivity;
         var candidateKinetics = _pointKineticsSolver.Step(committedControlState.PointKinetics, totalReactivityUsed, deltaTime);
         var kineticsSnapshot = _pointKineticsSolver.CreateSnapshot(candidateKinetics, totalReactivityUsed);
         var fissionPower = _fissionPowerSolver.Solve(candidateKinetics.NeutronPopulation);
+        var iodineXenonStep = _iodineXenonSolver?.Step(
+            committedControlState.IodineXenon,
+            fissionPower.TotalFissionThermalPower,
+            candidateKinetics.NeutronPopulation,
+            deltaTime);
 
         var controlStep = _controlSolver.Step(
             measuredSignals,
@@ -113,7 +146,9 @@ public sealed class ReactorPrimaryControlSolver
             _definition,
             controlStep.CandidateState,
             candidateRods,
-            candidateKinetics);
+            candidateKinetics,
+            iodineXenonStep?.State ?? committedControlState.IodineXenon,
+            quasiSpatialStep?.CandidateState ?? committedControlState.CoreState);
         var snapshot = new ReactorPrimaryControlSnapshot(
             _definition,
             controlStep.Snapshot,
@@ -122,10 +157,14 @@ public sealed class ReactorPrimaryControlSolver
             committedRodReactivity,
             _rodReactivitySolver.Evaluate(candidateRods),
             inputs.NonRodReactivity,
+            nonRodReactivity,
             totalReactivityUsed,
             kineticsSnapshot,
             fissionPower,
-            BuildLoopDiagnostics(measuredSignals, inputs.Controllers, controlStep));
+            committedIodineXenon,
+            iodineXenonStep?.Snapshot,
+            BuildLoopDiagnostics(measuredSignals, inputs.Controllers, controlStep),
+            quasiSpatialStep?.Snapshot);
 
         return new ReactorPrimaryControlStepResult(controlStep, candidateState, commandedFullPlant, snapshot);
     }

@@ -13,5 +13,6 @@ public static class ControlRoomWorkspaceCatalog
             new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.TurbineSecondary, "Turbine & Secondary Cycle", "Turbine", "Main steam, turbine, condenser, hotwell and feedwater operating workspace."),
             new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Electrical, "Generator & Electrical", "Electrical", "Generator synchronization, breaker state, electrical output and grid-facing controls."),
             new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.AlarmsEvents, "Alarms & Events", "Alarms", "Annunciator, first-out state and deterministic logical-step event review."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.OperatorComputer, "Operator Computer", "Computer", "Unified fixed-page operator terminal shell over canonical control-room, training and session contracts."),
         });
 }

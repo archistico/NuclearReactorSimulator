@@ -10,6 +10,7 @@ using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Instrumentation;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
+using NuclearReactorSimulator.Domain.Physics.Reactor.IodineXenon;
 using NuclearReactorSimulator.Domain.Physics.Reactor.Core;
 using NuclearReactorSimulator.Domain.Physics.Reactor.Core.Channels;
 using NuclearReactorSimulator.Domain.Physics.Reactor.Neutronics;
@@ -79,7 +80,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double initialRotorSpeedRpm = 0d,
         bool initialGeneratorBreakerClosed = false,
         double initialRequestedElectricalPowerMegawatts = 0d,
-        double initialCondenserCoolingPowerMegawatts = 0d)
+        double initialCondenserCoolingPowerMegawatts = 0d,
+        IodineXenonDefinition? iodineXenonDefinition = null,
+        IodineXenonState? initialIodineXenonState = null,
+        double? initialTurbineSpeedSetpointRpm = null,
+        double? initialSteamPathTemperatureCelsius = null,
+        double initialControlValvePercentOpen = 0d,
+        double initialPrimaryLiquidCompressionFraction = 0.000001d)
     {
         var recipe = BuildRecipe(
             initialNeutronPopulation,
@@ -90,7 +97,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             initialRotorSpeedRpm,
             initialGeneratorBreakerClosed,
             initialRequestedElectricalPowerMegawatts,
-            initialCondenserCoolingPowerMegawatts);
+            initialCondenserCoolingPowerMegawatts,
+            iodineXenonDefinition,
+            initialIodineXenonState,
+            initialTurbineSpeedSetpointRpm,
+            initialSteamPathTemperatureCelsius,
+            initialControlValvePercentOpen,
+            initialPrimaryLiquidCompressionFraction);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -120,8 +133,21 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double initialRotorSpeedRpm,
         bool initialGeneratorBreakerClosed,
         double initialRequestedElectricalPowerMegawatts,
-        double initialCondenserCoolingPowerMegawatts)
+        double initialCondenserCoolingPowerMegawatts,
+        IodineXenonDefinition? iodineXenonDefinition,
+        IodineXenonState? initialIodineXenonState,
+        double? initialTurbineSpeedSetpointRpm,
+        double? initialSteamPathTemperatureCelsius,
+        double initialControlValvePercentOpen,
+        double initialPrimaryLiquidCompressionFraction)
     {
+        if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
+        {
+            throw new ArgumentException(
+                "Iodine/xenon definition and initial state must either both be provided or both be omitted.",
+                nameof(initialIodineXenonState));
+        }
+
         if (!double.IsFinite(initialCondenserCoolingPowerMegawatts) || initialCondenserCoolingPowerMegawatts < 0d)
         {
             throw new ArgumentOutOfRangeException(
@@ -143,6 +169,42 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 nameof(initialRotorSpeedRpm),
                 initialRotorSpeedRpm,
                 "Operational seed rotor speed must be finite and between 0 and 3300 rpm.");
+        }
+        var turbineSpeedSetpointRpm = initialTurbineSpeedSetpointRpm ?? initialRotorSpeedRpm;
+        if (!double.IsFinite(turbineSpeedSetpointRpm) || turbineSpeedSetpointRpm < 0d || turbineSpeedSetpointRpm > 3_300d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialTurbineSpeedSetpointRpm),
+                turbineSpeedSetpointRpm,
+                "Operational seed turbine-speed setpoint must be finite and between 0 and 3300 rpm.");
+        }
+        if (initialSteamPathTemperatureCelsius.HasValue
+            && (!double.IsFinite(initialSteamPathTemperatureCelsius.Value)
+                || initialSteamPathTemperatureCelsius.Value < 40d
+                || initialSteamPathTemperatureCelsius.Value > 300d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialSteamPathTemperatureCelsius),
+                initialSteamPathTemperatureCelsius,
+                "Operational seed steam-path temperature must be finite and between 40 and 300 °C when specified.");
+        }
+        if (!double.IsFinite(initialControlValvePercentOpen)
+            || initialControlValvePercentOpen < 0d
+            || initialControlValvePercentOpen > 100d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialControlValvePercentOpen),
+                initialControlValvePercentOpen,
+                "Operational seed control-valve opening must be finite and between 0 and 100 percent.");
+        }
+        if (!double.IsFinite(initialPrimaryLiquidCompressionFraction)
+            || initialPrimaryLiquidCompressionFraction < 0d
+            || initialPrimaryLiquidCompressionFraction > 0.005d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialPrimaryLiquidCompressionFraction),
+                initialPrimaryLiquidCompressionFraction,
+                "Operational seed primary-liquid compression fraction must be finite and between 0 and 0.005.");
         }
         if (!double.IsFinite(initialRequestedElectricalPowerMegawatts)
             || initialRequestedElectricalPowerMegawatts < 0d
@@ -207,11 +269,24 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             Array.Empty<HeatTransferDefinition>(),
             Array.Empty<HeatSourceDefinition>());
 
-        var primaryLiquid = CreateSubcooledLiquid(plant, "suction", thermodynamicModel, initialPrimaryTemperatureCelsius);
+        var primaryLiquid = CreateSubcooledLiquid(
+            plant,
+            "suction",
+            thermodynamicModel,
+            initialPrimaryTemperatureCelsius,
+            initialPrimaryLiquidCompressionFraction);
         var primaryLiquidPressure = primaryLiquid.Pressure;
-        FluidNodeState PrimaryLiquid(string id) => CreateSubcooledLiquid(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius);
+        FluidNodeState PrimaryLiquid(string id) => CreateSubcooledLiquid(
+            plant,
+            id,
+            thermodynamicModel,
+            initialPrimaryTemperatureCelsius,
+            initialPrimaryLiquidCompressionFraction);
         FluidNodeState SteamSpace(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius);
         FluidNodeState CondenserSteam(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, 40d);
+        FluidNodeState SteamPath(string id) => initialSteamPathTemperatureCelsius.HasValue
+            ? CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialSteamPathTemperatureCelsius.Value)
+            : turbineStartupLineup ? CondenserSteam(id) : SteamSpace(id);
         FluidNodeState Condensate(string id) => CreateSubcooledLiquid(plant, id, thermodynamicModel, 40d);
 
         var hotwell = Condensate("hotwell");
@@ -226,8 +301,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 SteamSpace("steam"),
                 SteamSpace("header"),
                 SteamSpace("stop-out"),
-                turbineStartupLineup ? CondenserSteam("control-out") : SteamSpace("control-out"),
-                turbineStartupLineup ? CondenserSteam("turbine-inlet") : SteamSpace("turbine-inlet"),
+                SteamPath("control-out"),
+                SteamPath("turbine-inlet"),
                 CondenserSteam("exhaust"),
                 hotwell,
                 Condensate("feedwater-inventory"),
@@ -235,7 +310,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             new[]
             {
                 new ValveState("stop", turbineStartupLineup ? ValvePosition.FullyOpen : ValvePosition.Closed),
-                new ValveState("control", ValvePosition.Closed),
+                new ValveState("control", ValvePosition.FromPercent(initialControlValvePercentOpen)),
                 new ValveState("admission", turbineStartupLineup ? ValvePosition.FullyOpen : ValvePosition.Closed),
             },
             new[]
@@ -402,7 +477,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "power-loop", ReactorPrimaryControlLoopKind.ReactorPowerRodRegulation, "power-control", "rod-actuator"),
                 new ReactorPrimaryControlLoopDefinition(
                     "flow-loop", ReactorPrimaryControlLoopKind.MainCirculationPumpFlow, "flow-control", "mcp-actuator"),
-            });
+            },
+            iodineXenonDefinition);
 
         var secondaryControl = new ControlSystemDefinition("secondary-control", instrumentation, new[]
         {
@@ -501,7 +577,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         var reactorState = ReactorPrimaryControlState.CreateInitial(
             reactorDefinition,
             new ControlRodSystemState(new[] { new ControlRodState("rod-1", initialRodPosition) }),
-            PointKineticsState.CreateCriticalEquilibrium(kineticsParameters, initialNeutronPopulation));
+            PointKineticsState.CreateCriticalEquilibrium(kineticsParameters, initialNeutronPopulation),
+            initialIodineXenonState ?? IodineXenonState.Empty);
         var secondaryState = TurbineSecondaryControlState.CreateInitial(secondaryDefinition);
         var reactorInputs = new ReactorPrimaryControlInputs(
             reactorDefinition,
@@ -522,8 +599,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 new ControllerInput(
                     "speed-control",
                     turbineStartupLineup ? ControllerMode.Automatic : ControllerMode.Manual,
-                    initialRotorSpeedRpm,
-                    0d),
+                    turbineSpeedSetpointRpm,
+                    initialControlValvePercentOpen),
                 new ControllerInput(
                     "pressure-control",
                     ControllerMode.Manual,
@@ -586,12 +663,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         PlantDefinition plant,
         string nodeId,
         SimplifiedWaterSteamThermodynamicModel thermodynamicModel,
-        double temperatureCelsius)
+        double temperatureCelsius,
+        double compressionFraction = 0.000001d)
     {
         var definition = plant.GetFluidNode(nodeId);
         var temperature = Temperature.FromDegreesCelsius(temperatureCelsius);
         var saturation = thermodynamicModel.GetSaturationProperties(temperature);
-        var density = saturation.SaturatedLiquidDensity.KilogramsPerCubicMetre * 1.000001d;
+        var density = saturation.SaturatedLiquidDensity.KilogramsPerCubicMetre * (1d + compressionFraction);
         var mass = Mass.FromKilograms(density * definition.Volume.CubicMetres);
         var inventory = new FluidNodeInventory(mass, saturation.SaturatedLiquidInternalEnergy * mass);
         var previous = new FluidThermodynamicState(

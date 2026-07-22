@@ -3,16 +3,18 @@ using System.Text.Json.Serialization;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Faults;
+using NuclearReactorSimulator.Application.Scenarios.Historical;
 
 namespace NuclearReactorSimulator.Infrastructure.Scenarios;
 
 /// <summary>
-/// JSON persistence adapter for versioned scenario definitions. Schema v2 adds explicit deterministic M8.1 fault schedules;
-/// v0/v1 migration preserves exact initial-condition identity and yields an empty fault set rather than inventing behavior.
+/// JSON persistence adapter for versioned scenario definitions. Schema v2 added explicit deterministic M8.1 fault schedules;
+/// schema v3 adds optional M9.5 historical provenance/fidelity metadata. Legacy migration preserves exact scenario/initial-condition
+/// semantics and never invents historical context.
 /// </summary>
 public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerializer
 {
-    public const int CurrentSchemaVersion = 2;
+    public const int CurrentSchemaVersion = 3;
 
     private static readonly JsonSerializerOptions SerializerOptions = CreateSerializerOptions();
 
@@ -20,7 +22,7 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
     {
         ArgumentNullException.ThrowIfNull(scenario);
 
-        var document = new ScenarioDocumentV2
+        var document = new ScenarioDocumentV3
         {
             SchemaVersion = CurrentSchemaVersion,
             ScenarioId = scenario.ScenarioId,
@@ -47,6 +49,7 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
                 Activation = ToDocument(fault.Activation),
                 Deactivation = fault.Deactivation is null ? null : ToDocument(fault.Deactivation),
             }).ToArray(),
+            HistoricalContext = scenario.HistoricalContext is null ? null : ToDocument(scenario.HistoricalContext),
         };
 
         return JsonSerializer.Serialize(document, SerializerOptions);
@@ -67,7 +70,8 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
         {
             0 => MigrateV0(DeserializeDocument<ScenarioDocumentV0>(content)),
             1 => MigrateV1(DeserializeDocument<ScenarioDocumentV1>(content)),
-            CurrentSchemaVersion => ToDefinition(DeserializeDocument<ScenarioDocumentV2>(content)),
+            2 => MigrateV2(DeserializeDocument<ScenarioDocumentV2>(content)),
+            CurrentSchemaVersion => ToDefinition(DeserializeDocument<ScenarioDocumentV3>(content)),
             _ => throw new NotSupportedException(
                 $"Scenario schema version {schemaVersion} is not supported. Current version is {CurrentSchemaVersion}."),
         };
@@ -107,7 +111,7 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
             document.AllowedOperatorActions,
             Array.Empty<ScenarioFaultDefinition>());
 
-    private static ScenarioDefinition ToDefinition(ScenarioDocumentV2 document)
+    private static ScenarioDefinition MigrateV2(ScenarioDocumentV2 document)
     {
         var faults = (document.Faults ?? Array.Empty<ScenarioFaultDocumentV2>())
             .Select((fault, index) => ToFaultDefinition(fault, index))
@@ -120,7 +124,25 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
             document.InitialCondition,
             document.Objectives,
             document.AllowedOperatorActions,
-            faults);
+            faults,
+            historicalContext: null);
+    }
+
+    private static ScenarioDefinition ToDefinition(ScenarioDocumentV3 document)
+    {
+        var faults = (document.Faults ?? Array.Empty<ScenarioFaultDocumentV2>())
+            .Select((fault, index) => ToFaultDefinition(fault, index))
+            .ToArray();
+
+        return ToDefinitionCore(
+            document.ScenarioId,
+            document.Title,
+            document.Description,
+            document.InitialCondition,
+            document.Objectives,
+            document.AllowedOperatorActions,
+            faults,
+            document.HistoricalContext is null ? null : ToHistoricalContext(document.HistoricalContext));
     }
 
     private static ScenarioDefinition ToDefinitionCore(
@@ -130,7 +152,8 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
         InitialConditionReferenceDocument? initialCondition,
         ScenarioObjectiveDocument[]? objectiveDocuments,
         ControlRoomCommandKind[]? allowedOperatorActions,
-        IReadOnlyList<ScenarioFaultDefinition> faults)
+        IReadOnlyList<ScenarioFaultDefinition> faults,
+        HistoricalScenarioContextDefinition? historicalContext = null)
     {
         ValidateText(scenarioId, "scenarioId");
         ValidateText(title, "title");
@@ -162,8 +185,81 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
             new InitialConditionReference(initialCondition.Id!, initialCondition.Version),
             objectives,
             allowedOperatorActions ?? Array.Empty<ControlRoomCommandKind>(),
-            faults);
+            faults,
+            historicalContext);
     }
+
+    private static HistoricalScenarioContextDefinition ToHistoricalContext(HistoricalScenarioContextDocumentV3 document)
+    {
+        ValidateText(document.HistoricalSubject, "historicalContext.historicalSubject");
+        ValidateText(document.FidelityStatement, "historicalContext.fidelityStatement");
+
+        var sources = (document.Sources ?? Array.Empty<HistoricalSourceDocumentV3>())
+            .Select((source, index) =>
+            {
+                if (source is null)
+                {
+                    throw new InvalidDataException($"Historical source at index {index} cannot be null.");
+                }
+                ValidateText(source.SourceId, $"historicalContext.sources[{index}].sourceId");
+                ValidateText(source.Citation, $"historicalContext.sources[{index}].citation");
+                return new HistoricalSourceReference(source.SourceId!, source.Citation!, source.Locator);
+            })
+            .ToArray();
+
+        var claims = (document.Claims ?? Array.Empty<HistoricalClaimDocumentV3>())
+            .Select((claim, index) =>
+            {
+                if (claim is null)
+                {
+                    throw new InvalidDataException($"Historical claim at index {index} cannot be null.");
+                }
+                ValidateText(claim.ClaimId, $"historicalContext.claims[{index}].claimId");
+                ValidateText(claim.Statement, $"historicalContext.claims[{index}].statement");
+                if (claim.Kind is null || !Enum.IsDefined(claim.Kind.Value))
+                {
+                    throw new InvalidDataException($"Historical claim at index {index} must contain a supported kind.");
+                }
+                return new HistoricalScenarioClaimDefinition(
+                    claim.ClaimId!,
+                    claim.Kind.Value,
+                    claim.Statement!,
+                    claim.SourceIds ?? Array.Empty<string>(),
+                    claim.Rationale);
+            })
+            .ToArray();
+
+        return new HistoricalScenarioContextDefinition(
+            document.HistoricalSubject!,
+            document.FidelityStatement!,
+            sources,
+            claims,
+            document.RequiredModelCapabilities ?? Array.Empty<string>(),
+            document.DeliberateNonClaims ?? Array.Empty<string>());
+    }
+
+    private static HistoricalScenarioContextDocumentV3 ToDocument(HistoricalScenarioContextDefinition context)
+        => new()
+        {
+            HistoricalSubject = context.HistoricalSubject,
+            FidelityStatement = context.FidelityStatement,
+            Sources = context.Sources.Select(static source => new HistoricalSourceDocumentV3
+            {
+                SourceId = source.SourceId,
+                Citation = source.Citation,
+                Locator = source.Locator,
+            }).ToArray(),
+            Claims = context.Claims.Select(static claim => new HistoricalClaimDocumentV3
+            {
+                ClaimId = claim.ClaimId,
+                Kind = claim.Kind,
+                Statement = claim.Statement,
+                SourceIds = claim.SourceIds.ToArray(),
+                Rationale = claim.Rationale,
+            }).ToArray(),
+            RequiredModelCapabilities = context.RequiredModelCapabilities.ToArray(),
+            DeliberateNonClaims = context.DeliberateNonClaims.ToArray(),
+        };
 
     private static ScenarioFaultDefinition ToFaultDefinition(ScenarioFaultDocumentV2? document, int index)
     {
@@ -240,6 +336,19 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
         return options;
     }
 
+    private sealed class ScenarioDocumentV3
+    {
+        public int SchemaVersion { get; set; }
+        public string? ScenarioId { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public InitialConditionReferenceDocument? InitialCondition { get; set; }
+        public ScenarioObjectiveDocument[]? Objectives { get; set; }
+        public ControlRoomCommandKind[]? AllowedOperatorActions { get; set; }
+        public ScenarioFaultDocumentV2[]? Faults { get; set; }
+        public HistoricalScenarioContextDocumentV3? HistoricalContext { get; set; }
+    }
+
     private sealed class ScenarioDocumentV2
     {
         public int SchemaVersion { get; set; }
@@ -291,6 +400,32 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
         public ScenarioFaultTriggerKind Kind { get; set; }
         public long? LogicalStep { get; set; }
         public string? ConditionId { get; set; }
+    }
+
+    private sealed class HistoricalScenarioContextDocumentV3
+    {
+        public string? HistoricalSubject { get; set; }
+        public string? FidelityStatement { get; set; }
+        public HistoricalSourceDocumentV3[]? Sources { get; set; }
+        public HistoricalClaimDocumentV3[]? Claims { get; set; }
+        public string[]? RequiredModelCapabilities { get; set; }
+        public string[]? DeliberateNonClaims { get; set; }
+    }
+
+    private sealed class HistoricalSourceDocumentV3
+    {
+        public string? SourceId { get; set; }
+        public string? Citation { get; set; }
+        public string? Locator { get; set; }
+    }
+
+    private sealed class HistoricalClaimDocumentV3
+    {
+        public string? ClaimId { get; set; }
+        public HistoricalScenarioClaimKind? Kind { get; set; }
+        public string? Statement { get; set; }
+        public string[]? SourceIds { get; set; }
+        public string? Rationale { get; set; }
     }
 
     private sealed class ScenarioDocumentV0

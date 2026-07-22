@@ -8,7 +8,7 @@
     x:DataType="vm:MainWindowViewModel"
     Width="1440"
     Height="900"
-    MinWidth="1100"
+    MinWidth="1340"
     MinHeight="700"
     Title="{Binding Title}">
   <Window.Styles>
@@ -24,8 +24,20 @@
     <Style Selector="Button.shellCommand">
       <Setter Property="MinWidth" Value="92" />
       <Setter Property="Padding" Value="14,8" />
+      <Setter Property="Cursor" Value="Hand" />
     </Style>
   </Window.Styles>
+
+  <Window.KeyBindings>
+    <KeyBinding Gesture="F1" Command="{Binding OpenOperatorComputerGuidancePageCommand}" />
+    <KeyBinding Gesture="F2" Command="{Binding OpenOperatorComputerInfoPageCommand}" />
+    <KeyBinding Gesture="F3" Command="{Binding OpenOperatorComputerAlarmsPageCommand}" />
+    <KeyBinding Gesture="F4" Command="{Binding OpenOperatorComputerCommandsPageCommand}" />
+    <KeyBinding Gesture="F5" Command="{Binding OpenOperatorComputerModesPageCommand}" />
+    <KeyBinding Gesture="F6" Command="{Binding OpenOperatorComputerDiagnosticsPageCommand}" />
+    <KeyBinding Gesture="F7" Command="{Binding OpenOperatorComputerLogPageCommand}" />
+    <KeyBinding Gesture="F8" Command="{Binding OpenOperatorComputerSessionPageCommand}" />
+  </Window.KeyBindings>
 
   <Grid RowDefinitions="Auto,*,Auto">
     <Border Grid.Row="0" Padding="22,16" Background="#171C24">
@@ -39,16 +51,24 @@
           </StackPanel>
         </StackPanel>
 
-        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Spacing="8">
-          <Button Classes="shellCommand" Command="{Binding RunCommand}" Content="Run" />
-          <Button Classes="shellCommand" Command="{Binding PauseCommand}" Content="Pause" />
-          <Button Classes="shellCommand" Command="{Binding SingleStepCommand}" Content="Single step" />
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="6">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+            <Button Classes="shellCommand" Command="{Binding RunCommand}" Content="Run" />
+            <Button Classes="shellCommand" Command="{Binding PauseCommand}" Content="Pause" />
+            <Button Classes="shellCommand" Command="{Binding SingleStepCommand}" Content="Single step" />
+            <Button Classes="shellCommand" Click="ResetSession_Click" Content="Reset session" />
+          </StackPanel>
+          <Grid ColumnDefinitions="Auto,90,Auto" ColumnSpacing="8" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <TextBlock FontSize="11" FontWeight="SemiBold" Opacity="0.78" Text="{Binding RuntimeState}" />
+            <ProgressBar Grid.Column="1" Width="90" Height="4" IsIndeterminate="{Binding IsRuntimeRunning}" />
+            <TextBlock Grid.Column="2" FontSize="11" FontFamily="Consolas" Opacity="0.78" Text="{Binding RuntimeProgressText}" />
+          </Grid>
         </StackPanel>
       </Grid>
     </Border>
 
-    <Grid Grid.Row="1" ColumnDefinitions="240,*,320" Background="#0F1319">
-      <Border Grid.Column="0" Padding="16" BorderThickness="0,0,1,0" BorderBrush="#303846">
+    <Grid Grid.Row="1" ColumnDefinitions="240,*,320" Background="#0F1319" ClipToBounds="True">
+      <Border Grid.Column="0" Padding="16" Background="#12161D" BorderThickness="0,0,1,0" BorderBrush="#303846">
         <Grid RowDefinitions="Auto,*,Auto">
           <StackPanel Spacing="5">
             <TextBlock Classes="sectionHeading" Text="WORKSPACES" />
@@ -61,7 +81,7 @@
               SelectedItem="{Binding SelectedWorkspace, Mode=TwoWay}">
             <ListBox.ItemTemplate>
               <DataTemplate x:DataType="controlRoom:ControlRoomWorkspaceDescriptor">
-                <Border Padding="12,10" CornerRadius="5" HorizontalAlignment="Stretch">
+                <Border Padding="12,10" CornerRadius="5" Cursor="Hand" HorizontalAlignment="Stretch">
                   <TextBlock FontWeight="SemiBold" Text="{Binding ShortTitle}" />
                 </Border>
               </DataTemplate>
@@ -77,12 +97,21 @@
         </Grid>
       </Border>
 
-      <ScrollViewer Grid.Column="1" Padding="28">
-        <StackPanel Spacing="22">
+      <Border Grid.Column="1" ClipToBounds="True">
+        <ScrollViewer x:Name="MainWorkspaceScroll"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      ClipToBounds="True">
+          <Border Padding="28">
+            <StackPanel Spacing="22">
           <StackPanel Spacing="7">
             <TextBlock FontSize="30" FontWeight="SemiBold" Text="{Binding SelectedWorkspaceTitle}" />
             <TextBlock MaxWidth="900" FontSize="15" Opacity="0.74" TextWrapping="Wrap" Text="{Binding SelectedWorkspaceDescription}" />
           </StackPanel>
+
+          <Border IsVisible="{Binding IsOperatorComputerWorkspaceSelected}">
+            <controls:ControlRoomComputerControl DataContext="{Binding OperatorComputer}" />
+          </Border>
 
           <Border IsVisible="{Binding IsShellHostWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
             <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">
@@ -890,12 +919,17 @@
                          Text="M6 domain panels bind only to Application presentation records. Operator controls dispatch typed intents; unavailable runtime/target/permissive state disables commands fail-closed. No reactor, hydraulic, turbine, condenser, generator, synchronization or protection physics exists in Avalonia." />
             </StackPanel>
           </Border>
-        </StackPanel>
-      </ScrollViewer>
 
-      <Border Grid.Column="2" Padding="20" BorderThickness="1,0,0,0" BorderBrush="#303846">
-        <ScrollViewer>
-          <StackPanel Spacing="18">
+              <!-- Explicit trailing extent: keeps the final card fully scrollable above the fixed footer on every workspace. -->
+              <Border Height="40" />
+            </StackPanel>
+          </Border>
+        </ScrollViewer>
+      </Border>
+
+      <Border Grid.Column="2" Padding="20" Background="#12161D" BorderThickness="1,0,0,0" BorderBrush="#303846">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" ClipToBounds="True">
+          <StackPanel Spacing="18" Margin="0,0,0,32">
             <StackPanel Spacing="5">
               <TextBlock Classes="sectionHeading" Text="OPERATING SUMMARY" />
               <TextBlock FontSize="20" FontWeight="SemiBold" Text="Snapshot status" />
@@ -974,8 +1008,12 @@
 
     <Border Grid.Row="2" Padding="18,9" Background="#171C24" BorderThickness="0,1,0,0" BorderBrush="#303846">
       <Grid ColumnDefinitions="*,Auto">
-        <TextBlock FontSize="12" Opacity="0.72" Text="M8.1 Deterministic Fault-Injection Framework · explicit schedules/state · replay-visible · no hidden randomness · no UI physics" />
-        <TextBlock Grid.Column="1" FontSize="12" Opacity="0.72" Text="Bounded trends · M5.6 annunciator semantics · deterministic event sequence" />
+        <TextBlock FontSize="12" Opacity="0.72" Text="M10.1 operator computer shell · deterministic fixed-step runtime host · presentation-only terminal · no UI physics" />
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8">
+          <TextBlock FontSize="12" FontWeight="SemiBold" Opacity="0.78" Text="{Binding RuntimeState}" />
+          <TextBlock FontSize="12" Opacity="0.54" Text="·" />
+          <TextBlock FontSize="12" FontFamily="Consolas" Opacity="0.78" Text="{Binding RuntimeProgressText}" />
+        </StackPanel>
       </Grid>
     </Border>
   </Grid>

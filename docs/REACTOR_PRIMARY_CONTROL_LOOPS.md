@@ -113,3 +113,9 @@ The M3 spatial/core-zone/channel deposition logic remains authoritative downstre
 ## Downstream composition
 
 M5.3 remains authoritative only for reactor-power/rod and primary-circulation control. M5.4 composes downstream turbine speed/load, steam-pressure, drum/feedwater and hotwell/condensate loops over separate canonical valve/pump targets. Trips, SCRAM, permissives and interlocks are now supplied by the M5.5 protection layer through explicit override arbitration.
+
+## M9.4 opt-in quasi-spatial physical-feedback seam
+
+M9.4 may optionally compose `QuasiSpatialCoreFeedbackDefinition` into the reactor/primary envelope. This is physical reactor-feedback composition, not an instrumentation/control consumer: it reads committed canonical M3.3 zone domains and reuses the existing M2 temperature/void feedback solvers. Local zone contributions are reduced to one power-share-weighted global non-rod reactivity contribution before the existing global `PointKineticsSolver` step.
+
+The same optional solver may compute a normalized candidate `AggregatedCoreState` power shape using explicit configured zone coupling plus deterministic sensitivity/relaxation. That candidate shape is committed for subsequent downstream power allocation; it does not create local kinetics, local neutron inventories or a second fission-power owner. When no M9.4 profile is configured, the pre-M9.4 path is preserved.

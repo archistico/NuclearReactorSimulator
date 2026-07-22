@@ -1,11 +1,13 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.Faults;
+using NuclearReactorSimulator.Application.Scenarios.Historical;
 
 namespace NuclearReactorSimulator.Application.Scenarios;
 
 /// <summary>
 /// Immutable versioned scenario definition. M7.1 owns exact initial-condition/objective/action metadata; M8.1 extends the
-/// same document with explicit deterministic fault declarations. Scenario data never encodes forced physical outcomes.
+/// same document with explicit deterministic fault declarations; M9.5 optionally adds provenance/fidelity metadata for
+/// historical-inspired content. Scenario data never encodes forced physical outcomes.
 /// </summary>
 public sealed class ScenarioDefinition
 {
@@ -20,7 +22,8 @@ public sealed class ScenarioDefinition
         InitialConditionReference initialCondition,
         IEnumerable<ScenarioObjectiveDefinition>? objectives = null,
         IEnumerable<ControlRoomCommandKind>? allowedOperatorActions = null,
-        IEnumerable<ScenarioFaultDefinition>? faults = null)
+        IEnumerable<ScenarioFaultDefinition>? faults = null,
+        HistoricalScenarioContextDefinition? historicalContext = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(scenarioId);
         ArgumentException.ThrowIfNullOrWhiteSpace(title);
@@ -66,6 +69,7 @@ public sealed class ScenarioDefinition
         _objectives = Array.AsReadOnly(objectiveArray);
         _allowedOperatorActions = actionSet;
         _faults = Array.AsReadOnly(faultArray);
+        HistoricalContext = historicalContext;
     }
 
     public string ScenarioId { get; }
@@ -81,6 +85,8 @@ public sealed class ScenarioDefinition
     public IReadOnlySet<ControlRoomCommandKind> AllowedOperatorActions => _allowedOperatorActions;
 
     public IReadOnlyList<ScenarioFaultDefinition> Faults => _faults;
+
+    public HistoricalScenarioContextDefinition? HistoricalContext { get; }
 
     internal static bool IsRuntimeHostCommand(ControlRoomCommandKind kind)
         => kind is ControlRoomCommandKind.Run or ControlRoomCommandKind.Pause or ControlRoomCommandKind.SingleStep;

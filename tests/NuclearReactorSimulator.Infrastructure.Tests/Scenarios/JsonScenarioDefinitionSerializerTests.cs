@@ -1,6 +1,7 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Faults;
+using NuclearReactorSimulator.Application.Scenarios.Historical;
 using NuclearReactorSimulator.Infrastructure.Scenarios;
 using Xunit;
 
@@ -9,7 +10,7 @@ namespace NuclearReactorSimulator.Infrastructure.Tests.Scenarios;
 public sealed class JsonScenarioDefinitionSerializerTests
 {
     [Fact]
-    public void SerializeDeserialize_RoundTripsCanonicalVersionedScenarioDocumentIncludingFaultSchedule()
+    public void SerializeDeserialize_RoundTripsCanonicalVersionedScenarioDocumentIncludingFaultScheduleAndHistoricalContext()
     {
         var serializer = new JsonScenarioDefinitionSerializer();
         var scenario = new ScenarioDefinition(
@@ -31,12 +32,34 @@ public sealed class JsonScenarioDefinitionSerializerTests
                     ScenarioFaultTriggerDefinition.AtLogicalStep(10),
                     ScenarioFaultTriggerDefinition.WhenPlantCondition("pump-recovered"),
                     new Dictionary<string, string> { ["severity"] = "1.0" }),
-            });
+            },
+            new HistoricalScenarioContextDefinition(
+                "Synthetic historical subject",
+                "Historical inspiration only; exact reconstruction is not claimed.",
+                new[]
+                {
+                    new HistoricalSourceReference("source-1", "Synthetic citation", "section 1"),
+                },
+                new[]
+                {
+                    new HistoricalScenarioClaimDefinition(
+                        "fact-1",
+                        HistoricalScenarioClaimKind.DocumentedFact,
+                        "Synthetic documented statement.",
+                        new[] { "source-1" }),
+                    new HistoricalScenarioClaimDefinition(
+                        "approximation-1",
+                        HistoricalScenarioClaimKind.EducationalApproximation,
+                        "Synthetic educational approximation.",
+                        rationale: "Reduced-model test boundary."),
+                },
+                new[] { HistoricalModelCapabilityIds.DeterministicFullPlantRuntime },
+                new[] { "Not an exact historical reconstruction." }));
 
         var json = serializer.Serialize(scenario);
         var loaded = serializer.Deserialize(json);
 
-        Assert.Contains("\"schemaVersion\": 2", json);
+        Assert.Contains("\"schemaVersion\": 3", json);
         Assert.Equal(scenario.ScenarioId, loaded.ScenarioId);
         Assert.Equal(scenario.InitialCondition, loaded.InitialCondition);
         Assert.Equal(scenario.Objectives, loaded.Objectives);
@@ -48,6 +71,12 @@ public sealed class JsonScenarioDefinitionSerializerTests
         Assert.Equal(ScenarioFaultTriggerDefinition.AtLogicalStep(10), fault.Activation);
         Assert.Equal(ScenarioFaultTriggerDefinition.WhenPlantCondition("pump-recovered"), fault.Deactivation);
         Assert.Equal("1.0", fault.Parameters["severity"]);
+        var historical = Assert.IsType<HistoricalScenarioContextDefinition>(loaded.HistoricalContext);
+        Assert.Equal("Synthetic historical subject", historical.HistoricalSubject);
+        Assert.Equal(2, historical.Claims.Count);
+        Assert.Equal(HistoricalScenarioClaimKind.DocumentedFact, historical.Claims[0].Kind);
+        Assert.Equal(HistoricalModelCapabilityIds.DeterministicFullPlantRuntime, Assert.Single(historical.RequiredModelCapabilities));
+        Assert.Equal("Not an exact historical reconstruction.", Assert.Single(historical.DeliberateNonClaims));
     }
 
     [Fact]
@@ -100,6 +129,92 @@ public sealed class JsonScenarioDefinitionSerializerTests
         Assert.Equal("v1-training", migrated.ScenarioId);
         Assert.Equal(new InitialConditionReference("reference-state", 5), migrated.InitialCondition);
         Assert.Empty(migrated.Faults);
+    }
+
+    [Fact]
+    public void Deserialize_MigratesV2WithoutInventingHistoricalContext()
+    {
+        const string version2 = """
+        {
+          "schemaVersion": 2,
+          "scenarioId": "v2-training",
+          "title": "V2 training",
+          "description": "Fault-aware pre-historical schema",
+          "initialCondition": {
+            "id": "reference-state",
+            "version": 6
+          },
+          "objectives": [],
+          "allowedOperatorActions": ["ReactorScram"],
+          "faults": [
+            {
+              "faultId": "fault-v2",
+              "faultTypeId": "hydraulic.pump-trip",
+              "targetId": "mcp-1",
+              "parameters": {
+                "severity": "1.0"
+              },
+              "activation": {
+                "kind": "LogicalStep",
+                "logicalStep": 10
+              }
+            }
+          ]
+        }
+        """;
+        var serializer = new JsonScenarioDefinitionSerializer();
+
+        var migrated = serializer.Deserialize(version2);
+
+        Assert.Equal("v2-training", migrated.ScenarioId);
+        Assert.Equal(new InitialConditionReference("reference-state", 6), migrated.InitialCondition);
+        var fault = Assert.Single(migrated.Faults);
+        Assert.Equal("fault-v2", fault.FaultId);
+        Assert.Equal(ScenarioFaultTriggerDefinition.AtLogicalStep(10), fault.Activation);
+        Assert.Equal("1.0", fault.Parameters["severity"]);
+        Assert.Null(migrated.HistoricalContext);
+    }
+
+    [Fact]
+    public void Deserialize_V3HistoricalClaimWithoutExplicitKindFailsClosed()
+    {
+        const string invalid = """
+        {
+          "schemaVersion": 3,
+          "scenarioId": "historical-invalid",
+          "title": "Historical invalid",
+          "description": "Invalid historical metadata",
+          "initialCondition": {
+            "id": "reference-state",
+            "version": 1
+          },
+          "objectives": [],
+          "allowedOperatorActions": [],
+          "faults": [],
+          "historicalContext": {
+            "historicalSubject": "Synthetic subject",
+            "fidelityStatement": "Educational inspiration only.",
+            "sources": [
+              {
+                "sourceId": "source-1",
+                "citation": "Synthetic citation"
+              }
+            ],
+            "claims": [
+              {
+                "claimId": "fact-1",
+                "statement": "Synthetic statement.",
+                "sourceIds": ["source-1"]
+              }
+            ],
+            "requiredModelCapabilities": ["runtime.deterministic-full-plant"],
+            "deliberateNonClaims": ["Not an exact reconstruction."]
+          }
+        }
+        """;
+        var serializer = new JsonScenarioDefinitionSerializer();
+
+        Assert.Throws<InvalidDataException>(() => serializer.Deserialize(invalid));
     }
 
     [Fact]

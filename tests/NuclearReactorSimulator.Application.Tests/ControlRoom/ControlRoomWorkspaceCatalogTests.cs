@@ -10,7 +10,7 @@ public sealed class ControlRoomWorkspaceCatalogTests
     {
         var workspaces = ControlRoomWorkspaceCatalog.Default;
 
-        Assert.Equal(6, workspaces.Count);
+        Assert.Equal(7, workspaces.Count);
         Assert.Equal(ControlRoomWorkspaceId.Overview, workspaces[0].Id);
         Assert.Equal(workspaces.Count, workspaces.Select(static item => item.Id).Distinct().Count());
         Assert.Contains(workspaces, static item => item.Id == ControlRoomWorkspaceId.Reactor);
@@ -18,5 +18,6 @@ public sealed class ControlRoomWorkspaceCatalogTests
         Assert.Contains(workspaces, static item => item.Id == ControlRoomWorkspaceId.TurbineSecondary);
         Assert.Contains(workspaces, static item => item.Id == ControlRoomWorkspaceId.Electrical);
         Assert.Contains(workspaces, static item => item.Id == ControlRoomWorkspaceId.AlarmsEvents);
+        Assert.Contains(workspaces, static item => item.Id == ControlRoomWorkspaceId.OperatorComputer);
     }
 }

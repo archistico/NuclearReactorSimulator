@@ -545,7 +545,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - blocked/restricted **valve-controlled** paths via deterministic opening clamps, without a second topology/resistance owner;
 - selected bounded fluid-node leaks as signed mass + carried-energy `PlantNetworkSourceTerms` integrated exactly once by `PlantNetworkOrchestrator`;
 - built-in fail-closed hydraulic applicator registration and deterministic demonstration scenario pack;
-- arbitrary raw-pipe break/resistance mutation remains M8.5 rather than being hidden inside M8.2.
+- pressure-driven break/leak boundaries remain M8.5 ownership; arbitrary raw-pipe definition/resistance mutation remains forbidden rather than being hidden inside M8.2.
 - hotfix 2 adds presentation regression hardening and a headless App test project; local build and complete tests explicitly passed; it does not broaden M8.2 physical scope.
 
 ### M8.3 Instrumentation & Control Faults — VALIDATED
@@ -557,77 +557,202 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 - built-in demonstration and protection fail-safe diagnostic scenario definitions;
 - local build and complete tests explicitly passed; M8.3 is validated.
 
-### M8.4 Turbine/Generator/Feedwater/Condenser Transients — BASELINE CANDIDATE
+### M8.4 Turbine/Generator/Feedwater/Condenser Transients — VALIDATED / HOTFIX 2
 
 - turbine trip through canonical M5.5 protection and M4 steam/rotor ownership;
 - generator trip/load rejection through canonical M5.5/M4.5 breaker and electromagnetic-loading ownership;
 - feedwater loss/degradation by composing validated M8.2 pump-fault effects;
 - condenser-vacuum degradation/loss by reducing only canonical M4.3 cooling-boundary heat-rejection capacity;
 - dedicated versioned transient-ready initial condition and four deterministic scenario definitions;
-- local build and complete tests required before validation.
+- hotfix 2 scales the transient-ready condenser cooling boundary to the conserved reference-plant exhaust inventory; local build and complete tests explicitly passed.
 
-### M8.5 Educational Leak/LOCA-Class Scenarios
+### M8.5 Educational Leak/LOCA-Class Scenarios — VALIDATED / HOTFIX 2
 
-- simplified break/leak boundary models within the validated thermal-hydraulic envelope;
-- inventory loss, depressurization and heat-removal consequences;
-- explicit model limitations documented per scenario.
+- bounded `loca.pressure-driven-break` boundary model driven only by committed source-node pressure and immutable scenario parameters;
+- conservative mass plus carried-internal-energy removal through existing `PlantNetworkSourceTerms` and the single `PlantNetworkOrchestrator`;
+- deterministic thermodynamic-admissibility cap can only reduce requested break loss and never relax closure or mutate committed state;
+- small primary leak, large break-class and steam-space depressurization scenario definitions;
+- explicit non-licensing limitations retained; local clean restore/build/complete tests passed.
 
-### M8.6 Electrical Loss & Station Blackout-Class Scenarios
+### M8.6 Electrical Loss & Station Blackout-Class Scenarios — VALIDATED
 
-- loss of external electrical supply;
-- pump/control availability consequences;
-- decay-heat removal challenge using the plant systems actually modeled.
+- exact `electrical.external-supply-loss` fault through canonical M4.5 ownership;
+- station-blackout-class composition through M8.2/M8.3/M8.4 seams without invented AC/DC bus physics;
+- no automatic breaker reconnection after supply restoration;
+- explicit current decay-heat integration limitation retained; local complete tests passed.
 
-### M8.7 Safety-Response Scenario Pack
+### M8.7 Safety-Response Scenario Pack — VALIDATED / HOTFIX 2
 
-- deterministic scenario definitions and acceptance criteria;
-- protection/control response verification;
-- operator-action timeline capture.
+- three capstone exercises reusing exact M8.3/M8.5/M8.6 fault declarations;
+- presentation-only acceptance criteria, deterministic scoring and operator-action debrief timeline;
+- no scenario-specific physical/protection ownership; local clean restore/build/complete tests passed.
+
+**M8 gate — COMPLETE / VALIDATED:** deterministic fault injection, component/instrumentation/control/transient/break/electrical-loss scenarios and safety-response evaluation are validated through M8.7 hotfix 2.
 
 ## M9 — Advanced analysis, fidelity and historical-inspired scenarios
 
-### M9.1 Recorder, Checkpoints & Full Replay
+### M9.1 Recorder, Checkpoints & Full Replay — VALIDATED
 
-- richer plant-state/event recording above the M0 logical command trace;
-- versioned checkpoints;
-- deterministic seek/replay support.
+- recorder captures initial state plus every deterministic fixed-step `ControlRoomSnapshot` independent of presentation publication stride;
+- monotonic recorder event stream covers accepted operator actions, alarm events, fault lifecycle transitions and protection-trip transitions;
+- versioned `ScenarioCheckpoint` schema v1 stores exact scenario/initial-condition identity, logical step, applied-action prefix and versioned snapshot fingerprint;
+- replay-backed seek reconstructs from the exact seed and verifies checkpoint fingerprints fail-closed;
+- full replay verifies every logical-step fingerprint and the complete deterministic event stream, while M8 faults are reconstructed from scenario data rather than duplicated into a second fault trace.
 
-### M9.2 Post-Incident Analysis
+### M9.2 Post-Incident Analysis — VALIDATED
 
-- synchronized trends, alarms, commands and automatic actions;
-- causal timeline views;
-- conservation/fault diagnostics for training debriefs.
+- deterministic pre/post incident windows over immutable M9.1 fixed-step recordings;
+- synchronized recorder timeline for alarms, accepted commands, fault lifecycle and protection transitions;
+- observed response latencies and peak signal/alarm/fault indicators in logical steps;
+- nearest preceding replay-backed checkpoint linkage for verified reconstruction;
+- versioned debrief-report schema v1;
+- temporal ordering is evidence, not automatic causal inference.
 
-### M9.3 Advanced Xenon & Low-Power Transients
+### M9.3 Advanced Xenon & Low-Power Transients — VALIDATED
 
-- restart-after-shutdown xenon scenarios;
-- low-power manoeuvring and poisoning challenges;
-- only phenomena supported by the validated model are exposed as scenarios.
+- promotes the validated M2.8 I-135/Xe-135 state through the integrated reactor/primary runtime only for explicit versioned xenon-enabled configurations;
+- composes committed xenon reactivity through the existing explicit non-rod-reactivity seam before point kinetics, with M2.8 remaining the sole poison-state integrator;
+- preserves existing M7 v1 exact-version initial-condition/replay semantics by leaving those configurations xenon-disabled and explicitly unavailable;
+- adds versioned restart-after-shutdown and poisoned low-power initial conditions plus deterministic training scenarios;
+- exposes only phenomena supported by the reduced validated M2.8 model; no scripted xenon curves, recovery outcomes or historical-fidelity claims;
+- local clean restore/build and the complete automated suite passed after two test-only hotfixes; M9.3 is the validated baseline.
 
-### M9.4 Spatial/Quasi-Spatial Fidelity Refinement
+### M9.4 Spatial/Quasi-Spatial Fidelity Refinement — VALIDATED
 
-- refine zone coupling, power distribution and feedback weighting;
-- optional higher-resolution core aggregation;
-- preserve the global point-kinetics seam unless a separately validated spatial kinetics model is introduced.
+- optional `QuasiSpatialCoreFeedbackDefinition` over the existing canonical M3.3 `AggregatedCoreDefinition`;
+- evaluate validated linear fuel-temperature, coolant-temperature and void feedback formulas on committed per-zone domains;
+- reduce local feedback to one deterministic current-power-share-weighted scalar contribution through the existing global non-rod-reactivity/point-kinetics seam;
+- explicit symmetric zone coupling smooths only the power-shape driving signal and is never inferred from logical coordinates;
+- deterministic normalized candidate power-shape evolution with explicit sensitivity and relaxation time; current step still allocates power using committed shape;
+- arbitrary configured zone counts/coordinates remain supported for optional higher-resolution aggregations with matching canonical topology;
+- no local neutron populations, local xenon inventories, duplicate mass/energy state or hidden same-step nonlinear iteration;
+- existing validated configurations remain unchanged unless they explicitly opt into M9.4;
+- preserve the global point-kinetics seam unless a separately validated spatial kinetics model is introduced;
+- local compilation and the complete automated suite passed after one test-compilation-only namespace hotfix; M9.4 is the validated baseline for M9.5.
 
-### M9.5 Historical-Inspired Scenario Framework
+### M9.5 Historical-Inspired Scenario Framework — VALIDATED
 
-- historical-inspired initial conditions/procedures only after model-fidelity review;
-- explicit separation between documented facts, educational approximation and simulator-specific assumptions;
-- no scripted outcome that bypasses physics.
+- optional versioned `HistoricalContext` on `ScenarioDefinition`; schema v3 persists it while v0/v1/v2 migration never invents historical metadata;
+- explicit source references plus claim classification as documented fact, educational approximation or simulator-specific assumption;
+- documented facts require declared sources; approximations/assumptions require explicit rationale;
+- explicit fidelity statement, required validated model-capability IDs and deliberate non-claims;
+- fail-closed `HistoricalScenarioFidelityReviewer` gate executed by `ScenarioSessionFactory` before runtime creation;
+- current capability declarations cover validated model seams through M9.4 and are fidelity metadata, not physics owners or feature toggles;
+- no built-in named historical reconstruction, automatic source fetching/ranking, quantitative calibration or scripted physical outcome;
+- local compilation and the complete automated suite passed; M9.5 is the validated baseline for M9.6.
 
-### M9.6 Calibration & Reference Validation Suite
+### M9.6 Calibration & Reference Validation Suite — VALIDATED
 
-- curated steady-state and transient reference cases;
-- tolerance budgets and model-version tracking;
-- sensitivity/regression reports for configurable plant parameters.
+- versioned steady-state/transient `ReferenceValidationCaseDefinition` contracts with exact logical-step targets and explicit provenance text;
+- explicit absolute/relative `ReferenceValidationToleranceBudget` semantics and fail-closed `Missing` evidence handling;
+- stable presentation-level metric IDs extracted only from immutable `ControlRoomSnapshot` values;
+- curated v1 internal reference/regression cases for cold shutdown, pre-synchronization and first generator loading; these explicitly do not claim external historical measurement status;
+- model-version-bound suite reports and deterministic sensitivity/regression analysis for explicit parameter perturbations;
+- real sensitivity regression over `FissionPowerCalibration`;
+- significantly expanded App/UI regression coverage for command routing, selection clamping, snapshot refresh, alarm/protection/interlock availability and XAML binding contracts;
+- concise manual GUI validation checklist created in M9.6 and carried forward as required final M9.7 phase-gate evidence before M10;
+- no automatic fitting, invented historical calibration, private Simulation-state reach-through or pixel-diff visual test framework;
+- local compilation and the complete automated suite passed after one test-compilation-only hotfix; M9.6 is the validated code baseline for M9.7.
 
-### M9.7 Release Hardening
+### M9.7 Advanced Fidelity Integration Gate — VALIDATED
 
-- save/scenario migration hardening;
-- performance and memory budgets;
-- packaging/publish pipeline;
-- user/developer documentation and known-model-limitations register.
+- close M9 as the advanced-analysis/fidelity/calibration phase rather than the final product-release gate;
+- combined M9.3 xenon + M9.4 quasi-spatial regression proves both feedback paths compose exactly once through the single global point-kinetics seam;
+- real xenon scenario integration spans M9.1 recorder/checkpoint/full replay, M9.2 post-incident analysis and M9.6 immutable snapshot metric projection, requiring identical replay fingerprints/evidence;
+- verify M9.5 capability declarations remain distinct from M9.6 internal regression/reference provenance and never imply external historical calibration;
+- real-runtime App/ViewModel tests verify xenon/legacy-unavailable presentation and RUN/PAUSE/SINGLE STEP synchronization over canonical runtime boundaries;
+- final manual GUI validation is mandatory gate evidence before M10;
+- preserve a clean handoff into M10 without prematurely declaring final release hardening complete.
+
+**M9 gate:** **COMPLETE / VALIDATED**. M9.7 hotfix 5 compiled and all 760 tests passed; the final user-corrected `MainWindow.axaml` is integrated as the validated GUI layout baseline.
+
+## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
+
+M10 is **IN PROGRESS**. M10.1–M10.6 are VALIDATED after the cumulative M10.6 Hotfix 1 build/test gate passed. M10.7 is the current implementation candidate. The phase combines a unified operator terminal with a separately owned supervisory-control capability. The terminal is never a new physics/control owner: presentation aggregation lives in Application/App, while real plant automation extends the canonical M5 control domain.
+
+Two independent axes are mandatory:
+
+- **training assistance:** `Hidden` / `ChecklistOnly` / `Guided` (student-facing labels may be None / Checklist / Guided); this changes presentation/guidance only and never plant physics or scoring semantics;
+- **plant control authority:** Manual / Assisted / Supervisory Automatic; this changes how existing canonical control loops receive operator goals/setpoints, while protection remains superior to normal control.
+
+### M10.1 Operator Computer Contracts & Terminal Shell — VALIDATED
+
+- immutable `OperatorComputerSnapshot`/page contracts in Application;
+- fixed named pages: GUIDANCE, INFO, ALARMS, COMMANDS, MODES, DIAGNOSTICS, LOG and SESSION;
+- monospace HUD-style App presenter with fixed status line and keyboard-first navigation;
+- selected page, focus and scroll remain presentation state only; no UI-owned physics or deterministic time.
+
+### M10.2 Unified Information, Guidance & Diagnostics — VALIDATED
+
+- project active M7.2–M7.7 guidance/checklist content through generic terminal contracts without duplicating guidance logic;
+- fixed information pages sourced only from already promoted measured/model-diagnostic presentation values;
+- preserve explicit `Measured` / `Model Diagnostic` / `Unavailable` provenance;
+- adapt scenario-specific readiness/checklist evaluators into a generic diagnostic projection without inventing universal readiness criteria.
+
+### M10.3 Alarm, Log & Incident Workstation — VALIDATED
+
+- current annunciator/first-out state from canonical M5.6/M6 contracts;
+- bounded live logical-step history from M6.6;
+- optional deterministic session evidence from M9.1 recordings when a recorder/session owner explicitly supplies it; default desktop operation does not auto-enable full recording merely for presentation;
+- optional M9.2 incident-analysis views under LOG without a second causal-analysis owner;
+- ALARMS is read-only in M10.3; ACK/RESET actions remain canonical typed commands and are staged for the M10.4 command console, never resetting physical protection implicitly.
+
+### M10.4 Contextual Command Console — VALIDATED
+
+- deterministic command catalog with command kind, target, current state, availability and blocking reason;
+- keyboard/menu activation reuses canonical command dispatch and runtime fail-closed validation;
+- distinguish **plant commands**, **training/presentation intents** and **session lifecycle intents** instead of forcing all actions into `ControlRoomCommandKind`;
+- UI availability is advisory/presentational and never replaces runtime interlock/permissive enforcement.
+
+### M10.5 Dual Assistance & Control-Authority Model — VALIDATED
+
+- formalize independent training-assistance and plant-control-authority state;
+- expose per-loop controller mode plus requested/effective global control mode and mixed-mode state;
+- deterministic Manual ↔ Assisted ↔ Supervisory transitions;
+- require bumpless/manual takeover behavior using existing M5.2 controller semantics;
+- replay-visible semantic mode transitions without recording every low-level controller sample as an operator event.
+
+### M10.6 Supervisory Automatic Operation — VALIDATED
+
+- introduce a deterministic M5-owned `SupervisoryOperationCoordinator` (name provisional) above existing local controllers, never in App/UI;
+- accept bounded high-level operating objectives and translate them only into canonical controller modes, setpoints and typed plant commands;
+- never write target physical outcomes directly (power, pressure, level, speed, breaker state, etc.);
+- use required measured signals only, with no silent true-state fallback;
+- protection/interlocks always override supervisory control; no automatic SCRAM/trip reset or alarm acknowledgement;
+- support requested/effective/degraded state and fail-closed degradation when required measurements or equipment become unavailable;
+- manual takeover must stop new supervisory decisions and hand authority back deterministically without artificial state jumps.
+
+### M10.7 Session, Checkpoint, Replay & Save Workspace — IMPLEMENTATION CANDIDATE
+
+- expose exact-version scenario load, recorder state, checkpoint creation/listing, verified seek and full replay through existing M7/M9 owners;
+- add a versioned persistent session archive only as packaging around exact scenario identity, recording/action history, checkpoints and metadata;
+- restoration remains replay-backed through `ScenarioFullReplayRunner`/checkpoint fingerprint verification, never an opaque solver-memory dump;
+- do not create a second historian, checkpoint owner or fault trace.
+
+### M10.8 Integrated Operator Computer UI
+
+- integrate the complete terminal into the control room with HUD styling, monospace/tabular numeric presentation, scrolling and responsive layout;
+- fixed menu/status bar; no free-form command prompt, natural-language parser or external model dependency;
+- full mouse support but keyboard-only operation is an acceptance requirement;
+- no new business/physics logic in Avalonia code-behind or ViewModels.
+
+### M10.9 Integrated Human-Automation Validation Gate
+
+- matrix validation across training assistance × plant control authority;
+- deterministic fault/invalid-measurement/protection/trip/manual-takeover cases while supervisory control is active;
+- verify degraded/fail-closed behavior, protection priority, replay/checkpoint fidelity and same-seed determinism;
+- verify keyboard-only terminal operation and no hidden wall-clock/random behavior;
+- close M10 only after local clean build and complete automated validation.
+
+**M10 gate:** planned after M10.9.
+
+## M11 — Release Hardening, Packaging & Final Validation
+
+- save/scenario/session migration hardening after M10 contracts stabilize;
+- performance and memory budgets across headless simulation, recorder/replay and integrated operator terminal;
+- packaging/publish pipeline and deployment verification;
+- final user/developer documentation, accessibility review and known-model-limitations register;
+- final deterministic regression/reference-validation gate for release candidates.
 
 ## Cross-phase acceptance gates
 

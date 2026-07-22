@@ -1,5 +1,6 @@
 using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
+using NuclearReactorSimulator.Domain.Physics.Reactor.Core;
 using NuclearReactorSimulator.Simulation.Physics.Electrical;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
@@ -52,7 +53,10 @@ public sealed class ReactorPrimaryControlledFullPlantSolver
             committedControlState,
             controlInputs,
             deltaTime);
-        var effectivePlantInputs = WithFissionPower(basePlantInputs, controlStep.Snapshot.FissionPower.TotalFissionThermalPower);
+        var effectivePlantInputs = WithFissionPower(
+            basePlantInputs,
+            controlStep.Snapshot.FissionPower.TotalFissionThermalPower,
+            _definition.QuasiSpatialCoreFeedbackDefinition is null ? null : committedControlState.CoreState);
         var fullPlantStep = _fullPlantSolver.Step(controlStep.CommandedFullPlantState, effectivePlantInputs, deltaTime);
         var snapshot = new ReactorPrimaryControlledFullPlantSnapshot(fullPlantStep.Snapshot, controlStep.Snapshot);
         return new ReactorPrimaryControlledFullPlantStepResult(controlStep, fullPlantStep, effectivePlantInputs, snapshot);
@@ -60,7 +64,8 @@ public sealed class ReactorPrimaryControlledFullPlantSolver
 
     private static IntegratedSecondaryCycleInputs WithFissionPower(
         IntegratedSecondaryCycleInputs original,
-        Power fissionPower)
+        Power fissionPower,
+        AggregatedCoreState? committedCoreState)
     {
         var generator = original.GeneratorGridInputs;
         var feedwater = generator.CondensateFeedwaterInputs;
@@ -71,7 +76,7 @@ public sealed class ReactorPrimaryControlledFullPlantSolver
 
         var rewrittenPrimary = new IntegratedPrimaryCircuitInputs(
             primary.Definition,
-            primary.CoreState,
+            committedCoreState ?? primary.CoreState,
             fissionPower,
             primary.TotalDecayHeatPower,
             primary.BoundaryInputs);

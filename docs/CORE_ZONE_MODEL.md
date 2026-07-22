@@ -71,3 +71,15 @@ M3.3 does not implement:
 - per-zone heat deposition.
 
 Those capabilities are introduced only when their owning milestones provide the required physics and state semantics.
+
+## M9.4 opt-in quasi-spatial extension
+
+M9.4 does not replace the M3.3 ownership model above. It adds an optional refinement that:
+
+- evaluates the already validated M2 fuel-temperature, coolant-temperature and void feedback equations against committed canonical zone domains;
+- reduces local feedback to one current-power-share-weighted global reactivity contribution for the existing single point-kinetics solver;
+- evolves only normalized `AggregatedCoreState` power shares for the next committed step;
+- permits only explicitly configured symmetric zone coupling; `CoreZoneCoordinate` never implies adjacency;
+- introduces no local neutron populations, local xenon inventories or duplicate fluid/thermal inventories.
+
+Therefore the original M3.3 exclusions for spatial neutron diffusion and inter-zone **neutron** coupling remain true. Automatic power-shape evolution is available only when the explicit M9.4 quasi-spatial profile is enabled; legacy configurations preserve the original fixed/externally supplied shape semantics.

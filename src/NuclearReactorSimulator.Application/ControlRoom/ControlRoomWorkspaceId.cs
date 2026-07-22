@@ -8,4 +8,5 @@ public enum ControlRoomWorkspaceId
     TurbineSecondary = 3,
     Electrical = 4,
     AlarmsEvents = 5,
+    OperatorComputer = 6,
 }

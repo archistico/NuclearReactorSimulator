@@ -4,8 +4,12 @@ using System.Windows.Input;
 using NuclearReactorSimulator.App.Commands;
 using NuclearReactorSimulator.Application;
 using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.ControlRoom.Automation;
+using NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
 using NuclearReactorSimulator.Application.Scenarios.Criticality;
 using NuclearReactorSimulator.Application.Scenarios.Operations;
+using NuclearReactorSimulator.Application.Scenarios.Analysis;
+using NuclearReactorSimulator.Application.Scenarios.Recording;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Application.Scenarios.Startup;
 using NuclearReactorSimulator.Application.Scenarios.Synchronization;
@@ -15,8 +19,13 @@ namespace NuclearReactorSimulator.App.ViewModels;
 
 public sealed class MainWindowViewModel : INotifyPropertyChanged
 {
+    private readonly IControlRoomSnapshotSource _snapshotSource;
     private readonly IControlRoomCommandDispatcher _commandDispatcher;
+    private readonly IPlantControlAuthorityDispatcher? _plantControlAuthorityDispatcher;
     private readonly ControlRoomOperationalHistoryAccumulator _operationalHistory;
+    private readonly ScenarioRecorder? _scenarioRecorder;
+    private readonly PostIncidentAnalysisReport? _postIncidentAnalysis;
+    private readonly OperatorComputerSessionWorkspaceController? _sessionWorkspace;
     private readonly PreStartupGuidancePlan? _preStartupGuidance;
     private readonly PreStartupChecklistEvaluator _preStartupChecklistEvaluator = new();
     private readonly FirstCriticalityGuidancePlan? _firstCriticalityGuidance;
@@ -35,6 +44,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private int _selectedGeneratorIndex;
     private int _selectedAlarmIndex;
     private string _commandStatus;
+    private bool _runtimeSubscriptionsDetached;
 
     public MainWindowViewModel(
         ApplicationDescriptor descriptor,
@@ -45,10 +55,15 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         HeatUpTurbineStartupGuidancePlan? heatUpTurbineStartupGuidance = null,
         GridSynchronizationGuidancePlan? gridSynchronizationGuidance = null,
         PowerManoeuvringGuidancePlan? powerManoeuvringGuidance = null,
-        ScenarioTrainingTracker? trainingTracker = null)
+        ScenarioTrainingTracker? trainingTracker = null,
+        ScenarioRecorder? scenarioRecorder = null,
+        PostIncidentAnalysisReport? postIncidentAnalysis = null,
+        IPlantControlAuthorityDispatcher? plantControlAuthorityDispatcher = null,
+        OperatorComputerSessionWorkspaceController? sessionWorkspace = null)
     {
         ArgumentNullException.ThrowIfNull(descriptor);
         ArgumentNullException.ThrowIfNull(snapshotSource);
+        _snapshotSource = snapshotSource;
         _commandDispatcher = commandDispatcher ?? throw new ArgumentNullException(nameof(commandDispatcher));
         _preStartupGuidance = preStartupGuidance;
         _firstCriticalityGuidance = firstCriticalityGuidance;
@@ -56,6 +71,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _gridSynchronizationGuidance = gridSynchronizationGuidance;
         _powerManoeuvringGuidance = powerManoeuvringGuidance;
         _trainingTracker = trainingTracker;
+        _plantControlAuthorityDispatcher = plantControlAuthorityDispatcher;
+        _scenarioRecorder = scenarioRecorder;
+        _postIncidentAnalysis = postIncidentAnalysis;
+        _sessionWorkspace = sessionWorkspace;
         _commandStatus = trainingTracker is not null
             ? "M8.2 hydraulic faults are validated and M8.3 instrumentation/control fault effects are available over the same deterministic scheduler. The default desktop session remains the validated M7.7 normal-operations training scenario and declares no faults; load an explicit M8.2/M8.3 diagnostic scenario to exercise fault packs."
             : powerManoeuvringGuidance is not null
@@ -78,6 +97,12 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _operationalHistory = new ControlRoomOperationalHistoryAccumulator(
             maximumVisibleTrendSeries: PerformanceBudget.MaximumVisibleTrendSeries);
         _operationalHistory.Observe(_snapshot);
+        OperatorComputer = new OperatorComputerViewModel(
+            ProjectOperatorComputerSnapshot(),
+            _commandDispatcher,
+            _trainingTracker,
+            _plantControlAuthorityDispatcher,
+            _sessionWorkspace);
 
         RunCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.Run));
         PauseCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.Pause));
@@ -101,12 +126,54 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         AlarmResetCommand = new DelegateCommand(() => DispatchAlarm(ControlRoomCommandKind.AlarmReset));
         AlarmAcknowledgeAllCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.AlarmAcknowledgeAll));
         AlarmResetAllCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.AlarmResetAll));
+        OpenOperatorComputerGuidancePageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Guidance));
+        OpenOperatorComputerInfoPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Info));
+        OpenOperatorComputerAlarmsPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Alarms));
+        OpenOperatorComputerCommandsPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Commands));
+        OpenOperatorComputerModesPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Modes));
+        OpenOperatorComputerDiagnosticsPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Diagnostics));
+        OpenOperatorComputerLogPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Log));
+        OpenOperatorComputerSessionPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Session));
 
         snapshotSource.SnapshotChanged += OnSnapshotChanged;
         if (_trainingTracker is not null)
         {
             _trainingTracker.AssessmentChanged += OnTrainingAssessmentChanged;
+            _trainingTracker.GuidanceModeChanged += OnTrainingGuidanceModeChanged;
         }
+        if (_plantControlAuthorityDispatcher is not null)
+        {
+            _plantControlAuthorityDispatcher.AuthorityChanged += OnPlantControlAuthorityChanged;
+        }
+        if (_sessionWorkspace is not null)
+        {
+            _sessionWorkspace.Changed += OnSessionWorkspaceChanged;
+        }
+    }
+
+    public void DetachRuntimeSubscriptions()
+    {
+        if (_runtimeSubscriptionsDetached)
+        {
+            return;
+        }
+
+        _snapshotSource.SnapshotChanged -= OnSnapshotChanged;
+        if (_trainingTracker is not null)
+        {
+            _trainingTracker.AssessmentChanged -= OnTrainingAssessmentChanged;
+            _trainingTracker.GuidanceModeChanged -= OnTrainingGuidanceModeChanged;
+        }
+        if (_plantControlAuthorityDispatcher is not null)
+        {
+            _plantControlAuthorityDispatcher.AuthorityChanged -= OnPlantControlAuthorityChanged;
+        }
+        if (_sessionWorkspace is not null)
+        {
+            _sessionWorkspace.Changed -= OnSessionWorkspaceChanged;
+        }
+        _scenarioRecorder?.Dispose();
+        _runtimeSubscriptionsDetached = true;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -135,6 +202,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(IsTurbineWorkspaceSelected));
             OnPropertyChanged(nameof(IsElectricalWorkspaceSelected));
             OnPropertyChanged(nameof(IsAlarmsWorkspaceSelected));
+            OnPropertyChanged(nameof(IsOperatorComputerWorkspaceSelected));
             OnPropertyChanged(nameof(IsShellHostWorkspaceSelected));
             OnPropertyChanged(nameof(IsOverviewWorkspaceSelected));
         }
@@ -147,8 +215,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public bool IsTurbineWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.TurbineSecondary;
     public bool IsElectricalWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Electrical;
     public bool IsAlarmsWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.AlarmsEvents;
+    public bool IsOperatorComputerWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.OperatorComputer;
     public bool IsOverviewWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Overview;
     public bool IsShellHostWorkspaceSelected => IsOverviewWorkspaceSelected;
+
+    public OperatorComputerViewModel OperatorComputer { get; }
 
     public ControlRoomPerformanceBudget PerformanceBudget { get; }
 
@@ -290,6 +361,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         ControlRoomRunState.Paused => "PAUSED",
         _ => "SHELL ONLY",
     };
+
+    public bool IsRuntimeRunning => _snapshot.RunState == ControlRoomRunState.Running;
+
+    public string RuntimeProgressText => $"STEP {LogicalStep.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
 
     public string SignalHealthText => _snapshot.TotalMeasuredSignalCount == 0
         ? "No runtime measured frame published yet"
@@ -623,8 +698,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             : ControlRoomVisualState.Normal;
 
     public string XenonAvailabilityText => ReactorCore.XenonReactivity.State == ControlRoomVisualState.Unavailable
-        ? "M2.8 xenon physics is validated, but xenon state is not yet promoted into the M5.7 operational snapshot. M6.3 does not fabricate a value."
-        : "Xenon reactivity available from the operational presentation snapshot.";
+        ? "Canonical iodine/xenon state is unavailable for this runtime configuration; no value is fabricated."
+        : "Canonical M2.8 xenon reactivity is promoted through the operational snapshot; negative values indicate modeled poisoning worth.";
 
     public string CommandStatus
     {
@@ -663,6 +738,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public ICommand AlarmResetCommand { get; }
     public ICommand AlarmAcknowledgeAllCommand { get; }
     public ICommand AlarmResetAllCommand { get; }
+    public ICommand OpenOperatorComputerGuidancePageCommand { get; }
+    public ICommand OpenOperatorComputerInfoPageCommand { get; }
+    public ICommand OpenOperatorComputerAlarmsPageCommand { get; }
+    public ICommand OpenOperatorComputerCommandsPageCommand { get; }
+    public ICommand OpenOperatorComputerModesPageCommand { get; }
+    public ICommand OpenOperatorComputerDiagnosticsPageCommand { get; }
+    public ICommand OpenOperatorComputerLogPageCommand { get; }
+    public ICommand OpenOperatorComputerSessionPageCommand { get; }
 
     private static string BuildProtectionSummary(ControlRoomSnapshot snapshot)
     {
@@ -683,6 +766,18 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
 
         return string.Join(" · ", active);
+    }
+
+    internal void ReportRuntimeHostFailure(string message)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(message);
+        CommandStatus = $"Runtime paused after deterministic step failure: {message}";
+    }
+
+    private void OpenOperatorComputerPage(OperatorComputerPageId pageId)
+    {
+        SelectedWorkspace = Workspaces.Single(static workspace => workspace.Id == ControlRoomWorkspaceId.OperatorComputer);
+        OperatorComputer.SelectPage(pageId);
     }
 
     private void Dispatch(ControlRoomCommandKind kind)
@@ -790,8 +885,93 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         }
     }
 
+
+    private OperatorComputerSnapshot ProjectOperatorComputerSnapshot()
+    {
+        var guidanceMode = _trainingTracker?.GuidanceMode ?? TrainingGuidanceMode.Guided;
+        OperatorComputerScenarioContentSnapshot? scenarioContent = null;
+
+        if (_powerManoeuvringGuidance is not null)
+        {
+            scenarioContent = OperatorComputerScenarioContentProjector.Project(
+                _snapshot,
+                _powerManoeuvringGuidance,
+                _powerManoeuvringChecklistEvaluator,
+                guidanceMode,
+                _trainingTracker?.Assessment);
+        }
+        else if (_gridSynchronizationGuidance is not null)
+        {
+            scenarioContent = OperatorComputerScenarioContentProjector.Project(
+                _snapshot,
+                _gridSynchronizationGuidance,
+                _gridSynchronizationChecklistEvaluator,
+                guidanceMode,
+                _trainingTracker?.Assessment);
+        }
+        else if (_heatUpTurbineStartupGuidance is not null)
+        {
+            scenarioContent = OperatorComputerScenarioContentProjector.Project(
+                _snapshot,
+                _heatUpTurbineStartupGuidance,
+                _heatUpTurbineStartupChecklistEvaluator,
+                guidanceMode,
+                _trainingTracker?.Assessment);
+        }
+        else if (_firstCriticalityGuidance is not null)
+        {
+            scenarioContent = OperatorComputerScenarioContentProjector.Project(
+                _snapshot,
+                _firstCriticalityGuidance,
+                _firstCriticalityChecklistEvaluator,
+                guidanceMode,
+                _trainingTracker?.Assessment);
+        }
+        else if (_preStartupGuidance is not null)
+        {
+            scenarioContent = OperatorComputerScenarioContentProjector.Project(
+                _snapshot,
+                _preStartupGuidance,
+                _preStartupChecklistEvaluator,
+                guidanceMode,
+                _trainingTracker?.Assessment);
+        }
+
+        var modes = _plantControlAuthorityDispatcher is null
+            ? null
+            : new OperatorComputerModesSnapshot(
+                guidanceMode,
+                _plantControlAuthorityDispatcher.CurrentAutomation);
+
+        return OperatorComputerSnapshotProjector.Project(
+            _snapshot,
+            scenarioContent,
+            _operationalHistory.Current,
+            _scenarioRecorder?.Events,
+            _postIncidentAnalysis,
+            modes,
+            _sessionWorkspace?.Current);
+    }
+
+    private void OnSessionWorkspaceChanged(object? sender, EventArgs e)
+    {
+        OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
+    }
+
+    private void OnTrainingGuidanceModeChanged(object? sender, EventArgs e)
+    {
+        OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
+        OnPropertyChanged(nameof(TrainingGuidanceModeText));
+    }
+
+    private void OnPlantControlAuthorityChanged(object? sender, PlantControlAuthorityChangedEventArgs e)
+    {
+        OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
+    }
+
     private void OnTrainingAssessmentChanged(object? sender, ScenarioTrainingAssessmentChangedEventArgs e)
     {
+        OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         OnPropertyChanged(nameof(TrainingAssessmentText));
         OnPropertyChanged(nameof(TrainingGuidanceModeText));
     }
@@ -800,6 +980,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         _snapshot = e.Snapshot;
         _operationalHistory.Observe(_snapshot);
+        OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         if (_snapshot.ReactorCore.RodTargets.Count == 0)
         {
             _selectedRodIndex = 0;
@@ -838,6 +1019,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
         OnPropertyChanged(nameof(LogicalStep));
         OnPropertyChanged(nameof(RuntimeState));
+        OnPropertyChanged(nameof(IsRuntimeRunning));
+        OnPropertyChanged(nameof(RuntimeProgressText));
         OnPropertyChanged(nameof(SignalHealthText));
         OnPropertyChanged(nameof(AnnunciatedAlarmCount));
         OnPropertyChanged(nameof(UnacknowledgedAlarmCount));

@@ -68,6 +68,25 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
             return vaporState;
         }
 
+        // The coarse saturated-mixture scan above intentionally preserves the long-validated fast path.
+        // Near the saturated-liquid or saturated-vapor boundary, however, the physically valid temperature
+        // interval can end between two coarse scan samples. In that case a real two-phase root may exist in
+        // the narrow terminal interval even though no sampled sign change was observed. Re-scan only the
+        // mathematically valid saturation interval before declaring the conserved state unsupported.
+        if (TryResolveBoundaryAwareSaturatedMixture(specificVolume, specificInternalEnergy, out var boundaryState))
+        {
+            return boundaryState;
+        }
+
+        // The superheated branch has the same boundary-sampling hazard as the saturated branch: the first
+        // thermodynamically admissible superheated temperature can fall between two coarse scan samples.
+        // Inject the exact valid interval endpoints and reuse the existing deterministic root equations rather
+        // than widening the envelope, clamping the conserved state or inventing a transition correlation.
+        if (TryResolveBoundaryAwareSuperheatedVapor(specificVolume, specificInternalEnergy, out var boundaryVaporState))
+        {
+            return boundaryVaporState;
+        }
+
         throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
     }
 
@@ -122,6 +141,206 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
         state = null!;
         return false;
+    }
+
+    private static bool TryResolveBoundaryAwareSaturatedMixture(
+        double specificVolume,
+        double specificInternalEnergy,
+        out FluidThermodynamicState state)
+    {
+        if (!TryGetSaturatedTemperatureUpperBound(specificVolume, out var maximum))
+        {
+            state = null!;
+            return false;
+        }
+
+        var minimum = TriplePointTemperatureKelvins;
+        SaturatedEvaluation? previous = null;
+
+        for (var index = 0; index <= SearchSegments; index++)
+        {
+            var temperature = minimum + ((maximum - minimum) * index / SearchSegments);
+            var evaluation = EvaluateSaturatedCandidate(temperature, specificVolume, specificInternalEnergy);
+
+            if (evaluation is null)
+            {
+                previous = null;
+                continue;
+            }
+
+            if (IsRoot(evaluation.Value.ResidualJoulesPerKilogram, specificInternalEnergy))
+            {
+                state = CreateSaturatedState(evaluation.Value);
+                return true;
+            }
+
+            if (previous is not null && HasSignChange(previous.Value.ResidualJoulesPerKilogram, evaluation.Value.ResidualJoulesPerKilogram))
+            {
+                var root = BisectSaturated(
+                    previous.Value.TemperatureKelvins,
+                    evaluation.Value.TemperatureKelvins,
+                    specificVolume,
+                    specificInternalEnergy);
+                state = CreateSaturatedState(root);
+                return true;
+            }
+
+            previous = evaluation;
+        }
+
+        state = null!;
+        return false;
+    }
+
+    private static bool TryGetSaturatedTemperatureUpperBound(double specificVolume, out double upperBoundKelvins)
+    {
+        if (!IsInsideSaturationSpecificVolumeEnvelope(TriplePointTemperatureKelvins, specificVolume))
+        {
+            upperBoundKelvins = 0d;
+            return false;
+        }
+
+        if (IsInsideSaturationSpecificVolumeEnvelope(MaximumSaturationTemperatureKelvins, specificVolume))
+        {
+            upperBoundKelvins = MaximumSaturationTemperatureKelvins;
+            return true;
+        }
+
+        var lower = TriplePointTemperatureKelvins;
+        var upper = MaximumSaturationTemperatureKelvins;
+
+        for (var iteration = 0; iteration < BisectionIterations; iteration++)
+        {
+            var middle = (lower + upper) / 2d;
+            if (IsInsideSaturationSpecificVolumeEnvelope(middle, specificVolume))
+            {
+                lower = middle;
+            }
+            else
+            {
+                upper = middle;
+            }
+        }
+
+        // Keep the last mathematically valid point rather than the first invalid point. This guarantees that
+        // the terminal scan sample is evaluable even when the root lies arbitrarily close to quality 0 or 1.
+        upperBoundKelvins = lower;
+        return true;
+    }
+
+    private static bool IsInsideSaturationSpecificVolumeEnvelope(double temperatureKelvins, double specificVolume)
+    {
+        var saturation = EvaluateSaturation(temperatureKelvins);
+        return specificVolume >= saturation.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram
+            && specificVolume <= saturation.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
+    }
+
+    private static bool TryResolveBoundaryAwareSuperheatedVapor(
+        double specificVolume,
+        double specificInternalEnergy,
+        out FluidThermodynamicState state)
+    {
+        if (!TryGetSuperheatedTemperatureBounds(specificVolume, out var minimum, out var maximum))
+        {
+            state = null!;
+            return false;
+        }
+
+        var lower = EvaluateSuperheatedCandidate(minimum, specificVolume, specificInternalEnergy);
+        var upper = EvaluateSuperheatedCandidate(maximum, specificVolume, specificInternalEnergy);
+        if (lower is null || upper is null)
+        {
+            state = null!;
+            return false;
+        }
+
+        if (IsRoot(lower.Value.ResidualJoulesPerKilogram, specificInternalEnergy))
+        {
+            state = CreateSuperheatedState(lower.Value);
+            return true;
+        }
+
+        if (IsRoot(upper.Value.ResidualJoulesPerKilogram, specificInternalEnergy))
+        {
+            state = CreateSuperheatedState(upper.Value);
+            return true;
+        }
+
+        if (!HasSignChange(lower.Value.ResidualJoulesPerKilogram, upper.Value.ResidualJoulesPerKilogram))
+        {
+            state = null!;
+            return false;
+        }
+
+        var root = BisectSuperheated(
+            lower.Value.TemperatureKelvins,
+            upper.Value.TemperatureKelvins,
+            specificVolume,
+            specificInternalEnergy);
+        state = CreateSuperheatedState(root);
+        return true;
+    }
+
+    private static bool TryGetSuperheatedTemperatureBounds(
+        double specificVolume,
+        out double minimumKelvins,
+        out double maximumKelvins)
+    {
+        var maximumSaturationPressure = SaturationPressurePascals(MaximumSaturationTemperatureKelvins);
+        var pressureLimitedMaximum = maximumSaturationPressure * specificVolume
+            / WaterVaporGasConstantJoulesPerKilogramKelvin;
+        maximumKelvins = Math.Min(MaximumSuperheatedTemperatureKelvins, pressureLimitedMaximum);
+
+        if (maximumKelvins < TriplePointTemperatureKelvins
+            || !IsSuperheatedTemperatureAdmissible(maximumKelvins, specificVolume))
+        {
+            minimumKelvins = 0d;
+            maximumKelvins = 0d;
+            return false;
+        }
+
+        if (IsSuperheatedTemperatureAdmissible(TriplePointTemperatureKelvins, specificVolume))
+        {
+            minimumKelvins = TriplePointTemperatureKelvins;
+            return true;
+        }
+
+        var lower = TriplePointTemperatureKelvins;
+        var upper = Math.Min(MaximumSaturationTemperatureKelvins, maximumKelvins);
+        if (!IsSuperheatedTemperatureAdmissible(upper, specificVolume))
+        {
+            minimumKelvins = 0d;
+            maximumKelvins = 0d;
+            return false;
+        }
+
+        for (var iteration = 0; iteration < BisectionIterations; iteration++)
+        {
+            var middle = (lower + upper) / 2d;
+            if (IsSuperheatedTemperatureAdmissible(middle, specificVolume))
+            {
+                upper = middle;
+            }
+            else
+            {
+                lower = middle;
+            }
+        }
+
+        minimumKelvins = upper;
+        return true;
+    }
+
+    private static bool IsSuperheatedTemperatureAdmissible(double temperatureKelvins, double specificVolume)
+    {
+        var pressurePascals = WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / specificVolume;
+        if (!double.IsFinite(pressurePascals) || pressurePascals <= 0d || pressurePascals >= CriticalPressurePascals)
+        {
+            return false;
+        }
+
+        var saturationTemperature = SaturationTemperatureFromPressure(pressurePascals);
+        return saturationTemperature is not null && temperatureKelvins >= saturationTemperature.Value;
     }
 
     private static bool TryResolveSubcooledLiquid(

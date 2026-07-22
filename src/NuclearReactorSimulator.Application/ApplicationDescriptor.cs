@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M8.4 — Turbine / Generator / Feedwater / Condenser Transients",
-        "Baseline candidate — M8.3 validated; M8.4 adds deterministic secondary-system transient packs through canonical M4/M5 and M8 fault seams");
+        "M10.7 — Session, Checkpoint, Replay & Save Workspace",
+        "Implementation candidate — M10.7 on validated M10.6 baseline; adds explicit opt-in M9.1 recording, replay-backed checkpoints, compact versioned session archives, exact-version save/load/restore through ScenarioFullReplayRunner, and continuation recording after verified restore without opaque solver-state dumps");
 }

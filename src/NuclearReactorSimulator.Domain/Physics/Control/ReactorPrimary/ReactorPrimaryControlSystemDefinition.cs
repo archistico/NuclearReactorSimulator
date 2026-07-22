@@ -1,6 +1,8 @@
 using System.Collections.ObjectModel;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
+using NuclearReactorSimulator.Domain.Physics.Reactor.IodineXenon;
+using NuclearReactorSimulator.Domain.Physics.Reactor.Core.Spatial;
 using NuclearReactorSimulator.Domain.Physics.Reactor.Neutronics;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ThermalPower;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Integration;
@@ -9,7 +11,9 @@ namespace NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
 
 /// <summary>
 /// Canonical M5.3 composition of generic M5.2 controllers/actuators with reactor rods and primary-circulation pumps.
-/// It validates ownership only; physical state remains in the pre-existing rod and plant domains.
+/// M9.3 may additionally opt into the existing M2.8 iodine/xenon definition. M9.4 may opt into a quasi-spatial
+/// aggregated-core feedback/power-shape refinement while preserving the single global point-kinetics owner. Physical state
+/// remains in Simulation state envelopes owned by the established M2/M3 domains rather than in this composition definition.
 /// </summary>
 public sealed class ReactorPrimaryControlSystemDefinition
 {
@@ -20,7 +24,9 @@ public sealed class ReactorPrimaryControlSystemDefinition
         PointKineticsParameters pointKineticsParameters,
         FissionPowerDefinition fissionPowerDefinition,
         ActuatorSystemDefinition actuatorSystem,
-        IEnumerable<ReactorPrimaryControlLoopDefinition> loops)
+        IEnumerable<ReactorPrimaryControlLoopDefinition> loops,
+        IodineXenonDefinition? iodineXenonDefinition = null,
+        QuasiSpatialCoreFeedbackDefinition? quasiSpatialCoreFeedbackDefinition = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -32,6 +38,16 @@ public sealed class ReactorPrimaryControlSystemDefinition
         PointKineticsParameters = pointKineticsParameters ?? throw new ArgumentNullException(nameof(pointKineticsParameters));
         FissionPowerDefinition = fissionPowerDefinition ?? throw new ArgumentNullException(nameof(fissionPowerDefinition));
         ActuatorSystem = actuatorSystem ?? throw new ArgumentNullException(nameof(actuatorSystem));
+        IodineXenonDefinition = iodineXenonDefinition;
+        QuasiSpatialCoreFeedbackDefinition = quasiSpatialCoreFeedbackDefinition;
+        if (quasiSpatialCoreFeedbackDefinition is not null
+            && !ReferenceEquals(quasiSpatialCoreFeedbackDefinition.CoreDefinition, plantDefinition.PrimaryCircuit.CoreDefinition))
+        {
+            throw new ArgumentException(
+                "Quasi-spatial core feedback must use the canonical full-plant aggregated-core definition.",
+                nameof(quasiSpatialCoreFeedbackDefinition));
+        }
+
         ArgumentNullException.ThrowIfNull(loops);
 
         var canonical = loops
@@ -98,6 +114,8 @@ public sealed class ReactorPrimaryControlSystemDefinition
     public ControlRodSystemDefinition ControlRods { get; }
     public PointKineticsParameters PointKineticsParameters { get; }
     public FissionPowerDefinition FissionPowerDefinition { get; }
+    public IodineXenonDefinition? IodineXenonDefinition { get; }
+    public QuasiSpatialCoreFeedbackDefinition? QuasiSpatialCoreFeedbackDefinition { get; }
     public ActuatorSystemDefinition ActuatorSystem { get; }
     public IReadOnlyList<ReactorPrimaryControlLoopDefinition> Loops { get; }
 

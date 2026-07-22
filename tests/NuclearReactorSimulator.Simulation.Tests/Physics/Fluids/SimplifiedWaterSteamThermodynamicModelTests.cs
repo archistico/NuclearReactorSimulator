@@ -90,6 +90,76 @@ public sealed class SimplifiedWaterSteamThermodynamicModelTests
     }
 
     [Fact]
+    public void NearSaturatedLiquidBoundary_StateMissedByCoarseGrid_ResolvesAsTwoPhaseEndpoint()
+    {
+        const double specificVolume = 0.0010603244562929237d;
+        const double specificInternalEnergy = 503_958.0002916595d;
+        var definition = new FluidNodeDefinition("near-saturated-liquid", Volume.FromCubicMetres(specificVolume));
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(1d),
+            Energy.FromJoules(specificInternalEnergy));
+
+        var result = _model.Resolve(definition, inventory, PreviousState());
+
+        Assert.Equal(FluidPhase.SaturatedMixture, result.Phase);
+        Assert.NotNull(result.VaporQuality);
+        Assert.InRange(result.VaporQuality!.Value.Fraction, 0d, 1e-6d);
+        Assert.Equal(120d, result.Temperature.DegreesCelsius, 5);
+    }
+
+    [Fact]
+    public void NarrowHighQualitySaturatedInterval_StateMissedByCoarseGrid_ResolvesAsWetSteam()
+    {
+        const double specificVolume = 19.385464213565946d;
+        const double specificInternalEnergy = 2_434_381.9782870971d;
+        var definition = new FluidNodeDefinition("near-saturated-vapor", Volume.FromCubicMetres(specificVolume));
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(1d),
+            Energy.FromJoules(specificInternalEnergy));
+
+        var result = _model.Resolve(definition, inventory, PreviousState());
+
+        Assert.Equal(FluidPhase.SaturatedMixture, result.Phase);
+        Assert.NotNull(result.VaporQuality);
+        Assert.InRange(result.VaporQuality!.Value.Fraction, 0.989d, 0.991d);
+        Assert.InRange(result.Temperature.DegreesCelsius, 39.92d, 39.95d);
+    }
+
+    [Fact]
+    public void NarrowSuperheatedOnsetInterval_StateMissedByCoarseGrid_ResolvesAsSuperheatedVapor()
+    {
+        const double specificVolume = 65.477888248812704d;
+        const double specificInternalEnergy = 2_434_381.9782870663d;
+        var definition = new FluidNodeDefinition("near-superheated-onset", Volume.FromCubicMetres(specificVolume));
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(1d),
+            Energy.FromJoules(specificInternalEnergy));
+
+        var result = _model.Resolve(definition, inventory, PreviousState());
+
+        Assert.Equal(FluidPhase.SuperheatedVapor, result.Phase);
+        Assert.Null(result.VaporQuality);
+        Assert.InRange(result.Temperature.DegreesCelsius, 17.90d, 17.92d);
+        Assert.InRange(result.Pressure.Kilopascals, 2.04d, 2.06d);
+    }
+
+    [Fact]
+    public void SaturationToSuperheatCorrelationGap_WithoutRoot_RemainsOutOfRange()
+    {
+        const double specificVolume = 65.477888248812704d;
+        const double specificInternalEnergy = 2_434_355d;
+        var definition = new FluidNodeDefinition("unsupported-correlation-gap", Volume.FromCubicMetres(specificVolume));
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(1d),
+            Energy.FromJoules(specificInternalEnergy));
+
+        var exception = Assert.Throws<WaterSteamStateOutOfRangeException>(() =>
+            _model.Resolve(definition, inventory, PreviousState()));
+
+        Assert.Equal("unsupported-correlation-gap", exception.NodeId);
+    }
+
+    [Fact]
     public void NegativeSpecificInternalEnergy_IsRejectedAsOutOfRange()
     {
         var definition = new FluidNodeDefinition("invalid", Volume.FromCubicMetres(1d));

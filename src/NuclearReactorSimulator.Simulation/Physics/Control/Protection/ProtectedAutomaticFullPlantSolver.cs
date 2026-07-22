@@ -32,6 +32,7 @@ public sealed class ProtectedAutomaticFullPlantSolver
     private readonly TurbineSecondaryControlSolver _secondaryControlSolver;
     private readonly ProtectionSystemSolver _protectionSolver;
     private readonly FullPlantSolver _fullPlantSolver;
+    private readonly IFluidThermodynamicModel _thermodynamicModel;
     private readonly ValveFlowSolver _valveFlowSolver = new();
 
     public ProtectedAutomaticFullPlantSolver(
@@ -61,6 +62,7 @@ public sealed class ProtectedAutomaticFullPlantSolver
         _reactorControlSolver = new ReactorPrimaryControlSolver(reactorDefinition);
         _secondaryControlSolver = new TurbineSecondaryControlSolver(secondaryDefinition);
         _protectionSolver = new ProtectionSystemSolver(protectionDefinition);
+        _thermodynamicModel = thermodynamicModel;
         _fullPlantSolver = new FullPlantSolver(secondaryDefinition.PlantDefinition, thermodynamicModel);
     }
 
@@ -134,8 +136,15 @@ public sealed class ProtectedAutomaticFullPlantSolver
             reactorStep.Snapshot.FissionPower.TotalFissionThermalPower,
             faultedPlantState,
             protection);
-        var leakSourceTerms = BuildHydraulicLeakSourceTerms(faultedPlantState, hydraulicFaultInputs);
-        var fullPlantStep = _fullPlantSolver.Step(protectedFullPlantState, effectiveInputs, deltaTime, leakSourceTerms);
+        var leakSourceTerms = BuildHydraulicLeakSourceTerms(
+            faultedPlantState,
+            hydraulicFaultInputs,
+            deltaTime);
+        var fullPlantStep = _fullPlantSolver.Step(
+            protectedFullPlantState,
+            effectiveInputs,
+            deltaTime,
+            leakSourceTerms);
 
         var arbitration = new ProtectionArbitrationSnapshot(
             protection.ReactorScramActive,
@@ -253,9 +262,12 @@ public sealed class ProtectedAutomaticFullPlantSolver
         return new PlantState(state.Definition, state.FluidNodes, valves, pumps, state.ThermalBodies, state.HeatSources);
     }
 
-    private static PlantNetworkSourceTerms BuildHydraulicLeakSourceTerms(PlantState state, HydraulicComponentFaultInputs faults)
+    private PlantNetworkSourceTerms BuildHydraulicLeakSourceTerms(
+        PlantState state,
+        HydraulicComponentFaultInputs faults,
+        TimeSpan deltaTime)
     {
-        if (faults.Leaks.Count == 0)
+        if (faults.Leaks.Count == 0 && faults.PressureDrivenBreaks.Count == 0)
         {
             return PlantNetworkSourceTerms.Empty;
         }
@@ -263,10 +275,16 @@ public sealed class ProtectedAutomaticFullPlantSolver
         var balances = new Dictionary<string, FluidNodeBalance>(StringComparer.Ordinal);
         var totalLeak = MassFlowRate.Zero;
         var externalPower = Power.Zero;
-        foreach (var leak in faults.Leaks.OrderBy(static x => x.FaultId, StringComparer.Ordinal))
+
+        void AccumulateRemoval(string fluidNodeId, MassFlowRate massFlowRate)
         {
-            var node = state.GetFluidNode(leak.FluidNodeId);
-            var removalMass = MassFlowRate.FromKilogramsPerSecond(-leak.MassFlowRate.KilogramsPerSecond);
+            if (massFlowRate <= MassFlowRate.Zero)
+            {
+                return;
+            }
+
+            var node = state.GetFluidNode(fluidNodeId);
+            var removalMass = MassFlowRate.FromKilogramsPerSecond(-massFlowRate.KilogramsPerSecond);
             var removalPower = node.SpecificInternalEnergy * removalMass;
             var balance = new FluidNodeBalance(removalMass, removalPower);
             balances[node.Id] = balances.TryGetValue(node.Id, out var existing) ? existing + balance : balance;
@@ -274,11 +292,126 @@ public sealed class ProtectedAutomaticFullPlantSolver
             externalPower += removalPower;
         }
 
+        foreach (var leak in faults.Leaks.OrderBy(static x => x.FaultId, StringComparer.Ordinal))
+        {
+            AccumulateRemoval(leak.FluidNodeId, leak.MassFlowRate);
+        }
+
+        foreach (var pressureBreak in faults.PressureDrivenBreaks.OrderBy(static x => x.FaultId, StringComparer.Ordinal))
+        {
+            var node = state.GetFluidNode(pressureBreak.FluidNodeId);
+            var drivingPressurePascals = Math.Max(0d, node.Pressure.Pascals - pressureBreak.AmbientPressure.Pascals);
+            if (drivingPressurePascals <= 0d)
+            {
+                continue;
+            }
+
+            // Educational bounded break law: flow scales with sqrt(dP) up to the declared reference flow.
+            // This is intentionally not a critical-flow/two-phase discharge correlation.
+            var normalizedDrivingPressure = Math.Min(
+                1d,
+                drivingPressurePascals / pressureBreak.ReferencePressureDifference.Pascals);
+            var pressureDrivenMassFlow = MassFlowRate.FromKilogramsPerSecond(
+                pressureBreak.ReferenceMassFlowRate.KilogramsPerSecond * Math.Sqrt(normalizedDrivingPressure));
+            var inventoryBoundMassFlow = (node.Mass * pressureBreak.MaximumInventoryFractionPerStep).Per(deltaTime);
+            var declaredBoundMassFlow = MassFlowRate.FromKilogramsPerSecond(Math.Min(
+                pressureDrivenMassFlow.KilogramsPerSecond,
+                inventoryBoundMassFlow.KilogramsPerSecond));
+            var effectiveMassFlow = LimitPressureDrivenBreakToThermodynamicEnvelope(
+                node,
+                declaredBoundMassFlow,
+                deltaTime);
+
+            AccumulateRemoval(pressureBreak.FluidNodeId, effectiveMassFlow);
+        }
+
         return new PlantNetworkSourceTerms(
             balances,
             new Dictionary<string, ThermalEnergyBalance>(StringComparer.Ordinal),
             totalLeak,
             externalPower);
+    }
+
+    private MassFlowRate LimitPressureDrivenBreakToThermodynamicEnvelope(
+        FluidNodeState committedNode,
+        MassFlowRate proposedMassFlow,
+        TimeSpan deltaTime)
+    {
+        if (proposedMassFlow <= MassFlowRate.Zero)
+        {
+            return MassFlowRate.Zero;
+        }
+
+        var proposedRemovalKilograms = proposedMassFlow.KilogramsPerSecond * deltaTime.TotalSeconds;
+        if (CanResolvePressureDrivenBreakCandidate(committedNode, proposedRemovalKilograms))
+        {
+            return proposedMassFlow;
+        }
+
+        // Zero loss is the committed, already-resolved state. Bisect only the additional M8.5 removal and keep
+        // a deterministic margin inside the simplified water/steam closure envelope.
+        var lowerRemovalKilograms = 0d;
+        var upperRemovalKilograms = proposedRemovalKilograms;
+        for (var iteration = 0; iteration < 64; iteration++)
+        {
+            var middleRemovalKilograms = (lowerRemovalKilograms + upperRemovalKilograms) / 2d;
+            if (CanResolvePressureDrivenBreakCandidate(committedNode, middleRemovalKilograms))
+            {
+                lowerRemovalKilograms = middleRemovalKilograms;
+            }
+            else
+            {
+                upperRemovalKilograms = middleRemovalKilograms;
+            }
+        }
+
+        var safeRemovalKilograms = lowerRemovalKilograms * 0.5d;
+        return safeRemovalKilograms <= 0d
+            ? MassFlowRate.Zero
+            : MassFlowRate.FromKilogramsPerSecond(safeRemovalKilograms / deltaTime.TotalSeconds);
+    }
+
+    private bool CanResolvePressureDrivenBreakCandidate(
+        FluidNodeState committedNode,
+        double removalKilograms)
+    {
+        if (!double.IsFinite(removalKilograms) || removalKilograms < 0d)
+        {
+            return false;
+        }
+
+        var candidateMassKilograms = committedNode.Mass.Kilograms - removalKilograms;
+        if (!double.IsFinite(candidateMassKilograms) || candidateMassKilograms <= 0d)
+        {
+            return false;
+        }
+
+        // M8.5 removes carried internal energy at the committed node's specific internal energy, so this probe
+        // preserves the break source-term semantics while asking only whether the resulting extensive inventory
+        // remains resolvable by the existing thermodynamic owner.
+        var candidateEnergyJoules = committedNode.InternalEnergy.Joules
+            - (committedNode.SpecificInternalEnergy.JoulesPerKilogram * removalKilograms);
+        if (!double.IsFinite(candidateEnergyJoules))
+        {
+            return false;
+        }
+
+        var candidateInventory = new FluidNodeInventory(
+            Mass.FromKilograms(candidateMassKilograms),
+            Energy.FromJoules(candidateEnergyJoules));
+
+        try
+        {
+            _ = _thermodynamicModel.Resolve(
+                committedNode.Definition,
+                candidateInventory,
+                committedNode.Thermodynamics);
+            return true;
+        }
+        catch (WaterSteamStateOutOfRangeException)
+        {
+            return false;
+        }
     }
 
     private IntegratedSecondaryCycleInputs BuildEffectivePlantInputs(

@@ -1,4 +1,6 @@
 using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.ControlRoom.Automation;
+using NuclearReactorSimulator.Domain.Physics.Control.Supervisory;
 
 namespace NuclearReactorSimulator.Application.Scenarios.Faults;
 
@@ -7,7 +9,7 @@ namespace NuclearReactorSimulator.Application.Scenarios.Faults;
 /// Activation/deactivation effects are delegated to registered runtime-bound applicators before the corresponding physical
 /// step. The decorator never advances time, mutates presentation state to force outcomes or evaluates wall clock.
 /// </summary>
-public sealed class ScenarioFaultRuntimeEngine : IControlRoomRuntimeEngine
+public sealed class ScenarioFaultRuntimeEngine : IControlRoomRuntimeEngine, IPlantControlAuthorityRuntimeEngine
 {
     private sealed class RuntimeFaultState
     {
@@ -98,6 +100,19 @@ public sealed class ScenarioFaultRuntimeEngine : IControlRoomRuntimeEngine
 
     public void QueueOperatorCommand(ControlRoomCommand command)
         => _inner.QueueOperatorCommand(command);
+
+    public PlantControlAuthorityPresentationSnapshot CreateAutomationSnapshot()
+        => RequireAutomationRuntime().CreateAutomationSnapshot();
+
+    public void RequestPlantControlAuthority(PlantControlAuthorityMode mode)
+        => RequireAutomationRuntime().RequestPlantControlAuthority(mode);
+
+    public void RequestSupervisoryObjective(SupervisoryObjectiveRequest objective)
+        => RequireAutomationRuntime().RequestSupervisoryObjective(objective);
+
+    private IPlantControlAuthorityRuntimeEngine RequireAutomationRuntime()
+        => _inner as IPlantControlAuthorityRuntimeEngine
+            ?? throw new InvalidOperationException("The wrapped runtime does not expose the M10.5/M10.6 plant-control-authority seam.");
 
     private void EnsureInitialized(ControlRoomSnapshot committed)
     {

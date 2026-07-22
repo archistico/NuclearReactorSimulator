@@ -9,13 +9,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-**M8.3 — Instrumentation & Control Faults — VALIDATED**
+The current explicitly validated baseline is **M10.6 — Supervisory Automatic Operation — VALIDATED**. The user confirmed the cumulative M10.2→M10.6 Hotfix 1 package compiled successfully and the complete automated suite passed, therefore M10.2, M10.3, M10.4, the incorporated M10.5 prerequisite and M10.6 are promoted in sequence.
 
-M0, M1, M2, the complete M3 primary-circuit phase, M4.1 through M4.7, M5.1 through M5.7, M6.1–M6.7, M7.1–M7.7, M8.1, M8.2 hotfix 2 and M8.3 are validated. The M3, M4, M5, M6 and M7 gates are complete. M8.1 owns deterministic fault scheduling/lifecycle, M8.2 adds validated hydraulic fault effects and M8.3 adds validated instrumentation/control fault effects through canonical seams.
+The underlying **M9 phase gate remains COMPLETE / VALIDATED**. M9.7 hotfix 5 previously passed the full gate, including the long 6,000-step / 60-second endurance runs and direct saturation/superheat boundary regressions; the user-supplied corrected `MainWindow.axaml` remains the authoritative validated layout baseline.
 
-The current implementation candidate is **M8.4 — Turbine / Generator / Feedwater / Condenser Transients**. It composes turbine/generator trip paths, validated M8.2 feedwater-pump faults and bounded M4.3 condenser cooling-capacity degradation without creating duplicate physical state.
+The current working package is **M10.7 — Session, Checkpoint, Replay & Save Workspace — IMPLEMENTATION CANDIDATE**. It activates F8 SESSION using existing M7/M9 owners, adds compact versioned replay-backed archives, checkpoint creation/listing, full replay verification, file save/load and verified checkpoint restore. Ordinary desktop startup keeps full M9.1 recording opt-in to avoid hidden every-fixed-step overhead.
 
-M8.2 hotfix 2 also introduced `NuclearReactorSimulator.App.Tests`, a headless regression suite for control-room ViewModel/XAML command-state wiring; M8.3 and M8.4 preserve that boundary and add no UI-side physics.
+See `docs/milestones/M10.7.md`, `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`, `docs/milestones/M10.6.md`, ADR 0070 and ADR 0074. Final product release hardening remains M11 after M10.
 
 ## Architectural principles
 
@@ -404,7 +404,10 @@ SimplifiedWaterSteamThermodynamicModel
 - `docs/FULL_PLANT_STEADY_STATE.md` — M4.7 full-plant state/snapshot, reference operating point, drift gate and performance diagnostics
 - `docs/INSTRUMENTATION_SIGNAL_MODEL.md` — M5.1 measured-signal separation, range/scaling, lag, quality and fault seams
 - `docs/CONTROLLER_ACTUATOR_PRIMITIVES.md` — M5.2 measured-signal-only P/PI/PID behavior, manual/auto transfer, anti-windup and typed actuator command seams
-- `docs/ROADMAP.md` — approved and granular M0–M9 roadmap
+- `docs/HISTORICAL_INSPIRED_SCENARIO_FRAMEWORK.md` — M9.5 historical-source provenance, explicit claim classification and fail-closed fidelity-review boundary
+- `docs/CALIBRATION_REFERENCE_VALIDATION.md` — M9.6 versioned reference cases, tolerance budgets, model-version tracking and sensitivity/regression reports
+- `docs/MANUAL_GUI_VALIDATION_CHECKLIST.md` — short manual desktop validation gate before M9.6 promotion/M10
+- `docs/ROADMAP.md` — approved and granular M0–M11 roadmap
 - `docs/milestones/` — milestone definitions and acceptance checklists
 - `docs/adr/` — Architecture Decision Records
 - `docs/research/REFERENCES.md` — initial research references
@@ -445,7 +448,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1, M8.2 hotfix 2 and M8.3 are **validated**; the M3, M4, M5, M6 and M7 gates are complete. M8.4 is the current **baseline candidate**, adding deterministic turbine/generator/feedwater/condenser transient packs over canonical M4/M5/M8 seams.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.6 are validated; M10.6 is the current official baseline and M10.7 is the current implementation candidate.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -509,7 +512,7 @@ M6.2 defines one semantic presentation vocabulary across the future control room
 
 ## M6.3 reactor/core control-room panel
 
-M6.3 composes the validated M6.1 shell and M6.2 reusable controls into the first domain-specific operator workspace. Reactor thermal power is projected from the M5.1 measured frame with validity/quality semantics; reactor period, reactivity, rod state and aggregated core-zone values are explicitly labelled model diagnostics projected by Application rather than read directly by Avalonia. The panel exposes canonical rod target selection and insert/hold/withdraw command intents plus SCRAM/protection-reset seams and M5.5 protection/interlock status. M2.8 xenon physics remains validated but is shown `Unavailable` because xenon state is not yet promoted into the M5.7 automatic-operation snapshot; no UI-side value is fabricated. See `docs/REACTOR_CORE_CONTROL_ROOM_PANEL.md` and ADR 0048.
+M6.3 composes the validated M6.1 shell and M6.2 reusable controls into the first domain-specific operator workspace. Reactor thermal power is projected from the M5.1 measured frame with validity/quality semantics; reactor period, reactivity, rod state and aggregated core-zone values are explicitly labelled model diagnostics projected by Application rather than read directly by Avalonia. The panel exposes canonical rod target selection and insert/hold/withdraw command intents plus SCRAM/protection-reset seams and M5.5 protection/interlock status. M2.8 xenon physics remains the canonical owner. Legacy exact-version M7 v1 configurations still show xenon as `Unavailable`; M9.3 xenon-enabled versioned configurations promote the committed canonical poison diagnostic through the same presentation boundary, with no UI-side value fabricated. See `docs/REACTOR_CORE_CONTROL_ROOM_PANEL.md` and ADR 0048.
 
 
 ## M6.4 primary-circuit mnemonics
@@ -565,3 +568,11 @@ M7.7 closes the M7 gate with deterministic first-achievement checkpoints observe
 ## M8.1 deterministic fault-injection framework
 
 M8.1 adds explicit `ScenarioFaultDefinition` entries to versioned scenario schema v2 and is validated. M8.2 hotfix 2 is validated and adds pump trip/degradation, valve fail/stuck behavior, valve-controlled path restriction/blockage and selected node leaks through typed runtime seams. M8.3 adds M5.1 sensor bias/freeze/failure modes plus bounded controller-output and actuator-command faults without true-state fallback or direct physical writes. See `docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md`, `docs/HYDRAULIC_COMPONENT_FAULTS.md`, `docs/INSTRUMENTATION_CONTROL_FAULTS.md`, ADR 0060–0062.
+
+## M8.4–M8.6 transient, leak and electrical-loss scenario composition
+
+M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded educational break scenarios, electrical-loss/SBO-class scenarios and safety-response evaluation through canonical seams. The current reference plant still does not claim licensing-grade LOCA/containment/ECCS or detailed station electrical distribution fidelity. M9.1 adds deterministic recorder/checkpoint/full-replay infrastructure; see `docs/RECORDER_CHECKPOINT_FULL_REPLAY.md` and ADR 0067.
+
+## Current development checkpoint
+
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.6 are validated; M10.7 Session, Checkpoint, Replay & Save Workspace is the current implementation candidate.

@@ -13,7 +13,7 @@ M8.1 validates deterministic fault declaration, scheduling and lifecycle but int
 3. Normal control and protection still compute their canonical commands first. Hydraulic component failures then constrain the physical component state before the existing M4.7/full-plant step. This models a component that may fail to obey a valid command without transferring protection ownership to the fault layer.
 4. Pump trip/degradation acts only on canonical `PumpState` run/speed capability before `PumpFlowSolver`; no flow or pressure is written directly.
 5. Valve fail-open/fail-closed/stuck and path restriction/blockage act only on canonical `ValveState` position before `ValveFlowSolver`. Stuck position is captured from the committed state at activation.
-6. M8.2 path restriction/blockage targets canonical valve-controlled paths. Arbitrary pipe-definition mutation is deferred rather than creating a second hydraulic topology.
+6. M8.2 path restriction/blockage targets canonical valve-controlled paths. Arbitrary pipe-definition mutation is excluded rather than creating a second hydraulic topology; later M8.5 break behavior composes through conservative source-term boundaries instead.
 7. Selected leaks are signed external `PlantNetworkSourceTerms`: negative mass flow plus the corresponding source-node specific-internal-energy export. They pass through the same one `PlantNetworkOrchestrator` integration and audit boundary as all other staged source terms.
 8. Fault clearance removes the forcing constraint; it does not teleport a physical component back to a prior position/speed. Normal control or later operator/protection commands determine subsequent recovery.
 9. Target IDs and numeric parameters are validated fail-closed and use invariant deterministic parsing.

@@ -113,9 +113,11 @@ public static class ControlRoomSnapshotProjector
                 ControlRoomVisualState.Normal))
             .ToArray();
 
-        // M2.8 xenon physics is validated, but its state is not yet part of the M5.7 automatic-operation envelope.
-        // M6 must not invent or privately reconstruct that missing operational boundary.
-        var xenon = ControlRoomValueSnapshot.Unavailable("pcm");
+        // M9.3 promotes the canonical M2.8 poison snapshot through the existing M5/M6 presentation boundary.
+        // Application remains observational: no iodine/xenon integration or reactivity reconstruction occurs here.
+        var xenon = reactorControl.CommittedIodineXenon is { } iodineXenon
+            ? Value(iodineXenon.XenonReactivity.Pcm, "pcm", "0.0")
+            : ControlRoomValueSnapshot.Unavailable("pcm");
 
         return new ReactorCorePanelSnapshot(
             power,

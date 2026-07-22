@@ -46,4 +46,4 @@ All transitions use the M8.1 logical-step lifecycle. Re-running the same initial
 
 ## Model limits
 
-These scenarios are educational system transients within the current simplified model. They do not claim detailed turbine-stage maps, excitation/grid electromagnetic transients, feedwater-heater/deaerator dynamics, circulating-water hydraulics, air ingress or ejector physics. M8.5 owns educational leak/LOCA-class extensions; M8.6 owns electrical-loss/station-blackout-class extensions.
+These scenarios are educational system transients within the current simplified model. They do not claim detailed turbine-stage maps, excitation/grid electromagnetic transients, feedwater-heater/deaerator dynamics, circulating-water hydraulics, air ingress or ejector physics. M8.5 remains the bounded educational leak/LOCA-class candidate; M8.6 is a stacked candidate for explicit electrical-loss/station-blackout-class extensions.

@@ -6,7 +6,7 @@ namespace NuclearReactorSimulator.Application.Scenarios.Training;
 /// M7.7 observational training tracker. It samples every deterministic runtime step and the accepted operator-action journal,
 /// retaining only first-achievement checkpoints. Guidance mode changes presentation assistance only and never evaluation.
 /// </summary>
-public sealed class ScenarioTrainingTracker
+public sealed class ScenarioTrainingTracker : ITrainingAssistanceDispatcher
 {
     private readonly object _gate = new();
     private readonly ScenarioSession _session;
@@ -48,6 +48,8 @@ public sealed class ScenarioTrainingTracker
 
     public event EventHandler<ScenarioTrainingAssessmentChangedEventArgs>? AssessmentChanged;
 
+    public event EventHandler? GuidanceModeChanged;
+
     public TrainingGuidanceMode GuidanceMode
     {
         get
@@ -57,17 +59,29 @@ public sealed class ScenarioTrainingTracker
                 return _guidanceMode;
             }
         }
-        set
-        {
-            if (!Enum.IsDefined(value))
-            {
-                throw new ArgumentOutOfRangeException(nameof(value));
-            }
+        set => SetGuidanceMode(value);
+    }
 
-            lock (_gate)
+    public void SetGuidanceMode(TrainingGuidanceMode mode)
+    {
+        if (!Enum.IsDefined(mode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(mode));
+        }
+
+        var changed = false;
+        lock (_gate)
+        {
+            if (_guidanceMode != mode)
             {
-                _guidanceMode = value;
+                _guidanceMode = mode;
+                changed = true;
             }
+        }
+
+        if (changed)
+        {
+            GuidanceModeChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 

@@ -1,8 +1,12 @@
+using NuclearReactorSimulator.Application.ControlRoom.Automation;
+using NuclearReactorSimulator.Application.Scenarios.Faults.ElectricalLoss;
 using NuclearReactorSimulator.Application.Scenarios.Faults.Hydraulics;
 using NuclearReactorSimulator.Application.Scenarios.Faults.InstrumentationControl;
+using NuclearReactorSimulator.Application.Scenarios.Faults.LossOfCoolant;
 using NuclearReactorSimulator.Application.Scenarios.Faults.SecondaryTransients;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary;
+using NuclearReactorSimulator.Domain.Physics.Control.Supervisory;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Instrumentation;
@@ -13,6 +17,7 @@ using NuclearReactorSimulator.Simulation.Physics.Control.Alarms;
 using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
 using NuclearReactorSimulator.Simulation.Physics.Control.Protection;
 using NuclearReactorSimulator.Simulation.Physics.Control.ReactorPrimary;
+using NuclearReactorSimulator.Simulation.Physics.Control.Supervisory;
 using NuclearReactorSimulator.Simulation.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Simulation.Physics.Electrical;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
@@ -27,7 +32,14 @@ namespace NuclearReactorSimulator.Application.ControlRoom;
 /// controller setpoints and M4.5 requested electrical load modify only immutable per-step input bundles; trip, breaker and
 /// annunciator commands are one-step pulses cleared after the next deterministic step.
 /// </summary>
-public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRuntimeEngine, IHydraulicComponentFaultTarget, IInstrumentationControlFaultTarget, ISecondaryTransientFaultTarget
+public sealed class IntegratedAutomaticOperationRuntimeEngine :
+    IControlRoomRuntimeEngine,
+    IPlantControlAuthorityRuntimeEngine,
+    IElectricalLossFaultTarget,
+    IHydraulicComponentFaultTarget,
+    IInstrumentationControlFaultTarget,
+    ISecondaryTransientFaultTarget,
+    ILossOfCoolantFaultTarget
 {
     private sealed record ControlCommandFaultOverride(
         string FaultId,
@@ -38,13 +50,22 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         string FaultId,
         string BoundaryId,
         double CapacityFraction);
+
+    private sealed record ExternalSupplyLossOverride(
+        string FaultId,
+        string GridId);
+
     private readonly IntegratedAutomaticOperationSolver _solver;
     private readonly TimeSpan _deltaTime;
     private readonly ControlRoomRuntimeCommandPolicy _policy;
+    private readonly SupervisoryOperationCoordinator _supervisoryCoordinator = new();
     private IntegratedAutomaticOperationState _state;
     private IntegratedAutomaticOperationInputs _persistentInputs;
     private IntegratedAutomaticOperationSnapshot _lastSnapshot;
     private long _logicalStep;
+    private PlantControlAuthorityMode _requestedPlantControlAuthority;
+    private SupervisoryOperatingObjective? _requestedSupervisoryObjective;
+    private SupervisoryOperationState _supervisoryState;
 
     private bool _manualReactorScram;
     private bool _manualTurbineTrip;
@@ -59,9 +80,11 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
     private readonly Dictionary<string, ValveHydraulicFaultInput> _hydraulicValveFaults = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HydraulicPathRestrictionInput> _hydraulicPathRestrictions = new(StringComparer.Ordinal);
     private readonly Dictionary<string, HydraulicLeakInput> _hydraulicLeaks = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, PressureDrivenBreakInput> _pressureDrivenBreaks = new(StringComparer.Ordinal);
     private readonly Dictionary<string, SensorFaultInput> _instrumentationFaults = new(StringComparer.Ordinal);
     private readonly Dictionary<string, ControlCommandFaultOverride> _controlCommandFaults = new(StringComparer.Ordinal);
     private readonly Dictionary<string, CondenserCoolingFaultOverride> _condenserCoolingFaults = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, ExternalSupplyLossOverride> _externalSupplyLosses = new(StringComparer.Ordinal);
 
     public IntegratedAutomaticOperationRuntimeEngine(
         IntegratedAutomaticOperationSolver solver,
@@ -89,6 +112,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         _deltaTime = deltaTime;
         _logicalStep = initialLogicalStep;
         _policy = commandPolicy ?? ControlRoomRuntimeCommandPolicy.Default;
+        _requestedPlantControlAuthority = InferInitialAuthority(persistentInputs);
+        _supervisoryState = SupervisoryOperationState.CreateInitial(_requestedPlantControlAuthority);
     }
 
     public long LogicalStep => _logicalStep;
@@ -107,6 +132,7 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
             throw new ArgumentException("A connected automatic-operation runtime cannot step in ShellOnly state.", nameof(runState));
         }
 
+        ApplySupervisoryDecision();
         var stepInputs = BuildStepInputs();
         var result = _solver.Step(_state, stepInputs, _deltaTime);
         _state = result.CandidateState;
@@ -114,6 +140,54 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         _logicalStep++;
         ClearTransientCommands();
         return ControlRoomSnapshotProjector.Project(_logicalStep, runState, _lastSnapshot);
+    }
+
+    public PlantControlAuthorityPresentationSnapshot CreateAutomationSnapshot()
+    {
+        var controllerModes = _persistentInputs.ReactorPrimaryInputs.Controllers.Controllers
+            .Select(input => CreateControllerModeSnapshot(
+                "REACTOR / PRIMARY",
+                _persistentInputs.ReactorPrimaryInputs.Controllers.Definition,
+                input))
+            .Concat(_persistentInputs.TurbineSecondaryInputs.Controllers.Controllers.Select(input => CreateControllerModeSnapshot(
+                "TURBINE / SECONDARY",
+                _persistentInputs.TurbineSecondaryInputs.Controllers.Definition,
+                input)))
+            .OrderBy(static item => item.Area, StringComparer.Ordinal)
+            .ThenBy(static item => item.ControllerId, StringComparer.Ordinal)
+            .ToArray();
+
+        return new PlantControlAuthorityPresentationSnapshot(
+            true,
+            _requestedPlantControlAuthority,
+            _supervisoryState.EffectiveAuthority,
+            _supervisoryState.Health,
+            _supervisoryState.DegradationReason,
+            FormatObjective(_requestedSupervisoryObjective),
+            _supervisoryState.TransitionSequence,
+            controllerModes);
+    }
+
+    public void RequestPlantControlAuthority(PlantControlAuthorityMode mode)
+    {
+        if (!Enum.IsDefined(mode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(mode));
+        }
+
+        _requestedPlantControlAuthority = mode;
+        if (mode == PlantControlAuthorityMode.Manual)
+        {
+            // Manual takeover is an explicit supervisory disengagement. Re-entry into Supervisory must therefore use a
+            // fresh bounded objective rather than silently resuming a stale pre-takeover target.
+            _requestedSupervisoryObjective = null;
+        }
+    }
+
+    public void RequestSupervisoryObjective(SupervisoryObjectiveRequest objective)
+    {
+        ArgumentNullException.ThrowIfNull(objective);
+        _requestedSupervisoryObjective = ResolveObjective(objective);
     }
 
     public void QueueOperatorCommand(ControlRoomCommand command)
@@ -223,6 +297,7 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
     {
         ValidateFaultId(faultId);
         _ = _state.PlantState.PlantState.GetFluidNode(fluidNodeId);
+        EnsureNoOtherLossBoundary(faultId, fluidNodeId);
         _hydraulicLeaks[faultId] = new HydraulicLeakInput(faultId, fluidNodeId, massFlowRate);
     }
 
@@ -233,6 +308,32 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         _hydraulicValveFaults.Remove(faultId);
         _hydraulicPathRestrictions.Remove(faultId);
         _hydraulicLeaks.Remove(faultId);
+    }
+
+    public void ActivatePressureDrivenBreak(
+        string faultId,
+        string fluidNodeId,
+        MassFlowRate referenceMassFlowRate,
+        Pressure ambientPressure,
+        PressureDifference referencePressureDifference,
+        double maximumInventoryFractionPerStep)
+    {
+        ValidateFaultId(faultId);
+        _ = _state.PlantState.PlantState.GetFluidNode(fluidNodeId);
+        EnsureNoOtherLossBoundary(faultId, fluidNodeId);
+        _pressureDrivenBreaks[faultId] = new PressureDrivenBreakInput(
+            faultId,
+            fluidNodeId,
+            referenceMassFlowRate,
+            ambientPressure,
+            referencePressureDifference,
+            maximumInventoryFractionPerStep);
+    }
+
+    public void ClearLossOfCoolantFault(string faultId)
+    {
+        ValidateFaultId(faultId);
+        _pressureDrivenBreaks.Remove(faultId);
     }
 
     public void ActivateSensorBias(string faultId, string channelId, double biasEngineeringUnits)
@@ -294,6 +395,34 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
         ValidateFaultId(faultId);
         _instrumentationFaults.Remove(faultId);
         _controlCommandFaults.Remove(faultId);
+    }
+
+    public void ActivateExternalSupplyLoss(string faultId, string gridId)
+    {
+        ValidateFaultId(faultId);
+        ArgumentException.ThrowIfNullOrWhiteSpace(gridId);
+        var canonicalGridId = _persistentInputs.PlantInputs.GeneratorGridInputs.Definition.Grid.Id;
+        if (!string.Equals(canonicalGridId, gridId, StringComparison.Ordinal))
+        {
+            throw new KeyNotFoundException($"Unknown canonical external electrical grid '{gridId}'.");
+        }
+
+        var conflict = _externalSupplyLosses.Values.FirstOrDefault(effect =>
+            !string.Equals(effect.FaultId, faultId, StringComparison.Ordinal)
+            && string.Equals(effect.GridId, gridId, StringComparison.Ordinal));
+        if (conflict is not null)
+        {
+            throw new InvalidOperationException(
+                $"External electrical grid '{gridId}' already has active supply-loss fault '{conflict.FaultId}'.");
+        }
+
+        _externalSupplyLosses[faultId] = new ExternalSupplyLossOverride(faultId, gridId);
+    }
+
+    public void ClearElectricalLossFault(string faultId)
+    {
+        ValidateFaultId(faultId);
+        _externalSupplyLosses.Remove(faultId);
     }
 
     public void ActivateTurbineTrip(string faultId, string turbineRotorId)
@@ -518,8 +647,150 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
 
     private static void ValidateFaultId(string faultId) => ArgumentException.ThrowIfNullOrWhiteSpace(faultId);
 
+    private void EnsureNoOtherLossBoundary(string faultId, string fluidNodeId)
+    {
+        var fixedLeakConflict = _hydraulicLeaks.Values.FirstOrDefault(x =>
+            !string.Equals(x.FaultId, faultId, StringComparison.Ordinal)
+            && string.Equals(x.FluidNodeId, fluidNodeId, StringComparison.Ordinal));
+        if (fixedLeakConflict is not null)
+        {
+            throw new InvalidOperationException(
+                $"Fluid node '{fluidNodeId}' already has active prescribed leak '{fixedLeakConflict.FaultId}'.");
+        }
+
+        var breakConflict = _pressureDrivenBreaks.Values.FirstOrDefault(x =>
+            !string.Equals(x.FaultId, faultId, StringComparison.Ordinal)
+            && string.Equals(x.FluidNodeId, fluidNodeId, StringComparison.Ordinal));
+        if (breakConflict is not null)
+        {
+            throw new InvalidOperationException(
+                $"Fluid node '{fluidNodeId}' already has active pressure-driven break '{breakConflict.FaultId}'.");
+        }
+    }
+
     private HydraulicComponentFaultInputs BuildHydraulicFaultInputs()
-        => new(_hydraulicPumpFaults.Values, _hydraulicValveFaults.Values, _hydraulicPathRestrictions.Values, _hydraulicLeaks.Values);
+        => new(
+            _hydraulicPumpFaults.Values,
+            _hydraulicValveFaults.Values,
+            _hydraulicPathRestrictions.Values,
+            _hydraulicLeaks.Values,
+            _pressureDrivenBreaks.Values);
+
+    private void ApplySupervisoryDecision()
+    {
+        if (CanSkipStableAssistedDecision() || CanSkipStableManualDecision())
+        {
+            return;
+        }
+
+        var result = _supervisoryCoordinator.Step(
+            _supervisoryState,
+            _requestedPlantControlAuthority,
+            _requestedSupervisoryObjective,
+            _state.MeasuredSignals,
+            _lastSnapshot.Control.ProtectedControl.Protection,
+            _state.ReactorPrimaryControlState,
+            _state.TurbineSecondaryControlState,
+            _persistentInputs.ReactorPrimaryInputs,
+            _persistentInputs.TurbineSecondaryInputs);
+
+        _supervisoryState = result.CandidateState;
+        if (!ReferenceEquals(result.ReactorPrimaryInputs, _persistentInputs.ReactorPrimaryInputs)
+            || !ReferenceEquals(result.TurbineSecondaryInputs, _persistentInputs.TurbineSecondaryInputs))
+        {
+            ReplacePersistentInputs(
+                reactorInputs: result.ReactorPrimaryInputs,
+                secondaryInputs: result.TurbineSecondaryInputs);
+        }
+    }
+
+    private bool CanSkipStableAssistedDecision()
+        => _requestedPlantControlAuthority == PlantControlAuthorityMode.Assisted
+            && _supervisoryState.RequestedAuthority == PlantControlAuthorityMode.Assisted
+            && _supervisoryState.EffectiveAuthority == PlantControlAuthorityMode.Assisted
+            && _supervisoryState.Health == PlantControlAuthorityHealth.Normal
+            && _supervisoryState.Objective == _requestedSupervisoryObjective;
+
+    private bool CanSkipStableManualDecision()
+        => _requestedPlantControlAuthority == PlantControlAuthorityMode.Manual
+            && _supervisoryState.RequestedAuthority == PlantControlAuthorityMode.Manual
+            && _supervisoryState.EffectiveAuthority == PlantControlAuthorityMode.Manual
+            && _supervisoryState.Health == PlantControlAuthorityHealth.Normal
+            && _requestedSupervisoryObjective is null
+            && _persistentInputs.ReactorPrimaryInputs.Controllers.Controllers.All(static input => input.Mode == ControllerMode.Manual)
+            && _persistentInputs.TurbineSecondaryInputs.Controllers.Controllers.All(static input => input.Mode == ControllerMode.Manual);
+
+    private SupervisoryOperatingObjective ResolveObjective(SupervisoryObjectiveRequest objective)
+    {
+        if (objective.CaptureCurrentOperatingPoint)
+        {
+            var reactorLoop = _persistentInputs.ReactorPrimaryInputs.Definition.Loops
+                .Single(static item => item.Kind == ReactorPrimaryControlLoopKind.ReactorPowerRodRegulation);
+            var speedLoop = _persistentInputs.TurbineSecondaryInputs.Definition.Loops
+                .Single(static item => item.Kind == TurbineSecondaryControlLoopKind.TurbineSpeedAdmission);
+            var reactorController = _persistentInputs.ReactorPrimaryInputs.Controllers.Definition.GetController(reactorLoop.ControllerId);
+            var speedController = _persistentInputs.TurbineSecondaryInputs.Controllers.Definition.GetController(speedLoop.ControllerId);
+            var reactorPower = RequireValidMeasuredValue(reactorController.MeasurementChannelId);
+            var turbineSpeed = RequireValidMeasuredValue(speedController.MeasurementChannelId);
+            return SupervisoryOperatingObjective.HoldOperatingPoint(reactorPower, turbineSpeed);
+        }
+
+        return objective.Kind switch
+        {
+            SupervisoryOperatingObjectiveKind.HoldReactorPower => SupervisoryOperatingObjective.HoldReactorPower(
+                objective.ReactorPowerSetpointWatts ?? throw new InvalidOperationException("Reactor-power objective requires an explicit setpoint.")),
+            SupervisoryOperatingObjectiveKind.HoldTurbineSpeed => SupervisoryOperatingObjective.HoldTurbineSpeed(
+                objective.TurbineSpeedSetpointRpm ?? throw new InvalidOperationException("Turbine-speed objective requires an explicit setpoint.")),
+            SupervisoryOperatingObjectiveKind.HoldOperatingPoint => SupervisoryOperatingObjective.HoldOperatingPoint(
+                objective.ReactorPowerSetpointWatts ?? throw new InvalidOperationException("Operating-point objective requires a reactor-power setpoint."),
+                objective.TurbineSpeedSetpointRpm ?? throw new InvalidOperationException("Operating-point objective requires a turbine-speed setpoint.")),
+            _ => throw new ArgumentOutOfRangeException(nameof(objective), objective.Kind, "Unsupported supervisory objective request."),
+        };
+    }
+
+    private double RequireValidMeasuredValue(string channelId)
+    {
+        var signal = _state.MeasuredSignals.GetSignal(channelId);
+        if (signal.Validity != SignalValidity.Valid
+            || !signal.EngineeringValue.HasValue
+            || !double.IsFinite(signal.EngineeringValue.Value))
+        {
+            throw new InvalidOperationException($"Cannot capture supervisory objective: measured signal '{channelId}' is unavailable or invalid.");
+        }
+
+        return signal.EngineeringValue.Value;
+    }
+
+    private static PlantControllerModePresentationSnapshot CreateControllerModeSnapshot(
+        string area,
+        ControlSystemDefinition definition,
+        ControllerInput input)
+    {
+        var controller = definition.GetController(input.ControllerId);
+        var channel = definition.Instrumentation.GetChannel(controller.MeasurementChannelId);
+        return new PlantControllerModePresentationSnapshot(
+            input.ControllerId,
+            area,
+            input.Mode,
+            input.Setpoint,
+            channel.EngineeringUnitSymbol);
+    }
+
+    private static string FormatObjective(SupervisoryOperatingObjective? objective)
+        => objective?.Kind switch
+        {
+            SupervisoryOperatingObjectiveKind.HoldReactorPower => $"HOLD REACTOR POWER · {objective.ReactorPowerSetpointWatts!.Value:0.###} W",
+            SupervisoryOperatingObjectiveKind.HoldTurbineSpeed => $"HOLD TURBINE SPEED · {objective.TurbineSpeedSetpointRpm!.Value:0.###} rpm",
+            SupervisoryOperatingObjectiveKind.HoldOperatingPoint => $"HOLD OPERATING POINT · {objective.ReactorPowerSetpointWatts!.Value:0.###} W · {objective.TurbineSpeedSetpointRpm!.Value:0.###} rpm",
+            _ => "NONE",
+        };
+
+    private static PlantControlAuthorityMode InferInitialAuthority(IntegratedAutomaticOperationInputs inputs)
+        => inputs.ReactorPrimaryInputs.Controllers.Controllers
+            .Concat(inputs.TurbineSecondaryInputs.Controllers.Controllers)
+            .Any(static input => input.Mode == ControllerMode.Automatic)
+            ? PlantControlAuthorityMode.Assisted
+            : PlantControlAuthorityMode.Manual;
 
     private IntegratedAutomaticOperationInputs BuildStepInputs()
     {
@@ -665,6 +936,26 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine : IControlRoomRunt
                 gridInputs.Definition,
                 gridInputs.CondensateFeedwaterInputs,
                 generatorInputs);
+        }
+
+        if (_externalSupplyLosses.Count > 0)
+        {
+            var canonicalGridId = gridInputs.Definition.Grid.Id;
+            if (_externalSupplyLosses.Values.Any(effect => string.Equals(effect.GridId, canonicalGridId, StringComparison.Ordinal)))
+            {
+                var generatorInputs = gridInputs.GeneratorInputs
+                    .Select(input => new SynchronousGeneratorInput(
+                        input.GeneratorId,
+                        input.TerminalLineVoltage,
+                        input.RequestedElectricalPower,
+                        closeBreakerCommand: false,
+                        openBreakerCommand: true))
+                    .ToArray();
+                gridInputs = new GeneratorGridInputs(
+                    gridInputs.Definition,
+                    gridInputs.CondensateFeedwaterInputs,
+                    generatorInputs);
+            }
         }
 
         return ReferenceEquals(gridInputs, plantInputs.GeneratorGridInputs)

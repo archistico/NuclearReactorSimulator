@@ -13,7 +13,7 @@ Each `ScenarioFaultDefinition` contains:
 - one activation trigger;
 - optional deactivation trigger.
 
-Faults are persisted as part of scenario schema v2. Legacy v0/v1 scenarios migrate with an empty fault set.
+Fault schedules were introduced in scenario schema v2. Current schema v3 retains the same deterministic fault fields and adds only optional M9.5 historical provenance/fidelity metadata. Legacy v0/v1 scenarios still migrate with an empty fault set, while v2 migration never invents historical context.
 
 ## Trigger semantics
 
@@ -73,7 +73,7 @@ produces the same fault lifecycle history/state without a separate wall-clock fa
 
 - M8.2: pump, valve, restriction/blockage and selected hydraulic/leak applicators;
 - M8.3: validated sensor and control/actuator diagnostic applicators over canonical M5.1–M5.5 seams;
-- M8.4: current candidate for turbine/generator/feedwater/condenser transient packs over canonical M4/M5/M8 seams;
-- M8.5/M8.6: larger educational leak/LOCA and electrical-loss/SBO-class scenarios.
+- M8.4: validated turbine/generator/feedwater/condenser transient packs over canonical M4/M5/M8 seams;
+- M8.5 remains an unvalidated candidate for bounded educational leak/LOCA-class scenarios; M8.6 is a stacked candidate for explicit electrical-loss/SBO-class composition.
 
 All concrete effects must compose through existing canonical M1–M5 owners.
