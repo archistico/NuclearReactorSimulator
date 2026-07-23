@@ -82,6 +82,7 @@ public sealed class TurbineSecondaryControlledFullPlantSolver
             reactorStep.CommandedFullPlantState,
             committedSecondaryControlState,
             secondaryInputs,
+            basePlantInputs,
             deltaTime);
 
         var effectiveInputs = BuildEffectivePlantInputs(

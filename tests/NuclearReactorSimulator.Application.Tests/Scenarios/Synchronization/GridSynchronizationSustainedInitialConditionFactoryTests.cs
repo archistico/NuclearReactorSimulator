@@ -17,6 +17,9 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
         Assert.Equal(new InitialConditionReference("pre-synchronization-grid-loading", 2), current.Descriptor.Reference);
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
+        var currentGovernorDroop = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineGovernorDroopDefinition>(
+            currentEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
+        Assert.Equal(150d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
         var generatorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
         var gridCoupling = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridCouplingDefinition>(
             generatorDefinition.GridCoupling);

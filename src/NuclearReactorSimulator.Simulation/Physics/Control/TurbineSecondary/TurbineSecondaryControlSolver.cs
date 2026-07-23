@@ -30,6 +30,21 @@ public sealed class TurbineSecondaryControlSolver
         TurbineSecondaryControlState committedControlState,
         TurbineSecondaryControlInputs inputs,
         TimeSpan deltaTime)
+        => Step(
+            measuredSignals,
+            committedFullPlantState,
+            committedControlState,
+            inputs,
+            plantInputs: null,
+            deltaTime: deltaTime);
+
+    public TurbineSecondaryControlStepResult Step(
+        MeasuredSignalFrame measuredSignals,
+        FullPlantState committedFullPlantState,
+        TurbineSecondaryControlState committedControlState,
+        TurbineSecondaryControlInputs inputs,
+        IntegratedSecondaryCycleInputs? plantInputs,
+        TimeSpan deltaTime)
     {
         ArgumentNullException.ThrowIfNull(measuredSignals);
         ArgumentNullException.ThrowIfNull(committedFullPlantState);
@@ -48,15 +63,23 @@ public sealed class TurbineSecondaryControlSolver
         {
             throw new ArgumentException("Turbine/secondary inputs do not use this solver's canonical definition.", nameof(inputs));
         }
+        if (plantInputs is not null && !ReferenceEquals(plantInputs.Definition, _definition.PlantDefinition))
+        {
+            throw new ArgumentException("Plant inputs do not use this solver's canonical integrated secondary-cycle definition.", nameof(plantInputs));
+        }
         if (deltaTime <= TimeSpan.Zero)
         {
             throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "M5.4 timestep must be positive.");
         }
 
+        var effectiveControllerInputs = ResolveGovernorControllerInputs(
+            committedFullPlantState,
+            inputs.Controllers,
+            plantInputs);
         var controlStep = _controlSolver.Step(
             measuredSignals,
             committedControlState.ControlAndActuator,
-            inputs.Controllers,
+            effectiveControllerInputs,
             deltaTime);
 
         var commandedPlantState = ApplyCommands(
@@ -72,21 +95,21 @@ public sealed class TurbineSecondaryControlSolver
         var snapshot = new TurbineSecondaryControlSnapshot(
             _definition,
             controlStep.Snapshot,
-            BuildLoopDiagnostics(measuredSignals, inputs, controlStep));
+            BuildLoopDiagnostics(measuredSignals, effectiveControllerInputs, controlStep));
 
         return new TurbineSecondaryControlStepResult(controlStep, candidateState, commandedFullPlantState, snapshot);
     }
 
     private IReadOnlyList<TurbineSecondaryLoopDiagnosticSnapshot> BuildLoopDiagnostics(
         MeasuredSignalFrame measuredSignals,
-        TurbineSecondaryControlInputs inputs,
+        ControllerInputs effectiveControllerInputs,
         ControlAndActuatorStepResult controlStep)
         => _definition.Loops.Select(loop =>
         {
             var controller = _definition.ActuatorSystem.ControlSystem.GetController(loop.ControllerId);
             var actuator = _definition.ActuatorSystem.GetActuator(loop.ActuatorId);
             var measurement = measuredSignals.GetSignal(controller.MeasurementChannelId);
-            var input = inputs.Controllers.GetController(loop.ControllerId);
+            var input = effectiveControllerInputs.GetController(loop.ControllerId);
             var output = controlStep.Snapshot.Controllers.Outputs.GetOutput(loop.ControllerId);
             return new TurbineSecondaryLoopDiagnosticSnapshot(
                 loop.Id,
@@ -100,6 +123,44 @@ public sealed class TurbineSecondaryControlSolver
                 measurement.EngineeringValue.HasValue && measurement.Validity == SignalValidity.Valid,
                 output.IsSaturated);
         }).ToArray();
+
+    private ControllerInputs ResolveGovernorControllerInputs(
+        FullPlantState committedFullPlantState,
+        ControllerInputs requestedControllerInputs,
+        IntegratedSecondaryCycleInputs? plantInputs)
+    {
+        var governor = _definition.GovernorDroop;
+        if (governor is null || plantInputs is null)
+        {
+            return requestedControllerInputs;
+        }
+
+        var generatorState = committedFullPlantState.ElectricalState.GetGenerator(governor.GeneratorId);
+        var requestedSpeedController = requestedControllerInputs.GetController(governor.SpeedControllerId);
+        if (!generatorState.BreakerClosed || requestedSpeedController.Mode != ControllerMode.Automatic)
+        {
+            return requestedControllerInputs;
+        }
+
+        var generator = _definition.PlantDefinition.GeneratorGridSystem.GetGenerator(governor.GeneratorId);
+        var generatorInput = plantInputs.GeneratorGridInputs.GetGeneratorInput(governor.GeneratorId);
+        var requestedLoadFraction = generatorInput.RequestedElectricalPower.Watts / generator.MaximumElectricalPower.Watts;
+        requestedLoadFraction = Math.Clamp(requestedLoadFraction, 0d, 1d);
+
+        var synchronousMechanicalRpm =
+            _definition.PlantDefinition.GeneratorGridSystem.Grid.NominalFrequency.Hertz
+            * 60d
+            / generator.PolePairs;
+        var effectiveDroopSetpointRpm = synchronousMechanicalRpm
+            + (governor.FullLoadSpeedReferenceRise.RevolutionsPerMinute * requestedLoadFraction);
+
+        var effectiveInputs = requestedControllerInputs.Controllers
+            .Select(input => string.Equals(input.ControllerId, governor.SpeedControllerId, StringComparison.Ordinal)
+                ? new ControllerInput(input.ControllerId, input.Mode, effectiveDroopSetpointRpm, input.ManualOutput)
+                : input)
+            .ToArray();
+        return new ControllerInputs(requestedControllerInputs.Definition, effectiveInputs);
+    }
 
     private PlantState ApplyCommands(PlantState committed, ActuatorCommandFrame commands, TimeSpan deltaTime)
     {

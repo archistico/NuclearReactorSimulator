@@ -42,6 +42,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
                     NuclearReactorSimulator.Domain.Physics.Control.ActuatorTargetKind.Valve
                     or NuclearReactorSimulator.Domain.Physics.Control.ActuatorTargetKind.Pump),
             static actuator => Assert.Null(actuator.TravelRate));
+        Assert.Null(legacyEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
         var stageDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
@@ -83,6 +84,11 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             0.25d,
             currentActuators.GetActuator("condensate-actuator").TravelRate.GetValueOrDefault().FractionPerSecond,
             12);
+        var currentGovernorDroop = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineGovernorDroopDefinition>(
+            currentEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
+        Assert.Equal("speed-control", currentGovernorDroop.SpeedControllerId);
+        Assert.Equal("generator", currentGovernorDroop.GeneratorId);
+        Assert.Equal(150d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
 
         var coordinator = new ControlRoomRuntimeCoordinator(currentEngine);
         var snapshot = coordinator.Current;

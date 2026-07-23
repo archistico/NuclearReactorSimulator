@@ -87,6 +87,46 @@ public sealed class TurbineSecondaryControlSolverTests
     }
 
     [Fact]
+    public void Step_GovernorUsesOperatorSpeedReferenceBeforeSynchronizationAndLoadDroopReferenceAfterBreakerClose()
+    {
+        var openFixture = CreateFixture(
+            breakerClosed: false,
+            governorFullLoadSpeedReferenceRiseRpm: 150d);
+        var openSolver = new TurbineSecondaryControlSolver(openFixture.SecondaryDefinition);
+        var openResult = openSolver.Step(
+            openFixture.Signals,
+            openFixture.FullPlantState,
+            openFixture.SecondaryState,
+            openFixture.SecondaryInputs,
+            new IntegratedSecondaryCycleInputs(openFixture.FullPlantDefinition, openFixture.Physical.Inputs),
+            TimeSpan.FromMilliseconds(10d));
+
+        var openSpeedLoop = Assert.Single(
+            openResult.Snapshot.Loops,
+            static loop => loop.Kind == TurbineSecondaryControlLoopKind.TurbineSpeedAdmission);
+        Assert.Equal(0d, openSpeedLoop.Setpoint, 12);
+
+        var closedFixture = CreateFixture(
+            breakerClosed: true,
+            governorFullLoadSpeedReferenceRiseRpm: 150d);
+        var closedSolver = new TurbineSecondaryControlSolver(closedFixture.SecondaryDefinition);
+        var closedResult = closedSolver.Step(
+            closedFixture.Signals,
+            closedFixture.FullPlantState,
+            closedFixture.SecondaryState,
+            closedFixture.SecondaryInputs,
+            new IntegratedSecondaryCycleInputs(closedFixture.FullPlantDefinition, closedFixture.Physical.Inputs),
+            TimeSpan.FromMilliseconds(10d));
+
+        var closedSpeedLoop = Assert.Single(
+            closedResult.Snapshot.Loops,
+            static loop => loop.Kind == TurbineSecondaryControlLoopKind.TurbineSpeedAdmission);
+        // Fixture request is 0.3 MWe on a 1000 MWe generator: 0.03% load × 150 rpm full-load rise = 0.045 rpm.
+        Assert.Equal(3_000.045d, closedSpeedLoop.Setpoint, 9);
+        Assert.Equal(0d, closedFixture.SecondaryInputs.Controllers.GetController("speed-control").Setpoint, 12);
+    }
+
+    [Fact]
     public void IntegratedStep_DerivesTurbineFlowFromCommandedAdmissionPathAndKeepsValidatedM53Kinetics()
     {
         var fixture = CreateFixture();
@@ -148,11 +188,13 @@ public sealed class TurbineSecondaryControlSolverTests
 
     internal static Fixture CreateFixture(
         double? valveTravelRatePerSecond = null,
-        double? pumpTravelRatePerSecond = null)
+        double? pumpTravelRatePerSecond = null,
+        bool breakerClosed = true,
+        double? governorFullLoadSpeedReferenceRiseRpm = null)
     {
         var physical = global::NuclearReactorSimulator.Simulation.Tests.Physics.Electrical.GeneratorGridSolverTests.CreateFixture(
             3_000d,
-            breakerClosed: true,
+            breakerClosed: breakerClosed,
             generatorPhaseDegrees: 0d,
             gridPhaseDegrees: 0d);
         var fullPlantDefinition = new IntegratedSecondaryCycleDefinition("secondary-cycle", physical.Definition);
@@ -236,7 +278,13 @@ public sealed class TurbineSecondaryControlSolverTests
                 new TurbineSecondaryControlLoopDefinition("pressure-loop", TurbineSecondaryControlLoopKind.SteamPressureAdmission, "pressure-control", "pressure-actuator"),
                 new TurbineSecondaryControlLoopDefinition("level-loop", TurbineSecondaryControlLoopKind.SteamDrumLevelFeedwater, "level-control", "feedwater-actuator"),
                 new TurbineSecondaryControlLoopDefinition("hotwell-loop", TurbineSecondaryControlLoopKind.HotwellInventoryCondensate, "hotwell-control", "condensate-actuator"),
-            });
+            },
+            governorFullLoadSpeedReferenceRiseRpm.HasValue
+                ? new TurbineGovernorDroopDefinition(
+                    "speed-control",
+                    "generator",
+                    AngularSpeed.FromRevolutionsPerMinute(governorFullLoadSpeedReferenceRiseRpm.Value))
+                : null);
 
         var reactorState = ReactorPrimaryControlState.CreateInitial(
             reactorDefinition,

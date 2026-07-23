@@ -2,7 +2,7 @@
 
 ## Status
 
-M10.9.3 remains the validated baseline. M10.9.4 Hotfix 21 is the current implementation candidate; Hotfix 20 Fix 2 is the latest validated structural checkpoint.
+M10.9.3 remains the validated baseline. M10.9.4 Hotfix 22 is the current implementation candidate; Hotfix 21 is the latest validated structural checkpoint.
 
 This plan records the structural audit triggered by the long-running gameplay journey and by the discovery that the historical turbine-stage flow law made the admission train a monotonic mass accumulator. The governing rule is now:
 
@@ -155,7 +155,7 @@ Hotfix 19 adds opt-in canonical discharge check-valve semantics to the current-v
 
 Current-v2 now instantiates measured, latching turbine overspeed, condenser high-backpressure and generator overfrequency protection with explicit turbine/generator trip actions. Initial measured frames contain exactly one signal per channel and generator frequency is validated against committed rotor state. Underfrequency remains deferred until breaker/load-state supervision exists.
 
-### Hotfix 21 — current actuator correction
+### Hotfix 21 — validated actuator correction
 
 Normal M5.4 valve/pump commands are no longer written directly into canonical physical state for current-v2 actuator bindings. `ActuatorTravelRate` gives a typed normalized full-scale fraction per second; null retains legacy instantaneous behavior. Current-v2 uses:
 
@@ -219,7 +219,8 @@ then, one structural change at a time:
 2. synchronous generator-grid coupling — Hotfix 18 validated
 3. pump discharge check valves — Hotfix 19 validated
 4. meaningful measured secondary protections — Hotfix 20 Fix 2 validated
-5. actuator travel/ramp dynamics — Hotfix 21 current candidate
+5. actuator travel/ramp dynamics — Hotfix 21 validated
+6. governor/load-control mode cleanup — Hotfix 22 current candidate
 6. governor/load-control mode cleanup
 7. source-side/steam-dump audit
 8. turbine thermodynamic work fidelity
@@ -231,4 +232,9 @@ No item advances merely because the long-run lasts longer. Each item needs a sho
 
 ## Hotfix 20 / 21 continuation
 
-Hotfix 20 Fix 2 is validated with the first meaningful measured current-v2 secondary protection set. Hotfix 21 is the current isolated actuator-dynamics step. Next after validation: governor/load-control mode cleanup.
+Hotfix 20 Fix 2 is validated with the first meaningful measured current-v2 secondary protection set. Hotfix 21 is validated with isolated actuator dynamics. Hotfix 22 is the current isolated governor/load-control mode cleanup step.
+
+
+## G. Governor/load-control mode cleanup — CURRENT / Hotfix 22
+
+Hotfix 21 is validated. Hotfix 22 keeps the canonical speed PID and control-valve actuator but makes its automatic reference operating-mode aware. Breaker open uses the operator speed reference. Breaker closed uses synchronous mechanical speed plus a 5% full-load droop offset derived from canonical requested electrical power. Manual mode bypasses the rewrite. No duplicate load PID or actuator owner is introduced.

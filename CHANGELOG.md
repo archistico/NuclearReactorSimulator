@@ -1,3 +1,14 @@
+## M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — IMPLEMENTATION CANDIDATE
+
+- Promotes Hotfix 21 to the latest validated structural checkpoint after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.
+- Adds optional `TurbineGovernorDroopDefinition`; null preserves legacy speed-reference-only semantics.
+- Current-v2 keeps the existing canonical speed PID/control-valve owner but changes its automatic reference by breaker state: breaker open uses the operator speed setpoint; breaker closed uses grid synchronous speed plus a requested-electrical-load droop offset.
+- Current-v2 uses a 150 rpm full-load reference rise on the 3000 rpm machine (5% droop). At the validated 5 MWe / 1000 MWe point the effective reference is 3000.75 rpm, keeping the transition near-bumpless.
+- Manual controller mode bypasses droop rewriting. The breaker-close step itself remains pre-sync; load-droop semantics begin on the next committed step.
+- Both M5.4 integrated and M5.5 protected orchestration paths pass canonical `IntegratedSecondaryCycleInputs` into the governor so requested load cannot diverge by execution path.
+- Adds domain, solver and versioned-seed regressions plus ADR 0089. No protection, actuator-rate, turbine, condenser, pump or generator-grid physics changes are mixed into this hotfix.
+- M10.9.3 remains the official milestone baseline; Hotfix 21 is the latest validated M10.9.4 structural checkpoint and Hotfix 22 requires ordinary + both explicit 60-second gates before promotion.
+
 ## M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — IMPLEMENTATION CANDIDATE
 
 - Promotes Hotfix 20 Fix 2 to the latest validated structural checkpoint after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.

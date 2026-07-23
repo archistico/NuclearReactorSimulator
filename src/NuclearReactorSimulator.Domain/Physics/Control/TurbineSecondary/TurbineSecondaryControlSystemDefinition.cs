@@ -16,7 +16,8 @@ public sealed class TurbineSecondaryControlSystemDefinition
         string id,
         IntegratedSecondaryCycleDefinition plantDefinition,
         ActuatorSystemDefinition actuatorSystem,
-        IEnumerable<TurbineSecondaryControlLoopDefinition> loops)
+        IEnumerable<TurbineSecondaryControlLoopDefinition> loops,
+        TurbineGovernorDroopDefinition? governorDroop = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -62,14 +63,39 @@ public sealed class TurbineSecondaryControlSystemDefinition
             ValidateLoop(loop, controller, actuator);
         }
 
+        if (governorDroop is not null)
+        {
+            var governorController = actuatorSystem.ControlSystem.GetController(governorDroop.SpeedControllerId);
+            var governorLoop = canonical.SingleOrDefault(loop => string.Equals(loop.ControllerId, governorController.Id, StringComparison.Ordinal));
+            if (governorLoop is null || governorLoop.Kind != TurbineSecondaryControlLoopKind.TurbineSpeedAdmission)
+            {
+                throw new ArgumentException(
+                    $"Governor controller '{governorDroop.SpeedControllerId}' must own a turbine-speed admission loop.",
+                    nameof(governorDroop));
+            }
+
+            var governorGenerator = plantDefinition.GeneratorGridSystem.GetGenerator(governorDroop.GeneratorId);
+            var governorActuator = actuatorSystem.GetActuator(governorLoop.ActuatorId);
+            var governorTrain = GetAdmissionTrainForNormalValve(governorActuator, governorLoop);
+            var governorRotorId = GetRotorIdForAdmissionTrain(governorTrain.Id);
+            if (!string.Equals(governorGenerator.RotorId, governorRotorId, StringComparison.Ordinal))
+            {
+                throw new ArgumentException(
+                    $"Governor generator '{governorGenerator.Id}' is not coupled to speed-loop rotor '{governorRotorId}'.",
+                    nameof(governorDroop));
+            }
+        }
+
         Id = id.Trim();
         Loops = new ReadOnlyCollection<TurbineSecondaryControlLoopDefinition>(canonical);
+        GovernorDroop = governorDroop;
     }
 
     public string Id { get; }
     public IntegratedSecondaryCycleDefinition PlantDefinition { get; }
     public ActuatorSystemDefinition ActuatorSystem { get; }
     public IReadOnlyList<TurbineSecondaryControlLoopDefinition> Loops { get; }
+    public TurbineGovernorDroopDefinition? GovernorDroop { get; }
 
     public TurbineSecondaryControlLoopDefinition GetLoop(string id)
         => Loops.FirstOrDefault(item => string.Equals(item.Id, id, StringComparison.Ordinal))

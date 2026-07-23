@@ -63,6 +63,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             includeEnhancedSecondaryProtections: true,
             secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
+            governorFullLoadSpeedReferenceRiseRpm: 150d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             deterministicSeedStepCount: 2);
 }

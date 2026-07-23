@@ -114,6 +114,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool includeEnhancedSecondaryProtections = false,
         ActuatorTravelRate? secondaryValveTravelRate = null,
         ActuatorTravelRate? secondaryPumpTravelRate = null,
+        double? governorFullLoadSpeedReferenceRiseRpm = null,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
         int deterministicSeedStepCount = 1)
     {
@@ -168,6 +169,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             includeEnhancedSecondaryProtections,
             secondaryValveTravelRate,
             secondaryPumpTravelRate,
+            governorFullLoadSpeedReferenceRiseRpm,
             steamDrumLiquidRecirculationMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
@@ -243,6 +245,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool includeEnhancedSecondaryProtections,
         ActuatorTravelRate? secondaryValveTravelRate,
         ActuatorTravelRate? secondaryPumpTravelRate,
+        double? governorFullLoadSpeedReferenceRiseRpm,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
@@ -281,6 +284,16 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 nameof(initialTurbineSpeedSetpointRpm),
                 turbineSpeedSetpointRpm,
                 "Operational seed turbine-speed setpoint must be finite and between 0 and 3300 rpm.");
+        }
+        if (governorFullLoadSpeedReferenceRiseRpm.HasValue
+            && (!double.IsFinite(governorFullLoadSpeedReferenceRiseRpm.Value)
+                || governorFullLoadSpeedReferenceRiseRpm.Value <= 0d
+                || governorFullLoadSpeedReferenceRiseRpm.Value > 600d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(governorFullLoadSpeedReferenceRiseRpm),
+                governorFullLoadSpeedReferenceRiseRpm,
+                "Governor full-load speed-reference rise must be finite, greater than zero and no greater than 600 rpm.");
         }
         if (initialSteamPathTemperatureCelsius.HasValue
             && (!double.IsFinite(initialSteamPathTemperatureCelsius.Value)
@@ -857,7 +870,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "level-loop", TurbineSecondaryControlLoopKind.SteamDrumLevelFeedwater, "level-control", "feedwater-actuator"),
                 new TurbineSecondaryControlLoopDefinition(
                     "hotwell-loop", TurbineSecondaryControlLoopKind.HotwellInventoryCondensate, "hotwell-control", "condensate-actuator"),
-            });
+            },
+            governorFullLoadSpeedReferenceRiseRpm.HasValue
+                ? new TurbineGovernorDroopDefinition(
+                    "speed-control",
+                    "generator",
+                    AngularSpeed.FromRevolutionsPerMinute(governorFullLoadSpeedReferenceRiseRpm.Value))
+                : null);
 
         var protectionFunctions = new List<ProtectionFunctionDefinition>
         {

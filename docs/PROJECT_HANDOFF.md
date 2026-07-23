@@ -17,7 +17,7 @@ M9 gate — COMPLETE / VALIDATED
         ↓
 M10.1–M10.9.3 — VALIDATED
         ↓
-M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — CURRENT CANDIDATE
+M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — CURRENT CANDIDATE
         ↓
 M10.9.5 Contextual Command Consequence Model
 M10.9.6 Operational Challenge & Energy-Demand Framework
@@ -40,7 +40,7 @@ Hotfix 16 closes current-v2 drum/main-steam continuity conservatively and fixes 
 
 **Hotfix 17 changes one structural item only:** current-v2 condenser heat rejection becomes `min(Q_available, UA·ΔT)` with `UA = 1.225 MW/K` and cooling water at 20 °C, chosen to reproduce the existing 24.5 MW / 40 °C design point exactly at initialization. Legacy null-UA definitions retain capacity-only behavior as an isolated compatibility seam.
 
-Hotfix 17, Hotfix 18 and Hotfix 19 are validated structural checkpoints. Hotfix 20 Fix 2 is also validated: the user confirmed compilation, the ordinary suite and both explicit 60-second journeys green with measured turbine overspeed, condenser high-backpressure and generator overfrequency latching protection plus a complete measured-frame bootstrap. Hotfix 21 now changes only normal M5.4 actuator dynamics: current-v2 valve/pump bindings move toward requested targets at deterministic typed rates; legacy null rates remain instantaneous. Protection/fault authority is unchanged and governor/load-control cleanup stays separate.
+Hotfix 17, Hotfix 18 and Hotfix 19 are validated structural checkpoints. Hotfix 20 Fix 2 is also validated: the user confirmed compilation, the ordinary suite and both explicit 60-second journeys green with measured turbine overspeed, condenser high-backpressure and generator overfrequency latching protection plus a complete measured-frame bootstrap. Hotfix 21 is validated. Hotfix 22 changes only current-v2 governor mode semantics: breaker-open automatic operation uses the operator speed setpoint; breaker-closed automatic operation uses synchronous speed plus requested-load droop. Manual mode, protection/fault authority and actuator travel rates are unchanged.
 
 ## 2. Operator-experience objective
 

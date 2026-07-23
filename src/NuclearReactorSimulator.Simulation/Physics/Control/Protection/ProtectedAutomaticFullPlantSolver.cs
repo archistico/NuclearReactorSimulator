@@ -118,6 +118,7 @@ public sealed class ProtectedAutomaticFullPlantSolver
             reactorStep.CommandedFullPlantState,
             committedSecondaryControlState,
             secondaryInputs,
+            basePlantInputs,
             deltaTime);
 
         var protectedPlantState = ApplyPlantCommandOverrides(

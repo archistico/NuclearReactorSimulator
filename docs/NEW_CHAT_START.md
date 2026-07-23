@@ -22,8 +22,8 @@ We are continuing the **Nuclear Reactor Simulator** project.
 - M7, M8, M9 gates: **COMPLETE / VALIDATED**.
 - M10.1–M10.9.3: **VALIDATED**.
 - Official baseline: **M10.9.3 — Interactive Full-Plant Mimic**.
-- Latest validated structural checkpoint: **M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract**.
-- Current candidate: **M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics**.
+- Latest validated structural checkpoint: **M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics**.
+- Current candidate: **M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup**.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
 ## Approved M10.9 sequence
@@ -35,16 +35,17 @@ We are continuing the **Nuclear Reactor Simulator** project.
 5. M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — VALIDATED STRUCTURAL CHECKPOINT
 6. M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — VALIDATED STRUCTURAL CHECKPOINT
 7. M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — VALIDATED STRUCTURAL CHECKPOINT
-8. M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — CURRENT CANDIDATE
+8. M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — VALIDATED STRUCTURAL CHECKPOINT
+9. M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — CURRENT CANDIDATE
 5. M10.9.5 Contextual Command Consequence Model
 6. M10.9.6 Operational Challenge & Energy-Demand Framework
 7. M10.9.7 Mission & Performance Workstation
 8. M10.9.8 Integrated Human-Automation-HMI Validation Gate
 
 
-## Hotfix 20 validated checkpoint / Hotfix 21 current step
+## Hotfix 21 validated checkpoint / Hotfix 22 current step
 
-Hotfix 17 established condenser UA·ΔT feedback, Hotfix 18 generator/grid synchronous stiffness and Hotfix 19 secondary-pump discharge check valves; all are validated structural checkpoints. Hotfix 20 Fix 2 is now also validated after compilation, the ordinary suite and both explicit 60-second journeys passed with measured turbine overspeed, condenser high-backpressure and generator overfrequency protections active. Hotfix 21 is based directly on that checkpoint and changes only normal M5.4 actuator application: current-v2 control/admission valves use a 2 s full-stroke limit and condensate/feedwater pumps a 4 s full-ramp limit. Legacy bindings remain instantaneous and protection/fault authority is unchanged.
+Hotfix 17 established condenser UA·ΔT feedback, Hotfix 18 generator/grid synchronous stiffness and Hotfix 19 secondary-pump discharge check valves; all are validated structural checkpoints. Hotfix 20 Fix 2 is now also validated after compilation, the ordinary suite and both explicit 60-second journeys passed with measured turbine overspeed, condenser high-backpressure and generator overfrequency protections active. Hotfix 21 is validated with deterministic actuator travel/ramp dynamics. Hotfix 22 is based directly on it and changes only governor operating-mode reference derivation: speed reference before synchronization, requested-load droop reference after breaker closure. Legacy governor definitions remain speed-reference-only and manual/protection authority is unchanged.
 
 Current-v2 condenser law:
 
