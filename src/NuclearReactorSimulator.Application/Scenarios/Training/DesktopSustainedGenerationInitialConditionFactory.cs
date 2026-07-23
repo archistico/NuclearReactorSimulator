@@ -59,6 +59,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             generatorMaximumSynchronizingCorrectionPowerMegawatts: 10d,
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
             secondaryPumpsHaveDischargeCheckValves: true,
+            includeEnhancedSecondaryProtections: true,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             deterministicSeedStepCount: 2);
 }

@@ -99,3 +99,16 @@ M5.5 contains no wall-clock or random behavior. Trip/interlock evaluation depend
 - explicit manual trip/reset inputs.
 
 Scenario scheduling and fault timing remain later responsibilities.
+
+
+## M10.9.4 Hotfix 20 — current-v2 secondary protection set
+
+The historical/default recipe remains intentionally minimal. The current-v2 sustained-generation and synchronization profiles opt into three additional measured latching functions:
+
+- `turbine-overspeed`: `speed >= 3300 rpm`, reset-safe at `<= 3150 rpm`, actions `TurbineTrip | GeneratorTrip`;
+- `condenser-high-backpressure`: `condenser-pressure >= 30 kPa abs`, reset-safe at `<= 20 kPa abs`, actions `TurbineTrip | GeneratorTrip`;
+- `generator-overfrequency`: `generator-frequency >= 53 Hz`, reset-safe at `<= 51.5 Hz`, action `GeneratorTrip`.
+
+The current-v2 instrumentation definition therefore adds canonical measured condenser absolute pressure and generator frequency channels. The turbine speed channel already exists. Protection still consumes only the committed `MeasuredSignalFrame`; no true-state shortcut is introduced.
+
+Generator underfrequency is deliberately deferred. The current trip primitive has no breaker/load-state supervision, so an unconditional low-frequency function would incorrectly latch while a disconnected machine is starting or coasting. Underfrequency must be added only with explicit operational supervision.

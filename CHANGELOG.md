@@ -1,3 +1,22 @@
+## M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — IMPLEMENTATION CANDIDATE
+
+- Test-only correction: the current-v2 protection bootstrap regression no longer requires an exact literal 50.000000 Hz after deterministic seed preconditioning. It now derives expected generator frequency from the committed turbine rotor angular speed through `SynchronousGeneratorDefinition.ElectricalFrequencyAt(...)`, asserts measured telemetry matches that physical value, and separately requires the healthy operating point to remain within 49.9–50.1 Hz. No production code, protection thresholds/actions, plant physics or replay semantics changed.
+
+## M10.9.4 Hotfix 20 Fix 1 — Meaningful Secondary Protection Set / Initial Measured-Frame Completeness — SUPERSEDED BY FIX 2
+
+- Fixes the current-v2 bootstrap contract after Hotfix 20 added `condenser-pressure` and `generator-frequency` channels without adding matching initial measured signals. `MeasuredSignalFrame` again contains exactly one signal per instrumentation channel from logical step 0.
+- Initial `condenser-pressure` is seeded from the committed `exhaust` node pressure and `generator-frequency` from `SynchronousGeneratorDefinition.ElectricalFrequencyAt(initial rotor speed)`, preventing fabricated bootstrap values and false protection trips.
+- Adds a direct regression comparing instrumentation-channel IDs with initial measured-frame signal IDs and checking physically safe initial condenser pressure / 50 Hz generator frequency. No protection threshold/action or plant physics changes.
+- Promotes Hotfix 19 to the latest validated structural checkpoint after the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass.
+- Adds an opt-in current-v2 protection profile while preserving the historical minimal legacy protection definition by default.
+- Current-v2 adds measured `turbine-overspeed` at 3300 rpm (reset-safe 3150 rpm) with turbine + generator trip, `condenser-high-backpressure` at 30 kPa absolute (reset-safe 20 kPa) with turbine + generator trip, and `generator-overfrequency` at 53 Hz (reset-safe 51.5 Hz) with generator trip.
+- Adds canonical measured channels for condenser absolute pressure and generator frequency only when the enhanced current-v2 protection profile is enabled. Protection continues to consume measured M5.1 signals only.
+- Adds current-v2 warning/trip annunciation for condenser high backpressure plus turbine/generator trip actions.
+- Intentionally defers generator underfrequency protection until breaker/load-state supervision is available; a disconnected machine must not latch underfrequency merely because it is not synchronized.
+- Adds regressions proving legacy/current version ownership, exact thresholds/actions, healthy initial v2 state and actual latching from measured overspeed/backpressure/overfrequency signals.
+- Adds ADR 0087. Actuator travel rates, governor/load-control cleanup and adaptive substepping remain separate follow-on work.
+- M10.9.3 remains the official validated milestone baseline; Hotfix 19 is the latest validated M10.9.4 structural checkpoint and Hotfix 20 requires ordinary + both explicit 60-second gates before promotion.
+
 ## M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — IMPLEMENTATION CANDIDATE
 
 - Compile fix: current/legacy seed tests now resolve pump definitions through `IntegratedSecondaryCycleDefinition.PlantDefinition` before calling `GetPump(...)`; no pump/check-valve physics or seed configuration changed.

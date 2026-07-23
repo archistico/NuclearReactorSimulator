@@ -17,7 +17,7 @@ M9 gate — COMPLETE / VALIDATED
         ↓
 M10.1–M10.9.3 — VALIDATED
         ↓
-M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — CURRENT CANDIDATE
+M10.9.4 Hotfix 20 Fix 1 — Meaningful Secondary Protection Set / Initial Measured-Frame Completeness — CURRENT CANDIDATE
         ↓
 M10.9.5 Contextual Command Consequence Model
 M10.9.6 Operational Challenge & Energy-Demand Framework
@@ -40,7 +40,7 @@ Hotfix 16 closes current-v2 drum/main-steam continuity conservatively and fixes 
 
 **Hotfix 17 changes one structural item only:** current-v2 condenser heat rejection becomes `min(Q_available, UA·ΔT)` with `UA = 1.225 MW/K` and cooling water at 20 °C, chosen to reproduce the existing 24.5 MW / 40 °C design point exactly at initialization. Legacy null-UA definitions retain capacity-only behavior as an isolated compatibility seam.
 
-Hotfix 17 is validated. Hotfix 18 is also validated: the user confirmed compilation, ordinary suite and both explicit 60-second journeys green with current-v2 generator/grid phase-frequency stiffness. Hotfix 19 now adds only opt-in pump discharge check-valve behavior to the current-v2 condensate/feedwater train. Default/legacy pumps remain bidirectional. Do not mix protection expansion, actuator travel rates or adaptive substepping into this pump step.
+Hotfix 17 and Hotfix 18 are validated structural checkpoints. Hotfix 19 is also validated: the user confirmed compilation, the ordinary suite and both explicit 60-second journeys green with current-v2 condensate/feedwater discharge check valves. Hotfix 20 now changes protection configuration only: current-v2 adds measured turbine overspeed, condenser high-backpressure and generator overfrequency latching protection while legacy profiles retain the minimal historical set. Underfrequency remains deferred until breaker-state supervision exists; actuator travel rates and governor/load-control cleanup stay separate.
 
 ## 2. Operator-experience objective
 

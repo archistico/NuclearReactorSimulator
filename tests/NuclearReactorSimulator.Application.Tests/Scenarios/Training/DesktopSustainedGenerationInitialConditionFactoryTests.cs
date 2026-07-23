@@ -1,7 +1,10 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Training;
+using NuclearReactorSimulator.Domain.Physics.Control.Protection;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
+using NuclearReactorSimulator.Simulation.Physics.Control.Protection;
+using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
 using Xunit;
 
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Training;
@@ -120,6 +123,147 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.InRange(admissionFlow, 10d, 30d);
         Assert.InRange(stageFlow, 10d, 30d);
     }
+
+
+    [Fact]
+    public void Version2_EnablesMeaningfulSecondaryProtectionsWhileLegacyVersion1RemainsMinimal()
+    {
+        var legacyEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            new DesktopIntegratedOperationsInitialConditionFactory().CreateRuntimeEngine());
+        var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+
+        var legacyProtection = legacyEngine.CurrentState.ProtectionState.Definition;
+        Assert.Single(legacyProtection.TripFunctions);
+        Assert.Throws<KeyNotFoundException>(() => legacyProtection.GetTripFunction("turbine-overspeed"));
+        Assert.Throws<KeyNotFoundException>(() => legacyProtection.GetTripFunction("condenser-high-backpressure"));
+        Assert.Throws<KeyNotFoundException>(() => legacyProtection.GetTripFunction("generator-overfrequency"));
+
+        var expectedMeasuredChannelIds = currentEngine.CurrentState.InstrumentationDefinition.Channels
+            .Select(static channel => channel.Id)
+            .OrderBy(static id => id, StringComparer.Ordinal)
+            .ToArray();
+        var actualMeasuredChannelIds = currentEngine.CurrentState.MeasuredSignals.Signals
+            .Select(static signal => signal.ChannelId)
+            .OrderBy(static id => id, StringComparer.Ordinal)
+            .ToArray();
+        Assert.Equal(expectedMeasuredChannelIds, actualMeasuredChannelIds);
+        Assert.InRange(
+            currentEngine.CurrentState.MeasuredSignals.GetSignal("condenser-pressure").EngineeringValue ?? double.NaN,
+            1_000d,
+            20_000d);
+        var currentGenerator = Assert.Single(currentEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
+        var currentRotorState = Assert.Single(currentEngine.CurrentState.PlantState.TurbineState.Rotors);
+        var expectedGeneratorFrequencyHertz = currentGenerator.ElectricalFrequencyAt(currentRotorState.AngularSpeed).Hertz;
+        Assert.Equal(
+            expectedGeneratorFrequencyHertz,
+            currentEngine.CurrentState.MeasuredSignals.GetSignal("generator-frequency").EngineeringValue ?? double.NaN,
+            9);
+        Assert.InRange(expectedGeneratorFrequencyHertz, 49.9d, 50.1d);
+
+        var currentProtection = currentEngine.CurrentState.ProtectionState.Definition;
+        Assert.Equal(4, currentProtection.TripFunctions.Count);
+
+        AssertProtection(
+            currentProtection.GetTripFunction("turbine-overspeed"),
+            "speed",
+            ProtectionComparison.High,
+            3_300d,
+            3_150d,
+            ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip);
+        AssertProtection(
+            currentProtection.GetTripFunction("condenser-high-backpressure"),
+            "condenser-pressure",
+            ProtectionComparison.High,
+            30_000d,
+            20_000d,
+            ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip);
+        AssertProtection(
+            currentProtection.GetTripFunction("generator-overfrequency"),
+            "generator-frequency",
+            ProtectionComparison.High,
+            53d,
+            51.5d,
+            ProtectionAction.GeneratorTrip);
+
+        Assert.False(new ControlRoomRuntimeCoordinator(currentEngine).Current.AnyTripActive);
+    }
+
+    [Fact]
+    public void Version2_SecondaryProtectionFunctionsLatchFromMeasuredSignals()
+    {
+        var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+        var definition = engine.CurrentState.ProtectionState.Definition;
+        var solver = new ProtectionSystemSolver(definition);
+
+        var cases = new[]
+        {
+            new ProtectionTriggerCase(
+                "turbine-overspeed",
+                "speed",
+                3_350d,
+                ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip),
+            new ProtectionTriggerCase(
+                "condenser-high-backpressure",
+                "condenser-pressure",
+                35_000d,
+                ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip),
+            new ProtectionTriggerCase(
+                "generator-overfrequency",
+                "generator-frequency",
+                54d,
+                ProtectionAction.GeneratorTrip),
+        };
+
+        foreach (var testCase in cases)
+        {
+            var signals = ReplaceMeasuredSignal(
+                engine.CurrentState.MeasuredSignals,
+                testCase.ChannelId,
+                testCase.EngineeringValue);
+            var result = solver.Step(
+                signals,
+                ProtectionSystemState.CreateInitial(definition),
+                new ProtectionSystemInputs(definition));
+
+            Assert.True(result.CandidateState.IsFunctionLatched(testCase.FunctionId));
+            Assert.Equal(
+                testCase.ExpectedActions,
+                result.Snapshot.LatchedActions & testCase.ExpectedActions);
+        }
+    }
+
+    private static void AssertProtection(
+        ProtectionFunctionDefinition definition,
+        string channelId,
+        ProtectionComparison comparison,
+        double tripThreshold,
+        double resetThreshold,
+        ProtectionAction actions)
+    {
+        Assert.Equal(channelId, definition.MeasurementChannelId);
+        Assert.Equal(comparison, definition.Comparison);
+        Assert.Equal(tripThreshold, definition.TripThreshold, 12);
+        Assert.Equal(resetThreshold, definition.ResetThreshold, 12);
+        Assert.Equal(actions, definition.Actions);
+    }
+
+    private static MeasuredSignalFrame ReplaceMeasuredSignal(
+        MeasuredSignalFrame source,
+        string channelId,
+        double engineeringValue)
+        => new(
+            source.Definition,
+            source.Signals.Select(signal => signal.ChannelId == channelId
+                ? signal with { EngineeringValue = engineeringValue, ScaledValue = engineeringValue }
+                : signal));
+
+    private sealed record ProtectionTriggerCase(
+        string FunctionId,
+        string ChannelId,
+        double EngineeringValue,
+        ProtectionAction ExpectedActions);
 
     private static double AdmissionTrainInventoryKilograms(IntegratedAutomaticOperationRuntimeEngine engine)
     {

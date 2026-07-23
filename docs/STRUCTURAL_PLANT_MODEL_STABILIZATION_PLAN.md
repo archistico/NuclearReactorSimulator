@@ -224,3 +224,10 @@ then, one structural change at a time:
 ```
 
 No item advances merely because the long-run lasts longer. Each item needs a short direct invariant/regression test that would fail under the old structural defect.
+
+
+## Hotfix 20 — protection-set hardening
+
+Hotfix 19 is validated. Hotfix 20 adds the first meaningful current-v2 secondary protection set without mixing actuator dynamics: turbine overspeed, condenser high backpressure and generator overfrequency are measured, latching M5.5 trip functions. Generator underfrequency is deliberately deferred because the current protection primitive has no breaker/load-state supervision; tripping a disconnected machine solely for low frequency would be structurally wrong.
+
+Next after validation: actuator travel-rate dynamics, then governor/load-control mode cleanup.

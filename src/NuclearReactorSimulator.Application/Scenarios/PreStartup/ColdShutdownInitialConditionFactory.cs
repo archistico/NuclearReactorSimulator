@@ -111,6 +111,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts = null,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts = null,
         bool secondaryPumpsHaveDischargeCheckValves = false,
+        bool includeEnhancedSecondaryProtections = false,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
         int deterministicSeedStepCount = 1)
     {
@@ -162,6 +163,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             generatorMaximumSynchronizingCorrectionPowerMegawatts,
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
             secondaryPumpsHaveDischargeCheckValves,
+            includeEnhancedSecondaryProtections,
             steamDrumLiquidRecirculationMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
@@ -234,6 +236,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
         bool secondaryPumpsHaveDischargeCheckValves,
+        bool includeEnhancedSecondaryProtections,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
@@ -728,6 +731,11 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         {
             instrumentationChannels.Add(Channel("turbine-shaft-power", "plant/turbine/total-shaft-power", "W"));
         }
+        if (includeEnhancedSecondaryProtections)
+        {
+            instrumentationChannels.Add(Channel("condenser-pressure", "condenser/condenser/pressure", "Pa"));
+            instrumentationChannels.Add(Channel("generator-frequency", "generator/generator/frequency", "Hz"));
+        }
         var instrumentation = new InstrumentationSystemDefinition("instrumentation", instrumentationChannels);
 
         var reactorControl = new ControlSystemDefinition("reactor-control", instrumentation, new[]
@@ -837,29 +845,77 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "hotwell-loop", TurbineSecondaryControlLoopKind.HotwellInventoryCondensate, "hotwell-control", "condensate-actuator"),
             });
 
+        var protectionFunctions = new List<ProtectionFunctionDefinition>
+        {
+            new(
+                "very-high-pressure", "pressure", ProtectionComparison.High, 25_000_000d, 24_000_000d,
+                ProtectionAction.ReactorScram),
+        };
+        if (includeEnhancedSecondaryProtections)
+        {
+            protectionFunctions.Add(new ProtectionFunctionDefinition(
+                "turbine-overspeed",
+                "speed",
+                ProtectionComparison.High,
+                3_300d,
+                3_150d,
+                ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip));
+            protectionFunctions.Add(new ProtectionFunctionDefinition(
+                "condenser-high-backpressure",
+                "condenser-pressure",
+                ProtectionComparison.High,
+                30_000d,
+                20_000d,
+                ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip));
+            protectionFunctions.Add(new ProtectionFunctionDefinition(
+                "generator-overfrequency",
+                "generator-frequency",
+                ProtectionComparison.High,
+                53d,
+                51.5d,
+                ProtectionAction.GeneratorTrip));
+        }
         var protectionDefinition = new ProtectionSystemDefinition(
             "protection",
             fullPlantDefinition,
             instrumentation,
-            new[]
-            {
-                new ProtectionFunctionDefinition(
-                    "very-high-pressure", "pressure", ProtectionComparison.High, 25_000_000d, 24_000_000d,
-                    ProtectionAction.ReactorScram),
-            });
+            protectionFunctions);
+
+        var alarmDefinitions = new List<AlarmDefinition>
+        {
+            new(
+                "pressure-high", "Steam-drum pressure high", AlarmSeverity.Warning, AlarmLatchingMode.NonLatching,
+                new MeasuredAlarmConditionDefinition("pressure", AlarmComparison.High, 20_000_000d)),
+            new(
+                "scram-active", "SCRAM active", AlarmSeverity.Trip, AlarmLatchingMode.LatchedUntilReset,
+                new ProtectionActionAlarmConditionDefinition(ProtectionAction.ReactorScram)),
+        };
+        if (includeEnhancedSecondaryProtections)
+        {
+            alarmDefinitions.Add(new AlarmDefinition(
+                "condenser-backpressure-high",
+                "Condenser backpressure high",
+                AlarmSeverity.Warning,
+                AlarmLatchingMode.NonLatching,
+                new MeasuredAlarmConditionDefinition("condenser-pressure", AlarmComparison.High, 20_000d)));
+            alarmDefinitions.Add(new AlarmDefinition(
+                "turbine-trip-active",
+                "Turbine trip active",
+                AlarmSeverity.Trip,
+                AlarmLatchingMode.LatchedUntilReset,
+                new ProtectionActionAlarmConditionDefinition(ProtectionAction.TurbineTrip)));
+            alarmDefinitions.Add(new AlarmDefinition(
+                "generator-trip-active",
+                "Generator trip active",
+                AlarmSeverity.Trip,
+                AlarmLatchingMode.LatchedUntilReset,
+                new ProtectionActionAlarmConditionDefinition(ProtectionAction.GeneratorTrip)));
+        }
         var alarmDefinition = new AlarmSystemDefinition(
             "alarms",
             instrumentation,
             protectionDefinition,
-            new[]
-            {
-                new AlarmDefinition(
-                    "pressure-high", "Steam-drum pressure high", AlarmSeverity.Warning, AlarmLatchingMode.NonLatching,
-                    new MeasuredAlarmConditionDefinition("pressure", AlarmComparison.High, 20_000_000d)),
-                new AlarmDefinition(
-                    "scram-active", "SCRAM active", AlarmSeverity.Trip, AlarmLatchingMode.LatchedUntilReset,
-                    new ProtectionActionAlarmConditionDefinition(ProtectionAction.ReactorScram)),
-            });
+            alarmDefinitions);
 
         var primaryBoundaryInputs = new PrimaryCircuitBoundaryInputs(
             boundaries,
@@ -960,6 +1016,18 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         if (includeTurbineShaftPowerInstrumentation)
         {
             initialMeasuredSignals.Add(Signal("turbine-shaft-power", "W", 0d));
+        }
+        if (includeEnhancedSecondaryProtections)
+        {
+            initialMeasuredSignals.Add(Signal(
+                "condenser-pressure",
+                "Pa",
+                plantState.GetFluidNode("exhaust").Pressure.Pascals));
+            initialMeasuredSignals.Add(Signal(
+                "generator-frequency",
+                "Hz",
+                generator.ElectricalFrequencyAt(
+                    AngularSpeed.FromRevolutionsPerMinute(initialRotorSpeedRpm)).Hertz));
         }
         var measuredSignals = new MeasuredSignalFrame(instrumentation, initialMeasuredSignals);
         var state = new IntegratedAutomaticOperationState(

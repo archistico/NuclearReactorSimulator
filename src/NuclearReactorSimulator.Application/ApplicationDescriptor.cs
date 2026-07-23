@@ -8,5 +8,5 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
         "M10.9.4 — Subsystem Engineering Schematics",
-        "Implementation candidate — M10.9.4 Hotfix 19 on validated M10.9.3 baseline; adds subsystem engineering schematics, long-gameplay acceptance tests, pressure-driven turbine expansion, current-v2 drum/main-steam closure, condenser UA×ΔT pressure feedback, synchronous generator/grid phase-frequency stiffness and opt-in secondary-pump discharge check valves without moving plant topology, protection or control authority into the UI");
+        "Implementation candidate — M10.9.4 Hotfix 20 on validated M10.9.3 baseline; adds subsystem engineering schematics, long-gameplay acceptance tests, pressure-driven turbine expansion, current-v2 drum/main-steam closure, condenser UA×ΔT pressure feedback, synchronous generator/grid phase-frequency stiffness, opt-in secondary-pump discharge check valves and meaningful current-v2 turbine/generator/condenser protection functions without moving plant topology, protection or control authority into the UI");
 }
