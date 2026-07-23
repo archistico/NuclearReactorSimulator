@@ -11,9 +11,9 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 The current explicitly validated baseline is **M10.9.3 — Interactive Full-Plant Mimic — VALIDATED**. The user confirmed local compilation and the complete automated suite passed.
 
-The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.3 are validated. The user-supplied **M10.9.4 Hotfix 16 — Conservative Main-Steam Supply Closure** is the latest green integrated checkpoint; its changelog records a clean build, 870 ordinary tests passed and both explicit 60-second gameplay journeys passed separately. The current working package is **M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — IMPLEMENTATION CANDIDATE**, based directly on Hotfix 16.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.3 are validated. **M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback is the latest validated structural checkpoint**: the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass. The current working package is **M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — IMPLEMENTATION CANDIDATE**, based directly on validated Hotfix 17.
 
-Hotfix 17 changes one structural owner only: current-v2 M4.3 condenser heat rejection is `min(Q_available, UA·ΔT)` instead of treating installed cooling capacity as immediately usable independently of condenser temperature. The current design point uses `UA = 1.225 MW/K` and cooling water at 20 °C, reproducing the existing 24.5 MW rejection at the 40 °C initial exhaust state. Pressure-driven turbine expansion and the Hotfix 16 drum/main-steam closure remain unchanged. The next structural item after green ordinary + explicit gates is generator-grid synchronous coupling.
+Hotfix 18 changes one structural owner only: current-v2 M4.5 generator/grid coupling adds deterministic phase-angle and frequency-slip restoring corrections around the dispatched electrical load. At the validated 50 Hz / zero-phase-error operating point those corrections are zero, preserving the Hotfix 17 initial condition. Pump non-return behavior, protection expansion, actuator travel rates and adaptive substepping remain separate follow-on items.
 
 See `docs/milestones/M10.9.4.md`, `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`, `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`, ADR 0075–ADR 0084. M10 closes only after M10.9.8; release hardening remains M11.
 
@@ -448,7 +448,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.3 are validated; M10.9.3 is the current official baseline and M10.9.4 Hotfix 17 is the current implementation candidate.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.3 are validated; M10.9.3 is the current official baseline and M10.9.4 Hotfix 18 is the current implementation candidate.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -575,4 +575,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.3 are validated; M10.9.4 Hotfix 17 is the current implementation candidate in the approved M10.9 operator-experience sequence.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.3 are validated; M10.9.4 Hotfix 18 is the current implementation candidate in the approved M10.9 operator-experience sequence.

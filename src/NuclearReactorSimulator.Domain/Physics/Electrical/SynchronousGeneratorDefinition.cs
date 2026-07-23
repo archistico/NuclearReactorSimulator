@@ -17,7 +17,8 @@ public sealed class SynchronousGeneratorDefinition
         GeneratorEfficiency efficiency,
         Frequency maximumSynchronizationFrequencyDifference,
         PhaseAngleDifference maximumSynchronizationPhaseDifference,
-        ElectricPotential maximumSynchronizationVoltageDifference)
+        ElectricPotential maximumSynchronizationVoltageDifference,
+        SynchronousGridCouplingDefinition? gridCoupling = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -64,6 +65,7 @@ public sealed class SynchronousGeneratorDefinition
         MaximumSynchronizationFrequencyDifference = maximumSynchronizationFrequencyDifference;
         MaximumSynchronizationPhaseDifference = maximumSynchronizationPhaseDifference;
         MaximumSynchronizationVoltageDifference = maximumSynchronizationVoltageDifference;
+        GridCoupling = gridCoupling;
     }
 
     public string Id { get; }
@@ -85,6 +87,11 @@ public sealed class SynchronousGeneratorDefinition
     public PhaseAngleDifference MaximumSynchronizationPhaseDifference { get; }
 
     public ElectricPotential MaximumSynchronizationVoltageDifference { get; }
+
+    /// <summary>
+    /// Optional infinite-bus synchronizing correction. Null preserves the historical dispatch-torque-only model.
+    /// </summary>
+    public SynchronousGridCouplingDefinition? GridCoupling { get; }
 
     public Frequency ElectricalFrequencyAt(AngularSpeed mechanicalAngularSpeed)
         => Frequency.FromHertz(PolePairs * mechanicalAngularSpeed.RadiansPerSecond / (2d * Math.PI));

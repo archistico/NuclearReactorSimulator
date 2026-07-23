@@ -77,7 +77,7 @@ main-steam pipe  transports the same committed outlet inventory to the header
 
 Legacy drums retain the historical law. Direct regressions verify unchanged outlet inventory under matched current-mode demand, equal drum depletion, zero balance residuals and no replenishment for legacy mode. ADR 0083 records the decision.
 
-## C. Condenser pressure/heat-rejection feedback — CURRENT / Hotfix 17
+## C. Condenser pressure/heat-rejection feedback — VALIDATED / Hotfix 17
 
 ### Confirmed defect
 
@@ -107,22 +107,37 @@ M4.3 tests verify:
 - legacy null-UA definitions retain the historical capacity-only law;
 - deterministic mass/energy audit closure remains unchanged.
 
-The ordinary suite and both explicit 60-second journeys are required before advancing.
+The user confirmed the ordinary suite and both explicit 60-second journeys are green on Hotfix 17. This item is validated as the current condenser-feedback checkpoint.
 
-## D. Generator-grid synchronous coupling — AFTER CONDENSER
+## D. Generator-grid synchronous coupling — CURRENT / Hotfix 18
 
-### Audit result: confirmed
+### Confirmed defect
 
-The current generator load torque is derived from requested mechanical power at rated angular speed. When paralleled, there is no synchronizing torque/stiffness tying rotor electrical angle/frequency to the infinite grid. Electrical output therefore falls with rotor speed in a way that can permit an implausibly slow paralleled machine rather than producing a synchronizing/pole-slip response.
+The historical M4.5 generator converted requested electrical power into a fixed opposing torque at rated angular speed. Once paralleled, rotor/grid electrical phase and frequency slip did not feed back into electromagnetic torque, allowing an implausibly slow machine to remain connected while MWe simply scaled down with rotor speed.
 
-### Planned correction
+### Current correction
 
-Add a bounded educational synchronous coupling model with explicit rotor-grid angle/frequency feedback, synchronization torque and fail-closed loss-of-synchronism behavior. Add direct tests for:
+Current v2 generators opt into `SynchronousGridCouplingDefinition`. Breaker-closed load torque is derived from dispatched mechanical-power demand plus deterministic infinite-bus corrections:
 
-- grid-coupled speed/frequency stiffness;
-- load-angle response;
-- loss-of-synchronism / breaker or protection behavior;
-- no use of rotor kinetic energy as an unconstrained long-duration electrical source.
+```text
+P_phase = P_sync,max * sin(delta)
+P_frequency = P_damp@1Hz * (f_generator - f_grid)
+P_load = clamp(P_dispatch + P_phase + P_frequency, 0, P_generator,max / efficiency)
+T_e = P_load / omega_rated
+```
+
+Positive generator lead / positive frequency slip increase electromagnetic loading; negative slip unloads the shaft. Current v2 uses `P_sync,max = 10 MW` and `P_damp@1Hz = 10 MW`. At 50 Hz and zero phase error both corrections are zero, so the validated Hotfix 17 design point is preserved. Null coupling remains only as an isolated legacy seam.
+
+### Direct regressions
+
+M4.5 tests verify:
+
+- phase lead increases and phase lag reduces electromagnetic load;
+- a slow paralleled rotor is unloaded while a fast rotor is loaded more strongly;
+- legacy null coupling preserves exact historical dispatch torque;
+- sustained-generation and pre-synchronization current-v2 seeds explicitly publish the coupling.
+
+Loss-of-synchronism protection is deliberately not mixed into this physics step; it remains part of the later protection-layer expansion after the coupling itself passes ordinary and long-running gates. ADR 0085 records the decision.
 
 ## E. Pump non-return behavior — AFTER GENERATOR COUPLING
 
@@ -199,7 +214,7 @@ Hotfix 15: drum inventory closure
 
 then, one structural change at a time:
 
-1. condenser UA*DeltaT pressure feedback — Hotfix 17 current
+1. condenser UA*DeltaT pressure feedback — Hotfix 17 validated
 2. synchronous generator-grid coupling — NEXT
 3. pump discharge check valves
 4. protections + actuator travel/ramp dynamics

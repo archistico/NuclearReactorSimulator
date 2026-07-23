@@ -29,6 +29,8 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         var legacyCondenser = Assert.Single(legacyEngine.CurrentState.PlantDefinition
             .CondensateFeedwaterSystem.CondenserSystem.Condensers);
         Assert.False(legacyCondenser.OverallHeatTransferConductance.HasValue);
+        var legacyGeneratorDefinition = Assert.Single(legacyEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
+        Assert.Null(legacyGeneratorDefinition.GridCoupling);
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
         var stageDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
@@ -46,6 +48,11 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             1.225d,
             currentCondenserDefinition.OverallHeatTransferConductance.GetValueOrDefault().MegawattsPerKelvin,
             12);
+        var currentGeneratorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
+        var gridCoupling = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridCouplingDefinition>(
+            currentGeneratorDefinition.GridCoupling);
+        Assert.Equal(10d, gridCoupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
+        Assert.Equal(10d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
 
         var coordinator = new ControlRoomRuntimeCoordinator(currentEngine);
         var snapshot = coordinator.Current;

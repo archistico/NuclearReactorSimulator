@@ -1,4 +1,18 @@
-## M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — IMPLEMENTATION CANDIDATE
+## M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — IMPLEMENTATION CANDIDATE
+
+- Compile correction: import the canonical Domain turbine namespace in `GeneratorGridSolver.cs` so the `TurbineRotorDefinition` parameter used by the new synchronous-coupling helper resolves correctly. No generator/grid equations, coefficients, seed values, replay semantics, protection logic or control authority changed.
+
+- Promotes Hotfix 17 to the latest validated structural checkpoint after the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass.
+- Adds optional `SynchronousGridCouplingDefinition` to M4.5 generator definitions; null preserves the historical dispatch-torque-only legacy seam.
+- Current-v2 paralleled generators now apply deterministic infinite-bus corrections around the dispatch setpoint: `Pphase = Psync,max*sin(delta)` plus `Pfrequency = Pdamp@1Hz*(fgenerator-fgrid)`.
+- Positive electrical phase lead / positive frequency slip increase electromagnetic load; negative slip unloads the rotor, creating restoring phase/frequency stiffness instead of allowing a paralleled machine to drift freely away from 50 Hz.
+- The final mechanical load is bounded to `[0, generator maximum mechanical power]` before conversion to canonical M4.2 external rotor torque. Rotor inertia remains integrated exactly once by `TurbineExpansionSolver`.
+- Current sustained-generation and pre-synchronization v2 definitions use `Psync,max = 10 MW` and `Pdamp@1Hz = 10 MW`; at the validated 50 Hz / zero-phase-error design point the correction is exactly zero, preserving the Hotfix 17 initial operating point.
+- Adds direct M4.5 regressions for phase lead/lag restoring direction, slow/fast rotor frequency damping and exact legacy-null-coupling dispatch behavior. Current-v2 seed tests assert the coupling is explicitly present.
+- Adds ADR 0085. No pump check-valve, protection expansion, actuator travel-rate or adaptive-substep changes are mixed into this hotfix.
+- M10.9.3 remains the official validated milestone baseline; Hotfix 17 is the latest validated M10.9.4 structural checkpoint and Hotfix 18 requires ordinary + both explicit 60-second gates before promotion.
+
+## M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — VALIDATED STRUCTURAL CHECKPOINT
 
 - Takes user-corrected Hotfix 16 as the current green working checkpoint: solution build, 870 ordinary tests and both explicit 60-second gameplay journeys are documented green there.
 - Replaces the current-v2 condenser's capacity-only heat-removal assumption with a canonical surface-condenser feedback law: `Q_effective = min(Q_available, UA * max(0, T_steam-space - T_coolant))`.
@@ -9,7 +23,7 @@
 - Adds direct M4.3 regressions proving UA-limited rejection below installed capacity, weaker condensation as ΔT falls, zero condensation at non-positive ΔT and explicit legacy isolation.
 - Removes the obsolete duplicate-number Hotfix 11 condenser ADR and records the current decision as ADR 0084.
 - No generator synchronous-coupling, pump check-valve, protection, actuator-rate or adaptive-substep changes are mixed into this hotfix. Those remain ordered follow-on structural items.
-- M10.9.3 remains the validated baseline. Hotfix 17 requires the ordinary gate and both explicit 60-second gameplay journeys before promotion.
+- User validation complete: compilation, ordinary suite and both explicit 60-second gameplay journeys passed. Hotfix 17 is the validated base for Hotfix 18.
 
 ## M10.9.4 Hotfix 16 — Conservative Main-Steam Supply Closure — IMPLEMENTATION CANDIDATE
 

@@ -108,6 +108,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double hotwellControllerIntegralGainPerSecond = 0d,
         double exhaustSteamSpaceVolumeCubicMetres = 10d,
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared = null,
+        double? generatorMaximumSynchronizingCorrectionPowerMegawatts = null,
+        double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts = null,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
         int deterministicSeedStepCount = 1)
     {
@@ -156,6 +158,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             hotwellControllerIntegralGainPerSecond,
             exhaustSteamSpaceVolumeCubicMetres,
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
+            generatorMaximumSynchronizingCorrectionPowerMegawatts,
+            generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
             steamDrumLiquidRecirculationMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
@@ -225,6 +229,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double hotwellControllerIntegralGainPerSecond,
         double exhaustSteamSpaceVolumeCubicMetres,
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
+        double? generatorMaximumSynchronizingCorrectionPowerMegawatts,
+        double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
@@ -419,6 +425,31 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 nameof(turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared),
                 turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
                 "Operational-seed turbine expansion resistance must be finite and positive when specified.");
+        }
+        if (generatorMaximumSynchronizingCorrectionPowerMegawatts.HasValue
+            != generatorFrequencyDampingPowerAtOneHertzSlipMegawatts.HasValue)
+        {
+            throw new ArgumentException(
+                "Generator synchronizing phase and frequency coupling parameters must either both be supplied or both be omitted.",
+                nameof(generatorMaximumSynchronizingCorrectionPowerMegawatts));
+        }
+        if (generatorMaximumSynchronizingCorrectionPowerMegawatts.HasValue
+            && (!double.IsFinite(generatorMaximumSynchronizingCorrectionPowerMegawatts.Value)
+                || generatorMaximumSynchronizingCorrectionPowerMegawatts.Value <= 0d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(generatorMaximumSynchronizingCorrectionPowerMegawatts),
+                generatorMaximumSynchronizingCorrectionPowerMegawatts,
+                "Generator maximum synchronizing correction power must be finite and positive when specified.");
+        }
+        if (generatorFrequencyDampingPowerAtOneHertzSlipMegawatts.HasValue
+            && (!double.IsFinite(generatorFrequencyDampingPowerAtOneHertzSlipMegawatts.Value)
+                || generatorFrequencyDampingPowerAtOneHertzSlipMegawatts.Value <= 0d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(generatorFrequencyDampingPowerAtOneHertzSlipMegawatts),
+                generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
+                "Generator frequency-damping power at one hertz slip must be finite and positive when specified.");
         }
         if (!Enum.IsDefined(steamDrumLiquidRecirculationMode))
         {
@@ -658,7 +689,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             GeneratorEfficiency.FromPercent(98d),
             Frequency.FromHertz(0.2d),
             PhaseAngleDifference.FromDegrees(10d),
-            ElectricPotential.FromKilovolts(10d));
+            ElectricPotential.FromKilovolts(10d),
+            generatorMaximumSynchronizingCorrectionPowerMegawatts.HasValue
+                ? new SynchronousGridCouplingDefinition(
+                    Power.FromMegawatts(generatorMaximumSynchronizingCorrectionPowerMegawatts.Value),
+                    Power.FromMegawatts(generatorFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value))
+                : null);
         var generatorGrid = new GeneratorGridSystemDefinition("electrical", feedwater, grid, new[] { generator });
         var fullPlantDefinition = new IntegratedSecondaryCycleDefinition("secondary-cycle", generatorGrid);
         var fullPlantState = new FullPlantState(

@@ -17,7 +17,7 @@ M9 gate — COMPLETE / VALIDATED
         ↓
 M10.1–M10.9.3 — VALIDATED
         ↓
-M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — CURRENT CANDIDATE
+M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — CURRENT CANDIDATE
         ↓
 M10.9.5 Contextual Command Consequence Model
 M10.9.6 Operational Challenge & Energy-Demand Framework
@@ -40,7 +40,7 @@ Hotfix 16 closes current-v2 drum/main-steam continuity conservatively and fixes 
 
 **Hotfix 17 changes one structural item only:** current-v2 condenser heat rejection becomes `min(Q_available, UA·ΔT)` with `UA = 1.225 MW/K` and cooling water at 20 °C, chosen to reproduce the existing 24.5 MW / 40 °C design point exactly at initialization. Legacy null-UA definitions retain capacity-only behavior as an isolated compatibility seam.
 
-Next after Hotfix 17, if ordinary + explicit gates remain green: **generator-grid synchronous coupling**. Do not mix pump check valves, protection expansion, actuator travel rates or adaptive substepping into the condenser change.
+Hotfix 17 is validated: the user confirmed compilation, ordinary suite and both explicit 60-second journeys green. Hotfix 18 now adds only current-v2 generator/grid phase-frequency stiffness. Next after Hotfix 18, if ordinary + explicit gates remain green: **pump non-return/check-valve behavior**. Do not mix protection expansion, actuator travel rates or adaptive substepping into this generator step.
 
 ## 2. Operator-experience objective
 

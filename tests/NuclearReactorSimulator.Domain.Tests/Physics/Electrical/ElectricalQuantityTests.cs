@@ -25,6 +25,23 @@ public sealed class ElectricalQuantityTests
     }
 
     [Fact]
+    public void SynchronousGridCouplingDefinition_RequiresPositivePhaseAndFrequencyStiffness()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new SynchronousGridCouplingDefinition(
+            Power.Zero,
+            Power.FromMegawatts(1d)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => new SynchronousGridCouplingDefinition(
+            Power.FromMegawatts(1d),
+            Power.Zero));
+
+        var coupling = new SynchronousGridCouplingDefinition(
+            Power.FromMegawatts(10d),
+            Power.FromMegawatts(8d));
+        Assert.Equal(10d, coupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
+        Assert.Equal(8d, coupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
+    }
+
+    [Fact]
     public void SynchronousGeneratorDefinition_RejectsDefaultInvalidEfficiency()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new SynchronousGeneratorDefinition(

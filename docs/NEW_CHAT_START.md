@@ -22,7 +22,8 @@ We are continuing the **Nuclear Reactor Simulator** project.
 - M7, M8, M9 gates: **COMPLETE / VALIDATED**.
 - M10.1–M10.9.3: **VALIDATED**.
 - Official baseline: **M10.9.3 — Interactive Full-Plant Mimic**.
-- Current candidate: **M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback**.
+- Latest validated structural checkpoint: **M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback**.
+- Current candidate: **M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness**.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
 ## Approved M10.9 sequence
@@ -30,16 +31,17 @@ We are continuing the **Nuclear Reactor Simulator** project.
 1. M10.9.1 HMI Information Architecture & Visual Language — VALIDATED
 2. M10.9.2 Hotfix 2 Advanced Instrument & Gauge System — VALIDATED
 3. M10.9.3 Interactive Full-Plant Mimic — VALIDATED
-4. M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — CURRENT CANDIDATE
+4. M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — VALIDATED STRUCTURAL CHECKPOINT
+5. M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — CURRENT CANDIDATE
 5. M10.9.5 Contextual Command Consequence Model
 6. M10.9.6 Operational Challenge & Energy-Demand Framework
 7. M10.9.7 Mission & Performance Workstation
 8. M10.9.8 Integrated Human-Automation-HMI Validation Gate
 
 
-## Hotfix 16 green checkpoint / Hotfix 17 current step
+## Hotfix 17 validated checkpoint / Hotfix 18 current step
 
-The user-supplied Hotfix 16 package is the latest green integrated checkpoint: its changelog records a clean build, 870 ordinary tests passed and both explicit 60-second gameplay journeys passed separately. Hotfix 17 is based directly on that package and changes only condenser feedback.
+Hotfix 16 established the prior green integrated checkpoint. Hotfix 17 was subsequently validated by the user with compilation, the ordinary suite and both explicit 60-second journeys green, and is now the latest validated structural checkpoint. Hotfix 18 is based directly on Hotfix 17 and changes only generator/grid synchronous phase-frequency feedback.
 
 Current-v2 condenser law:
 

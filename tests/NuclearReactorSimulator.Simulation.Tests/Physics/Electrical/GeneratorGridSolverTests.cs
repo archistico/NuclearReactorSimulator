@@ -106,6 +106,79 @@ public sealed class GeneratorGridSolverTests
     }
 
     [Fact]
+    public void Step_GridCouplingPhaseLeadIncreasesAndPhaseLagReducesElectromagneticLoad()
+    {
+        var leading = CreateFixture(
+            3_000d,
+            breakerClosed: true,
+            generatorPhaseDegrees: 5d,
+            gridPhaseDegrees: 0d,
+            gridCouplingSynchronizingPowerMegawatts: 10d,
+            gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d);
+        var lagging = CreateFixture(
+            3_000d,
+            breakerClosed: true,
+            generatorPhaseDegrees: -5d,
+            gridPhaseDegrees: 0d,
+            gridCouplingSynchronizingPowerMegawatts: 10d,
+            gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d);
+
+        var leadingResult = new GeneratorGridSolver(leading.Definition, leading.ThermodynamicModel)
+            .Step(leading.PlantState, leading.TurbineState, leading.ElectricalState, leading.Inputs, TimeSpan.FromMilliseconds(1d));
+        var laggingResult = new GeneratorGridSolver(lagging.Definition, lagging.ThermodynamicModel)
+            .Step(lagging.PlantState, lagging.TurbineState, lagging.ElectricalState, lagging.Inputs, TimeSpan.FromMilliseconds(1d));
+
+        var leadingGenerator = Assert.Single(leadingResult.Snapshot.Generators);
+        var laggingGenerator = Assert.Single(laggingResult.Snapshot.Generators);
+        Assert.True(leadingGenerator.CommandedElectromagneticTorque > laggingGenerator.CommandedElectromagneticTorque);
+    }
+
+    [Fact]
+    public void Step_GridCouplingFrequencyDampingUnloadsSlowRotorAndLoadsFastRotor()
+    {
+        var slow = CreateFixture(
+            2_970d,
+            breakerClosed: true,
+            generatorPhaseDegrees: 0d,
+            gridPhaseDegrees: 0d,
+            gridCouplingSynchronizingPowerMegawatts: 10d,
+            gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d);
+        var fast = CreateFixture(
+            3_030d,
+            breakerClosed: true,
+            generatorPhaseDegrees: 0d,
+            gridPhaseDegrees: 0d,
+            gridCouplingSynchronizingPowerMegawatts: 10d,
+            gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d);
+
+        var slowResult = new GeneratorGridSolver(slow.Definition, slow.ThermodynamicModel)
+            .Step(slow.PlantState, slow.TurbineState, slow.ElectricalState, slow.Inputs, TimeSpan.FromMilliseconds(1d));
+        var fastResult = new GeneratorGridSolver(fast.Definition, fast.ThermodynamicModel)
+            .Step(fast.PlantState, fast.TurbineState, fast.ElectricalState, fast.Inputs, TimeSpan.FromMilliseconds(1d));
+
+        var slowGenerator = Assert.Single(slowResult.Snapshot.Generators);
+        var fastGenerator = Assert.Single(fastResult.Snapshot.Generators);
+        Assert.True(slowGenerator.CommandedElectromagneticTorque < fastGenerator.CommandedElectromagneticTorque);
+        Assert.Equal(Torque.Zero, slowGenerator.CommandedElectromagneticTorque);
+    }
+
+    [Fact]
+    public void Step_LegacyNullGridCouplingPreservesDispatchTorqueAtFrequencySlip()
+    {
+        var fixture = CreateFixture(2_970d, breakerClosed: true, generatorPhaseDegrees: 20d, gridPhaseDegrees: 0d);
+        var result = new GeneratorGridSolver(fixture.Definition, fixture.ThermodynamicModel)
+            .Step(fixture.PlantState, fixture.TurbineState, fixture.ElectricalState, fixture.Inputs, TimeSpan.FromMilliseconds(1d));
+        var generator = Assert.Single(result.Snapshot.Generators);
+        var definition = fixture.Definition.GetGenerator("generator");
+        var rotor = fixture.Definition.TurbineExpansionSystem.GetRotor("rotor");
+        var expectedMechanicalPower = fixture.Inputs.GetGeneratorInput("generator").RequestedElectricalPower / definition.Efficiency.Fraction;
+        var expectedTorque = expectedMechanicalPower.Watts / rotor.RatedAngularSpeed.RadiansPerSecond;
+
+        Assert.Null(definition.GridCoupling);
+        Assert.Equal(expectedTorque, generator.CommandedElectromagneticTorque.NewtonMetres, 9);
+    }
+
+    [Fact]
     public void Definition_RejectsGeneratorThatDoesNotCoverCanonicalTurbineRotor()
     {
         var fixture = CreateFixture(3_000d, breakerClosed: false, generatorPhaseDegrees: 0d, gridPhaseDegrees: 0d);
@@ -191,7 +264,9 @@ public sealed class GeneratorGridSolverTests
         double gridPhaseDegrees,
         bool closeCommand = false,
         bool openCommand = false,
-        double terminalVoltageKilovolts = 400d)
+        double terminalVoltageKilovolts = 400d,
+        double? gridCouplingSynchronizingPowerMegawatts = null,
+        double? gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts = null)
     {
         var thermodynamicModel = new PreservingThermodynamicModel();
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
@@ -372,7 +447,12 @@ public sealed class GeneratorGridSolverTests
             GeneratorEfficiency.FromPercent(98d),
             Frequency.FromHertz(0.2d),
             PhaseAngleDifference.FromDegrees(10d),
-            ElectricPotential.FromKilovolts(10d));
+            ElectricPotential.FromKilovolts(10d),
+            gridCouplingSynchronizingPowerMegawatts.HasValue
+                ? new SynchronousGridCouplingDefinition(
+                    Power.FromMegawatts(gridCouplingSynchronizingPowerMegawatts.Value),
+                    Power.FromMegawatts(gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value))
+                : null);
         var definition = new GeneratorGridSystemDefinition("electrical", feedwater, grid, new[] { generator });
 
         var primaryBoundaryInputs = new PrimaryCircuitBoundaryInputs(

@@ -1,5 +1,6 @@
 using NuclearReactorSimulator.Domain.Physics.Electrical;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
+using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
 using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
 using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Condenser;
@@ -153,7 +154,13 @@ public sealed class GeneratorGridSolver
             var requestedMechanicalPower = requestedElectricalPower / generator.Efficiency.Fraction;
             var rotorDefinition = _definition.TurbineExpansionSystem.GetRotor(generator.RotorId);
             var commandedTorque = breakerFinallyClosed
-                ? Torque.FromNewtonMetres(requestedMechanicalPower.Watts / rotorDefinition.RatedAngularSpeed.RadiansPerSecond)
+                ? ResolveCommandedElectromagneticTorque(
+                    generator,
+                    rotorDefinition,
+                    requestedMechanicalPower,
+                    initialFrequency,
+                    state.ElectricalPhaseAngle,
+                    committedElectricalState.GridPhaseAngle)
                 : Torque.Zero;
 
             result.Add(
@@ -174,6 +181,50 @@ public sealed class GeneratorGridSolver
         }
 
         return result;
+    }
+
+
+    private Torque ResolveCommandedElectromagneticTorque(
+        SynchronousGeneratorDefinition generator,
+        TurbineRotorDefinition rotorDefinition,
+        Power requestedMechanicalPower,
+        Frequency generatorFrequency,
+        PhaseAngle generatorPhase,
+        PhaseAngle gridPhase)
+    {
+        var coupling = generator.GridCoupling;
+        if (coupling is null)
+        {
+            return Torque.FromNewtonMetres(
+                requestedMechanicalPower.Watts / rotorDefinition.RatedAngularSpeed.RadiansPerSecond);
+        }
+
+        var signedPhaseLeadRadians = SignedShortestPhaseLeadRadians(generatorPhase, gridPhase);
+        var phaseCorrectionPower = coupling.MaximumSynchronizingCorrectionPower * Math.Sin(signedPhaseLeadRadians);
+        var frequencySlipHertz = generatorFrequency.Hertz - _definition.Grid.NominalFrequency.Hertz;
+        var frequencyCorrectionPower = coupling.FrequencyDampingPowerAtOneHertzSlip * frequencySlipHertz;
+        var unconstrainedMechanicalPower = requestedMechanicalPower + phaseCorrectionPower + frequencyCorrectionPower;
+        var maximumMechanicalPower = generator.MaximumElectricalPower / generator.Efficiency.Fraction;
+        var effectiveMechanicalWatts = Math.Clamp(
+            unconstrainedMechanicalPower.Watts,
+            0d,
+            maximumMechanicalPower.Watts);
+
+        return Torque.FromNewtonMetres(
+            effectiveMechanicalWatts / rotorDefinition.RatedAngularSpeed.RadiansPerSecond);
+    }
+
+    private static double SignedShortestPhaseLeadRadians(PhaseAngle generatorPhase, PhaseAngle gridPhase)
+    {
+        var difference = generatorPhase.Radians - gridPhase.Radians;
+        var fullTurn = 2d * Math.PI;
+        difference = (difference + Math.PI) % fullTurn;
+        if (difference < 0d)
+        {
+            difference += fullTurn;
+        }
+
+        return difference - Math.PI;
     }
 
     private CondensateFeedwaterSystemInputs BuildCondensateFeedwaterInputs(

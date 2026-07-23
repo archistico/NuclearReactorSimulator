@@ -134,3 +134,7 @@ The long-run failure report now accumulates every completed checkpoint and inclu
 The user-supplied Hotfix 16 package records both explicit 60-second journeys passing separately after 870 ordinary tests passed. This is the base checkpoint for Hotfix 17.
 
 Hotfix 17 changes only condenser heat-transfer feedback from capacity-only to current-v2 `min(Qavailable, UA*DeltaT)`. Because this changes long-horizon condenser backpressure/vacuum behavior, both explicit journeys must be rerun even if the ordinary suite is green. A failure must be diagnosed from condenser pressure/temperature, heat-rejection capacity, turbine exhaust flow and generator evidence; do not retune seed inventories merely to extend runtime.
+
+## Hotfix 17 validated / Hotfix 18 rerun requirement
+
+The user confirmed Hotfix 17 passes compilation, the ordinary suite and both explicit 60-second journeys. Hotfix 18 changes only breaker-closed generator/grid electromagnetic loading by adding phase-angle and frequency-slip stiffness around the dispatch setpoint. Both explicit journeys must therefore be rerun because they exercise sustained parallel operation and synchronization/load raise directly. A regression should be diagnosed from rotor speed, phase/frequency difference, requested vs actual MWe and electromagnetic/mechanical power before changing steam-path or condenser parameters.
