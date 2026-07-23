@@ -1,5 +1,6 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
+using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
@@ -60,6 +61,8 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
             secondaryPumpsHaveDischargeCheckValves: true,
             includeEnhancedSecondaryProtections: true,
+            secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
+            secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             deterministicSeedStepCount: 2);
 }

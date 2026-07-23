@@ -36,6 +36,12 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Null(legacyGeneratorDefinition.GridCoupling);
         Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
         Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
+        Assert.All(
+            legacyEngine.CurrentState.TurbineSecondaryControlState.Definition.ActuatorSystem.Actuators
+                .Where(static actuator => actuator.TargetKind is
+                    NuclearReactorSimulator.Domain.Physics.Control.ActuatorTargetKind.Valve
+                    or NuclearReactorSimulator.Domain.Physics.Control.ActuatorTargetKind.Pump),
+            static actuator => Assert.Null(actuator.TravelRate));
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
         var stageDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
@@ -60,6 +66,23 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Equal(10d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
         Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
         Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
+        var currentActuators = currentEngine.CurrentState.TurbineSecondaryControlState.Definition.ActuatorSystem;
+        Assert.Equal(
+            0.5d,
+            currentActuators.GetActuator("speed-actuator").TravelRate.GetValueOrDefault().FractionPerSecond,
+            12);
+        Assert.Equal(
+            0.5d,
+            currentActuators.GetActuator("pressure-actuator").TravelRate.GetValueOrDefault().FractionPerSecond,
+            12);
+        Assert.Equal(
+            0.25d,
+            currentActuators.GetActuator("feedwater-actuator").TravelRate.GetValueOrDefault().FractionPerSecond,
+            12);
+        Assert.Equal(
+            0.25d,
+            currentActuators.GetActuator("condensate-actuator").TravelRate.GetValueOrDefault().FractionPerSecond,
+            12);
 
         var coordinator = new ControlRoomRuntimeCoordinator(currentEngine);
         var snapshot = coordinator.Current;

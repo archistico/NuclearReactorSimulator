@@ -1,3 +1,4 @@
+using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Instrumentation;
@@ -58,7 +59,10 @@ public sealed class TurbineSecondaryControlSolver
             inputs.Controllers,
             deltaTime);
 
-        var commandedPlantState = ApplyCommands(committedFullPlantState.PlantState, controlStep.Snapshot.ActuatorCommands);
+        var commandedPlantState = ApplyCommands(
+            committedFullPlantState.PlantState,
+            controlStep.Snapshot.ActuatorCommands,
+            deltaTime);
         var commandedFullPlantState = new FullPlantState(
             committedFullPlantState.Definition,
             commandedPlantState,
@@ -97,17 +101,63 @@ public sealed class TurbineSecondaryControlSolver
                 output.IsSaturated);
         }).ToArray();
 
-    private static PlantState ApplyCommands(PlantState committed, ActuatorCommandFrame commands)
+    private PlantState ApplyCommands(PlantState committed, ActuatorCommandFrame commands, TimeSpan deltaTime)
     {
         var valvesById = commands.ValveCommands.ToDictionary(static item => item.ValveId, StringComparer.Ordinal);
         var pumpsById = commands.PumpCommands.ToDictionary(static item => item.PumpId, StringComparer.Ordinal);
+        var valveActuatorsByTarget = _definition.ActuatorSystem.Actuators
+            .Where(static actuator => actuator.TargetKind == ActuatorTargetKind.Valve)
+            .ToDictionary(static actuator => actuator.TargetId, StringComparer.Ordinal);
+        var pumpActuatorsByTarget = _definition.ActuatorSystem.Actuators
+            .Where(static actuator => actuator.TargetKind == ActuatorTargetKind.Pump)
+            .ToDictionary(static actuator => actuator.TargetId, StringComparer.Ordinal);
 
-        var valves = committed.Valves.Select(state => valvesById.TryGetValue(state.ValveId, out var command)
-            ? new ValveState(state.ValveId, command.RequestedPosition, state.IsFailSafeActive)
-            : state).ToArray();
-        var pumps = committed.Pumps.Select(state => pumpsById.TryGetValue(state.PumpId, out var command)
-            ? new PumpState(state.PumpId, command.RequestedSpeed, command.RunCommand)
-            : state).ToArray();
+        var valves = committed.Valves.Select(state =>
+        {
+            if (!valvesById.TryGetValue(state.ValveId, out var command))
+            {
+                return state;
+            }
+
+            var actuator = valveActuatorsByTarget[state.ValveId];
+            var requestedFraction = command.RequestedPosition.Fraction;
+            var effectiveFraction = MoveTowards(
+                state.Position.Fraction,
+                requestedFraction,
+                actuator.TravelRate,
+                deltaTime);
+            return new ValveState(
+                state.ValveId,
+                ValvePosition.FromFraction(effectiveFraction),
+                state.IsFailSafeActive);
+        }).ToArray();
+
+        var pumps = committed.Pumps.Select(state =>
+        {
+            if (!pumpsById.TryGetValue(state.PumpId, out var command))
+            {
+                return state;
+            }
+
+            var actuator = pumpActuatorsByTarget[state.PumpId];
+            if (!actuator.TravelRate.HasValue)
+            {
+                return new PumpState(state.PumpId, command.RequestedSpeed, command.RunCommand);
+            }
+
+            var effectiveFraction = MoveTowards(
+                state.Speed.Fraction,
+                command.RequestedSpeed.Fraction,
+                actuator.TravelRate,
+                deltaTime);
+            var effectiveSpeed = PumpSpeed.FromFraction(effectiveFraction);
+
+            // A zero-speed request ramps down deterministically instead of turning IsRunning off before the
+            // physical speed reaches zero. A positive request starts the pump immediately at the first finite
+            // ramped speed. This preserves one canonical speed state rather than inventing a second coast-down model.
+            var isRunning = command.RunCommand || (state.IsRunning && !effectiveSpeed.IsStopped);
+            return new PumpState(state.PumpId, effectiveSpeed, isRunning);
+        }).ToArray();
 
         return new PlantState(
             committed.Definition,
@@ -116,5 +166,26 @@ public sealed class TurbineSecondaryControlSolver
             pumps,
             committed.ThermalBodies,
             committed.HeatSources);
+    }
+
+    private static double MoveTowards(
+        double committedFraction,
+        double requestedFraction,
+        ActuatorTravelRate? travelRate,
+        TimeSpan deltaTime)
+    {
+        if (!travelRate.HasValue)
+        {
+            return requestedFraction;
+        }
+
+        var maximumDelta = travelRate.Value.FractionPerSecond * deltaTime.TotalSeconds;
+        var delta = requestedFraction - committedFraction;
+        if (Math.Abs(delta) <= maximumDelta)
+        {
+            return requestedFraction;
+        }
+
+        return committedFraction + (Math.Sign(delta) * maximumDelta);
     }
 }

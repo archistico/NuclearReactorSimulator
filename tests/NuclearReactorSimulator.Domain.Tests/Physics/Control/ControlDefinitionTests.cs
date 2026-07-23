@@ -52,6 +52,28 @@ public sealed class ControlDefinitionTests
         Assert.Throws<ArgumentException>(() => new ActuatorSystemDefinition("unknown", control, new[] { ActuatorDefinition.Pump("P", "missing", "pump", range) }));
     }
 
+
+    [Fact]
+    public void ActuatorTravelRate_IsOptionalVersionedAndMustBeFinitePositiveWhenSpecified()
+    {
+        var range = new ControllerOutputRange(0d, 100d);
+        var legacyValve = ActuatorDefinition.Valve("legacy-valve", "controller", "valve", range);
+        var dynamicValve = ActuatorDefinition.Valve(
+            "dynamic-valve", "controller", "valve", range, travelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d));
+        var dynamicPump = ActuatorDefinition.Pump(
+            "dynamic-pump", "controller", "pump", range, travelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d));
+
+        Assert.Null(legacyValve.TravelRate);
+        Assert.True(dynamicValve.TravelRate.HasValue);
+        Assert.Equal(0.5d, dynamicValve.TravelRate.GetValueOrDefault().FractionPerSecond);
+        Assert.Equal(TimeSpan.FromSeconds(2d), dynamicValve.TravelRate.GetValueOrDefault().FullTravelTime);
+        Assert.True(dynamicPump.TravelRate.HasValue);
+        Assert.Equal(0.25d, dynamicPump.TravelRate.GetValueOrDefault().FractionPerSecond);
+        Assert.Equal(TimeSpan.FromSeconds(4d), dynamicPump.TravelRate.GetValueOrDefault().FullTravelTime);
+        Assert.Throws<ArgumentOutOfRangeException>(() => ActuatorTravelRate.FromFractionPerSecond(0d));
+        Assert.Throws<ArgumentOutOfRangeException>(() => ActuatorTravelRate.FromFractionPerSecond(double.NaN));
+    }
+
     [Fact]
     public void RodActuator_RequiresExplicitTargetKindAndKeepsDeadbandConfiguration()
     {

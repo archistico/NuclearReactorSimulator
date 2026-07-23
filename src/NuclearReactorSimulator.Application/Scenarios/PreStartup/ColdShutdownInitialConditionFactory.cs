@@ -112,6 +112,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts = null,
         bool secondaryPumpsHaveDischargeCheckValves = false,
         bool includeEnhancedSecondaryProtections = false,
+        ActuatorTravelRate? secondaryValveTravelRate = null,
+        ActuatorTravelRate? secondaryPumpTravelRate = null,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
         int deterministicSeedStepCount = 1)
     {
@@ -164,6 +166,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
             secondaryPumpsHaveDischargeCheckValves,
             includeEnhancedSecondaryProtections,
+            secondaryValveTravelRate,
+            secondaryPumpTravelRate,
             steamDrumLiquidRecirculationMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
@@ -237,6 +241,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
         bool secondaryPumpsHaveDischargeCheckValves,
         bool includeEnhancedSecondaryProtections,
+        ActuatorTravelRate? secondaryValveTravelRate,
+        ActuatorTravelRate? secondaryPumpTravelRate,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
@@ -824,10 +830,18 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         });
         var secondaryActuators = new ActuatorSystemDefinition("secondary-actuators", secondaryControl, new[]
         {
-            ActuatorDefinition.Valve("speed-actuator", "speed-control", "control", new ControllerOutputRange(0d, 100d)),
-            ActuatorDefinition.Valve("pressure-actuator", "pressure-control", "admission", new ControllerOutputRange(0d, 100d)),
-            ActuatorDefinition.Pump("feedwater-actuator", "level-control", "feedwater-pump", new ControllerOutputRange(0d, 100d)),
-            ActuatorDefinition.Pump("condensate-actuator", "hotwell-control", "condensate-pump", new ControllerOutputRange(0d, 100d)),
+            ActuatorDefinition.Valve(
+                "speed-actuator", "speed-control", "control", new ControllerOutputRange(0d, 100d),
+                secondaryValveTravelRate),
+            ActuatorDefinition.Valve(
+                "pressure-actuator", "pressure-control", "admission", new ControllerOutputRange(0d, 100d),
+                secondaryValveTravelRate),
+            ActuatorDefinition.Pump(
+                "feedwater-actuator", "level-control", "feedwater-pump", new ControllerOutputRange(0d, 100d),
+                secondaryPumpTravelRate),
+            ActuatorDefinition.Pump(
+                "condensate-actuator", "hotwell-control", "condensate-pump", new ControllerOutputRange(0d, 100d),
+                secondaryPumpTravelRate),
         });
         var secondaryDefinition = new TurbineSecondaryControlSystemDefinition(
             "secondary-controls",

@@ -15,15 +15,15 @@ We are continuing the **Nuclear Reactor Simulator** project.
 9. `docs/INTERACTIVE_FULL_PLANT_MIMIC.md`
 10. `docs/ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md`
 11. `docs/OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`
-12. ADR 0075–ADR 0087
+12. ADR 0075–ADR 0088
 
 ## Exact checkpoint
 
 - M7, M8, M9 gates: **COMPLETE / VALIDATED**.
 - M10.1–M10.9.3: **VALIDATED**.
 - Official baseline: **M10.9.3 — Interactive Full-Plant Mimic**.
-- Latest validated structural checkpoint: **M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves**.
-- Current candidate: **M10.9.4 Hotfix 20 Fix 1 — Meaningful Secondary Protection Set / Initial Measured-Frame Completeness**.
+- Latest validated structural checkpoint: **M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract**.
+- Current candidate: **M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics**.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
 ## Approved M10.9 sequence
@@ -34,16 +34,17 @@ We are continuing the **Nuclear Reactor Simulator** project.
 4. M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — VALIDATED STRUCTURAL CHECKPOINT
 5. M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — VALIDATED STRUCTURAL CHECKPOINT
 6. M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — VALIDATED STRUCTURAL CHECKPOINT
-7. M10.9.4 Hotfix 20 Fix 1 — Meaningful Secondary Protection Set / Initial Measured-Frame Completeness — CURRENT CANDIDATE
+7. M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — VALIDATED STRUCTURAL CHECKPOINT
+8. M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — CURRENT CANDIDATE
 5. M10.9.5 Contextual Command Consequence Model
 6. M10.9.6 Operational Challenge & Energy-Demand Framework
 7. M10.9.7 Mission & Performance Workstation
 8. M10.9.8 Integrated Human-Automation-HMI Validation Gate
 
 
-## Hotfix 19 validated checkpoint / Hotfix 20 current step
+## Hotfix 20 validated checkpoint / Hotfix 21 current step
 
-Hotfix 17 established condenser UA·ΔT feedback and was validated. Hotfix 18 added generator/grid synchronous phase-frequency stiffness and was validated. Hotfix 19 then added current-v2 condensate/feedwater discharge check valves and was validated by the user with compilation, the ordinary suite and both explicit 60-second journeys green. Hotfix 20 is based directly on validated Hotfix 19 and changes only the current-v2 protection set: turbine overspeed, condenser high backpressure and generator overfrequency become measured latching trips; underfrequency is deferred until breaker-state supervision exists.
+Hotfix 17 established condenser UA·ΔT feedback, Hotfix 18 generator/grid synchronous stiffness and Hotfix 19 secondary-pump discharge check valves; all are validated structural checkpoints. Hotfix 20 Fix 2 is now also validated after compilation, the ordinary suite and both explicit 60-second journeys passed with measured turbine overspeed, condenser high-backpressure and generator overfrequency protections active. Hotfix 21 is based directly on that checkpoint and changes only normal M5.4 actuator application: current-v2 control/admission valves use a 2 s full-stroke limit and condensate/feedwater pumps a 4 s full-ramp limit. Legacy bindings remain instantaneous and protection/fault authority is unchanged.
 
 Current-v2 condenser law:
 

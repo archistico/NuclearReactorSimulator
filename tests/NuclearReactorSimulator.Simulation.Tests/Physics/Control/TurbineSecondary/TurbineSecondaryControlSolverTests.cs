@@ -40,6 +40,52 @@ public sealed class TurbineSecondaryControlSolverTests
         Assert.Equal(4, result.Snapshot.Loops.Count);
     }
 
+
+    [Fact]
+    public void Step_RateLimitedSecondaryActuatorsMoveTowardCommandsWithoutInstantaneousJumps()
+    {
+        var fixture = CreateFixture(valveTravelRatePerSecond: 0.5d, pumpTravelRatePerSecond: 0.25d);
+        var solver = new TurbineSecondaryControlSolver(fixture.SecondaryDefinition);
+
+        var committedControlValve = fixture.FullPlantState.PlantState.GetValve("control");
+        var committedCondensatePump = fixture.FullPlantState.PlantState.GetPump("condensate-pump");
+        Assert.True(committedControlValve.Position.IsFullyOpen);
+        Assert.Equal(1d, committedCondensatePump.Speed.Fraction, 12);
+
+        var result = solver.Step(
+            fixture.Signals,
+            fixture.FullPlantState,
+            fixture.SecondaryState,
+            fixture.SecondaryInputs,
+            TimeSpan.FromMilliseconds(100d));
+
+        var requestedControl = Assert.Single(
+            result.ControlAndActuatorStep.Snapshot.ActuatorCommands.ValveCommands,
+            static command => command.ValveId == "control");
+        var requestedCondensate = Assert.Single(
+            result.ControlAndActuatorStep.Snapshot.ActuatorCommands.PumpCommands,
+            static command => command.PumpId == "condensate-pump");
+        Assert.True(requestedControl.RequestedPosition.IsClosed);
+        Assert.True(requestedCondensate.RequestedSpeed.IsStopped);
+        Assert.False(requestedCondensate.RunCommand);
+
+        var physicalControl = result.CommandedFullPlantState.PlantState.GetValve("control");
+        var physicalCondensate = result.CommandedFullPlantState.PlantState.GetPump("condensate-pump");
+        Assert.Equal(0.95d, physicalControl.Position.Fraction, 12);
+        Assert.Equal(0.975d, physicalCondensate.Speed.Fraction, 12);
+        Assert.True(physicalCondensate.IsRunning);
+
+        var completed = solver.Step(
+            fixture.Signals,
+            fixture.FullPlantState,
+            fixture.SecondaryState,
+            fixture.SecondaryInputs,
+            TimeSpan.FromSeconds(5d));
+        Assert.True(completed.CommandedFullPlantState.PlantState.GetValve("control").Position.IsClosed);
+        Assert.True(completed.CommandedFullPlantState.PlantState.GetPump("condensate-pump").Speed.IsStopped);
+        Assert.False(completed.CommandedFullPlantState.PlantState.GetPump("condensate-pump").IsRunning);
+    }
+
     [Fact]
     public void IntegratedStep_DerivesTurbineFlowFromCommandedAdmissionPathAndKeepsValidatedM53Kinetics()
     {
@@ -100,7 +146,9 @@ public sealed class TurbineSecondaryControlSolverTests
         Assert.Equal("kg", catalog.GetSource("condenser/condenser/hotwell-mass").EngineeringUnitSymbol);
     }
 
-    internal static Fixture CreateFixture()
+    internal static Fixture CreateFixture(
+        double? valveTravelRatePerSecond = null,
+        double? pumpTravelRatePerSecond = null)
     {
         var physical = global::NuclearReactorSimulator.Simulation.Tests.Physics.Electrical.GeneratorGridSolverTests.CreateFixture(
             3_000d,
@@ -169,10 +217,14 @@ public sealed class TurbineSecondaryControlSolverTests
         });
         var secondaryActuators = new ActuatorSystemDefinition("secondary-actuators", secondaryControl, new[]
         {
-            ActuatorDefinition.Valve("speed-actuator", "speed-control", "control", new ControllerOutputRange(0d, 100d)),
-            ActuatorDefinition.Valve("pressure-actuator", "pressure-control", "admission", new ControllerOutputRange(0d, 100d)),
-            ActuatorDefinition.Pump("feedwater-actuator", "level-control", "feedwater-pump", new ControllerOutputRange(0d, 100d)),
-            ActuatorDefinition.Pump("condensate-actuator", "hotwell-control", "condensate-pump", new ControllerOutputRange(0d, 100d)),
+            ActuatorDefinition.Valve(
+                "speed-actuator", "speed-control", "control", new ControllerOutputRange(0d, 100d), valveTravelRatePerSecond.HasValue ? ActuatorTravelRate.FromFractionPerSecond(valveTravelRatePerSecond.Value) : null),
+            ActuatorDefinition.Valve(
+                "pressure-actuator", "pressure-control", "admission", new ControllerOutputRange(0d, 100d), valveTravelRatePerSecond.HasValue ? ActuatorTravelRate.FromFractionPerSecond(valveTravelRatePerSecond.Value) : null),
+            ActuatorDefinition.Pump(
+                "feedwater-actuator", "level-control", "feedwater-pump", new ControllerOutputRange(0d, 100d), pumpTravelRatePerSecond.HasValue ? ActuatorTravelRate.FromFractionPerSecond(pumpTravelRatePerSecond.Value) : null),
+            ActuatorDefinition.Pump(
+                "condensate-actuator", "hotwell-control", "condensate-pump", new ControllerOutputRange(0d, 100d), pumpTravelRatePerSecond.HasValue ? ActuatorTravelRate.FromFractionPerSecond(pumpTravelRatePerSecond.Value) : null),
         });
         var secondaryDefinition = new TurbineSecondaryControlSystemDefinition(
             "secondary-controls",

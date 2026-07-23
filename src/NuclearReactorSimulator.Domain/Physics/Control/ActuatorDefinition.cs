@@ -11,6 +11,7 @@ public sealed class ActuatorDefinition
         ActuatorTargetKind targetKind,
         string targetId,
         ControllerOutputRange inputRange,
+        ActuatorTravelRate? travelRate,
         ControlRodCommandTargetKind? rodTargetKind,
         double rodNeutralDeadbandFraction,
         bool positiveRodOutputWithdraws)
@@ -45,6 +46,7 @@ public sealed class ActuatorDefinition
         TargetKind = targetKind;
         TargetId = targetId.Trim();
         InputRange = inputRange;
+        TravelRate = travelRate;
         RodTargetKind = rodTargetKind;
         RodNeutralDeadbandFraction = rodNeutralDeadbandFraction;
         PositiveRodOutputWithdraws = positiveRodOutputWithdraws;
@@ -55,15 +57,34 @@ public sealed class ActuatorDefinition
     public ActuatorTargetKind TargetKind { get; }
     public string TargetId { get; }
     public ControllerOutputRange InputRange { get; }
+    /// <summary>
+    /// Optional deterministic full-scale travel/ramp limit expressed as normalized fraction per second.
+    /// Null preserves the historical instantaneous command-to-physical-state behavior.
+    /// </summary>
+    public ActuatorTravelRate? TravelRate { get; }
     public ControlRodCommandTargetKind? RodTargetKind { get; }
     public double RodNeutralDeadbandFraction { get; }
     public bool PositiveRodOutputWithdraws { get; }
 
-    public static ActuatorDefinition Valve(string id, string controllerId, string valveId, ControllerOutputRange inputRange)
-        => new(id, controllerId, ActuatorTargetKind.Valve, valveId, inputRange, null, 0d, true);
+    public static ActuatorDefinition Valve(
+        string id,
+        string controllerId,
+        string valveId,
+        ControllerOutputRange inputRange,
+        ActuatorTravelRate? travelRate = null)
+        => new(
+            id, controllerId, ActuatorTargetKind.Valve, valveId, inputRange,
+            travelRate, null, 0d, true);
 
-    public static ActuatorDefinition Pump(string id, string controllerId, string pumpId, ControllerOutputRange inputRange)
-        => new(id, controllerId, ActuatorTargetKind.Pump, pumpId, inputRange, null, 0d, true);
+    public static ActuatorDefinition Pump(
+        string id,
+        string controllerId,
+        string pumpId,
+        ControllerOutputRange inputRange,
+        ActuatorTravelRate? travelRate = null)
+        => new(
+            id, controllerId, ActuatorTargetKind.Pump, pumpId, inputRange,
+            travelRate, null, 0d, true);
 
     public static ActuatorDefinition ControlRod(
         string id,
@@ -73,5 +94,7 @@ public sealed class ActuatorDefinition
         ControllerOutputRange inputRange,
         double neutralDeadbandFraction = 0.05d,
         bool positiveOutputWithdraws = true)
-        => new(id, controllerId, ActuatorTargetKind.ControlRod, targetId, inputRange, targetKind, neutralDeadbandFraction, positiveOutputWithdraws);
+        => new(
+            id, controllerId, ActuatorTargetKind.ControlRod, targetId, inputRange,
+            null, targetKind, neutralDeadbandFraction, positiveOutputWithdraws);
 }

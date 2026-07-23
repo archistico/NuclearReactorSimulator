@@ -2,7 +2,7 @@
 
 ## Status
 
-M10.9.3 remains the validated baseline. M10.9.4 Hotfix 16 is the current implementation candidate.
+M10.9.3 remains the validated baseline. M10.9.4 Hotfix 21 is the current implementation candidate; Hotfix 20 Fix 2 is the latest validated structural checkpoint.
 
 This plan records the structural audit triggered by the long-running gameplay journey and by the discovery that the historical turbine-stage flow law made the admission train a monotonic mass accumulator. The governing rule is now:
 
@@ -109,7 +109,7 @@ M4.3 tests verify:
 
 The user confirmed the ordinary suite and both explicit 60-second journeys are green on Hotfix 17. This item is validated as the current condenser-feedback checkpoint.
 
-## D. Generator-grid synchronous coupling — CURRENT / Hotfix 18
+## D. Generator-grid synchronous coupling — VALIDATED / Hotfix 18
 
 ### Confirmed defect
 
@@ -139,7 +139,7 @@ M4.5 tests verify:
 
 Loss-of-synchronism protection is deliberately not mixed into this physics step; it remains part of the later protection-layer expansion after the coupling itself passes ordinary and long-running gates. ADR 0085 records the decision.
 
-## E. Pump non-return behavior — HOTFIX 19 CURRENT CANDIDATE
+## E. Pump non-return behavior — VALIDATED / Hotfix 19
 
 ### Audit result: confirmed
 
@@ -149,23 +149,24 @@ Loss-of-synchronism protection is deliberately not mixed into this physics step;
 
 Hotfix 19 adds opt-in canonical discharge check-valve semantics to the current-v2 condensate/feedwater pumps plus direct reverse-flow regressions. `PumpDefinition.HasDischargeCheckValve` defaults to false so pumps without a check valve remain bidirectional where reverse flow is intentionally modeled. When enabled, a negative hydraulic solution closes the valve and the pump path transfers zero mass and energy.
 
-## F. Protection coverage and actuator dynamics — AFTER CORE POWER PATH IS STABLE
+## F. Protection coverage and actuator dynamics — PROTECTION VALIDATED / ACTUATORS CURRENT
 
-### Audit result: confirmed for the current reference recipe
+### Hotfix 20 Fix 2 — validated protection coverage
 
-The reference protection definition currently contains only the very-high-pressure reactor SCRAM function. Turbine/generator trip actions exist in the framework but are not comprehensively instantiated in the reference plant. Valve/pump actuator commands are applied directly to requested positions/speeds without travel-rate dynamics.
+Current-v2 now instantiates measured, latching turbine overspeed, condenser high-backpressure and generator overfrequency protection with explicit turbine/generator trip actions. Initial measured frames contain exactly one signal per channel and generator frequency is validated against committed rotor state. Underfrequency remains deferred until breaker/load-state supervision exists.
 
-The current seed/control setup also includes deliberately simplified loops: pressure control can be manual, drum-level setpoint/control scaling is coarse, and turbine speed control remains simplified.
+### Hotfix 21 — current actuator correction
 
-### Planned correction
+Normal M5.4 valve/pump commands are no longer written directly into canonical physical state for current-v2 actuator bindings. `ActuatorTravelRate` gives a typed normalized full-scale fraction per second; null retains legacy instantaneous behavior. Current-v2 uses:
 
-Add in small validated increments:
+```text
+control/admission valves: 0.5 fraction/s = 2 s full stroke
+condensate/feedwater pumps: 0.25 fraction/s = 4 s full ramp
+```
 
-- turbine overspeed trip;
-- low condenser vacuum / high backpressure protection;
-- generator under/over-frequency, reverse-power and loss-of-synchronism protections as appropriate to the educational model;
-- realistic actuator travel/ramp limits;
-- coherent parallel-operation load/governor mode rather than relying only on isochronous speed control.
+Each committed step moves physical position/speed by at most `rate * dt` toward the already-computed typed actuator command. Pump coast-down keeps `IsRunning` true until canonical speed reaches zero, so run-state semantics cannot bypass the ramp. Turbine-trip stop-valve override remains immediate higher authority and hydraulic fault overrides remain separate.
+
+Direct regressions verify optional legacy semantics, typed-rate validation and bounded per-step valve/pump movement. Governor/load-control mode cleanup remains a separate next step after Hotfix 21 passes ordinary and long-running gates.
 
 ## G. Steam-drum/source-side coupling — AUDIT REQUIRED AFTER B–E
 
@@ -215,19 +216,19 @@ Hotfix 15: drum inventory closure
 then, one structural change at a time:
 
 1. condenser UA*DeltaT pressure feedback — Hotfix 17 validated
-2. synchronous generator-grid coupling — NEXT
-3. pump discharge check valves
-4. protections + actuator travel/ramp dynamics
-5. source-side/steam-dump audit
-6. turbine thermodynamic work fidelity
-7. deterministic adaptive substepping hardening
+2. synchronous generator-grid coupling — Hotfix 18 validated
+3. pump discharge check valves — Hotfix 19 validated
+4. meaningful measured secondary protections — Hotfix 20 Fix 2 validated
+5. actuator travel/ramp dynamics — Hotfix 21 current candidate
+6. governor/load-control mode cleanup
+7. source-side/steam-dump audit
+8. turbine thermodynamic work fidelity
+9. deterministic adaptive substepping hardening
 ```
 
 No item advances merely because the long-run lasts longer. Each item needs a short direct invariant/regression test that would fail under the old structural defect.
 
 
-## Hotfix 20 — protection-set hardening
+## Hotfix 20 / 21 continuation
 
-Hotfix 19 is validated. Hotfix 20 adds the first meaningful current-v2 secondary protection set without mixing actuator dynamics: turbine overspeed, condenser high backpressure and generator overfrequency are measured, latching M5.5 trip functions. Generator underfrequency is deliberately deferred because the current protection primitive has no breaker/load-state supervision; tripping a disconnected machine solely for low frequency would be structurally wrong.
-
-Next after validation: actuator travel-rate dynamics, then governor/load-control mode cleanup.
+Hotfix 20 Fix 2 is validated with the first meaningful measured current-v2 secondary protection set. Hotfix 21 is the current isolated actuator-dynamics step. Next after validation: governor/load-control mode cleanup.

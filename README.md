@@ -1,3 +1,5 @@
+> **Current M10.9.4 candidate:** Hotfix 21 adds deterministic, versioned valve/pump actuator travel and ramp dynamics to current-v2 M5.4 while preserving legacy instantaneous semantics. Hotfix 20 Fix 2 is the latest validated structural checkpoint.
+
 # Nuclear Reactor Simulator
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
@@ -11,11 +13,11 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 The current explicitly validated baseline is **M10.9.3 — Interactive Full-Plant Mimic — VALIDATED**. The user confirmed local compilation and the complete automated suite passed.
 
-The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.3 are validated. **M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves is the latest validated structural checkpoint**: the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass. The current working package is **M10.9.4 Hotfix 20 Fix 1 — Meaningful Secondary Protection Set / Initial Measured-Frame Completeness — IMPLEMENTATION CANDIDATE**, based directly on validated Hotfix 19.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.3 are validated. **M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract is the latest validated structural checkpoint**: the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass. The current working package is **M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — IMPLEMENTATION CANDIDATE**, based directly on validated Hotfix 20 Fix 2.
 
-Hotfix 19 is validated and adds opt-in non-return semantics to the current-v2 condensate/feedwater pumps. Hotfix 20 changes protection configuration only: current-v2 gains measured turbine overspeed, condenser high-backpressure and generator overfrequency latching trips with explicit turbine/generator actions, while legacy profiles retain the historical minimal protection set. Underfrequency is intentionally deferred until breaker-state supervision exists; actuator travel rates and governor/load-control cleanup remain separate follow-on items.
+Hotfix 19 is validated and adds opt-in non-return semantics to the current-v2 condensate/feedwater pumps. Hotfix 20 Fix 2 is validated and adds measured turbine overspeed, condenser high-backpressure and generator overfrequency latching trips with complete measured-frame bootstrap. Hotfix 21 now adds only normal M5.4 actuator travel/ramp dynamics; governor/load-control cleanup remains a separate follow-on item.
 
-See `docs/milestones/M10.9.4.md`, `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`, `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`, ADR 0075–ADR 0087. M10 closes only after M10.9.8; release hardening remains M11.
+See `docs/milestones/M10.9.4.md`, `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`, `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`, ADR 0075–ADR 0088. M10 closes only after M10.9.8; release hardening remains M11.
 
 ## Architectural principles
 
@@ -448,7 +450,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.3 are validated; M10.9.3 is the current official baseline and M10.9.4 Hotfix 20 is the current implementation candidate.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.3 are validated; M10.9.3 is the current official baseline and M10.9.4 Hotfix 21 is the current implementation candidate.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -575,4 +577,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.3 are validated; M10.9.4 Hotfix 20 is the current implementation candidate in the approved M10.9 operator-experience sequence.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.3 are validated; M10.9.4 Hotfix 21 is the current implementation candidate in the approved M10.9 operator-experience sequence.

@@ -1,4 +1,16 @@
-## M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — IMPLEMENTATION CANDIDATE
+## M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — IMPLEMENTATION CANDIDATE
+
+- Promotes Hotfix 20 Fix 2 to the latest validated structural checkpoint after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.
+- Adds strongly typed `ActuatorTravelRate` in normalized full-scale fraction per second; `ActuatorDefinition.TravelRate = null` preserves historical instantaneous command application for legacy/versioned compatibility.
+- Current-v2 turbine/secondary actuators opt into deterministic travel limits: control/admission valves use `0.5 fraction/s` (2 s full stroke) and condensate/feedwater pumps use `0.25 fraction/s` (4 s full ramp).
+- M5.4 keeps controller output / typed actuator command instantaneous and observable, but the canonical physical `PlantState` now moves from committed state toward the requested valve position or pump speed by at most `rate * dt` per step. No hydraulic/thermodynamic integration is moved into the control layer.
+- Pump zero-speed commands now ramp down canonical speed before `IsRunning` becomes false; positive commands start at the first finite ramped speed. This avoids defeating the ramp with an instantaneous run-state drop while preserving one canonical pump-speed state.
+- Protection trip override remains higher authority: turbine-trip stop-valve closure is not routed through normal M5.4 actuator travel limits. Hydraulic fault overrides also remain separate.
+- Adds direct domain and M5.4 regressions for optional legacy semantics, typed rate validation, bounded per-step valve/pump movement, non-instantaneous coast-down and explicit current-v2 ownership.
+- Adds ADR 0088. Governor/load-control mode cleanup remains the next separate structural step.
+- M10.9.3 remains the official validated milestone baseline; Hotfix 20 Fix 2 is the latest validated M10.9.4 structural checkpoint and Hotfix 21 requires ordinary + both explicit 60-second gates before promotion.
+
+## M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — VALIDATED STRUCTURAL CHECKPOINT
 
 - Test-only correction: the current-v2 protection bootstrap regression no longer requires an exact literal 50.000000 Hz after deterministic seed preconditioning. It now derives expected generator frequency from the committed turbine rotor angular speed through `SynchronousGeneratorDefinition.ElectricalFrequencyAt(...)`, asserts measured telemetry matches that physical value, and separately requires the healthy operating point to remain within 49.9–50.1 Hz. No production code, protection thresholds/actions, plant physics or replay semantics changed.
 
@@ -17,7 +29,7 @@
 - Adds ADR 0087. Actuator travel rates, governor/load-control cleanup and adaptive substepping remain separate follow-on work.
 - M10.9.3 remains the official validated milestone baseline; Hotfix 19 is the latest validated M10.9.4 structural checkpoint and Hotfix 20 requires ordinary + both explicit 60-second gates before promotion.
 
-## M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — IMPLEMENTATION CANDIDATE
+## M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — VALIDATED STRUCTURAL CHECKPOINT
 
 - Compile fix: current/legacy seed tests now resolve pump definitions through `IntegratedSecondaryCycleDefinition.PlantDefinition` before calling `GetPump(...)`; no pump/check-valve physics or seed configuration changed.
 - Promotes Hotfix 18 to the latest validated structural checkpoint after the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass.
@@ -28,7 +40,7 @@
 - Adds ADR 0086 and updates the structural stabilization roadmap. Protection expansion, actuator travel rates and adaptive substepping remain explicitly deferred.
 - M10.9.3 remains the official validated milestone baseline; Hotfix 18 is the latest validated M10.9.4 structural checkpoint and Hotfix 19 requires ordinary + both explicit 60-second gates before promotion.
 
-## M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — IMPLEMENTATION CANDIDATE
+## M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — VALIDATED STRUCTURAL CHECKPOINT
 
 - Compile correction: import the canonical Domain turbine namespace in `GeneratorGridSolver.cs` so the `TurbineRotorDefinition` parameter used by the new synchronous-coupling helper resolves correctly. No generator/grid equations, coefficients, seed values, replay semantics, protection logic or control authority changed.
 
