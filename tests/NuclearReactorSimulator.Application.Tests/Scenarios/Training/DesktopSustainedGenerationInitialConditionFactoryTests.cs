@@ -31,6 +31,8 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.False(legacyCondenser.OverallHeatTransferConductance.HasValue);
         var legacyGeneratorDefinition = Assert.Single(legacyEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
         Assert.Null(legacyGeneratorDefinition.GridCoupling);
+        Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
+        Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
         var stageDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
@@ -53,6 +55,8 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             currentGeneratorDefinition.GridCoupling);
         Assert.Equal(10d, gridCoupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
         Assert.Equal(10d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
+        Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
+        Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
 
         var coordinator = new ControlRoomRuntimeCoordinator(currentEngine);
         var snapshot = coordinator.Current;

@@ -14,7 +14,8 @@ public sealed record PumpDefinition
         PipeDefinition pipe,
         PressureDifference ratedPressureBoost,
         QuadraticHydraulicResistance internalResistance,
-        PumpEfficiency efficiency)
+        PumpEfficiency efficiency,
+        bool hasDischargeCheckValve = false)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -43,6 +44,7 @@ public sealed record PumpDefinition
         RatedPressureBoost = ratedPressureBoost;
         InternalResistance = internalResistance;
         Efficiency = efficiency;
+        HasDischargeCheckValve = hasDischargeCheckValve;
     }
 
     public string Id { get; }
@@ -54,4 +56,11 @@ public sealed record PumpDefinition
     public QuadraticHydraulicResistance InternalResistance { get; }
 
     public PumpEfficiency Efficiency { get; }
+
+    /// <summary>
+    /// When true, a non-return valve on the pump discharge prevents hydraulic flow opposite to the pump path's
+    /// reference direction. The check valve is passive: it does not create forward flow and it remains effective
+    /// whether the pump rotor is running or stopped.
+    /// </summary>
+    public bool HasDischargeCheckValve { get; }
 }

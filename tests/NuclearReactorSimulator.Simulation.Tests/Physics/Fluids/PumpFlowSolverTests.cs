@@ -72,6 +72,48 @@ public sealed class PumpFlowSolverTests
         Assert.Equal(Power.Zero, result.ShaftPowerDemand);
     }
 
+
+    [Fact]
+    public void DischargeCheckValve_BlocksReverseFlowWithoutMassOrEnergyTransfer()
+    {
+        var pump = CreatePump(hasDischargeCheckValve: true);
+        var result = new PumpFlowSolver().Solve(
+            pump,
+            new PumpState(pump.Id, PumpSpeed.Rated),
+            CreateNode("from", 5d, 1_000d, 100d),
+            CreateNode("to", 5.9d, 800d, 120d));
+
+        Assert.Equal(MassFlowRate.Zero, result.MassFlowRate);
+        Assert.Equal(VolumetricFlowRate.Zero, result.VolumetricFlowRate);
+        Assert.Equal(Power.Zero, result.HydraulicPowerExchange);
+        Assert.Equal(Power.Zero, result.ShaftPowerDemand);
+        Assert.Equal(MassFlowRate.Zero, result.FromNodeBalance.NetMassFlowRate);
+        Assert.Equal(MassFlowRate.Zero, result.ToNodeBalance.NetMassFlowRate);
+        Assert.Equal(Power.Zero, result.FromNodeBalance.NetEnergyRate);
+        Assert.Equal(Power.Zero, result.ToNodeBalance.NetEnergyRate);
+    }
+
+    [Fact]
+    public void StoppedPump_WithDischargeCheckValveBlocksPassiveReverseFlowButStillAllowsForwardFlow()
+    {
+        var pump = CreatePump(hasDischargeCheckValve: true);
+        var solver = new PumpFlowSolver();
+
+        var reverse = solver.Solve(
+            pump,
+            new PumpState(pump.Id, PumpSpeed.Rated, isRunning: false),
+            CreateNode("from", 5d, 1_000d, 100d),
+            CreateNode("to", 5.4d, 800d, 120d));
+        var forward = solver.Solve(
+            pump,
+            new PumpState(pump.Id, PumpSpeed.Rated, isRunning: false),
+            CreateNode("from", 5.4d, 1_000d, 100d),
+            CreateNode("to", 5d, 800d, 120d));
+
+        Assert.Equal(MassFlowRate.Zero, reverse.MassFlowRate);
+        Assert.True(forward.MassFlowRate.KilogramsPerSecond > 0d);
+    }
+
     [Fact]
     public void PumpBalances_ConserveMassAndExposeExternalEnergyInput()
     {
@@ -145,7 +187,7 @@ public sealed class PumpFlowSolverTests
             CreateNode("to", toPressureMegapascals, 800d, 120d));
     }
 
-    private static PumpDefinition CreatePump()
+    private static PumpDefinition CreatePump(bool hasDischargeCheckValve = false)
     {
         return new PumpDefinition(
             "pump",
@@ -156,7 +198,8 @@ public sealed class PumpFlowSolverTests
                 QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(50_000d)),
             PressureDifference.FromMegapascals(0.4d),
             QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(50_000d),
-            PumpEfficiency.FromPercent(80d));
+            PumpEfficiency.FromPercent(80d),
+            hasDischargeCheckValve);
     }
 
     private static FluidNodeState CreateNode(

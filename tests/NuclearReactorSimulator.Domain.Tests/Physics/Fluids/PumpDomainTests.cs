@@ -54,6 +54,21 @@ public sealed class PumpDomainTests
         Assert.Equal(0.4d, definition.RatedPressureBoost.Megapascals, 12);
         Assert.Equal(50_000d, definition.InternalResistance.PascalSecondsSquaredPerKilogramSquared, 12);
         Assert.Equal(0.8d, definition.Efficiency.Fraction, 12);
+        Assert.False(definition.HasDischargeCheckValve);
+    }
+
+    [Fact]
+    public void PumpDefinition_OptInDischargeCheckValveIsPreserved()
+    {
+        var definition = new PumpDefinition(
+            "pump",
+            CreatePipe(),
+            PressureDifference.FromMegapascals(0.4d),
+            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(50_000d),
+            PumpEfficiency.FromPercent(80d),
+            hasDischargeCheckValve: true);
+
+        Assert.True(definition.HasDischargeCheckValve);
     }
 
     [Fact]

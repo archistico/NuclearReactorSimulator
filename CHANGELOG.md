@@ -1,3 +1,14 @@
+## M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — IMPLEMENTATION CANDIDATE
+
+- Compile fix: current/legacy seed tests now resolve pump definitions through `IntegratedSecondaryCycleDefinition.PlantDefinition` before calling `GetPump(...)`; no pump/check-valve physics or seed configuration changed.
+- Promotes Hotfix 18 to the latest validated structural checkpoint after the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass.
+- Adds opt-in `PumpDefinition.HasDischargeCheckValve`; default `false` preserves existing bidirectional pump-path semantics for legacy definitions and components where reverse flow is intentional.
+- `PumpFlowSolver` now closes an enabled discharge check valve whenever the unconstrained hydraulic solution would reverse through the pump path. The blocked state transfers zero mass, zero advected/internal pump energy and zero shaft-demand credit while retaining the committed pump speed/head state.
+- Enables discharge check valves only on current-v2 `condensate-pump` and `feedwater-pump`; the main circulation pump and all legacy/default definitions remain unchanged.
+- Adds direct regressions for running/stopped reverse-flow blocking, passive forward opening, zero mass/energy balance when closed, and v1/v2 topology ownership.
+- Adds ADR 0086 and updates the structural stabilization roadmap. Protection expansion, actuator travel rates and adaptive substepping remain explicitly deferred.
+- M10.9.3 remains the official validated milestone baseline; Hotfix 18 is the latest validated M10.9.4 structural checkpoint and Hotfix 19 requires ordinary + both explicit 60-second gates before promotion.
+
 ## M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — IMPLEMENTATION CANDIDATE
 
 - Compile correction: import the canonical Domain turbine namespace in `GeneratorGridSolver.cs` so the `TurbineRotorDefinition` parameter used by the new synchronous-coupling helper resolves correctly. No generator/grid equations, coefficients, seed values, replay semantics, protection logic or control authority changed.

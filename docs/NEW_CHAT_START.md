@@ -22,8 +22,8 @@ We are continuing the **Nuclear Reactor Simulator** project.
 - M7, M8, M9 gates: **COMPLETE / VALIDATED**.
 - M10.1–M10.9.3: **VALIDATED**.
 - Official baseline: **M10.9.3 — Interactive Full-Plant Mimic**.
-- Latest validated structural checkpoint: **M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback**.
-- Current candidate: **M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness**.
+- Latest validated structural checkpoint: **M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness**.
+- Current candidate: **M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves**.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
 ## Approved M10.9 sequence
@@ -32,16 +32,17 @@ We are continuing the **Nuclear Reactor Simulator** project.
 2. M10.9.2 Hotfix 2 Advanced Instrument & Gauge System — VALIDATED
 3. M10.9.3 Interactive Full-Plant Mimic — VALIDATED
 4. M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — VALIDATED STRUCTURAL CHECKPOINT
-5. M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — CURRENT CANDIDATE
+5. M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — VALIDATED STRUCTURAL CHECKPOINT
+6. M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — CURRENT CANDIDATE
 5. M10.9.5 Contextual Command Consequence Model
 6. M10.9.6 Operational Challenge & Energy-Demand Framework
 7. M10.9.7 Mission & Performance Workstation
 8. M10.9.8 Integrated Human-Automation-HMI Validation Gate
 
 
-## Hotfix 17 validated checkpoint / Hotfix 18 current step
+## Hotfix 18 validated checkpoint / Hotfix 19 current step
 
-Hotfix 16 established the prior green integrated checkpoint. Hotfix 17 was subsequently validated by the user with compilation, the ordinary suite and both explicit 60-second journeys green, and is now the latest validated structural checkpoint. Hotfix 18 is based directly on Hotfix 17 and changes only generator/grid synchronous phase-frequency feedback.
+Hotfix 17 established condenser UA·ΔT feedback and was validated. Hotfix 18 then added generator/grid synchronous phase-frequency stiffness and was validated by the user with compilation, the ordinary suite and both explicit 60-second journeys green. Hotfix 19 is based directly on validated Hotfix 18 and changes only pump discharge non-return semantics for the current-v2 condensate/feedwater train.
 
 Current-v2 condenser law:
 

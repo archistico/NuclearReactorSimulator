@@ -110,6 +110,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared = null,
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts = null,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts = null,
+        bool secondaryPumpsHaveDischargeCheckValves = false,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
         int deterministicSeedStepCount = 1)
     {
@@ -160,6 +161,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
             generatorMaximumSynchronizingCorrectionPowerMegawatts,
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
+            secondaryPumpsHaveDischargeCheckValves,
             steamDrumLiquidRecirculationMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
@@ -231,6 +233,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
+        bool secondaryPumpsHaveDischargeCheckValves,
         SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
@@ -471,12 +474,14 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             string from,
             string to,
             double boostMegapascals,
-            double resistancePascalSecondsSquaredPerKilogramSquared = 100_000_000d) => new(
+            double resistancePascalSecondsSquaredPerKilogramSquared = 100_000_000d,
+            bool hasDischargeCheckValve = false) => new(
             id,
             Pipe($"{id}-path", from, to, resistancePascalSecondsSquaredPerKilogramSquared),
             PressureDifference.FromMegapascals(boostMegapascals),
             QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(resistancePascalSecondsSquaredPerKilogramSquared),
-            PumpEfficiency.FromPercent(80d));
+            PumpEfficiency.FromPercent(80d),
+            hasDischargeCheckValve);
 
         var plant = new PlantDefinition(
             "educational-reference-plant",
@@ -501,8 +506,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             new[]
             {
                 Pump("pump", "suction", "pressure", 1d),
-                Pump("condensate-pump", "hotwell", "feedwater-inventory", 1d, secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared),
-                Pump("feedwater-pump", "feedwater-inventory", "drum", 7d, secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared),
+                Pump("condensate-pump", "hotwell", "feedwater-inventory", 1d, secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared, secondaryPumpsHaveDischargeCheckValves),
+                Pump("feedwater-pump", "feedwater-inventory", "drum", 7d, secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared, secondaryPumpsHaveDischargeCheckValves),
             },
             new[]
             {

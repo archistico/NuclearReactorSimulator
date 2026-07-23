@@ -58,6 +58,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared: 21_400d,
             generatorMaximumSynchronizingCorrectionPowerMegawatts: 10d,
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
+            secondaryPumpsHaveDischargeCheckValves: true,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             deterministicSeedStepCount: 2);
 }

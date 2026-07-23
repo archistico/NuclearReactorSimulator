@@ -55,6 +55,27 @@ public sealed class PumpFlowSolver
             fromNode,
             toNode,
             activePressureBoost);
+
+        if (pump.HasDischargeCheckValve && hydraulicFlow.MassFlowRate.KilogramsPerSecond < 0d)
+        {
+            var blockedFlow = new PipeFlowResult(
+                hydraulicFlow.PressureDifference,
+                MassFlowRate.Zero,
+                Power.Zero);
+
+            return new PumpFlowResult(
+                effectiveSpeed,
+                hydraulicFlow.PressureDifference,
+                activePressureBoost,
+                PressureDifference.Zero,
+                blockedFlow,
+                VolumetricFlowRate.Zero,
+                Power.Zero,
+                Power.Zero,
+                blockedFlow.FromNodeBalance,
+                blockedFlow.ToNodeBalance);
+        }
+
         var massFlowRate = hydraulicFlow.MassFlowRate;
         var upstreamNode = massFlowRate.KilogramsPerSecond >= 0d ? fromNode : toNode;
         var volumetricFlowRate = massFlowRate == MassFlowRate.Zero

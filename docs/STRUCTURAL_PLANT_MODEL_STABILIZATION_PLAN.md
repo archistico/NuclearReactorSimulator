@@ -139,7 +139,7 @@ M4.5 tests verify:
 
 Loss-of-synchronism protection is deliberately not mixed into this physics step; it remains part of the later protection-layer expansion after the coupling itself passes ordinary and long-running gates. ADR 0085 records the decision.
 
-## E. Pump non-return behavior — AFTER GENERATOR COUPLING
+## E. Pump non-return behavior — HOTFIX 19 CURRENT CANDIDATE
 
 ### Audit result: confirmed
 
@@ -147,7 +147,7 @@ Loss-of-synchronism protection is deliberately not mixed into this physics step;
 
 ### Planned correction
 
-Add opt-in canonical discharge check-valve semantics to the relevant condensate/feedwater pumps and direct reverse-flow regressions. Preserve pumps without check valves where reverse flow is intentionally modeled.
+Hotfix 19 adds opt-in canonical discharge check-valve semantics to the current-v2 condensate/feedwater pumps plus direct reverse-flow regressions. `PumpDefinition.HasDischargeCheckValve` defaults to false so pumps without a check valve remain bidirectional where reverse flow is intentionally modeled. When enabled, a negative hydraulic solution closes the valve and the pump path transfers zero mass and energy.
 
 ## F. Protection coverage and actuator dynamics — AFTER CORE POWER PATH IS STABLE
 

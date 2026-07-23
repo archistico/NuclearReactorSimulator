@@ -108,3 +108,10 @@ M1.5 does not yet model:
 - two-phase pump degradation.
 
 Those behaviors will be added only when their surrounding physical systems exist.
+
+
+## M10.9.4 Hotfix 19 — optional discharge check valve
+
+`PumpDefinition.HasDischargeCheckValve` is an opt-in hydraulic topology property. The default is `false`, preserving the historical bidirectional pump-path model. When enabled, `PumpFlowSolver` first solves the same active-head plus quadratic-resistance relation; if that unconstrained solution would be negative relative to the pump reference direction, the discharge check valve is considered closed and the committed transfer is zero mass / zero advected energy / zero hydraulic exchange for that step. Positive forward flow remains unchanged, including passive forward flow through a stopped pump when upstream pressure is sufficient.
+
+The current-v2 sustained-generation and synchronization definitions enable this only on `condensate-pump` and `feedwater-pump`. The main circulation pump and legacy/default definitions remain unchanged. This removes nonphysical secondary-train backflow such as a stopped condensate pump flowing from the pressurized feedwater inventory back into the hotwell without globally forbidding reverse flow in the hydraulic framework.
