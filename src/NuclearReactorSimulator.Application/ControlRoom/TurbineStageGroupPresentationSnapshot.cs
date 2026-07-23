@@ -10,6 +10,10 @@ public sealed record TurbineStageGroupPresentationSnapshot(
     ControlRoomValueSnapshot InletPressure,
     ControlRoomValueSnapshot InletTemperature,
     string InletPhase,
+    ControlRoomValueSnapshot AvailableSpecificWork,
+    ControlRoomValueSnapshot ExtractedSpecificWork,
+    bool ThermodynamicWorkModelActive,
+    bool ThermodynamicWorkLimited,
     bool TripBlocked)
 {
     public string EndpointText => $"{InletNodeId} → {ExhaustNodeId}";

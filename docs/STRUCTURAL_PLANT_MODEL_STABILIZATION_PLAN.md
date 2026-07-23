@@ -2,7 +2,7 @@
 
 ## Status
 
-M10.9.3 remains the validated baseline. M10.9.4 Hotfix 22 is the current implementation candidate; Hotfix 21 is the latest validated structural checkpoint.
+M10.9.3 remains the validated baseline. M10.9.4 Hotfix 23 is the current implementation candidate; Hotfix 22 is the latest validated structural checkpoint.
 
 This plan records the structural audit triggered by the long-running gameplay journey and by the discovery that the historical turbine-stage flow law made the admission train a monotonic mass accumulator. The governing rule is now:
 
@@ -176,15 +176,17 @@ Direct regressions verify optional legacy semantics, typed-rate validation and b
 
 After the downstream pressure/torque loops are corrected, add conservation/response tests to determine whether a dedicated pressure-dependent boiling/steam-export closure or steam-dump/safety-valve path is still required.
 
-## H. Turbine thermodynamic work model — LATER FIDELITY HARDENING
+## H. Turbine thermodynamic work model — CURRENT / Hotfix 23
 
 ### Audit result: confirmed simplification
 
 Stage torque currently derives from fixed `NominalSpecificWork * mass flow * efficiency`; the work is not primarily derived from inlet/exhaust thermodynamic states. The solver throws for impossible energy extraction instead of producing a bounded degraded operating state plus diagnostic evidence.
 
-### Planned correction
+### Hotfix 23 correction
 
-After hydraulic, condenser and grid feedback are stable, move to a pressure/enthalpy-dependent educational expansion law and explicit degraded/fault diagnostics.
+Current-v2 now opts into `TurbineThermodynamicWorkDefinition`. Available ideal work is estimated from committed inlet absolute temperature, inlet/exhaust pressure ratio and inlet vapor mass fraction using an educational vapor-expansion relation. It is then bounded by `NominalSpecificWork` and by 80% of committed inlet specific internal energy before efficiency is applied.
+
+The historical fixed-work law remains only when the optional definition is null. Current-v2 therefore degrades continuously as backpressure rises, produces zero shaft work for liquid/non-expanding admission, and exposes available/extracted specific work plus a limitation flag instead of reaching negative exhaust energy in normal operation. ADR 0090 records the decision. A complete enthalpy/entropy backend remains replaceable future fidelity.
 
 ## I. Integration stability / adaptive substepping — CROSS-CUTTING HARDENING
 
@@ -220,10 +222,9 @@ then, one structural change at a time:
 3. pump discharge check valves — Hotfix 19 validated
 4. meaningful measured secondary protections — Hotfix 20 Fix 2 validated
 5. actuator travel/ramp dynamics — Hotfix 21 validated
-6. governor/load-control mode cleanup — Hotfix 22 current candidate
-6. governor/load-control mode cleanup
-7. source-side/steam-dump audit
-8. turbine thermodynamic work fidelity
+6. governor/load-control mode cleanup — Hotfix 22 validated
+7. turbine thermodynamic work fidelity — Hotfix 23 current candidate
+8. source-side/steam-dump audit
 9. deterministic adaptive substepping hardening
 ```
 
@@ -232,9 +233,9 @@ No item advances merely because the long-run lasts longer. Each item needs a sho
 
 ## Hotfix 20 / 21 continuation
 
-Hotfix 20 Fix 2 is validated with the first meaningful measured current-v2 secondary protection set. Hotfix 21 is validated with isolated actuator dynamics. Hotfix 22 is the current isolated governor/load-control mode cleanup step.
+Hotfix 20 Fix 2 is validated with the first meaningful measured current-v2 secondary protection set. Hotfix 21 is validated with isolated actuator dynamics. Hotfix 22 is validated with governor speed/load droop cleanup. Hotfix 23 is the current isolated turbine thermodynamic-work step.
 
 
-## G. Governor/load-control mode cleanup — CURRENT / Hotfix 22
+## G. Governor/load-control mode cleanup — VALIDATED / Hotfix 22
 
-Hotfix 21 is validated. Hotfix 22 keeps the canonical speed PID and control-valve actuator but makes its automatic reference operating-mode aware. Breaker open uses the operator speed reference. Breaker closed uses synchronous mechanical speed plus a 5% full-load droop offset derived from canonical requested electrical power. Manual mode bypasses the rewrite. No duplicate load PID or actuator owner is introduced.
+Hotfix 22 keeps the canonical speed PID and control-valve actuator but makes its automatic reference operating-mode aware. Breaker open uses the operator speed reference. Breaker closed uses synchronous mechanical speed plus a 5% full-load droop offset derived from canonical requested electrical power. Manual mode bypasses the rewrite. No duplicate load PID or actuator owner is introduced. The user confirmed compilation, the ordinary suite and both explicit 60-second journeys all pass.

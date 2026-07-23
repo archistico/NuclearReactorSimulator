@@ -427,6 +427,10 @@ public static class ControlRoomSnapshotProjector
                 Value(stage.InletPressure.Megapascals, "MPa", "0.000"),
                 Value(stage.InletTemperature.DegreesCelsius, "°C", "0.0"),
                 stage.InletPhase.ToString().ToUpperInvariant(),
+                Value(stage.EffectiveIdealSpecificWork.KilojoulesPerKilogram, "kJ/kg", "0.0"),
+                Value(stage.ExtractedSpecificWork.KilojoulesPerKilogram, "kJ/kg", "0.0"),
+                stage.ThermodynamicWorkModelActive,
+                stage.ThermodynamicWorkLimited,
                 stage.TripBlocked))
             .ToArray();
 

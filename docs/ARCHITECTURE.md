@@ -13,7 +13,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7.3 is locally validated and provides exact `pre-criticality-source-range` v1 plus controlled first-criticality/low-power operation.
 - M7.4 is locally validated and supplies exact `low-power-steam-raising` v1 plus turbine-startup guidance through M5.4.
 - M7.5 is locally validated and supplies exact `pre-synchronization-grid-loading` v1, canonical M4.5 synchronization/breaker closure and bounded requested electrical-load commands.
-- M7, M8 and M9 gates are complete. M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; M9.7 hotfix 5 passed all 760 automated tests and the final user-corrected `MainWindow.axaml` is integrated as the validated GUI layout baseline. M10.1–M10.9.3 are validated; M10.9.3 Interactive Full-Plant Mimic is the official application baseline and M10.9.4 Hotfix 14 Turbine Hydraulic Invariant Regression Contract is the current implementation candidate in the approved M10.9.1–M10.9.8 operator-experience sequence. ADR 0075 fixes HMI range-semantics/expected-vs-observed/logical-time boundaries, ADR 0076 fixes published gauge semantics plus logical-step trend rules, ADR 0077 keeps whole-plant mimic topology/semantics in Application rather than Avalonia, and ADR 0078 extends the same rule to subsystem schematics while making long gameplay acceptance opt-in/explicit, and ADR 0079 requires generation-ready operating-point changes to use new exact initial-condition versions while keeping effective turbine-flow presentation outside fingerprint-v1; ADR 0080 makes current turbine expansion pressure-driven from inlet to exhaust; ADR 0081 isolates legacy replay compatibility from current-model correctness.
+- M7, M8 and M9 gates are complete. M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; M9.7 hotfix 5 passed all 760 automated tests and the final user-corrected `MainWindow.axaml` is integrated as the validated GUI layout baseline. M10.1–M10.9.3 are validated; M10.9.3 Interactive Full-Plant Mimic is the official application baseline. M10.9.4 Hotfix 22 is the latest user-validated structural checkpoint and Hotfix 23 Pressure/Temperature/Vapor-Dependent Turbine Work is the current candidate. ADR 0075–ADR 0090 record the HMI, replay, hydraulic, condenser, grid, pump, protection, actuator, governor and turbine-work boundaries.
 - M8.2 hotfix 2 introduced a headless `NuclearReactorSimulator.App.Tests` boundary for ViewModel/XAML interaction contracts. These tests may reference `App`, but production dependency direction is unchanged: `App` still has no `Simulation` reference and owns no physics.
 
 For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
@@ -1327,3 +1327,22 @@ verified reconstructed session
 Normal desktop startup does not silently enable `ScenarioRecorder`; the operator must explicitly restart as a recorded session before checkpoint/save operations. Load and checkpoint restore always replay exact inputs and verify fingerprints fail-closed. A verified restored prefix may be reattached to `ScenarioRecorder` for continuation, but the recorder verifies scenario identity, logical step, fingerprint and journals before accepting the prefix.
 
 Avalonia owns only file-picker/presentation orchestration. It never restores physics directly.
+
+
+## M10.9.4 Hotfix 23 turbine-work ownership
+
+Current-v2 turbine stage work remains owned by the M4.2 `TurbineExpansionSolver`. The stage definition may opt into an educational thermodynamic-work closure; legacy/null definitions preserve the historical fixed nominal-specific-work law.
+
+```text
+committed inlet temperature
++ committed inlet/exhaust pressure ratio
++ committed inlet vapor mass fraction
+        ↓
+pressure/temperature available specific work
+        ↓ min(nominal design cap, inlet-energy reserve)
+effective ideal specific work
+        ↓ turbine efficiency + rotor mechanics
+extracted shaft work / conservative exhaust energy
+```
+
+The closure does not move steam-table physics into Application or the UI. `TurbineStageGroupSnapshot` publishes the committed pressure/temperature availability, inlet-energy bound, effective ideal work and limitation state. Application projects only immutable diagnostics. A future higher-fidelity enthalpy/entropy backend may replace the educational closure without changing ownership or integration seams. See ADR 0090.

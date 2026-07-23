@@ -1,7 +1,7 @@
 # ADR 0089 — Current-v2 governor switches from speed reference to grid-load droop
 
 ## Status
-Accepted for M10.9.4 Hotfix 22 candidate.
+Accepted and validated in M10.9.4 Hotfix 22.
 
 ## Decision
 The current-v2 turbine governor keeps one canonical speed PID and one canonical control-valve actuator.

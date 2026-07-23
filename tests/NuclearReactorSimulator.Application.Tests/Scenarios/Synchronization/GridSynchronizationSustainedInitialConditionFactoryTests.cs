@@ -20,6 +20,9 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
         var currentGovernorDroop = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineGovernorDroopDefinition>(
             currentEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
         Assert.Equal(150d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
+        var stageDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
+        Assert.IsType<NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine.TurbineThermodynamicWorkDefinition>(
+            stageDefinition.ThermodynamicWork);
         var generatorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
         var gridCoupling = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridCouplingDefinition>(
             generatorDefinition.GridCoupling);

@@ -108,6 +108,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double hotwellControllerIntegralGainPerSecond = 0d,
         double exhaustSteamSpaceVolumeCubicMetres = 10d,
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared = null,
+        bool useThermodynamicTurbineWork = false,
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts = null,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts = null,
         bool secondaryPumpsHaveDischargeCheckValves = false,
@@ -163,6 +164,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             hotwellControllerIntegralGainPerSecond,
             exhaustSteamSpaceVolumeCubicMetres,
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
+            useThermodynamicTurbineWork,
             generatorMaximumSynchronizingCorrectionPowerMegawatts,
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
             secondaryPumpsHaveDischargeCheckValves,
@@ -239,6 +241,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double hotwellControllerIntegralGainPerSecond,
         double exhaustSteamSpaceVolumeCubicMetres,
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
+        bool useThermodynamicTurbineWork,
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
         bool secondaryPumpsHaveDischargeCheckValves,
@@ -677,6 +680,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.HasValue
                         ? QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(
                             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.Value)
+                        : null,
+                    useThermodynamicTurbineWork
+                        ? new TurbineThermodynamicWorkDefinition(
+                            SpecificHeatCapacity.FromKilojoulesPerKilogramKelvin(2.1d),
+                            heatCapacityRatio: 1.3d,
+                            maximumInletInternalEnergyExtractionFraction: 0.8d)
                         : null),
             });
         var condensers = new CondenserSystemDefinition(

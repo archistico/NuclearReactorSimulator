@@ -57,6 +57,7 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             hotwellControllerIntegralGainPerSecond: -0.000001d,
             exhaustSteamSpaceVolumeCubicMetres: 1_000d,
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared: 21_400d,
+            useThermodynamicTurbineWork: true,
             generatorMaximumSynchronizingCorrectionPowerMegawatts: 10d,
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
             secondaryPumpsHaveDischargeCheckValves: true,

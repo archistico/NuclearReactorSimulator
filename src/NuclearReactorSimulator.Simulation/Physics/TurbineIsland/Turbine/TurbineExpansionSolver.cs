@@ -1,3 +1,4 @@
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
 using NuclearReactorSimulator.Domain.Plant;
@@ -73,7 +74,7 @@ public sealed class TurbineExpansionSolver
         }
 
         var seconds = deltaTime.TotalSeconds;
-        var stageWorking = BuildStageWorkingSet(committedTurbineState, inputs);
+        var stageWorking = BuildStageWorkingSet(committedPlantState, committedTurbineState, inputs);
         var rotorWorking = SolveRotors(committedTurbineState, inputs, stageWorking, seconds);
         var stageSolution = SolveStages(committedPlantState, stageWorking, rotorWorking);
         var sourceTerms = PlantNetworkSourceTerms.Combine(
@@ -106,6 +107,7 @@ public sealed class TurbineExpansionSolver
     }
 
     private IReadOnlyDictionary<string, StageWorking> BuildStageWorkingSet(
+        PlantState committedPlantState,
         TurbineExpansionState committedState,
         TurbineExpansionInputs inputs)
     {
@@ -117,8 +119,20 @@ public sealed class TurbineExpansionSolver
             var rotorInput = inputs.GetRotorInput(rotor.Id);
             var stageInput = inputs.GetStageGroupInput(stage.Id);
             var effectiveFlow = rotorInput.TripCommand ? MassFlowRate.Zero : stageInput.MassFlowRate;
-            var ratedPower = stage.NominalSpecificWork * effectiveFlow * stage.Efficiency.Fraction;
-            var torque = Torque.FromNewtonMetres(ratedPower.Watts / rotor.RatedAngularSpeed.RadiansPerSecond);
+            var boundary = _definition.MainSteamNetwork.GetTurbineAdmissionBoundary(stage.AdmissionBoundaryId);
+            var inlet = committedPlantState.GetFluidNode(boundary.SourceNodeId);
+            var exhaust = committedPlantState.GetFluidNode(stage.ExhaustNodeId);
+            var specificWork = ResolveSpecificWork(stage, inlet, exhaust);
+            var availableShaftPower = specificWork.EffectiveIdealSpecificWork
+                * effectiveFlow
+                * stage.Efficiency.Fraction;
+            var torqueReferenceSpeed = stage.ThermodynamicWork is null
+                ? rotor.RatedAngularSpeed
+                : AngularSpeed.FromRadiansPerSecond(Math.Max(
+                    rotor.RatedAngularSpeed.RadiansPerSecond,
+                    rotorState.AngularSpeed.RadiansPerSecond));
+            var torque = Torque.FromNewtonMetres(
+                availableShaftPower.Watts / torqueReferenceSpeed.RadiansPerSecond);
 
             result.Add(
                 stage.Id,
@@ -128,10 +142,66 @@ public sealed class TurbineExpansionSolver
                     rotorInput,
                     stageInput.MassFlowRate,
                     effectiveFlow,
+                    specificWork,
                     torque));
         }
 
         return result;
+    }
+
+    private static SpecificWorkResolution ResolveSpecificWork(
+        TurbineStageGroupDefinition stage,
+        FluidNodeState inlet,
+        FluidNodeState exhaust)
+    {
+        if (stage.ThermodynamicWork is not { } work)
+        {
+            return new SpecificWorkResolution(
+                false,
+                stage.NominalSpecificWork,
+                stage.NominalSpecificWork,
+                stage.NominalSpecificWork,
+                false);
+        }
+
+        var vaporMassFraction = inlet.Thermodynamics.VaporMassFraction ?? 0d;
+        var pressureTemperatureAvailableJoulesPerKilogram = 0d;
+        if (vaporMassFraction > 0d && inlet.Pressure > exhaust.Pressure)
+        {
+            var pressureRatio = Math.Clamp(
+                exhaust.Pressure.Pascals / inlet.Pressure.Pascals,
+                1e-12d,
+                1d);
+            var isentropicExponent = (work.HeatCapacityRatio - 1d) / work.HeatCapacityRatio;
+            var idealTemperatureDropFraction = 1d - Math.Pow(pressureRatio, isentropicExponent);
+            pressureTemperatureAvailableJoulesPerKilogram =
+                work.VaporSpecificHeatAtConstantPressure.JoulesPerKilogramKelvin
+                * inlet.Temperature.Kelvins
+                * idealTemperatureDropFraction
+                * vaporMassFraction;
+        }
+
+        var pressureTemperatureAvailable = SpecificEnergy.FromJoulesPerKilogram(
+            Math.Max(0d, pressureTemperatureAvailableJoulesPerKilogram));
+        var inletEnergyBounded = SpecificEnergy.FromJoulesPerKilogram(
+            Math.Max(
+                0d,
+                inlet.SpecificInternalEnergy.JoulesPerKilogram
+                    * work.MaximumInletInternalEnergyExtractionFraction));
+        var effectiveIdeal = SpecificEnergy.FromJoulesPerKilogram(Math.Min(
+            stage.NominalSpecificWork.JoulesPerKilogram,
+            Math.Min(
+                pressureTemperatureAvailable.JoulesPerKilogram,
+                inletEnergyBounded.JoulesPerKilogram)));
+        var limited = effectiveIdeal.JoulesPerKilogram
+            < stage.NominalSpecificWork.JoulesPerKilogram - 1e-9d;
+
+        return new SpecificWorkResolution(
+            true,
+            pressureTemperatureAvailable,
+            inletEnergyBounded,
+            effectiveIdeal,
+            limited);
     }
 
     private IReadOnlyDictionary<string, RotorWorking> SolveRotors(
@@ -244,6 +314,13 @@ public sealed class TurbineExpansionSolver
                 inlet.Phase,
                 inlet.VaporQuality,
                 inlet.SpecificInternalEnergy,
+                committedPlantState.GetFluidNode(stage.ExhaustNodeId).Pressure,
+                committedPlantState.GetFluidNode(stage.ExhaustNodeId).Temperature,
+                working.SpecificWork.ThermodynamicWorkModelActive,
+                working.SpecificWork.PressureTemperatureAvailableSpecificWork,
+                working.SpecificWork.InletEnergyBoundedSpecificWork,
+                working.SpecificWork.EffectiveIdealSpecificWork,
+                working.SpecificWork.ThermodynamicWorkLimited,
                 stage.NominalSpecificWork,
                 extractedSpecificWork,
                 exhaustSpecificInternalEnergy,
@@ -343,7 +420,15 @@ public sealed class TurbineExpansionSolver
         TurbineRotorInput RotorInput,
         MassFlowRate CommandedMassFlowRate,
         MassFlowRate EffectiveMassFlowRate,
+        SpecificWorkResolution SpecificWork,
         Torque ShaftTorque);
+
+    private sealed record SpecificWorkResolution(
+        bool ThermodynamicWorkModelActive,
+        SpecificEnergy PressureTemperatureAvailableSpecificWork,
+        SpecificEnergy InletEnergyBoundedSpecificWork,
+        SpecificEnergy EffectiveIdealSpecificWork,
+        bool ThermodynamicWorkLimited);
 
     private sealed record RotorWorking(
         TurbineRotorDefinition Definition,

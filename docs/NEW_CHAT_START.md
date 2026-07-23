@@ -15,15 +15,15 @@ We are continuing the **Nuclear Reactor Simulator** project.
 9. `docs/INTERACTIVE_FULL_PLANT_MIMIC.md`
 10. `docs/ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md`
 11. `docs/OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`
-12. ADR 0075–ADR 0088
+12. ADR 0075–ADR 0090
 
 ## Exact checkpoint
 
 - M7, M8, M9 gates: **COMPLETE / VALIDATED**.
 - M10.1–M10.9.3: **VALIDATED**.
 - Official baseline: **M10.9.3 — Interactive Full-Plant Mimic**.
-- Latest validated structural checkpoint: **M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics**.
-- Current candidate: **M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup**.
+- Latest validated structural checkpoint: **M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup**.
+- Current candidate: **M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work**.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
 ## Approved M10.9 sequence
@@ -36,16 +36,17 @@ We are continuing the **Nuclear Reactor Simulator** project.
 6. M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — VALIDATED STRUCTURAL CHECKPOINT
 7. M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — VALIDATED STRUCTURAL CHECKPOINT
 8. M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — VALIDATED STRUCTURAL CHECKPOINT
-9. M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — CURRENT CANDIDATE
-5. M10.9.5 Contextual Command Consequence Model
-6. M10.9.6 Operational Challenge & Energy-Demand Framework
-7. M10.9.7 Mission & Performance Workstation
-8. M10.9.8 Integrated Human-Automation-HMI Validation Gate
+9. M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — VALIDATED
+10. M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — CURRENT CANDIDATE
+11. M10.9.5 Contextual Command Consequence Model
+12. M10.9.6 Operational Challenge & Energy-Demand Framework
+13. M10.9.7 Mission & Performance Workstation
+14. M10.9.8 Integrated Human-Automation-HMI Validation Gate
 
 
-## Hotfix 21 validated checkpoint / Hotfix 22 current step
+## Hotfix 22 validated checkpoint / Hotfix 23 current step
 
-Hotfix 17 established condenser UA·ΔT feedback, Hotfix 18 generator/grid synchronous stiffness and Hotfix 19 secondary-pump discharge check valves; all are validated structural checkpoints. Hotfix 20 Fix 2 is now also validated after compilation, the ordinary suite and both explicit 60-second journeys passed with measured turbine overspeed, condenser high-backpressure and generator overfrequency protections active. Hotfix 21 is validated with deterministic actuator travel/ramp dynamics. Hotfix 22 is based directly on it and changes only governor operating-mode reference derivation: speed reference before synchronization, requested-load droop reference after breaker closure. Legacy governor definitions remain speed-reference-only and manual/protection authority is unchanged.
+Hotfix 17 established condenser UA·ΔT feedback, Hotfix 18 generator/grid synchronous stiffness and Hotfix 19 secondary-pump discharge check valves; all are validated structural checkpoints. Hotfix 20 Fix 2 is now also validated after compilation, the ordinary suite and both explicit 60-second journeys passed with measured turbine overspeed, condenser high-backpressure and generator overfrequency protections active. Hotfix 21 is validated with deterministic actuator travel/ramp dynamics. Hotfix 22 is also validated with speed reference before synchronization and requested-load droop after breaker closure. Hotfix 23 is based directly on Hotfix 22 and changes only turbine work availability: current-v2 uses pressure/temperature/vapor-dependent educational expansion bounded by nominal design work and inlet internal energy, while legacy stages remain fixed-work.
 
 Current-v2 condenser law:
 
@@ -55,7 +56,7 @@ Qsurface = UA * ΔT
 Qeffective = min(Qavailable, Qsurface)
 ```
 
-Current v2 design values: `UA = 1.225 MW/K`, `Tcoolant = 20 °C`; at the existing 40 °C exhaust design point this reproduces exactly 24.5 MW. Run ordinary tests and both explicit journeys before advancing to generator-grid synchronous coupling.
+Current v2 design values: `UA = 1.225 MW/K`, `Tcoolant = 20 °C`; at the existing 40 °C exhaust design point this reproduces exactly 24.5 MW. Run ordinary tests and both explicit journeys before advancing to source-side/steam-dump audit or adaptive-substep hardening.
 
 ## What M10.9.4 changes
 

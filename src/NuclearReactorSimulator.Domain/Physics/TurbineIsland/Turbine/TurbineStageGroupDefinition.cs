@@ -15,7 +15,8 @@ public sealed class TurbineStageGroupDefinition
         string rotorId,
         SpecificEnergy nominalSpecificWork,
         TurbineEfficiency efficiency,
-        QuadraticHydraulicResistance? expansionResistance = null)
+        QuadraticHydraulicResistance? expansionResistance = null,
+        TurbineThermodynamicWorkDefinition? thermodynamicWork = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -54,6 +55,7 @@ public sealed class TurbineStageGroupDefinition
         NominalSpecificWork = nominalSpecificWork;
         Efficiency = efficiency;
         ExpansionResistance = expansionResistance;
+        ThermodynamicWork = thermodynamicWork;
     }
 
     public string Id { get; }
@@ -73,4 +75,9 @@ public sealed class TurbineStageGroupDefinition
     /// node to <see cref="ExhaustNodeId"/>. Null preserves the historical upstream-valve-minimum stage-flow law.
     /// </summary>
     public QuadraticHydraulicResistance? ExpansionResistance { get; }
+
+    /// <summary>
+    /// Optional current-model work closure. Null preserves the historical fixed nominal-specific-work law.
+    /// </summary>
+    public TurbineThermodynamicWorkDefinition? ThermodynamicWork { get; }
 }

@@ -1,4 +1,16 @@
-## M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — IMPLEMENTATION CANDIDATE
+## M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — IMPLEMENTATION CANDIDATE
+
+- Promotes Hotfix 22 to the latest validated structural checkpoint after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.
+- Adds strongly typed `SpecificHeatCapacity` and optional `TurbineThermodynamicWorkDefinition`; null preserves the historical fixed-`NominalSpecificWork` law.
+- Current-v2 estimates ideal vapor expansion work from committed inlet temperature, inlet/exhaust pressure ratio, heat-capacity ratio and inlet vapor mass fraction, then bounds it by the 500 kJ/kg stage design cap and 80% of committed inlet specific internal energy.
+- Liquid admission, absent vapor content or non-positive pressure drop now yields zero current-v2 shaft work instead of nominal torque. Rising exhaust backpressure continuously reduces available work.
+- Low-energy current-v2 inlet states degrade through bounded available/extracted-specific-work diagnostics rather than reaching negative exhaust energy in normal operation.
+- The validated operating point remains materially unchanged because thermodynamic availability exceeds the existing nominal design cap; turbine efficiency still produces approximately 400 kJ/kg extracted work.
+- Extends turbine snapshots, Application presentation and long-running diagnostics with available/extracted specific work plus model-active/limited flags.
+- Adds direct domain, solver and versioned-seed regressions plus ADR 0090. Adaptive substepping and source-side/steam-dump fidelity remain separate follow-on work.
+- M10.9.3 remains the official milestone baseline; Hotfix 22 is the latest validated M10.9.4 structural checkpoint and Hotfix 23 requires ordinary + both explicit 60-second gates before promotion.
+
+## M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — VALIDATED STRUCTURAL CHECKPOINT
 
 - Promotes Hotfix 21 to the latest validated structural checkpoint after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.
 - Adds optional `TurbineGovernorDroopDefinition`; null preserves legacy speed-reference-only semantics.
@@ -9,7 +21,7 @@
 - Adds domain, solver and versioned-seed regressions plus ADR 0089. No protection, actuator-rate, turbine, condenser, pump or generator-grid physics changes are mixed into this hotfix.
 - M10.9.3 remains the official milestone baseline; Hotfix 21 is the latest validated M10.9.4 structural checkpoint and Hotfix 22 requires ordinary + both explicit 60-second gates before promotion.
 
-## M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — IMPLEMENTATION CANDIDATE
+## M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — VALIDATED STRUCTURAL CHECKPOINT
 
 - Promotes Hotfix 20 Fix 2 to the latest validated structural checkpoint after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.
 - Adds strongly typed `ActuatorTravelRate` in normalized full-scale fraction per second; `ActuatorDefinition.TravelRate = null` preserves historical instantaneous command application for legacy/versioned compatibility.

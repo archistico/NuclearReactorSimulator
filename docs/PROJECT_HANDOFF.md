@@ -17,7 +17,7 @@ M9 gate — COMPLETE / VALIDATED
         ↓
 M10.1–M10.9.3 — VALIDATED
         ↓
-M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — CURRENT CANDIDATE
+M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — CURRENT CANDIDATE
         ↓
 M10.9.5 Contextual Command Consequence Model
 M10.9.6 Operational Challenge & Energy-Demand Framework
@@ -40,7 +40,7 @@ Hotfix 16 closes current-v2 drum/main-steam continuity conservatively and fixes 
 
 **Hotfix 17 changes one structural item only:** current-v2 condenser heat rejection becomes `min(Q_available, UA·ΔT)` with `UA = 1.225 MW/K` and cooling water at 20 °C, chosen to reproduce the existing 24.5 MW / 40 °C design point exactly at initialization. Legacy null-UA definitions retain capacity-only behavior as an isolated compatibility seam.
 
-Hotfix 17, Hotfix 18 and Hotfix 19 are validated structural checkpoints. Hotfix 20 Fix 2 is also validated: the user confirmed compilation, the ordinary suite and both explicit 60-second journeys green with measured turbine overspeed, condenser high-backpressure and generator overfrequency latching protection plus a complete measured-frame bootstrap. Hotfix 21 is validated. Hotfix 22 changes only current-v2 governor mode semantics: breaker-open automatic operation uses the operator speed setpoint; breaker-closed automatic operation uses synchronous speed plus requested-load droop. Manual mode, protection/fault authority and actuator travel rates are unchanged.
+Hotfix 17, Hotfix 18 and Hotfix 19 are validated structural checkpoints. Hotfix 20 Fix 2 is also validated: the user confirmed compilation, the ordinary suite and both explicit 60-second journeys green with measured turbine overspeed, condenser high-backpressure and generator overfrequency latching protection plus a complete measured-frame bootstrap. Hotfix 21 and Hotfix 22 are validated. Hotfix 22 establishes breaker-open speed control and breaker-closed requested-load droop without duplicate actuator ownership. Hotfix 23 changes only turbine work fidelity: current-v2 stage work depends on committed inlet temperature, inlet/exhaust pressure ratio and vapor fraction, bounded by the nominal 500 kJ/kg design cap and 80% inlet internal energy. Legacy stage definitions keep `ThermodynamicWork = null`.
 
 ## 2. Operator-experience objective
 
@@ -80,9 +80,11 @@ Hotfix 13 rebases on Hotfix 10 and withdraws unvalidated Hotfix 11/12 workaround
 
 Replay policy is also clarified: legacy replay compatibility is a read/migration concern, not a veto on correcting current physics. Pre-release legacy versions may be isolated, migrated or deprecated rather than contaminating the active model.
 
-## 4. Current M10.9.4 Hotfix 13 candidate
+## 4. Current M10.9.4 Hotfix 23 candidate
 
-M10.9.4 adds five detailed engineering schematic families:
+M10.9.4 retains the five detailed engineering schematic families and the validated structural corrections through Hotfix 22. Hotfix 23 adds current-v2 thermodynamic turbine-work availability while preserving legacy fixed-work seams.
+
+The five schematic families remain:
 
 1. Reactor / Core
 2. Primary Circuit / Steam Drums

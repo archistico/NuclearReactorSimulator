@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4 Hotfix 21 candidate validation.
+Accepted and validated in M10.9.4 Hotfix 21.
 
 ## Context
 

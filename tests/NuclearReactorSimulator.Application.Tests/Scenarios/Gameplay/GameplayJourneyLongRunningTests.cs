@@ -154,6 +154,7 @@ public sealed class GameplayJourneyLongRunningTests
     {
         var generator = snapshot.Electrical.Generators.FirstOrDefault();
         var rotor = snapshot.TurbineSecondary.Rotors.FirstOrDefault();
+        var stage = snapshot.TurbineSecondary.StageGroups.FirstOrDefault();
         var train = snapshot.TurbineSecondary.AdmissionTrains.FirstOrDefault();
         var condenser = snapshot.TurbineSecondary.Condensers.FirstOrDefault();
         var feedwater = snapshot.TurbineSecondary.FeedwaterTrains.FirstOrDefault();
@@ -163,6 +164,9 @@ public sealed class GameplayJourneyLongRunningTests
             ControlRoomSubsystemSchematicProjector.BuildGeneratorPowerPathDiagnostic(snapshot),
             generator is null ? "GENERATOR —" : FormattableString.Invariant($"BREAKER={generator.BreakerText}; MWe={generator.ElectricalOutput.NumericValue:0.###}; MECH={generator.MechanicalInputPower.NumericValue:0.###}; REQUEST={generator.RequestedElectricalPower.NumericValue:0.###}"),
             rotor is null ? "ROTOR —" : FormattableString.Invariant($"RPM={rotor.Speed.NumericValue:0.###}; SHAFT={rotor.ShaftPower.NumericValue:0.###}"),
+            stage is null
+                ? "STAGE-WORK —"
+                : FormattableString.Invariant($"STAGE-WORK={stage.ExtractedSpecificWork.NumericValue:0.###}/{stage.AvailableSpecificWork.NumericValue:0.###} kJ/kg; THERMO={stage.ThermodynamicWorkModelActive}; LIMITED={stage.ThermodynamicWorkLimited}"),
             FormattableString.Invariant($"STEAM={snapshot.TurbineSecondary.EffectiveTurbineSteamFlow.NumericValue:0.###} kg/s; MEASURED-SHAFT={snapshot.TurbineSecondary.TotalTurbineShaftPower.NumericValue:0.###} MW"),
             train is null
                 ? "ADMISSION —"

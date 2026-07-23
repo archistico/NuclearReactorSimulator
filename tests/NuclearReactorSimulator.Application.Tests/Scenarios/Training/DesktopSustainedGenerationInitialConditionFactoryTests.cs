@@ -26,6 +26,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         var legacyEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(legacy.CreateRuntimeEngine());
         var legacyStage = Assert.Single(legacyEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
         Assert.False(legacyStage.ExpansionResistance.HasValue);
+        Assert.Null(legacyStage.ThermodynamicWork);
         var legacyDrum = Assert.Single(legacyEngine.CurrentState.PlantDefinition
             .TurbineExpansionSystem.MainSteamNetwork.PrimaryCircuit.SteamDrumSystem.Drums);
         Assert.Equal(SteamDrumLiquidRecirculationMode.LegacyReturnSplit, legacyDrum.LiquidRecirculationMode);
@@ -50,6 +51,11 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Equal(
             21_400d,
             stageDefinition.ExpansionResistance.GetValueOrDefault().PascalSecondsSquaredPerKilogramSquared);
+        var thermodynamicWork = Assert.IsType<NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine.TurbineThermodynamicWorkDefinition>(
+            stageDefinition.ThermodynamicWork);
+        Assert.Equal(2.1d, thermodynamicWork.VaporSpecificHeatAtConstantPressure.KilojoulesPerKilogramKelvin, 12);
+        Assert.Equal(1.3d, thermodynamicWork.HeatCapacityRatio, 12);
+        Assert.Equal(0.8d, thermodynamicWork.MaximumInletInternalEnergyExtractionFraction, 12);
         var currentDrum = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .TurbineExpansionSystem.MainSteamNetwork.PrimaryCircuit.SteamDrumSystem.Drums);
         Assert.Equal(SteamDrumLiquidRecirculationMode.CirculationDemandBalanced, currentDrum.LiquidRecirculationMode);
@@ -105,6 +111,9 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.True((steamLine.PressureDifference.NumericValue ?? 0d) > 0d);
         Assert.InRange(rotor.Speed.NumericValue ?? double.NaN, 2_980d, 3_020d);
         Assert.InRange(stage.SteamFlow.NumericValue ?? double.NaN, 12.5d, 30d);
+        Assert.True(stage.ThermodynamicWorkModelActive);
+        Assert.InRange(stage.AvailableSpecificWork.NumericValue ?? double.NaN, 450d, 500d);
+        Assert.InRange(stage.ExtractedSpecificWork.NumericValue ?? double.NaN, 350d, 450d);
         Assert.InRange(rotor.ShaftPower.NumericValue ?? double.NaN, 4.5d, 20d);
         Assert.InRange(snapshot.TurbineSecondary.EffectiveTurbineSteamFlow.NumericValue ?? double.NaN, 12.5d, 30d);
         Assert.True((condenser.CondensationFlow.NumericValue ?? 0d) > 10d);

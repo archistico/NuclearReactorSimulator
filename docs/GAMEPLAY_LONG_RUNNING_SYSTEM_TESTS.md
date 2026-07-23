@@ -138,3 +138,10 @@ Hotfix 17 changes only condenser heat-transfer feedback from capacity-only to cu
 ## Hotfix 17 validated / Hotfix 18 rerun requirement
 
 The user confirmed Hotfix 17 passes compilation, the ordinary suite and both explicit 60-second journeys. Hotfix 18 changes only breaker-closed generator/grid electromagnetic loading by adding phase-angle and frequency-slip stiffness around the dispatch setpoint. Both explicit journeys must therefore be rerun because they exercise sustained parallel operation and synchronization/load raise directly. A regression should be diagnosed from rotor speed, phase/frequency difference, requested vs actual MWe and electromagnetic/mechanical power before changing steam-path or condenser parameters.
+
+
+## Hotfix 22 validated / Hotfix 23 rerun requirement
+
+The user confirmed Hotfix 22 passes compilation, the ordinary suite and both explicit 60-second journeys. Hotfix 23 changes only current-v2 turbine specific-work availability. The long-run diagnostic now prints extracted/available stage work together with `THERMO` and `LIMITED` flags.
+
+Both journeys must be rerun because sustained shaft and electrical export depend directly on this closure. The validated low-load design point is intentionally preserved by the 500 kJ/kg stage cap; failures must be diagnosed from inlet/exhaust pressure, vapor content, available/extracted kJ/kg, shaft power and generator evidence before changing seed or controller parameters.

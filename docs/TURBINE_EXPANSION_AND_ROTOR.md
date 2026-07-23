@@ -188,3 +188,33 @@ The turbine solver remains the sole owner of rotor mechanical-state integration.
 ## M4.5 generator-load ownership
 
 M4.2 intentionally introduced `TurbineRotorInput.ExternalLoadTorque` as a replaceable manual seam. M4.5 now owns that seam when generator/grid physics is active. `GeneratorGridInputs` therefore requires every legacy M4.2 external-load torque command to be zero and injects the generator electromagnetic torque internally before the same M4.2 rotor integration. This prevents double loading while preserving M4.2 backward compatibility for standalone turbine tests and earlier milestones.
+
+## M10.9.4 current-v2 thermodynamic work closure
+
+Hotfix 23 keeps the historical fixed-work law only where `TurbineStageGroupDefinition.ThermodynamicWork` is null. The current-v2 generation-ready profiles opt into a deterministic educational vapor-expansion closure:
+
+```text
+pressure ratio r = P_exhaust / P_inlet
+ideal vapor work = cp * T_inlet * (1 - r^((gamma - 1) / gamma)) * vapor mass fraction
+```
+
+The solver then applies two explicit bounds before turbine efficiency:
+
+```text
+effective ideal work = min(
+    NominalSpecificWork,
+    pressure/temperature/vapor available work,
+    0.8 * committed inlet specific internal energy)
+```
+
+This preserves the 500 kJ/kg design cap at the validated operating point while making work respond to actual committed conditions:
+
+- rising exhaust backpressure reduces stage work;
+- falling inlet pressure/temperature reduces stage work;
+- saturated-mixture quality scales the vapor work available;
+- liquid admission or `P_inlet <= P_exhaust` produces zero shaft work;
+- low-energy inlet states are bounded and diagnosed instead of producing negative exhaust energy during normal current-v2 operation.
+
+`TurbineStageGroupSnapshot` publishes the pressure/temperature availability, inlet-energy bound, effective ideal work, extracted work and `ThermodynamicWorkLimited`. The Application projection exposes available/extracted kJ/kg so long-running failures identify whether the limitation comes from steam flow or steam quality/expansion authority.
+
+This remains an educational closure, not a complete isentropic steam-table or multi-cylinder stage map. The optional definition keeps that backend replaceable without changing turbine topology or rotor ownership.
