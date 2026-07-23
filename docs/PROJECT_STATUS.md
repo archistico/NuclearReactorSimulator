@@ -1,6 +1,6 @@
 # Project Status
 
-M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.7 are VALIDATED**. The user first validated the cumulative M10.2→M10.6 Hotfix 1 chain, then separately confirmed M10.7 Hotfix 1 compiled successfully and the complete automated suite passed. **M10.7 — Session, Checkpoint, Replay & Save Workspace is the current validated baseline. M10.7.1 Hotfix 2 — Operator Control-State & Synchronization Usability is the current implementation candidate before M10.8.**
+M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.9.3 are VALIDATED**. The user confirmed M10.9.3 compiled successfully and the complete automated suite passed. **M10.9.3 — Interactive Full-Plant Mimic is the current validated baseline. M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback is the current implementation candidate.** The long-gameplay investigation proved the prior stage-flow law was structurally degenerate: the valve train transferred mass into intermediate plenums while stage drain was derived from the minimum upstream valve flow, forcing monotonic train accumulation/equalization. Hotfix 13 rebases on ordinary-green Hotfix 10 and introduces a pressure-driven inlet→exhaust expansion law for current v2 only; unvalidated Hotfix 11/12 workaround branches are withdrawn.
 
 
 | Phase | Status | Validated capability |
@@ -15,6 +15,7 @@ M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.7 
 | M7 | VALIDATED | M7.1–M7.7 validated; versioned sessions, normal operating path and deterministic training/evaluation gate complete |
 | M8 | VALIDATED | M8.1–M8.7 validated; deterministic fault/scenario/safety-response gate complete |
 | M9 | COMPLETE / VALIDATED | M9.1–M9.7 validated; 760/760 tests passed and final GUI layout integrated |
+| M10 | IN PROGRESS | M10.1–M10.9.3 validated; M10.9.4 Hotfix 17 current candidate; M10 closes at M10.9.8 |
 
 ## Validated M8 fault/scenario gate
 
@@ -28,7 +29,7 @@ M9.1 is validated and provides deterministic per-step recording, replay-backed c
 
 M9.3 is **validated**. It connects the already validated M2.8 iodine/xenon owner to the integrated M5 reactor/primary runtime through optional versioned configuration/state, composes committed xenon worth through the existing non-rod-reactivity seam, promotes the committed diagnostic through the presentation snapshot, and adds two versioned xenon/low-power scenario seeds. Existing M7 v1 initial conditions remain xenon-disabled so exact-version replay semantics are not silently changed. Local compilation and the complete automated suite passed after two test-only hotfixes that did not alter production physics or replay/versioning semantics.
 
-### Validated M9 gate / M10.1–M10.7 validated / current M10.7.1 candidate
+### Validated M9 gate / M10.1–M10.9.3 validated / current M10.9.4 candidate
 
 M9.4 is **validated**. It adds an opt-in quasi-spatial refinement over the M3.3 aggregated-core boundary, evaluates existing M2 fuel-temperature/coolant-temperature/void feedback equations on committed zone domains, reduces them to one current-power-share-weighted scalar for the existing global point-kinetics seam, and evolves only normalized `AggregatedCoreState` power shares for the next committed step. Explicit symmetric zone couplings smooth only the shape-driving signal; coordinates do not imply adjacency and no local neutron populations or conserved inventories are introduced. Local compilation and the complete automated suite passed after one test-compilation-only namespace hotfix.
 
@@ -36,7 +37,9 @@ M9.5 is **VALIDATED**: optional `HistoricalContext` provenance/fidelity metadata
 
 M9.7 is **VALIDATED** and the M9 gate is complete. The user confirmed local compilation and **760/760 automated tests passed** after hotfix 5, including 6,000-step / 60-second direct-session and desktop-pump endurance. The final manual center-workspace clipping/overlap issue was corrected in the user-supplied `MainWindow.axaml`, now integrated as the authoritative layout baseline.
 
-M10.1 through M10.7 are **VALIDATED**. M10.2 provides GUIDANCE/INFO/DIAGNOSTICS, M10.3 ALARMS/LOG, M10.4 contextual COMMANDS, M10.5 the independent assistance/control-authority model, M10.6 deterministic M5-owned bounded supervisory operation, and M10.7 explicit opt-in recording plus replay-backed checkpoint/save/load/restore without opaque state dumps. M10.7.1 Hotfix 2 is the current **implementation candidate**, closing operator-facing trip/reset/synchronization ambiguity, adding canonical next-action/startup-to-power guidance, and making rod/pump/breaker persistent state visibly distinct from momentary speed/load command feedback before M10.8.
+M10.1 through M10.9.3 are **VALIDATED**. The user-supplied Hotfix 16 package is the latest green structural checkpoint: its changelog records a clean build, 870 ordinary tests passing and both explicit 60-second gameplay journeys passing separately. Hotfix 17 advances one structural item only: the current-v2 condenser now closes heat rejection through `min(Q_available, UA·ΔT)` while preserving the Hotfix 16 design point at 40 °C steam-space / 20 °C cooling water.
+
+M10.1 through M10.9.3 are **VALIDATED**. M10.2 provides GUIDANCE/INFO/DIAGNOSTICS, M10.3 ALARMS/LOG, M10.4 contextual COMMANDS, M10.5 the independent assistance/control-authority model, M10.6 deterministic M5-owned bounded supervisory operation, M10.7 replay-backed checkpoint/save/load/restore, M10.7.1 validated trip/reset/synchronization plus unified persistent/momentary control feedback, M10.8 the integrated keyboard-first operator computer, and M10.9.1 the validated five-region HMI information architecture plus range-semantics contracts. M10.9.2 Hotfix 2 is validated, adding advanced linear/circular instruments, canonical target/setpoint/protection visualization, provenance/quality/off-scale semantics and logical-step trends without new plant physics/control logic. M10.9.3 is validated, adding the interactive whole-plant mimic, explicit equipment inputs/outputs, directional medium-aware paths and subsystem drill-down. M10.9.4 Hotfix 17 is the current **implementation candidate**, adding detailed subsystem engineering schematics, generator power-path diagnostics and opt-in long-running gameplay/system acceptance tests. The first executable long-gameplay gate proved the historical v1 desktop/synchronization operating seeds were not sustained generation points; Hotfix 6 preserves v1 exact replay identity and adds versioned v2 generation-ready balance plus effective turbine-stage-flow presentation.
 
 ## What the validated engine can already do
 
@@ -106,7 +109,7 @@ The validated core can run headlessly and deterministically with:
 
 **M9.3 — Advanced Xenon & Low-Power Transients** is validated. It composes canonical M2.8 poison state through an explicit opt-in seam into the integrated reactor/primary runtime, preserves legacy exact-version M7 v1 semantics, promotes committed xenon diagnostics through the presentation boundary, and adds two versioned xenon/low-power scenario seeds. **M9.4–M9.7 are also validated and the M9 phase gate is complete**; M9.7 hotfix 5 passed 760/760 automated tests and the final user-corrected GUI layout is integrated.
 
-**Continuation note:** M8.1–M8.7, M9.1–M9.7 and M10.1–M10.7 are validated. M10.7 is the current official baseline and M10.7.1 is the current implementation candidate; see `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `docs/milestones/M10.7.1.md` and `OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`.
+**Continuation note:** M8.1–M8.7, M9.1–M9.7 and M10.1–M10.9.3 are validated. M10.9.3 is the current official baseline and M10.9.4 Hotfix 17 is the current implementation candidate; see `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `docs/milestones/M10.9.4.md`, `SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`, `INTERACTIVE_FULL_PLANT_MIMIC.md`, `ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md` and `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`.
 
 M8.2 hotfix 2 also established the first dedicated headless `NuclearReactorSimulator.App.Tests` coverage for `MainWindowViewModel` and XAML command-state wiring; that presentation regression boundary remains validated and unchanged by M8.3–M8.7.
 
@@ -128,9 +131,9 @@ The following are planned architecture boundaries, not missing bugs:
 
 ## Approved future M10 architecture
 
-M10 is **IN PROGRESS** as **Operator Computer, Supervisory Automation & Human-Machine Integration**. M10.1–M10.7 are validated, M10.7 is the current official baseline and M10.7.1 is the current implementation candidate before M10.8. The operator computer is an Application/App aggregation/presentation surface, while real Manual / Assisted / Supervisory Automatic plant control extends canonical M5 ownership. Training assistance (`TrainingGuidanceMode`) remains a separate independent axis.
+M10 is **IN PROGRESS** as **Operator Computer, Supervisory Automation & Human-Machine Integration**. M10.1–M10.9.3 are validated, M10.9.3 is the current official baseline and M10.9.4 Hotfix 17 is the current implementation candidate. The approved M10.9.1–M10.9.8 sequence refactors the HMI around situation awareness, engineering schematics, command consequences and deterministic performance-oriented training. The operator computer remains an Application/App aggregation surface; real Manual / Assisted / Supervisory Automatic plant control remains canonical M5 ownership. Training assistance (`TrainingGuidanceMode`) remains a separate independent axis.
 
-Approved constraints include fixed menu/pages with no free-form prompt, measured-signal-only supervisory consumers, protection priority, fail-closed degraded operation, deterministic bumpless manual takeover, separation of plant/training/session intents, and replay-backed session persistence built on M9.1 rather than opaque solver-state dumps. See `OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`, `milestones/M10.md` and ADR 0070.
+Approved constraints include fixed menu/pages with no free-form prompt, measured-signal-only supervisory consumers, protection priority, fail-closed degraded operation, deterministic bumpless manual takeover, separation of plant/training/session intents, replay-backed session persistence, distinct instrument/operating/target/protection range semantics, and logical-time challenge scoring. See `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`, `OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`, `milestones/M10.md` and ADR 0070.
 
 ## Architecture debt to avoid going forward
 
@@ -212,6 +215,6 @@ A milestone becomes validated only after:
 - documentation reflects the implemented behavior;
 - user validation is explicitly recorded.
 
-## Validated M9 gate / M10.1–M10.7 validated / current M10.7.1 candidate
+## Validated M9 gate / M10.1–M10.9.3 validated / current M10.9.4 candidate
 
-M8.1–M8.7 are validated and the M8 gate is complete. M9.1–M9.7 are validated and the M9 gate is complete; M9.7 remains the validated M9 phase-gate baseline. The user confirmed 760/760 automated tests passed after hotfix 5, and the final corrected `MainWindow.axaml` is integrated. **M10.1–M10.7 are VALIDATED**: the cumulative M10.6 Hotfix 1 gate validated M10.2–M10.6, and the user subsequently confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed. **M10.7 is the current validated application baseline**. **M10.7.1 is the current implementation candidate** before M10.8; M10.8–M10.9 remain planned under the approved M10 architecture.
+M8.1–M8.7 are validated and the M8 gate is complete. M9.1–M9.7 are validated and the M9 gate is complete; M9.7 remains the validated M9 phase-gate baseline. The user confirmed 760/760 automated tests passed after hotfix 5, and the final corrected `MainWindow.axaml` is integrated. **M10.1–M10.9.3 are VALIDATED**. The user explicitly confirmed M10.9.3 compiled and the complete automated suite passed. **M10.9.3 is the current validated application baseline**. **M10.9.4 Hotfix 17 is the current implementation candidate**; M10 closes only after M10.9.8 integrated human-automation-HMI validation.

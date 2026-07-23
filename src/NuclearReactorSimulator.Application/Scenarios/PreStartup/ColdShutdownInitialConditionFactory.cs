@@ -86,8 +86,39 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? initialTurbineSpeedSetpointRpm = null,
         double? initialSteamPathTemperatureCelsius = null,
         double initialControlValvePercentOpen = 0d,
-        double initialPrimaryLiquidCompressionFraction = 0.000001d)
+        double initialPrimaryLiquidCompressionFraction = 0.000001d,
+        double? initialHeaderSteamTemperatureCelsius = null,
+        double? initialStopOutletSteamTemperatureCelsius = null,
+        double? initialControlOutletSteamTemperatureCelsius = null,
+        double? initialTurbineInletSteamTemperatureCelsius = null,
+        double mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared = 100_000d,
+        double turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared = 100_000d,
+        double speedControllerProportionalGain = 1d,
+        double speedControllerIntegralGainPerSecond = 0d,
+        double speedControllerDerivativeGainSeconds = 0d,
+        double hotwellControllerProportionalGain = 0.01d,
+        bool includeTurbineShaftPowerInstrumentation = false,
+        double maximumCondenserMassFlowRateKilogramsPerSecond = 10d,
+        double? condenserOverallHeatTransferConductanceMegawattsPerKelvin = null,
+        double condenserCoolingWaterTemperatureCelsius = 20d,
+        double secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared = 100_000_000d,
+        double initialCondensatePumpPercent = 0d,
+        double initialFeedwaterPumpPercent = 0d,
+        double levelControllerIntegralGainPerSecond = 0d,
+        double hotwellControllerIntegralGainPerSecond = 0d,
+        double exhaustSteamSpaceVolumeCubicMetres = 10d,
+        double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared = null,
+        SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
+        int deterministicSeedStepCount = 1)
     {
+        if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(deterministicSeedStepCount),
+                deterministicSeedStepCount,
+                "Operational-seed deterministic preconditioning must use between 1 and 256 fixed steps.");
+        }
+
         var recipe = BuildRecipe(
             initialNeutronPopulation,
             mainCirculationRunning,
@@ -103,7 +134,29 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             initialTurbineSpeedSetpointRpm,
             initialSteamPathTemperatureCelsius,
             initialControlValvePercentOpen,
-            initialPrimaryLiquidCompressionFraction);
+            initialPrimaryLiquidCompressionFraction,
+            initialHeaderSteamTemperatureCelsius,
+            initialStopOutletSteamTemperatureCelsius,
+            initialControlOutletSteamTemperatureCelsius,
+            initialTurbineInletSteamTemperatureCelsius,
+            mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared,
+            turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared,
+            speedControllerProportionalGain,
+            speedControllerIntegralGainPerSecond,
+            speedControllerDerivativeGainSeconds,
+            hotwellControllerProportionalGain,
+            includeTurbineShaftPowerInstrumentation,
+            maximumCondenserMassFlowRateKilogramsPerSecond,
+            condenserOverallHeatTransferConductanceMegawattsPerKelvin,
+            condenserCoolingWaterTemperatureCelsius,
+            secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared,
+            initialCondensatePumpPercent,
+            initialFeedwaterPumpPercent,
+            levelControllerIntegralGainPerSecond,
+            hotwellControllerIntegralGainPerSecond,
+            exhaustSteamSpaceVolumeCubicMetres,
+            turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
+            steamDrumLiquidRecirculationMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -112,14 +165,25 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             recipe.ThermodynamicModel,
             recipe.SignalSources);
 
-        // M5.7 exposes immutable step snapshots rather than a separate arbitrary true-state snapshot constructor. Seed one
-        // deterministic fixed step from the recipe and treat that committed candidate as version 1's exact runtime seed.
-        var seed = solver.Step(recipe.State, recipe.Inputs, RuntimeStep);
+        // M5.7 exposes immutable step snapshots rather than a separate arbitrary true-state snapshot constructor. Historical
+        // initial-condition versions keep the one-step default exactly. New versioned operational seeds may request a small,
+        // deterministic fixed-step preconditioning window so controller state, measured feedback and derived turbine inputs are
+        // mutually committed before logical STEP 0 is exposed to the operator. These steps are part of the versioned initial
+        // condition identity; they are not wall-clock warm-up and never advance the public logical-step counter.
+        var seedState = recipe.State;
+        IntegratedAutomaticOperationStepResult? seed = null;
+        for (var step = 0; step < deterministicSeedStepCount; step++)
+        {
+            seed = solver.Step(seedState, recipe.Inputs, RuntimeStep);
+            seedState = seed.CandidateState;
+        }
+
+        var committedSeed = seed ?? throw new InvalidOperationException("Operational seed preconditioning produced no committed step.");
         return new IntegratedAutomaticOperationRuntimeEngine(
             solver,
-            seed.CandidateState,
+            committedSeed.CandidateState,
             recipe.Inputs,
-            seed.Snapshot,
+            committedSeed.Snapshot,
             RuntimeStep,
             initialLogicalStep: 0);
     }
@@ -139,7 +203,29 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? initialTurbineSpeedSetpointRpm,
         double? initialSteamPathTemperatureCelsius,
         double initialControlValvePercentOpen,
-        double initialPrimaryLiquidCompressionFraction)
+        double initialPrimaryLiquidCompressionFraction,
+        double? initialHeaderSteamTemperatureCelsius,
+        double? initialStopOutletSteamTemperatureCelsius,
+        double? initialControlOutletSteamTemperatureCelsius,
+        double? initialTurbineInletSteamTemperatureCelsius,
+        double mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared,
+        double turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared,
+        double speedControllerProportionalGain,
+        double speedControllerIntegralGainPerSecond,
+        double speedControllerDerivativeGainSeconds,
+        double hotwellControllerProportionalGain,
+        bool includeTurbineShaftPowerInstrumentation,
+        double maximumCondenserMassFlowRateKilogramsPerSecond,
+        double? condenserOverallHeatTransferConductanceMegawattsPerKelvin,
+        double condenserCoolingWaterTemperatureCelsius,
+        double secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared,
+        double initialCondensatePumpPercent,
+        double initialFeedwaterPumpPercent,
+        double levelControllerIntegralGainPerSecond,
+        double hotwellControllerIntegralGainPerSecond,
+        double exhaustSteamSpaceVolumeCubicMetres,
+        double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
+        SteamDrumLiquidRecirculationMode steamDrumLiquidRecirculationMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -188,6 +274,103 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 initialSteamPathTemperatureCelsius,
                 "Operational seed steam-path temperature must be finite and between 40 and 300 °C when specified.");
         }
+        ValidateOptionalSteamTemperature(initialHeaderSteamTemperatureCelsius, nameof(initialHeaderSteamTemperatureCelsius));
+        ValidateOptionalSteamTemperature(initialStopOutletSteamTemperatureCelsius, nameof(initialStopOutletSteamTemperatureCelsius));
+        ValidateOptionalSteamTemperature(initialControlOutletSteamTemperatureCelsius, nameof(initialControlOutletSteamTemperatureCelsius));
+        ValidateOptionalSteamTemperature(initialTurbineInletSteamTemperatureCelsius, nameof(initialTurbineInletSteamTemperatureCelsius));
+        if (!double.IsFinite(mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared)
+            || mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared),
+                mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared,
+                "Main-steam hydraulic resistance must be finite and positive.");
+        }
+        if (!double.IsFinite(turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared)
+            || turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared),
+                turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared,
+                "Turbine-admission valve hydraulic resistance must be finite and positive.");
+        }
+        if (!double.IsFinite(speedControllerProportionalGain) || speedControllerProportionalGain <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(speedControllerProportionalGain),
+                speedControllerProportionalGain,
+                "Turbine-speed controller proportional gain must be finite and positive.");
+        }
+        if (!double.IsFinite(speedControllerIntegralGainPerSecond) || speedControllerIntegralGainPerSecond < 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(speedControllerIntegralGainPerSecond),
+                speedControllerIntegralGainPerSecond,
+                "Turbine-speed controller integral gain must be finite and non-negative.");
+        }
+        if (!double.IsFinite(speedControllerDerivativeGainSeconds) || speedControllerDerivativeGainSeconds < 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(speedControllerDerivativeGainSeconds),
+                speedControllerDerivativeGainSeconds,
+                "Turbine-speed controller derivative gain must be finite and non-negative.");
+        }
+        if (!double.IsFinite(hotwellControllerProportionalGain))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(hotwellControllerProportionalGain),
+                hotwellControllerProportionalGain,
+                "Hotwell controller proportional gain must be finite.");
+        }
+
+        if (!double.IsFinite(maximumCondenserMassFlowRateKilogramsPerSecond) || maximumCondenserMassFlowRateKilogramsPerSecond <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maximumCondenserMassFlowRateKilogramsPerSecond),
+                maximumCondenserMassFlowRateKilogramsPerSecond,
+                "Maximum condenser mass flow must be finite and positive.");
+        }
+        if (condenserOverallHeatTransferConductanceMegawattsPerKelvin.HasValue
+            && (!double.IsFinite(condenserOverallHeatTransferConductanceMegawattsPerKelvin.Value)
+                || condenserOverallHeatTransferConductanceMegawattsPerKelvin.Value <= 0d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(condenserOverallHeatTransferConductanceMegawattsPerKelvin),
+                condenserOverallHeatTransferConductanceMegawattsPerKelvin,
+                "Condenser overall heat-transfer conductance must be finite and positive when supplied.");
+        }
+        if (!double.IsFinite(condenserCoolingWaterTemperatureCelsius) || condenserCoolingWaterTemperatureCelsius < -273.15d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(condenserCoolingWaterTemperatureCelsius),
+                condenserCoolingWaterTemperatureCelsius,
+                "Condenser cooling-water temperature must be finite and at or above absolute zero.");
+        }
+        if (!double.IsFinite(secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared)
+            || secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared),
+                secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared,
+                "Secondary pump hydraulic resistance must be finite and positive.");
+        }
+        ValidatePercent(initialCondensatePumpPercent, nameof(initialCondensatePumpPercent));
+        ValidatePercent(initialFeedwaterPumpPercent, nameof(initialFeedwaterPumpPercent));
+        if (!double.IsFinite(levelControllerIntegralGainPerSecond) || levelControllerIntegralGainPerSecond < 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(levelControllerIntegralGainPerSecond),
+                levelControllerIntegralGainPerSecond,
+                "Drum-level controller integral gain must be finite and non-negative.");
+        }
+        if (!double.IsFinite(hotwellControllerIntegralGainPerSecond))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(hotwellControllerIntegralGainPerSecond),
+                hotwellControllerIntegralGainPerSecond,
+                "Hotwell controller integral gain must be finite.");
+        }
+
         if (!double.IsFinite(initialControlValvePercentOpen)
             || initialControlValvePercentOpen < 0d
             || initialControlValvePercentOpen > 100d)
@@ -221,18 +404,47 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 "A non-zero operational-seed electrical load requires the generator breaker to be initially closed.",
                 nameof(initialRequestedElectricalPowerMegawatts));
         }
+        if (!double.IsFinite(exhaustSteamSpaceVolumeCubicMetres) || exhaustSteamSpaceVolumeCubicMetres <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(exhaustSteamSpaceVolumeCubicMetres),
+                exhaustSteamSpaceVolumeCubicMetres,
+                "Operational-seed condenser steam-space volume must be finite and greater than zero.");
+        }
+        if (turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.HasValue
+            && (!double.IsFinite(turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.Value)
+                || turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.Value <= 0d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared),
+                turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
+                "Operational-seed turbine expansion resistance must be finite and positive when specified.");
+        }
+        if (!Enum.IsDefined(steamDrumLiquidRecirculationMode))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(steamDrumLiquidRecirculationMode),
+                steamDrumLiquidRecirculationMode,
+                "Unknown operational-seed steam-drum liquid-recirculation mode.");
+        }
 
         var thermodynamicModel = new SimplifiedWaterSteamThermodynamicModel();
-        FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
+        FluidNodeDefinition Node(string id, double volumeCubicMetres = 10d)
+            => new(id, Volume.FromCubicMetres(volumeCubicMetres));
         PipeDefinition Pipe(string id, string from, string to, double resistance = 100_000d) => new(
             id, from, to, QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(resistance));
-        ValveDefinition Valve(string id, string from, string to) => new(
-            id, Pipe($"{id}-path", from, to), ValveCharacteristic.Linear, ValveFailSafeAction.FailClosed);
-        PumpDefinition Pump(string id, string from, string to, double boostMegapascals) => new(
+        ValveDefinition Valve(string id, string from, string to, double resistance = 100_000d) => new(
+            id, Pipe($"{id}-path", from, to, resistance), ValveCharacteristic.Linear, ValveFailSafeAction.FailClosed);
+        PumpDefinition Pump(
+            string id,
+            string from,
+            string to,
+            double boostMegapascals,
+            double resistancePascalSecondsSquaredPerKilogramSquared = 100_000_000d) => new(
             id,
-            Pipe($"{id}-path", from, to, 100_000_000d),
+            Pipe($"{id}-path", from, to, resistancePascalSecondsSquaredPerKilogramSquared),
             PressureDifference.FromMegapascals(boostMegapascals),
-            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(100_000_000d),
+            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(resistancePascalSecondsSquaredPerKilogramSquared),
             PumpEfficiency.FromPercent(80d));
 
         var plant = new PlantDefinition(
@@ -240,26 +452,26 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             new[]
             {
                 Node("suction"), Node("pressure"), Node("outlet"), Node("drum"), Node("steam"),
-                Node("header"), Node("stop-out"), Node("control-out"), Node("turbine-inlet"), Node("exhaust"),
+                Node("header"), Node("stop-out"), Node("control-out"), Node("turbine-inlet"), Node("exhaust", exhaustSteamSpaceVolumeCubicMetres),
                 Node("hotwell"), Node("feedwater-inventory"),
             },
             new[]
             {
                 Pipe("channel", "pressure", "outlet"),
                 Pipe("return", "outlet", "drum"),
-                Pipe("main-steam-line", "steam", "header"),
+                Pipe("main-steam-line", "steam", "header", mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared),
             },
             new[]
             {
-                Valve("stop", "header", "stop-out"),
-                Valve("control", "stop-out", "control-out"),
-                Valve("admission", "control-out", "turbine-inlet"),
+                Valve("stop", "header", "stop-out", turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared),
+                Valve("control", "stop-out", "control-out", turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared),
+                Valve("admission", "control-out", "turbine-inlet", turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared),
             },
             new[]
             {
                 Pump("pump", "suction", "pressure", 1d),
-                Pump("condensate-pump", "hotwell", "feedwater-inventory", 1d),
-                Pump("feedwater-pump", "feedwater-inventory", "drum", 7d),
+                Pump("condensate-pump", "hotwell", "feedwater-inventory", 1d, secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared),
+                Pump("feedwater-pump", "feedwater-inventory", "drum", 7d, secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared),
             },
             new[]
             {
@@ -284,9 +496,18 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             initialPrimaryLiquidCompressionFraction);
         FluidNodeState SteamSpace(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius);
         FluidNodeState CondenserSteam(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, 40d);
-        FluidNodeState SteamPath(string id) => initialSteamPathTemperatureCelsius.HasValue
-            ? CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialSteamPathTemperatureCelsius.Value)
-            : turbineStartupLineup ? CondenserSteam(id) : SteamSpace(id);
+        var fallbackSteamPathTemperatureCelsius = initialSteamPathTemperatureCelsius
+            ?? (turbineStartupLineup ? 40d : initialPrimaryTemperatureCelsius);
+        var headerSteamTemperatureCelsius = initialHeaderSteamTemperatureCelsius
+            ?? initialPrimaryTemperatureCelsius;
+        var stopOutletSteamTemperatureCelsius = initialStopOutletSteamTemperatureCelsius
+            ?? initialPrimaryTemperatureCelsius;
+        var controlOutletSteamTemperatureCelsius = initialControlOutletSteamTemperatureCelsius
+            ?? fallbackSteamPathTemperatureCelsius;
+        var turbineInletSteamTemperatureCelsius = initialTurbineInletSteamTemperatureCelsius
+            ?? fallbackSteamPathTemperatureCelsius;
+        FluidNodeState SteamAt(string id, double temperatureCelsius)
+            => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, temperatureCelsius);
         FluidNodeState Condensate(string id) => CreateSubcooledLiquid(plant, id, thermodynamicModel, 40d);
 
         var hotwell = Condensate("hotwell");
@@ -299,10 +520,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 PrimaryLiquid("outlet"),
                 PrimaryLiquid("drum"),
                 SteamSpace("steam"),
-                SteamSpace("header"),
-                SteamSpace("stop-out"),
-                SteamPath("control-out"),
-                SteamPath("turbine-inlet"),
+                SteamAt("header", headerSteamTemperatureCelsius),
+                SteamAt("stop-out", stopOutletSteamTemperatureCelsius),
+                SteamAt("control-out", controlOutletSteamTemperatureCelsius),
+                SteamAt("turbine-inlet", turbineInletSteamTemperatureCelsius),
                 CondenserSteam("exhaust"),
                 hotwell,
                 Condensate("feedwater-inventory"),
@@ -319,8 +540,14 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "pump",
                     mainCirculationRunning ? PumpSpeed.Rated : PumpSpeed.Stopped,
                     isRunning: mainCirculationRunning),
-                new PumpState("condensate-pump", PumpSpeed.Stopped, isRunning: false),
-                new PumpState("feedwater-pump", PumpSpeed.Stopped, isRunning: false),
+                new PumpState(
+                    "condensate-pump",
+                    PumpSpeed.FromPercent(initialCondensatePumpPercent),
+                    isRunning: initialCondensatePumpPercent > 0d),
+                new PumpState(
+                    "feedwater-pump",
+                    PumpSpeed.FromPercent(initialFeedwaterPumpPercent),
+                    isRunning: initialFeedwaterPumpPercent > 0d),
             },
             new[]
             {
@@ -349,7 +576,17 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     new[] { new MainCirculationBranchDefinition("group", "return") }),
             });
         var drums = new SteamDrumSystemDefinition(
-            "drums", circulation, new[] { new SteamDrumDefinition("drum-a", "loop", "drum", "steam") });
+            "drums",
+            circulation,
+            new[]
+            {
+                new SteamDrumDefinition(
+                    "drum-a",
+                    "loop",
+                    "drum",
+                    "steam",
+                    steamDrumLiquidRecirculationMode),
+            });
         var boundaries = new PrimaryCircuitBoundarySystemDefinition(
             "boundaries",
             drums,
@@ -377,14 +614,28 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             {
                 new TurbineStageGroupDefinition(
                     "stage", "turbine-boundary", "exhaust", "rotor",
-                    SpecificEnergy.FromKilojoulesPerKilogram(500d), TurbineEfficiency.FromPercent(80d)),
+                    SpecificEnergy.FromKilojoulesPerKilogram(500d),
+                    TurbineEfficiency.FromPercent(80d),
+                    turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.HasValue
+                        ? QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(
+                            turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.Value)
+                        : null),
             });
         var condensers = new CondenserSystemDefinition(
             "condensers",
             turbine,
             new[]
             {
-                new CondenserDefinition("condenser", "stage", "exhaust", "hotwell", "cooling", MassFlowRate.FromKilogramsPerSecond(10d)),
+                new CondenserDefinition(
+                    "condenser",
+                    "stage",
+                    "exhaust",
+                    "hotwell",
+                    "cooling",
+                    MassFlowRate.FromKilogramsPerSecond(maximumCondenserMassFlowRateKilogramsPerSecond),
+                    condenserOverallHeatTransferConductanceMegawattsPerKelvin.HasValue
+                        ? ThermalConductance.FromMegawattsPerKelvin(condenserOverallHeatTransferConductanceMegawattsPerKelvin.Value)
+                        : null),
             },
             new[] { new CondenserCoolingBoundaryDefinition("cooling", "condenser") });
         var feedwater = new CondensateFeedwaterSystemDefinition(
@@ -421,7 +672,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 new SynchronousGeneratorState("generator", PhaseAngle.Zero, breakerClosed: initialGeneratorBreakerClosed),
             }));
 
-        var instrumentation = new InstrumentationSystemDefinition("instrumentation", new[]
+        var instrumentationChannels = new List<InstrumentChannelDefinition>
         {
             Channel("power", "plant/reactor/thermal-power", "W"),
             Channel("flow", "main-circulation-loop/loop/total-pump-flow", "kg/s"),
@@ -431,7 +682,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             Channel("hotwell", "condenser/condenser/hotwell-mass", "kg"),
             Channel("generator-output", "generator/generator/electrical-output", "W"),
             Channel("gross-generator-output", "plant/generator/gross-electrical-output", "W"),
-        });
+        };
+        if (includeTurbineShaftPowerInstrumentation)
+        {
+            instrumentationChannels.Add(Channel("turbine-shaft-power", "plant/turbine/total-shaft-power", "W"));
+        }
+        var instrumentation = new InstrumentationSystemDefinition("instrumentation", instrumentationChannels);
 
         var reactorControl = new ControlSystemDefinition("reactor-control", instrumentation, new[]
         {
@@ -480,12 +736,42 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             },
             iodineXenonDefinition);
 
+        var speedControllerAlgorithm = speedControllerDerivativeGainSeconds > 0d
+            ? ControllerAlgorithmKind.ProportionalIntegralDerivative
+            : speedControllerIntegralGainPerSecond > 0d
+                ? ControllerAlgorithmKind.ProportionalIntegral
+                : ControllerAlgorithmKind.Proportional;
         var secondaryControl = new ControlSystemDefinition("secondary-control", instrumentation, new[]
         {
-            Controller("speed-control", "speed", new ControllerOutputRange(0d, 100d), 1d),
+            new PidControllerDefinition(
+                "speed-control",
+                "speed",
+                speedControllerAlgorithm,
+                proportionalGain: speedControllerProportionalGain,
+                integralGainPerSecond: speedControllerIntegralGainPerSecond,
+                derivativeGainSeconds: speedControllerDerivativeGainSeconds,
+                outputRange: new ControllerOutputRange(0d, 100d)),
             Controller("pressure-control", "pressure", new ControllerOutputRange(0d, 100d), 0.0001d),
-            Controller("level-control", "level", new ControllerOutputRange(0d, 100d), 100d),
-            Controller("hotwell-control", "hotwell", new ControllerOutputRange(0d, 100d), 0.01d),
+            new PidControllerDefinition(
+                "level-control",
+                "level",
+                levelControllerIntegralGainPerSecond != 0d
+                    ? ControllerAlgorithmKind.ProportionalIntegral
+                    : ControllerAlgorithmKind.Proportional,
+                proportionalGain: 100d,
+                integralGainPerSecond: levelControllerIntegralGainPerSecond,
+                derivativeGainSeconds: 0d,
+                outputRange: new ControllerOutputRange(0d, 100d)),
+            new PidControllerDefinition(
+                "hotwell-control",
+                "hotwell",
+                hotwellControllerIntegralGainPerSecond != 0d
+                    ? ControllerAlgorithmKind.ProportionalIntegral
+                    : ControllerAlgorithmKind.Proportional,
+                proportionalGain: hotwellControllerProportionalGain,
+                integralGainPerSecond: hotwellControllerIntegralGainPerSecond,
+                derivativeGainSeconds: 0d,
+                outputRange: new ControllerOutputRange(0d, 100d)),
         });
         var secondaryActuators = new ActuatorSystemDefinition("secondary-actuators", secondaryControl, new[]
         {
@@ -554,7 +840,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             {
                 new CondenserCoolingBoundaryInput(
                     "cooling",
-                    Power.FromMegawatts(initialCondenserCoolingPowerMegawatts)),
+                    Power.FromMegawatts(initialCondenserCoolingPowerMegawatts),
+                    Temperature.FromDegreesCelsius(condenserCoolingWaterTemperatureCelsius)),
             });
         var feedwaterInputs = new CondensateFeedwaterSystemInputs(
             feedwater,
@@ -610,15 +897,15 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "level-control",
                     turbineStartupLineup ? ControllerMode.Automatic : ControllerMode.Manual,
                     1d,
-                    0d),
+                    initialFeedwaterPumpPercent),
                 new ControllerInput(
                     "hotwell-control",
                     turbineStartupLineup ? ControllerMode.Automatic : ControllerMode.Manual,
                     hotwell.Mass.Kilograms,
-                    0d),
+                    initialCondensatePumpPercent),
             }));
 
-        var measuredSignals = new MeasuredSignalFrame(instrumentation, new[]
+        var initialMeasuredSignals = new List<MeasuredSignal>
         {
             Signal("power", "W", 0d),
             Signal("flow", "kg/s", 0d),
@@ -628,7 +915,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             Signal("hotwell", "kg", hotwell.Mass.Kilograms),
             Signal("generator-output", "W", 0d),
             Signal("gross-generator-output", "W", 0d),
-        });
+        };
+        if (includeTurbineShaftPowerInstrumentation)
+        {
+            initialMeasuredSignals.Add(Signal("turbine-shaft-power", "W", 0d));
+        }
+        var measuredSignals = new MeasuredSignalFrame(instrumentation, initialMeasuredSignals);
         var state = new IntegratedAutomaticOperationState(
             fullPlantDefinition,
             instrumentation,
@@ -657,6 +949,31 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             state,
             inputs,
             signalSources);
+    }
+
+    private static void ValidatePercent(double percent, string parameterName)
+    {
+        if (!double.IsFinite(percent) || percent < 0d || percent > 100d)
+        {
+            throw new ArgumentOutOfRangeException(
+                parameterName,
+                percent,
+                "Operational seed percentage must be finite and between 0 and 100.");
+        }
+    }
+
+    private static void ValidateOptionalSteamTemperature(double? temperatureCelsius, string parameterName)
+    {
+        if (temperatureCelsius.HasValue
+            && (!double.IsFinite(temperatureCelsius.Value)
+                || temperatureCelsius.Value < 40d
+                || temperatureCelsius.Value > 300d))
+        {
+            throw new ArgumentOutOfRangeException(
+                parameterName,
+                temperatureCelsius,
+                "Operational seed steam-path temperature must be finite and between 40 and 300 °C when specified.");
+        }
     }
 
     private static FluidNodeState CreateSubcooledLiquid(

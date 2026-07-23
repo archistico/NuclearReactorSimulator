@@ -33,7 +33,7 @@ public sealed class ProtectedAutomaticFullPlantSolver
     private readonly ProtectionSystemSolver _protectionSolver;
     private readonly FullPlantSolver _fullPlantSolver;
     private readonly IFluidThermodynamicModel _thermodynamicModel;
-    private readonly ValveFlowSolver _valveFlowSolver = new();
+    private readonly TurbineStageMassFlowResolver _stageMassFlowResolver;
 
     public ProtectedAutomaticFullPlantSolver(
         ReactorPrimaryControlSystemDefinition reactorDefinition,
@@ -64,6 +64,7 @@ public sealed class ProtectedAutomaticFullPlantSolver
         _protectionSolver = new ProtectionSystemSolver(protectionDefinition);
         _thermodynamicModel = thermodynamicModel;
         _fullPlantSolver = new FullPlantSolver(secondaryDefinition.PlantDefinition, thermodynamicModel);
+        _stageMassFlowResolver = new TurbineStageMassFlowResolver(secondaryDefinition.PlantDefinition.TurbineExpansionSystem);
     }
 
     public ProtectedAutomaticFullPlantStepResult Step(
@@ -135,7 +136,8 @@ public sealed class ProtectedAutomaticFullPlantSolver
             basePlantInputs,
             reactorStep.Snapshot.FissionPower.TotalFissionThermalPower,
             faultedPlantState,
-            protection);
+            protection,
+            deltaTime);
         var leakSourceTerms = BuildHydraulicLeakSourceTerms(
             faultedPlantState,
             hydraulicFaultInputs,
@@ -418,7 +420,8 @@ public sealed class ProtectedAutomaticFullPlantSolver
         IntegratedSecondaryCycleInputs original,
         Power fissionPower,
         PlantState commandedPlantState,
-        ProtectionSystemSnapshot protection)
+        ProtectionSystemSnapshot protection,
+        TimeSpan deltaTime)
     {
         var generator = original.GeneratorGridInputs;
         var feedwater = generator.CondensateFeedwaterInputs;
@@ -438,7 +441,7 @@ public sealed class ProtectedAutomaticFullPlantSolver
             rewrittenPrimary,
             mainSteam.TurbineAdmissionBoundaryInputs);
         var automaticStageInputs = turbine.Definition.StageGroups
-            .Select(stage => new TurbineStageGroupInput(stage.Id, ResolveAdmissionMassFlow(commandedPlantState, stage.AdmissionBoundaryId)))
+            .Select(stage => new TurbineStageGroupInput(stage.Id, _stageMassFlowResolver.Resolve(commandedPlantState, stage, deltaTime)))
             .ToArray();
         var protectedRotorInputs = turbine.RotorInputs
             .Select(input => new TurbineRotorInput(
@@ -478,25 +481,5 @@ public sealed class ProtectedAutomaticFullPlantSolver
         return new IntegratedSecondaryCycleInputs(original.Definition, rewrittenGenerator);
     }
 
-    private MassFlowRate ResolveAdmissionMassFlow(PlantState commandedPlantState, string admissionBoundaryId)
-    {
-        var mainSteam = _secondaryDefinition.PlantDefinition.TurbineExpansionSystem.MainSteamNetwork;
-        var boundary = mainSteam.GetTurbineAdmissionBoundary(admissionBoundaryId);
-        var train = mainSteam.GetAdmissionTrain(boundary.AdmissionTrainId);
-        var stopFlow = SolvePositiveValveFlow(commandedPlantState, train.StopValveId);
-        var controlFlow = SolvePositiveValveFlow(commandedPlantState, train.ControlValveId);
-        var admissionFlow = SolvePositiveValveFlow(commandedPlantState, train.AdmissionValveId);
-        return MassFlowRate.FromKilogramsPerSecond(Math.Min(stopFlow, Math.Min(controlFlow, admissionFlow)));
-    }
 
-    private double SolvePositiveValveFlow(PlantState state, string valveId)
-    {
-        var definition = state.Definition.GetValve(valveId);
-        var flow = _valveFlowSolver.Solve(
-            definition,
-            state.GetValve(valveId),
-            state.GetFluidNode(definition.Pipe.FromNodeId),
-            state.GetFluidNode(definition.Pipe.ToNodeId));
-        return Math.Max(0d, flow.MassFlowRate.KilogramsPerSecond);
-    }
 }

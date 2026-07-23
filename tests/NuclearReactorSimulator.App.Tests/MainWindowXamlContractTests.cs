@@ -243,7 +243,12 @@ public sealed class MainWindowXamlContractTests
             paddedContent.Descendants(),
             static element => element.Name.LocalName == "Border" && (string?)element.Attribute("Height") == "40");
 
-        var centerHost = Assert.IsType<XElement>(centerScroll.Parent);
+        Assert.Equal("{Binding IsMainWorkspaceScrollVisible}", (string?)centerScroll.Attribute("IsVisible"));
+
+        var integrationGrid = Assert.IsType<XElement>(centerScroll.Parent);
+        Assert.Equal("Grid", integrationGrid.Name.LocalName);
+
+        var centerHost = Assert.IsType<XElement>(integrationGrid.Parent);
         Assert.Equal("Border", centerHost.Name.LocalName);
         Assert.Equal("1", (string?)centerHost.Attribute("Grid.Column"));
         Assert.Equal("True", (string?)centerHost.Attribute("ClipToBounds"));
@@ -251,7 +256,7 @@ public sealed class MainWindowXamlContractTests
         var centerGrid = Assert.IsType<XElement>(centerHost.Parent);
         Assert.Equal("Grid", centerGrid.Name.LocalName);
         Assert.Equal("1", (string?)centerGrid.Attribute("Grid.Row"));
-        Assert.Equal("240,*,320", (string?)centerGrid.Attribute("ColumnDefinitions"));
+        Assert.Equal("188,*,300", (string?)centerGrid.Attribute("ColumnDefinitions"));
         Assert.Equal("True", (string?)centerGrid.Attribute("ClipToBounds"));
     }
 
@@ -266,8 +271,14 @@ public sealed class MainWindowXamlContractTests
         Assert.Equal("{Binding OperatorComputer}", (string?)computer.Attribute("DataContext"));
 
         var computerHost = Assert.IsType<XElement>(computer.Parent);
-        Assert.Equal("Border", computerHost.Name.LocalName);
+        Assert.Equal("Grid", computerHost.Name.LocalName);
         Assert.Equal("{Binding IsOperatorComputerWorkspaceSelected}", (string?)computerHost.Attribute("IsVisible"));
+        Assert.Equal("Auto,*", (string?)computerHost.Attribute("RowDefinitions"));
+        Assert.Equal("1", (string?)computer.Attribute("Grid.Row"));
+        Assert.DoesNotContain(
+            computer.Ancestors(),
+            static element => element.Name.LocalName == "ScrollViewer"
+                && element.Attributes().Any(attribute => attribute.Name.LocalName == "Name" && attribute.Value == "MainWorkspaceScroll"));
 
         var expected = new Dictionary<string, string>(StringComparer.Ordinal)
         {

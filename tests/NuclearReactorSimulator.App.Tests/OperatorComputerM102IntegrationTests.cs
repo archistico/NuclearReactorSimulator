@@ -14,7 +14,7 @@ public sealed class OperatorComputerM102IntegrationTests
     {
         var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         });
         var session = new ScenarioSessionFactory(registry).Load(DesktopIntegratedOperationsProgram.Scenario);
         var tracker = new ScenarioTrainingTracker(

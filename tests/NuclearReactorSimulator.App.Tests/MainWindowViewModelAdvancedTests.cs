@@ -28,6 +28,7 @@ public sealed class MainWindowViewModelAdvancedTests
             Assert.Equal(workspace.Id == ControlRoomWorkspaceId.Electrical, viewModel.IsElectricalWorkspaceSelected);
             Assert.Equal(workspace.Id == ControlRoomWorkspaceId.AlarmsEvents, viewModel.IsAlarmsWorkspaceSelected);
             Assert.Equal(workspace.Id == ControlRoomWorkspaceId.OperatorComputer, viewModel.IsOperatorComputerWorkspaceSelected);
+            Assert.Equal(workspace.Id != ControlRoomWorkspaceId.OperatorComputer, viewModel.IsMainWorkspaceScrollVisible);
         }
     }
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-**M10.7 — VALIDATED.** The user confirmed Hotfix 1 compiled successfully and the complete automated suite passed; M10.7 is the current official baseline beneath M10.7.1.
+**M10.7 — VALIDATED.** The user confirmed Hotfix 1 compiled successfully and the complete automated suite passed; M10.7 remains the validated session/replay baseline beneath validated M10.7.1/M10.8 and the validated M10.9.2 Hotfix 2 gauge-system baseline and current M10.9.3 plant-mimic candidate.
 
 M10.2 through M10.6 were validated together by the user through a clean cumulative build/test gate. M10.7 activates the fixed `SESSION` terminal page without creating a second state owner or opaque save-state format.
 

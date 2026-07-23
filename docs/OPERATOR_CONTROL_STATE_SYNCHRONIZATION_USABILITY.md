@@ -1,5 +1,7 @@
 # Operator control-state and synchronization usability
 
+**Status:** VALIDATED — M10.7.1 Hotfix 3. Local compilation and the complete automated suite passed.
+
 ## Latched protection commands
 
 `SCRAM`, `TURBINE TRIP` and `GENERATOR TRIP` are momentary operator intents that latch canonical M5.5 protection state. They are not ON/OFF toggles.

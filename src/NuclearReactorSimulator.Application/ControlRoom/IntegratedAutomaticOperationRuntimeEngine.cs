@@ -899,7 +899,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
 
                 return new CondenserCoolingBoundaryInput(
                     input.BoundaryId,
-                    Power.FromWatts(input.AvailableHeatRejectionPower.Watts * effect.CapacityFraction));
+                    Power.FromWatts(input.AvailableHeatRejectionPower.Watts * effect.CapacityFraction),
+                    input.CoolantTemperature);
             }).ToArray();
             var faultedCondenserInputs = new CondenserSystemInputs(
                 condenserInputs.Definition,

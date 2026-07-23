@@ -106,7 +106,7 @@ public sealed class OperatorComputerM103IntegrationTests
     private static ScenarioSession CreateSession()
         => new ScenarioSessionFactory(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         })).Load(DesktopIntegratedOperationsProgram.Scenario);
 
     private static ScenarioTrainingTracker CreateTracker(ScenarioSession session)

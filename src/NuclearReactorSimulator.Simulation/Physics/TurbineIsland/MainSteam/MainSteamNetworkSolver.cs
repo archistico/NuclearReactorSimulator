@@ -1,7 +1,11 @@
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.MainSteam;
+using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
+using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
 using NuclearReactorSimulator.Simulation.Physics.Reactor.PrimaryCircuit.Integration;
+using NuclearReactorSimulator.Simulation.Physics.Reactor.PrimaryCircuit.SteamDrums;
+using NuclearReactorSimulator.Simulation.Physics.Thermal;
 using NuclearReactorSimulator.Simulation.Plant;
 
 namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.MainSteam;
@@ -15,6 +19,7 @@ public sealed class MainSteamNetworkSolver
     private readonly MainSteamNetworkDefinition _definition;
     private readonly IntegratedPrimaryCircuitSolver _primaryCircuitSolver;
     private readonly TurbineAdmissionBoundarySolver _boundarySolver;
+    private readonly SteamDrumSeparationSolver _steamDrumSolver;
     private readonly PipeFlowSolver _pipeFlowSolver = new();
     private readonly ValveFlowSolver _valveFlowSolver = new();
 
@@ -27,6 +32,7 @@ public sealed class MainSteamNetworkSolver
 
         _primaryCircuitSolver = new IntegratedPrimaryCircuitSolver(definition.PrimaryCircuit, thermodynamicModel);
         _boundarySolver = new TurbineAdmissionBoundarySolver(definition);
+        _steamDrumSolver = new SteamDrumSeparationSolver(definition.PrimaryCircuit.SteamDrumSystem);
     }
 
     public MainSteamNetworkDefinition Definition => _definition;
@@ -66,8 +72,10 @@ public sealed class MainSteamNetworkSolver
         var lineSnapshots = _definition.SteamLines.Select(line => SolveLine(line, committedState)).ToArray();
         var trainSnapshots = _definition.AdmissionTrains.Select(train => SolveTrain(train, committedState)).ToArray();
         var turbineBoundaries = _boundarySolver.Solve(committedState, inputs);
+        var steamSupplyTerms = BuildDemandBalancedSteamSupplyTerms(committedState, lineSnapshots);
         var combinedDownstreamSourceTerms = PlantNetworkSourceTerms.Combine(
             turbineBoundaries.SourceTerms,
+            steamSupplyTerms,
             supplementalSourceTerms);
         var primaryStep = _primaryCircuitSolver.Step(
             committedState,
@@ -83,6 +91,58 @@ public sealed class MainSteamNetworkSolver
             turbineBoundaries.Snapshots);
 
         return new MainSteamNetworkStepResult(primaryStep, snapshot);
+    }
+
+    private PlantNetworkSourceTerms BuildDemandBalancedSteamSupplyTerms(
+        PlantState committedState,
+        IReadOnlyList<MainSteamLineSnapshot> lineSnapshots)
+    {
+        var separation = _steamDrumSolver.Solve(committedState);
+        var balances = new Dictionary<string, FluidNodeBalance>(StringComparer.Ordinal);
+
+        foreach (var line in lineSnapshots.OrderBy(static item => item.LineId, StringComparer.Ordinal))
+        {
+            var export = _definition.PrimaryCircuit.BoundarySystem.GetSteamExportBoundary(line.SteamExportBoundaryId);
+            var drumDefinition = _definition.PrimaryCircuit.SteamDrumSystem.GetDrum(export.SteamDrumId);
+            if (drumDefinition.LiquidRecirculationMode != SteamDrumLiquidRecirculationMode.CirculationDemandBalanced)
+            {
+                continue;
+            }
+
+            var demandedFlow = Math.Max(0d, line.MassFlowRate.KilogramsPerSecond);
+            var returnSeparatedFlow = separation.Snapshot
+                .GetDrum(drumDefinition.Id)
+                .SeparatedSteamMassFlowRate
+                .KilogramsPerSecond;
+            var supplementalFlow = MassFlowRate.FromKilogramsPerSecond(
+                Math.Max(0d, demandedFlow - returnSeparatedFlow));
+            if (supplementalFlow == MassFlowRate.Zero)
+            {
+                continue;
+            }
+
+            // The canonical main-steam pipe removes the steam-outlet node's committed specific energy.
+            // Replenishing with the same carried energy makes the internal drum -> outlet transfer exactly
+            // mass/energy conservative without clamping either node or inventing an external heat source.
+            var carriedEnergyRate = committedState
+                .GetFluidNode(drumDefinition.SteamOutletNodeId)
+                .SpecificInternalEnergy * supplementalFlow;
+            AddBalance(
+                balances,
+                drumDefinition.InventoryNodeId,
+                new FluidNodeBalance(-supplementalFlow, -carriedEnergyRate));
+            AddBalance(
+                balances,
+                drumDefinition.SteamOutletNodeId,
+                new FluidNodeBalance(supplementalFlow, carriedEnergyRate));
+        }
+
+        return balances.Count == 0
+            ? PlantNetworkSourceTerms.Empty
+            : new PlantNetworkSourceTerms(
+                balances,
+                new Dictionary<string, ThermalEnergyBalance>(StringComparer.Ordinal),
+                Power.Zero);
     }
 
     private MainSteamLineSnapshot SolveLine(MainSteamLineDefinition line, PlantState state)
@@ -143,5 +203,15 @@ public sealed class MainSteamNetworkSolver
             flow.PressureDifference,
             flow.MassFlowRate,
             flow.InternalEnergyFlowRate);
+    }
+
+    private static void AddBalance(
+        IDictionary<string, FluidNodeBalance> balances,
+        string nodeId,
+        FluidNodeBalance balance)
+    {
+        balances[nodeId] = balances.TryGetValue(nodeId, out var existing)
+            ? existing + balance
+            : balance;
     }
 }

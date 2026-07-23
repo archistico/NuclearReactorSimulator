@@ -26,7 +26,7 @@ public static class OperatorComputerInformationProjector
             new OperatorComputerInformationSectionSnapshot("TURBINE", "TURBINE / SECONDARY", new[]
             {
                 Item("TURBINE SHAFT POWER", snapshot.TurbineSecondary.TotalTurbineShaftPower, OperatorComputerInformationProvenance.Measured),
-                Item("STEAM FLOW", snapshot.TurbineSecondary.TotalSteamFlow, OperatorComputerInformationProvenance.ModelDiagnostic),
+                Item("STEAM FLOW", snapshot.TurbineSecondary.EffectiveTurbineSteamFlow, OperatorComputerInformationProvenance.ModelDiagnostic),
                 Item("CONDENSER HEAT REJECTION", snapshot.TurbineSecondary.TotalCondenserHeatRejection, OperatorComputerInformationProvenance.Measured),
             }),
             new OperatorComputerInformationSectionSnapshot("ELECTRICAL", "ELECTRICAL", new[]

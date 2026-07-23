@@ -15,7 +15,7 @@ public sealed class DesktopControlRoomRuntimePumpTests
     {
         var session = new ScenarioSessionFactory(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         })).Load(DesktopIntegratedOperationsProgram.Scenario);
         var viewModel = new MainWindowViewModel(
             new ApplicationDescriptor("Nuclear Reactor Simulator", "M9.7 TEST", "desktop runtime pump"),
@@ -49,7 +49,7 @@ public sealed class DesktopControlRoomRuntimePumpTests
     {
         var session = new ScenarioSessionFactory(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         })).Load(DesktopIntegratedOperationsProgram.Scenario);
         var viewModel = new MainWindowViewModel(
             new ApplicationDescriptor("Nuclear Reactor Simulator", "M9.7 TEST", "desktop runtime pump endurance"),

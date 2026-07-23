@@ -1,0 +1,105 @@
+<svg viewBox="0 0 1500 750" xmlns="http://www.w3.org/2000/svg" font-family="Consolas, 'JetBrains Mono', monospace">
+  <defs>
+    <marker id="arrowWater" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#2266CC"/>
+    </marker>
+    <marker id="arrowSteam" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#CC5522"/>
+    </marker>
+    <marker id="arrowElectrical" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#333333"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1500" height="750" fill="#FFFFFF"/>
+  <text x="30" y="35" font-size="20" font-weight="bold" fill="#111111">NuclearReactorSimulator — Plant Flow Schematic (original, generic P&amp;ID symbols)</text>
+  <text x="30" y="55" font-size="12" fill="#555555">Single-string reference plant (one zone / one loop / one drum / one turbine train), as configured in ColdShutdownInitialConditionFactory</text>
+
+  <!-- ===================== LEGEND ===================== -->
+  <g font-size="11" fill="#222222">
+    <rect x="30" y="75" width="230" height="150" fill="none" stroke="#999999"/>
+    <text x="40" y="92" font-weight="bold">LEGEND</text>
+    <line x1="40" y1="108" x2="80" y2="108" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+    <text x="88" y="112">Water / feedwater flow</text>
+    <line x1="40" y1="128" x2="80" y2="128" stroke="#CC5522" stroke-width="3" marker-end="url(#arrowSteam)"/>
+    <text x="88" y="132">Steam flow</text>
+    <line x1="40" y1="148" x2="80" y2="148" stroke="#333333" stroke-width="2" marker-end="url(#arrowElectrical)"/>
+    <text x="88" y="152">Shaft / electrical</text>
+    <circle cx="55" cy="168" r="9" fill="none" stroke="#222222" stroke-width="1.5"/>
+    <path d="M50,168 L60,163 L60,173 Z" fill="#222222"/>
+    <text x="88" y="172">Pump</text>
+    <path d="M45,190 L65,190 L55,182 Z M45,190 L65,190 L55,198 Z" fill="none" stroke="#222222" stroke-width="1.5"/>
+    <text x="88" y="194">Valve</text>
+    <rect x="45" y="203" width="20" height="14" fill="none" stroke="#222222" stroke-width="1.5"/>
+    <text x="88" y="214">Vessel / heater / drum</text>
+  </g>
+
+  <!-- ===================== REACTOR CORE ===================== -->
+  <rect x="60" y="330" width="200" height="140" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="160" y="390" font-size="14" font-weight="bold" text-anchor="middle">REACTOR</text>
+  <text x="160" y="408" font-size="14" font-weight="bold" text-anchor="middle">CORE</text>
+  <text x="160" y="425" font-size="9" fill="#555555" text-anchor="middle">1 zone / 1 channel group</text>
+  <text x="160" y="325" font-size="10" fill="#777777" text-anchor="middle">(see reactor-core-detail-schematic)</text>
+
+  <!-- ===================== STEAM DRUM ===================== -->
+  <rect x="420" y="330" width="150" height="70" rx="20" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="495" y="360" font-size="12" font-weight="bold" text-anchor="middle">STEAM DRUM</text>
+  <text x="495" y="375" font-size="9" fill="#555555" text-anchor="middle">drum-a</text>
+
+  <!-- Reactor -> Drum (steam) -->
+  <path d="M260,350 L340,350 L340,350 L418,350" fill="none" stroke="#CC5522" stroke-width="3" marker-end="url(#arrowSteam)"/>
+
+  <!-- MCP (single pump, downcomer drum -> core) -->
+  <circle cx="340" cy="410" r="16" fill="none" stroke="#111111" stroke-width="2"/>
+  <path d="M332,410 L348,401 L348,419 Z" fill="#111111"/>
+  <text x="340" y="440" font-size="10" text-anchor="middle">MCP (pump)</text>
+  <path d="M460,400 L460,410 L356,410" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+  <path d="M324,410 L280,410 L280,400 L260,400" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+
+  <!-- ===================== MAIN STEAM LINE + VALVE TRAIN ===================== -->
+  <path d="M570,350 L640,350" fill="none" stroke="#CC5522" stroke-width="3"/>
+  <path d="M600,338 L620,338 L610,328 Z M600,338 L620,338 L610,348 Z" fill="none" stroke="#111111" stroke-width="1.5"/>
+  <text x="610" y="320" font-size="9" text-anchor="middle">stop/control/admission</text>
+  <text x="610" y="310" font-size="9" fill="#777777" text-anchor="middle">(see turbine-island-detail-schematic)</text>
+  <path d="M640,350 L700,350" fill="none" stroke="#CC5522" stroke-width="3" marker-end="url(#arrowSteam)"/>
+
+  <!-- ===================== TURBINE / GENERATOR / GRID ===================== -->
+  <rect x="700" y="305" width="160" height="90" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <circle cx="780" cy="350" r="18" fill="none" stroke="#111111" stroke-width="1.5"/>
+  <text x="780" y="330" font-size="12" font-weight="bold" text-anchor="middle">TURBINE</text>
+  <text x="780" y="385" font-size="10" fill="#555555" text-anchor="middle">rotor + 1 stage group</text>
+
+  <rect x="920" y="315" width="130" height="70" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="985" y="345" font-size="12" font-weight="bold" text-anchor="middle">GENERATOR</text>
+  <text x="985" y="363" font-size="9" fill="#555555" text-anchor="middle">grid + breaker</text>
+  <line x1="860" y1="350" x2="920" y2="350" stroke="#333333" stroke-width="3"/>
+  <line x1="1050" y1="350" x2="1070" y2="350" stroke="#333333" stroke-width="2"/>
+  <line x1="1070" y1="350" x2="1082" y2="338" stroke="#333333" stroke-width="2"/>
+  <line x1="1082" y1="350" x2="1102" y2="350" stroke="#333333" stroke-width="2" marker-end="url(#arrowElectrical)"/>
+  <text x="1130" y="354" font-size="12" font-weight="bold">GRID</text>
+
+  <!-- Turbine exhaust -> condenser -->
+  <path d="M780,395 L780,450" fill="none" stroke="#CC5522" stroke-width="3" marker-end="url(#arrowSteam)"/>
+
+  <!-- ===================== CONDENSER ===================== -->
+  <rect x="700" y="450" width="160" height="90" rx="16" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="780" y="490" font-size="12" font-weight="bold" text-anchor="middle">CONDENSER</text>
+  <text x="780" y="508" font-size="9" fill="#555555" text-anchor="middle">vacuum / hotwell</text>
+
+  <!-- ===================== CONDENSATE / FEEDWATER TRAIN ===================== -->
+  <circle cx="700" cy="620" r="16" fill="none" stroke="#111111" stroke-width="2"/>
+  <path d="M692,620 L708,611 L708,629 Z" fill="#111111"/>
+  <text x="700" y="655" font-size="10" text-anchor="middle">CONDENSATE</text>
+  <text x="700" y="668" font-size="10" text-anchor="middle">PUMP</text>
+
+  <circle cx="900" cy="620" r="16" fill="none" stroke="#111111" stroke-width="2"/>
+  <path d="M892,620 L908,611 L908,629 Z" fill="#111111"/>
+  <text x="900" y="655" font-size="10" text-anchor="middle">FEEDWATER</text>
+  <text x="900" y="668" font-size="10" text-anchor="middle">PUMP</text>
+
+  <path d="M780,540 L780,595 L700,595 L700,604" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+  <path d="M716,620 L884,620" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+  <path d="M900,604 L900,140 L495,140 L495,328" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+
+  <text x="30" y="720" font-size="10" fill="#777777">Original diagram for this project — not a reproduction of any third-party P&amp;ID. Component names/instance ids match ColdShutdownInitialConditionFactory.cs.</text>
+</svg>

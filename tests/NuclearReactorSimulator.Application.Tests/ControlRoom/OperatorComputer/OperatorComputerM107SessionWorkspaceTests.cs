@@ -55,7 +55,7 @@ public sealed class OperatorComputerM107SessionWorkspaceTests
     private static ScenarioSessionFactory CreateFactory()
         => new(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         }));
 
     private sealed class TestArchiveSerializer : IScenarioSessionArchiveSerializer

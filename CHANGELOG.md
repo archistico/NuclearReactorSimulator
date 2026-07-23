@@ -1,3 +1,191 @@
+## M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — IMPLEMENTATION CANDIDATE
+
+- Takes user-corrected Hotfix 16 as the current green working checkpoint: solution build, 870 ordinary tests and both explicit 60-second gameplay journeys are documented green there.
+- Replaces the current-v2 condenser's capacity-only heat-removal assumption with a canonical surface-condenser feedback law: `Q_effective = min(Q_available, UA * max(0, T_steam-space - T_coolant))`.
+- Adds optional `CondenserDefinition.OverallHeatTransferConductance`; null remains isolated legacy capacity-only behavior, while current sustained-generation/synchronization v2 definitions use `1.225 MW/K`.
+- Extends `CondenserCoolingBoundaryInput` with effective coolant temperature. Current v2 uses 20 °C; condenser cooling-capacity faults preserve that temperature while scaling only available rejection power.
+- Derives `UA = 24.5 MW / (40 °C - 20 °C) = 1.225 MW/K`, preserving the Hotfix 16 initial design point instead of introducing a new tuning discontinuity.
+- Publishes coolant temperature, steam-to-coolant ΔT, UA surface limit and effective heat-rejection capacity in condenser snapshots for direct diagnostics.
+- Adds direct M4.3 regressions proving UA-limited rejection below installed capacity, weaker condensation as ΔT falls, zero condensation at non-positive ΔT and explicit legacy isolation.
+- Removes the obsolete duplicate-number Hotfix 11 condenser ADR and records the current decision as ADR 0084.
+- No generator synchronous-coupling, pump check-valve, protection, actuator-rate or adaptive-substep changes are mixed into this hotfix. Those remain ordered follow-on structural items.
+- M10.9.3 remains the validated baseline. Hotfix 17 requires the ordinary gate and both explicit 60-second gameplay journeys before promotion.
+
+## M10.9.4 Hotfix 16 — Conservative Main-Steam Supply Closure — IMPLEMENTATION CANDIDATE
+
+- Reproduced both explicit long-gameplay failures at the exact conserved `drum` states and found two successive defects rather than one numerical blow-up.
+- Removed the artificial `p < pcrit` rejection from the subcritical-temperature compressed-liquid branch. The failing states are finite compressed liquid at about 548 K and 22.069 MPa; the critical-pressure bound remains in the saturation/vapor branches.
+- Closed the current-v2 `drum -> steam outlet -> main-steam line` inventory path: when `CirculationDemandBalanced` is active, M4.1 supplements return-separated steam up to the positive committed main-steam-line demand using an exactly mass/energy-conservative internal transfer. Legacy `LegacyReturnSplit` profiles retain the historical behavior.
+- Added direct regressions for both reported thermodynamic states, conservative current-mode steam replenishment and legacy isolation.
+- Added versioned operational-seed speed-controller gains. Historical callers retain `P=1`, `D=0`; the already-loaded desktop v2 keeps `P=1`, `I=0.02 s⁻¹` and adds `D=0.2 s` to damp its small 10-second overshoot, while pre-synchronization v2 uses `P=0.5`, `I=0.02 s⁻¹` to prevent post-close 0%/100% cycling. Both preserve the bumpless 46% handoff.
+- Long-test failures now retain all completed checkpoint diagnostics and include drum pressure/temperature/phase plus return, steam, recirculation and cycle-flow evidence.
+- Final local validation is green: solution build has 0 warnings/errors, the ordinary suite passes 870 tests with only the 2 explicit journeys skipped, and both 60-s explicit journeys pass separately. M10.9.3 remains the validated baseline pending release-candidate promotion.
+
+## M10.9.4 Hotfix 15 — Steam-Drum Inventory Closure — IMPLEMENTATION CANDIDATE
+
+- Ordinary build/tests and the Hotfix 14 200-step turbine hydraulic invariant passed locally; the explicit long gameplay journeys then exposed the next structural failure in the canonical `drum` node.
+- Root-caused the historical closed-cycle drum mass balance: physical return flow was added by the canonical return pipe and cancelled by the separator, while M4.4 feedwater remained a one-way drum addition, giving `dm_drum/dt = F_feedwater >= 0` by construction.
+- Added explicit `SteamDrumLiquidRecirculationMode`: legacy profiles retain `LegacyReturnSplit`; current v2 sustained-generation/synchronization profiles use `CirculationDemandBalanced`.
+- Current v2 liquid recirculation now follows positive committed MCP demand and separator drain is `F_steam + F_liquid`, yielding `dm_drum/dt = F_return + F_feedwater - F_MCP - F_steam` instead of a sign-only accumulator.
+- Added direct M3.6 regression coverage for the new source-term closure and ADR 0082. No seed-volume/feedwater tuning is used as the fix.
+- M10.9.3 remains the validated baseline; M10.9.4 Hotfix 15 remains candidate pending ordinary and explicit long-gameplay gates.
+
+## M10.9.4 Hotfix 14 — Turbine Hydraulic Invariant Regression Contract — IMPLEMENTATION CANDIDATE
+
+- Keeps the Hotfix 13 pressure-driven `turbine-inlet -> exhaust` expansion law unchanged; no production physics/control/protection code changes in this hotfix.
+- Corrects the 200-step structural regression: `F_admission == F_stage` is not an instantaneous invariant for a compressible `turbine-inlet` plenum because their difference changes plenum inventory during transients.
+- Retains the direct ±5% final combined admission-train inventory bound and adds a trajectory assertion requiring at least one negative inventory increment, which directly disproves the historical `dM_train/dt >= 0` ratchet.
+- Keeps finite positive/in-range admission and stage flow checks without conflating transient valve flow with turbine expansion flow.
+- Adds `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`, classifying the external structural audit against the current code and fixing the validation order: turbine hydraulic closure first, then condenser pressure feedback, synchronous generator-grid coupling, pump non-return behavior, protections/actuator dynamics, and later fidelity/integration hardening.
+- M10.9.3 remains the validated baseline; M10.9.4 Hotfix 14 remains candidate pending ordinary and explicit long-gameplay gates.
+
+## M10.9.4 Hotfix 10 — Deterministic Seed Preconditioning & Steam-Path Control Authority — IMPLEMENTATION CANDIDATE
+
+- Keeps M10.9.3 as the validated baseline and preserves all v1 initial-condition defaults/replay identities.
+- Adds an optional deterministic fixed-step preconditioning count to the operational-seed factory; historical callers remain at exactly one seed step, while the new v2 desktop/synchronization seeds use two committed fixed steps before public logical STEP 0.
+- This removes the first-snapshot bootstrap seam where the main-steam line was already flowing but turbine stage demand could still present as zero before controller/measurement/derived-input state had mutually committed.
+- Increases only v2 steam-path hydraulic authority by reducing main-steam/admission resistance from 1800 to 1000 Pa·s²/kg².
+- Reduces the v2 initial governor bias from 61% to 46%, preserving approximately the same initial steam-flow order while leaving substantially more opening authority when rotor speed falls under electrical load.
+- Keeps the generation-scale 1000 m³ exhaust steam-space and 24.5 MW condenser boundary introduced by Hotfix 9.
+- Updates the v2 synchronization seed contract to accept the intentional 46% bumpless governor bias without weakening synchronization or runtime stability requirements.
+- Ordinary and explicit gameplay acceptance remain required before M10.9.4 promotion.
+
+## M10.9.4 Hotfix 9 — Generation-Scale Condenser Steam-Space — IMPLEMENTATION CANDIDATE
+
+- Replaces the v2-only 10 m³ condenser `exhaust` node with a 1,000 m³ low-pressure steam-space while preserving the historical 10 m³ default for all v1 replay identities and existing callers.
+- Adds the optional `exhaustSteamSpaceVolumeCubicMetres` operational-seed parameter with strict finite/positive validation; no canonical M4 solver law or node connectivity is changed.
+- Increases v2 steam-path hydraulic margin by reducing main-steam/admission resistance from 2,800 to 1,800 Pa·s²/kg² so the initial staged path has comfortable mechanical-power margin before the PI governor settles toward the 5 MWe equilibrium.
+- Reduces v2 initial condenser heat rejection from 25.0 to 24.5 MW so the target low-load point is not systematically biased toward exhaust mass depletion.
+- Strengthens the v2 seed regression to expose the actual stage-flow and shaft-power values with `Assert.InRange` rather than an opaque boolean failure.
+- M10.9.3 remains the validated baseline; Hotfix 9 remains candidate pending the ordinary suite and the explicit 60-second gameplay pack.
+
+## M10.9.4 Hotfix 8 — Continuous Main-Steam Supply Gradient — IMPLEMENTATION CANDIDATE
+
+- Root-caused the repeated `exhaust` depletion: v2 initialized `steam` and `header` at the same saturation temperature/pressure, so the canonical main-steam line supplied 0 kg/s while the downstream admission train consumed only its finite preloaded inventories.
+- Added an optional operational-seed header steam temperature with a backward-compatible default equal to primary steam temperature; historical v1 recipes therefore remain unchanged.
+- Generation-ready v2 desktop and pre-synchronization seeds now initialize a continuous pressure staircase `steam 280 °C → header 275 °C → stop-out 269.5 °C → control-out 253 °C → turbine-inlet 246 °C`, yielding approximately 13 kg/s through every canonical steam-path element with the existing v2 resistances and 61% governor bias.
+- Added ordinary regressions requiring positive >10 kg/s canonical main-steam-line replenishment and positive source-to-header pressure difference before accepting the v2 generation-ready seed.
+- No M4 solver law, condenser law, turbine law, protection logic, historical v1 identity or replay payload was changed. M10.9.3 remains the validated baseline; Hotfix 8 remains candidate pending the ordinary suite and explicit long-gameplay pack.
+
+## M10.9.4 Hotfix 7 — Condenser Balance & Spinning-Reserve Seed Correction — IMPLEMENTATION CANDIDATE
+
+- Preserves M10.9.3 as the validated baseline and keeps historical `integrated-operations-desktop-stable` v1 / `pre-synchronization-grid-loading` v1 replay identities unchanged.
+- Corrects the generation-ready v2 condenser heat-rejection boundary from 30 MW to 25 MW, matching the modeled ~12.9 kg/s low-load turbine steam flow and exhaust-to-hotwell specific-energy drop instead of progressively over-condensing the exhaust steam-space.
+- Starts the v2 pre-synchronization profile with the same bumpless ~61% turbine-governor bias used by the sustained-generation profile, establishing spinning reserve before breaker closure rather than leaving downstream steam inventory to drain while the control valve is closed.
+- Adds an ordinary one-simulated-second pre-synchronization thermodynamic smoke regression, so control-out/exhaust envelope failures are caught by the standard suite before the explicit 60-second gameplay pack.
+- Restores the exact `ApplicationDescriptor` contract phrases required by the validated descriptor test (`long-gameplay acceptance tests`, `without moving plant topology`).
+- No M4 condenser/turbine solver law, replay fingerprint schema, protection priority or Avalonia plant-control ownership is changed.
+
+## M10.9.4 Hotfix 6 — Generation-Ready Power-Path Balance — IMPLEMENTATION CANDIDATE
+
+- The first real explicit long-gameplay execution proved the historical desktop v1 seed was not a sustained generation point: at 10 simulated seconds it had decayed to ~1442.6 rpm and ~2.406 MWe with MODEL rotor shaft power 0 MW; the separate synchronization journey also drove `control-out` outside the simplified water/steam envelope.
+- Preserved historical `integrated-operations-desktop-stable` v1 and `pre-synchronization-grid-loading` v1 unchanged for exact-version replay/archive compatibility; added generation-ready v2 factories and registered both versions.
+- Current desktop integrated operations now references v2, with a staged 280→275→260→250 °C pressurized steam path, matched low-load admission hydraulics, bumpless PI governor bias, explicit turbine-shaft instrumentation, finite condenser heat rejection/capacity and matched condensate/feedwater pump capacity/bias.
+- The explicit synchronization long journey uses a v2 initial condition without changing the historical M7.5 v1 scenario.
+- Added presentation-only `[JsonIgnore]` `EffectiveTurbineSteamFlow`, derived from actual turbine stage-group effective mass flow. HMI, mimic, schematics, diagnostics and Operator Computer now use this value instead of the legacy zero-valued M4.1 turbine-boundary seam, while fingerprint-v1 keeps the historical serialized field unchanged.
+- Strengthened the ordinary generation-ready seed regression to require finite synchronous speed, >4.5 MW MODEL shaft support, >10 kg/s effective steam/condensation/condensate/feedwater flow, and strengthened both explicit journeys to require sustained shaft plus electrical output.
+- Added ADR 0079. M10.9.3 remains the validated baseline; M10.9.4 Hotfix 6 remains candidate until the ordinary suite and explicit 60-second gameplay pack both pass locally.
+
+## M10.9.4 Hotfix 5 — Cooperative Long-Gameplay Batching — IMPLEMENTATION CANDIDATE
+
+- Fixed both explicit long-running gameplay journeys so each 1,000-step checkpoint respects `ControlRoomRuntimeCoordinator.ExecutionBudget.MaximumSimulationStepsPerBatch` instead of calling `AdvanceRunning(1000, ...)` directly.
+- A 1,000-step/10-second checkpoint is now executed cooperatively as runtime-budget-sized chunks (desktop default: 256 + 256 + 256 + 232), while assertions remain at the same 10-second checkpoints through 60 simulated seconds.
+- The runtime execution budget is not widened or bypassed; no plant physics, seed, control, protection, replay, HMI semantics or acceptance thresholds changed.
+- M10.9.3 remains the validated baseline; M10.9.4 Hotfix 5 is the current cumulative candidate pending the ordinary gate and explicit long-gameplay pack.
+
+## M10.9.4 Hotfix 4 — Nullable Measured-Shaft Compile Guard — IMPLEMENTATION CANDIDATE
+
+- Fixed CS8629 in `ControlRoomSubsystemSchematicProjector.BuildGeneratorPowerPathDiagnostic`: the near-zero measured-shaft branch now explicitly checks `shaft.HasValue` before reading `shaft.Value`.
+- Preserves Hotfix 3 semantics exactly: unavailable measured shaft remains `UNAVAILABLE`, is never coerced to zero, and MODEL rotor-shaft remains a separate diagnostic datum.
+- No runtime physics/control/protection/seed/replay changes.
+- M10.9.3 remains the validated baseline; M10.9.4 Hotfix 4 is the current cumulative candidate.
+
+## M10.9.4 Hotfix 3 — Unavailable Measured-Shaft Semantics & Long-Gameplay Gate Correction — IMPLEMENTATION CANDIDATE
+
+- Corrected the ordinary projection test: the initial aggregate turbine-shaft MEASURED presentation channel is `UNAVAILABLE` (`NumericValue = null`) because that measured source is not published by the desktop instrumentation definition; it must not be coerced to numeric zero.
+- Updated generator power-path diagnostics to distinguish `MEASURED shaft unavailable` from `measured shaft near zero`, while explicitly exposing the finite MODEL rotor-shaft evidence without silently substituting true state for an unavailable measurement.
+- Corrected the explicit desktop gameplay journey so step 0 requires a finite MODEL rotor-shaft value but sustained mechanical/electrical production is enforced at 10, 20, 30, 40, 50 and 60 simulated seconds.
+- Preserved Hotfix 2 Microsoft Testing Platform runner syntax using `dotnet test --project ... -- --explicit only`.
+- No canonical plant physics/control/protection/replay behavior changed; M10.9.3 remains the validated baseline until the ordinary suite and explicit long-gameplay gate both pass.
+
+## M10.9.4 Hotfix 2 — Test contracts, MTP runner syntax & desktop power-path evidence — IMPLEMENTATION CANDIDATE
+
+- Fixed the M10.9.4 historical instrumentation-label regression to inspect XAML `Label` attributes, matching the already validated M10.9.2/M10.9.3 contract.
+- Corrected the desktop power-path projection regression: the actual seed currently has ~5 MWe requested/actual output with near-zero turbine shaft production, so the diagnostic correctly reports a shaft deficit rather than `POWER PATH ACTIVE`.
+- Strengthened the explicit desktop gameplay journey to fail immediately when the handoff is powered only by rotor kinetic energy, before proceeding to 60-second sustained-export checks.
+- Fixed both long-gameplay helper scripts to use Microsoft Testing Platform syntax `dotnet test --project <csproj> --no-build -- --explicit only`.
+- No production physics/control/protection code changed in this hotfix; the potential desktop seed/integrated-balance defect remains intentionally exposed for the explicit gameplay gate.
+
+# Changelog
+
+## M10.9.4 Hotfix 1 — xUnit2009 Assertion Contract Fix — IMPLEMENTATION CANDIDATE
+
+- Replaced the two new `Assert.True(string.StartsWith(...))` assertions in `ControlRoomSubsystemSchematicProjectionTests` with canonical `Assert.StartsWith(...)` assertions required by xUnit analyzer rule xUnit2009.
+- No production code, schematic semantics, gameplay logic, physics, controls, protection, bindings or long-running test behavior changed.
+- M10.9.3 remains the official validated baseline until M10.9.4 Hotfix 1 passes the normal gate and the explicit long-gameplay pack.
+
+## M10.9.4 — Subsystem Engineering Schematics — IMPLEMENTATION CANDIDATE
+
+- Promoted M10.9.3 Interactive Full-Plant Mimic to VALIDATED after the user confirmed successful compilation and the complete automated suite passed.
+- Added five Application-owned subsystem engineering schematic families and the Avalonia `ControlRoomSubsystemSchematicControl` renderer.
+- Added explicit reactor/core feedback, primary recirculation/steam-drum, turbine/secondary, generator/grid and instrumentation/control/protection process/signal-flow diagrams with IN/OUT semantics.
+- Promoted generator requested electrical power as presentation-only metadata and added a live power-path diagnostic separating shaft power, mechanical input, requested load, actual MWe, synchronization, breaker and protection state.
+- Clarified that amber SHAFT is the mechanical-energy medium color, not warning severity.
+- Added two xUnit v3 explicit long-running gameplay/system acceptance journeys, plus separate CMD/PowerShell launchers, so 60-second integrated turbine→generator→grid verification does not run in the ordinary fast suite.
+- Added M10.9.4 Application/App regression coverage, `SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` and ADR 0078.
+
+## M10.9.3 — Interactive Full-Plant Mimic — IMPLEMENTATION CANDIDATE
+
+- Promoted M10.9.2 Hotfix 2 to VALIDATED after the user confirmed successful compilation and the complete automated suite passed.
+- Added immutable Application-layer `ControlRoomPlantMimic*` contracts and `ControlRoomPlantMimicProjector` over the existing `ControlRoomSnapshot` presentation boundary.
+- Added an interactive whole-plant PLANT overview with eight macro-equipment groups, nine directed process/energy connections, explicit IN/OUT semantics, medium-specific visual grammar and key live operating evidence.
+- Added equipment selection, connected-path emphasis and navigation-only `OPEN SUBSYSTEM` drill-down to existing REACTOR/PRIMARY/TURBINE/GRID workspaces.
+- Added `ControlRoomPlantMimicControl` with recognizable equipment glyphs and flow arrows; Avalonia renders supplied semantics and owns no topology/physics inference.
+- Added Application/App regression coverage plus `docs/milestones/M10.9.3.md`, `docs/INTERACTIVE_FULL_PLANT_MIMIC.md` and ADR 0077.
+
+## M10.9.2 Hotfix 2 — Measured Instrument Label Contract Restoration — IMPLEMENTATION CANDIDATE
+
+- Restored the canonical static XAML labels `ROTOR SPEED · MEASURED` and `ELECTRICAL OUTPUT · MEASURED` after the App contract suite exposed the first compatibility regression and review found the second latent assertion before another test cycle.
+- Preserved the new runtime provenance badge; no gauge scale, threshold, trend, projection, replay, physics, protection or control semantics changed.
+- M10.9.1 remains the validated baseline until the cumulative M10.9.2 Hotfix 2 package passes the local build/test/manual gate.
+
+## M10.9.2 Hotfix 1 — Nullable Setpoint Compile Correction — IMPLEMENTATION CANDIDATE
+
+- Fixed `CS0173` in `ControlRoomSnapshotProjector` for steam-drum level and steam-pressure setpoint projection by explicitly typing the two conditional locals as `double?`.
+- No formula, threshold, scale, target, protection, trend, UI binding or replay semantics changed.
+- M10.9.1 remains the validated baseline until M10.9.2 Hotfix 1 passes the local build/test/manual gate.
+
+## M10.9.2 — Advanced Instrument & Gauge System — IMPLEMENTATION CANDIDATE
+
+- Recorded explicit local validation of M10.9.1: the user confirmed successful compilation and the complete automated suite passed; M10.9.1 is the official validated baseline.
+- Added reusable advanced linear and circular gauge controls that render published scale/band/target/setpoint/protection semantics without UI-owned thresholds, including compact numeric semantics text so color is never the only carrier of limit meaning.
+- Added presentation-only provenance, quality and explicit off-scale metadata to control-room scalar snapshots while preserving replay/fingerprint-v1 identity.
+- Added deterministic logical-step trend snapshots with reset/backwards-step invalidation and no wall-clock dependency.
+- Projected canonical gauge metadata for reactor power, rod position, steam-drum pressure/level, rotor speed, generator synchronization quantities and electrical output.
+- Kept total turbine shaft power numeric because no defensible canonical display scale is currently published; M10.9.2 does not invent one.
+- Added M10.9.2 Application/App regression coverage, `ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md` and ADR 0076.
+
+## M10.9.1 — HMI Information Architecture & Visual Language — IMPLEMENTATION CANDIDATE
+
+- Recorded explicit local validation of M10.8: the user confirmed successful compilation and the complete automated suite passed; M10.8 is the official validated baseline.
+- Reframed the desktop around a five-region operator-experience shell: persistent situation strip, compact system navigation, central workspace, contextual inspector and persistent alarm/event strip.
+- Added high-salience runtime, logical-step, gross-output, training-score, alarm, protection, assistance and control-authority summaries without inventing the future external-demand capability planned for M10.9.6.
+- Reduced developer-facing milestone terminology in operator headings while preserving explicit MEASURED/MODEL provenance and all validated M10.8 keyboard/command capabilities.
+- Added immutable Application-layer HMI contracts that separate displayed instrument scale, operating bands, scenario/controller target bands, setpoint markers and protection thresholds; Avalonia remains presentation-only and does not own safety semantics.
+- Added shell/range-semantics regressions plus ADR 0075 and the approved M10.9.1–M10.9.8 operator-experience/HMI roadmap.
+- Added the user-provided plant, reactor-core, turbine-island and instrumentation/protection schematics under `docs/reference/hmi/` as design references only; they are not runtime topology or authoritative physics/control data.
+
+## M10.8 — Integrated Operator Computer UI — VALIDATED
+
+- Recorded explicit local validation of M10.7.1 Hotfix 3: compilation and the complete automated suite passed; M10.7.1 is the official validated baseline.
+- Integrated all eight operator-computer pages into a fixed header/menu/status/footer workstation with a single scrollable page-content region.
+- Moved the Computer workspace out of the normal center-workspace outer scroll into a dedicated center viewport so the terminal menu/status regions remain genuinely fixed while only page content scrolls; non-Computer workspaces retain the validated scroll layout.
+- Reworked the page menu into a readable 4×2 F1–F8 layout with persistent selected-page indicators independent of keyboard focus.
+- Kept runtime, logical step, alarm, signal-health and protection summaries always visible above scrolling page content.
+- Reduced rigid COMMANDS/SESSION sizing to bounded responsive list layouts suitable for the validated center viewport.
+- Preserved keyboard-first operation (F1–F8, Tab/Shift+Tab, arrows, Enter), full mouse support and the no-free-form-command rule.
+- Added dedicated M10.8 ViewModel/XAML regression coverage and rebuilt authoritative `PROJECT_HANDOFF.md` / `NEW_CHAT_START.md` for a clean post-M10.8 chat handoff.
+
 ## M10.7.1 Hotfix 3 — Committed breaker-state regression expectation — IMPLEMENTATION CANDIDATE
 
 - Updated the single stale App regression exposed by Hotfix 2: when a snapshot reports the generator breaker as physically CLOSED while a generator trip is active, `CLOSE BREAKER` must still present the committed CLOSED/active state rather than becoming visually `Unavailable`.

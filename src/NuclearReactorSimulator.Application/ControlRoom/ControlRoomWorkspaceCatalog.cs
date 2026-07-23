@@ -7,12 +7,12 @@ public static class ControlRoomWorkspaceCatalog
     public static IReadOnlyList<ControlRoomWorkspaceDescriptor> Default { get; } =
         new ReadOnlyCollection<ControlRoomWorkspaceDescriptor>(new[]
         {
-            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Overview, "Plant Overview", "Overview", "Whole-plant operating context, headline status and navigation entry point."),
-            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Reactor, "Reactor & Core", "Reactor", "Reactor instrumentation, rod/group controls and reactor-protection context."),
-            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.PrimaryCircuit, "Primary Circuit", "Primary", "Main circulation, headers, channel groups, steam drums and primary-system controls."),
-            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.TurbineSecondary, "Turbine & Secondary Cycle", "Turbine", "Main steam, turbine, condenser, hotwell and feedwater operating workspace."),
-            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Electrical, "Generator & Electrical", "Electrical", "Generator synchronization, breaker state, electrical output and grid-facing controls."),
-            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.AlarmsEvents, "Alarms & Events", "Alarms", "Annunciator, first-out state and deterministic logical-step event review."),
-            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.OperatorComputer, "Operator Computer", "Computer", "Unified fixed-page operator terminal shell over canonical control-room, training and session contracts."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Overview, "Plant Overview", "PLANT", "Whole-plant operating context and primary situation-awareness entry point."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Reactor, "Reactor & Core", "REACTOR", "Reactor instrumentation, reactivity, rod/group controls and protection context."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.PrimaryCircuit, "Primary Circuit", "PRIMARY", "Main circulation, headers, channel groups, steam drums and primary-system controls."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.TurbineSecondary, "Turbine & Secondary Cycle", "TURBINE", "Main steam, turbine, condenser, hotwell and feedwater operating workspace."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Electrical, "Generator & Grid", "GRID", "Generator synchronization, breaker state, electrical output and grid-facing controls."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.AlarmsEvents, "Alarms & Events", "ALARMS", "Annunciator, first-out state and deterministic logical-step event review."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.OperatorComputer, "Operator Computer", "COMPUTER", "Unified fixed-page utility workstation for guidance, diagnostics, commands, modes, log and session tools."),
         });
 }

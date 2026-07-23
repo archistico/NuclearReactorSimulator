@@ -83,3 +83,26 @@ M3.6 does not yet implement:
 - turbine coupling.
 
 Feedwater and steam boundaries are M3.7.
+
+## Current closed-cycle inventory closure (M10.9.4 Hotfix 15)
+
+The original M3.6 `LegacyReturnSplit` model treated the liquid outlet as `F_return - F_steam`. Once M4.4 added a real feedwater pump into the same canonical drum inventory, that zero-residence split created a structural closed-cycle ratchet: the physical return pipe and separator return drain cancelled while feedwater remained a one-way mass addition.
+
+Current version-2 sustained-operation profiles therefore use `SteamDrumLiquidRecirculationMode.CirculationDemandBalanced`:
+
+```text
+return pipe                 +F_return -> drum
+feedwater pump              +F_feedwater -> drum
+steam separation            -F_steam -> steam outlet
+liquid recirculation        -F_MCP -> suction header
+```
+
+so:
+
+```text
+dm_drum/dt = F_return + F_feedwater - F_MCP - F_steam
+```
+
+The liquid recirculation target remains the canonical loop suction header and its flow is the sum of positive committed MCP flows for that loop. This is still a staged internal transfer: `PlantNetworkOrchestrator` remains the only inventory integrator.
+
+`LegacyReturnSplit` remains available only as an explicit compatibility seam for historical profiles. It is not the preferred current physical closure.

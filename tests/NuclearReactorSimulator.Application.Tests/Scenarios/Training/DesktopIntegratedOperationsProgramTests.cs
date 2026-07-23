@@ -14,9 +14,11 @@ public sealed class DesktopIntegratedOperationsProgramTests
     {
         Assert.Equal(new InitialConditionReference("stable-low-load-parallel-operation", 1), PowerManoeuvringNormalShutdownProgram.InitialCondition);
         Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 1), DesktopIntegratedOperationsInitialConditionFactory.Reference);
+        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 2), DesktopSustainedGenerationInitialConditionFactory.Reference);
+        Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, DesktopIntegratedOperationsProgram.Scenario.InitialCondition);
         Assert.NotEqual(
             PowerManoeuvringNormalShutdownProgram.InitialCondition,
-            DesktopIntegratedOperationsInitialConditionFactory.Reference);
+            DesktopSustainedGenerationInitialConditionFactory.Reference);
         Assert.NotEqual(
             IntegratedOperationsTrainingProgram.Scenario.ScenarioId,
             DesktopIntegratedOperationsProgram.Scenario.ScenarioId);
@@ -27,7 +29,7 @@ public sealed class DesktopIntegratedOperationsProgramTests
     {
         var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         });
         var session = new ScenarioSessionFactory(registry).Load(DesktopIntegratedOperationsProgram.Scenario);
         var initial = session.Coordinator.Current;
@@ -50,7 +52,12 @@ public sealed class DesktopIntegratedOperationsProgramTests
         Assert.Equal(ControlRoomRunState.Running, session.Coordinator.Current.RunState);
         Assert.NotEmpty(session.Coordinator.Current.TurbineSecondary.Rotors);
         Assert.All(session.Coordinator.Current.TurbineSecondary.Rotors, static rotor =>
-            Assert.True(double.IsFinite(rotor.Speed.NumericValue ?? double.NaN)));
+        {
+            Assert.True(double.IsFinite(rotor.Speed.NumericValue ?? double.NaN));
+            Assert.InRange(rotor.Speed.NumericValue ?? double.NaN, 2_950d, 3_050d);
+            Assert.True((rotor.ShaftPower.NumericValue ?? 0d) > 4.5d);
+        });
+        Assert.True((session.Coordinator.Current.Electrical.GrossElectricalOutput.NumericValue ?? 0d) > 4d);
     }
 
     [Fact]
@@ -58,7 +65,7 @@ public sealed class DesktopIntegratedOperationsProgramTests
     {
         var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         });
         var factory = new ScenarioSessionFactory(registry);
         var first = factory.Load(DesktopIntegratedOperationsProgram.Scenario);

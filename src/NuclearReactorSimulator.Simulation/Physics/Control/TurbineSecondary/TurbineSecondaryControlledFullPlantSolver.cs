@@ -26,7 +26,7 @@ public sealed class TurbineSecondaryControlledFullPlantSolver
     private readonly ReactorPrimaryControlSolver _reactorControlSolver;
     private readonly TurbineSecondaryControlSolver _secondaryControlSolver;
     private readonly FullPlantSolver _fullPlantSolver;
-    private readonly ValveFlowSolver _valveFlowSolver = new();
+    private readonly TurbineStageMassFlowResolver _stageMassFlowResolver;
 
     public TurbineSecondaryControlledFullPlantSolver(
         ReactorPrimaryControlSystemDefinition reactorDefinition,
@@ -52,6 +52,7 @@ public sealed class TurbineSecondaryControlledFullPlantSolver
         _reactorControlSolver = new ReactorPrimaryControlSolver(reactorDefinition);
         _secondaryControlSolver = new TurbineSecondaryControlSolver(secondaryDefinition);
         _fullPlantSolver = new FullPlantSolver(secondaryDefinition.PlantDefinition, thermodynamicModel);
+        _stageMassFlowResolver = new TurbineStageMassFlowResolver(secondaryDefinition.PlantDefinition.TurbineExpansionSystem);
     }
 
     public TurbineSecondaryControlledFullPlantStepResult Step(
@@ -86,7 +87,8 @@ public sealed class TurbineSecondaryControlledFullPlantSolver
         var effectiveInputs = BuildEffectivePlantInputs(
             basePlantInputs,
             reactorStep.Snapshot.FissionPower.TotalFissionThermalPower,
-            secondaryStep.CommandedFullPlantState.PlantState);
+            secondaryStep.CommandedFullPlantState.PlantState,
+            deltaTime);
         var fullPlantStep = _fullPlantSolver.Step(secondaryStep.CommandedFullPlantState, effectiveInputs, deltaTime);
         var snapshot = new IntegratedAutomaticControlSnapshot(
             fullPlantStep.Snapshot,
@@ -104,7 +106,8 @@ public sealed class TurbineSecondaryControlledFullPlantSolver
     private IntegratedSecondaryCycleInputs BuildEffectivePlantInputs(
         IntegratedSecondaryCycleInputs original,
         Power fissionPower,
-        PlantState commandedPlantState)
+        PlantState commandedPlantState,
+        TimeSpan deltaTime)
     {
         var generator = original.GeneratorGridInputs;
         var feedwater = generator.CondensateFeedwaterInputs;
@@ -124,7 +127,7 @@ public sealed class TurbineSecondaryControlledFullPlantSolver
             rewrittenPrimary,
             mainSteam.TurbineAdmissionBoundaryInputs);
         var automaticStageInputs = turbine.Definition.StageGroups
-            .Select(stage => new TurbineStageGroupInput(stage.Id, ResolveAdmissionMassFlow(commandedPlantState, stage.AdmissionBoundaryId)))
+            .Select(stage => new TurbineStageGroupInput(stage.Id, _stageMassFlowResolver.Resolve(commandedPlantState, stage, deltaTime)))
             .ToArray();
         var rewrittenTurbine = new TurbineExpansionInputs(
             turbine.Definition,
@@ -145,28 +148,6 @@ public sealed class TurbineSecondaryControlledFullPlantSolver
             generator.GeneratorInputs);
 
         return new IntegratedSecondaryCycleInputs(original.Definition, rewrittenGenerator);
-    }
-
-    private MassFlowRate ResolveAdmissionMassFlow(PlantState commandedPlantState, string admissionBoundaryId)
-    {
-        var mainSteam = _secondaryDefinition.PlantDefinition.TurbineExpansionSystem.MainSteamNetwork;
-        var boundary = mainSteam.GetTurbineAdmissionBoundary(admissionBoundaryId);
-        var train = mainSteam.GetAdmissionTrain(boundary.AdmissionTrainId);
-        var stopFlow = SolvePositiveValveFlow(commandedPlantState, train.StopValveId);
-        var controlFlow = SolvePositiveValveFlow(commandedPlantState, train.ControlValveId);
-        var admissionFlow = SolvePositiveValveFlow(commandedPlantState, train.AdmissionValveId);
-        return MassFlowRate.FromKilogramsPerSecond(Math.Min(stopFlow, Math.Min(controlFlow, admissionFlow)));
-    }
-
-    private double SolvePositiveValveFlow(PlantState state, string valveId)
-    {
-        var definition = state.Definition.GetValve(valveId);
-        var flow = _valveFlowSolver.Solve(
-            definition,
-            state.GetValve(valveId),
-            state.GetFluidNode(definition.Pipe.FromNodeId),
-            state.GetFluidNode(definition.Pipe.ToNodeId));
-        return Math.Max(0d, flow.MassFlowRate.KilogramsPerSecond);
     }
 
     private static void ValidateDisjointPhysicalTargets(

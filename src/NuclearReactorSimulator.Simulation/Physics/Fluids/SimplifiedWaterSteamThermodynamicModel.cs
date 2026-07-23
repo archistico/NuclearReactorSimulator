@@ -375,7 +375,10 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         var compressionRatio = Math.Max(0d, (actualDensity / saturatedLiquidDensity) - 1d);
         var pressurePascals = saturation.Pressure.Pascals + (LiquidBulkModulusPascals * compressionRatio);
 
-        if (!double.IsFinite(pressurePascals) || pressurePascals <= 0d || pressurePascals >= CriticalPressurePascals)
+        // The saturation and vapor correlations are bounded below critical pressure, but compressed liquid
+        // remains a valid subcritical-temperature state when its pressure crosses the critical isobar.
+        // Rejecting it here creates an artificial gap in the conserved (v, u) envelope at p = pcrit.
+        if (!double.IsFinite(pressurePascals) || pressurePascals <= 0d)
         {
             state = null!;
             return false;

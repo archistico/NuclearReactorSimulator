@@ -9,13 +9,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The current explicitly validated baseline is **M10.7 — Session, Checkpoint, Replay & Save Workspace — VALIDATED**. The user confirmed M10.7 Hotfix 1 compiled successfully and the complete automated suite passed.
+The current explicitly validated baseline is **M10.9.3 — Interactive Full-Plant Mimic — VALIDATED**. The user confirmed local compilation and the complete automated suite passed.
 
-The underlying **M9 phase gate remains COMPLETE / VALIDATED**. M9.7 hotfix 5 previously passed the full gate, including the long 6,000-step / 60-second endurance runs and direct saturation/superheat boundary regressions; the user-supplied corrected `MainWindow.axaml` remains the authoritative validated layout baseline.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.3 are validated. The user-supplied **M10.9.4 Hotfix 16 — Conservative Main-Steam Supply Closure** is the latest green integrated checkpoint; its changelog records a clean build, 870 ordinary tests passed and both explicit 60-second gameplay journeys passed separately. The current working package is **M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — IMPLEMENTATION CANDIDATE**, based directly on Hotfix 16.
 
-The current working package is **M10.7.1 — Operator Control-State & Synchronization Usability Hotfix, Hotfix 2 — IMPLEMENTATION CANDIDATE**. It preserves the trip/reset/synchronization corrections and adds consistent actual-state feedback for rods, main-circulation pumps and breaker position, while momentary speed/load commands provide explicit press/last-action feedback without pretending to stay latched.
+Hotfix 17 changes one structural owner only: current-v2 M4.3 condenser heat rejection is `min(Q_available, UA·ΔT)` instead of treating installed cooling capacity as immediately usable independently of condenser temperature. The current design point uses `UA = 1.225 MW/K` and cooling water at 20 °C, reproducing the existing 24.5 MW rejection at the 40 °C initial exhaust state. Pressure-driven turbine expansion and the Hotfix 16 drum/main-steam closure remain unchanged. The next structural item after green ordinary + explicit gates is generator-grid synchronous coupling.
 
-See `docs/milestones/M10.7.1.md`, `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`, `docs/milestones/M10.7.md`, ADR 0070 and ADR 0074. Final product release hardening remains M11 after M10.
+See `docs/milestones/M10.9.4.md`, `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`, `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`, ADR 0075–ADR 0084. M10 closes only after M10.9.8; release hardening remains M11.
 
 ## Architectural principles
 
@@ -448,7 +448,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.7 are validated; M10.7 is the current official baseline and M10.7.1 is the current usability-hotfix candidate before M10.8.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.3 are validated; M10.9.3 is the current official baseline and M10.9.4 Hotfix 17 is the current implementation candidate.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -575,4 +575,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.7 are validated; M10.7.1 Operator Control-State & Synchronization Usability Hotfix is the current implementation candidate before M10.8.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.3 are validated; M10.9.4 Hotfix 17 is the current implementation candidate in the approved M10.9 operator-experience sequence.

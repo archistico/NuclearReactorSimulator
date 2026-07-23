@@ -78,6 +78,6 @@ public sealed class ScenarioAutomationReplayTests
     private static ScenarioSessionFactory CreateFactory()
         => new(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         }));
 }

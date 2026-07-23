@@ -1,0 +1,71 @@
+using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.Scenarios;
+using NuclearReactorSimulator.Application.Scenarios.Synchronization;
+using Xunit;
+
+namespace NuclearReactorSimulator.Application.Tests.Scenarios.Synchronization;
+
+public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
+{
+    [Fact]
+    public void Version2_CreatesFinitePreSynchronizationStateWithoutMutatingHistoricalVersion1Identity()
+    {
+        var legacy = new GridSynchronizationInitialConditionFactory();
+        var current = new GridSynchronizationSustainedInitialConditionFactory();
+
+        Assert.Equal(new InitialConditionReference("pre-synchronization-grid-loading", 1), legacy.Descriptor.Reference);
+        Assert.Equal(new InitialConditionReference("pre-synchronization-grid-loading", 2), current.Descriptor.Reference);
+
+        var snapshot = new ControlRoomRuntimeCoordinator(current.CreateRuntimeEngine()).Current;
+        var generator = Assert.Single(snapshot.Electrical.Generators);
+        var steamLine = Assert.Single(snapshot.TurbineSecondary.SteamLines);
+        var rotor = Assert.Single(snapshot.TurbineSecondary.Rotors);
+        var admission = Assert.Single(snapshot.TurbineSecondary.AdmissionTrains);
+
+        Assert.False(generator.BreakerClosed);
+        Assert.True(generator.SynchronizationConditionsSatisfied);
+        Assert.True((steamLine.MassFlow.NumericValue ?? 0d) > 10d);
+        Assert.True((steamLine.PressureDifference.NumericValue ?? 0d) > 0d);
+        Assert.InRange(rotor.Speed.NumericValue ?? double.NaN, 2_980d, 3_020d);
+        Assert.True(double.IsFinite(admission.TurbineInletPressure.NumericValue ?? double.NaN));
+        Assert.True(double.IsFinite(admission.TurbineInletTemperature.NumericValue ?? double.NaN));
+        Assert.InRange(admission.ControlValvePosition.NumericValue ?? double.NaN, 35d, 70d);
+        Assert.False(snapshot.AnyTripActive);
+    }
+
+    [Fact]
+    public void Version2_CloseLoadThenRunRemainsThermodynamicallyResolvableForOneSimulatedSecond()
+    {
+        var engine = new GridSynchronizationSustainedInitialConditionFactory().CreateRuntimeEngine();
+        var initial = engine.CreatePresentationSnapshot(ControlRoomRunState.Paused);
+        var initialGenerator = Assert.Single(initial.Electrical.Generators);
+
+        engine.QueueOperatorCommand(new ControlRoomCommand(
+            ControlRoomCommandKind.GeneratorBreakerClose,
+            initialGenerator.BreakerId,
+            ControlRoomCommandTargetKind.Breaker));
+        var paralleled = engine.Step(ControlRoomRunState.Running);
+        var paralleledGenerator = Assert.Single(paralleled.Electrical.Generators);
+        Assert.True(paralleledGenerator.BreakerClosed);
+
+        engine.QueueOperatorCommand(new ControlRoomCommand(
+            ControlRoomCommandKind.GeneratorLoadRaise,
+            paralleledGenerator.GeneratorId,
+            ControlRoomCommandTargetKind.Generator));
+        var snapshot = engine.Step(ControlRoomRunState.Running);
+
+        for (var step = 0; step < 100; step++)
+        {
+            snapshot = engine.Step(ControlRoomRunState.Running);
+        }
+
+        var generator = Assert.Single(snapshot.Electrical.Generators);
+        var rotor = Assert.Single(snapshot.TurbineSecondary.Rotors);
+
+        Assert.True(generator.BreakerClosed);
+        Assert.True((generator.RequestedElectricalPower.NumericValue ?? 0d) > 4.5d);
+        Assert.False(snapshot.AnyTripActive);
+        Assert.True(double.IsFinite(rotor.Speed.NumericValue ?? double.NaN));
+        Assert.InRange(rotor.Speed.NumericValue ?? double.NaN, 2_900d, 3_100d);
+    }
+}

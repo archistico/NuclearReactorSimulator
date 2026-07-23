@@ -10,12 +10,19 @@ public sealed record SteamDrumDefinition
         string id,
         string mainCirculationLoopId,
         string inventoryNodeId,
-        string steamOutletNodeId)
+        string steamOutletNodeId,
+        SteamDrumLiquidRecirculationMode liquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit)
     {
         Id = ValidateId(id, nameof(id), "Steam drum");
         MainCirculationLoopId = ValidateId(mainCirculationLoopId, nameof(mainCirculationLoopId), "Main-circulation loop");
         InventoryNodeId = ValidateId(inventoryNodeId, nameof(inventoryNodeId), "Steam-drum inventory node");
         SteamOutletNodeId = ValidateId(steamOutletNodeId, nameof(steamOutletNodeId), "Steam-outlet node");
+        LiquidRecirculationMode = liquidRecirculationMode;
+
+        if (!Enum.IsDefined(liquidRecirculationMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(liquidRecirculationMode), liquidRecirculationMode, "Unknown steam-drum liquid-recirculation mode.");
+        }
 
         if (string.Equals(InventoryNodeId, SteamOutletNodeId, StringComparison.Ordinal))
         {
@@ -30,6 +37,8 @@ public sealed record SteamDrumDefinition
     public string InventoryNodeId { get; }
 
     public string SteamOutletNodeId { get; }
+
+    public SteamDrumLiquidRecirculationMode LiquidRecirculationMode { get; }
 
     private static string ValidateId(string value, string parameterName, string label)
     {

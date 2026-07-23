@@ -1,0 +1,124 @@
+<svg viewBox="0 0 1600 850" xmlns="http://www.w3.org/2000/svg" font-family="Consolas, 'JetBrains Mono', monospace">
+  <defs>
+    <marker id="arrowWater" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#2266CC"/>
+    </marker>
+    <marker id="arrowSteam" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#CC5522"/>
+    </marker>
+    <marker id="arrowSignal" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#666666"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="850" fill="#FFFFFF"/>
+  <text x="30" y="35" font-size="20" font-weight="bold" fill="#111111">Turbine Island — detail schematic</text>
+  <text x="30" y="55" font-size="12" fill="#555555">Zoom into STEAM DRUM → ... → GENERATOR of the overview. One admission train, one stage group, one condenser (single-string reference plant).</text>
+
+  <!-- Steam Drum -->
+  <rect x="40" y="220" width="130" height="60" rx="18" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="105" y="248" font-size="11" font-weight="bold" text-anchor="middle">STEAM DRUM</text>
+  <text x="105" y="262" font-size="8" fill="#555555" text-anchor="middle">"drum-a"</text>
+
+  <!-- Main steam line -->
+  <path d="M170,250 L230,250" fill="none" stroke="#CC5522" stroke-width="3"/>
+  <text x="200" y="240" font-size="8" text-anchor="middle">"line-a"</text>
+  <rect x="230" y="235" width="90" height="30" fill="#F8F8F8" stroke="#333333"/>
+  <text x="275" y="254" font-size="9" text-anchor="middle">HEADER</text>
+
+  <!-- valve train -->
+  <path d="M320,250 L360,250" fill="none" stroke="#CC5522" stroke-width="3"/>
+  <path d="M345,240 L365,240 L355,230 Z M345,240 L365,240 L355,250 Z" fill="none" stroke="#111111" stroke-width="1.2"/>
+  <text x="355" y="222" font-size="8" text-anchor="middle">stop</text>
+
+  <path d="M375,250 L415,250" fill="none" stroke="#CC5522" stroke-width="3"/>
+  <path d="M400,240 L420,240 L410,230 Z M400,240 L420,240 L410,250 Z" fill="none" stroke="#111111" stroke-width="1.2"/>
+  <text x="410" y="222" font-size="8" text-anchor="middle">control</text>
+  <text x="410" y="272" font-size="7" fill="#666666" text-anchor="middle">speed-actuator</text>
+
+  <path d="M430,250 L470,250" fill="none" stroke="#CC5522" stroke-width="3"/>
+  <path d="M455,240 L475,240 L465,230 Z M455,240 L475,240 L465,250 Z" fill="none" stroke="#111111" stroke-width="1.2"/>
+  <text x="465" y="222" font-size="8" text-anchor="middle">admission</text>
+  <text x="465" y="272" font-size="7" fill="#666666" text-anchor="middle">pressure-actuator</text>
+
+  <path d="M485,250 L530,250" fill="none" stroke="#CC5522" stroke-width="3" marker-end="url(#arrowSteam)"/>
+  <text x="330" y="200" font-size="9" fill="#777777" text-anchor="middle">TurbineAdmissionTrainDefinition "train-a" (M4.1)</text>
+  <path d="M330,205 L330,215" fill="none" stroke="#999999"/>
+
+  <!-- Turbine rotor + stage group -->
+  <rect x="530" y="200" width="150" height="100" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <circle cx="605" cy="250" r="20" fill="none" stroke="#111111" stroke-width="1.5"/>
+  <text x="605" y="220" font-size="11" font-weight="bold" text-anchor="middle">TURBINE ROTOR</text>
+  <text x="605" y="285" font-size="8" fill="#555555" text-anchor="middle">"rotor" + stage group "stage"</text>
+  <text x="605" y="298" font-size="8" fill="#555555" text-anchor="middle">3000/3300 rpm nominal/trip</text>
+
+  <!-- shaft to generator -->
+  <line x1="680" y1="250" x2="760" y2="250" stroke="#333333" stroke-width="3"/>
+  <rect x="760" y="215" width="130" height="70" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="825" y="245" font-size="11" font-weight="bold" text-anchor="middle">GENERATOR</text>
+  <text x="825" y="260" font-size="8" fill="#555555" text-anchor="middle">"generator" → grid</text>
+  <text x="825" y="272" font-size="8" fill="#555555" text-anchor="middle">(see overview for breaker/grid)</text>
+
+  <!-- exhaust -> condenser -->
+  <path d="M605,300 L605,350" fill="none" stroke="#CC5522" stroke-width="3" marker-end="url(#arrowSteam)"/>
+  <text x="630" y="330" font-size="8" fill="#555555">exhaust</text>
+
+  <rect x="500" y="350" width="210" height="90" rx="16" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="605" y="385" font-size="11" font-weight="bold" text-anchor="middle">CONDENSER</text>
+  <text x="605" y="400" font-size="8" fill="#555555" text-anchor="middle">"condenser" — vacuum from exhaust inventory</text>
+  <text x="605" y="413" font-size="8" fill="#555555" text-anchor="middle">cooling boundary "cooling" (external heat rejection)</text>
+  <text x="605" y="426" font-size="8" fill="#555555" text-anchor="middle">hotwell condensate inventory node</text>
+
+  <!-- condenser -> condensate pump -->
+  <path d="M550,440 L550,480" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+  <circle cx="550" cy="510" r="16" fill="none" stroke="#111111" stroke-width="2"/>
+  <path d="M542,510 L558,501 L558,519 Z" fill="#111111"/>
+  <text x="550" y="545" font-size="9" text-anchor="middle">CONDENSATE</text>
+  <text x="550" y="558" font-size="9" text-anchor="middle">PUMP</text>
+  <text x="550" y="571" font-size="7" fill="#666666" text-anchor="middle">"condensate-pump"</text>
+  <text x="550" y="583" font-size="7" fill="#666666" text-anchor="middle">hotwell-actuator</text>
+
+  <path d="M566,510 L680,510" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+
+  <!-- Feedwater pump -->
+  <circle cx="710" cy="510" r="16" fill="none" stroke="#111111" stroke-width="2"/>
+  <path d="M702,510 L718,501 L718,519 Z" fill="#111111"/>
+  <text x="710" y="545" font-size="9" text-anchor="middle">FEEDWATER</text>
+  <text x="710" y="558" font-size="9" text-anchor="middle">PUMP</text>
+  <text x="710" y="571" font-size="7" fill="#666666" text-anchor="middle">"feedwater-pump"</text>
+  <text x="710" y="583" font-size="7" fill="#666666" text-anchor="middle">level-actuator</text>
+
+  <path d="M710,494 L710,120 L170,120 L170,225" fill="none" stroke="#2266CC" stroke-width="3" marker-end="url(#arrowWater)"/>
+  <text x="440" y="112" font-size="8" fill="#2266CC">feedwater return to drum — one train per feedwater seam (M4.4)</text>
+
+  <!-- ===================== CONTROL LOOPS ===================== -->
+  <rect x="960" y="200" width="600" height="300" rx="6" fill="#FAFAFA" stroke="#333333" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="1260" y="225" font-size="12" font-weight="bold" text-anchor="middle">TURBINE SECONDARY CONTROL LOOPS (M5.4)</text>
+
+  <rect x="985" y="245" width="260" height="55" fill="#FFFFFF" stroke="#666666"/>
+  <text x="1115" y="267" font-size="10" text-anchor="middle" font-weight="bold">speed-loop — TurbineSpeedAdmission</text>
+  <text x="1115" y="281" font-size="8" fill="#666666" text-anchor="middle">measured speed → control valve (speed-actuator)</text>
+
+  <rect x="1275" y="245" width="260" height="55" fill="#FFFFFF" stroke="#666666"/>
+  <text x="1405" y="267" font-size="10" text-anchor="middle" font-weight="bold">pressure-loop — SteamPressureAdmission</text>
+  <text x="1405" y="281" font-size="8" fill="#666666" text-anchor="middle">measured pressure → admission valve (pressure-actuator)</text>
+
+  <rect x="985" y="315" width="260" height="55" fill="#FFFFFF" stroke="#666666"/>
+  <text x="1115" y="337" font-size="10" text-anchor="middle" font-weight="bold">level-loop — SteamDrumLevelFeedwater</text>
+  <text x="1115" y="351" font-size="8" fill="#666666" text-anchor="middle">measured drum level → feedwater pump (level-actuator)</text>
+
+  <rect x="1275" y="315" width="260" height="55" fill="#FFFFFF" stroke="#666666"/>
+  <text x="1405" y="337" font-size="10" text-anchor="middle" font-weight="bold">hotwell-loop — HotwellInventoryCondensate</text>
+  <text x="1405" y="351" font-size="8" fill="#666666" text-anchor="middle">measured hotwell mass → condensate pump (hotwell-actuator)</text>
+
+  <text x="1260" y="400" font-size="9" fill="#555555" text-anchor="middle">all four read the shared MeasuredSignalFrame (M5.1);</text>
+  <text x="1260" y="414" font-size="9" fill="#555555" text-anchor="middle">turbine-trip / generator-trip (M5.5) can override the speed-loop and admission path</text>
+  <text x="1260" y="428" font-size="9" fill="#555555" text-anchor="middle">independent of normal control, arbitrated before the single M4.7 physical step</text>
+
+  <path d="M410,265 L1000,272" fill="none" stroke="#666666" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrowSignal)"/>
+  <path d="M465,265 L1290,272" fill="none" stroke="#666666" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrowSignal)"/>
+  <path d="M105,280 L1000,342" fill="none" stroke="#666666" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrowSignal)"/>
+  <path d="M605,440 L1290,342" fill="none" stroke="#666666" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrowSignal)"/>
+
+  <text x="30" y="820" font-size="10" fill="#777777">Original diagram — instance ids ("train-a", "stage", "condenser", pump ids) match ColdShutdownInitialConditionFactory.cs.</text>
+</svg>

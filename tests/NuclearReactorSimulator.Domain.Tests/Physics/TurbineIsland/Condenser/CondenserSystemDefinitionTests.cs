@@ -24,7 +24,8 @@ public sealed class CondenserSystemDefinitionTests
         var turbine = CreateTurbineExpansionSystem();
         var condenser = new CondenserDefinition(
             "condenser", "stage", "exhaust", "hotwell", "cooling",
-            MassFlowRate.FromKilogramsPerSecond(100d));
+            MassFlowRate.FromKilogramsPerSecond(100d),
+            ThermalConductance.FromMegawattsPerKelvin(1.225d));
         var cooling = new CondenserCoolingBoundaryDefinition("cooling", "condenser");
 
         var definition = new CondenserSystemDefinition(
@@ -35,7 +36,23 @@ public sealed class CondenserSystemDefinitionTests
 
         Assert.Same(turbine, definition.TurbineExpansionSystem);
         Assert.Same(condenser, definition.GetCondenser("condenser"));
+        Assert.True(condenser.OverallHeatTransferConductance.HasValue);
+        Assert.Equal(1.225d, condenser.OverallHeatTransferConductance.GetValueOrDefault().MegawattsPerKelvin, 12);
         Assert.Same(cooling, definition.GetCoolingBoundary("cooling"));
+    }
+
+
+    [Fact]
+    public void Definition_RejectsNonPositiveOverallHeatTransferConductanceWhenConfigured()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new CondenserDefinition(
+            "condenser",
+            "stage",
+            "exhaust",
+            "hotwell",
+            "cooling",
+            MassFlowRate.FromKilogramsPerSecond(100d),
+            ThermalConductance.Zero));
     }
 
     [Fact]

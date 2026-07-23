@@ -2,9 +2,9 @@
 
 ## Status
 
-**APPROVED ARCHITECTURE / ROADMAP PLAN — M10 IN PROGRESS; M10.1–M10.7 VALIDATED; M10.7.1 USABILITY HOTFIX CANDIDATE.**
+**APPROVED ARCHITECTURE — M10 IN PROGRESS; M10.1–M10.9.2 HOTFIX 2 VALIDATED; M10.9.3 PLANT-MIMIC CANDIDATE.**
 
-This document records the approved design direction for M10. M10.1–M10.7 are validated, including replay-backed session/checkpoint/save/load lifecycle over existing M7/M9 owners. M10.7.1 is the current operator-control/synchronization usability hotfix candidate; M10.8–M10.9 remain governed by this plan.
+This document remains authoritative for operator-computer and supervisory-automation ownership. M10.1–M10.9.2 Hotfix 2 are validated. The later operator-experience roadmap has been expanded into M10.9.1–M10.9.8; see `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md` for the current HMI/challenge plan.
 
 ## Purpose
 
@@ -236,9 +236,9 @@ This enables meaningful degraded automation under M8 sensor/component faults wit
 6. **M10.6 — Supervisory Automatic Operation**
 7. **M10.7 — Session, Checkpoint, Replay & Save Workspace**
 8. **M10.8 — Integrated Operator Computer UI**
-9. **M10.9 — Integrated Human-Automation Validation Gate**
+9. **M10.9.1–M10.9.8 — Operator Experience & Human-Machine Integration Refactor**, ending with the Integrated Human-Automation-HMI Validation Gate
 
-M10 begins only after the planned M9 fidelity/calibration integration gate. Final product release hardening is moved to M11.
+M10 began after the validated M9 fidelity/calibration integration gate. Final product release hardening remains in M11.
 
 ## Acceptance principles for the phase
 
@@ -250,7 +250,7 @@ M10 begins only after the planned M9 fidelity/calibration integration gate. Fina
 - deterministic logical-step semantics only: no wall-clock/random hidden behavior;
 - supervisory automation uses measured signals, degrades fail-closed and supports deterministic bumpless manual takeover;
 - session save/load remains exact-version and replay-backed;
-- M10 closes only after integrated deterministic fault/protection/replay/automation validation.
+- M10 closes only after M10.9.8 integrated deterministic fault/protection/replay/automation/HMI/challenge validation.
 
 ## Deliberate non-goals
 

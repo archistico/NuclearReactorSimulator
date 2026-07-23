@@ -42,10 +42,10 @@ public sealed class ControlRoomComputerControlXamlContractTests
             static element => element.Name.LocalName == "TextBlock" && (string?)element.Attribute("Text") == "{Binding SelectedPageContentText}");
         Assert.Contains(
             document.Descendants(),
-            static element => element.Name.LocalName == "TextBlock" && ((string?)element.Attribute("Text"))?.Contains("M10.7 SESSION / CHECKPOINT / REPLAY / SAVE WORKSPACE", StringComparison.Ordinal) == true);
+            static element => element.Name.LocalName == "TextBlock" && ((string?)element.Attribute("Text"))?.Contains("INTEGRATED OPERATOR COMPUTER", StringComparison.Ordinal) == true);
         Assert.Contains(
             buttons,
-            static element => (string?)element.Attribute("Content") == "EXECUTE SELECTED [ENTER]" &&
+            static element => (string?)element.Attribute("Content") == "EXECUTE [ENTER]" &&
                               (string?)element.Attribute("Command") == "{Binding ExecuteSelectedCommandCommand}");
         Assert.Contains(
             document.Descendants(),

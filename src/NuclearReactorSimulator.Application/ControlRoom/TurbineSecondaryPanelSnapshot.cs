@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace NuclearReactorSimulator.Application.ControlRoom;
 
 /// <summary>Presentation-only M6.5 turbine/secondary-cycle workspace snapshot.</summary>
@@ -28,6 +30,13 @@ public sealed record TurbineSecondaryPanelSnapshot(
     public ControlRoomVisualState ProtectionState => TurbineTripActive
         ? ControlRoomVisualState.Trip
         : ControlRoomVisualState.Normal;
+
+    /// <summary>
+    /// Current model-derived turbine working-steam flow from effective stage-group admission. Presentation-only so the
+    /// historical fingerprint-v1 payload keeps the legacy M4.1 boundary-total field unchanged.
+    /// </summary>
+    [JsonIgnore]
+    public ControlRoomValueSnapshot EffectiveTurbineSteamFlow { get; init; } = TotalSteamFlow;
 
     public string ProtectionText => TurbineTripActive ? "TURBINE TRIP ACTIVE" : "NO TURBINE TRIP LATCHED";
 }

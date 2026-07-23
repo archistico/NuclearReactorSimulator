@@ -97,9 +97,19 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
 
     public string SelectedPageDescription => SelectedPage.Description;
 
+    public bool IsGuidancePageSelected => SelectedPage.Id == OperatorComputerPageId.Guidance;
+
+    public bool IsInfoPageSelected => SelectedPage.Id == OperatorComputerPageId.Info;
+
+    public bool IsAlarmsPageSelected => SelectedPage.Id == OperatorComputerPageId.Alarms;
+
     public bool IsCommandsPageSelected => SelectedPage.Id == OperatorComputerPageId.Commands;
 
     public bool IsModesPageSelected => SelectedPage.Id == OperatorComputerPageId.Modes;
+
+    public bool IsDiagnosticsPageSelected => SelectedPage.Id == OperatorComputerPageId.Diagnostics;
+
+    public bool IsLogPageSelected => SelectedPage.Id == OperatorComputerPageId.Log;
 
     public bool IsSessionPageSelected => SelectedPage.Id == OperatorComputerPageId.Session;
 
@@ -321,8 +331,13 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(SelectedPageTitle));
         OnPropertyChanged(nameof(SelectedPageDescription));
         OnPropertyChanged(nameof(SelectedPageStateText));
+        OnPropertyChanged(nameof(IsGuidancePageSelected));
+        OnPropertyChanged(nameof(IsInfoPageSelected));
+        OnPropertyChanged(nameof(IsAlarmsPageSelected));
         OnPropertyChanged(nameof(IsCommandsPageSelected));
         OnPropertyChanged(nameof(IsModesPageSelected));
+        OnPropertyChanged(nameof(IsDiagnosticsPageSelected));
+        OnPropertyChanged(nameof(IsLogPageSelected));
         OnPropertyChanged(nameof(IsSessionPageSelected));
         OnPropertyChanged(nameof(IsStandardContentPageSelected));
         OnPropertyChanged(nameof(SelectedPageContentText));

@@ -1,4 +1,5 @@
 using System.Globalization;
+using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 using NuclearReactorSimulator.Domain.Physics.Control.Alarms;
 using NuclearReactorSimulator.Domain.Physics.Instrumentation;
 using NuclearReactorSimulator.Simulation.Physics.Control.Alarms;
@@ -88,12 +89,23 @@ public static class ControlRoomSnapshotProjector
         var protection = protectedControl.Protection;
         var primary = protectedControl.FullPlant.IntegratedCycle.PrimaryCircuit;
 
+        var powerSetpointMegawatts = reactorControl.Loops
+            .FirstOrDefault(static loop => loop.Kind == NuclearReactorSimulator.Domain.Physics.Control.ReactorPrimary.ReactorPrimaryControlLoopKind.ReactorPowerRodRegulation)
+            ?.Setpoint / 1_000_000d;
+        var referenceThermalPowerMegawatts = reactorControl.Definition.FissionPowerDefinition.Calibration.ReferenceThermalPower.Megawatts;
+        var reactorPowerScaleMaximum = Math.Max(referenceThermalPowerMegawatts * 1.2d, 1d);
         var power = ProjectMeasuredSource(
             measuredFrame,
             ReactorThermalPowerSourceId,
             "MWth",
             1d / 1_000_000d,
-            "0.0");
+            "0.0") with
+        {
+            InstrumentScale = new ControlRoomInstrumentScaleSnapshot(
+                0d,
+                reactorPowerScaleMaximum,
+                setpoint: WithinScale(powerSetpointMegawatts, 0d, reactorPowerScaleMaximum)),
+        };
 
         var periodSeconds = reactorControl.PointKinetics.ReactorPeriodSeconds;
         var period = periodSeconds.HasValue && double.IsFinite(periodSeconds.Value)
@@ -113,9 +125,12 @@ public static class ControlRoomSnapshotProjector
             .OrderBy(static rod => rod.RodId, StringComparer.Ordinal)
             .ToArray();
 
-        var averageRodWithdrawal = rods.Length == 0
-            ? ControlRoomValueSnapshot.Unavailable("%")
-            : Value(rods.Average(static rod => rod.PercentWithdrawn), "% withdrawn", "0.0");
+        var averageRodWithdrawal = (rods.Length == 0
+            ? ControlRoomValueSnapshot.Unavailable("%", ControlRoomInstrumentProvenance.Model)
+            : Value(rods.Average(static rod => rod.PercentWithdrawn), "% withdrawn", "0.0")) with
+        {
+            InstrumentScale = new ControlRoomInstrumentScaleSnapshot(0d, 100d),
+        };
 
         var rodTargets = reactorControl.Definition.ActuatorSystem.Actuators
             .Where(static actuator => actuator.TargetKind == NuclearReactorSimulator.Domain.Physics.Control.ActuatorTargetKind.ControlRod)
@@ -275,18 +290,22 @@ public static class ControlRoomSnapshotProjector
             .Select(drum => new PrimaryCircuitSteamDrumPresentationSnapshot(
                 drum.DrumId,
                 drum.MainCirculationLoopId,
-                ProjectMeasuredSource(
-                    measuredFrame,
-                    $"steam-drum/{drum.DrumId}/pressure",
-                    "MPa",
-                    1d / 1_000_000d,
-                    "0.000"),
-                ProjectMeasuredSource(
-                    measuredFrame,
-                    $"steam-drum/{drum.DrumId}/level",
-                    "%",
-                    100d,
-                    "0.0"),
+                WithScale(
+                    ProjectMeasuredSource(
+                        measuredFrame,
+                        $"steam-drum/{drum.DrumId}/pressure",
+                        "MPa",
+                        1d / 1_000_000d,
+                        "0.000"),
+                    BuildSteamDrumPressureScale(snapshot, drum.DrumId)),
+                WithScale(
+                    ProjectMeasuredSource(
+                        measuredFrame,
+                        $"steam-drum/{drum.DrumId}/level",
+                        "%",
+                        100d,
+                        "0.0"),
+                    BuildSteamDrumLevelScale(snapshot)),
                 Value(drum.Temperature.DegreesCelsius, "°C", "0.0"),
                 Value(drum.IncomingReturnMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
                 Value(drum.SeparatedSteamMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
@@ -382,12 +401,14 @@ public static class ControlRoomSnapshotProjector
             .OrderBy(static rotor => rotor.RotorId, StringComparer.Ordinal)
             .Select(rotor => new TurbineRotorPresentationSnapshot(
                 rotor.RotorId,
-                ProjectMeasuredSource(
-                    measuredFrame,
-                    $"turbine-rotor/{rotor.RotorId}/speed",
-                    "rpm",
-                    1d,
-                    "0.0"),
+                WithScale(
+                    ProjectMeasuredSource(
+                        measuredFrame,
+                        $"turbine-rotor/{rotor.RotorId}/speed",
+                        "rpm",
+                        1d,
+                        "0.0"),
+                    BuildTurbineSpeedScale(snapshot, rotor.RotorId)),
                 Value(rotor.ShaftPower.Megawatts, "MW", "0.0"),
                 Value(rotor.NetTorque.NewtonMetres, "N·m", "0"),
                 rotor.TripCommandActive,
@@ -453,6 +474,15 @@ public static class ControlRoomSnapshotProjector
                 Value(train.ThermalConditioningPower.Megawatts, "MW", "0.000")))
             .ToArray();
 
+        var legacyBoundarySteamFlow = Value(
+            mainSteam.TotalTurbineAdmissionMassFlowRate.KilogramsPerSecond,
+            "kg/s",
+            "0.0");
+        var effectiveTurbineSteamFlow = Value(
+            turbine.StageGroups.Sum(static stage => stage.EffectiveMassFlowRate.KilogramsPerSecond),
+            "kg/s",
+            "0.0");
+
         return new TurbineSecondaryPanelSnapshot(
             steamLines,
             admissionTrains,
@@ -460,7 +490,7 @@ public static class ControlRoomSnapshotProjector
             stageGroups,
             condensers,
             feedwaterTrains,
-            Value(mainSteam.TotalTurbineAdmissionMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
+            legacyBoundarySteamFlow,
             ProjectMeasuredSource(
                 measuredFrame,
                 "plant/turbine/total-shaft-power",
@@ -473,7 +503,10 @@ public static class ControlRoomSnapshotProjector
                 "MW",
                 1d / 1_000_000d,
                 "0.0"),
-            protectedControl.Protection.TurbineTripActive);
+            protectedControl.Protection.TurbineTripActive)
+        {
+            EffectiveTurbineSteamFlow = effectiveTurbineSteamFlow,
+        };
     }
 
     private static ElectricalPanelSnapshot ProjectElectrical(IntegratedAutomaticOperationSnapshot snapshot)
@@ -492,21 +525,29 @@ public static class ControlRoomSnapshotProjector
                     generator.GeneratorId,
                     generator.RotorId,
                     generator.BreakerId,
-                    ProjectMeasuredSource(
-                        measuredFrame,
-                        $"generator/{generator.GeneratorId}/frequency",
-                        "Hz",
-                        1d,
-                        "0.000"),
-                    ProjectMeasuredSource(
-                        measuredFrame,
-                        $"generator/{generator.GeneratorId}/electrical-output",
-                        "MWe",
-                        1d / 1_000_000d,
-                        "0.0"),
-                    Value(generator.TerminalLineVoltage.Kilovolts, "kV", "0.0"),
+                    WithScale(
+                        ProjectMeasuredSource(
+                            measuredFrame,
+                            $"generator/{generator.GeneratorId}/frequency",
+                            "Hz",
+                            1d,
+                            "0.000"),
+                        BuildGeneratorFrequencyScale(grid.Frequency.Hertz, definition.MaximumSynchronizationFrequencyDifference.Hertz)),
+                    WithScale(
+                        ProjectMeasuredSource(
+                            measuredFrame,
+                            $"generator/{generator.GeneratorId}/electrical-output",
+                            "MWe",
+                            1d / 1_000_000d,
+                            "0.0"),
+                        new ControlRoomInstrumentScaleSnapshot(0d, definition.MaximumElectricalPower.Megawatts)),
+                    WithScale(
+                        Value(generator.TerminalLineVoltage.Kilovolts, "kV", "0.0"),
+                        BuildGeneratorVoltageScale(generator.GridLineVoltage.Kilovolts, definition.MaximumSynchronizationVoltageDifference.Kilovolts)),
                     Value(generator.GridLineVoltage.Kilovolts, "kV", "0.0"),
-                    Value(generator.FinalPhaseDifference.Degrees, "°", "0.00"),
+                    WithScale(
+                        Value(generator.FinalPhaseDifference.Degrees, "°", "0.00"),
+                        BuildGeneratorPhaseScale(definition.MaximumSynchronizationPhaseDifference.Degrees)),
                     Value(generator.MechanicalInputPower.Megawatts, "MW", "0.0"),
                     Value(generator.ConversionLossPower.Megawatts, "MW", "0.000"),
                     generator.SynchronizationConditionsSatisfied,
@@ -518,7 +559,10 @@ public static class ControlRoomSnapshotProjector
                     generator.InitialPhaseDifference.Degrees,
                     definition.MaximumSynchronizationPhaseDifference.Degrees,
                     generator.VoltageDifferenceAtCloseCheck.Kilovolts,
-                    definition.MaximumSynchronizationVoltageDifference.Kilovolts);
+                    definition.MaximumSynchronizationVoltageDifference.Kilovolts)
+                {
+                    RequestedElectricalPower = Value(generator.RequestedElectricalPower.Megawatts, "MWe", "0.0"),
+                };
             })
             .ToArray();
 
@@ -529,12 +573,16 @@ public static class ControlRoomSnapshotProjector
                 Value(grid.LineVoltage.Kilovolts, "kV", "0.0"),
                 Value(grid.FinalPhaseAngle.Degrees, "°", "0.00")),
             generators,
-            ProjectMeasuredSource(
-                measuredFrame,
-                "plant/generator/gross-electrical-output",
-                "MWe",
-                1d / 1_000_000d,
-                "0.0"),
+            WithScale(
+                ProjectMeasuredSource(
+                    measuredFrame,
+                    "plant/generator/gross-electrical-output",
+                    "MWe",
+                    1d / 1_000_000d,
+                    "0.0"),
+                new ControlRoomInstrumentScaleSnapshot(
+                    0d,
+                    Math.Max(1d, generatorGrid.Definition.Generators.Sum(static definition => definition.MaximumElectricalPower.Megawatts)))),
             protectedControl.Protection.GeneratorTripActive);
     }
 
@@ -655,7 +703,7 @@ public static class ControlRoomSnapshotProjector
             .FirstOrDefault();
         if (channel is null)
         {
-            return ControlRoomValueSnapshot.Unavailable(displayUnit);
+            return ControlRoomValueSnapshot.Unavailable(displayUnit, ControlRoomInstrumentProvenance.Measured);
         }
 
         var signal = frame.GetSignal(channel.Id);
@@ -664,7 +712,7 @@ public static class ControlRoomSnapshotProjector
             || !double.IsFinite(signal.EngineeringValue.Value)
             || signal.Quality is SignalQuality.Bad or SignalQuality.Unavailable)
         {
-            return ControlRoomValueSnapshot.Unavailable(displayUnit);
+            return ControlRoomValueSnapshot.Unavailable(displayUnit, ControlRoomInstrumentProvenance.Measured);
         }
 
         var scaled = signal.EngineeringValue.Value * engineeringScale;
@@ -676,7 +724,13 @@ public static class ControlRoomSnapshotProjector
             scaled.ToString(format, CultureInfo.InvariantCulture),
             displayUnit,
             scaled,
-            state);
+            state)
+        {
+            Provenance = ControlRoomInstrumentProvenance.Measured,
+            Quality = signal.Quality == SignalQuality.Suspect || signal.OutOfMeasurementRange
+                ? ControlRoomInstrumentQuality.Suspect
+                : ControlRoomInstrumentQuality.Good,
+        };
     }
 
     private static ControlRoomValueSnapshot Value(double value, string unit, string format)
@@ -690,6 +744,184 @@ public static class ControlRoomSnapshotProjector
             value.ToString(format, CultureInfo.InvariantCulture),
             unit,
             value,
-            ControlRoomVisualState.Normal);
+            ControlRoomVisualState.Normal)
+        {
+            Provenance = ControlRoomInstrumentProvenance.Model,
+            Quality = ControlRoomInstrumentQuality.Good,
+        };
+    }
+
+    private static ControlRoomValueSnapshot WithScale(
+        ControlRoomValueSnapshot value,
+        ControlRoomInstrumentScaleSnapshot scale)
+        => value with { InstrumentScale = scale };
+
+    private static double? WithinScale(double? value, double minimum, double maximum)
+        => value.HasValue && double.IsFinite(value.Value) && value.Value >= minimum && value.Value <= maximum
+            ? value.Value
+            : null;
+
+    private static ControlRoomInstrumentScaleSnapshot BuildSteamDrumLevelScale(IntegratedAutomaticOperationSnapshot snapshot)
+    {
+        var levelLoop = snapshot.Control.ProtectedControl.TurbineSecondary.Loops
+            .FirstOrDefault(static loop => loop.Kind == NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineSecondaryControlLoopKind.SteamDrumLevelFeedwater);
+        double? setpointPercent = levelLoop is null ? null : levelLoop.Setpoint * 100d;
+        return new ControlRoomInstrumentScaleSnapshot(
+            0d,
+            100d,
+            setpoint: WithinScale(setpointPercent, 0d, 100d));
+    }
+
+    private static ControlRoomInstrumentScaleSnapshot BuildTurbineSpeedScale(
+        IntegratedAutomaticOperationSnapshot snapshot,
+        string rotorId)
+    {
+        var turbine = snapshot.Control.ProtectedControl.FullPlant.IntegratedCycle.TurbineExpansion;
+        var definition = turbine.Definition.GetRotor(rotorId);
+        var overspeedRpm = definition.OverspeedThreshold.RevolutionsPerMinute;
+        var maximum = Math.Max(overspeedRpm * 1.05d, 1d);
+        var speedLoop = snapshot.Control.ProtectedControl.TurbineSecondary.Loops
+            .FirstOrDefault(static loop => loop.Kind == NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineSecondaryControlLoopKind.TurbineSpeedAdmission);
+        var setpoint = WithinScale(speedLoop?.Setpoint, 0d, maximum);
+
+        return new ControlRoomInstrumentScaleSnapshot(
+            0d,
+            maximum,
+            setpoint: setpoint,
+            protectionLimits: new[]
+            {
+                new ControlRoomProtectionLimitSnapshot(
+                    overspeedRpm,
+                    ControlRoomLimitDirection.High,
+                    "OVERSPEED TRIP"),
+            });
+    }
+
+    private static ControlRoomInstrumentScaleSnapshot BuildGeneratorFrequencyScale(
+        double gridFrequencyHertz,
+        double synchronizationToleranceHertz)
+    {
+        var maximum = Math.Max(gridFrequencyHertz * 1.1d, gridFrequencyHertz + synchronizationToleranceHertz + 1d);
+        return new ControlRoomInstrumentScaleSnapshot(
+            0d,
+            maximum,
+            targetBand: new ControlRoomTargetBandSnapshot(
+                Math.Max(0d, gridFrequencyHertz - synchronizationToleranceHertz),
+                Math.Min(maximum, gridFrequencyHertz + synchronizationToleranceHertz),
+                "SYNC WINDOW"),
+            setpoint: WithinScale(gridFrequencyHertz, 0d, maximum));
+    }
+
+    private static ControlRoomInstrumentScaleSnapshot BuildGeneratorPhaseScale(double synchronizationToleranceDegrees)
+    {
+        var extent = Math.Max(180d, Math.Abs(synchronizationToleranceDegrees) * 1.1d);
+        var tolerance = Math.Min(extent, Math.Abs(synchronizationToleranceDegrees));
+        return new ControlRoomInstrumentScaleSnapshot(
+            -extent,
+            extent,
+            targetBand: new ControlRoomTargetBandSnapshot(-tolerance, tolerance, "SYNC WINDOW"),
+            setpoint: 0d);
+    }
+
+    private static ControlRoomInstrumentScaleSnapshot BuildGeneratorVoltageScale(
+        double gridVoltageKilovolts,
+        double synchronizationToleranceKilovolts)
+    {
+        var maximum = Math.Max(gridVoltageKilovolts * 1.2d, gridVoltageKilovolts + synchronizationToleranceKilovolts + 1d);
+        return new ControlRoomInstrumentScaleSnapshot(
+            0d,
+            maximum,
+            targetBand: new ControlRoomTargetBandSnapshot(
+                Math.Max(0d, gridVoltageKilovolts - synchronizationToleranceKilovolts),
+                Math.Min(maximum, gridVoltageKilovolts + synchronizationToleranceKilovolts),
+                "SYNC WINDOW"),
+            setpoint: WithinScale(gridVoltageKilovolts, 0d, maximum));
+    }
+
+    private static ControlRoomInstrumentScaleSnapshot BuildSteamDrumPressureScale(
+        IntegratedAutomaticOperationSnapshot snapshot,
+        string drumId)
+    {
+        var protectedControl = snapshot.Control.ProtectedControl;
+        var instrumentation = protectedControl.Protection.Definition.Instrumentation;
+        var sourceId = $"steam-drum/{drumId}/pressure";
+
+        var alarmThresholds = snapshot.Control.Alarms.Definition.Alarms
+            .Select(static alarm => (Alarm: alarm, Condition: alarm.Condition as MeasuredAlarmConditionDefinition))
+            .Where(static pair => pair.Condition is not null)
+            .Where(pair => string.Equals(
+                instrumentation.GetChannel(pair.Condition!.MeasurementChannelId).SourceId,
+                sourceId,
+                StringComparison.Ordinal))
+            .Select(pair => (
+                Threshold: pair.Condition!.Threshold / 1_000_000d,
+                Comparison: pair.Condition.Comparison,
+                Severity: pair.Alarm.Severity,
+                Title: pair.Alarm.Title))
+            .ToArray();
+
+        var protectionThresholds = protectedControl.Protection.Definition.TripFunctions
+            .Where(function => string.Equals(
+                instrumentation.GetChannel(function.MeasurementChannelId).SourceId,
+                sourceId,
+                StringComparison.Ordinal))
+            .Select(function => (
+                Threshold: function.TripThreshold / 1_000_000d,
+                Comparison: function.Comparison,
+                Label: function.Id))
+            .ToArray();
+
+        var highestThreshold = alarmThresholds.Select(static item => item.Threshold)
+            .Concat(protectionThresholds.Select(static item => item.Threshold))
+            .DefaultIfEmpty(10d)
+            .Max();
+        var maximum = Math.Max(1d, highestThreshold * 1.1d);
+
+        var bands = new List<ControlRoomInstrumentBandSnapshot>();
+        foreach (var alarm in alarmThresholds)
+        {
+            if (alarm.Comparison == AlarmComparison.High)
+            {
+                var nextLimit = protectionThresholds
+                    .Where(item => item.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.High && item.Threshold > alarm.Threshold)
+                    .Select(static item => item.Threshold)
+                    .DefaultIfEmpty(maximum)
+                    .Min();
+                if (nextLimit > alarm.Threshold)
+                {
+                    bands.Add(new ControlRoomInstrumentBandSnapshot(
+                        alarm.Threshold,
+                        nextLimit,
+                        alarm.Severity == AlarmSeverity.Trip ? ControlRoomInstrumentBandKind.Alarm : ControlRoomInstrumentBandKind.Warning,
+                        alarm.Title.ToUpperInvariant()));
+                }
+            }
+            else if (alarm.Threshold > 0d)
+            {
+                bands.Add(new ControlRoomInstrumentBandSnapshot(
+                    0d,
+                    Math.Min(maximum, alarm.Threshold),
+                    alarm.Severity == AlarmSeverity.Trip ? ControlRoomInstrumentBandKind.Alarm : ControlRoomInstrumentBandKind.Warning,
+                    alarm.Title.ToUpperInvariant()));
+            }
+        }
+
+        var limits = protectionThresholds.Select(item => new ControlRoomProtectionLimitSnapshot(
+            item.Threshold,
+            item.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.High
+                ? ControlRoomLimitDirection.High
+                : ControlRoomLimitDirection.Low,
+            item.Label.ToUpperInvariant())).ToArray();
+
+        var pressureLoop = protectedControl.TurbineSecondary.Loops
+            .FirstOrDefault(static loop => loop.Kind == NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineSecondaryControlLoopKind.SteamPressureAdmission);
+        double? setpointMegapascals = pressureLoop is null ? null : pressureLoop.Setpoint / 1_000_000d;
+
+        return new ControlRoomInstrumentScaleSnapshot(
+            0d,
+            maximum,
+            bands,
+            setpoint: WithinScale(setpointMegapascals, 0d, maximum),
+            protectionLimits: limits);
     }
 }

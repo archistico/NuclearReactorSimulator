@@ -107,6 +107,26 @@ public sealed class SimplifiedWaterSteamThermodynamicModelTests
         Assert.Equal(120d, result.Temperature.DegreesCelsius, 5);
     }
 
+    [Theory]
+    [InlineData(0.0013071694196213973d, 1_154_261.3973991463d)]
+    [InlineData(0.0013071706652417227d, 1_154_262.8057549433d)]
+    public void LongRunningDrumState_AboveCriticalIsobar_ResolvesAsCompressedLiquid(
+        double specificVolume,
+        double specificInternalEnergy)
+    {
+        var definition = new FluidNodeDefinition("drum", Volume.FromCubicMetres(specificVolume));
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(1d),
+            Energy.FromJoules(specificInternalEnergy));
+
+        var result = _model.Resolve(definition, inventory, PreviousState());
+
+        Assert.Equal(FluidPhase.SubcooledLiquid, result.Phase);
+        Assert.Null(result.VaporQuality);
+        Assert.InRange(result.Temperature.Kelvins, 547.98d, 547.99d);
+        Assert.InRange(result.Pressure.Megapascals, 22.069d, 22.071d);
+    }
+
     [Fact]
     public void NarrowHighQualitySaturatedInterval_StateMissedByCoarseGrid_ResolvesAsWetSteam()
     {

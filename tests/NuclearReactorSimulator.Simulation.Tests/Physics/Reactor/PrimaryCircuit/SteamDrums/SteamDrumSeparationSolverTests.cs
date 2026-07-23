@@ -8,6 +8,7 @@ using NuclearReactorSimulator.Domain.Physics.Reactor.ThermalPower;
 using NuclearReactorSimulator.Domain.Physics.Thermal;
 using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
+using NuclearReactorSimulator.Simulation.Physics.Reactor.PrimaryCircuit.Circulation;
 using NuclearReactorSimulator.Simulation.Physics.Reactor.PrimaryCircuit.SteamDrums;
 using NuclearReactorSimulator.Simulation.Plant;
 using Xunit;
@@ -35,6 +36,32 @@ public sealed class SteamDrumSeparationSolverTests
             12);
         Assert.InRange(drum.LiquidLevelFraction.Fraction, 0d, 1d);
         Assert.True(drum.VoidFraction.Fraction > 0.25d);
+    }
+
+
+    [Fact]
+    public void Solve_CirculationDemandBalanced_UsesCommittedPumpDemandForLiquidRecirculation()
+    {
+        var fixture = CreateFixture(
+            FluidPhase.SaturatedMixture,
+            0.25d,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced);
+        var circulation = new MainCirculationSystemSolver(fixture.Solver.Definition.MainCirculationSystem)
+            .Solve(fixture.State);
+
+        var result = fixture.Solver.Solve(fixture.State, circulation);
+        var drum = result.Snapshot.GetDrum("drum-a");
+        var loop = circulation.GetLoop("loop");
+        var expectedLiquidKilogramsPerSecond = loop.Pumps
+            .Sum(static pump => Math.Max(0d, pump.MassFlowRate.KilogramsPerSecond));
+
+        Assert.Equal(expectedLiquidKilogramsPerSecond, drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond, 12);
+        var drumBalance = result.SourceTerms.FluidNodeBalances["drum-node"];
+        Assert.Equal(
+            -(drum.SeparatedSteamMassFlowRate.KilogramsPerSecond + drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond),
+            drumBalance.NetMassFlowRate.KilogramsPerSecond,
+            12);
+        Assert.Equal(0d, result.SourceTerms.FluidNodeBalances.Values.Sum(static balance => balance.NetMassFlowRate.KilogramsPerSecond), 12);
     }
 
     [Fact]
@@ -77,7 +104,10 @@ public sealed class SteamDrumSeparationSolverTests
         Assert.True(network.CandidateState.GetFluidNode("steam-outlet").Mass > fixture.State.GetFluidNode("steam-outlet").Mass);
     }
 
-    private static Fixture CreateFixture(FluidPhase drumPhase, double? quality)
+    private static Fixture CreateFixture(
+        FluidPhase drumPhase,
+        double? quality,
+        SteamDrumLiquidRecirculationMode liquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit)
     {
         var thermodynamics = new SimplifiedWaterSteamThermodynamicModel();
         var saturation = thermodynamics.GetSaturationProperties(Temperature.FromDegreesCelsius(280d));
@@ -190,7 +220,15 @@ public sealed class SteamDrumSeparationSolverTests
         var drums = new SteamDrumSystemDefinition(
             "drums",
             circulation,
-            new[] { new SteamDrumDefinition("drum-a", "loop", "drum-node", "steam-outlet") });
+            new[]
+            {
+                new SteamDrumDefinition(
+                    "drum-a",
+                    "loop",
+                    "drum-node",
+                    "steam-outlet",
+                    liquidRecirculationMode),
+            });
 
         return new Fixture(state, new SteamDrumSeparationSolver(drums));
     }

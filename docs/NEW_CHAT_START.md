@@ -2,89 +2,103 @@
 
 We are continuing the **Nuclear Reactor Simulator** project.
 
-## Authoritative restart order
-
-Read first:
+## Read first
 
 1. `docs/PROJECT_HANDOFF.md`
 2. `docs/PROJECT_STATUS.md`
 3. `docs/ROADMAP.md`
 4. `docs/ARCHITECTURE.md`
-5. `docs/milestones/M10.7.1.md`
-6. `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`
-7. `docs/milestones/M10.7.md`
-8. `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`
-9. `docs/milestones/M10.6.md`
-10. `docs/milestones/M10.5.md`
-11. `docs/SUPERVISORY_AUTOMATIC_OPERATION.md`
-12. `docs/DUAL_ASSISTANCE_CONTROL_AUTHORITY.md`
-13. `docs/milestones/M10.4.md`
-14. `docs/OPERATOR_COMPUTER_CONTEXTUAL_COMMAND_CONSOLE.md`
-15. `docs/milestones/M10.3.md`
-16. `docs/OPERATOR_COMPUTER_ALARM_LOG_INCIDENT_WORKSTATION.md`
-17. `docs/milestones/M10.2.md`
-18. `docs/OPERATOR_COMPUTER_INFORMATION_GUIDANCE_DIAGNOSTICS.md`
-19. `docs/milestones/M10.1.md`
-20. `docs/OPERATOR_COMPUTER_TERMINAL_SHELL.md`
-21. `docs/OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`
-22. ADR 0070, ADR 0074 and relevant M9 ADRs 0067–0073
+5. `docs/milestones/M10.9.4.md`
+6. `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`
+7. `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`
+8. `docs/milestones/M10.9.3.md`
+9. `docs/INTERACTIVE_FULL_PLANT_MIMIC.md`
+10. `docs/ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md`
+11. `docs/OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`
+12. ADR 0075–ADR 0084
 
-## Exact current checkpoint
+## Exact checkpoint
 
-- M7, M8 and M9 gates: **COMPLETE / VALIDATED**.
-- **M10.1–M10.7: VALIDATED**. The cumulative M10.2→M10.6 Hotfix 1 chain passed first; the user then confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed.
-- **Official application baseline:** `M10.7 — Session, Checkpoint, Replay & Save Workspace`.
-- **Current implementation candidate:** `M10.7.1 Hotfix 2 — Operator Control-State & Synchronization Usability`.
-- Next after explicit M10.7.1 validation: `M10.8 — Integrated Operator Computer UI`.
+- M7, M8, M9 gates: **COMPLETE / VALIDATED**.
+- M10.1–M10.9.3: **VALIDATED**.
+- Official baseline: **M10.9.3 — Interactive Full-Plant Mimic**.
+- Current candidate: **M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback**.
+- M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
-## Validated M10.7 boundary / current M10.7.1 candidate
+## Approved M10.9 sequence
 
-M10.7 is validated and adds F8 SESSION over canonical owners only:
+1. M10.9.1 HMI Information Architecture & Visual Language — VALIDATED
+2. M10.9.2 Hotfix 2 Advanced Instrument & Gauge System — VALIDATED
+3. M10.9.3 Interactive Full-Plant Mimic — VALIDATED
+4. M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — CURRENT CANDIDATE
+5. M10.9.5 Contextual Command Consequence Model
+6. M10.9.6 Operational Challenge & Energy-Demand Framework
+7. M10.9.7 Mission & Performance Workstation
+8. M10.9.8 Integrated Human-Automation-HMI Validation Gate
 
-- explicit opt-in M9.1 recording rather than hidden recorder overhead on normal desktop startup;
-- replay-backed checkpoint create/list/restore;
-- compact versioned `ScenarioSessionArchive` JSON persistence;
-- exact-version load and full replay verification through `ScenarioFullReplayRunner`;
-- persistence of operator actions plus separate M10.5/M10.6 automation intents;
-- resumed recording after verified archive/checkpoint restore;
-- training tracker reconstruction by attaching it before deterministic replay.
 
-No opaque solver-state dump, second checkpoint owner, second fault trace or UI-owned restore logic is introduced.
+## Hotfix 16 green checkpoint / Hotfix 17 current step
 
-M10.7.1 Hotfix 2 additionally standardizes normal-control feedback: persistent rod/pump/breaker states are filled only from committed canonical snapshots, while speed/load raise/lower remain momentary pulse commands with explicit last-action feedback.
+The user-supplied Hotfix 16 package is the latest green integrated checkpoint: its changelog records a clean build, 870 ordinary tests passed and both explicit 60-second gameplay journeys passed separately. Hotfix 17 is based directly on that package and changes only condenser feedback.
 
-## Non-negotiable architecture rules
+Current-v2 condenser law:
 
-Preserve:
+```text
+ΔT = max(0, Tsteam - Tcoolant)
+Qsurface = UA * ΔT
+Qeffective = min(Qavailable, Qsurface)
+```
 
-- deterministic fixed timestep independent of wall clock/UI cadence;
-- immutable committed/candidate semantics;
-- each conserved inventory integrated exactly once by its canonical owner;
-- M2 reactor physics, M3 primary thermohydraulics, M4 secondary/electrical and M5 instrumentation/control/protection/alarm ownership;
-- UI consumes presentation contracts and dispatches typed intents only; no UI physics;
-- unavailable values remain unavailable; no fabricated zero or true-state fallback;
-- guidance/checklist criteria remain owned by their M7 scenario contracts/evaluators;
-- runtime permissives/interlocks remain authoritative even when DIAGNOSTICS says READY;
-- training assistance and plant control authority remain independent axes;
-- real supervisory automation remains M5-owned;
-- no free-form/NLP terminal command prompt.
+Current v2 design values: `UA = 1.225 MW/K`, `Tcoolant = 20 °C`; at the existing 40 °C exhaust design point this reproduces exactly 24.5 MW. Run ordinary tests and both explicit journeys before advancing to generator-grid synchronous coupling.
 
-## Validation action for M10.7.1
+## What M10.9.4 changes
 
-Run:
+- five detailed Application-owned engineering schematics: reactor/core, primary/steam-drum, turbine/secondary, generator/grid, instrumentation/control/protection;
+- explicit IN/OUT and process/signal directions;
+- distinct process/energy vs signal-flow grammar;
+- generator GRID diagnostic separating shaft power, requested load, actual MWe, synchronization, breaker and protection state;
+- requested generator load promoted as presentation-only data;
+- explicit explanation that amber SHAFT means mechanical energy, not warning;
+- separately runnable xUnit v3 explicit long-gameplay acceptance tests for sustained turbine→generator→grid behavior;
+- versioned v2 generation-ready desktop/synchronization seeds while historical v1 origins remain exact;
+- HMI turbine steam admission now uses actual effective stage-group flow instead of the legacy zero-valued M4.1 boundary seam.
+
+## Important open verification
+
+The first executable long-gameplay gate **did expose a real integrated balance defect** in the historical v1 operating seeds: the desktop journey reached ~1442.6 rpm / ~2.406 MWe with zero MODEL rotor shaft power after 10 simulated seconds, and the synchronization journey drove `control-out` outside the supported simplified water/steam envelope. Hotfix 6 preserves those historical v1 replay origins and introduces generation-ready v2 seeds with staged steam pressure, matched admission/condenser/feedwater capacity and bumpless control bias. The ordinary suite and explicit 60-second pack must both pass before M10.9.4 can be validated.
+
+## Architecture rules that must not be broken
+
+- deterministic fixed timestep independent of wall-clock/UI cadence;
+- canonical M2/M3/M4/M5 ownership unchanged;
+- measured consumers never substitute true/model state;
+- protection overrides normal/supervisory control;
+- Application owns presentation topology; Avalonia renders only;
+- no UI-side predictive physics;
+- save/load/checkpoint remains M9.1 replay-backed;
+- no free-form/NLP control surface.
+
+## Validate M10.9.4
 
 ```text
 dotnet clean
 dotnet restore
 dotnet build --no-restore
 dotnet test --no-build
+scripts\run-gameplay-long-tests.cmd
 ```
 
-Then manually verify M10.7.1 usability:
+Then manually verify `docs/milestones/M10.9.4.md`.
 
-- SCRAM / TURBINE TRIP / GENERATOR TRIP become filled `— ACTIVE` indications after latching and cannot be issued again while active;
-- the same canonical `RESET PROTECTION` is discoverable near affected panels and shows `RESET AVAILABLE` or a real M5.5-derived blocking reason;
-- with generator breaker closed, synchronization shows `PARALLELED` / normal rather than a stale warning;
-- with breaker open, synchronization shows Δfrequency / Δphase / Δvoltage and per-dimension OK/WAIT against canonical M4.5 limits;
-- Overview shows current condition, next canonical action and the cold-shutdown-to-first-electrical-output command map without dispatching automatically;
-- existing M10.7 SESSION save/load/checkpoint/replay behavior still passes automated regressions.
+If the normal suite passes but a long gameplay test fails, diagnose the reported checkpoint/power-path evidence before promoting M10.9.4.
+
+
+## M10.9.4 Hotfix 13 current correction
+
+Hotfix 13 is a deliberate rebase on Hotfix 10, the last locally reported ordinary-green candidate. Hotfix 11/12 workaround branches are not part of the current package. The root cause is structural: the historical stage-flow law `min(stop, control, admission)` made the admission-train inventory monotonic because all three valves already transfer real mass while the stage source term drains only `turbine-inlet`. Current v2 uses an explicit pressure-driven turbine-inlet→exhaust expansion resistance; legacy null definitions retain the old law only for isolated compatibility.
+
+Repeated `exhaust` failures were traced upstream of the condenser: the v2 recipe initialized both drum `steam` and main-steam `header` at 280 °C saturation, yielding zero canonical `steam → header` pressure difference and therefore zero main-steam-line replenishment. Downstream staged inventories initially masked this by feeding the turbine until they drained. Hotfix 8 adds an optional backward-compatible header steam initialization and uses a continuous v2 pressure staircase 280 / 275 / 269.5 / 253 / 246 °C through turbine inlet, targeting roughly 13 kg/s across every canonical steam-path element. v1 remains unchanged. Standard build/test must pass before the explicit 60-second gameplay pack is rerun.
+
+## M10.9.4 Hotfix 15 historical correction
+
+The Hotfix 14 ordinary suite is locally green. Long gameplay exposed a second monotonic inventory defect in the steam drum: historical separation cancelled canonical return inflow while leaving feedwater as a one-way addition. Hotfix 15 changes current v2 liquid recirculation to committed MCP demand, removing `dm_drum/dt = F_feedwater >= 0` by construction. Legacy behavior is isolated explicitly; current-model correctness has priority.

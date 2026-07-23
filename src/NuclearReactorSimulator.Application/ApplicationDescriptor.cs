@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M10.7.1 — Operator Control-State & Synchronization Usability Hotfix",
-        "Implementation candidate — M10.7.1 hotfix 2 on validated M10.7 baseline; preserves trip/protection-reset/synchronization usability, adds actual-state feedback for rods, main-circulation pumps and breaker position, and distinguishes persistent controls from momentary speed/load actions before M10.8");
+        "M10.9.4 — Subsystem Engineering Schematics",
+        "Implementation candidate — M10.9.4 Hotfix 17 on validated M10.9.3 baseline; adds subsystem engineering schematics, long-gameplay acceptance tests, pressure-driven turbine expansion, current-v2 drum/main-steam closure and condenser UA×ΔT pressure feedback without moving plant topology, protection or control authority into the UI");
 }

@@ -107,7 +107,9 @@ The resolver therefore preserves the original superheated fast path and, only be
 
 The simplified saturation correlations are intentionally bounded below the critical point. States outside the supported educational envelope fail fast with `WaterSteamStateOutOfRangeException` rather than returning `NaN`, silently clamping or extrapolating arbitrary properties.
 
-Supercritical water, metastable states, detailed compressed-liquid properties and high-fidelity transport properties are outside M1.7.
+The saturation and vapor branches remain bounded below critical pressure. The simplified compressed-liquid branch may cross the critical isobar while its derived temperature remains below the supported saturation-temperature ceiling; this is still classified as compressed/subcooled liquid, not as supercritical fluid, and uses the same finite bulk-modulus response without clamping pressure.
+
+Supercritical-temperature water, metastable states, detailed compressed-liquid properties and high-fidelity transport properties are outside M1.7.
 
 ## Architectural consequence
 

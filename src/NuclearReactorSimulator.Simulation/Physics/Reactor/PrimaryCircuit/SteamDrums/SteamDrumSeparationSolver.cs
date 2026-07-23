@@ -68,7 +68,8 @@ public sealed class SteamDrumSeparationSolver
             var split = ResolvePhaseSplit(drumState);
             var incoming = SumPositiveReturnInflows(loopSnapshot);
             var steamFlow = incoming * split.VaporMassFraction;
-            var liquidFlow = incoming - steamFlow;
+            var liquidFlow = ResolveLiquidRecirculationFlow(drum, loopSnapshot, incoming, steamFlow);
+            var totalSeparatedOutflow = steamFlow + liquidFlow;
             var steamEnergyRate = split.VaporSpecificEnergy * steamFlow;
             var liquidEnergyRate = split.LiquidSpecificEnergy * liquidFlow;
             var totalEnergyRate = steamEnergyRate + liquidEnergyRate;
@@ -76,7 +77,7 @@ public sealed class SteamDrumSeparationSolver
             AddBalance(
                 fluidBalances,
                 drum.InventoryNodeId,
-                new FluidNodeBalance(-incoming, -totalEnergyRate));
+                new FluidNodeBalance(-totalSeparatedOutflow, -totalEnergyRate));
             AddBalance(
                 fluidBalances,
                 drum.SteamOutletNodeId,
@@ -107,7 +108,7 @@ public sealed class SteamDrumSeparationSolver
                 split.LiquidSpecificEnergy,
                 steamEnergyRate,
                 liquidEnergyRate,
-                (-incoming + steamFlow + liquidFlow).KilogramsPerSecond,
+                (-totalSeparatedOutflow + steamFlow + liquidFlow).KilogramsPerSecond,
                 (-totalEnergyRate + steamEnergyRate + liquidEnergyRate).Watts));
         }
 
@@ -158,6 +159,36 @@ public sealed class SteamDrumSeparationSolver
             saturation.SaturatedVaporInternalEnergy,
             _voidFractionSolver.Resolve(state.Thermodynamics),
             SteamDrumLevelFraction.FromFraction(levelFraction));
+    }
+
+
+    private static MassFlowRate ResolveLiquidRecirculationFlow(
+        SteamDrumDefinition drum,
+        MainCirculationLoopSnapshot loop,
+        MassFlowRate incomingReturnFlow,
+        MassFlowRate separatedSteamFlow)
+        => drum.LiquidRecirculationMode switch
+        {
+            SteamDrumLiquidRecirculationMode.LegacyReturnSplit => incomingReturnFlow - separatedSteamFlow,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced => SumPositivePumpOutflows(loop),
+            _ => throw new InvalidOperationException(
+                $"Steam drum '{drum.Id}' uses unsupported liquid-recirculation mode '{drum.LiquidRecirculationMode}'."),
+        };
+
+    private static MassFlowRate SumPositivePumpOutflows(MainCirculationLoopSnapshot loop)
+    {
+        var totalKilogramsPerSecond = 0d;
+        var compensation = 0d;
+        foreach (var pump in loop.Pumps)
+        {
+            var value = Math.Max(0d, pump.MassFlowRate.KilogramsPerSecond);
+            var adjusted = value - compensation;
+            var next = totalKilogramsPerSecond + adjusted;
+            compensation = (next - totalKilogramsPerSecond) - adjusted;
+            totalKilogramsPerSecond = next;
+        }
+
+        return MassFlowRate.FromKilogramsPerSecond(totalKilogramsPerSecond);
     }
 
     private static MassFlowRate SumPositiveReturnInflows(MainCirculationLoopSnapshot loop)

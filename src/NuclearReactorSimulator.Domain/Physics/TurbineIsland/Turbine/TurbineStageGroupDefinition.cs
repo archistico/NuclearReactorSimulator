@@ -14,7 +14,8 @@ public sealed class TurbineStageGroupDefinition
         string exhaustNodeId,
         string rotorId,
         SpecificEnergy nominalSpecificWork,
-        TurbineEfficiency efficiency)
+        TurbineEfficiency efficiency,
+        QuadraticHydraulicResistance? expansionResistance = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -52,6 +53,7 @@ public sealed class TurbineStageGroupDefinition
         RotorId = rotorId.Trim();
         NominalSpecificWork = nominalSpecificWork;
         Efficiency = efficiency;
+        ExpansionResistance = expansionResistance;
     }
 
     public string Id { get; }
@@ -65,4 +67,10 @@ public sealed class TurbineStageGroupDefinition
     public SpecificEnergy NominalSpecificWork { get; }
 
     public TurbineEfficiency Efficiency { get; }
+
+    /// <summary>
+    /// Optional pressure-driven hydraulic resistance for the physical expansion path from the admission-boundary source
+    /// node to <see cref="ExhaustNodeId"/>. Null preserves the historical upstream-valve-minimum stage-flow law.
+    /// </summary>
+    public QuadraticHydraulicResistance? ExpansionResistance { get; }
 }

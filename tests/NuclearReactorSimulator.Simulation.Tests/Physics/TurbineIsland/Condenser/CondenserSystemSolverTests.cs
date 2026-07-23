@@ -68,6 +68,94 @@ public sealed class CondenserSystemSolverTests
         Assert.Equal(Power.Zero, boundary.UnusedHeatRejectionPower);
     }
 
+
+    [Fact]
+    public void Step_SurfaceHeatTransferUaLimitsHeatRejectionBelowAvailableCoolingCapacity()
+    {
+        var fixture = CreateFixture(
+            Power.FromMegawatts(10d),
+            new PreservingThermodynamicModel(),
+            ThermalConductance.FromMegawattsPerKelvin(0.005d),
+            Temperature.FromDegreesCelsius(20d));
+        var solver = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel);
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var condenser = Assert.Single(result.Snapshot.Condensers);
+        var boundary = Assert.Single(result.Snapshot.CoolingBoundaries);
+
+        Assert.Equal(260d, condenser.SteamToCoolingTemperatureDifference.Kelvins, 9);
+        Assert.Equal(1.3d, condenser.SurfaceHeatTransferLimitedPower.Megawatts, 9);
+        Assert.Equal(1.3d, condenser.EffectiveHeatRejectionCapacity.Megawatts, 9);
+        Assert.Equal(1.3d, boundary.SurfaceHeatTransferLimitedPower.Megawatts, 9);
+        Assert.Equal(1.3d, boundary.EffectiveHeatRejectionCapacity.Megawatts, 9);
+        Assert.Equal(1.3d / 1.5d, condenser.ThermalLimitedCondensationMassFlowRate.KilogramsPerSecond, 9);
+        Assert.Equal(1.3d, condenser.HeatRejectionPower.Megawatts, 9);
+    }
+
+
+    [Fact]
+    public void Step_SurfaceHeatTransferUaReducesCondensationAsSteamApproachesCoolantTemperature()
+    {
+        var warm = CreateFixture(
+            Power.FromMegawatts(10d),
+            new PreservingThermodynamicModel(),
+            ThermalConductance.FromMegawattsPerKelvin(0.01d),
+            Temperature.FromDegreesCelsius(20d),
+            exhaustTemperatureCelsius: 120d);
+        var cool = CreateFixture(
+            Power.FromMegawatts(10d),
+            new PreservingThermodynamicModel(),
+            ThermalConductance.FromMegawattsPerKelvin(0.01d),
+            Temperature.FromDegreesCelsius(20d),
+            exhaustTemperatureCelsius: 40d);
+
+        var warmResult = new CondenserSystemSolver(warm.Definition, warm.ThermodynamicModel).Step(
+            warm.PlantState,
+            warm.TurbineState,
+            warm.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var coolResult = new CondenserSystemSolver(cool.Definition, cool.ThermodynamicModel).Step(
+            cool.PlantState,
+            cool.TurbineState,
+            cool.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var warmCondenser = Assert.Single(warmResult.Snapshot.Condensers);
+        var coolCondenser = Assert.Single(coolResult.Snapshot.Condensers);
+
+        Assert.Equal(1d, warmCondenser.SurfaceHeatTransferLimitedPower.Megawatts, 9);
+        Assert.Equal(0.2d, coolCondenser.SurfaceHeatTransferLimitedPower.Megawatts, 9);
+        Assert.True(warmCondenser.ActualCondensationMassFlowRate > coolCondenser.ActualCondensationMassFlowRate);
+    }
+
+    [Fact]
+    public void Step_SurfaceHeatTransferUaStopsCondensationWhenSteamIsNotHotterThanCoolant()
+    {
+        var fixture = CreateFixture(
+            Power.FromMegawatts(10d),
+            new PreservingThermodynamicModel(),
+            ThermalConductance.FromMegawattsPerKelvin(1d),
+            Temperature.FromDegreesCelsius(40d),
+            exhaustTemperatureCelsius: 40d);
+        var solver = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel);
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var condenser = Assert.Single(result.Snapshot.Condensers);
+
+        Assert.Equal(TemperatureDifference.Zero, condenser.SteamToCoolingTemperatureDifference);
+        Assert.Equal(Power.Zero, condenser.SurfaceHeatTransferLimitedPower);
+        Assert.Equal(Power.Zero, condenser.EffectiveHeatRejectionCapacity);
+        Assert.Equal(MassFlowRate.Zero, condenser.ActualCondensationMassFlowRate);
+        Assert.Equal(Power.Zero, condenser.HeatRejectionPower);
+    }
+
     [Fact]
     public void Step_NoCoolingCapacityProducesNoCondensation()
     {
@@ -130,7 +218,12 @@ public sealed class CondenserSystemSolverTests
             Array.Empty<CondenserCoolingBoundaryInput>()));
     }
 
-    private static Fixture CreateFixture(Power coolingPower, IFluidThermodynamicModel thermodynamicModel)
+    private static Fixture CreateFixture(
+        Power coolingPower,
+        IFluidThermodynamicModel thermodynamicModel,
+        ThermalConductance? overallHeatTransferConductance = null,
+        Temperature? coolantTemperature = null,
+        double exhaustTemperatureCelsius = 280d)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -176,7 +269,8 @@ public sealed class CondenserSystemSolverTests
             double pressureMegapascals,
             FluidPhase phase,
             double specificEnergyKilojoulesPerKilogram,
-            VaporQuality? vaporQuality = null)
+            VaporQuality? vaporQuality = null,
+            double temperatureCelsius = 280d)
         {
             var mass = Mass.FromKilograms(10_000d);
             var specificEnergy = SpecificEnergy.FromKilojoulesPerKilogram(specificEnergyKilojoulesPerKilogram);
@@ -185,7 +279,7 @@ public sealed class CondenserSystemSolverTests
                 new FluidNodeInventory(mass, specificEnergy * mass),
                 new FluidThermodynamicState(
                     Pressure.FromMegapascals(pressureMegapascals),
-                    Temperature.FromDegreesCelsius(280d),
+                    Temperature.FromDegreesCelsius(temperatureCelsius),
                     phase,
                     vaporQuality));
         }
@@ -203,7 +297,13 @@ public sealed class CondenserSystemSolverTests
                 Fluid("stop-out", 6d, FluidPhase.SuperheatedVapor, 2_000d),
                 Fluid("control-out", 5.5d, FluidPhase.SuperheatedVapor, 2_000d),
                 Fluid("turbine-inlet", 5d, FluidPhase.SuperheatedVapor, 2_000d),
-                Fluid("exhaust", 0.1d, FluidPhase.SaturatedMixture, 2_000d, VaporQuality.FromPercent(90d)),
+                Fluid(
+                    "exhaust",
+                    0.1d,
+                    FluidPhase.SaturatedMixture,
+                    2_000d,
+                    VaporQuality.FromPercent(90d),
+                    exhaustTemperatureCelsius),
                 Fluid("hotwell", 0.1d, FluidPhase.SubcooledLiquid, 500d),
             },
             new[]
@@ -277,7 +377,8 @@ public sealed class CondenserSystemSolverTests
             {
                 new CondenserDefinition(
                     "condenser", "stage", "exhaust", "hotwell", "cooling",
-                    MassFlowRate.FromKilogramsPerSecond(10d)),
+                    MassFlowRate.FromKilogramsPerSecond(10d),
+                    overallHeatTransferConductance),
             },
             new[] { new CondenserCoolingBoundaryDefinition("cooling", "condenser") });
 
@@ -303,7 +404,7 @@ public sealed class CondenserSystemSolverTests
         var inputs = new CondenserSystemInputs(
             definition,
             turbineInputs,
-            new[] { new CondenserCoolingBoundaryInput("cooling", coolingPower) });
+            new[] { new CondenserCoolingBoundaryInput("cooling", coolingPower, coolantTemperature) });
         var turbineState = new TurbineExpansionState(
             turbine,
             new[] { new TurbineRotorState("rotor", AngularSpeed.FromRevolutionsPerMinute(3_000d)) });

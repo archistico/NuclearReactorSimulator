@@ -1,0 +1,95 @@
+<svg viewBox="0 0 1300 800" xmlns="http://www.w3.org/2000/svg" font-family="Consolas, 'JetBrains Mono', monospace">
+  <defs>
+    <marker id="arrowSignal" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#666666"/>
+    </marker>
+    <marker id="arrowCommand" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#111111"/>
+    </marker>
+    <marker id="arrowProtection" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0,0 L8,4 L0,8 Z" fill="#CC2222"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="1300" height="800" fill="#FFFFFF"/>
+  <text x="30" y="35" font-size="20" font-weight="bold" fill="#111111">Instrumentation, Control &amp; Protection — signal-flow schematic</text>
+  <text x="30" y="55" font-size="12" fill="#555555">Different diagram grammar on purpose: this is command/signal flow (M5.1–M5.6), not physical piping — boxes and arrows, not pipes and valves.</text>
+  <text x="30" y="70" font-size="11" fill="#CC2222">Red = protection (can override normal control; never the reverse)</text>
+
+  <!-- PLANT -->
+  <rect x="40" y="330" width="180" height="120" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="130" y="380" font-size="13" font-weight="bold" text-anchor="middle">PLANT</text>
+  <text x="130" y="396" font-size="9" fill="#555555" text-anchor="middle">true physical state</text>
+  <text x="130" y="410" font-size="9" fill="#555555" text-anchor="middle">(FullPlantState, M4.7)</text>
+  <text x="130" y="424" font-size="9" fill="#555555" text-anchor="middle">one authoritative step</text>
+
+  <!-- MEASURED SIGNALS -->
+  <rect x="320" y="340" width="200" height="100" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="420" y="368" font-size="12" font-weight="bold" text-anchor="middle">MEASURED SIGNALS</text>
+  <text x="420" y="384" font-size="9" fill="#555555" text-anchor="middle">MeasuredSignalFrame (M5.1)</text>
+  <text x="420" y="398" font-size="9" fill="#555555" text-anchor="middle">range/lag/bias/freeze/fail seams</text>
+  <text x="420" y="412" font-size="9" fill="#555555" text-anchor="middle">separate from true plant state</text>
+  <path d="M220,390 L318,390" fill="none" stroke="#666666" stroke-width="2" marker-end="url(#arrowSignal)"/>
+
+  <!-- CONTROLLERS -->
+  <rect x="320" y="500" width="220" height="120" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="430" y="525" font-size="12" font-weight="bold" text-anchor="middle">CONTROLLERS (M5.2/5.3/5.4)</text>
+  <text x="430" y="542" font-size="9" fill="#555555" text-anchor="middle">P/PI/PID, manual/auto, anti-windup</text>
+  <text x="430" y="558" font-size="9" fill="#555555" text-anchor="middle">power-loop · flow-loop</text>
+  <text x="430" y="573" font-size="9" fill="#555555" text-anchor="middle">speed/pressure/level/hotwell-loop</text>
+  <text x="430" y="589" font-size="9" fill="#555555" text-anchor="middle">6 loops in the reference plant</text>
+  <path d="M400,440 L400,498" fill="none" stroke="#666666" stroke-width="2" marker-end="url(#arrowSignal)"/>
+
+  <!-- PROTECTION -->
+  <rect x="320" y="170" width="220" height="120" rx="6" fill="#FDF0F0" stroke="#CC2222" stroke-width="2"/>
+  <text x="430" y="195" font-size="12" font-weight="bold" text-anchor="middle" fill="#CC2222">PROTECTION (M5.5)</text>
+  <text x="430" y="212" font-size="9" fill="#993333" text-anchor="middle">trip functions, high/low + hysteresis</text>
+  <text x="430" y="227" font-size="9" fill="#993333" text-anchor="middle">latched SCRAM / turbine trip / gen. trip</text>
+  <text x="430" y="242" font-size="9" fill="#993333" text-anchor="middle">non-latching withdrawal/breaker interlocks</text>
+  <text x="430" y="257" font-size="9" fill="#993333" text-anchor="middle">fail-closed on invalid measurement</text>
+  <text x="430" y="272" font-size="9" fill="#993333" text-anchor="middle">reference plant wires 1 function (pressure)</text>
+  <path d="M400,340 L400,292" fill="none" stroke="#666666" stroke-width="2" marker-end="url(#arrowSignal)"/>
+
+  <!-- ARBITRATION -->
+  <rect x="650" y="330" width="220" height="120" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="760" y="360" font-size="12" font-weight="bold" text-anchor="middle">COMMAND ARBITRATION</text>
+  <text x="760" y="378" font-size="9" fill="#555555" text-anchor="middle">rods, stop/control/admission valves,</text>
+  <text x="760" y="392" font-size="9" fill="#555555" text-anchor="middle">MCP, feedwater/condensate pumps,</text>
+  <text x="760" y="406" font-size="9" fill="#555555" text-anchor="middle">generator breaker</text>
+  <text x="760" y="422" font-size="9" font-weight="bold" fill="#CC2222" text-anchor="middle">protection always wins over control/operator</text>
+
+  <path d="M540,560 L650,400" fill="none" stroke="#111111" stroke-width="2" marker-end="url(#arrowCommand)"/>
+  <path d="M540,230 L650,380" fill="none" stroke="#CC2222" stroke-width="2.5" marker-end="url(#arrowProtection)"/>
+  <path d="M760,330 L760,270 L220,270 L220,340" fill="none" stroke="#111111" stroke-width="2" stroke-dasharray="2,2" marker-end="url(#arrowCommand)"/>
+  <text x="480" y="264" font-size="8" fill="#555555">commanded actuator state feeds the next physical step</text>
+
+  <!-- ALARMS -->
+  <rect x="650" y="150" width="220" height="120" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="760" y="175" font-size="12" font-weight="bold" text-anchor="middle">ALARMS / ANNUNCIATOR (M5.6)</text>
+  <text x="760" y="192" font-size="9" fill="#555555" text-anchor="middle">non-latching + latched-until-reset</text>
+  <text x="760" y="207" font-size="9" fill="#555555" text-anchor="middle">first-out grouping, logical event order</text>
+  <text x="760" y="222" font-size="9" fill="#555555" text-anchor="middle">observational only —</text>
+  <text x="760" y="237" font-size="9" font-weight="bold" fill="#CC2222" text-anchor="middle">cannot trigger or reset protection</text>
+  <path d="M540,200 L650,210" fill="none" stroke="#CC2222" stroke-width="2" marker-end="url(#arrowProtection)"/>
+  <path d="M520,360 L650,215" fill="none" stroke="#666666" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowSignal)"/>
+
+  <!-- OPERATOR -->
+  <rect x="950" y="330" width="180" height="120" rx="6" fill="#F4F4F4" stroke="#111111" stroke-width="2"/>
+  <text x="1040" y="365" font-size="12" font-weight="bold" text-anchor="middle">OPERATOR</text>
+  <text x="1040" y="382" font-size="9" fill="#555555" text-anchor="middle">control room / computer</text>
+  <text x="1040" y="397" font-size="9" fill="#555555" text-anchor="middle">typed command intents</text>
+  <text x="1040" y="412" font-size="9" fill="#555555" text-anchor="middle">reads alarms, sets guidance level</text>
+  <path d="M950,390 L870,390" fill="none" stroke="#111111" stroke-width="2" marker-end="url(#arrowCommand)"/>
+  <path d="M1000,330 L830,220" fill="none" stroke="#666666" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arrowSignal)"/>
+
+  <!-- FAULT SCHEDULE -->
+  <rect x="40" y="560" width="220" height="100" rx="6" fill="#F0F0F8" stroke="#555588" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="150" y="585" font-size="12" font-weight="bold" text-anchor="middle">FAULT SCHEDULE (M8.1/8.2)</text>
+  <text x="150" y="602" font-size="9" fill="#444466" text-anchor="middle">deterministic, versioned scenario input</text>
+  <text x="150" y="617" font-size="9" fill="#444466" text-anchor="middle">pump/valve constraints, bounded leaks</text>
+  <text x="150" y="632" font-size="9" fill="#444466" text-anchor="middle">applied before the one physical step</text>
+  <text x="150" y="647" font-size="9" fill="#444466" text-anchor="middle">— not a second command owner</text>
+  <path d="M150,558 L130,452" fill="none" stroke="#555588" stroke-width="2" marker-end="url(#arrowCommand)"/>
+
+  <text x="30" y="770" font-size="10" fill="#777777">Original diagram. Loop names/counts and the single wired protection function match ColdShutdownInitialConditionFactory.cs — other scenarios may wire more.</text>
+</svg>

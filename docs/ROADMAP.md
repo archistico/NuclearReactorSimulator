@@ -668,7 +668,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.7 are VALIDATED; the user confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed. M10.7 is the current official baseline, and M10.7.1 is the current operator-usability hotfix candidate before M10.8. The phase combines a unified operator terminal with a separately owned supervisory-control capability. The terminal is never a new physics/control owner: presentation aggregation lives in Application/App, while real plant automation extends the canonical M5 control domain.
+M10 is **IN PROGRESS**. M10.1–M10.9.3 are VALIDATED; the user confirmed M10.9.3 compiled and the complete automated suite passed. M10.9.3 is the current official baseline and M10.9.4 is the current implementation candidate. The approved M10.9 sequence refactors the operator experience around a clear engineering HMI, advanced instrumentation, plant/subsystem schematics, command-consequence understanding and deterministic performance-oriented training. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
 
 Two independent axes are mandatory:
 
@@ -729,29 +729,76 @@ Two independent axes are mandatory:
 - restoration remains replay-backed through `ScenarioFullReplayRunner`/checkpoint fingerprint verification, never an opaque solver-memory dump;
 - do not create a second historian, checkpoint owner or fault trace.
 
-### M10.7.1 Operator Control-State & Synchronization Usability Hotfix — IMPLEMENTATION CANDIDATE
+### M10.7.1 Operator Control-State & Synchronization Usability Hotfix — VALIDATED
 
 - make latched SCRAM/turbine/generator trips persistently visible while disabling repeated one-shot trip dispatch;
 - expose the same canonical protection reset near affected panels with M5.5-derived reset readiness/blockers;
 - make synchronization breaker-aware: detailed pre-close Δf/Δphase/ΔV checks while open, `PARALLELED` once closed;
 - expose current condition, next canonical action and a cold-shutdown-to-first-electrical-output command map composed from validated M7 guidance without introducing new automation.
 
-### M10.8 Integrated Operator Computer UI
+### M10.8 Integrated Operator Computer UI — VALIDATED
 
-- integrate the complete terminal into the control room with HUD styling, monospace/tabular numeric presentation, scrolling and responsive layout;
-- fixed menu/status bar; no free-form command prompt, natural-language parser or external model dependency;
-- full mouse support but keyboard-only operation is an acceptance requirement;
-- no new business/physics logic in Avalonia code-behind or ViewModels.
+- complete eight-page operator computer integrated into the control room;
+- fixed menu/status/footer and keyboard-first F1–F8 operation;
+- replay/session/command/authority capabilities remain canonical and no free-form command prompt exists;
+- local compilation and complete automated suite passed; M10.8 is the validated baseline for the operator-experience refactor.
 
-### M10.9 Integrated Human-Automation Validation Gate
+### M10.9.1 HMI Information Architecture & Visual Language — VALIDATED
+
+- reorganize the desktop into persistent situation strip, compact system rail, central workspace, context inspector and alarm/event strip;
+- reduce developer/milestone terminology in primary operator-facing headings;
+- expose current condition, next canonical action, system context and command feedback beside the active workspace;
+- formalize immutable instrument-scale metadata that separates display scale, operating bands, target/setpoint and protection thresholds;
+- do not fabricate future grid-demand/challenge data before its canonical owner exists;
+- user-confirmed local compilation and complete automated suite passed.
+
+### M10.9.2 Advanced Instrument & Gauge System — VALIDATED
+
+- banded linear gauges and circular gauges where instrument semantics justify them;
+- normal/warning/alarm/protection regions, target/setpoint markers, trend/rate indication, off-scale and unavailable/quality semantics;
+- thresholds always supplied by canonical presentation contracts, never invented in Avalonia.
+
+### M10.9.3 Interactive Full-Plant Mimic — VALIDATED
+
+- whole-plant process/energy path as the primary situation-awareness surface;
+- realistic equipment identity/shape, explicit inputs/outputs, pipe direction, flow/phase, pressure, temperature and state;
+- selection/drill-down highlights connected process paths without replacing detailed subsystem workspaces.
+
+### M10.9.4 Subsystem Engineering Schematics — IMPLEMENTATION CANDIDATE
+
+- reactor/core dependency schematic;
+- primary/steam-drum and turbine/secondary engineering schematics;
+- generator/grid schematic;
+- instrumentation/control/protection signal-flow schematic with a grammar distinct from piping and explicit protection priority.
+
+### M10.9.5 Contextual Command Consequence Model
+
+- focused commands explain direct effect, expected downstream influence, permissives/blockers and what to monitor;
+- selected dependency chains can be highlighted on schematics;
+- expected influence is explicitly distinct from observed post-command response; no UI-side predictive physics or invented causality.
+
+### M10.9.6 Operational Challenge & Energy-Demand Framework
+
+- timed deterministic objectives for startup, shutdown, testing, power manoeuvring, stabilization and fault recovery;
+- deterministic external electrical-demand profiles and integrated demand-tracking error;
+- multidimensional scoring for time, grid service, stability and safety/procedure with safety dominant;
+- challenge time uses logical simulation time, not wall-clock timing; practice/debug behavior cannot create scoring exploits.
+
+### M10.9.7 Mission & Performance Workstation
+
+- current objective, elapsed/target logical time, demand/output/error, score composition and objective progress;
+- progressive assistance remains independent from physical control authority;
+- live feedback supports learning by doing without turning the simulator into an arcade abstraction.
+
+### M10.9.8 Integrated Human-Automation-HMI Validation Gate
 
 - matrix validation across training assistance × plant control authority;
 - deterministic fault/invalid-measurement/protection/trip/manual-takeover cases while supervisory control is active;
-- verify degraded/fail-closed behavior, protection priority, replay/checkpoint fidelity and same-seed determinism;
-- verify keyboard-only terminal operation and no hidden wall-clock/random behavior;
-- close M10 only after local clean build and complete automated validation.
+- validate gauge/range semantics, mimic/schematic information integrity, command-consequence presentation and mission/scoring determinism;
+- verify degraded/fail-closed behavior, protection priority, replay/checkpoint fidelity, same-seed determinism and keyboard operation;
+- close M10 only after local clean build, complete automated suite and manual HMI acceptance.
 
-**M10 gate:** planned after M10.9.
+**M10 gate:** planned after M10.9.8.
 
 ## M11 — Release Hardening, Packaging & Final Validation
 

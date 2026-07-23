@@ -1,382 +1,244 @@
 # Project Handoff — Nuclear Reactor Simulator
 
-This document is the **authoritative continuity checkpoint** for restarting the project in a new conversation.
+This is the **authoritative continuity checkpoint** for restarting the project in a new conversation.
 
-## 1. Current truth
+## 1. Exact current truth
 
-### Validated baseline
+### Official validated baseline
 
-The last explicitly locally validated application milestone is:
+**M10.9.3 — Interactive Full-Plant Mimic — VALIDATED**
 
-**M10.7 — Session, Checkpoint, Replay & Save Workspace — VALIDATED**
-
-The user confirmed M10.7 Hotfix 1 compiled successfully and the complete automated suite passed. The earlier cumulative M10.2→M10.6 Hotfix 1 gate had already validated M10.2, M10.3, M10.4, the incorporated M10.5 prerequisite and M10.6 in sequence.
-
-The underlying M9 phase gate remains **COMPLETE / VALIDATED** with the user-corrected `MainWindow.axaml` as the authoritative validated layout baseline.
+The user explicitly confirmed local compilation and the complete automated suite passed.
 
 ```text
+M7 gate — COMPLETE / VALIDATED
+M8 gate — COMPLETE / VALIDATED
 M9 gate — COMPLETE / VALIDATED
         ↓
-M10.1 — Operator Computer Contracts & Terminal Shell — VALIDATED
+M10.1–M10.9.3 — VALIDATED
         ↓
-M10.2 — Unified Information, Guidance & Diagnostics — VALIDATED
+M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — CURRENT CANDIDATE
         ↓
-M10.3 — Alarm, Log & Incident Workstation — VALIDATED
+M10.9.5 Contextual Command Consequence Model
+M10.9.6 Operational Challenge & Energy-Demand Framework
+M10.9.7 Mission & Performance Workstation
+M10.9.8 Integrated Human-Automation-HMI Validation Gate
         ↓
-M10.4 — Contextual Command Console — VALIDATED
-        ↓
-M10.5 — Dual Assistance & Control-Authority Model — VALIDATED
-        ↓
-M10.6 — Supervisory Automatic Operation — VALIDATED
-        ↓
-M10.7 — Session, Checkpoint, Replay & Save Workspace — VALIDATED / OFFICIAL BASELINE
-        ↓
-M10.7.1 Hotfix 2 — Operator Control-State & Synchronization Usability — IMPLEMENTATION CANDIDATE
+M10 COMPLETE
 ```
 
-### Validated M10.7 boundary / current M10.7.1 candidate
 
-M10.7 is validated and activates F8 SESSION by packaging existing M7/M9 owners rather than introducing a second state owner:
+## 1A. Latest green checkpoint and current structural step
 
-- normal desktop startup keeps M9.1 full recording **inactive** to avoid hidden every-fixed-step fingerprint/frame overhead;
-- `START RECORDED SESSION` reloads the exact versioned desktop initial condition at STEP 0 with a recorder attached;
-- checkpoints remain `ScenarioCheckpoint` replay-backed anchors;
-- `ScenarioSessionArchive` schema v1 stores exact scenario definition, compact per-step fingerprint/event evidence, operator actions, M10.5/M10.6 automation intents, recorder events and checkpoints;
-- JSON load always reconstructs through `ScenarioFullReplayRunner` and fails closed on fingerprint/event/checkpoint divergence;
-- selected-checkpoint restore replays only the exact archived prefix and verifies the checkpoint fingerprint;
-- after verified load/restore, `ScenarioRecorder` resumes from the verified prefix so the session can continue one deterministic trace;
-- the built-in training tracker is attached before replay so training checkpoint/scoring state is reconstructed rather than reset at the final snapshot.
+The user supplied **Hotfix 16 — Conservative Main-Steam Supply Closure** as the latest green working checkpoint. Its package changelog records:
 
-Routine desktop/full-plant endurance tests were reduced in M10.7 from 6,000 to 1,000 steps / 10 simulated seconds. The historical M9.7 60-second validation evidence remains authoritative, and direct `drum`/`exhaust` thermodynamic boundary regressions remain mandatory.
+- solution build: 0 warnings/errors;
+- ordinary suite: 870 passed, 2 explicit journeys skipped by normal filtering;
+- both explicit 60-second gameplay journeys: passed separately.
 
-See `docs/milestones/M10.7.md`, `docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md`, ADR 0067, ADR 0070 and ADR 0074.
+Hotfix 16 closes current-v2 drum/main-steam continuity conservatively and fixes the artificial compressed-liquid rejection above the critical isobar. It is the base for Hotfix 17.
 
+**Hotfix 17 changes one structural item only:** current-v2 condenser heat rejection becomes `min(Q_available, UA·ΔT)` with `UA = 1.225 MW/K` and cooling water at 20 °C, chosen to reproduce the existing 24.5 MW / 40 °C design point exactly at initialization. Legacy null-UA definitions retain capacity-only behavior as an isolated compatibility seam.
 
-M10.7.1 is the current usability-hotfix candidate before M10.8. It preserves all M10.7 replay/session ownership while:
+Next after Hotfix 17, if ordinary + explicit gates remain green: **generator-grid synchronous coupling**. Do not mix pump check valves, protection expansion, actuator travel rates or adaptive substepping into the condenser change.
 
-- separating latched protection visual state from one-shot command availability;
-- exposing the same canonical `ProtectionReset` near reactor/turbine/electrical trip indications with M5.5-derived reset readiness/blockers;
-- presenting synchronization as a pre-close breaker check only and `PARALLELED` after closure;
-- adding current-condition, next-action and cold-shutdown-to-first-output guidance composed from validated M7 procedures without automatic dispatch.
-- extending the same state/availability distinction to rod motion, main-circulation pumps and generator breaker position, while speed/load setpoint steps remain visibly momentary and never fake a persistent active state.
+## 2. Operator-experience objective
 
-See `docs/milestones/M10.7.1.md` and `docs/OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`.
+The simulator remains educational through **learning by operating**: the user must execute startup/shutdown/testing/power/stability/fault-recovery tasks efficiently and later track deterministic external electrical demand with safety-dominant scoring.
 
----
+The HMI must make plant connectivity, operating ranges, command effects and the difference between process state, alarms and protection immediately understandable.
 
-## 2. Technology and solution structure
+## 3. Validated HMI foundation
 
-- C# / .NET 10
-- Avalonia desktop UI
-- xUnit v3
-- warnings-as-errors
-- deterministic educational full-plant RBMK-like simulator
+- M10.9.1: five-region HMI shell and formal range semantics.
+- M10.9.2 Hotfix 2: advanced linear/circular gauges, target/setpoint/protection bands, provenance/quality/off-scale and logical-step trends.
+- M10.9.3: Application-owned interactive whole-plant mimic with equipment IN/OUT, directional medium-aware paths, connected-path emphasis and navigation-only subsystem drill-down.
 
-Primary projects:
+## 3A. M10.9.4 Hotfix 13 current finding
 
-- `NuclearReactorSimulator.Domain`
-- `NuclearReactorSimulator.Simulation`
-- `NuclearReactorSimulator.Application`
-- `NuclearReactorSimulator.Infrastructure`
-- `NuclearReactorSimulator.App`
-- matching test projects
+The user confirmed Hotfix 4 compiled and the ordinary/classic test suite passed locally. Hotfix 5 then fixed cooperative batching in the explicit long-gameplay harness; the subsequent explicit run finally reached plant behavior and exposed two canonical operating-seed defects rather than a UI problem:
 
-The project is educational. It does not claim licensing-grade reactor-safety/LOCA/containment/ECCS/severe-accident fidelity.
+- desktop at logical step 1000 / 10 simulated seconds: breaker closed, 5 MWe requested, ~2.406 MWe actual, ~2.455 MW generator mechanical input, rotor ~1442.615 rpm, MODEL rotor shaft 0 MW;
+- synchronization/load journey: `WaterSteamStateOutOfRangeException` at `control-out` (`v≈2.758 m³/kg`, `u≈2.497 MJ/kg`).
 
----
+Root-cause review found the historical v1 desktop/synchronization seeds were designed for numerical/runtime stability, not sustained low-load generation: a ~120 °C nearly isobaric steam path, 100,000 Pa·s²/kg² admission resistance and proportional-only speed governor could not maintain the ~12.75 kg/s turbine flow required by the simplified 5 MWe stage/generator model. The legacy `TotalSteamFlow` HMI field also came from the M4.1 turbine-admission boundary seam, which is zero while M5.4 derives actual turbine stage flow from canonical stop/control/admission valve hydraulics.
 
-## 3. Non-negotiable ownership rules
+Hotfix 6 does **not mutate v1**. It adds exact-version v2 initial-condition factories, keeps v1 registered for archive/replay, points new desktop sessions to v2, and gives the explicit sync journey its own v2 origin. The v2 recipe adds a staged pressurized steam path, matched admission resistance, bumpless PI governor bias, measured aggregate shaft channel, condenser capacity/heat rejection and condensate/feedwater pump capacity/bias. `EffectiveTurbineSteamFlow` is new `[JsonIgnore]` presentation metadata derived from turbine stage effective flow; fingerprint-v1 retains the historical serialized field.
 
-### Core runtime
 
-1. Simulation uses a deterministic fixed timestep.
-2. Wall-clock time, UI refresh cadence, publication stride and random timing must not change physical results.
-3. Components read one committed state per step; candidate state is validated before commit.
-4. Conserved fluid/thermal inventories are integrated exactly once by canonical plant-network orchestration.
-5. Snapshot/state objects exposed across boundaries remain immutable in semantics.
+Hotfix 7 corrected condenser capacity but the same `exhaust` depletion persisted. Hotfix 8 identifies the upstream root cause: v2 initialized `steam` and `header` at the same 280 °C saturated state, so the canonical main-steam line supplied 0 kg/s while the admission train temporarily drained only preloaded downstream inventories. Hotfix 8 adds a backward-compatible optional header steam temperature and uses a continuous v2 pressure staircase (280 → 275 → 269.5 → 253 → 246 °C from drum steam through turbine inlet), producing approximately 13 kg/s through every canonical steam-path segment with existing v2 resistances. Historical v1 defaults remain exact.
 
-### Physical ownership
+The ordinary synchronization regression now exercises the intended operator path (close breaker → raise load → run) rather than treating prolonged breaker-open/no-load operation as the generation endurance point. M10.9.4 is still **NOT VALIDATED** until both the ordinary suite and the explicit 60-second gameplay pack pass on Hotfix 8.
 
-- **M2:** reactivity, control rods, neutron kinetics, fission power, decay heat, feedbacks, iodine/xenon physics.
-- **M3:** primary-circuit thermo-hydraulic topology and conserved inventories.
-- **M4:** main steam, turbine, condenser/hotwell, condensate/feedwater, generator/grid and secondary-cycle energy path.
-- **M5:** instrumentation, measured signals, automatic control, interlocks/trips/SCRAM, alarms.
+Hotfix 8 established continuous upstream replenishment but local tests still showed `exhaust` leaving the simplified thermodynamic envelope and the initial shaft-support assertion failing. The remaining structural mismatch is the generic 10 m³ low-pressure exhaust node: at ~40 °C it contains only about 0.5 kg of vapor while the v2 turbine moves ~13 kg/s, so each 0.01 s step moves a large fraction of the entire inventory. Hotfix 9 changed only v2 to a 1,000 m³ condenser steam-space, preserved the historical 10 m³ default for v1 and retained the then-current 1,800 Pa·s²/kg² steam/admission resistance with 24.5 MW initial condenser rejection. The next local run proved the thermodynamic crash was removed but exposed two remaining issues: the first public seed snapshot still showed zero turbine-stage flow, and after 10 simulated seconds the rotor settled low at ~2928 rpm with ~4.13 MW shaft power. Hotfix 10 therefore adds deterministic v2-only seed preconditioning and increases available steam-path control authority without changing v1 or any M4/M5 solver law.
 
-No later layer may recreate these owners.
+### Structural root cause confirmed after Hotfix 10
 
-### Application/UI
+The explicit gameplay runs proved the remaining failure was not a condenser/seed tuning problem. Both M5.4 and M5.5 duplicated the same stage-flow law: `min(stopFlow, controlFlow, admissionFlow)`. Because the canonical plant orchestrator already integrates each valve as a real mass transfer and the turbine expansion source term drains only `turbine-inlet`, the combined `stop-out + control-out + turbine-inlet` inventory obeyed `dM/dt = F_stop - F_stage >= 0` under that law. The admission train therefore behaved as a monotonic accumulator, equalized toward the steam header and inevitably drove stage flow to zero.
 
-- Avalonia/UI contains no physics.
-- UI consumes `ControlRoomSnapshot`/presentation contracts only.
-- UI dispatches typed application commands.
-- App must not become a hidden Simulation owner.
-- Missing data remains explicitly unavailable; never fabricate values for presentation convenience.
+Hotfix 13 rebases on Hotfix 10 and withdraws unvalidated Hotfix 11/12 workaround branches. `TurbineStageGroupDefinition` now optionally owns an expansion resistance; current v2 uses 21,400 Pa·s²/kg² and one shared M4 `TurbineStageMassFlowResolver` computes pressure-driven inlet→exhaust flow with no reverse flow and a per-step inventory guard. Null remains only as an isolated legacy law. An ordinary 200-step invariant regression checks admission-train inventory boundedness and admission/stage-flow agreement.
 
-### Instrumentation/control/protection
+Replay policy is also clarified: legacy replay compatibility is a read/migration concern, not a veto on correcting current physics. Pre-release legacy versions may be isolated, migrated or deprecated rather than contaminating the active model.
 
-- consumers requiring instrumentation use measured signals only;
-- no silent true-state fallback;
-- protection priority is above normal control;
-- alarm acknowledge/reset does not reset physical protection;
-- invalid required measurements follow validated fail-safe behavior.
+## 4. Current M10.9.4 Hotfix 13 candidate
 
-### Scenario/fault/training
+M10.9.4 adds five detailed engineering schematic families:
 
-- scenario/fault layers schedule/orchestrate existing canonical seams;
-- no scenario-specific physics owner;
-- no scripted target pressures, levels, speeds, powers, breaker outcomes or recovery trajectories;
-- fault schedules use deterministic logical-step/committed-condition semantics;
-- unknown fault handlers/targets fail closed;
-- fault lifecycle is replay/snapshot-visible but is not authoritative physical state.
+1. Reactor / Core
+2. Primary Circuit / Steam Drums
+3. Turbine / Secondary
+4. Generator / Grid
+5. Instrumentation / Control / Protection
 
----
+New Application-owned contracts/projector:
 
-## 4. Validated milestone history relevant to continuation
+- `ControlRoomSubsystemSchematic*`
+- `ControlRoomSubsystemSchematicProjector`
 
-Earlier M0–M6 foundations/control-room stack are validated. Key later phase state:
+New Avalonia renderer:
 
-### M7 — COMPLETE / VALIDATED
+- `ControlRoomSubsystemSchematicControl`
 
-- M7.1 Versioned Initial Conditions & Scenario Framework
-- M7.2 Cold Shutdown & Pre-Startup
-- M7.3 First Criticality & Low-Power Operation
-- M7.4 Heat-Up, Steam Raising & Turbine Startup
-- M7.5 Grid Synchronization & Load Increase
-- M7.6 Power Manoeuvring & Normal Shutdown
-- M7.7 Training Objectives, Procedure Guidance & Evaluation
+Avalonia renders supplied presentation topology only. It does not infer physics, process topology, alarm/protection rules or command consequences.
 
-Key rule: exact initial-condition identity/version; no implicit latest when reconstructing sessions/replay.
+## 5. Turbine → generator → grid investigation
 
-### M8 — COMPLETE / VALIDATED
+The user observed that the M10.9.3 whole-plant SHAFT path is amber and that continued simulation can eventually show `0 MWe`.
 
-- M8.1 Deterministic Fault-Injection Framework
-- M8.2 Hydraulic Component Faults hotfix 2
-- M8.3 Instrumentation & Control Faults
-- M8.4 Turbine / Generator / Feedwater / Condenser Transients hotfix 2
-- M8.5 Educational Leak/LOCA-Class Scenarios hotfix 2
-- M8.6 Electrical Loss & Station Blackout-Class Scenarios
-- M8.7 Safety-Response Scenario Pack hotfix 2
+Important findings from code review:
 
-Important limits:
+- amber SHAFT is the **mechanical-energy medium color**, not a warning;
+- electrical output is not produced merely because the rotor is spinning;
+- with the breaker closed, requested electrical load produces electromagnetic load torque;
+- actual generator output derives from mechanical power transferred by the rotor to that load;
+- if sustained steam/turbine shaft production is insufficient, rotor kinetic energy can be consumed, speed can decay and output can collapse;
+- therefore the observation is not automatically operator error.
 
-- M8.5 pressure-driven break is a bounded educational conservative mass/energy source-term model, not licensing-grade LOCA critical-flow physics;
-- M8.6 SBO-class composition does not imply detailed AC/DC buses, diesels, batteries, switchgear or ECCS electrical systems;
-- scenario clearing never silently resets canonical protection latches or historical physical state;
-- fault layers never directly write derived pressure/temperature/phase/rotor/generator outcomes.
+The previous ordinary desktop stability test ran 1,000 steps / 10 simulated seconds but only required finite rotor speed; it did not assert sustained positive MWe. M10.9.4 closes this coverage gap.
 
----
+### Generator/Grid HMI diagnostic
 
-## 5. M9.1 — VALIDATED
+The GRID workspace now distinguishes:
 
-**Recorder, Checkpoints & Full Replay**
+- sync ready/not ready;
+- breaker open/closed/paralleled;
+- requested electrical load;
+- actual electrical output;
+- turbine shaft power / generator mechanical input;
+- turbine/generator trip state.
 
-### Delivered contracts
+The diagnostic tells the operator whether 0 MWe is expected because the breaker is open or requested load is zero, or whether a requested-load/shaft/output mismatch needs investigation.
 
-- `ScenarioRecorder`
-- immutable `ScenarioRecording`
-- every-fixed-step `ScenarioRecordingFrame`
-- monotonic `ScenarioRecordingEvent` stream
-- accepted typed operator-action journal integration
-- versioned `ControlRoomSnapshot` fingerprint
-- `ScenarioCheckpoint` schema v1
-- `ScenarioFullReplayRunner`
-- replay divergence fail-closed semantics
-- JSON checkpoint persistence
+## 6. Separately runnable long gameplay/system tests
 
-### Critical semantics
+`GameplayJourneyLongRunningTests` contains xUnit v3 **explicit** acceptance tests so they do not run in the ordinary fast suite.
 
-- recorder observes every deterministic fixed step independent of UI publication stride;
-- accepted operator action at journal step `N` is replay-applied at fixed step `N + 1` in accepted sequence order;
-- Run/Pause host mode is normalized out of replay identity, but committed logical state remains fingerprinted;
-- checkpoint is a **replay-backed anchor**, not an opaque physical-state dump;
-- seek reconstructs exact initial condition + scenario + action prefix and verifies fingerprint;
-- M8 fault lifecycle is reconstructed from exact scenario data; M9.1 does not store a second fault command trace;
-- full replay verifies every frame and deterministic event stream fail closed.
+They cover:
 
-ADR: `docs/adr/0067-checkpoints-are-versioned-replay-anchors-not-opaque-state-dumps.md`.
+- actual desktop integrated seed for 60 simulated seconds;
+- deliberate synchronization → close breaker → load raise → 60-second sustained export journey.
 
----
-
-## 6. M9.2 — VALIDATED
-
-**Post-Incident Analysis**
-
-### Delivered contracts
-
-- `ScenarioPostIncidentAnalyzer`
-- `PostIncidentAnalysisOptions`
-- exact or deterministic incident-anchor selection
-- logical-step pre/post windows
-- `PostIncidentAnalysisTimelineEntry`
-- synchronized fixed-step `PostIncidentTrendSample`
-- compact start/anchor/end `PostIncidentStateSummary`
-- `PostIncidentResponseMetrics`
-- `PostIncidentAnalysisReport` schema v1
-- `JsonPostIncidentAnalysisSerializer`
-
-### Anchor policy
-
-Without explicit recorder event sequence, deterministic selection prefers:
-
-1. first fault transition;
-2. otherwise first protection transition;
-3. otherwise first alarm;
-4. otherwise first operator action.
-
-This is a **selection policy only**, not a physical causal claim.
-
-### Evidence/timeline rules
-
-- event order follows M9.1 recorder monotonic sequence;
-- same-step event ordering remains explicit;
-- relative logical-step offsets are derived from the selected anchor;
-- typed operator commands remain typed evidence;
-- analysis is immutable/observational and must not mutate runtime or replay state.
-
-### Synchronized trend values
-
-M9.2 only uses values already promoted through `ControlRoomSnapshot`, including where available:
-
-- reactor thermal power;
-- total primary mass;
-- feedwater flow;
-- steam export/steam flow;
-- turbine shaft power;
-- condenser heat rejection;
-- gross electrical output;
-- invalid-signal/alarm/fault counts;
-- SCRAM/turbine-trip/generator-trip states.
-
-Unavailable presentation values remain `null`; analysis must never synthesize them.
-
-### Response metrics
-
-Observed logical-step metrics include:
-
-- first alarm latency;
-- first protection activation latency;
-- first operator-action latency;
-- first fault-clear latency;
-- peak invalid measured signals;
-- peak annunciated/unacknowledged alarms;
-- peak active fault count.
-
-`null` latency means **not observed in the selected window**, not “never occurred”.
-
-### Checkpoint linkage
-
-M9.2 may reference the nearest preceding M9.1 checkpoint. It does not own restoration. Reconstruction remains `ScenarioFullReplayRunner.SeekAndVerify` ownership.
-
-### Deliberate omission
-
-M9.1 recordings do not currently include all private M3/M4/M5 conservation/audit objects. M9.2 therefore does **not** reach into Simulation to fabricate retrospective conservation diagnostics. Such diagnostics require an explicit future versioned presentation/recording contract.
-
-ADR: `docs/adr/0068-post-incident-analysis-is-evidence-based-not-causal-inference.md`.
-
----
-
-## 7. M9.3 — VALIDATED / CURRENT FUNCTIONAL BASELINE
-
-**Advanced Xenon & Low-Power Transients**
-
-M9.3 closes the historical operational-observability seam for validated M2.8 iodine/xenon physics without creating a second poison model:
+Normal suite:
 
 ```text
-versioned M9.3 poison state/configuration
-        ↓
-M5 reactor/primary state envelope
-        ↓
-canonical M2.8 IodineXenonSolver
-        ↓ committed xenon worth through explicit non-rod seam
-M2 rods → total reactivity → point kinetics → fission power
-        ↓
-next canonical I/Xe state
-        ↓ immutable committed diagnostic
-ControlRoomSnapshot → scenario/training observation
+dotnet test --no-build
 ```
 
-Existing M7 v1 exact-version initial conditions remain xenon-disabled so prior replay/checkpoint identity semantics are not silently changed. New exact-version M9.3 seeds provide post-shutdown xenon restart and poisoned low-power operation. Scenario/Application/UI layers do not integrate poison inventories or script xenon/power/recovery trajectories.
+Explicit long gameplay pack only:
 
-Local compilation and the complete automated suite passed after two test-only hotfixes; M9.3 was then the official validated baseline and was subsequently superseded by validated M9.4.
+```text
+scripts\run-gameplay-long-tests.cmd
+```
 
-ADR: `docs/adr/0069-m93-xenon-promotion-is-opt-in-through-versioned-runtime-state.md`.
+or:
 
----
+```text
+dotnet test --project tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj --no-build -- --explicit only
+```
 
-## 8. Immediate continuation
+For M10.9.4 promotion, run the explicit pack once in addition to the normal build/test gate. If it fails, use its checkpoint diagnostic and patch the smallest canonical owner; do not weaken the test merely to promote the milestone.
 
-Current implementation candidate:
+## 7. Non-negotiable architecture rules
 
-**M9.7 — Advanced Fidelity Integration Gate — VALIDATED / M9 GATE COMPLETE**
+- fixed deterministic timestep; wall clock/UI cadence never changes physics;
+- M2 owns reactor physics;
+- M3 owns primary thermohydraulics/inventories;
+- M4 owns secondary/turbine/condenser/feedwater/generator/grid;
+- M5 owns instrumentation/control/protection/alarms/supervisory automation;
+- M7 owns guidance/checklists/training semantics;
+- M9.1 owns recorder/checkpoints/full replay;
+- M9.2 owns immutable post-incident analysis;
+- UI/ViewModels own no physics, alarm, protection, controller or topology algorithms;
+- measured consumers never silently read true/model state;
+- protection always overrides normal/supervisory control;
+- training assistance and plant-control authority remain independent axes;
+- mimic/schematic selection is presentation-only;
+- no free-form/NLP command surface.
 
-M9.6 local compilation and the complete automated suite passed after one test-compilation-only hotfix. M9.7 hotfix 2 then compiled and passed the complete automated suite after the first manual-GUI findings were addressed. A subsequent manual pass found remaining bidirectional center-workspace clipping, no whole-session reset action, and a continuous-run block around logical step 3111. M9.7 hotfix 5 addresses those findings with a rebuilt scroll extent, composition-root session reset and a 6,000-step / 60-second endurance gate while preserving validated M7 v1 identities through the separate versioned desktop seed. The M9.7 gate introduces no new physical capability; hotfix 4 corrected saturated-mixture boundary bracketing and hotfix 5 adds the symmetric superheated-onset boundary search after revalidation exposed another valid low-pressure state missed by the coarse scan. The gate closes the phase with explicit cross-feature evidence:
+## 8. Primary M10.9.4 implementation files
 
-- M9.3 xenon + M9.4 quasi-spatial feedback composed simultaneously through one global point-kinetics/non-rod seam with no double counting;
-- a real xenon scenario traversing M9.1 recorder/checkpoint/full replay, M9.2 post-incident analysis and M9.6 immutable snapshot metric projection, requiring identical original/replay fingerprints and xenon evidence;
-- M9.5 validated-capability declarations checked alongside M9.6 reference provenance so an internal green baseline never becomes an implicit historical-calibration claim;
-- real-runtime App/ViewModel integration for Reactor workspace, xenon availability, legacy `Unavailable` semantics and RUN/PAUSE/SINGLE STEP synchronization.
+- `src/NuclearReactorSimulator.Application/ControlRoom/Hmi/ControlRoomSubsystemSchematic*.cs`
+- `src/NuclearReactorSimulator.Application/ControlRoom/Hmi/ControlRoomSubsystemSchematicProjector.cs`
+- `src/NuclearReactorSimulator.Application/ControlRoom/GeneratorPresentationSnapshot.cs`
+- `src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs`
+- `src/NuclearReactorSimulator.App/Controls/ControlRoomSubsystemSchematicControl.cs`
+- `src/NuclearReactorSimulator.App/ViewModels/MainWindowViewModel.cs`
+- `src/NuclearReactorSimulator.App/Views/MainWindow.axaml`
+- `tests/NuclearReactorSimulator.Application.Tests/ControlRoom/ControlRoomSubsystemSchematicProjectionTests.cs`
+- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/GameplayJourneyLongRunningTests.cs`
+- `tests/NuclearReactorSimulator.App.Tests/OperatorExperienceM1094SubsystemSchematicsTests.cs`
+- `scripts/run-gameplay-long-tests.cmd`
+- `scripts/run-gameplay-long-tests.ps1`
+- `docs/milestones/M10.9.4.md`
+- `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`
+- `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`
+- ADR 0078
+- ADR 0080 — turbine expansion is a pressure-driven hydraulic element
+- ADR 0081 — legacy replay compatibility does not constrain current-model correctness
 
-Validation result: local compilation and all 760 automated tests passed, including the 6,000-step / 60-second endurance regressions. The user then supplied and manually validated the final corrected `MainWindow.axaml`; M9.7 and the M9 gate are complete.
+The four user-provided SVG schematics remain design references under `docs/reference/hmi/`; they are not authoritative runtime topology.
 
-See `docs/milestones/M9.7.md`, `docs/M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md`, `docs/M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, plus the M9.1–M9.6 milestone/domain documents.
+## 9. Validate current candidate
 
-M10.1–M10.7 are validated: the cumulative M10.6 Hotfix 1 gate validated M10.2–M10.6, and the user subsequently confirmed M10.7 Hotfix 1 compiled and the complete automated suite passed. M10.7 is the official application baseline; M10.7.1 is the current usability-hotfix candidate before M10.8. Final release hardening remains M11 after M10.
+Run locally:
 
----
+```text
+dotnet clean
+dotnet restore
+dotnet build --no-restore
+dotnet test --no-build
+```
 
-## 9. Approved M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
+Then run the separate long gameplay acceptance pack:
 
-Approved sequence:
+```text
+scripts\run-gameplay-long-tests.cmd
+```
 
-1. M10.1 Operator Computer Contracts & Terminal Shell — VALIDATED
-2. M10.2 Unified Information, Guidance & Diagnostics — VALIDATED
-3. M10.3 Alarm, Log & Incident Workstation — VALIDATED
-4. M10.4 Contextual Command Console — VALIDATED
-5. M10.5 Dual Assistance & Control-Authority Model — VALIDATED
-6. M10.6 Supervisory Automatic Operation — VALIDATED
-7. M10.7 Session, Checkpoint, Replay & Save Workspace — VALIDATED / official baseline
-7.1. M10.7.1 Operator Control-State & Synchronization Usability Hotfix — current implementation candidate
-8. M10.8 Integrated Operator Computer UI
-9. M10.9 Integrated Human-Automation Validation Gate
+Then manually verify `docs/milestones/M10.9.4.md`.
 
-Critical M10 rules:
+Do not mark M10.9.4 validated until the user explicitly confirms the normal gate **and** the requested long gameplay test outcome is understood/green.
 
-- operator computer = thin Application aggregation + App presentation;
-- training assistance and physical control authority are orthogonal;
-- supervisory automation = M5-owned deterministic control coordination;
-- no direct physical-result assignment and no App/UI physics/control algorithm;
-- measured-signal discipline, protection priority, degraded/fail-closed semantics and bumpless manual takeover;
-- fixed menu/pages and keyboard-first operation; no free-form text/NLP/LLM control;
-- M9.1 remains recorder/checkpoint/replay authority; persistent session archives, if added, are replay-backed packaging only.
+## 10. Next after validation
 
-See ADR 0070 for the durable ownership decision.
+**M10.9.5 — Contextual Command Consequence Model**.
 
----
+## 11. Delivery convention
 
-## 10. Authoritative documentation order
+- deliver complete ZIP packages;
+- keep validated baseline and current candidate distinct;
+- patch the smallest responsible layer when failures appear;
+- never create a second physics/topology/control owner in UI code.
 
-For continuation, read:
 
-1. `docs/PROJECT_HANDOFF.md`
-2. `docs/PROJECT_STATUS.md`
-3. `docs/ROADMAP.md`
-4. `docs/ARCHITECTURE.md`
-5. `docs/NEW_CHAT_START.md`
-6. `docs/milestones/M10.2.md`
-7. `docs/OPERATOR_COMPUTER_INFORMATION_GUIDANCE_DIAGNOSTICS.md`
-8. `docs/milestones/M10.1.md` and `docs/OPERATOR_COMPUTER_TERMINAL_SHELL.md`
-9. `docs/OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`, `docs/milestones/M10.md` and ADR 0070
-10. `docs/milestones/M9.7.md` and `docs/M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md`
-11. M9 ADRs 0067–0073 as relevant
+## 3B. M10.9.4 Hotfix 14 current test-contract correction
 
-If documentation conflicts, this handoff plus explicit local validation results take precedence; then fix the conflicting documentation before milestone advancement.
+Hotfix 14 keeps Hotfix 13 production code unchanged. The 200-step turbine hydraulic regression no longer requires `AdmissionFlow == StageFlow` to 3 decimals because a compressible `turbine-inlet` plenum may accumulate/deplete transiently. Instead it keeps the ±5% final combined admission-train inventory bound, samples the trajectory and requires at least one negative inventory increment to directly refute the historical monotonic-accumulator invariant. Finite positive/in-range admission and stage flows remain required.
 
----
+The structural audit and ordered remediation plan are authoritative in `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`. Do not tune seeds/boundaries to compensate for missing feedback laws.
 
-## 11. Delivery discipline
+## M10.9.4 Hotfix 15 historical structural finding
 
-- deliver complete ZIPs, not isolated patch snippets;
-- preserve warnings-as-errors;
-- add deterministic/conservation/invariant tests appropriate to each change;
-- update roadmap/status/handoff/ADR when durable architecture changes;
-- do not mark a newly changed package validated without explicit user confirmation of local build + complete tests.
+Hotfix 14 compiled and the complete ordinary suite passed. The explicit long gameplay journeys then failed in the canonical `drum` node with specific volume about 0.001307 m^3/kg. The root cause is another algebraic inventory ratchet: the physical return pipe adds `F_return`, historical separator source terms remove exactly `F_return`, and canonical feedwater adds `F_feedwater`, leaving `dm_drum/dt = F_feedwater >= 0`.
+
+Hotfix 15 introduces explicit `SteamDrumLiquidRecirculationMode`. Historical profiles remain `LegacyReturnSplit`; current v2 sustained-generation and synchronization profiles use `CirculationDemandBalanced`, where liquid recirculation follows positive committed MCP demand. The drum balance is therefore `F_return + F_feedwater - F_MCP - F_steam`, so inventory is no longer forced to increase by construction. See ADR 0082 and `STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`.

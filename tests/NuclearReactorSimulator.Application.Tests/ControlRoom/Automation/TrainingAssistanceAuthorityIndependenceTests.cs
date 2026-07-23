@@ -13,7 +13,7 @@ public sealed class TrainingAssistanceAuthorityIndependenceTests
     {
         var session = new ScenarioSessionFactory(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         })).Load(DesktopIntegratedOperationsProgram.Scenario);
         var tracker = new ScenarioTrainingTracker(
             session,

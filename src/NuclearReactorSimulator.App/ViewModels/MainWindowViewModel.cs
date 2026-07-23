@@ -4,6 +4,7 @@ using System.Windows.Input;
 using NuclearReactorSimulator.App.Commands;
 using NuclearReactorSimulator.Application;
 using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 using NuclearReactorSimulator.Application.ControlRoom.Automation;
 using NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
 using NuclearReactorSimulator.Application.Scenarios.Criticality;
@@ -41,6 +42,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private readonly PowerManoeuvringChecklistEvaluator _powerManoeuvringChecklistEvaluator = new();
     private ControlRoomWorkspaceDescriptor _selectedWorkspace;
     private ControlRoomSnapshot _snapshot;
+    private ControlRoomInstrumentTrendSnapshot _reactorThermalPowerTrend = ControlRoomInstrumentTrendSnapshot.Unavailable;
+    private ControlRoomInstrumentTrendSnapshot _grossElectricalOutputTrend = ControlRoomInstrumentTrendSnapshot.Unavailable;
+    private ControlRoomPlantMimicSnapshot _plantMimic = ControlRoomPlantMimicSnapshot.Empty;
+    private ControlRoomSubsystemSchematicsSnapshot _subsystemSchematics = ControlRoomSubsystemSchematicsSnapshot.Empty;
+    private string? _selectedMimicElementId;
     private int _selectedRodIndex;
     private int _selectedPumpIndex;
     private int _selectedGeneratorIndex;
@@ -79,16 +85,16 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _postIncidentAnalysis = postIncidentAnalysis;
         _sessionWorkspace = sessionWorkspace;
         _commandStatus = trainingTracker is not null
-            ? "M8.2 hydraulic faults are validated and M8.3 instrumentation/control fault effects are available over the same deterministic scheduler. The default desktop session remains the validated M7.7 normal-operations training scenario and declares no faults; load an explicit M8.2/M8.3 diagnostic scenario to exercise fault packs."
+            ? "Training session ready. No operator command has been issued yet. Fault-enabled scenarios use the same canonical instrumentation, control and protection paths as normal operation."
             : powerManoeuvringGuidance is not null
-            ? "M7.6 power-manoeuvring/normal-shutdown scenario loaded in PAUSED state. Manoeuvre load through canonical requests, then unload, disconnect, insert rods and preserve post-shutdown circulation."
+            ? "Power-manoeuvring / normal-shutdown scenario loaded in PAUSED state. Manoeuvre load deliberately, then unload, disconnect, insert rods and preserve post-shutdown circulation."
             : gridSynchronizationGuidance is not null
-            ? "M7.5 grid-synchronization/initial-loading scenario loaded in PAUSED state. Close only on the canonical synchronization permissive, then take load in deliberate increments."
+            ? "Grid-synchronization / initial-loading scenario loaded in PAUSED state. Close only when synchronization permissives are satisfied, then take load in deliberate increments."
             : heatUpTurbineStartupGuidance is not null
-            ? "M7.4 heat-up/steam-raising/turbine-startup scenario loaded in PAUSED state. Preserve generator isolation while using the validated speed-control seam for turbine roll-off."
+            ? "Heat-up / steam-raising / turbine-startup scenario loaded in PAUSED state. Preserve generator isolation while rolling the turbine with the canonical speed controls."
             : firstCriticalityGuidance is not null
-                ? "M7.3 first-criticality/low-power scenario loaded in PAUSED state. Use controlled rod motion, observe reactivity/period and preserve steam/grid isolation."
-                : "M7.2 cold-shutdown/pre-start scenario loaded in PAUSED state. Follow the preparation guidance; scenario permissions fail closed before runtime commands.";
+                ? "First-criticality / low-power scenario loaded in PAUSED state. Use controlled rod motion, observe reactivity/period and preserve steam/grid isolation."
+                : "Cold-shutdown / pre-start scenario loaded in PAUSED state. Follow preparation guidance; unavailable or blocked actions fail closed.";
 
         Title = descriptor.ProductName;
         Milestone = descriptor.Milestone;
@@ -96,6 +102,9 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         Workspaces = ControlRoomWorkspaceCatalog.Default;
         _selectedWorkspace = Workspaces[0];
         _snapshot = snapshotSource.Current;
+        _plantMimic = ControlRoomPlantMimicProjector.Project(_snapshot);
+        _subsystemSchematics = ControlRoomSubsystemSchematicProjector.Project(_snapshot);
+        _selectedMimicElementId = _plantMimic.Elements.FirstOrDefault()?.ElementId;
         PerformanceBudget = ControlRoomPerformanceBudget.DesktopDefault;
         _operationalHistory = new ControlRoomOperationalHistoryAccumulator(
             maximumVisibleTrendSeries: PerformanceBudget.MaximumVisibleTrendSeries);
@@ -137,6 +146,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OpenOperatorComputerDiagnosticsPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Diagnostics));
         OpenOperatorComputerLogPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Log));
         OpenOperatorComputerSessionPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Session));
+        OpenSelectedMimicSubsystemCommand = new DelegateCommand(OpenSelectedMimicSubsystem);
 
         snapshotSource.SnapshotChanged += OnSnapshotChanged;
         if (_trainingTracker is not null)
@@ -200,12 +210,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged();
             OnPropertyChanged(nameof(SelectedWorkspaceTitle));
             OnPropertyChanged(nameof(SelectedWorkspaceDescription));
+            OnPropertyChanged(nameof(SelectedWorkspaceContextText));
             OnPropertyChanged(nameof(IsReactorWorkspaceSelected));
             OnPropertyChanged(nameof(IsPrimaryWorkspaceSelected));
             OnPropertyChanged(nameof(IsTurbineWorkspaceSelected));
             OnPropertyChanged(nameof(IsElectricalWorkspaceSelected));
             OnPropertyChanged(nameof(IsAlarmsWorkspaceSelected));
             OnPropertyChanged(nameof(IsOperatorComputerWorkspaceSelected));
+            OnPropertyChanged(nameof(IsMainWorkspaceScrollVisible));
             OnPropertyChanged(nameof(IsShellHostWorkspaceSelected));
             OnPropertyChanged(nameof(IsOverviewWorkspaceSelected));
         }
@@ -213,12 +225,23 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public string SelectedWorkspaceTitle => SelectedWorkspace.Title;
     public string SelectedWorkspaceDescription => SelectedWorkspace.Description;
+    public string SelectedWorkspaceContextText => SelectedWorkspace.Id switch
+    {
+        ControlRoomWorkspaceId.Reactor => ReactorCore.ProtectionText,
+        ControlRoomWorkspaceId.PrimaryCircuit => PrimaryContextText,
+        ControlRoomWorkspaceId.TurbineSecondary => TurbineContextText,
+        ControlRoomWorkspaceId.Electrical => ElectricalContextText,
+        ControlRoomWorkspaceId.AlarmsEvents => AlarmContextText,
+        ControlRoomWorkspaceId.OperatorComputer => "Utility workstation for guidance, diagnostics, canonical commands, authority modes, log and replay-backed session tools.",
+        _ => SelectedMimicElement is null ? OperatorCurrentConditionText : $"{SelectedMimicTitle} · {SelectedMimicStatusText} · {SelectedMimicValuesText}",
+    };
     public bool IsReactorWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Reactor;
     public bool IsPrimaryWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.PrimaryCircuit;
     public bool IsTurbineWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.TurbineSecondary;
     public bool IsElectricalWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Electrical;
     public bool IsAlarmsWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.AlarmsEvents;
     public bool IsOperatorComputerWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.OperatorComputer;
+    public bool IsMainWorkspaceScrollVisible => !IsOperatorComputerWorkspaceSelected;
     public bool IsOverviewWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Overview;
     public bool IsShellHostWorkspaceSelected => IsOverviewWorkspaceSelected;
 
@@ -327,7 +350,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     }
 
     public string TrainingGuidanceModeText => _trainingTracker is null
-        ? "No M7.7/M8.1 training evaluation loaded"
+        ? "No training evaluation loaded"
         : _trainingTracker.GuidanceMode switch
         {
             TrainingGuidanceMode.Hidden => "HIDDEN — procedure assistance suppressed; scoring unchanged",
@@ -369,6 +392,70 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public string RuntimeProgressText => $"STEP {LogicalStep.ToString(System.Globalization.CultureInfo.InvariantCulture)}";
 
+    public string TrainingScoreText => _trainingTracker is null
+        ? "—"
+        : $"{_trainingTracker.Assessment.TotalScore}/{_trainingTracker.Assessment.MaximumScore}";
+
+    public string GuidanceModeShortText => _trainingTracker?.GuidanceMode switch
+    {
+        TrainingGuidanceMode.Hidden => "HIDDEN",
+        TrainingGuidanceMode.ChecklistOnly => "CHECKLIST",
+        TrainingGuidanceMode.Guided => "GUIDED",
+        _ => "—",
+    };
+
+    public string ControlAuthorityText
+    {
+        get
+        {
+            if (_plantControlAuthorityDispatcher is null)
+            {
+                return "—";
+            }
+
+            var automation = _plantControlAuthorityDispatcher.CurrentAutomation;
+            if (!automation.IsAvailable)
+            {
+                return "UNAVAILABLE";
+            }
+
+            return automation.EffectiveAuthority switch
+            {
+                NuclearReactorSimulator.Domain.Physics.Control.Supervisory.PlantControlAuthorityMode.Manual => "MANUAL",
+                NuclearReactorSimulator.Domain.Physics.Control.Supervisory.PlantControlAuthorityMode.Assisted => "ASSISTED",
+                NuclearReactorSimulator.Domain.Physics.Control.Supervisory.PlantControlAuthorityMode.SupervisoryAutomatic => "SUPERVISORY",
+                _ => "—",
+            };
+        }
+    }
+
+    public string ElectricalOutputText => Electrical.GrossElectricalOutput.State == ControlRoomVisualState.Unavailable
+        ? "—"
+        : $"{Electrical.GrossElectricalOutput.ValueText} {Electrical.GrossElectricalOutput.Unit}".TrimEnd();
+
+    public string ProtectionStateText => _snapshot.RunState == ControlRoomRunState.ShellOnly
+        ? "UNAVAILABLE"
+        : _snapshot.AnyTripActive ? "TRIP ACTIVE" : "NORMAL";
+
+    public string FirstOutStripText => AlarmEvents.FirstOutCount == 0
+        ? "NO FIRST-OUT"
+        : $"{AlarmEvents.FirstOutCount} FIRST-OUT ACTIVE";
+
+    public string LatestEventText
+    {
+        get
+        {
+            var events = _operationalHistory.Current.Events;
+            if (events.Count == 0)
+            {
+                return "No alarm/event transitions recorded in this session.";
+            }
+
+            var latest = events[0];
+            return $"{latest.LogicalStepText} · {latest.KindText} · {latest.AlarmTitle}";
+        }
+    }
+
     public string SignalHealthText => _snapshot.TotalMeasuredSignalCount == 0
         ? "No runtime measured frame published yet"
         : $"{_snapshot.ValidMeasuredSignalCount}/{_snapshot.TotalMeasuredSignalCount} measured signals valid";
@@ -387,7 +474,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         : "No latched reactor/turbine/generator trip in presentation snapshot";
 
     public string FaultLifecycleText => _snapshot.Faults.Faults.Count == 0
-        ? "No M8 fault declarations in the loaded training scenario"
+        ? "No declared faults in the loaded training scenario"
         : $"{_snapshot.Faults.ActiveCount} active · {_snapshot.Faults.PendingCount} pending · {_snapshot.Faults.ClearedCount} cleared";
 
     public string PrimaryContextText => PrimaryCircuit.Loops.Count == 0
@@ -401,6 +488,68 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public TurbineSecondaryPanelSnapshot TurbineSecondary => _snapshot.TurbineSecondary;
 
     public ElectricalPanelSnapshot Electrical => _snapshot.Electrical;
+
+    public ControlRoomInstrumentTrendSnapshot ReactorThermalPowerTrend => _reactorThermalPowerTrend;
+
+
+    public ControlRoomInstrumentTrendSnapshot GrossElectricalOutputTrend => _grossElectricalOutputTrend;
+
+    public ControlRoomPlantMimicSnapshot PlantMimic => _plantMimic;
+
+    public ControlRoomSubsystemSchematicsSnapshot SubsystemSchematics => _subsystemSchematics;
+
+    public ControlRoomSubsystemSchematicSnapshot ReactorCoreSchematic => _subsystemSchematics.ReactorCore;
+
+    public ControlRoomSubsystemSchematicSnapshot PrimarySteamDrumSchematic => _subsystemSchematics.PrimarySteamDrum;
+
+    public ControlRoomSubsystemSchematicSnapshot TurbineSecondarySchematic => _subsystemSchematics.TurbineSecondary;
+
+    public ControlRoomSubsystemSchematicSnapshot GeneratorGridSchematic => _subsystemSchematics.GeneratorGrid;
+
+    public ControlRoomSubsystemSchematicSnapshot InstrumentationProtectionSchematic => _subsystemSchematics.InstrumentationProtection;
+
+    public string GeneratorPowerPathDiagnosticText => ControlRoomSubsystemSchematicProjector.BuildGeneratorPowerPathDiagnostic(_snapshot);
+
+    public string? SelectedMimicElementId
+    {
+        get => _selectedMimicElementId;
+        set
+        {
+            if (string.Equals(_selectedMimicElementId, value, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            _selectedMimicElementId = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedMimicElement));
+            OnPropertyChanged(nameof(SelectedMimicTitle));
+            OnPropertyChanged(nameof(SelectedMimicStatusText));
+            OnPropertyChanged(nameof(SelectedMimicValuesText));
+            OnPropertyChanged(nameof(SelectedMimicInputText));
+            OnPropertyChanged(nameof(SelectedMimicOutputText));
+            OnPropertyChanged(nameof(SelectedMimicDetailText));
+            OnPropertyChanged(nameof(SelectedWorkspaceContextText));
+        }
+    }
+
+    public ControlRoomPlantMimicElementSnapshot? SelectedMimicElement =>
+        PlantMimic.Elements.FirstOrDefault(element => string.Equals(element.ElementId, SelectedMimicElementId, StringComparison.Ordinal))
+        ?? PlantMimic.Elements.FirstOrDefault();
+
+    public string SelectedMimicTitle => SelectedMimicElement?.DisplayName ?? "NO EQUIPMENT SELECTED";
+
+    public string SelectedMimicStatusText => SelectedMimicElement?.StatusText ?? "MIMIC DATA UNAVAILABLE";
+
+    public string SelectedMimicValuesText => SelectedMimicElement is { } element
+        ? $"{element.PrimaryValueText} · {element.SecondaryValueText}"
+        : "VALUES —";
+
+    public string SelectedMimicInputText => SelectedMimicElement?.InputText ?? "IN —";
+
+    public string SelectedMimicOutputText => SelectedMimicElement?.OutputText ?? "OUT —";
+
+    public string SelectedMimicDetailText => SelectedMimicElement?.DetailText ?? "Select an equipment item in the plant mimic for canonical context.";
 
     public AlarmEventsPanelSnapshot AlarmEvents => _snapshot.AlarmEvents;
 
@@ -856,6 +1005,22 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public ICommand OpenOperatorComputerDiagnosticsPageCommand { get; }
     public ICommand OpenOperatorComputerLogPageCommand { get; }
     public ICommand OpenOperatorComputerSessionPageCommand { get; }
+    public ICommand OpenSelectedMimicSubsystemCommand { get; }
+
+    private void OpenSelectedMimicSubsystem()
+    {
+        var element = SelectedMimicElement;
+        if (element is null)
+        {
+            return;
+        }
+
+        var workspace = Workspaces.FirstOrDefault(candidate => candidate.Id == element.DrillDownWorkspaceId);
+        if (workspace is not null)
+        {
+            SelectedWorkspace = workspace;
+        }
+    }
 
     private string BuildOperatorCurrentConditionText()
     {
@@ -1248,6 +1413,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         OnPropertyChanged(nameof(TrainingGuidanceModeText));
+        OnPropertyChanged(nameof(GuidanceModeShortText));
+        OnPropertyChanged(nameof(SelectedWorkspaceContextText));
         OnPropertyChanged(nameof(OperatorNextActionText));
         OnPropertyChanged(nameof(StartupToPowerCommandPathText));
     }
@@ -1255,19 +1422,29 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private void OnPlantControlAuthorityChanged(object? sender, PlantControlAuthorityChangedEventArgs e)
     {
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
+        OnPropertyChanged(nameof(ControlAuthorityText));
     }
 
     private void OnTrainingAssessmentChanged(object? sender, ScenarioTrainingAssessmentChangedEventArgs e)
     {
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         OnPropertyChanged(nameof(TrainingAssessmentText));
+        OnPropertyChanged(nameof(TrainingScoreText));
         OnPropertyChanged(nameof(TrainingGuidanceModeText));
+        OnPropertyChanged(nameof(GuidanceModeShortText));
         OnPropertyChanged(nameof(OperatorNextActionText));
     }
 
     private void OnSnapshotChanged(object? sender, ControlRoomSnapshotChangedEventArgs e)
     {
+        UpdateInstrumentTrends(_snapshot, e.Snapshot);
         _snapshot = e.Snapshot;
+        _plantMimic = ControlRoomPlantMimicProjector.Project(_snapshot);
+        _subsystemSchematics = ControlRoomSubsystemSchematicProjector.Project(_snapshot);
+        if (_plantMimic.Elements.All(element => !string.Equals(element.ElementId, _selectedMimicElementId, StringComparison.Ordinal)))
+        {
+            _selectedMimicElementId = _plantMimic.Elements.FirstOrDefault()?.ElementId;
+        }
         _operationalHistory.Observe(_snapshot);
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         if (_snapshot.ReactorCore.RodTargets.Count == 0)
@@ -1310,6 +1487,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(RuntimeState));
         OnPropertyChanged(nameof(IsRuntimeRunning));
         OnPropertyChanged(nameof(RuntimeProgressText));
+        OnPropertyChanged(nameof(ElectricalOutputText));
+        OnPropertyChanged(nameof(ProtectionStateText));
+        OnPropertyChanged(nameof(FirstOutStripText));
+        OnPropertyChanged(nameof(LatestEventText));
+        OnPropertyChanged(nameof(SelectedWorkspaceContextText));
         OnPropertyChanged(nameof(SignalHealthText));
         OnPropertyChanged(nameof(AnnunciatedAlarmCount));
         OnPropertyChanged(nameof(UnacknowledgedAlarmCount));
@@ -1328,6 +1510,24 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(PrimaryCircuit));
         OnPropertyChanged(nameof(TurbineSecondary));
         OnPropertyChanged(nameof(Electrical));
+        OnPropertyChanged(nameof(PlantMimic));
+        OnPropertyChanged(nameof(SubsystemSchematics));
+        OnPropertyChanged(nameof(ReactorCoreSchematic));
+        OnPropertyChanged(nameof(PrimarySteamDrumSchematic));
+        OnPropertyChanged(nameof(TurbineSecondarySchematic));
+        OnPropertyChanged(nameof(GeneratorGridSchematic));
+        OnPropertyChanged(nameof(InstrumentationProtectionSchematic));
+        OnPropertyChanged(nameof(GeneratorPowerPathDiagnosticText));
+        OnPropertyChanged(nameof(SelectedMimicElementId));
+        OnPropertyChanged(nameof(SelectedMimicElement));
+        OnPropertyChanged(nameof(SelectedMimicTitle));
+        OnPropertyChanged(nameof(SelectedMimicStatusText));
+        OnPropertyChanged(nameof(SelectedMimicValuesText));
+        OnPropertyChanged(nameof(SelectedMimicInputText));
+        OnPropertyChanged(nameof(SelectedMimicOutputText));
+        OnPropertyChanged(nameof(SelectedMimicDetailText));
+        OnPropertyChanged(nameof(ReactorThermalPowerTrend));
+        OnPropertyChanged(nameof(GrossElectricalOutputTrend));
         OnPropertyChanged(nameof(AlarmEvents));
         OnPropertyChanged(nameof(OperationalHistory));
         OnPropertyChanged(nameof(AlarmOptionsText));
@@ -1394,6 +1594,37 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(RodCommandState));
         OnPropertyChanged(nameof(RodWithdrawCommandState));
         OnPropertyChanged(nameof(XenonAvailabilityText));
+    }
+
+    private void UpdateInstrumentTrends(ControlRoomSnapshot previous, ControlRoomSnapshot current)
+    {
+        _reactorThermalPowerTrend = BuildInstrumentTrend(
+            previous.LogicalStep,
+            previous.ReactorCore.ReactorThermalPower,
+            current.LogicalStep,
+            current.ReactorCore.ReactorThermalPower);
+        _grossElectricalOutputTrend = BuildInstrumentTrend(
+            previous.LogicalStep,
+            previous.Electrical.GrossElectricalOutput,
+            current.LogicalStep,
+            current.Electrical.GrossElectricalOutput);
+    }
+
+    private static ControlRoomInstrumentTrendSnapshot BuildInstrumentTrend(
+        long previousLogicalStep,
+        ControlRoomValueSnapshot previous,
+        long currentLogicalStep,
+        ControlRoomValueSnapshot current)
+    {
+        var scale = current.InstrumentScale;
+        var steadyTolerance = scale is null ? 1e-9d : (scale.Maximum - scale.Minimum) * 1e-6d;
+        return ControlRoomInstrumentTrendSnapshot.Between(
+            previousLogicalStep,
+            previous.NumericValue,
+            currentLogicalStep,
+            current.NumericValue,
+            steadyTolerance,
+            current.Unit);
     }
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

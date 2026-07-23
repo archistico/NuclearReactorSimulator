@@ -100,7 +100,10 @@ public sealed class CondenserSystemSolver
             .Select(solution => new CondenserCoolingBoundarySnapshot(
                 solution.CoolingBoundaryInput.BoundaryId,
                 solution.Definition.Id,
+                solution.CoolingBoundaryInput.CoolantTemperature,
                 solution.CoolingBoundaryInput.AvailableHeatRejectionPower,
+                solution.SurfaceHeatTransferLimitedPower,
+                solution.EffectiveHeatRejectionCapacity,
                 solution.HeatRejectionPower))
             .ToArray();
         var snapshot = new CondenserSystemSnapshot(
@@ -128,12 +131,22 @@ public sealed class CondenserSystemSolver
         var availableCondensableMass = Mass.FromKilograms(Math.Min(phaseLimitedMassKilograms, residualLimitedMassKilograms));
         var inventoryLimitedFlow = availableCondensableMass.Per(deltaTime);
 
+        var steamToCoolingTemperatureDifference = TemperatureDifference.FromKelvins(Math.Max(
+            0d,
+            steamSpace.Temperature.Kelvins - coolingBoundaryInput.CoolantTemperature.Kelvins));
+        var surfaceHeatTransferLimitedPower = definition.OverallHeatTransferConductance is { } conductance
+            ? conductance * steamToCoolingTemperatureDifference
+            : coolingBoundaryInput.AvailableHeatRejectionPower;
+        var effectiveHeatRejectionCapacity = Power.FromWatts(Math.Min(
+            coolingBoundaryInput.AvailableHeatRejectionPower.Watts,
+            surfaceHeatTransferLimitedPower.Watts));
+
         var specificEnergyDropJoulesPerKilogram = steamSpace.SpecificInternalEnergy.JoulesPerKilogram
             - hotwell.SpecificInternalEnergy.JoulesPerKilogram;
         var thermalLimitedFlow = specificEnergyDropJoulesPerKilogram <= 0d
             ? MassFlowRate.Zero
             : MassFlowRate.FromKilogramsPerSecond(
-                coolingBoundaryInput.AvailableHeatRejectionPower.Watts / specificEnergyDropJoulesPerKilogram);
+                effectiveHeatRejectionCapacity.Watts / specificEnergyDropJoulesPerKilogram);
         var actualFlow = MassFlowRate.FromKilogramsPerSecond(Math.Max(
             0d,
             Math.Min(
@@ -157,6 +170,9 @@ public sealed class CondenserSystemSolver
             condensableVaporMassFraction,
             availableCondensableMass,
             inventoryLimitedFlow,
+            steamToCoolingTemperatureDifference,
+            surfaceHeatTransferLimitedPower,
+            effectiveHeatRejectionCapacity,
             thermalLimitedFlow,
             actualFlow,
             steamEnergyRemovalRate,
@@ -215,6 +231,11 @@ public sealed class CondenserSystemSolver
             solution.CondensableVaporMassFraction,
             solution.AvailableCondensableMass,
             solution.Definition.MaximumCondensationMassFlowRate,
+            solution.CoolingBoundaryInput.CoolantTemperature,
+            solution.SteamToCoolingTemperatureDifference,
+            solution.Definition.OverallHeatTransferConductance,
+            solution.SurfaceHeatTransferLimitedPower,
+            solution.EffectiveHeatRejectionCapacity,
             solution.InventoryLimitedCondensationMassFlowRate,
             solution.ThermalLimitedCondensationMassFlowRate,
             solution.ActualCondensationMassFlowRate,
@@ -263,6 +284,9 @@ public sealed class CondenserSystemSolver
         double CondensableVaporMassFraction,
         Mass AvailableCondensableMass,
         MassFlowRate InventoryLimitedCondensationMassFlowRate,
+        TemperatureDifference SteamToCoolingTemperatureDifference,
+        Power SurfaceHeatTransferLimitedPower,
+        Power EffectiveHeatRejectionCapacity,
         MassFlowRate ThermalLimitedCondensationMassFlowRate,
         MassFlowRate ActualCondensationMassFlowRate,
         Power SteamEnergyRemovalRate,

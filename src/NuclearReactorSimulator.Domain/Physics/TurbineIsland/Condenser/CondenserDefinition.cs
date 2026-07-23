@@ -13,7 +13,8 @@ public sealed class CondenserDefinition
         string steamSpaceNodeId,
         string hotwellNodeId,
         string coolingBoundaryId,
-        MassFlowRate maximumCondensationMassFlowRate)
+        MassFlowRate maximumCondensationMassFlowRate,
+        ThermalConductance? overallHeatTransferConductance = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -53,12 +54,21 @@ public sealed class CondenserDefinition
                 "Maximum condenser condensation mass flow must be greater than zero.");
         }
 
+        if (overallHeatTransferConductance is { } conductance && conductance <= ThermalConductance.Zero)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(overallHeatTransferConductance),
+                overallHeatTransferConductance,
+                "Condenser overall heat-transfer conductance must be greater than zero when supplied.");
+        }
+
         Id = id.Trim();
         TurbineStageGroupId = turbineStageGroupId.Trim();
         SteamSpaceNodeId = steamSpaceNodeId.Trim();
         HotwellNodeId = hotwellNodeId.Trim();
         CoolingBoundaryId = coolingBoundaryId.Trim();
         MaximumCondensationMassFlowRate = maximumCondensationMassFlowRate;
+        OverallHeatTransferConductance = overallHeatTransferConductance;
     }
 
     public string Id { get; }
@@ -72,4 +82,10 @@ public sealed class CondenserDefinition
     public string CoolingBoundaryId { get; }
 
     public MassFlowRate MaximumCondensationMassFlowRate { get; }
+
+    /// <summary>
+    /// Optional canonical UA conductance for pressure/temperature-responsive surface-condensing behavior.
+    /// Null preserves the historical capacity-only condenser law for isolated legacy definitions.
+    /// </summary>
+    public ThermalConductance? OverallHeatTransferConductance { get; }
 }

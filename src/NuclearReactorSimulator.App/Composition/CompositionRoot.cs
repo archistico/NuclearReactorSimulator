@@ -89,6 +89,8 @@ internal static class CompositionRoot
             new GridSynchronizationInitialConditionFactory(),
             new PowerManoeuvringInitialConditionFactory(),
             new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
+            new GridSynchronizationSustainedInitialConditionFactory(),
             new SecondaryTransientInitialConditionFactory(),
             new XenonRestartInitialConditionFactory(),
             new LowPowerXenonInitialConditionFactory(),

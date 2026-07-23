@@ -24,6 +24,8 @@ public sealed record GeneratorPresentationSnapshot(
     [property: JsonIgnore] double CloseCheckVoltageDifferenceKilovolts = 0d,
     [property: JsonIgnore] double MaximumSynchronizationVoltageDifferenceKilovolts = 0d)
 {
+    [JsonIgnore]
+    public ControlRoomValueSnapshot RequestedElectricalPower { get; init; } = ControlRoomValueSnapshot.Unavailable("MWe");
     // Fingerprint-v1 compatibility: these legacy computed properties intentionally preserve
     // their M10.7 serialization semantics. The breaker-aware operator presentation lives in
     // JsonIgnored Display* properties below so replay/archive fingerprints remain stable.

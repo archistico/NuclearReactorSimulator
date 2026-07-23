@@ -14,8 +14,8 @@ public static class DesktopIntegratedOperationsProgram
     public static ScenarioDefinition Scenario { get; } = new(
         ScenarioId,
         "Integrated Normal Operations Training — Desktop Stable Runtime",
-        "M9.7 desktop integration profile reusing the validated M7.7 objectives/actions over a separately versioned stable low-load runtime seed suitable for continuous RUN-mode and GUI validation.",
-        DesktopIntegratedOperationsInitialConditionFactory.Reference,
+        "M10.9.4 desktop integration profile reusing the validated training objectives/actions over a versioned generation-ready runtime seed suitable for sustained low-load turbine-generator-grid operation.",
+        DesktopSustainedGenerationInitialConditionFactory.Reference,
         IntegratedOperationsTrainingProgram.Scenario.Objectives,
         IntegratedOperationsTrainingProgram.Scenario.AllowedOperatorActions);
 

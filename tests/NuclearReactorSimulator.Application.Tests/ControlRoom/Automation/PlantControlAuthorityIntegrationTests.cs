@@ -110,7 +110,7 @@ public sealed class PlantControlAuthorityIntegrationTests
     public void InvalidRequiredMeasurement_DegradesFailClosedWithoutTrueStateFallback()
     {
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new DesktopIntegratedOperationsInitialConditionFactory().CreateRuntimeEngine());
+            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
         var state = engine.CurrentState;
         var inputs = engine.PersistentInputs;
         var powerLoop = inputs.ReactorPrimaryInputs.Definition.Loops
@@ -161,6 +161,6 @@ public sealed class PlantControlAuthorityIntegrationTests
     private static ScenarioSession CreateSession()
         => new ScenarioSessionFactory(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         })).Load(DesktopIntegratedOperationsProgram.Scenario);
 }

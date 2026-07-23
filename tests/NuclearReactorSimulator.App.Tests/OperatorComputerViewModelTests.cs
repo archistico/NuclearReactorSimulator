@@ -34,6 +34,41 @@ public sealed class OperatorComputerViewModelTests
     }
 
     [Fact]
+    public void PageSelection_ExposesExactlyOneIntegratedNavigationState()
+    {
+        var viewModel = CreateViewModel(ControlRoomSnapshot.ShellOnly);
+        var pageIds = new[]
+        {
+            OperatorComputerPageId.Guidance,
+            OperatorComputerPageId.Info,
+            OperatorComputerPageId.Alarms,
+            OperatorComputerPageId.Commands,
+            OperatorComputerPageId.Modes,
+            OperatorComputerPageId.Diagnostics,
+            OperatorComputerPageId.Log,
+            OperatorComputerPageId.Session,
+        };
+
+        foreach (var pageId in pageIds)
+        {
+            viewModel.SelectPage(pageId);
+            var selectedStates = new[]
+            {
+                viewModel.IsGuidancePageSelected,
+                viewModel.IsInfoPageSelected,
+                viewModel.IsAlarmsPageSelected,
+                viewModel.IsCommandsPageSelected,
+                viewModel.IsModesPageSelected,
+                viewModel.IsDiagnosticsPageSelected,
+                viewModel.IsLogPageSelected,
+                viewModel.IsSessionPageSelected,
+            };
+
+            Assert.Single(selectedStates, static selected => selected);
+        }
+    }
+
+    [Fact]
     public void SnapshotUpdate_PreservesPresentationOnlyPageSelectionAndRefreshesStatusLine()
     {
         var viewModel = CreateViewModel(ControlRoomSnapshot.ShellOnly);

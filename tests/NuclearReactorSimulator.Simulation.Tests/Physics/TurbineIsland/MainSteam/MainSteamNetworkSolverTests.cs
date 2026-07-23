@@ -82,7 +82,52 @@ public sealed class MainSteamNetworkSolverTests
         Assert.Equal(MassFlowRate.Zero, train.StopValve.MassFlowRate);
     }
 
-    private static Fixture CreateFixture(bool stopValveFailSafeActive = false)
+    [Fact]
+    public void Step_CirculationDemandBalanced_ReplenishesMainSteamLineFromDrumConservatively()
+    {
+        var fixture = CreateFixture(circulationDemandBalanced: true);
+        var solver = new MainSteamNetworkSolver(fixture.Definition, new PreservingThermodynamicModel());
+        var initialDrum = fixture.State.GetFluidNode("drum");
+        var initialSteam = fixture.State.GetFluidNode("steam");
+        var deltaTime = TimeSpan.FromMilliseconds(1d);
+
+        var result = solver.Step(fixture.State, fixture.Inputs, deltaTime);
+
+        var line = Assert.Single(result.Snapshot.SteamLines);
+        var candidateDrum = result.CandidateState.GetFluidNode("drum");
+        var candidateSteam = result.CandidateState.GetFluidNode("steam");
+        var transferredMass = line.MassFlowRate.KilogramsPerSecond * deltaTime.TotalSeconds;
+        var transferredEnergy = initialSteam.SpecificInternalEnergy.JoulesPerKilogram * transferredMass;
+
+        Assert.True(line.MassFlowRate > MassFlowRate.Zero);
+        Assert.Equal(initialSteam.Mass.Kilograms, candidateSteam.Mass.Kilograms, 9);
+        Assert.Equal(initialSteam.InternalEnergy.Joules, candidateSteam.InternalEnergy.Joules, 3);
+        Assert.Equal(initialDrum.Mass.Kilograms - transferredMass, candidateDrum.Mass.Kilograms, 9);
+        Assert.Equal(initialDrum.InternalEnergy.Joules - transferredEnergy, candidateDrum.InternalEnergy.Joules, 3);
+        Assert.InRange(Math.Abs(result.Snapshot.Audit.BalanceMassRateResidualKilogramsPerSecond), 0d, 1e-12d);
+        Assert.InRange(Math.Abs(result.Snapshot.Audit.BalancePowerResidualWatts), 0d, 1e-6d);
+    }
+
+    [Fact]
+    public void Step_LegacyReturnSplit_DoesNotApplyDemandBalancedSteamSupply()
+    {
+        var fixture = CreateFixture();
+        var solver = new MainSteamNetworkSolver(fixture.Definition, new PreservingThermodynamicModel());
+        var initialSteamMass = fixture.State.GetFluidNode("steam").Mass.Kilograms;
+        var deltaTime = TimeSpan.FromMilliseconds(1d);
+
+        var result = solver.Step(fixture.State, fixture.Inputs, deltaTime);
+
+        var line = Assert.Single(result.Snapshot.SteamLines);
+        Assert.Equal(
+            initialSteamMass - (line.MassFlowRate.KilogramsPerSecond * deltaTime.TotalSeconds),
+            result.CandidateState.GetFluidNode("steam").Mass.Kilograms,
+            9);
+    }
+
+    private static Fixture CreateFixture(
+        bool stopValveFailSafeActive = false,
+        bool circulationDemandBalanced = false)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -194,7 +239,17 @@ public sealed class MainSteamNetworkSolverTests
         var drums = new SteamDrumSystemDefinition(
             "drums",
             circulation,
-            new[] { new SteamDrumDefinition("drum-a", "loop", "drum", "steam") });
+            new[]
+            {
+                new SteamDrumDefinition(
+                    "drum-a",
+                    "loop",
+                    "drum",
+                    "steam",
+                    circulationDemandBalanced
+                        ? SteamDrumLiquidRecirculationMode.CirculationDemandBalanced
+                        : SteamDrumLiquidRecirculationMode.LegacyReturnSplit),
+            });
         var boundaries = new PrimaryCircuitBoundarySystemDefinition(
             "boundaries",
             drums,

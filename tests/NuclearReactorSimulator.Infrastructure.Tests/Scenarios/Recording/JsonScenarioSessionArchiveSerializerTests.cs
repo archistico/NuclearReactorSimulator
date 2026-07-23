@@ -14,7 +14,7 @@ public sealed class JsonScenarioSessionArchiveSerializerTests
     {
         var factory = new ScenarioSessionFactory(new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopIntegratedOperationsInitialConditionFactory(),
+            new DesktopSustainedGenerationInitialConditionFactory(),
         }));
         var session = factory.Load(DesktopIntegratedOperationsProgram.Scenario);
         using var recorder = new ScenarioRecorder(session);
