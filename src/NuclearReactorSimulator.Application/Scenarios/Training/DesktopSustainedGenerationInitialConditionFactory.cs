@@ -10,7 +10,7 @@ namespace NuclearReactorSimulator.Application.Scenarios.Training;
 /// <summary>
 /// M10.9.4 generation-ready desktop seed. Version 2 intentionally leaves the historical M9.7 v1 seed untouched for
 /// replay/archive compatibility while providing a thermodynamically pressurized steam path, matched low-load steam/condensate/feedwater
-/// capacity and bumpless controller biases suitable for sustained turbine-generator-grid operation.
+/// capacity, explicit condenser headroom above the 24.5 MW surface-transfer design point and bumpless controller biases suitable for sustained turbine-generator-grid operation.
 /// </summary>
 public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersionedInitialConditionFactory
 {
@@ -22,7 +22,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
     public InitialConditionDescriptor Descriptor { get; } = new(
         Reference,
         "Integrated Operations Sustained Generation Runtime v2",
-        "M10.9.4 generation-ready desktop seed preserving the v1 replay baseline while establishing a continuously pressure-graded staged steam path, matched admission/condenser/feedwater hydraulics and a generation-scale condenser steam-space inventory, bumpless control biases and finite heat rejection for sustained low-load electrical export.");
+        "M10.9.4 generation-ready desktop seed preserving the v1 replay baseline while establishing a continuously pressure-graded staged steam path, matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory, 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law, bumpless control biases and finite heat rejection for sustained low-load electrical export.");
 
     public IControlRoomRuntimeEngine CreateRuntimeEngine()
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
@@ -34,7 +34,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialRotorSpeedRpm: 3_000d,
             initialGeneratorBreakerClosed: true,
             initialRequestedElectricalPowerMegawatts: 5d,
-            initialCondenserCoolingPowerMegawatts: 24.5d,
+            initialCondenserCoolingPowerMegawatts: 40d,
             initialTurbineSpeedSetpointRpm: 3_000d,
             initialControlValvePercentOpen: 46d,
             initialHeaderSteamTemperatureCelsius: 275d,
@@ -47,7 +47,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             speedControllerDerivativeGainSeconds: 0.2d,
             hotwellControllerProportionalGain: -0.01d,
             includeTurbineShaftPowerInstrumentation: true,
-            maximumCondenserMassFlowRateKilogramsPerSecond: 15d,
+            maximumCondenserMassFlowRateKilogramsPerSecond: 20d,
             condenserOverallHeatTransferConductanceMegawattsPerKelvin: 1.225d,
             condenserCoolingWaterTemperatureCelsius: 20d,
             secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared: 500d,

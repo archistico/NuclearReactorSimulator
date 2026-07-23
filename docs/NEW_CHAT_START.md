@@ -10,53 +10,58 @@ We are continuing the **Nuclear Reactor Simulator** project.
 4. `docs/ARCHITECTURE.md`
 5. `docs/milestones/M10.9.4.md`
 6. `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`
-7. `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`
-8. `docs/milestones/M10.9.3.md`
-9. `docs/INTERACTIVE_FULL_PLANT_MIMIC.md`
-10. `docs/ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md`
-11. `docs/OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`
-12. ADR 0075–ADR 0090
+7. `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`
+8. `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`
+9. `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`
+10. `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
+11. `docs/KNOWN_MODEL_LIMITATIONS.md`
+12. `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`
+13. `docs/milestones/M10.9.3.md`
+14. `docs/INTERACTIVE_FULL_PLANT_MIMIC.md`
+15. `docs/ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md`
+16. `docs/OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`
+17. ADR 0075–ADR 0091
 
 ## Exact checkpoint
 
 - M7, M8, M9 gates: **COMPLETE / VALIDATED**.
-- M10.1–M10.9.3: **VALIDATED**.
-- Official baseline: **M10.9.3 — Interactive Full-Plant Mimic**.
-- Latest validated structural checkpoint: **M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup**.
-- Current candidate: **M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work**.
+- M10.1–M10.9.4: **VALIDATED**.
+- Official milestone baseline: **M10.9.4 — Subsystem Engineering Schematics**.
+- Hotfix 23 validation: compilation, complete ordinary suite and both explicit 60-second gameplay journeys passed.
+- Final M10.9.4 manual HMI / engineering-schematic checklist: **PASSED**.
+- Current activity: **M10.9.4.1-A.2 Hotfix 1 condenser-headroom candidate; local validation pending**.
+- A.1 evidence completion is implemented in the candidate: one-second sampling, exact latched-function reporting and independent condenser-limit/exhaust-inventory diagnostics.
+- Confirmed initiating protection: `condenser-high-backpressure`; the unchanged 30 kPa threshold was crossed between ten-second samples near 70 s.
+- A.2 changes only current-v2 installed cooling capacity 24.5→40 MW and maximum condensation flow 15→20 kg/s; `UA`, cooling-water temperature, solver law, thresholds and legacy seeds remain unchanged.
+- Broader next phase after A.2 validation: **M10.9.4.1-B — Drum and Source Inventory Closure**.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
-## Approved M10.9 sequence
+## Approved forward sequence
 
-1. M10.9.1 HMI Information Architecture & Visual Language — VALIDATED
-2. M10.9.2 Hotfix 2 Advanced Instrument & Gauge System — VALIDATED
-3. M10.9.3 Interactive Full-Plant Mimic — VALIDATED
-4. M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — VALIDATED STRUCTURAL CHECKPOINT
-5. M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — VALIDATED STRUCTURAL CHECKPOINT
-6. M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — VALIDATED STRUCTURAL CHECKPOINT
-7. M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — VALIDATED STRUCTURAL CHECKPOINT
-8. M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — VALIDATED STRUCTURAL CHECKPOINT
-9. M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — VALIDATED
-10. M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — CURRENT CANDIDATE
-11. M10.9.5 Contextual Command Consequence Model
-12. M10.9.6 Operational Challenge & Energy-Demand Framework
-13. M10.9.7 Mission & Performance Workstation
-14. M10.9.8 Integrated Human-Automation-HMI Validation Gate
+1. Validate M10.9.4.1-A.2 Hotfix 1 through build, ordinary suite, both gameplay-long journeys and the full audit pack.
+2. M10.9.4.1-B drum and source inventory closure.
+3. M10.9.4.1-C condenser phase-change closure.
+4. M10.9.4.1-D turbine admission and governor authority.
+5. M10.9.4.1-E generator/grid scale and bidirectional coupling.
+6. M10.9.4.1-F relief/bypass with choked flow.
+7. M10.9.4.1-G flow-work and enthalpy transport.
+8. M10.9.4.1-H numerical stiffness decision gate.
+9. M10.9.4.1-I compatibility and engineering hardening.
+10. M10.9.5 Contextual Command Consequence Model.
+11. M10.9.6 Operational Challenge & Energy-Demand Framework.
+12. M10.9.7 Mission & Performance Workstation.
+13. M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
+## Why M10.9.4.1 is separate
 
-## Hotfix 22 validated checkpoint / Hotfix 23 current step
+Hotfix 13–23 repaired real physical/control defects discovered by the M10.9.4 long-running acceptance tests. The new 300-second audit then exposed a further long-horizon trip near 70 simulated seconds. M10.9.4.1 is therefore organized as evidence-first hardening:
 
-Hotfix 17 established condenser UA·ΔT feedback, Hotfix 18 generator/grid synchronous stiffness and Hotfix 19 secondary-pump discharge check valves; all are validated structural checkpoints. Hotfix 20 Fix 2 is now also validated after compilation, the ordinary suite and both explicit 60-second journeys passed with measured turbine overspeed, condenser high-backpressure and generator overfrequency protections active. Hotfix 21 is validated with deterministic actuator travel/ramp dynamics. Hotfix 22 is also validated with speed reference before synchronization and requested-load droop after breaker closure. Hotfix 23 is based directly on Hotfix 22 and changes only turbine work availability: current-v2 uses pressure/temperature/vapor-dependent educational expansion bounded by nominal design work and inlet internal energy, while legacy stages remain fixed-work.
+- A.1 identifies the exact protection edge, condenser limiter, inventory slopes, pump/controller behavior and nominal scale;
+- B–G isolate drum/source, condenser, turbine/governor, generator/grid, relief/choked-flow and enthalpy/flow-work corrections;
+- H measures stiffness before choosing explicit substepping or semi-implicit treatment;
+- I closes compatibility, CI, reference trajectories, known limitations and possible offline seed trim.
 
-Current-v2 condenser law:
-
-```text
-ΔT = max(0, Tsteam - Tcoolant)
-Qsurface = UA * ΔT
-Qeffective = min(Qavailable, Qsurface)
-```
-
-Current v2 design values: `UA = 1.225 MW/K`, `Tcoolant = 20 °C`; at the existing 40 °C exhaust design point this reproduces exactly 24.5 MW. Run ordinary tests and both explicit journeys before advancing to source-side/steam-dump audit or adaptive-substep hardening.
+These items are mandatory before command-consequence and challenge/demand work so later features describe stable canonical behavior rather than temporary approximations.
 
 ## What M10.9.4 changes
 
@@ -99,6 +104,12 @@ Then manually verify `docs/milestones/M10.9.4.md`.
 
 If the normal suite passes but a long gameplay test fails, diagnose the reported checkpoint/power-path evidence before promoting M10.9.4.
 
+
+## M10.9.4.1-A observed failure
+
+The extended audit has been run. Compilation and ordinary tests pass, but the intended healthy 300-second/5 MWe journey trips at checkpoint 7/30, step 7000 (~70 s), with turbine and generator trip latched. Conservation remains closed; sampled drift reaches drum 7.821 MPa / 100% level, condenser 28.593 kPa and feedwater flow 0 kg/s.
+
+The combined trip action, bounded rotor speed and bounded frequency identify `condenser-high-backpressure` as the initiating function. A.2 adds one-second direct function/limiter evidence and tests a narrow capacity-headroom correction without changing the 30 kPa threshold or the condenser solver law.
 
 ## M10.9.4 Hotfix 13 current correction
 

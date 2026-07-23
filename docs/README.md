@@ -6,14 +6,22 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 - `PROJECT_HANDOFF.md` — **authoritative current checkpoint**, ownership rules and exact continuation point.
 - `NEW_CHAT_START.md` — ready-to-paste bootstrap for restarting work in a new conversation.
-- `PROJECT_STATUS.md` — current capability map, current candidate and deliberate omissions.
+- `PROJECT_STATUS.md` — current capability map, latest validated checkpoint and deliberate omissions.
 - `ROADMAP.md` — milestone sequence, phase gates and future scope.
 - `ARCHITECTURE.md` — system composition, state ownership and cross-domain boundaries.
 - `milestones/M10.9.2.md` — validated advanced-instrument/gauge baseline.
-- `milestones/M10.9.3.md` — current interactive full-plant mimic candidate and validation boundary.
+- `milestones/M10.9.3.md` — validated interactive full-plant mimic baseline.
 - `INTERACTIVE_FULL_PLANT_MIMIC.md` — whole-plant mimic contracts, selection and rendering boundary.
 - `SUBSYSTEM_ENGINEERING_SCHEMATICS.md` — detailed reactor/primary/turbine/generator/instrumentation engineering schematic grammar.
-- `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — separately runnable explicit long operator-journey/endurance acceptance tests.
+- `milestones/M10.9.4.md` — validated subsystem-engineering-schematics milestone.
+- `M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md` — completed user-facing M10.9.4 sign-off.
+- `milestones/M10.9.4.1.md` — active operational-envelope and numerical-hardening milestone before M10.9.5.
+- `M10_9_4_1_A_EXTENDED_AUDIT.md` — executed non-green extended audit and exact ~70-second trip evidence.
+- `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` — adjudication of the two external LLM reviews and accepted planning decisions.
+- `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` — revised A.1–I evidence/physics/numerical hardening sequence.
+- `REFERENCE_PLANT_SCALE_CONTRACT.md` — open nominal scale/inertia/droop/capacity engineering decision.
+- `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
+- `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
 - `ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md` — gauge semantics, provenance/quality, off-scale and logical-step trend rules.
 - `milestones/M10.9.1.md` — validated HMI information-architecture/visual-language baseline.
 - `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md` — approved M10.9.1–M10.9.8 operator-experience, schematics, consequence and challenge architecture.
@@ -21,7 +29,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI decisions are ADR 0046–0076.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI decisions are ADR 0046–0090.
 
 ## Milestone records
 
@@ -29,23 +37,22 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Domain documents
 
-The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.2 advanced-instrument/gauge baseline and current M10.9.3 interactive full-plant mimic candidate and the approved M10.9.1–M10.9.8 operator-experience architecture.
+The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.3 interactive full-plant mimic baseline, validated M10.9.4, active non-green M10.9.4.1 extended audit/hardening, and the approved M10.9.1–M10.9.8 operator-experience architecture.
 
 When modifying a subsystem, update its domain document together with the milestone/ADR/handoff documents rather than leaving architecture knowledge only in source comments or chat history.
 
 ## Current restart checkpoint
 
-At this documentation refresh:
+At this documentation/planning checkpoint:
 
-- M7 gate is complete / validated.
-- M8.1–M8.7 hotfix 2 are validated and the M8 gate is complete.
-- M9.1–M9.7 are validated and the M9 gate is complete.
-- M9 gate: COMPLETE / VALIDATED.
-- M10.1–M10.9.2 Hotfix 2 are validated.
-- Current validated baseline: M10.9.1 HMI Information Architecture & Visual Language.
-- Current implementation candidate: M10.9.3 Interactive Full-Plant Mimic.
+- M7, M8 and M9 gates are complete / validated.
+- M10.1–M10.9.4 are validated.
+- Official milestone baseline: M10.9.4.
+- M10.9.4.1-A Hotfix 1 compiles and the ordinary suite passes.
+- The explicit 300-second healthy-reference audit fails near 70 simulated seconds with latched turbine/generator trip.
+- M10.9.4.1-A is not validated; the failure is preserved as evidence.
+- Next checkpoint: M10.9.4.1-A.1 Audit Evidence Completion, still without production-physics changes.
 - M10 closes after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
-- M10 is IN PROGRESS under the approved Operator Computer & Supervisory Automation architecture.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
 

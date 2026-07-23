@@ -18,6 +18,7 @@ public sealed class GameplayJourneyLongRunningTests
     private const int CheckpointCount = 6;
 
     [Fact(Explicit = true)]
+    [Trait("Category", "GameplayLong")]
     public void DesktopIntegratedSession_SustainsParallelElectricalExportForSixtySimulatedSeconds()
     {
         var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
@@ -59,6 +60,7 @@ public sealed class GameplayJourneyLongRunningTests
     }
 
     [Fact(Explicit = true)]
+    [Trait("Category", "GameplayLong")]
     public void SynchronizeCloseLoadRaiseJourney_ProducesAndSustainsElectricalExport()
     {
         var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]

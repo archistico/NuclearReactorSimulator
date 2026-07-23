@@ -668,7 +668,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.9.3 are VALIDATED; the user confirmed M10.9.3 compiled and the complete automated suite passed. M10.9.3 is the current official baseline and M10.9.4 is the current implementation candidate. The approved M10.9 sequence refactors the operator experience around a clear engineering HMI, advanced instrumentation, plant/subsystem schematics, command-consequence understanding and deterministic performance-oriented training. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
+M10 is **IN PROGRESS**. M10.1–M10.9.4 are VALIDATED. The final manual HMI / engineering-schematic checklist passed, so M10.9.4 is the official baseline. M10.9.4.1-A has executed and repeatedly trips near 70 simulated seconds. The action signature identifies condenser high backpressure. A.2 Hotfix 1 is the current candidate, adding one-second evidence and isolated current-v2 condenser-capacity headroom. The remaining M10.9.4.1 physical/numerical phases stay before M10.9.5 so later consequence, challenge and scoring work is built over stable canonical behavior. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
 
 Two independent axes are mandatory:
 
@@ -764,12 +764,29 @@ Two independent axes are mandatory:
 - realistic equipment identity/shape, explicit inputs/outputs, pipe direction, flow/phase, pressure, temperature and state;
 - selection/drill-down highlights connected process paths without replacing detailed subsystem workspaces.
 
-### M10.9.4 Subsystem Engineering Schematics — IMPLEMENTATION CANDIDATE
+### M10.9.4 Subsystem Engineering Schematics — VALIDATED
 
 - reactor/core dependency schematic;
 - primary/steam-drum and turbine/secondary engineering schematics;
 - generator/grid schematic;
-- instrumentation/control/protection signal-flow schematic with a grammar distinct from piping and explicit protection priority.
+- instrumentation/control/protection signal-flow schematic with a grammar distinct from piping and explicit protection priority;
+- Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
+- final manual schematic/HMI checklist passed; M10.9.4 is validated and Phase A audit evidence is now the active gate.
+
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (A.2 candidate)
+
+- Phase A audit implementation compiles and the ordinary suite passes, but the intended healthy 300-second/5 MWe journey trips near 70 simulated seconds; conservation remains closed and the action signature identifies `condenser-high-backpressure`;
+- Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
+- Phase A.2 preserves the 24.5 MW initial `UA * ΔT` point while raising current-v2 installed cooling capacity to 40 MW and maximum condensation flow to 20 kg/s; validation pending;
+- Phase B closes drum/source mass, energy, phase and liquid-inventory behavior before low-level protection;
+- Phase C closes condenser phase-change/hotwell energy and independent limiting semantics;
+- Phase D aligns turbine admission phase policy and governor authority;
+- Phase E resolves reference-plant scale and adds bidirectional generator/grid coupling before reverse-power/underfrequency/loss-of-synchronism protection;
+- Phase F adds choked compressible flow and conservative relief/bypass topology;
+- Phase G performs a dedicated flow-work/enthalpy transport migration;
+- Phase H measures numerical stiffness before choosing adaptive substepping or semi-implicit coupling;
+- Phase I completes profile compatibility, legacy retirement, audit consolidation, CI, reference trajectories, known limitations and optional offline seed-trim research;
+- require ordinary suite, 60-second journeys, a healthy 300-second reference journey, per-step protection evidence, replay determinism, conservation/inventory slopes, scale contract and performance gates before M10.9.5.
 
 ### M10.9.5 Contextual Command Consequence Model
 

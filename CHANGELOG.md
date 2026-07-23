@@ -1,6 +1,48 @@
-## M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — IMPLEMENTATION CANDIDATE
+## M10.9.4.1-A.2 Hotfix 1 — Condenser installed-capacity headroom / per-second trip evidence — CANDIDATE
 
-- Promotes Hotfix 22 to the latest validated structural checkpoint after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.
+- Confirms the repeated 300-second audit failure is not intermittent: the only automatic function capable of producing the observed `TurbineTrip | GeneratorTrip` at ~70 s with rotor/frequency inside bounds is `condenser-high-backpressure` crossing its unchanged 30 kPa measured threshold.
+- Preserves the current-v2 condenser surface law and initial design point: cooling water remains 20 °C and `UA` remains 1.225 MW/K, so a 40 °C steam space is still surface-limited to 24.5 MW.
+- Raises only the installed current-v2 cooling-boundary ceiling from 24.5 MW to 40 MW, allowing the existing `UA * ΔT` negative feedback to continue above the initial point instead of clipping exactly at design load.
+- Raises the current-v2 maximum condensation-flow ceiling from 15 to 20 kg/s so the hard mass-flow cap has explicit margin over the approximately 15 kg/s turbine path. Legacy/v1 seeds remain unchanged.
+- Samples the 300-second audit once per simulated second and reports stage flow, actual/inventory/thermal condensation limits, heat-rejection capacity, surface limit, exhaust mass and the exact latched protection-function measurements.
+- No condenser solver equation, thermodynamic property law, protection threshold/action, timestep, controller, replay schema or legacy seed is changed. Local build, ordinary tests, 60-second journeys and the full `OperationalEnvelopeAudit` gate remain required.
+
+## M10.9.4.1-A audit execution / external review planning checkpoint
+
+- Records local compilation and ordinary-suite success after Hotfix 1.
+- Records the non-green explicit extended audit: the intended 300-second/5 MWe journey fails at checkpoint 7/30, step 7000 (~70 simulated seconds), with `TurbineTrip | GeneratorTrip` latched.
+- Preserves the exact evidence: conservation residuals remain effectively zero; sampled drum reaches 7.821 MPa / 100%, condenser reaches 28.593 kPa and feedwater flow reaches 0 kg/s.
+- Classifies condenser high backpressure as the leading but unproved hypothesis because protection executes every step while the audit samples only every 10 seconds.
+- Adds the A.1 audit-evidence-completion gate, revised B–I hardening sequence, external LLM review adjudication, open reference-plant scale contract and known-model-limitations register.
+- Documentation only: no source, solver, seed, coefficient, threshold, controller, integration or replay behavior changed.
+
+## M10.9.4.1-A Hotfix 1 — Invariant audit diagnostic compile fix
+
+- Fixes `CS1503` in `OperationalEnvelopeExtendedAuditTests.ToString()`: concatenated interpolated strings were materialized as `string` before being passed to `FormattableString.Invariant`.
+- Formats each diagnostic segment invariantly and concatenates the resulting strings. Diagnostic content and assertion thresholds are unchanged.
+- Test-only correction: no solver, seed, controller, protection, integration, replay or production-physics behavior changed.
+
+## M10.9.4 final validation / M10.9.4.1-A extended audit candidate
+
+- Recorded user-confirmed passage of the complete M10.9.4 manual HMI / engineering-schematic checklist; M10.9.4 is now the official validated milestone baseline.
+- Opened M10.9.4.1-A as an audit-only candidate on the validated Hotfix 23 source baseline.
+- Added explicit 300-second steady operation, deterministic load raise/lower, breaker-open/generator-trip/turbine-trip load rejection, condenser-cooling degradation, per-step secondary-pump non-return and 120-second replay/checkpoint journeys.
+- Added read-only, test-assembly-only access to the already committed canonical snapshot so audit tests can report mass/energy closure, drum/condenser envelope, rotor/frequency, pump-flow and protection evidence without exposing true state to App/UI consumers.
+- Added separately filtered, non-parallel audit runner scripts and explicit category filtering for the existing 60-second gameplay pack.
+- No solver law, physical coefficient, protection threshold, seed configuration, integration behavior or replay schema was changed. Local .NET 10 validation remains required before Phase A promotion.
+
+## M10.9.4 Hotfix 23 validation and forward-planning documentation checkpoint
+
+- Recorded user-confirmed validation of Hotfix 23: compilation, the complete ordinary suite and both explicit 60-second gameplay journeys passed.
+- Clarified that M10.9.4 has no open production candidate and now awaits only final manual HMI/schematic acceptance.
+- Added `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md` as the exact promotion gate.
+- Inserted planned M10.9.4.1 `Operational Envelope & Numerical Hardening` before M10.9.5 to stop physical-model scope creep inside the schematic milestone.
+- Added `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` and `docs/milestones/M10.9.4.1.md` with six isolated phases: extended audit, source-side steam generation, load-rejection relief/bypass, supervised electrical protection, deterministic adaptive substepping and canonical-result duplication audit.
+- Updated authoritative handoff/status/roadmap/restart/documentation-map records. No production code, physics, replay schema or test thresholds changed.
+
+## M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — VALIDATED STRUCTURAL CHECKPOINT
+
+- Builds on validated Hotfix 22 and is now itself validated after the user confirmed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys all pass.
 - Adds strongly typed `SpecificHeatCapacity` and optional `TurbineThermodynamicWorkDefinition`; null preserves the historical fixed-`NominalSpecificWork` law.
 - Current-v2 estimates ideal vapor expansion work from committed inlet temperature, inlet/exhaust pressure ratio, heat-capacity ratio and inlet vapor mass fraction, then bounds it by the 500 kJ/kg stage design cap and 80% of committed inlet specific internal energy.
 - Liquid admission, absent vapor content or non-positive pressure drop now yields zero current-v2 shaft work instead of nominal torque. Rising exhaust backpressure continuously reduces available work.
@@ -8,7 +50,7 @@
 - The validated operating point remains materially unchanged because thermodynamic availability exceeds the existing nominal design cap; turbine efficiency still produces approximately 400 kJ/kg extracted work.
 - Extends turbine snapshots, Application presentation and long-running diagnostics with available/extracted specific work plus model-active/limited flags.
 - Adds direct domain, solver and versioned-seed regressions plus ADR 0090. Adaptive substepping and source-side/steam-dump fidelity remain separate follow-on work.
-- M10.9.3 remains the official milestone baseline; Hotfix 22 is the latest validated M10.9.4 structural checkpoint and Hotfix 23 requires ordinary + both explicit 60-second gates before promotion.
+- M10.9.3 remains the official milestone baseline until final manual M10.9.4 acceptance; Hotfix 23 is the latest validated structural checkpoint and no production candidate is open.
 
 ## M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup — VALIDATED STRUCTURAL CHECKPOINT
 
@@ -19,7 +61,7 @@
 - Manual controller mode bypasses droop rewriting. The breaker-close step itself remains pre-sync; load-droop semantics begin on the next committed step.
 - Both M5.4 integrated and M5.5 protected orchestration paths pass canonical `IntegratedSecondaryCycleInputs` into the governor so requested load cannot diverge by execution path.
 - Adds domain, solver and versioned-seed regressions plus ADR 0089. No protection, actuator-rate, turbine, condenser, pump or generator-grid physics changes are mixed into this hotfix.
-- M10.9.3 remains the official milestone baseline; Hotfix 21 is the latest validated M10.9.4 structural checkpoint and Hotfix 22 requires ordinary + both explicit 60-second gates before promotion.
+- User validation complete: compilation, the ordinary suite and both explicit 60-second journeys passed. Hotfix 22 became the validated base for Hotfix 23.
 
 ## M10.9.4 Hotfix 21 — Deterministic Secondary Actuator Travel/Ramp Dynamics — VALIDATED STRUCTURAL CHECKPOINT
 
@@ -31,7 +73,7 @@
 - Protection trip override remains higher authority: turbine-trip stop-valve closure is not routed through normal M5.4 actuator travel limits. Hydraulic fault overrides also remain separate.
 - Adds direct domain and M5.4 regressions for optional legacy semantics, typed rate validation, bounded per-step valve/pump movement, non-instantaneous coast-down and explicit current-v2 ownership.
 - Adds ADR 0088. Governor/load-control mode cleanup remains the next separate structural step.
-- M10.9.3 remains the official validated milestone baseline; Hotfix 20 Fix 2 is the latest validated M10.9.4 structural checkpoint and Hotfix 21 requires ordinary + both explicit 60-second gates before promotion.
+- User validation complete: compilation, the ordinary suite and both explicit 60-second journeys passed. Hotfix 21 became the validated base for Hotfix 22.
 
 ## M10.9.4 Hotfix 20 Fix 2 — Meaningful Secondary Protection Set / Physical Frequency Regression Contract — VALIDATED STRUCTURAL CHECKPOINT
 
@@ -50,7 +92,7 @@
 - Intentionally defers generator underfrequency protection until breaker/load-state supervision is available; a disconnected machine must not latch underfrequency merely because it is not synchronized.
 - Adds regressions proving legacy/current version ownership, exact thresholds/actions, healthy initial v2 state and actual latching from measured overspeed/backpressure/overfrequency signals.
 - Adds ADR 0087. Actuator travel rates, governor/load-control cleanup and adaptive substepping remain separate follow-on work.
-- M10.9.3 remains the official validated milestone baseline; Hotfix 19 is the latest validated M10.9.4 structural checkpoint and Hotfix 20 requires ordinary + both explicit 60-second gates before promotion.
+- User validation complete after Fix 2: compilation, the ordinary suite and both explicit 60-second journeys passed. Hotfix 20 Fix 2 became the validated base for Hotfix 21.
 
 ## M10.9.4 Hotfix 19 — Secondary-Pump Discharge Check Valves — VALIDATED STRUCTURAL CHECKPOINT
 
@@ -61,7 +103,7 @@
 - Enables discharge check valves only on current-v2 `condensate-pump` and `feedwater-pump`; the main circulation pump and all legacy/default definitions remain unchanged.
 - Adds direct regressions for running/stopped reverse-flow blocking, passive forward opening, zero mass/energy balance when closed, and v1/v2 topology ownership.
 - Adds ADR 0086 and updates the structural stabilization roadmap. Protection expansion, actuator travel rates and adaptive substepping remain explicitly deferred.
-- M10.9.3 remains the official validated milestone baseline; Hotfix 18 is the latest validated M10.9.4 structural checkpoint and Hotfix 19 requires ordinary + both explicit 60-second gates before promotion.
+- User validation complete after the compile fix: compilation, the ordinary suite and both explicit 60-second journeys passed. Hotfix 19 became the validated base for Hotfix 20.
 
 ## M10.9.4 Hotfix 18 — Generator/Grid Synchronous Phase-Frequency Stiffness — VALIDATED STRUCTURAL CHECKPOINT
 
@@ -75,7 +117,7 @@
 - Current sustained-generation and pre-synchronization v2 definitions use `Psync,max = 10 MW` and `Pdamp@1Hz = 10 MW`; at the validated 50 Hz / zero-phase-error design point the correction is exactly zero, preserving the Hotfix 17 initial operating point.
 - Adds direct M4.5 regressions for phase lead/lag restoring direction, slow/fast rotor frequency damping and exact legacy-null-coupling dispatch behavior. Current-v2 seed tests assert the coupling is explicitly present.
 - Adds ADR 0085. No pump check-valve, protection expansion, actuator travel-rate or adaptive-substep changes are mixed into this hotfix.
-- M10.9.3 remains the official validated milestone baseline; Hotfix 17 is the latest validated M10.9.4 structural checkpoint and Hotfix 18 requires ordinary + both explicit 60-second gates before promotion.
+- User validation complete after the namespace compile fix: compilation, the ordinary suite and both explicit 60-second journeys passed. Hotfix 18 became the validated base for Hotfix 19.
 
 ## M10.9.4 Hotfix 17 — Condenser UA·ΔT Pressure Feedback — VALIDATED STRUCTURAL CHECKPOINT
 
@@ -117,6 +159,28 @@
 - Keeps finite positive/in-range admission and stage flow checks without conflating transient valve flow with turbine expansion flow.
 - Adds `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`, classifying the external structural audit against the current code and fixing the validation order: turbine hydraulic closure first, then condenser pressure feedback, synchronous generator-grid coupling, pump non-return behavior, protections/actuator dynamics, and later fidelity/integration hardening.
 - M10.9.3 remains the validated baseline; M10.9.4 Hotfix 14 remains candidate pending ordinary and explicit long-gameplay gates.
+
+## M10.9.4 Hotfix 13 — Pressure-Driven Turbine Expansion Hydraulic Closure — IMPLEMENTATION CANDIDATE
+
+- Rebases deliberately on Hotfix 10, the last ordinary-green candidate; the unvalidated Hotfix 11 and Hotfix 12 experimental branches are not part of the accepted source line.
+- Replaces the current-v2 historical `min(stop, control, admission)` stage-drain projection with a shared pressure-driven `turbine-inlet -> exhaust` expansion flow.
+- Adds optional `ExpansionResistance`; null preserves isolated legacy behavior, while current v2 uses 21,400 Pa·s²/kg².
+- Blocks reverse stage flow and limits one-step drain against committed inlet inventory.
+- Removes duplicated stage-flow resolution between integrated control paths and adopts the policy that legacy replay compatibility may not preserve a known defect in the active model.
+- Adds ADR 0080 and ADR 0081 plus a short admission-train inventory regression; ordinary and explicit long-running gates remain required.
+
+## M10.9.4 Hotfix 12 — Speculative Fuel/Structure Thermal Closure — WITHDRAWN / NEVER VALIDATED
+
+- Records the historical experimental branch described in the milestone history.
+- The branch explored a speculative fuel/structure thermal closure but was never accepted as the canonical cause or validated baseline.
+- Hotfix 13 rebased on Hotfix 10 and excluded this branch so the turbine hydraulic defect could be corrected in isolation.
+- No Hotfix 12 production behavior exists in the current validated tree.
+
+## M10.9.4 Hotfix 11 — Condenser-Flow-Following Workaround — WITHDRAWN / NEVER VALIDATED
+
+- Records the historical experimental condenser-flow-following workaround omitted from the prior changelog sequence.
+- The branch was never validated and was withdrawn rather than retained as a compensating law for the unresolved turbine admission-train accumulator.
+- Hotfix 13 rebased on Hotfix 10; no Hotfix 11 production behavior or accepted ADR remains in the current validated tree.
 
 ## M10.9.4 Hotfix 10 — Deterministic Seed Preconditioning & Steam-Path Control Authority — IMPLEMENTATION CANDIDATE
 

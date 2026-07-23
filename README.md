@@ -1,4 +1,4 @@
-> **Current M10.9.4 candidate:** Hotfix 23 adds pressure/temperature/vapor-dependent turbine work. Hotfix 22 is the latest validated structural checkpoint.
+> **Current checkpoint:** M10.9.4 is VALIDATED. M10.9.4.1-A repeatedly exposes condenser-high-backpressure trip near 70 simulated seconds. M10.9.4.1-A.2 Hotfix 1 is the current candidate: one-second direct trip/limiter evidence plus isolated current-v2 condenser installed-capacity headroom; local validation pending.
 
 # Nuclear Reactor Simulator
 
@@ -11,13 +11,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The current explicitly validated baseline is **M10.9.3 — Interactive Full-Plant Mimic — VALIDATED**. The user confirmed local compilation and the complete automated suite passed.
+The current official milestone baseline is **M10.9.4 — Subsystem Engineering Schematics — VALIDATED**.
 
-The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.3 are validated. **M10.9.4 Hotfix 22 — Governor Speed-to-Load Droop Mode Cleanup is the latest validated structural checkpoint**: the user confirmed compilation, the ordinary suite and both explicit 60-second gameplay journeys all pass. The current working package is **M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — IMPLEMENTATION CANDIDATE**, based directly on validated Hotfix 22.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 are validated. **M10.9.4.1-A — Extended Operating-Envelope Audit** has been executed: compilation and the ordinary suite pass, while the explicit healthy-reference journey latches turbine/generator trip near 70 simulated seconds. The original audit remains non-green. **M10.9.4.1-A.2 Hotfix 1** is the current candidate: it preserves the initial 24.5 MW `UA * ΔT` point while raising current-v2 installed cooling capacity to 40 MW and maximum condensation flow to 20 kg/s, with direct one-second protection/limiter evidence.
 
-Hotfix 19 is validated and adds opt-in non-return semantics to the current-v2 condensate/feedwater pumps. Hotfix 20 Fix 2 validates measured turbine overspeed, condenser high-backpressure and generator overfrequency trips. Hotfix 21 validates finite actuator travel; Hotfix 22 validates breaker-aware speed/load droop. Hotfix 23 now adds only thermodynamic turbine-work availability; adaptive substepping and source-side fidelity remain separate follow-on items.
+Hotfix 19 validates opt-in non-return semantics on current-v2 condensate/feedwater pumps. Hotfix 20 Fix 2 validates measured turbine overspeed, condenser high-backpressure and generator overfrequency trips. Hotfix 21 validates finite actuator travel; Hotfix 22 validates breaker-aware speed/load droop; Hotfix 23 validates pressure/temperature/vapor-dependent turbine work. Remaining physical/numerical hardening is moved out of schematic scope into **M10.9.4.1 — Operational Envelope & Numerical Hardening** before M10.9.5.
 
-See `docs/milestones/M10.9.4.md`, `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`, `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`, ADR 0075–ADR 0090. M10 closes only after M10.9.8; release hardening remains M11.
+See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0091. M10 closes only after M10.9.8; release hardening remains M11.
 
 ## Architectural principles
 
@@ -450,7 +450,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.3 are validated; M10.9.3 is the current official baseline and M10.9.4 Hotfix 23 is the current implementation candidate.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. M10.9.4.1-A compilation/ordinary tests pass, but the explicit extended audit found condenser-high-backpressure trip near 70 simulated seconds; A.2 Hotfix 1 validation is pending.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -577,4 +577,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.3 are validated; M10.9.4 Hotfix 23 is the current implementation candidate in the approved M10.9 operator-experience sequence.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. M10.9.4.1-A has executed and exposed a non-green 300-second reference journey; A.2 Hotfix 1 and later hardening phases remain before M10.9.5.

@@ -4,20 +4,26 @@ This is the **authoritative continuity checkpoint** for restarting the project i
 
 ## 1. Exact current truth
 
-### Official validated baseline
+### Official validated milestone baseline
 
-**M10.9.3 — Interactive Full-Plant Mimic — VALIDATED**
+**M10.9.4 — Subsystem Engineering Schematics — VALIDATED**
 
-The user explicitly confirmed local compilation and the complete automated suite passed.
+The user confirmed the complete final manual HMI / engineering-schematic checklist passed after Hotfix 23 had already passed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys.
 
 ```text
 M7 gate — COMPLETE / VALIDATED
 M8 gate — COMPLETE / VALIDATED
 M9 gate — COMPLETE / VALIDATED
         ↓
-M10.1–M10.9.3 — VALIDATED
+M10.1–M10.9.4 — VALIDATED
         ↓
-M10.9.4 Hotfix 23 — Pressure/Temperature/Vapor-Dependent Turbine Work — CURRENT CANDIDATE
+M10.9.4.1-A Extended Operating-Envelope Audit — EXECUTED / FAILURE FOUND
+        ↓
+M10.9.4.1-A.1 Audit Evidence Completion — IMPLEMENTED IN CANDIDATE
+        ↓
+M10.9.4.1-A.2 Condenser Capacity Headroom — CANDIDATE / VALIDATION PENDING
+        ↓
+M10.9.4.1-B through I Operational Envelope & Numerical Hardening
         ↓
 M10.9.5 Contextual Command Consequence Model
 M10.9.6 Operational Challenge & Energy-Demand Framework
@@ -27,20 +33,21 @@ M10.9.8 Integrated Human-Automation-HMI Validation Gate
 M10 COMPLETE
 ```
 
+### Current audit result
 
-## 1A. Latest green checkpoint and current structural step
+**M10.9.4.1-A — Extended Operating-Envelope Audit** has been executed on the validated Hotfix 23 source baseline. Hotfix 1 fixed only a test-diagnostic compile error. The solution compiles and the ordinary suite passes locally, but the explicit extended audit is not green.
 
-The user supplied **Hotfix 16 — Conservative Main-Steam Supply Closure** as the latest green working checkpoint. Its package changelog records:
+The intended 300-second healthy 5 MWe journey failed at checkpoint 7/30, logical step 7000 (~70 simulated seconds), with `TurbineTrip | GeneratorTrip` latched. Conservation residuals remained effectively zero, while sampled drum pressure rose to 7.821 MPa, drum level reached 100%, condenser pressure reached 28.593 kPa and sampled feedwater flow reached 0 kg/s.
 
-- solution build: 0 warnings/errors;
-- ordinary suite: 870 passed, 2 explicit journeys skipped by normal filtering;
-- both explicit 60-second gameplay journeys: passed separately.
+The action signature now identifies the initiating function: overspeed is excluded by the observed 3000.241 rpm maximum, overfrequency is excluded by 50.004 Hz, and only `condenser-high-backpressure` produces the observed combined `TurbineTrip | GeneratorTrip`. The 28.593 kPa ten-second sample therefore brackets an unobserved crossing of the unchanged 30 kPa threshold.
 
-Hotfix 16 closes current-v2 drum/main-steam continuity conservatively and fixes the artificial compressed-liquid rejection above the critical isobar. It is the base for Hotfix 17.
+M10.9.4.1-A.2 Hotfix 1 is the current candidate. It samples once per simulated second and reports the exact latched function plus condenser limits and exhaust inventory. It preserves 20 °C cooling water and `UA = 1.225 MW/K`, so the 40 °C design point remains 24.5 MW, but raises the installed current-v2 cooling ceiling to 40 MW and the maximum condensation-flow ceiling to 20 kg/s. No solver equation, threshold, timestep or legacy seed changes.
 
-**Hotfix 17 changes one structural item only:** current-v2 condenser heat rejection becomes `min(Q_available, UA·ΔT)` with `UA = 1.225 MW/K` and cooling water at 20 °C, chosen to reproduce the existing 24.5 MW / 40 °C design point exactly at initialization. Legacy null-UA definitions retain capacity-only behavior as an isolated compatibility seam.
+**Next:** local build, ordinary suite, both 60-second journeys and the complete `OperationalEnvelopeAudit` gate on A.2 Hotfix 1. See `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, ADR 0091 and `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`.
 
-Hotfix 17, Hotfix 18 and Hotfix 19 are validated structural checkpoints. Hotfix 20 Fix 2 is also validated: the user confirmed compilation, the ordinary suite and both explicit 60-second journeys green with measured turbine overspeed, condenser high-backpressure and generator overfrequency latching protection plus a complete measured-frame bootstrap. Hotfix 21 and Hotfix 22 are validated. Hotfix 22 establishes breaker-open speed control and breaker-closed requested-load droop without duplicate actuator ownership. Hotfix 23 changes only turbine work fidelity: current-v2 stage work depends on committed inlet temperature, inlet/exhaust pressure ratio and vapor fraction, bounded by the nominal 500 kJ/kg design cap and 80% inlet internal energy. Legacy stage definitions keep `ThermodynamicWork = null`.
+### Scope sequence after Hotfix 23
+
+M10.9.4.1 must finish before M10.9.5 so consequence chains and later challenge/scoring logic are built over a stable canonical operating envelope. Phase A found the failure; A.1 adds direct evidence; A.2 tests one isolated current-v2 condenser-capacity correction before the broader physical/numerical phases B–I.
 
 ## 2. Operator-experience objective
 
@@ -80,9 +87,9 @@ Hotfix 13 rebases on Hotfix 10 and withdraws unvalidated Hotfix 11/12 workaround
 
 Replay policy is also clarified: legacy replay compatibility is a read/migration concern, not a veto on correcting current physics. Pre-release legacy versions may be isolated, migrated or deprecated rather than contaminating the active model.
 
-## 4. Current M10.9.4 Hotfix 23 candidate
+## 4. M10.9.4 Hotfix 23 validated structural checkpoint
 
-M10.9.4 retains the five detailed engineering schematic families and the validated structural corrections through Hotfix 22. Hotfix 23 adds current-v2 thermodynamic turbine-work availability while preserving legacy fixed-work seams.
+M10.9.4 retains the five detailed engineering schematic families and the validated structural corrections through Hotfix 23. Automated, explicit long-running and final manual HMI/schematic gates are all green; M10.9.4 is the official validated milestone baseline.
 
 The five schematic families remain:
 

@@ -1,5 +1,20 @@
 # Gameplay Long-Running System Tests
 
+## Current validated gate and non-green Phase A audit
+
+Hotfix 23 passes both existing explicit 60-second journeys. These remain the validated M10.9.4 acceptance pack under category `GameplayLong`.
+
+M10.9.4.1-A adds a separate `OperationalEnvelopeAudit` tier rather than silently lengthening the existing tests. This tier has now been executed and is intentionally non-green because the healthy-reference journey trips near 70 simulated seconds:
+
+- 300 simulated seconds at the validated low-load parallel operating point;
+- deterministic load increase/decrease steps;
+- breaker-open/generator-trip/turbine-trip load rejection;
+- condenser-cooling degradation and expected protection response;
+- mass/energy audit, drum/condenser envelope, frequency/speed and replay-determinism evidence.
+
+Extended tests remain explicit and separately runnable; they must not slow the ordinary suite.
+
+
 ## Purpose
 
 The ordinary suite should remain fast enough to run after normal changes. Full operator-journey/endurance checks are therefore explicit opt-in tests.
@@ -30,11 +45,36 @@ PowerShell:
 .\scripts\run-gameplay-long-tests.ps1
 ```
 
-Direct invocation:
+Direct invocation for the validated 60-second pack:
 
 ```text
-dotnet test --project tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj --no-build -- --explicit only
+dotnet test --project tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj --no-build -- --explicit only --filter-trait "Category=GameplayLong" --parallel none
 ```
+
+M10.9.4.1-A extended audit (executed / non-green):
+
+```text
+scripts\run-operational-envelope-audit.cmd
+```
+
+```text
+dotnet test --project tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj --no-build -- --explicit only --filter-trait "Category=OperationalEnvelopeAudit" --parallel none
+```
+
+## M10.9.4.1-A extended-audit result
+
+Hotfix 1 fixed the test diagnostic compile error. The solution then compiled and the ordinary suite passed, but the explicit `OperationalEnvelopeAudit` run reported one failure:
+
+```text
+DesktopFiveMWePoint_SustainsThreeHundredSecondsWithConservationAndPerformanceEvidence
+checkpoint 7/30 · step 7000 · approximately 70 simulated seconds
+protection=TurbineTrip, GeneratorTrip
+condenser sampled maximum=28.593 kPa
+drum sampled maximum=7.821 MPa / 100% level
+minimum sampled feedwater flow=0 kg/s
+```
+
+Closure residuals remained effectively zero. The combined action signature and bounded rotor/frequency evidence identify `condenser-high-backpressure` crossing the unchanged 30 kPa threshold between ten-second samples. M10.9.4.1-A is not validated. A.2 Hotfix 1 adds one-second function/limiter/exhaust evidence and isolated current-v2 condenser-capacity headroom; local validation is pending.
 
 ## M10.9.4 Hotfix 2 finding
 

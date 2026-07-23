@@ -66,6 +66,15 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             1.225d,
             currentCondenserDefinition.OverallHeatTransferConductance.GetValueOrDefault().MegawattsPerKelvin,
             12);
+        Assert.Equal(20d, currentCondenserDefinition.MaximumCondensationMassFlowRate.KilogramsPerSecond, 12);
+        var currentCoolingBoundary = Assert.Single(
+            currentEngine.PersistentInputs
+                .PlantInputs
+                .GeneratorGridInputs
+                .CondensateFeedwaterInputs
+                .CondenserInputs
+                .CoolingBoundaryInputs);
+        Assert.Equal(40d, currentCoolingBoundary.AvailableHeatRejectionPower.Megawatts, 12);
         var currentGeneratorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
         var gridCoupling = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridCouplingDefinition>(
             currentGeneratorDefinition.GridCoupling);

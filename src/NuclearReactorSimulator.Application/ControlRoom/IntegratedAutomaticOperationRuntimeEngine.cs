@@ -122,6 +122,12 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
 
     public IntegratedAutomaticOperationInputs PersistentInputs => _persistentInputs;
 
+    /// <summary>
+    /// Read-only canonical evidence seam for Application integration tests. It is internal so UI/presentation code cannot
+    /// consume true plant state or bypass the existing measured/presentation projection boundary.
+    /// </summary>
+    internal IntegratedAutomaticOperationSnapshot LatestCanonicalSnapshot => _lastSnapshot;
+
     public ControlRoomSnapshot CreatePresentationSnapshot(ControlRoomRunState runState)
         => ControlRoomSnapshotProjector.Project(_logicalStep, runState, _lastSnapshot);
 

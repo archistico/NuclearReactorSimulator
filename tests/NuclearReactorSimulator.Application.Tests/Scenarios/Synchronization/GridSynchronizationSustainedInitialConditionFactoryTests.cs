@@ -28,6 +28,17 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
             generatorDefinition.GridCoupling);
         Assert.Equal(10d, gridCoupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
         Assert.Equal(10d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
+        var condenserDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition
+            .CondensateFeedwaterSystem.CondenserSystem.Condensers);
+        Assert.Equal(20d, condenserDefinition.MaximumCondensationMassFlowRate.KilogramsPerSecond, 12);
+        var coolingBoundary = Assert.Single(
+            currentEngine.PersistentInputs
+                .PlantInputs
+                .GeneratorGridInputs
+                .CondensateFeedwaterInputs
+                .CondenserInputs
+                .CoolingBoundaryInputs);
+        Assert.Equal(40d, coolingBoundary.AvailableHeatRejectionPower.Megawatts, 12);
 
         var snapshot = new ControlRoomRuntimeCoordinator(currentEngine).Current;
         var generator = Assert.Single(snapshot.Electrical.Generators);

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4 Hotfix 23 candidate.
+Accepted and locally validated for M10.9.4 Hotfix 23.
 
 ## Context
 

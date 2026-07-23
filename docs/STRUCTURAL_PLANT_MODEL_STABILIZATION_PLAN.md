@@ -2,7 +2,7 @@
 
 ## Status
 
-M10.9.3 remains the validated baseline. M10.9.4 Hotfix 23 is the current implementation candidate; Hotfix 22 is the latest validated structural checkpoint.
+M10.9.3 remains the official milestone baseline pending final manual M10.9.4 acceptance. M10.9.4 Hotfix 23 is the latest validated structural checkpoint: compilation, the complete ordinary suite and both explicit 60-second journeys passed. Remaining physical/numerical work is moved to M10.9.4.1 rather than extending the schematic milestone indefinitely.
 
 This plan records the structural audit triggered by the long-running gameplay journey and by the discovery that the historical turbine-stage flow law made the admission train a monotonic mass accumulator. The governing rule is now:
 
@@ -176,7 +176,7 @@ Direct regressions verify optional legacy semantics, typed-rate validation and b
 
 After the downstream pressure/torque loops are corrected, add conservation/response tests to determine whether a dedicated pressure-dependent boiling/steam-export closure or steam-dump/safety-valve path is still required.
 
-## H. Turbine thermodynamic work model — CURRENT / Hotfix 23
+## H. Turbine thermodynamic work model — VALIDATED / Hotfix 23
 
 ### Audit result: confirmed simplification
 
@@ -223,9 +223,14 @@ then, one structural change at a time:
 4. meaningful measured secondary protections — Hotfix 20 Fix 2 validated
 5. actuator travel/ramp dynamics — Hotfix 21 validated
 6. governor/load-control mode cleanup — Hotfix 22 validated
-7. turbine thermodynamic work fidelity — Hotfix 23 current candidate
-8. source-side/steam-dump audit
-9. deterministic adaptive substepping hardening
+7. turbine thermodynamic work fidelity — Hotfix 23 validated
+8. M10.9.4 final manual HMI/schematic acceptance
+9. M10.9.4.1-A extended operating-envelope audit
+10. M10.9.4.1-B source-side steam-generation closure
+11. M10.9.4.1-C load-rejection relief/bypass topology
+12. M10.9.4.1-D supervised electrical protections
+13. M10.9.4.1-E deterministic adaptive substepping
+14. M10.9.4.1-F canonical solve/duplication audit
 ```
 
 No item advances merely because the long-run lasts longer. Each item needs a short direct invariant/regression test that would fail under the old structural defect.
@@ -233,7 +238,7 @@ No item advances merely because the long-run lasts longer. Each item needs a sho
 
 ## Hotfix 20 / 21 continuation
 
-Hotfix 20 Fix 2 is validated with the first meaningful measured current-v2 secondary protection set. Hotfix 21 is validated with isolated actuator dynamics. Hotfix 22 is validated with governor speed/load droop cleanup. Hotfix 23 is the current isolated turbine thermodynamic-work step.
+Hotfix 20 Fix 2 is validated with the first meaningful measured current-v2 secondary protection set. Hotfix 21 is validated with isolated actuator dynamics. Hotfix 22 is validated with governor speed/load droop cleanup. Hotfix 23 is validated with isolated turbine thermodynamic-work fidelity. The remaining sequence is owned by M10.9.4.1.
 
 
 ## G. Governor/load-control mode cleanup — VALIDATED / Hotfix 22

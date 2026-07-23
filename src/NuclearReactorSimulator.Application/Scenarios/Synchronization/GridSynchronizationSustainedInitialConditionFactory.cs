@@ -10,7 +10,7 @@ namespace NuclearReactorSimulator.Application.Scenarios.Synchronization;
 /// <summary>
 /// M10.9.4 opt-in generation-ready synchronization seed used by long gameplay/system acceptance. The historical M7.5
 /// v1 seed remains unchanged. This v2 profile retains zero initial generator load while using a bumpless spinning-reserve governor bias,
-/// a staged pressurized steam inventory and matched steam/condensation/feedwater capacity for deliberate post-synchronization loading.
+/// a staged pressurized steam inventory and matched steam/condensation/feedwater capacity with condenser headroom for deliberate post-synchronization loading.
 /// </summary>
 public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersionedInitialConditionFactory
 {
@@ -22,7 +22,7 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
     public InitialConditionDescriptor Descriptor { get; } = new(
         Reference,
         "Pre-Synchronization / Sustained Initial Loading v2",
-        "M10.9.4 long-gameplay synchronization seed preserving M7.5 v1 while providing a continuously pressure-graded staged steam path and matched admission/condenser/feedwater hydraulics and a generation-scale condenser steam-space inventory for post-synchronization load acceptance.");
+        "M10.9.4 long-gameplay synchronization seed preserving M7.5 v1 while providing a continuously pressure-graded staged steam path and matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory and 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law for post-synchronization load acceptance.");
 
     public IControlRoomRuntimeEngine CreateRuntimeEngine()
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
@@ -34,7 +34,7 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             initialRotorSpeedRpm: 3_000d,
             initialGeneratorBreakerClosed: false,
             initialRequestedElectricalPowerMegawatts: 0d,
-            initialCondenserCoolingPowerMegawatts: 24.5d,
+            initialCondenserCoolingPowerMegawatts: 40d,
             initialTurbineSpeedSetpointRpm: 3_000d,
             initialControlValvePercentOpen: 46d,
             initialHeaderSteamTemperatureCelsius: 275d,
@@ -47,7 +47,7 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             speedControllerIntegralGainPerSecond: 0.02d,
             hotwellControllerProportionalGain: -0.01d,
             includeTurbineShaftPowerInstrumentation: true,
-            maximumCondenserMassFlowRateKilogramsPerSecond: 15d,
+            maximumCondenserMassFlowRateKilogramsPerSecond: 20d,
             condenserOverallHeatTransferConductanceMegawattsPerKelvin: 1.225d,
             condenserCoolingWaterTemperatureCelsius: 20d,
             secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared: 500d,
