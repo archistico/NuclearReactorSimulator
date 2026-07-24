@@ -26,6 +26,14 @@ public sealed class ControlRoomPlantMimicProjectionTests
         Assert.Contains(mimic.Elements, static element => element.Kind == ControlRoomPlantMimicElementKind.Condenser);
         Assert.Contains(mimic.Elements, static element => element.Kind == ControlRoomPlantMimicElementKind.Feedwater);
 
+        var turbine = Assert.Single(mimic.Elements, static element => element.ElementId == "turbine");
+        Assert.StartsWith("ADMITTED ", turbine.PrimaryValueText);
+        Assert.StartsWith("CONTROL ", turbine.SecondaryValueText);
+        Assert.Contains("D.3 TRACKING AUDIT: NO CORRECTION ADDED", turbine.DetailText);
+        var governedAdmission = Assert.Single(mimic.Connections, static connection => connection.ConnectionId == "drums-turbine");
+        Assert.Equal("GOVERNED STEAM ADMISSION", governedAdmission.MediumText);
+        Assert.StartsWith(controlRoom.TurbineSecondary.EffectiveTurbineSteamFlow.ValueText, governedAdmission.PrimaryText);
+
         Assert.All(mimic.Elements, static element =>
         {
             Assert.False(string.IsNullOrWhiteSpace(element.InputText));

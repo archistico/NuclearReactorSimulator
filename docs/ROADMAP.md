@@ -773,9 +773,9 @@ Two independent axes are mandatory:
 - post-validation HMI readability hardening keeps alarm flashing geometry stable, separates runtime/progress/step content, removes duplicate current-step readouts and limits subsystem schematic rows to at most four nodes;
 - the visual design system and printable user manual apply the same maximum-four-elements-per-row rule, using vertical flow or consecutive diagram segments instead of shrinking labels;
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
-- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; Phase B.1–B.3 and C.1–C.2 are present in the user-supplied consolidated continuation base. The earlier isolated 300-second wall-clock budget overrun remains tracked as performance evidence, while the user has explicitly resumed development at Phase D. D.1 turbine admission phase-policy closure is implemented with local validation pending; D.2 turbine admission authority evidence is the active candidate.
+- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; Phase B.1–B.3 and C.1–C.2 are present in the user-supplied consolidated continuation base. The earlier isolated 300-second wall-clock budget overrun remains tracked as performance evidence, while the user has explicitly resumed development at Phase D. D.1 turbine admission phase-policy closure and D.2 Hotfix 1 authority evidence are locally validated; D.3 governor/actuator tracking evidence is the active audit candidate.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (user-supplied consolidated A/B/C base; D.1 implemented / D.2 audit candidate)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (user-supplied consolidated A/B/C base; D.1 + D.2 Hotfix 1 validated / D.3 audit candidate)
 
 - Phase A audit exposed a repeatable ~70 s protection trip; root cause was later traced to current-v2 seed energy/hydraulic starvation rather than the thermodynamic resolver; the corrected seed now passes the exact 300-second sustained journey;
 - Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
@@ -840,3 +840,7 @@ Every implementation milestone must continue to satisfy:
 - configuration-driven plant constants rather than hidden RBMK constants in the generic engine;
 - ADR/documentation update when a durable architecture decision changes;
 - local user validation before a baseline is marked validated.
+
+## M10.9.4.1-D.3 current audit gate
+
+D.1 admission phase-policy closure and D.2 Hotfix 1 authority evidence are locally validated. D.3 changes no production law: it measures controller-command versus committed control-valve position during a canonical +50 rpm / restore disturbance. A >=5 percentage-point lag must be exercised; >=2 percentage points of integral excursion while materially lagged triggers a separate D.3.1 tracking anti-windup correction. Otherwise D.3 closes evidence-only.

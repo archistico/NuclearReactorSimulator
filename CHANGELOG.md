@@ -1,3 +1,19 @@
+# M10.9.4.1-D.3 — Turbine Governor/Actuator Tracking Evidence
+
+## M10.9.4.1-D.3 Hotfix 1 — Pre-synchronization governor-tracking audit stimulus
+
+- Corrected the explicit D.3 governor/actuator tracking audit to use the current-v2 pre-synchronization sustained seed, where the generator breaker is open and operator SPEED RAISE/LOWER commands remain authoritative.
+- The previous audit used the paralleled 5 MWe sustained-generation seed; with the breaker closed, the current-v2 droop law intentionally overrides the manual speed reference, so the requested +50 rpm stimulus could not create the intended controller-command/actuator-position lag and the lagged-sample set remained empty.
+- Updated the dedicated CMD/PowerShell runners to Microsoft.Testing.Platform/xUnit v3 syntax (`--project`, `--filter-trait`, `--explicit only`, `--parallel none`), replacing the incompatible legacy `--filter` invocation.
+- Production physics, PID gains, droop, actuator travel rates, turbine admission, protections, replay and all `src/` files remain unchanged.
+
+
+- D.1 and D.2 Hotfix 1 are recorded as locally validated after user-confirmed build/test success.
+- Added an audit-only governor/actuator tracking gate; no production `src/` file changes relative to D.2 Hotfix 1.
+- The audit applies a deterministic +50 rpm / restore operator stimulus and measures controller output versus committed control-valve position, integral excursion, speed error and residual integral offset.
+- A material actuator lag is defined as >=5 percentage points; tracking anti-windup is justified only if integral excursion while materially lagged reaches >=2 controller-output percentage points.
+- No PID gain, droop, valve travel rate, admission resistance, protection, replay or timestep value is changed.
+
 ## M10.9.4.1-D.2 — Turbine admission authority evidence — CANDIDATE
 
 ## M10.9.4.1-D.2 Hotfix 1 — Turbine Admission Authority Audit Compile Fix — CANDIDATE

@@ -1,10 +1,10 @@
-# Current bootstrap override — M10.9.4.1-D.2
+# Current bootstrap override — M10.9.4.1-D.3
 
-Use the current D.2 candidate cumulatively on D.1. D.1 local validation is still pending. D.2 changes no production physics: it freezes the turbine admission resistance budget and adds deterministic static/runtime authority evidence. Do not retune the 21,400 stage resistance, 1,000 valve resistances, governor gains or actuator travel until `scripts\run-turbine-admission-authority-audit.cmd` has been executed and reviewed.
+Use the current D.3 audit candidate cumulatively on the locally validated D.1 + D.2 Hotfix 1 checkpoint. D.1 and D.2 Hotfix 1 are locally validated. D.3 is the active audit-only governor/actuator tracking gate. Do not add actuator-position tracking anti-windup unless `scripts\run-turbine-governor-actuator-tracking-audit.cmd` reaches the documented material-integral-excursion trigger.
 
 # Previous bootstrap note — M10.9.4.1-D.1
 
-Use the user-supplied consolidated `M10.9.4.1_nuova` tree as the source base. D.1 is implemented with local validation pending; D.2 authority evidence is the active candidate: current-v2 turbine stage admission is vapor-mass-fraction limited; legacy stage admission remains unrestricted. Do not retune stage/control-valve resistance or governor gains until D.2 authority evidence is measured.
+Use the user-supplied consolidated `M10.9.4.1_nuova` tree as the source base. D.1 and D.2 Hotfix 1 are locally validated; D.3 governor/actuator tracking evidence is the active audit candidate: current-v2 turbine stage admission is vapor-mass-fraction limited; legacy stage admission remains unrestricted. Do not add actuator-position tracking anti-windup unless the D.3 material-integral-excursion gate is triggered. Keep the D.2 authority evidence as the basis for any future admission-law retuning.
 
 # New Chat Start — Nuclear Reactor Simulator
 
@@ -54,7 +54,7 @@ We are continuing the **Nuclear Reactor Simulator** project.
 1. Validate M10.9.4.1-B.3 through clean build, ordinary suite, focused protection/HMI regressions, 60-second journeys and the 300-second operational-envelope audit.
 2. Close Phase B if B.3 remains green; keep general node pressure/design-envelope diagnostics tracked separately rather than mixing them into drum protection.
 3. Complete remaining Phase B diagnostics, then add low-drum-level protection only after inventory semantics are physically closed.
-4. M10.9.4.1 continuation: use the user-supplied consolidated A/B/C base. Phase D has started; D.1 turbine admission phase-policy closure is implemented with local validation pending; D.2 turbine admission authority evidence is the active candidate. Keep the earlier wall-clock performance-budget observation tracked for the later numerical/performance gate.
+4. M10.9.4.1 continuation: use the user-supplied consolidated A/B/C base. Phase D has started; D.1 turbine admission phase-policy closure and D.2 Hotfix 1 authority evidence are locally validated; D.3 governor/actuator tracking evidence is the active audit candidate. Keep the earlier wall-clock performance-budget observation tracked for the later numerical/performance gate.
 5. M10.9.4.1-D turbine admission and governor authority.
 6. M10.9.4.1-E generator/grid scale and bidirectional coupling.
 7. M10.9.4.1-F relief/bypass with choked flow.
@@ -138,4 +138,4 @@ The Hotfix 14 ordinary suite is locally green. Long gameplay exposed a second mo
 
 ## M10.9.4.1-C.2 authoritative continuation
 
-The user supplied a consolidated M10.9.4.1 source tree after additional local changes and explicitly requested continuation at Phase D. Treat that tree as the source base. D.1 is implemented with local validation pending; D.2 authority evidence is the active candidate; do not retune valve/stage resistance or governor gains until D.2 authority evidence is measured. The earlier 300-second wall-clock performance-budget observation remains tracked separately.
+The user supplied a consolidated M10.9.4.1 source tree after additional local changes and explicitly requested continuation at Phase D. Treat that tree as the source base. D.1 and D.2 Hotfix 1 are locally validated; D.3 governor/actuator tracking evidence is the active audit candidate; do not add actuator-position tracking anti-windup unless the D.3 gate is triggered; any later valve/stage retuning must remain evidence-based. The earlier 300-second wall-clock performance-budget observation remains tracked separately.

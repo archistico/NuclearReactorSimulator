@@ -1,6 +1,6 @@
 > **Current development:** M10.9.4.1-D.1 candidate on the user-supplied consolidated continuation base. Current-v2 turbine admission is vapor-mass-fraction limited; D.2 valve/governor authority evidence is next.
 
-> **Current development checkpoint:** M10.9.4.1-D.2 turbine-admission authority evidence is an audit-only candidate, cumulative on D.1. It does not retune production physics; see `docs/TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`.
+> **Current development checkpoint:** M10.9.4.1-D.1 and D.2 Hotfix 1 are locally validated. M10.9.4.1-D.3 governor/actuator tracking evidence is the active audit-only candidate; see `docs/TURBINE_GOVERNOR_ACTUATOR_TRACKING_EVIDENCE.md`.
 
 
 > **Current checkpoint:** M10.9.4 is the official validated milestone baseline. The current-v2 A.3 operating seed, B.1–B.3 drum/inventory/protection closure and C.1 condenser phase-change energy closure are locally user-validated. M10.9.4.1-C.2 is locally user-validated. Development is at C.2 Hotfix 1: current-v2 primary operational flow presentation uses deterministic 0.5 s instrument filtering and generator re-synchronization guidance now explains the zero-slip/phase-offset condition; underlying raw hydraulic chatter remains a numerical-hardening item.

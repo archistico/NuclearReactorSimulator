@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed / M10.9.4.1-D.2 candidate.
+Accepted / M10.9.4.1-D.2 Hotfix 1 locally validated.
 
 ## Context
 

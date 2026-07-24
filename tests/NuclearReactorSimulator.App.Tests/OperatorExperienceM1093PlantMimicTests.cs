@@ -12,8 +12,16 @@ public sealed class OperatorExperienceM1093PlantMimicTests
     public void Overview_HostsInteractivePlantMimicWithTwoWaySelectionAndSubsystemDrillDown()
     {
         var document = LoadMainWindow();
-        var mimic = Assert.Single(
+        var overview = Assert.Single(
             document.Descendants(),
+            static element => element.Name.LocalName == "StackPanel"
+                && (string?)element.Attribute("IsVisible") == "{Binding IsOverviewWorkspaceSelected}");
+        var schematicPanel = Assert.Single(overview.Elements().Take(1));
+        Assert.Equal("Border", schematicPanel.Name.LocalName);
+        Assert.Equal("schematicPanel", (string?)schematicPanel.Attribute("Classes"));
+
+        var mimic = Assert.Single(
+            schematicPanel.Descendants(),
             static element => element.Name.LocalName == "ControlRoomPlantMimicControl");
 
         Assert.Equal("{Binding PlantMimic}", (string?)mimic.Attribute("Snapshot"));
@@ -35,13 +43,7 @@ public sealed class OperatorExperienceM1093PlantMimicTests
             .Where(static text => text is not null)
             .ToHashSet(StringComparer.Ordinal);
 
-        Assert.Contains("INTERACTIVE FULL-PLANT MIMIC", texts);
-        Assert.Contains("● PRIMARY", texts);
-        Assert.Contains("● STEAM", texts);
-        Assert.Contains("● CONDENSATE", texts);
-        Assert.Contains("● FEEDWATER", texts);
-        Assert.Contains("● SHAFT", texts);
-        Assert.Contains("● ELECTRICAL", texts);
+        Assert.Contains("WHOLE-PLANT ENGINEERING SCHEMATIC", texts);
         Assert.Contains("{Binding PlantMimic.PathSummaryText}", texts);
         Assert.Contains("{Binding SelectedMimicInputText}", texts);
         Assert.Contains("{Binding SelectedMimicOutputText}", texts);

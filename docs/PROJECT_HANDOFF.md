@@ -1,17 +1,17 @@
 # Current continuation override — M10.9.4.1-D.2
 
-D.2 is the active **audit-only** candidate, cumulative on D.1 (local validation still pending). No production physics changes in D.2. The current-v2 28% control-valve seed has materially more theoretical authority than the older 46% audit point, but authority compresses strongly above ~60% opening. Run `scripts\run-turbine-admission-authority-audit.cmd` and review control position / inlet pressure / commanded-effective flow / shaft power before choosing any resistance, effective-area or Stodola correction.
+D.1 and D.2 Hotfix 1 are locally validated. D.3 is the active **audit-only** governor/actuator tracking candidate; it changes no production physics or controller law. The current-v2 28% control-valve seed has materially more theoretical authority than the older 46% audit point, but authority compresses strongly above ~60% opening. D.2 authority evidence is now validated as an evidence baseline. Run `scripts\run-turbine-governor-actuator-tracking-audit.cmd` for D.3 before adding any actuator-position tracking anti-windup.
 
 See `TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`, ADR 0100 and `M10_9_4_1_D2_VALIDATION_CHECKLIST.md`.
 
 # Project Handoff — Nuclear Reactor Simulator
 
 
-## Previous Phase-D step — M10.9.4.1-D.1 (implemented; local validation pending)
+## Previous Phase-D steps — M10.9.4.1-D.1 + D.2 Hotfix 1 (locally validated)
 
 The user supplied `NuclearReactorSimulator_M10.9.4.1_nuova.zip` as the authoritative continuation source and requested development to resume at Phase D. D.1 adds explicit turbine admission phase ownership: current-v2 sustained profiles use `VaporMassFractionLimited`, legacy definitions remain `LegacyUnrestricted`, pure liquid cannot cross the stage as a zero-work bypass, and wet-steam quality is not applied twice to total shaft work. No valve/stage resistance or governor tuning is changed yet.
 
-D.2 is now implemented as the active audit-only candidate. Run its dedicated authority audit before selecting any hydraulic/control-law correction. The historical 300-second wall-clock performance-budget observation remains tracked for the later performance/numerical gate.
+D.2 Hotfix 1 is locally validated. D.3 is the active audit-only candidate and measures whether rate-limited valve travel produces material integral accumulation before any tracking correction is allowed. The historical 300-second wall-clock performance-budget observation remains tracked for the later performance/numerical gate.
 This is the **authoritative continuity checkpoint** for restarting the project in a new conversation.
 
 ## 1. Exact current truth
@@ -84,7 +84,7 @@ The earlier A.2 condenser-capacity headroom remains in current-v2 but is no long
 
 **M10.9.4.1-C.2 is locally validated. Current development candidate: C.2 Hotfix 1.** The user observed strong 10 ms step-to-step variation in raw current-v2 primary flow diagnostics and difficulty understanding why a generator did not become synchronizable again after opening the breaker. Hotfix 1 does not retune the validated primary hydraulics: it adds 0.5 s deterministic presentation instrumentation for operator-facing primary flows and makes zero-slip/out-of-phase re-synchronization guidance explicit. The underlying raw hydraulic chatter remains a numerical-hardening item for the later timestep/stiffness decision gate.
 
-**Superseded continuation note:** the earlier C.2 Hotfix 2 package reached the 300-second journey's final performance assertion without an earlier physics failure but exceeded the then-current wall-clock budget on one workstation. The user has since supplied a consolidated `M10.9.4.1_nuova` source tree and explicitly resumed development at Phase D. The wall-clock observation remains tracked for the performance/numerical gate; D.1 is implemented with local validation pending; D.2 authority evidence is now the active candidate.
+**Superseded continuation note:** the earlier C.2 Hotfix 2 package reached the 300-second journey's final performance assertion without an earlier physics failure but exceeded the then-current wall-clock budget on one workstation. The user has since supplied a consolidated `M10.9.4.1_nuova` source tree and explicitly resumed development at Phase D. The wall-clock observation remains tracked for the performance/numerical gate; D.1 and D.2 Hotfix 1 are locally validated; D.3 governor/actuator tracking evidence is now the active audit candidate.
 
 **Validation order:** `docs/M10_9_4_1_C2_VALIDATION_CHECKLIST.md`, then the ordinary suite and explicit 60/300-second gates required by that checklist.
 
@@ -295,3 +295,7 @@ Hotfix 15 introduces explicit `SteamDrumLiquidRecirculationMode`. Historical pro
 ## M10.9.4.1-C.2 authoritative continuation
 
 The user-supplied consolidated continuation base contains the accumulated Phase-B and Phase-C work, including explicit condenser installed-capacity ownership and the sustained synchronization-drum corrections. Development now resumes at Phase D. D.1 closes the turbine liquid/wet-steam admission-policy mismatch without retuning hydraulic authority. The earlier 300-second wall-clock budget observation remains a tracked performance item rather than being silently discarded.
+
+## M10.9.4.1-D.3 current audit gate
+
+D.1 admission phase-policy closure and D.2 Hotfix 1 authority evidence are locally validated. D.3 changes no production law: it measures controller-command versus committed control-valve position during a canonical +50 rpm / restore disturbance. A >=5 percentage-point lag must be exercised; >=2 percentage points of integral excursion while materially lagged triggers a separate D.3.1 tracking anti-windup correction. Otherwise D.3 closes evidence-only.

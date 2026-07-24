@@ -249,27 +249,14 @@
             </Grid>
           </Border>
 
-          <StackPanel IsVisible="{Binding IsOverviewWorkspaceSelected}" Spacing="16">
-            <Border Padding="18" Background="#0D151C" CornerRadius="8" BorderThickness="1" BorderBrush="#31505C">
-              <Grid RowDefinitions="Auto,Auto,560,Auto" RowSpacing="12">
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
-                  <StackPanel Spacing="4">
-                    <TextBlock Classes="sectionHeading" Foreground="#79C9D8" Text="INTERACTIVE FULL-PLANT MIMIC" />
-                    <TextBlock FontSize="22" FontWeight="SemiBold" Foreground="#EAF7FA" Text="Follow energy, mass flow and equipment state through the whole plant" />
-                    <TextBlock MaxWidth="980" FontSize="11" Foreground="#9CB2BC" TextWrapping="Wrap" Text="Select equipment to isolate its connected paths and inspect canonical inputs, outputs and key operating data. Pipe arrows show direction; medium colors identify primary coolant, steam, condensate, feedwater, shaft power and electrical export." />
-                  </StackPanel>
-                  <StackPanel Grid.Column="1" Spacing="3" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Spacing="9">
-                      <TextBlock FontSize="9" Foreground="#55C3D1" Text="● PRIMARY" />
-                      <TextBlock FontSize="9" Foreground="#D8EEF2" Text="● STEAM" />
-                      <TextBlock FontSize="9" Foreground="#4D9DBB" Text="● CONDENSATE" />
-                      <TextBlock FontSize="9" Foreground="#5FC9A9" Text="● FEEDWATER" />
-                      <TextBlock FontSize="9" Foreground="#D7B765" Text="● SHAFT" />
-                      <TextBlock FontSize="9" Foreground="#B89AE8" Text="● ELECTRICAL" />
-                    </StackPanel>
-                    <TextBlock HorizontalAlignment="Right" FontSize="8" Foreground="#8298A2" Text="PROCESS COLORS = MEDIUM / ENERGY TYPE · NOT ALARM SEVERITY" />
-                  </StackPanel>
-                </Grid>
+          <StackPanel IsVisible="{Binding IsOverviewWorkspaceSelected}" Spacing="18">
+            <Border Classes="schematicPanel">
+              <Grid RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="12">
+                <StackPanel Spacing="4">
+                  <TextBlock Classes="sectionHeading" Text="WHOLE-PLANT ENGINEERING SCHEMATIC" />
+                  <TextBlock MaxWidth="980" FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="Main circulation, reactor, steam production, governed turbine admission, electrical export and condensate/feedwater return share the same process grammar used by the subsystem schematics. Select equipment to inspect canonical inputs, outputs and live operating data." />
+                  <TextBlock FontSize="10" Opacity="0.68" Text="PROCESS COLORS = MEDIUM / ENERGY TYPE · NOT ALARM SEVERITY" />
+                </StackPanel>
 
                 <Border Grid.Row="1" Padding="10,7" Background="#091116" CornerRadius="5" BorderThickness="1" BorderBrush="#223743">
                   <TextBlock FontSize="10" FontFamily="{StaticResource InterfaceFont}" Foreground="#A6E7F0" Text="{Binding PlantMimic.PathSummaryText}" />
