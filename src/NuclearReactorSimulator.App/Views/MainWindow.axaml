@@ -10,21 +10,46 @@
     Height="900"
     MinWidth="1340"
     MinHeight="700"
+    WindowState="Maximized"
+    controls:ControlRoomTrendScope.LogicalStep="{Binding LogicalStep}"
     Title="{Binding Title}">
   <Window.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontSize" Value="12.5" />
+    </Style>
     <Style Selector="TextBlock.sectionHeading">
-      <Setter Property="FontSize" Value="13" />
-      <Setter Property="FontWeight" Value="SemiBold" />
-      <Setter Property="Opacity" Value="0.72" />
+      <Setter Property="FontSize" Value="11" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="Foreground" Value="#79D9E8" />
+      <Setter Property="LetterSpacing" Value="1.1" />
     </Style>
     <Style Selector="TextBlock.metricValue">
       <Setter Property="FontSize" Value="24" />
       <Setter Property="FontWeight" Value="SemiBold" />
     </Style>
     <Style Selector="Button.shellCommand">
-      <Setter Property="MinWidth" Value="92" />
+      <Setter Property="MinWidth" Value="96" />
+      <Setter Property="MinHeight" Value="38" />
       <Setter Property="Padding" Value="14,8" />
+      <Setter Property="CornerRadius" Value="4" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="BorderBrush" Value="#436776" />
+      <Setter Property="BorderThickness" Value="1,1,1,2" />
       <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="Border.schematicPanel">
+      <Setter Property="Padding" Value="14" />
+      <Setter Property="Background" Value="#0A151C" />
+      <Setter Property="CornerRadius" Value="6" />
+      <Setter Property="BorderThickness" Value="1,1,1,2" />
+      <Setter Property="BorderBrush" Value="#365864" />
+    </Style>
+    <Style Selector="Border.controlDeck">
+      <Setter Property="Padding" Value="16" />
+      <Setter Property="Background" Value="#101D25" />
+      <Setter Property="CornerRadius" Value="5" />
+      <Setter Property="BorderThickness" Value="1,1,1,3" />
+      <Setter Property="BorderBrush" Value="#46717E" />
     </Style>
   </Window.Styles>
 
@@ -39,10 +64,10 @@
     <KeyBinding Gesture="F8" Command="{Binding OpenOperatorComputerSessionPageCommand}" />
   </Window.KeyBindings>
 
-  <Grid RowDefinitions="Auto,*,Auto" Background="#081016">
+  <Grid RowDefinitions="Auto,*" Background="#071119">
     <!-- M10.9.1 operator-experience shell: situation strip, compact system rail, central workspace, contextual inspector, alarm/event strip. -->
     <Border Grid.Row="0" Background="#0D171E" BorderThickness="0,0,0,1" BorderBrush="#29414D">
-      <Grid RowDefinitions="Auto,Auto">
+      <Grid RowDefinitions="Auto,Auto,Auto">
         <Grid Margin="18,10,18,8" ColumnDefinitions="*,Auto" ColumnSpacing="18">
           <StackPanel Spacing="2" VerticalAlignment="Center">
             <TextBlock FontSize="19" FontWeight="SemiBold" Foreground="#EAF7FA" Text="{Binding Title}" />
@@ -50,10 +75,15 @@
           </StackPanel>
 
           <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Spacing="7">
-            <Grid ColumnDefinitions="Auto,90,Auto" ColumnSpacing="8" Margin="0,0,10,0" VerticalAlignment="Center">
-              <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#9CB2BC" Text="{Binding RuntimeState}" />
-              <ProgressBar Grid.Column="1" Width="90" Height="3" IsIndeterminate="{Binding IsRuntimeRunning}" />
-              <TextBlock Grid.Column="2" FontSize="10" FontFamily="Consolas" Foreground="#9CB2BC" Text="{Binding RuntimeProgressText}" />
+            <Grid Width="150"
+                  RowDefinitions="Auto,3,Auto"
+                  RowSpacing="3"
+                  Margin="0,0,12,0"
+                  VerticalAlignment="Center"
+                  ClipToBounds="True">
+              <TextBlock Grid.Row="0" HorizontalAlignment="Left" FontSize="10" FontWeight="SemiBold" Foreground="#9CB2BC" Text="{Binding RuntimeState}" />
+              <ProgressBar Grid.Row="1" HorizontalAlignment="Stretch" Height="3" ClipToBounds="True" IsIndeterminate="{Binding IsRuntimeRunning}" />
+              <TextBlock Grid.Row="2" HorizontalAlignment="Right" FontSize="10" FontFamily="{StaticResource DataFont}" Foreground="#9CB2BC" Text="{Binding RuntimeProgressText}" />
             </Grid>
             <Button Classes="shellCommand" Command="{Binding RunCommand}" Content="Run" />
             <Button Classes="shellCommand" Command="{Binding PauseCommand}" Content="Pause" />
@@ -62,7 +92,7 @@
           </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,*,1.35*" Background="#0A1218">
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,1.35*" Background="#0A1218">
           <Border Padding="14,8" BorderThickness="0,1,1,0" BorderBrush="#223743">
             <StackPanel Spacing="2">
               <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="RUNTIME" />
@@ -71,35 +101,29 @@
           </Border>
           <Border Grid.Column="1" Padding="14,8" BorderThickness="0,1,1,0" BorderBrush="#223743">
             <StackPanel Spacing="2">
-              <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="LOGICAL STEP" />
-              <TextBlock FontSize="14" FontFamily="Consolas" FontWeight="SemiBold" Foreground="#DCEFF2" Text="{Binding LogicalStepText}" />
+              <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="GROSS OUTPUT" />
+              <TextBlock FontSize="14" FontFamily="{StaticResource InterfaceFont}" FontWeight="SemiBold" Foreground="#DCEFF2" Text="{Binding ElectricalOutputText}" />
             </StackPanel>
           </Border>
           <Border Grid.Column="2" Padding="14,8" BorderThickness="0,1,1,0" BorderBrush="#223743">
             <StackPanel Spacing="2">
-              <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="GROSS OUTPUT" />
-              <TextBlock FontSize="14" FontFamily="Consolas" FontWeight="SemiBold" Foreground="#DCEFF2" Text="{Binding ElectricalOutputText}" />
+              <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="TRAINING SCORE" />
+              <TextBlock FontSize="14" FontFamily="{StaticResource InterfaceFont}" FontWeight="SemiBold" Foreground="#DCEFF2" Text="{Binding TrainingScoreText}" />
             </StackPanel>
           </Border>
           <Border Grid.Column="3" Padding="14,8" BorderThickness="0,1,1,0" BorderBrush="#223743">
             <StackPanel Spacing="2">
-              <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="TRAINING SCORE" />
-              <TextBlock FontSize="14" FontFamily="Consolas" FontWeight="SemiBold" Foreground="#DCEFF2" Text="{Binding TrainingScoreText}" />
+              <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="UNACK ALARMS" />
+              <TextBlock FontSize="14" FontFamily="{StaticResource InterfaceFont}" FontWeight="SemiBold" Foreground="#F0C96A" Text="{Binding UnacknowledgedAlarmCountText}" />
             </StackPanel>
           </Border>
           <Border Grid.Column="4" Padding="14,8" BorderThickness="0,1,1,0" BorderBrush="#223743">
-            <StackPanel Spacing="2">
-              <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="UNACK ALARMS" />
-              <TextBlock FontSize="14" FontFamily="Consolas" FontWeight="SemiBold" Foreground="#F0C96A" Text="{Binding UnacknowledgedAlarmCountText}" />
-            </StackPanel>
-          </Border>
-          <Border Grid.Column="5" Padding="14,8" BorderThickness="0,1,1,0" BorderBrush="#223743">
             <StackPanel Spacing="2">
               <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="PROTECTION" />
               <TextBlock FontSize="14" FontWeight="SemiBold" Foreground="#DCEFF2" Text="{Binding ProtectionStateText}" />
             </StackPanel>
           </Border>
-          <Border Grid.Column="6" Padding="14,8" BorderThickness="0,1,0,0" BorderBrush="#223743">
+          <Border Grid.Column="5" Padding="14,8" BorderThickness="0,1,0,0" BorderBrush="#223743">
             <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
               <StackPanel Spacing="2">
                 <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#71909D" Text="ASSISTANCE" />
@@ -112,10 +136,15 @@
             </Grid>
           </Border>
         </Grid>
+
+        <controls:ControlRoomAlarmBanner
+            Grid.Row="2"
+            Snapshot="{Binding AlarmEvents}"
+            OpenAlarmsCommand="{Binding OpenOperatorComputerAlarmsPageCommand}" />
       </Grid>
     </Border>
 
-    <Grid Grid.Row="1" ColumnDefinitions="188,*,300" Background="#081016" ClipToBounds="True">
+    <Grid Grid.Row="1" ColumnDefinitions="172,*,260" Background="#071119" ClipToBounds="True">
       <Border Grid.Column="0" Padding="12" Background="#0B141B" BorderThickness="0,0,1,0" BorderBrush="#29414D">
         <Grid RowDefinitions="Auto,*,Auto">
           <StackPanel Spacing="3" Margin="6,4,6,12">
@@ -162,8 +191,8 @@
                         VerticalScrollBarVisibility="Auto"
                         HorizontalScrollBarVisibility="Disabled"
                         ClipToBounds="True">
-          <Border Padding="28">
-            <StackPanel Spacing="22">
+          <Border Padding="18">
+            <StackPanel Spacing="18">
           <StackPanel Spacing="7">
             <TextBlock FontSize="25" FontWeight="SemiBold" Text="{Binding SelectedWorkspaceTitle}" />
             <TextBlock MaxWidth="900" FontSize="15" Opacity="0.74" TextWrapping="Wrap" Text="{Binding SelectedWorkspaceDescription}" />
@@ -179,20 +208,14 @@
                            Text="Use the plant workspaces to understand current condition, operate canonical controls and verify the measured response. Guidance and scoring remain deterministic; diagnostic fault scenarios use the same instrumentation, control and protection paths." />
               </StackPanel>
 
-              <Grid Grid.Row="1" ColumnDefinitions="*,*,*" ColumnSpacing="10">
+              <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="10">
                 <Border Padding="18" Background="#11161D" CornerRadius="6">
-                  <StackPanel Spacing="6">
-                    <TextBlock Classes="sectionHeading" Text="LOGICAL STEP" />
-                    <TextBlock Classes="metricValue" Text="{Binding LogicalStep}" />
-                  </StackPanel>
-                </Border>
-                <Border Grid.Column="1" Padding="18" Background="#11161D" CornerRadius="6">
                   <StackPanel Spacing="6">
                     <TextBlock Classes="sectionHeading" Text="MEASURED SIGNALS" />
                     <TextBlock FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding SignalHealthText}" />
                   </StackPanel>
                 </Border>
-                <Border Grid.Column="2" Padding="18" Background="#11161D" CornerRadius="6">
+                <Border Grid.Column="1" Padding="18" Background="#11161D" CornerRadius="6">
                   <StackPanel Spacing="6">
                     <TextBlock Classes="sectionHeading" Text="PROTECTION" />
                     <TextBlock FontSize="15" FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding ProtectionSummary}" />
@@ -218,6 +241,7 @@
                     <TextBlock Classes="sectionHeading" Text="TRAINING EVALUATION" />
                     <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding TrainingGuidanceModeText}" />
                     <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding FaultLifecycleText}" />
+                    <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding TrainingPenaltyRuleText}" />
                     <TextBlock FontSize="12" Opacity="0.88" TextWrapping="Wrap" Text="{Binding TrainingAssessmentText}" />
                   </StackPanel>
                 </Border>
@@ -248,7 +272,7 @@
                 </Grid>
 
                 <Border Grid.Row="1" Padding="10,7" Background="#091116" CornerRadius="5" BorderThickness="1" BorderBrush="#223743">
-                  <TextBlock FontSize="10" FontFamily="Consolas" Foreground="#A6E7F0" Text="{Binding PlantMimic.PathSummaryText}" />
+                  <TextBlock FontSize="10" FontFamily="{StaticResource InterfaceFont}" Foreground="#A6E7F0" Text="{Binding PlantMimic.PathSummaryText}" />
                 </Border>
 
                 <Border Grid.Row="2" Background="#071016" CornerRadius="7" BorderThickness="1" BorderBrush="#223743" ClipToBounds="True">
@@ -268,7 +292,7 @@
                   <Border Grid.Column="1" Padding="12" Background="#111A21" CornerRadius="5">
                     <StackPanel Spacing="3">
                       <TextBlock FontSize="9" Foreground="#71909D" Text="KEY DATA" />
-                      <TextBlock FontSize="11" FontFamily="Consolas" Foreground="#DCEFF2" TextWrapping="Wrap" Text="{Binding SelectedMimicValuesText}" />
+                      <TextBlock FontSize="11" FontFamily="{StaticResource InterfaceFont}" Foreground="#DCEFF2" TextWrapping="Wrap" Text="{Binding SelectedMimicValuesText}" />
                     </StackPanel>
                   </Border>
                   <Border Grid.Column="2" Padding="12" Background="#111A21" CornerRadius="5">
@@ -333,12 +357,28 @@
 
 
           <StackPanel IsVisible="{Binding IsPrimaryWorkspaceSelected}" Spacing="18">
-            <Border Padding="16" Background="#11161D" CornerRadius="8" BorderThickness="1" BorderBrush="#3345505B">
+            <Border Classes="schematicPanel">
               <StackPanel Spacing="10">
                 <TextBlock Classes="sectionHeading" Text="PRIMARY CIRCUIT / STEAM-DRUM ENGINEERING SCHEMATIC" />
                 <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="Closed recirculation topology with explicit steam-export and feedwater boundaries. Follow every arrow from source to destination; process colors identify medium, not alarm severity." />
-                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding PrimarySteamDrumSchematic}" MinHeight="520" />
+                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding PrimarySteamDrumSchematic}" />
                 <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding PrimarySteamDrumSchematic.OperatorContextText}" />
+              </StackPanel>
+            </Border>
+            <Border Classes="controlDeck">
+              <StackPanel Spacing="10">
+                <TextBlock Classes="sectionHeading" Text="IMMEDIATE OPERATOR CONTROLS · MAIN CIRCULATION PUMPS" />
+                <Grid ColumnDefinitions="260,*,Auto" ColumnSpacing="12">
+                  <controls:ControlRoomSelector Label="PUMP TARGET" OptionsText="{Binding PumpOptionsText}" SelectedIndex="{Binding SelectedPumpIndex, Mode=TwoWay}" State="{Binding PumpCommandState}" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                    <TextBlock FontWeight="SemiBold" Text="{Binding SelectedPumpText}" />
+                    <TextBlock FontSize="11" Foreground="#9CB2BC" TextWrapping="Wrap" Text="{Binding LastControlActionText}" />
+                  </StackPanel>
+                  <Grid Grid.Column="2" ColumnDefinitions="170,150" ColumnSpacing="8" VerticalAlignment="Center">
+                    <controls:ControlRoomPushButton Grid.Column="0" Label="START / RUN" State="{Binding PumpCommandState}" IsActive="{Binding PumpStartCommandActive}" IsCommandEnabled="{Binding PumpStartCommandEnabled}" Command="{Binding PumpStartCommand}" />
+                    <controls:ControlRoomPushButton Grid.Column="1" Label="STOP" State="{Binding PumpCommandState}" IsActive="{Binding PumpStopCommandActive}" IsCommandEnabled="{Binding PumpStopCommandEnabled}" Command="{Binding PumpStopCommand}" />
+                  </Grid>
+                </Grid>
               </StackPanel>
             </Border>
             <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
@@ -347,16 +387,16 @@
                   <TextBlock Classes="sectionHeading" Text="PRIMARY CIRCUIT" />
                   <TextBlock FontSize="20" FontWeight="SemiBold" Text="Main circulation → channel groups → steam drums → recirculation" />
                   <TextBlock Opacity="0.72" TextWrapping="Wrap"
-                             Text="Loop total flow, header ΔP, drum pressure and drum level are measured instruments. Header absolute pressures, pump/branch details, drum temperature and boundary flows are explicitly labelled model diagnostics." />
+                             Text="Loop total flow, header ΔP, drum pressure and drum level are measured instruments. Current-v2 operational flow readouts use a 0.5 s deterministic instrument lag so the HMI does not expose 10 ms algebraic hydraulic chatter as operator signal; absolute header pressures, thermodynamic details and pressure boosts remain model diagnostics." />
                 </StackPanel>
 
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                   <controls:ControlRoomNumericIndicator Grid.Column="0" Label="PRIMARY INVENTORY · MODEL DIAGNOSTIC"
-                      ValueText="{Binding PrimaryCircuit.TotalPrimaryMass.ValueText}" Unit="{Binding PrimaryCircuit.TotalPrimaryMass.Unit}" State="{Binding PrimaryCircuit.TotalPrimaryMass.State}" />
+                      Snapshot="{Binding PrimaryCircuit.TotalPrimaryMass}" ValueText="{Binding PrimaryCircuit.TotalPrimaryMass.ValueText}" Unit="{Binding PrimaryCircuit.TotalPrimaryMass.Unit}" State="{Binding PrimaryCircuit.TotalPrimaryMass.State}" />
                   <controls:ControlRoomNumericIndicator Grid.Column="1" Label="FEEDWATER TOTAL · MODEL DIAGNOSTIC"
-                      ValueText="{Binding PrimaryCircuit.TotalFeedwaterFlow.ValueText}" Unit="{Binding PrimaryCircuit.TotalFeedwaterFlow.Unit}" State="{Binding PrimaryCircuit.TotalFeedwaterFlow.State}" />
+                      Snapshot="{Binding PrimaryCircuit.TotalFeedwaterFlow}" ValueText="{Binding PrimaryCircuit.TotalFeedwaterFlow.ValueText}" Unit="{Binding PrimaryCircuit.TotalFeedwaterFlow.Unit}" State="{Binding PrimaryCircuit.TotalFeedwaterFlow.State}" />
                   <controls:ControlRoomNumericIndicator Grid.Column="2" Label="STEAM EXPORT TOTAL · MODEL DIAGNOSTIC"
-                      ValueText="{Binding PrimaryCircuit.TotalSteamExportFlow.ValueText}" Unit="{Binding PrimaryCircuit.TotalSteamExportFlow.Unit}" State="{Binding PrimaryCircuit.TotalSteamExportFlow.State}" />
+                      Snapshot="{Binding PrimaryCircuit.TotalSteamExportFlow}" ValueText="{Binding PrimaryCircuit.TotalSteamExportFlow.ValueText}" Unit="{Binding PrimaryCircuit.TotalSteamExportFlow.Unit}" State="{Binding PrimaryCircuit.TotalSteamExportFlow.State}" />
                 </Grid>
               </StackPanel>
             </Border>
@@ -377,13 +417,13 @@
                       </Grid>
 
                       <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
-                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="TOTAL MCP FLOW · MEASURED" ValueText="{Binding TotalPumpFlow.ValueText}" Unit="{Binding TotalPumpFlow.Unit}" State="{Binding TotalPumpFlow.State}" />
-                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="HEADER ΔP · MEASURED" ValueText="{Binding HeaderPressureRise.ValueText}" Unit="{Binding HeaderPressureRise.Unit}" State="{Binding HeaderPressureRise.State}" />
-                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="SUCTION HEADER · MODEL" ValueText="{Binding SuctionHeaderPressure.ValueText}" Unit="{Binding SuctionHeaderPressure.Unit}" State="{Binding SuctionHeaderPressure.State}" />
-                        <controls:ControlRoomNumericIndicator Grid.Column="3" Label="PRESSURE HEADER · MODEL" ValueText="{Binding PressureHeaderPressure.ValueText}" Unit="{Binding PressureHeaderPressure.Unit}" State="{Binding PressureHeaderPressure.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="TOTAL MCP FLOW · MEASURED" Snapshot="{Binding TotalPumpFlow}" ValueText="{Binding TotalPumpFlow.ValueText}" Unit="{Binding TotalPumpFlow.Unit}" State="{Binding TotalPumpFlow.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="HEADER ΔP · MEASURED" Snapshot="{Binding HeaderPressureRise}" ValueText="{Binding HeaderPressureRise.ValueText}" Unit="{Binding HeaderPressureRise.Unit}" State="{Binding HeaderPressureRise.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="SUCTION HEADER · MODEL" Snapshot="{Binding SuctionHeaderPressure}" ValueText="{Binding SuctionHeaderPressure.ValueText}" Unit="{Binding SuctionHeaderPressure.Unit}" State="{Binding SuctionHeaderPressure.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="3" Label="PRESSURE HEADER · MODEL" Snapshot="{Binding PressureHeaderPressure}" ValueText="{Binding PressureHeaderPressure.ValueText}" Unit="{Binding PressureHeaderPressure.Unit}" State="{Binding PressureHeaderPressure.State}" />
                       </Grid>
 
-                      <TextBlock Classes="sectionHeading" Text="MAIN CIRCULATION PUMPS · MODEL DIAGNOSTICS" />
+                      <TextBlock Classes="sectionHeading" Text="MAIN CIRCULATION PUMPS · FILTERED FLOW / MODEL BOOST" />
                       <ItemsControl ItemsSource="{Binding Pumps}">
                         <ItemsControl.ItemTemplate>
                           <DataTemplate x:DataType="controlRoom:PrimaryCircuitPumpPresentationSnapshot">
@@ -400,7 +440,7 @@
                         </ItemsControl.ItemTemplate>
                       </ItemsControl>
 
-                      <TextBlock Classes="sectionHeading" Text="FUEL-CHANNEL GROUP PATHS · MODEL DIAGNOSTICS" />
+                      <TextBlock Classes="sectionHeading" Text="FUEL-CHANNEL GROUP PATHS · FILTERED FLOW / MODEL THERMODYNAMICS" />
                       <ItemsControl ItemsSource="{Binding Branches}">
                         <ItemsControl.ItemTemplate>
                           <DataTemplate x:DataType="controlRoom:PrimaryCircuitBranchPresentationSnapshot">
@@ -446,10 +486,15 @@
                             <controls:ControlRoomLinearGauge Grid.Column="1" Label="DRUM LEVEL" Snapshot="{Binding Level}" />
                           </Grid>
                           <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                            <controls:ControlRoomNumericIndicator Grid.Column="0" Label="TEMPERATURE · MODEL" ValueText="{Binding Temperature.ValueText}" Unit="{Binding Temperature.Unit}" State="{Binding Temperature.State}" />
-                            <controls:ControlRoomNumericIndicator Grid.Column="1" Label="STEAM FLOW · MODEL" ValueText="{Binding SteamFlow.ValueText}" Unit="{Binding SteamFlow.Unit}" State="{Binding SteamFlow.State}" />
-                            <controls:ControlRoomNumericIndicator Grid.Column="2" Label="RECIRCULATION · MODEL" ValueText="{Binding RecirculationFlow.ValueText}" Unit="{Binding RecirculationFlow.Unit}" State="{Binding RecirculationFlow.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="0" Label="TEMPERATURE · MODEL" Snapshot="{Binding Temperature}" ValueText="{Binding Temperature.ValueText}" Unit="{Binding Temperature.Unit}" State="{Binding Temperature.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="1" Label="STEAM FLOW · MODEL" Snapshot="{Binding SteamFlow}" ValueText="{Binding SteamFlow.ValueText}" Unit="{Binding SteamFlow.Unit}" State="{Binding SteamFlow.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="2" Label="RECIRCULATION · MODEL" Snapshot="{Binding RecirculationFlow}" ValueText="{Binding RecirculationFlow.ValueText}" Unit="{Binding RecirculationFlow.Unit}" State="{Binding RecirculationFlow.State}" />
                           </Grid>
+                          <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                            <controls:ControlRoomNumericIndicator Grid.Column="0" Label="SEPARABLE LIQUID · MODEL" Snapshot="{Binding SeparableLiquidInventory}" ValueText="{Binding SeparableLiquidInventory.ValueText}" Unit="{Binding SeparableLiquidInventory.Unit}" State="{Binding SeparableLiquidInventory.State}" />
+                            <controls:ControlRoomNumericIndicator Grid.Column="1" Label="LIQUID INVENTORY · MODEL" Snapshot="{Binding SeparableLiquidMassFraction}" ValueText="{Binding SeparableLiquidMassFraction.ValueText}" Unit="{Binding SeparableLiquidMassFraction.Unit}" State="{Binding SeparableLiquidMassFraction.State}" />
+                          </Grid>
+                          <TextBlock FontSize="12" Opacity="0.72" Text="{Binding LiquidInventoryStatus}" />
                           <TextBlock FontSize="12" Opacity="0.68" Text="{Binding PhaseText}" />
                         </StackPanel>
                       </Border>
@@ -460,7 +505,7 @@
             </Border>
 
             <Grid ColumnDefinitions="1.2*,1*" ColumnSpacing="14">
-              <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
+              <Border Grid.ColumnSpan="2" Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
                 <StackPanel Spacing="12">
                   <TextBlock Classes="sectionHeading" Text="PRIMARY-BOUNDARY VALVES · MODEL STATE" />
                   <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="Only canonical valves hydraulically connected to primary-circuit nodes are shown. An empty list means no such valve exists in the current topology; the UI does not invent one." />
@@ -483,33 +528,32 @@
                 </StackPanel>
               </Border>
 
-              <Border Grid.Column="1" Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
-                <StackPanel Spacing="12">
-                  <TextBlock Classes="sectionHeading" Text="MCP OPERATOR INTENT" />
-                  <controls:ControlRoomSelector Label="PUMP TARGET" OptionsText="{Binding PumpOptionsText}" SelectedIndex="{Binding SelectedPumpIndex, Mode=TwoWay}" State="{Binding PumpCommandState}" />
-                  <TextBlock FontSize="12" Opacity="0.68" Text="{Binding SelectedPumpText}" />
-                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="START / RUN" State="{Binding PumpCommandState}" IsActive="{Binding PumpStartCommandActive}" IsCommandEnabled="{Binding PumpStartCommandEnabled}" Command="{Binding PumpStartCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="STOP" State="{Binding PumpCommandState}" IsActive="{Binding PumpStopCommandActive}" IsCommandEnabled="{Binding PumpStopCommandEnabled}" Command="{Binding PumpStopCommand}" />
-                  </Grid>
-                  <TextBlock FontSize="11" Opacity="0.78" TextWrapping="Wrap" Text="The filled button is the ACTUAL committed pump state. START/RUN and STOP are mutually exclusive persistent states; the already-satisfied command is disabled. An accepted command may become filled only after the next fixed step confirms the new state." />
-                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding LastControlActionText}" />
-                  <TextBlock FontSize="12" Opacity="0.68" TextWrapping="Wrap" Text="Pump controls use the canonical command path. Availability and interlocks are authoritative; the interface does not bypass plant control or hydraulic state." />
-                </StackPanel>
-              </Border>
             </Grid>
           </StackPanel>
 
           <StackPanel IsVisible="{Binding IsTurbineWorkspaceSelected}" Spacing="18">
-            <Border Padding="16" Background="#11161D" CornerRadius="8" BorderThickness="1" BorderBrush="#3345505B">
+            <Border Classes="schematicPanel">
               <StackPanel Spacing="10">
                 <TextBlock Classes="sectionHeading" Text="TURBINE / SECONDARY ENGINEERING SCHEMATIC" />
                 <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="Main steam → stop/control/admission valves → turbine stages → shaft, with exhaust → condenser → condensate/feedwater return shown as a separate process path." />
-                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding TurbineSecondarySchematic}" MinHeight="520" />
+                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding TurbineSecondarySchematic}" />
                 <Border Padding="10" Background="#171C24" CornerRadius="5" BorderBrush="#4A3C2B" BorderThickness="1">
                   <TextBlock FontSize="11" TextWrapping="Wrap" Text="AMBER SHAFT = MECHANICAL ENERGY PATH · it is a medium/type color, not a warning. Alarm/trip severity is shown by equipment state and protection annunciation." />
                 </Border>
                 <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding TurbineSecondarySchematic.OperatorContextText}" />
+              </StackPanel>
+            </Border>
+            <Border Classes="controlDeck">
+              <StackPanel Spacing="10">
+                <TextBlock Classes="sectionHeading" Text="IMMEDIATE OPERATOR CONTROLS · TURBINE PROTECTION" />
+                <Grid ColumnDefinitions="*,190,190" ColumnSpacing="10">
+                  <StackPanel VerticalAlignment="Center" Spacing="3">
+                    <TextBlock FontSize="16" FontWeight="SemiBold" Text="{Binding TurbineSecondary.ProtectionText}" />
+                    <TextBlock FontSize="11" Foreground="#9CB2BC" TextWrapping="Wrap" Text="{Binding ProtectionResetStatusText}" />
+                  </StackPanel>
+                  <controls:ControlRoomPushButton Grid.Column="1" Label="{Binding TurbineTripCommandLabel}" State="{Binding TurbineTripCommandState}" IsCommandEnabled="{Binding TurbineTripCommandEnabled}" Command="{Binding TurbineTripCommand}" />
+                  <controls:ControlRoomPushButton Grid.Column="2" Label="RESET PROTECTION" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
+                </Grid>
               </StackPanel>
             </Border>
             <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
@@ -522,27 +566,12 @@
                 </StackPanel>
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                   <controls:ControlRoomNumericIndicator Grid.Column="0" Label="TURBINE SHAFT POWER · MEASURED"
-                      ValueText="{Binding TurbineSecondary.TotalTurbineShaftPower.ValueText}" Unit="{Binding TurbineSecondary.TotalTurbineShaftPower.Unit}" State="{Binding TurbineSecondary.TotalTurbineShaftPower.State}" />
+                      Snapshot="{Binding TurbineSecondary.TotalTurbineShaftPower}" ValueText="{Binding TurbineSecondary.TotalTurbineShaftPower.ValueText}" Unit="{Binding TurbineSecondary.TotalTurbineShaftPower.Unit}" State="{Binding TurbineSecondary.TotalTurbineShaftPower.State}" />
                   <controls:ControlRoomNumericIndicator Grid.Column="1" Label="STEAM ADMISSION · MODEL DIAGNOSTIC"
-                      ValueText="{Binding TurbineSecondary.EffectiveTurbineSteamFlow.ValueText}" Unit="{Binding TurbineSecondary.EffectiveTurbineSteamFlow.Unit}" State="{Binding TurbineSecondary.EffectiveTurbineSteamFlow.State}" />
+                      Snapshot="{Binding TurbineSecondary.EffectiveTurbineSteamFlow}" ValueText="{Binding TurbineSecondary.EffectiveTurbineSteamFlow.ValueText}" Unit="{Binding TurbineSecondary.EffectiveTurbineSteamFlow.Unit}" State="{Binding TurbineSecondary.EffectiveTurbineSteamFlow.State}" />
                   <controls:ControlRoomNumericIndicator Grid.Column="2" Label="CONDENSER HEAT REJECTION · MEASURED"
-                      ValueText="{Binding TurbineSecondary.TotalCondenserHeatRejection.ValueText}" Unit="{Binding TurbineSecondary.TotalCondenserHeatRejection.Unit}" State="{Binding TurbineSecondary.TotalCondenserHeatRejection.State}" />
+                      Snapshot="{Binding TurbineSecondary.TotalCondenserHeatRejection}" ValueText="{Binding TurbineSecondary.TotalCondenserHeatRejection.ValueText}" Unit="{Binding TurbineSecondary.TotalCondenserHeatRejection.Unit}" State="{Binding TurbineSecondary.TotalCondenserHeatRejection.State}" />
                 </Grid>
-              </StackPanel>
-            </Border>
-
-            <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
-              <StackPanel Spacing="12">
-                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-                  <StackPanel Spacing="4">
-                    <TextBlock Classes="sectionHeading" Text="TURBINE PROTECTION" />
-                    <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding TurbineSecondary.ProtectionText}" />
-                  </StackPanel>
-                  <controls:ControlRoomPushButton Grid.Column="1" Label="{Binding TurbineTripCommandLabel}" State="{Binding TurbineTripCommandState}" IsCommandEnabled="{Binding TurbineTripCommandEnabled}" Command="{Binding TurbineTripCommand}" />
-                </Grid>
-                <controls:ControlRoomIndicatorLamp Label="TURBINE TRIP LATCH" State="{Binding TurbineSecondary.ProtectionState}" />
-                <controls:ControlRoomPushButton Label="RESET PROTECTION" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
-                <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding ProtectionResetStatusText}" />
               </StackPanel>
             </Border>
 
@@ -585,9 +614,9 @@
                         <TextBlock Grid.Column="2" Text="{Binding AdmissionValveText}" />
                       </Grid>
                       <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="ADMISSION FLOW · MODEL" ValueText="{Binding AdmissionFlow.ValueText}" Unit="{Binding AdmissionFlow.Unit}" State="{Binding AdmissionFlow.State}" />
-                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="INLET PRESSURE · MODEL" ValueText="{Binding TurbineInletPressure.ValueText}" Unit="{Binding TurbineInletPressure.Unit}" State="{Binding TurbineInletPressure.State}" />
-                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="INLET TEMPERATURE · MODEL" ValueText="{Binding TurbineInletTemperature.ValueText}" Unit="{Binding TurbineInletTemperature.Unit}" State="{Binding TurbineInletTemperature.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="ADMISSION FLOW · MODEL" Snapshot="{Binding AdmissionFlow}" ValueText="{Binding AdmissionFlow.ValueText}" Unit="{Binding AdmissionFlow.Unit}" State="{Binding AdmissionFlow.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="INLET PRESSURE · MODEL" Snapshot="{Binding TurbineInletPressure}" ValueText="{Binding TurbineInletPressure.ValueText}" Unit="{Binding TurbineInletPressure.Unit}" State="{Binding TurbineInletPressure.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="INLET TEMPERATURE · MODEL" Snapshot="{Binding TurbineInletTemperature}" ValueText="{Binding TurbineInletTemperature.ValueText}" Unit="{Binding TurbineInletTemperature.Unit}" State="{Binding TurbineInletTemperature.State}" />
                       </Grid>
                     </StackPanel>
                   </Border>
@@ -611,8 +640,8 @@
                             <Grid ColumnDefinitions="270,*" ColumnSpacing="12">
                               <controls:ControlRoomCircularGauge Grid.Column="0" Label="ROTOR SPEED · MEASURED" Snapshot="{Binding Speed}" />
                               <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="8">
-                                <controls:ControlRoomNumericIndicator Label="SHAFT POWER · MODEL" ValueText="{Binding ShaftPower.ValueText}" Unit="{Binding ShaftPower.Unit}" State="{Binding ShaftPower.State}" />
-                                <controls:ControlRoomNumericIndicator Label="NET TORQUE · MODEL" ValueText="{Binding NetTorque.ValueText}" Unit="{Binding NetTorque.Unit}" State="{Binding NetTorque.State}" />
+                                <controls:ControlRoomNumericIndicator Label="SHAFT POWER · MODEL" Snapshot="{Binding ShaftPower}" ValueText="{Binding ShaftPower.ValueText}" Unit="{Binding ShaftPower.Unit}" State="{Binding ShaftPower.State}" />
+                                <controls:ControlRoomNumericIndicator Label="NET TORQUE · MODEL" Snapshot="{Binding NetTorque}" ValueText="{Binding NetTorque.ValueText}" Unit="{Binding NetTorque.Unit}" State="{Binding NetTorque.State}" />
                               </StackPanel>
                             </Grid>
                           </StackPanel>
@@ -655,14 +684,31 @@
                       <TextBlock Classes="sectionHeading" Text="CONDENSER / HOTWELL" />
                       <TextBlock FontSize="20" FontWeight="SemiBold" Text="{Binding CondenserId}" />
                       <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="PRESSURE · MEASURED" ValueText="{Binding Pressure.ValueText}" Unit="{Binding Pressure.Unit}" State="{Binding Pressure.State}" />
-                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="VACUUM · MEASURED" ValueText="{Binding Vacuum.ValueText}" Unit="{Binding Vacuum.Unit}" State="{Binding Vacuum.State}" />
-                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="HOTWELL MASS · MEASURED" ValueText="{Binding HotwellMass.ValueText}" Unit="{Binding HotwellMass.Unit}" State="{Binding HotwellMass.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="PRESSURE · MEASURED" Snapshot="{Binding Pressure}" ValueText="{Binding Pressure.ValueText}" Unit="{Binding Pressure.Unit}" State="{Binding Pressure.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="VACUUM · MEASURED" Snapshot="{Binding Vacuum}" ValueText="{Binding Vacuum.ValueText}" Unit="{Binding Vacuum.Unit}" State="{Binding Vacuum.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="HOTWELL MASS · MEASURED" Snapshot="{Binding HotwellMass}" ValueText="{Binding HotwellMass.ValueText}" Unit="{Binding HotwellMass.Unit}" State="{Binding HotwellMass.State}" />
                       </Grid>
                       <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
                         <TextBlock Text="{Binding CondensationFlow.ValueText}" />
                         <TextBlock Grid.Column="1" Text="{Binding HeatRejectionPower.ValueText}" />
                         <TextBlock Grid.Column="2" Text="{Binding SteamSpacePhase}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="CONDENSATE ENERGY · MODEL" Snapshot="{Binding CondensateSpecificInternalEnergy}" ValueText="{Binding CondensateSpecificInternalEnergy.ValueText}" Unit="{Binding CondensateSpecificInternalEnergy.Unit}" State="{Binding CondensateSpecificInternalEnergy.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="PHASE-CHANGE Δu · MODEL" Snapshot="{Binding SpecificCondensationEnergyDrop}" ValueText="{Binding SpecificCondensationEnergyDrop.ValueText}" Unit="{Binding SpecificCondensationEnergyDrop.Unit}" State="{Binding SpecificCondensationEnergyDrop.State}" />
+                        <StackPanel Grid.Column="2" Spacing="3">
+                          <TextBlock FontSize="10" Opacity="0.62" Text="ACTIVE CONDENSATION LIMIT · MODEL" />
+                          <TextBlock FontWeight="SemiBold" Text="{Binding CondensationLimitStatus}" TextWrapping="Wrap" />
+                        </StackPanel>
+                      </Grid>
+                      <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                        <controls:ControlRoomNumericIndicator Grid.Column="0" Label="INSTALLED COOLING · MODEL" Snapshot="{Binding InstalledCoolingCapacity}" ValueText="{Binding InstalledCoolingCapacity.ValueText}" Unit="{Binding InstalledCoolingCapacity.Unit}" State="{Binding InstalledCoolingCapacity.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="1" Label="AVAILABLE COOLING · MODEL" Snapshot="{Binding AvailableCoolingCapacity}" ValueText="{Binding AvailableCoolingCapacity.ValueText}" Unit="{Binding AvailableCoolingCapacity.Unit}" State="{Binding AvailableCoolingCapacity.State}" />
+                        <controls:ControlRoomNumericIndicator Grid.Column="2" Label="SURFACE UA LIMIT · MODEL" Snapshot="{Binding SurfaceHeatTransferLimit}" ValueText="{Binding SurfaceHeatTransferLimit.ValueText}" Unit="{Binding SurfaceHeatTransferLimit.Unit}" State="{Binding SurfaceHeatTransferLimit.State}" />
+                        <StackPanel Grid.Column="3" Spacing="3">
+                          <TextBlock FontSize="10" Opacity="0.62" Text="ACTIVE HEAT-REJECTION LIMIT · MODEL" />
+                          <TextBlock FontWeight="SemiBold" Text="{Binding HeatRejectionLimitStatus}" TextWrapping="Wrap" />
+                        </StackPanel>
                       </Grid>
                     </StackPanel>
                   </Border>
@@ -703,11 +749,11 @@
           </StackPanel>
 
           <StackPanel IsVisible="{Binding IsElectricalWorkspaceSelected}" Spacing="18">
-            <Border Padding="16" Background="#11161D" CornerRadius="8" BorderThickness="1" BorderBrush="#3345505B">
+            <Border Classes="schematicPanel">
               <StackPanel Spacing="10">
                 <TextBlock Classes="sectionHeading" Text="GENERATOR / GRID ENGINEERING SCHEMATIC" />
                 <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="Read the complete power path left-to-right: TURBINE SHAFT → GENERATOR → SYNC / BREAKER → GRID. Shaft power alone does not imply exported MWe." />
-                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding GeneratorGridSchematic}" MinHeight="500" />
+                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding GeneratorGridSchematic}" />
                 <Border Padding="12" Background="#171C24" CornerRadius="6" BorderBrush="#4A5666" BorderThickness="1">
                   <StackPanel Spacing="5">
                     <TextBlock FontSize="11" FontWeight="Bold" Text="POWER-PATH DIAGNOSTIC" />
@@ -716,6 +762,42 @@
                   </StackPanel>
                 </Border>
                 <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding GeneratorGridSchematic.OperatorContextText}" />
+              </StackPanel>
+            </Border>
+            <Border Classes="controlDeck">
+              <StackPanel Spacing="10">
+                <TextBlock Classes="sectionHeading" Text="IMMEDIATE OPERATOR CONTROLS · GENERATOR / GRID" />
+                <Grid ColumnDefinitions="250,*,Auto" ColumnSpacing="12">
+                  <controls:ControlRoomSelector Label="GENERATOR TARGET" OptionsText="{Binding GeneratorOptionsText}" SelectedIndex="{Binding SelectedGeneratorIndex, Mode=TwoWay}" State="{Binding GeneratorSelectionState}" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding SelectedGeneratorSynchronizationText}" />
+                    <TextBlock FontSize="11" Foreground="#9CB2BC" TextWrapping="Wrap" Text="{Binding SelectedGeneratorSynchronizationDetailText}" />
+                    <TextBlock FontSize="11" Foreground="#9CB2BC" TextWrapping="Wrap" Text="{Binding SelectedBreakerId}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                      <StackPanel Spacing="1">
+                        <TextBlock FontSize="9.5" Foreground="#7F9BA6" Text="SPEED REFERENCE · MODEL" />
+                        <TextBlock FontFamily="{StaticResource DataFont}" FontWeight="SemiBold" Text="{Binding SelectedTurbineSpeedReferenceText}" />
+                      </StackPanel>
+                      <StackPanel Grid.Column="1" Spacing="1">
+                        <TextBlock FontSize="9.5" Foreground="#7F9BA6" Text="REQUESTED LOAD · MODEL" />
+                        <TextBlock FontFamily="{StaticResource DataFont}" FontWeight="SemiBold" Text="{Binding SelectedGeneratorLoadReferenceText}" />
+                      </StackPanel>
+                    </Grid>
+                    <TextBlock FontSize="10" Foreground="#7F9BA6" TextWrapping="Wrap" Text="{Binding GeneratorSetpointStepSummaryText}" />
+                  </StackPanel>
+                  <Grid Grid.Column="2" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="150,150,170" RowSpacing="8" ColumnSpacing="8">
+                    <controls:ControlRoomPushButton Grid.Row="0" Grid.Column="0" Label="SPEED LOWER" State="{Binding TurbineSpeedCommandState}" Command="{Binding TurbineSpeedLowerCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="0" Grid.Column="1" Label="SPEED RAISE" State="{Binding TurbineSpeedCommandState}" Command="{Binding TurbineSpeedRaiseCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="0" Grid.Column="2" Label="{Binding GeneratorTripCommandLabel}" State="{Binding GeneratorTripCommandState}" IsCommandEnabled="{Binding GeneratorTripCommandEnabled}" Command="{Binding GeneratorTripCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="1" Grid.Column="0" Label="LOAD LOWER" State="{Binding GeneratorLoadCommandState}" Command="{Binding GeneratorLoadLowerCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="1" Grid.Column="1" Label="LOAD RAISE" State="{Binding GeneratorLoadCommandState}" Command="{Binding GeneratorLoadRaiseCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="1" Grid.Column="2" Label="PROTECTION RESET" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
+                    <Grid Grid.Row="2" Grid.ColumnSpan="3" ColumnDefinitions="*,*" ColumnSpacing="8">
+                      <controls:ControlRoomPushButton Grid.Column="0" Label="CLOSE BREAKER" State="{Binding BreakerCloseCommandState}" IsActive="{Binding BreakerCloseCommandActive}" IsCommandEnabled="{Binding BreakerCloseCommandEnabled}" Command="{Binding GeneratorBreakerCloseCommand}" />
+                      <controls:ControlRoomPushButton Grid.Column="1" Label="OPEN BREAKER" State="{Binding BreakerOpenCommandState}" IsActive="{Binding BreakerOpenCommandActive}" IsCommandEnabled="{Binding BreakerOpenCommandEnabled}" Command="{Binding GeneratorBreakerOpenCommand}" />
+                    </Grid>
+                  </Grid>
+                </Grid>
               </StackPanel>
             </Border>
             <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
@@ -728,51 +810,12 @@
                 </StackPanel>
                 <controls:ControlRoomLinearGauge Label="GROSS ELECTRICAL OUTPUT" Snapshot="{Binding Electrical.GrossElectricalOutput}" Trend="{Binding GrossElectricalOutputTrend}" />
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
-                  <controls:ControlRoomNumericIndicator Grid.Column="0" Label="GRID FREQUENCY · MODEL" ValueText="{Binding Electrical.Grid.Frequency.ValueText}" Unit="{Binding Electrical.Grid.Frequency.Unit}" State="{Binding Electrical.Grid.Frequency.State}" />
-                  <controls:ControlRoomNumericIndicator Grid.Column="1" Label="GRID VOLTAGE · MODEL" ValueText="{Binding Electrical.Grid.LineVoltage.ValueText}" Unit="{Binding Electrical.Grid.LineVoltage.Unit}" State="{Binding Electrical.Grid.LineVoltage.State}" />
-                  <controls:ControlRoomNumericIndicator Grid.Column="2" Label="GRID PHASE · MODEL" ValueText="{Binding Electrical.Grid.PhaseAngle.ValueText}" Unit="{Binding Electrical.Grid.PhaseAngle.Unit}" State="{Binding Electrical.Grid.PhaseAngle.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="0" Label="GRID FREQUENCY · MODEL" Snapshot="{Binding Electrical.Grid.Frequency}" ValueText="{Binding Electrical.Grid.Frequency.ValueText}" Unit="{Binding Electrical.Grid.Frequency.Unit}" State="{Binding Electrical.Grid.Frequency.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="1" Label="GRID VOLTAGE · MODEL" Snapshot="{Binding Electrical.Grid.LineVoltage}" ValueText="{Binding Electrical.Grid.LineVoltage.ValueText}" Unit="{Binding Electrical.Grid.LineVoltage.Unit}" State="{Binding Electrical.Grid.LineVoltage.State}" />
+                  <controls:ControlRoomNumericIndicator Grid.Column="2" Label="GRID PHASE · MODEL" Snapshot="{Binding Electrical.Grid.PhaseAngle}" ValueText="{Binding Electrical.Grid.PhaseAngle.ValueText}" Unit="{Binding Electrical.Grid.PhaseAngle.Unit}" State="{Binding Electrical.Grid.PhaseAngle.State}" />
                 </Grid>
               </StackPanel>
             </Border>
-
-            <Grid ColumnDefinitions="1.25*,1*" ColumnSpacing="14">
-              <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
-                <StackPanel Spacing="12">
-                  <TextBlock Classes="sectionHeading" Text="GENERATOR / BREAKER CONTROL" />
-                  <controls:ControlRoomSelector Label="GENERATOR TARGET" OptionsText="{Binding GeneratorOptionsText}" SelectedIndex="{Binding SelectedGeneratorIndex, Mode=TwoWay}" State="{Binding GeneratorSelectionState}" />
-                  <TextBlock FontSize="12" Opacity="0.82" TextWrapping="Wrap" Text="{Binding SelectedGeneratorSynchronizationText}" />
-                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding SelectedGeneratorSynchronizationDetailText}" />
-                  <TextBlock FontSize="12" Opacity="0.72" Text="{Binding SelectedBreakerId}" />
-                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="SPEED LOWER" State="{Binding TurbineSpeedCommandState}" Command="{Binding TurbineSpeedLowerCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="SPEED RAISE" State="{Binding TurbineSpeedCommandState}" Command="{Binding TurbineSpeedRaiseCommand}" />
-                  </Grid>
-                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="LOAD LOWER" State="{Binding GeneratorLoadCommandState}" Command="{Binding GeneratorLoadLowerCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="LOAD RAISE" State="{Binding GeneratorLoadCommandState}" Command="{Binding GeneratorLoadRaiseCommand}" />
-                  </Grid>
-                  <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="CLOSE BREAKER" State="{Binding BreakerCloseCommandState}" IsActive="{Binding BreakerCloseCommandActive}" IsCommandEnabled="{Binding BreakerCloseCommandEnabled}" Command="{Binding GeneratorBreakerCloseCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="OPEN BREAKER" State="{Binding BreakerOpenCommandState}" IsActive="{Binding BreakerOpenCommandActive}" IsCommandEnabled="{Binding BreakerOpenCommandEnabled}" Command="{Binding GeneratorBreakerOpenCommand}" />
-                  </Grid>
-                  <controls:ControlRoomPushButton Label="{Binding GeneratorTripCommandLabel}" State="{Binding GeneratorTripCommandState}" IsCommandEnabled="{Binding GeneratorTripCommandEnabled}" Command="{Binding GeneratorTripCommand}" />
-                  <TextBlock FontSize="11" Opacity="0.78" TextWrapping="Wrap" Text="SPEED ± and LOAD ± are MOMENTARY setpoint steps: they flash when pressed and never remain latched. CLOSE/OPEN BREAKER show the ACTUAL committed breaker state; the active side stays filled and cannot be re-issued. After an accepted breaker command, the fill changes only when a later fixed step confirms the new state." />
-                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding LastControlActionText}" />
-                  <TextBlock FontSize="11" Opacity="0.62" TextWrapping="Wrap" Text="Breaker close fails closed when the published synchronization permissive is false or a generator trip is active. Synchronization and breaker state remain authoritative plant state." />
-                </StackPanel>
-              </Border>
-
-              <Border Grid.Column="1" Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
-                <StackPanel Spacing="10">
-                  <TextBlock Classes="sectionHeading" Text="ELECTRICAL PROTECTION" />
-                  <controls:ControlRoomIndicatorLamp Label="GENERATOR TRIP LATCH" State="{Binding Electrical.ProtectionState}" />
-                  <TextBlock FontWeight="SemiBold" Text="{Binding Electrical.ProtectionText}" />
-                  <controls:ControlRoomPushButton Label="RESET PROTECTION" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
-                  <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding ProtectionResetStatusText}" />
-                  <TextBlock TextWrapping="Wrap" Opacity="0.72" Text="{Binding ElectricalContextText}" />
-                </StackPanel>
-              </Border>
-            </Grid>
 
             <ItemsControl ItemsSource="{Binding Electrical.Generators}">
               <ItemsControl.ItemTemplate>
@@ -808,12 +851,32 @@
           </StackPanel>
 
           <StackPanel IsVisible="{Binding IsReactorWorkspaceSelected}" Spacing="18">
-            <Border Padding="16" Background="#11161D" CornerRadius="8" BorderThickness="1" BorderBrush="#3345505B">
+            <Border Classes="schematicPanel">
               <StackPanel Spacing="10">
                 <TextBlock Classes="sectionHeading" Text="REACTOR / CORE ENGINEERING SCHEMATIC" />
                 <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="Rods and feedbacks feed total reactivity; reactivity drives neutron/power response; fission heat couples to fuel/coolant state, which closes temperature/void/xenon feedback paths." />
-                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding ReactorCoreSchematic}" MinHeight="520" />
+                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding ReactorCoreSchematic}" />
                 <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding ReactorCoreSchematic.OperatorContextText}" />
+              </StackPanel>
+            </Border>
+            <Border Classes="controlDeck">
+              <StackPanel Spacing="10">
+                <TextBlock Classes="sectionHeading" Text="IMMEDIATE OPERATOR CONTROLS · REACTOR" />
+                <Grid ColumnDefinitions="240,*,Auto" ColumnSpacing="12">
+                  <controls:ControlRoomSelector Label="ROD TARGET" OptionsText="{Binding RodOptionsText}" SelectedIndex="{Binding SelectedRodIndex, Mode=TwoWay}" State="{Binding RodCommandState}" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                    <TextBlock FontWeight="SemiBold" Text="{Binding SelectedRodMotionText}" />
+                    <TextBlock FontSize="11" Foreground="#9CB2BC" TextWrapping="Wrap" Text="{Binding ReactorCore.RodWithdrawalInterlockText}" />
+                  </StackPanel>
+                  <Grid Grid.Column="2" RowDefinitions="Auto,Auto" ColumnDefinitions="145,145,160" RowSpacing="8" ColumnSpacing="8">
+                    <controls:ControlRoomPushButton Grid.Row="0" Grid.Column="0" Label="INSERT" State="{Binding RodCommandState}" IsActive="{Binding RodInsertCommandActive}" IsCommandEnabled="{Binding RodInsertCommandEnabled}" Command="{Binding RodInsertCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="0" Grid.Column="1" Label="HOLD" State="{Binding RodCommandState}" IsActive="{Binding RodHoldCommandActive}" IsCommandEnabled="{Binding RodHoldCommandEnabled}" Command="{Binding RodHoldCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="0" Grid.Column="2" Label="WITHDRAW" State="{Binding RodWithdrawCommandState}" IsActive="{Binding RodWithdrawCommandActive}" IsCommandEnabled="{Binding RodWithdrawCommandEnabled}" Command="{Binding RodWithdrawCommand}" />
+                    <controls:ControlRoomIndicatorLamp Grid.Row="1" Grid.Column="0" Label="SCRAM" State="{Binding ReactorCore.ProtectionState}" />
+                    <controls:ControlRoomPushButton Grid.Row="1" Grid.Column="1" Label="{Binding ScramCommandLabel}" State="{Binding ScramCommandState}" IsCommandEnabled="{Binding ScramCommandEnabled}" Command="{Binding ReactorScramCommand}" />
+                    <controls:ControlRoomPushButton Grid.Row="1" Grid.Column="2" Label="PROTECTION RESET" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
+                  </Grid>
+                </Grid>
               </StackPanel>
             </Border>
             <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
@@ -828,10 +891,10 @@
                 <Grid ColumnDefinitions="300,*" ColumnSpacing="10">
                   <controls:ControlRoomCircularGauge Grid.Column="0" Label="REACTOR THERMAL POWER" Snapshot="{Binding ReactorCore.ReactorThermalPower}" Trend="{Binding ReactorThermalPowerTrend}" />
                   <Grid Grid.Column="1" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="10">
-                    <controls:ControlRoomNumericIndicator Grid.Row="0" Grid.Column="0" Label="REACTOR PERIOD · MODEL" ValueText="{Binding ReactorCore.ReactorPeriod.ValueText}" Unit="{Binding ReactorCore.ReactorPeriod.Unit}" State="{Binding ReactorCore.ReactorPeriod.State}" />
-                    <controls:ControlRoomNumericIndicator Grid.Row="0" Grid.Column="1" Label="TOTAL REACTIVITY · MODEL" ValueText="{Binding ReactorCore.TotalReactivity.ValueText}" Unit="{Binding ReactorCore.TotalReactivity.Unit}" State="{Binding ReactorCore.TotalReactivity.State}" />
-                    <controls:ControlRoomNumericIndicator Grid.Row="1" Grid.Column="0" Label="ROD REACTIVITY · MODEL" ValueText="{Binding ReactorCore.RodReactivity.ValueText}" Unit="{Binding ReactorCore.RodReactivity.Unit}" State="{Binding ReactorCore.RodReactivity.State}" />
-                    <controls:ControlRoomNumericIndicator Grid.Row="1" Grid.Column="1" Label="NON-ROD REACTIVITY · MODEL" ValueText="{Binding ReactorCore.NonRodReactivity.ValueText}" Unit="{Binding ReactorCore.NonRodReactivity.Unit}" State="{Binding ReactorCore.NonRodReactivity.State}" />
+                    <controls:ControlRoomNumericIndicator Grid.Row="0" Grid.Column="0" Label="REACTOR PERIOD · MODEL" Snapshot="{Binding ReactorCore.ReactorPeriod}" ValueText="{Binding ReactorCore.ReactorPeriod.ValueText}" Unit="{Binding ReactorCore.ReactorPeriod.Unit}" State="{Binding ReactorCore.ReactorPeriod.State}" />
+                    <controls:ControlRoomNumericIndicator Grid.Row="0" Grid.Column="1" Label="TOTAL REACTIVITY · MODEL" Snapshot="{Binding ReactorCore.TotalReactivity}" ValueText="{Binding ReactorCore.TotalReactivity.ValueText}" Unit="{Binding ReactorCore.TotalReactivity.Unit}" State="{Binding ReactorCore.TotalReactivity.State}" />
+                    <controls:ControlRoomNumericIndicator Grid.Row="1" Grid.Column="0" Label="ROD REACTIVITY · MODEL" Snapshot="{Binding ReactorCore.RodReactivity}" ValueText="{Binding ReactorCore.RodReactivity.ValueText}" Unit="{Binding ReactorCore.RodReactivity.Unit}" State="{Binding ReactorCore.RodReactivity.State}" />
+                    <controls:ControlRoomNumericIndicator Grid.Row="1" Grid.Column="1" Label="NON-ROD REACTIVITY · MODEL" Snapshot="{Binding ReactorCore.NonRodReactivity}" ValueText="{Binding ReactorCore.NonRodReactivity.ValueText}" Unit="{Binding ReactorCore.NonRodReactivity.Unit}" State="{Binding ReactorCore.NonRodReactivity.State}" />
                     <controls:ControlRoomLinearGauge Grid.Row="2" Grid.ColumnSpan="2" Label="AVERAGE ROD WITHDRAWAL" Snapshot="{Binding ReactorCore.AverageRodWithdrawal}" />
                   </Grid>
                 </Grid>
@@ -885,23 +948,12 @@
                     <TextBlock FontSize="20" FontWeight="SemiBold" Text="Canonical rod target and command seam" />
                   </StackPanel>
 
-                  <controls:ControlRoomSelector
-                      Label="ROD TARGET"
-                      OptionsText="{Binding RodOptionsText}"
-                      SelectedIndex="{Binding SelectedRodIndex, Mode=TwoWay}"
-                      State="{Binding RodCommandState}" />
-
                   <StackPanel Orientation="Horizontal" Spacing="4">
                     <TextBlock FontSize="12" Opacity="0.68" Text="Selected canonical target:" />
                     <TextBlock FontSize="12" Opacity="0.68" FontWeight="SemiBold" Text="{Binding SelectedRodId}" />
                   </StackPanel>
                   <TextBlock FontSize="12" FontWeight="SemiBold" Text="{Binding SelectedRodMotionText}" />
 
-                  <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
-                    <controls:ControlRoomPushButton Grid.Column="0" Label="INSERT" State="{Binding RodCommandState}" IsActive="{Binding RodInsertCommandActive}" IsCommandEnabled="{Binding RodInsertCommandEnabled}" Command="{Binding RodInsertCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="1" Label="HOLD" State="{Binding RodCommandState}" IsActive="{Binding RodHoldCommandActive}" IsCommandEnabled="{Binding RodHoldCommandEnabled}" Command="{Binding RodHoldCommand}" />
-                    <controls:ControlRoomPushButton Grid.Column="2" Label="WITHDRAW" State="{Binding RodWithdrawCommandState}" IsActive="{Binding RodWithdrawCommandActive}" IsCommandEnabled="{Binding RodWithdrawCommandEnabled}" Command="{Binding RodWithdrawCommand}" />
-                  </Grid>
                   <TextBlock FontSize="11" Opacity="0.78" TextWrapping="Wrap" Text="The filled button is the ACTUAL committed motion mode of the selected rod/group. INSERT, HOLD and WITHDRAW remain active until another rod-motion command changes the canonical state. MIXED means group members do not share one motion. After an accepted command, the fill changes only when the next fixed step publishes the new motion." />
                   <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding LastControlActionText}" />
 
@@ -929,10 +981,6 @@
                     <TextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding ReactorCore.ProtectionText}" />
                     <controls:ControlRoomIndicatorLamp Label="ROD WITHDRAWAL INTERLOCK" State="{Binding ReactorCore.RodWithdrawalInterlockState}" />
                     <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="{Binding ReactorCore.RodWithdrawalInterlockText}" />
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                      <controls:ControlRoomPushButton Grid.Column="0" Label="{Binding ScramCommandLabel}" State="{Binding ScramCommandState}" IsCommandEnabled="{Binding ScramCommandEnabled}" Command="{Binding ReactorScramCommand}" />
-                      <controls:ControlRoomPushButton Grid.Column="1" Label="PROTECTION RESET" State="{Binding ProtectionResetCommandState}" IsCommandEnabled="{Binding ProtectionResetCommandEnabled}" Command="{Binding ProtectionResetCommand}" />
-                    </Grid>
                     <TextBlock FontSize="11" Opacity="0.68" TextWrapping="Wrap" Text="{Binding ProtectionResetStatusText}" />
                   </StackPanel>
                 </Border>
@@ -942,6 +990,7 @@
                     <TextBlock Classes="sectionHeading" Text="IODINE / XENON" />
                     <controls:ControlRoomNumericIndicator
                         Label="XENON REACTIVITY"
+                        Snapshot="{Binding ReactorCore.XenonReactivity}"
                         ValueText="{Binding ReactorCore.XenonReactivity.ValueText}"
                         Unit="{Binding ReactorCore.XenonReactivity.Unit}"
                         State="{Binding ReactorCore.XenonReactivity.State}" />
@@ -954,11 +1003,11 @@
 
 
           <StackPanel IsVisible="{Binding IsAlarmsWorkspaceSelected}" Spacing="18">
-            <Border Padding="16" Background="#11161D" CornerRadius="8" BorderThickness="1" BorderBrush="#3345505B">
+            <Border Classes="schematicPanel">
               <StackPanel Spacing="10">
                 <TextBlock Classes="sectionHeading" Text="INSTRUMENTATION / CONTROL / PROTECTION SCHEMATIC" />
                 <TextBlock FontSize="12" Opacity="0.72" TextWrapping="Wrap" Text="Signal-flow grammar is deliberately distinct from piping: MEASUREMENT → CONTROLLER / PROTECTION, CONTROL → ACTUATION, PROTECTION OVERRIDE → final authority, ALARM → operator annunciation." />
-                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding InstrumentationProtectionSchematic}" MinHeight="500" />
+                <controls:ControlRoomSubsystemSchematicControl Snapshot="{Binding InstrumentationProtectionSchematic}" />
                 <TextBlock FontSize="11" Opacity="0.72" TextWrapping="Wrap" Text="{Binding InstrumentationProtectionSchematic.OperatorContextText}" />
               </StackPanel>
             </Border>
@@ -971,10 +1020,9 @@
                              Text="Trend samples are indexed by logical step and alarm events preserve deterministic sequence order. Wall-clock timing and rendering cadence do not alter operational history." />
                 </StackPanel>
 
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                   <controls:ControlRoomNumericIndicator Grid.Column="0" Label="ANNUNCIATED" ValueText="{Binding AnnunciatedAlarmCountText}" Unit="alarms" State="Normal" />
                   <controls:ControlRoomNumericIndicator Grid.Column="1" Label="UNACKNOWLEDGED" ValueText="{Binding UnacknowledgedAlarmCountText}" Unit="alarms" State="{Binding UnacknowledgedAlarmVisualState}" />
-                  <controls:ControlRoomNumericIndicator Grid.Column="2" Label="LOGICAL STEP" ValueText="{Binding LogicalStepText}" Unit="step" State="Normal" />
                 </Grid>
               </StackPanel>
             </Border>
@@ -998,7 +1046,7 @@
                             <TextBlock FontSize="11" Opacity="0.62" Text="{Binding Provenance}" />
                             <TextBlock FontSize="10" Opacity="0.5" Text="{Binding SourceId}" />
                           </StackPanel>
-                          <TextBlock Grid.Column="1" FontFamily="Consolas" FontSize="19" VerticalAlignment="Center" Text="{Binding SparklineText}" />
+                          <TextBlock Grid.Column="1" FontFamily="{StaticResource InterfaceFont}" FontSize="19" VerticalAlignment="Center" Text="{Binding SparklineText}" />
                           <StackPanel Grid.Column="2" MinWidth="190" Spacing="2">
                             <TextBlock FontWeight="SemiBold" Text="{Binding CurrentText}" />
                             <TextBlock FontSize="11" Opacity="0.68" Text="{Binding MinimumLabel}" />
@@ -1088,8 +1136,8 @@
                     <DataTemplate x:DataType="controlRoom:ControlRoomAlarmEventPresentationSnapshot">
                       <Border Margin="0,0,0,6" Padding="10" Background="#11161D" CornerRadius="4">
                         <Grid ColumnDefinitions="90,100,120,*,Auto" ColumnSpacing="10">
-                          <TextBlock FontFamily="Consolas" FontWeight="SemiBold" Text="{Binding SequenceText}" />
-                          <TextBlock Grid.Column="1" FontFamily="Consolas" Text="{Binding LogicalStepText}" />
+                          <TextBlock FontFamily="{StaticResource InterfaceFont}" FontWeight="SemiBold" Text="{Binding SequenceText}" />
+                          <TextBlock Grid.Column="1" FontFamily="{StaticResource InterfaceFont}" Text="{Binding LogicalStepText}" />
                           <TextBlock Grid.Column="2" FontWeight="SemiBold" Text="{Binding KindText}" />
                           <TextBlock Grid.Column="3" Text="{Binding AlarmTitle}" />
                           <TextBlock Grid.Column="4" FontSize="11" Opacity="0.62" Text="{Binding AlarmId}" />
@@ -1161,7 +1209,7 @@
                 <TextBlock FontSize="9" FontWeight="SemiBold" Foreground="#6F929F" Text="READING THE HMI" />
                 <TextBlock FontSize="11" Foreground="#B6C9D0" TextWrapping="Wrap" Text="MEASURED values come from the instrumentation path. MODEL values are estimates or true-state diagnostics and remain explicitly distinct." />
                 <TextBlock FontSize="11" Foreground="#B6C9D0" TextWrapping="Wrap" Text="Green indicates confirmed healthy/available state, amber requires attention, red is reserved for trip/protection significance, and unavailable data is never fabricated." />
-                <TextBlock FontSize="11" Foreground="#B6C9D0" TextWrapping="Wrap" Text="GAUGES: filled bands show only canonical operating/alarm evidence; cyan band = target window; cyan marker = setpoint; red marker = protection limit; arrows show deterministic logical-step trend. In-scale never means automatically safe." />
+                <TextBlock FontSize="11" Foreground="#B6C9D0" TextWrapping="Wrap" Text="GAUGES: filled bands show only canonical operating/alarm evidence; cyan band = target window; cyan marker = setpoint; red marker = protection limit. TREND: ↓ falling, → steady, ↑ rising, and ↓↓/↑↑ changing rapidly per logical step. In-scale never means automatically safe." />
               </StackPanel>
             </Border>
           </StackPanel>
@@ -1169,20 +1217,5 @@
       </Border>
     </Grid>
 
-    <Border Grid.Row="2" Padding="14,8" Background="#0D171E" BorderThickness="0,1,0,0" BorderBrush="#29414D">
-      <Grid ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="16" VerticalAlignment="Center">
-        <StackPanel Orientation="Horizontal" Spacing="6">
-          <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#6F929F" Text="ALARMS" />
-          <TextBlock FontSize="11" FontFamily="Consolas" FontWeight="SemiBold" Foreground="#F0C96A" Text="{Binding UnacknowledgedAlarmCountText}" />
-        </StackPanel>
-        <TextBlock Grid.Column="1" FontSize="10" FontWeight="SemiBold" Foreground="#9CB2BC" Text="{Binding FirstOutStripText}" />
-        <TextBlock Grid.Column="2" FontSize="10" Foreground="#AFC4CB" TextTrimming="CharacterEllipsis" Text="{Binding LatestEventText}" />
-        <StackPanel Grid.Column="3" Orientation="Horizontal" Spacing="7">
-          <TextBlock FontSize="10" FontWeight="SemiBold" Foreground="#79C9D8" Text="{Binding RuntimeState}" />
-          <TextBlock FontSize="10" Foreground="#506A74" Text="·" />
-          <TextBlock FontSize="10" FontFamily="Consolas" Foreground="#9CB2BC" Text="{Binding RuntimeProgressText}" />
-        </StackPanel>
-      </Grid>
-    </Border>
   </Grid>
 </Window>

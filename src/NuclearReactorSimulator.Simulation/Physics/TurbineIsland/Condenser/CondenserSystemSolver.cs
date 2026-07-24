@@ -20,6 +20,7 @@ public sealed class CondenserSystemSolver
 
     private readonly CondenserSystemDefinition _definition;
     private readonly TurbineExpansionSolver _turbineExpansionSolver;
+    private readonly IWaterSteamSaturationPropertyProvider? _saturationPropertyProvider;
 
     public CondenserSystemSolver(
         CondenserSystemDefinition definition,
@@ -27,6 +28,17 @@ public sealed class CondenserSystemSolver
     {
         _definition = definition ?? throw new ArgumentNullException(nameof(definition));
         ArgumentNullException.ThrowIfNull(thermodynamicModel);
+        _saturationPropertyProvider = thermodynamicModel as IWaterSteamSaturationPropertyProvider;
+
+        if (_definition.Condensers.Any(static condenser =>
+                condenser.CondensateEnergyMode == CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure)
+            && _saturationPropertyProvider is null)
+        {
+            throw new ArgumentException(
+                "A condenser using pressure-resolved saturated-liquid condensate energy requires a water/steam saturation-property provider.",
+                nameof(thermodynamicModel));
+        }
+
         _turbineExpansionSolver = new TurbineExpansionSolver(definition.TurbineExpansionSystem, thermodynamicModel);
     }
 
@@ -80,7 +92,13 @@ public sealed class CondenserSystemSolver
         }
 
         var solutions = _definition.Condensers
-            .Select(condenser => SolveCondenser(committedPlantState, condenser, inputs.GetCoolingBoundaryInput(condenser.CoolingBoundaryId), deltaTime))
+            .Select(condenser => SolveCondenser(
+                committedPlantState,
+                condenser,
+                _definition.GetCoolingBoundary(condenser.CoolingBoundaryId),
+                inputs.GetCoolingBoundaryInput(condenser.CoolingBoundaryId),
+                deltaTime,
+                _saturationPropertyProvider))
             .OrderBy(static item => item.Definition.Id, StringComparer.Ordinal)
             .ToArray();
         var sourceTerms = PlantNetworkSourceTerms.Combine(
@@ -104,7 +122,10 @@ public sealed class CondenserSystemSolver
                 solution.CoolingBoundaryInput.AvailableHeatRejectionPower,
                 solution.SurfaceHeatTransferLimitedPower,
                 solution.EffectiveHeatRejectionCapacity,
-                solution.HeatRejectionPower))
+                solution.HeatRejectionPower,
+                solution.InstalledHeatRejectionCapacity,
+                _definition.GetCoolingBoundary(solution.Definition.CoolingBoundaryId).MaximumInstalledHeatRejectionPower.HasValue,
+                solution.Definition.OverallHeatTransferConductance.HasValue))
             .ToArray();
         var snapshot = new CondenserSystemSnapshot(
             _definition,
@@ -118,8 +139,10 @@ public sealed class CondenserSystemSolver
     private static CondenserSolution SolveCondenser(
         PlantState committedPlantState,
         CondenserDefinition definition,
+        CondenserCoolingBoundaryDefinition coolingBoundaryDefinition,
         CondenserCoolingBoundaryInput coolingBoundaryInput,
-        TimeSpan deltaTime)
+        TimeSpan deltaTime,
+        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider)
     {
         var steamSpace = committedPlantState.GetFluidNode(definition.SteamSpaceNodeId);
         var hotwell = committedPlantState.GetFluidNode(definition.HotwellNodeId);
@@ -134,15 +157,24 @@ public sealed class CondenserSystemSolver
         var steamToCoolingTemperatureDifference = TemperatureDifference.FromKelvins(Math.Max(
             0d,
             steamSpace.Temperature.Kelvins - coolingBoundaryInput.CoolantTemperature.Kelvins));
+        var installedHeatRejectionCapacity = coolingBoundaryDefinition.MaximumInstalledHeatRejectionPower
+            ?? coolingBoundaryInput.AvailableHeatRejectionPower;
         var surfaceHeatTransferLimitedPower = definition.OverallHeatTransferConductance is { } conductance
             ? conductance * steamToCoolingTemperatureDifference
             : coolingBoundaryInput.AvailableHeatRejectionPower;
         var effectiveHeatRejectionCapacity = Power.FromWatts(Math.Min(
-            coolingBoundaryInput.AvailableHeatRejectionPower.Watts,
-            surfaceHeatTransferLimitedPower.Watts));
+            installedHeatRejectionCapacity.Watts,
+            Math.Min(
+                coolingBoundaryInput.AvailableHeatRejectionPower.Watts,
+                surfaceHeatTransferLimitedPower.Watts)));
 
+        var condensateSpecificInternalEnergy = ResolveCondensateSpecificInternalEnergy(
+            definition,
+            steamSpace,
+            hotwell,
+            saturationPropertyProvider);
         var specificEnergyDropJoulesPerKilogram = steamSpace.SpecificInternalEnergy.JoulesPerKilogram
-            - hotwell.SpecificInternalEnergy.JoulesPerKilogram;
+            - condensateSpecificInternalEnergy.JoulesPerKilogram;
         var thermalLimitedFlow = specificEnergyDropJoulesPerKilogram <= 0d
             ? MassFlowRate.Zero
             : MassFlowRate.FromKilogramsPerSecond(
@@ -154,12 +186,12 @@ public sealed class CondenserSystemSolver
                 Math.Min(inventoryLimitedFlow.KilogramsPerSecond, thermalLimitedFlow.KilogramsPerSecond))));
 
         var steamEnergyRemovalRate = steamSpace.SpecificInternalEnergy * actualFlow;
-        var hotwellEnergyAdditionRate = hotwell.SpecificInternalEnergy * actualFlow;
+        var hotwellEnergyAdditionRate = condensateSpecificInternalEnergy * actualFlow;
         var heatRejectionPower = steamEnergyRemovalRate - hotwellEnergyAdditionRate;
         if (heatRejectionPower < Power.Zero)
         {
             throw new InvalidOperationException(
-                $"Condenser '{definition.Id}' produced negative heat rejection from the committed steam-space/hotwell energy gradient.");
+                $"Condenser '{definition.Id}' produced negative heat rejection from the committed steam-space/condensate phase-change energy gradient.");
         }
 
         return new CondenserSolution(
@@ -171,10 +203,12 @@ public sealed class CondenserSystemSolver
             availableCondensableMass,
             inventoryLimitedFlow,
             steamToCoolingTemperatureDifference,
+            installedHeatRejectionCapacity,
             surfaceHeatTransferLimitedPower,
             effectiveHeatRejectionCapacity,
             thermalLimitedFlow,
             actualFlow,
+            condensateSpecificInternalEnergy,
             steamEnergyRemovalRate,
             hotwellEnergyAdditionRate,
             heatRejectionPower);
@@ -240,7 +274,7 @@ public sealed class CondenserSystemSolver
             solution.ThermalLimitedCondensationMassFlowRate,
             solution.ActualCondensationMassFlowRate,
             solution.InitialSteamSpace.SpecificInternalEnergy,
-            solution.InitialHotwell.SpecificInternalEnergy,
+            solution.CondensateSpecificInternalEnergy,
             solution.SteamEnergyRemovalRate,
             solution.HotwellEnergyAdditionRate,
             solution.HeatRejectionPower,
@@ -251,6 +285,25 @@ public sealed class CondenserSystemSolver
             solution.InitialHotwell.Phase,
             finalHotwell.Phase);
     }
+
+
+    private static SpecificEnergy ResolveCondensateSpecificInternalEnergy(
+        CondenserDefinition definition,
+        FluidNodeState steamSpace,
+        FluidNodeState hotwell,
+        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider)
+        => definition.CondensateEnergyMode switch
+        {
+            CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy => hotwell.SpecificInternalEnergy,
+            CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure =>
+                (saturationPropertyProvider
+                    ?? throw new InvalidOperationException(
+                        $"Condenser '{definition.Id}' requires saturation properties for pressure-resolved condensate energy."))
+                .GetSaturationProperties(steamSpace.Pressure)
+                .SaturatedLiquidInternalEnergy,
+            _ => throw new InvalidOperationException(
+                $"Condenser '{definition.Id}' uses unsupported condensate-energy mode '{definition.CondensateEnergyMode}'."),
+        };
 
     private static double ResolveCondensableVaporMassFraction(FluidNodeState steamSpace)
         => steamSpace.Phase switch
@@ -285,10 +338,12 @@ public sealed class CondenserSystemSolver
         Mass AvailableCondensableMass,
         MassFlowRate InventoryLimitedCondensationMassFlowRate,
         TemperatureDifference SteamToCoolingTemperatureDifference,
+        Power InstalledHeatRejectionCapacity,
         Power SurfaceHeatTransferLimitedPower,
         Power EffectiveHeatRejectionCapacity,
         MassFlowRate ThermalLimitedCondensationMassFlowRate,
         MassFlowRate ActualCondensationMassFlowRate,
+        SpecificEnergy CondensateSpecificInternalEnergy,
         Power SteamEnergyRemovalRate,
         Power HotwellEnergyAdditionRate,
         Power HeatRejectionPower);

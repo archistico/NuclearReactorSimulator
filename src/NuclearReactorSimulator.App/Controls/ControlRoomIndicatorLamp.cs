@@ -20,21 +20,22 @@ public sealed class ControlRoomIndicatorLamp : Border
 
     public ControlRoomIndicatorLamp()
     {
-        Padding = new Thickness(12, 10);
-        CornerRadius = new CornerRadius(6);
+        Padding = new Thickness(12, 9);
+        CornerRadius = new CornerRadius(4);
         Background = ControlRoomPalette.SurfaceInset;
         BorderBrush = ControlRoomPalette.Border;
-        BorderThickness = new Thickness(1);
+        BorderThickness = new Thickness(1, 1, 1, 2);
 
         _lamp = new Border
         {
-            Width = 18,
-            Height = 18,
-            CornerRadius = new CornerRadius(9),
-            BorderThickness = new Thickness(2),
+            Width = 9,
+            Height = 32,
+            CornerRadius = new CornerRadius(3),
+            BorderThickness = new Thickness(1),
         };
         _label = new TextBlock
         {
+            FontSize = 11.5,
             FontWeight = FontWeight.SemiBold,
             VerticalAlignment = VerticalAlignment.Center,
         };
@@ -48,7 +49,7 @@ public sealed class ControlRoomIndicatorLamp : Border
         Child = new StackPanel
         {
             Orientation = Orientation.Horizontal,
-            Spacing = 10,
+            Spacing = 11,
             Children =
             {
                 _lamp,
@@ -97,5 +98,6 @@ public sealed class ControlRoomIndicatorLamp : Border
         _lamp.BorderBrush = accent;
         _label.Text = Label;
         _stateText.Text = ControlRoomPalette.StateText(State);
+        BorderBrush = State == ControlRoomVisualState.Unavailable ? ControlRoomPalette.Border : accent;
     }
 }

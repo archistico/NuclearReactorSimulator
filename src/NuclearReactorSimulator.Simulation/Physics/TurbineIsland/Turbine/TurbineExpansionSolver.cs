@@ -118,11 +118,14 @@ public sealed class TurbineExpansionSolver
             var rotorState = committedState.GetRotor(rotor.Id);
             var rotorInput = inputs.GetRotorInput(rotor.Id);
             var stageInput = inputs.GetStageGroupInput(stage.Id);
-            var effectiveFlow = rotorInput.TripCommand ? MassFlowRate.Zero : stageInput.MassFlowRate;
             var boundary = _definition.MainSteamNetwork.GetTurbineAdmissionBoundary(stage.AdmissionBoundaryId);
             var inlet = committedPlantState.GetFluidNode(boundary.SourceNodeId);
             var exhaust = committedPlantState.GetFluidNode(stage.ExhaustNodeId);
-            var specificWork = ResolveSpecificWork(stage, inlet, exhaust);
+            var admissionVaporFraction = ResolveAdmissionVaporFraction(stage, inlet);
+            var phaseLimitedFlow = MassFlowRate.FromKilogramsPerSecond(
+                stageInput.MassFlowRate.KilogramsPerSecond * admissionVaporFraction);
+            var effectiveFlow = rotorInput.TripCommand ? MassFlowRate.Zero : phaseLimitedFlow;
+            var specificWork = ResolveSpecificWork(stage, inlet, exhaust, admissionVaporFraction);
             var availableShaftPower = specificWork.EffectiveIdealSpecificWork
                 * effectiveFlow
                 * stage.Efficiency.Fraction;
@@ -152,7 +155,8 @@ public sealed class TurbineExpansionSolver
     private static SpecificWorkResolution ResolveSpecificWork(
         TurbineStageGroupDefinition stage,
         FluidNodeState inlet,
-        FluidNodeState exhaust)
+        FluidNodeState exhaust,
+        double admissionVaporFraction)
     {
         if (stage.ThermodynamicWork is not { } work)
         {
@@ -164,9 +168,14 @@ public sealed class TurbineExpansionSolver
                 false);
         }
 
-        var vaporMassFraction = inlet.Thermodynamics.VaporMassFraction ?? 0d;
+        // Under the current-v2 vapor-fraction-limited policy, mass flow has already been reduced to the admitted vapor
+        // fraction. Work is therefore evaluated per kilogram of admitted vapor rather than applying vapor quality twice.
+        // Legacy definitions preserve the historical specific-work degradation by inlet vapor mass fraction.
+        var workVaporFraction = stage.AdmissionPhasePolicy == TurbineAdmissionPhasePolicy.VaporMassFractionLimited
+            ? (admissionVaporFraction > 0d ? 1d : 0d)
+            : inlet.Thermodynamics.VaporMassFraction ?? 0d;
         var pressureTemperatureAvailableJoulesPerKilogram = 0d;
-        if (vaporMassFraction > 0d && inlet.Pressure > exhaust.Pressure)
+        if (workVaporFraction > 0d && inlet.Pressure > exhaust.Pressure)
         {
             var pressureRatio = Math.Clamp(
                 exhaust.Pressure.Pascals / inlet.Pressure.Pascals,
@@ -178,7 +187,7 @@ public sealed class TurbineExpansionSolver
                 work.VaporSpecificHeatAtConstantPressure.JoulesPerKilogramKelvin
                 * inlet.Temperature.Kelvins
                 * idealTemperatureDropFraction
-                * vaporMassFraction;
+                * workVaporFraction;
         }
 
         var pressureTemperatureAvailable = SpecificEnergy.FromJoulesPerKilogram(
@@ -202,6 +211,19 @@ public sealed class TurbineExpansionSolver
             inletEnergyBounded,
             effectiveIdeal,
             limited);
+    }
+
+
+    private static double ResolveAdmissionVaporFraction(
+        TurbineStageGroupDefinition stage,
+        FluidNodeState inlet)
+    {
+        if (stage.AdmissionPhasePolicy == TurbineAdmissionPhasePolicy.LegacyUnrestricted)
+        {
+            return 1d;
+        }
+
+        return Math.Clamp(inlet.Thermodynamics.VaporMassFraction ?? 0d, 0d, 1d);
     }
 
     private IReadOnlyDictionary<string, RotorWorking> SolveRotors(

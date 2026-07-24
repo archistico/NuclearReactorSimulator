@@ -9,7 +9,7 @@ namespace NuclearReactorSimulator.Simulation.Physics.Fluids;
 /// combined with deliberately simplified correlations for density and internal energy.
 /// It is not a complete IAPWS-IF97 implementation and must not be used for engineering design.
 /// </summary>
-public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamicModel
+public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamicModel, IWaterSteamSaturationPropertyProvider
 {
     private const double TriplePointTemperatureKelvins = 273.16d;
     private const double CriticalTemperatureKelvins = 647.096d;
@@ -101,6 +101,25 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         }
 
         return EvaluateSaturation(temperature.Kelvins);
+    }
+
+    public WaterSteamSaturationProperties GetSaturationProperties(Pressure pressure)
+    {
+        if (!double.IsFinite(pressure.Pascals) || pressure <= Pressure.Vacuum)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pressure), pressure, "Saturation pressure must be finite and greater than zero.");
+        }
+
+        var saturationTemperatureKelvins = SaturationTemperatureFromPressure(pressure.Pascals);
+        if (!saturationTemperatureKelvins.HasValue)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(pressure),
+                pressure,
+                $"Simplified saturation properties are not available above the supported saturation envelope ending at {MaximumSaturationTemperatureKelvins} K.");
+        }
+
+        return EvaluateSaturation(saturationTemperatureKelvins.Value);
     }
 
     private static bool TryResolveSaturatedMixture(

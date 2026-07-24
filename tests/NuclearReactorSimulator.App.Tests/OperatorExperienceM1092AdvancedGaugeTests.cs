@@ -50,6 +50,28 @@ public sealed class OperatorExperienceM1092AdvancedGaugeTests
                 && (string?)element.Attribute("Snapshot") == "{Binding TurbineSecondary.TotalTurbineShaftPower}");
     }
 
+    [Fact]
+    public void SnapshotIndicators_InheritLogicalStepAndPublishAutomaticTrendArrows()
+    {
+        var document = LoadMainWindow();
+        var window = Assert.Single(document.Elements());
+        Assert.Equal(
+            "{Binding LogicalStep}",
+            window.Attributes()
+                .Single(attribute => attribute.Name.LocalName == "ControlRoomTrendScope.LogicalStep")
+                .Value);
+
+        var snapshotIndicators = document.Descendants()
+            .Where(static element => element.Name.LocalName == "ControlRoomNumericIndicator")
+            .Where(static element => ((string?)element.Attribute("ValueText"))?.Contains(".ValueText}", StringComparison.Ordinal) == true)
+            .ToArray();
+
+        Assert.NotEmpty(snapshotIndicators);
+        Assert.All(
+            snapshotIndicators,
+            static indicator => Assert.False(string.IsNullOrWhiteSpace((string?)indicator.Attribute("Snapshot"))));
+    }
+
     private static XDocument LoadMainWindow()
         => XDocument.Load(Path.Combine(AppContext.BaseDirectory, "MainWindow.axaml"));
 }

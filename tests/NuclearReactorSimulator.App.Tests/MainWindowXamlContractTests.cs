@@ -96,6 +96,28 @@ public sealed class MainWindowXamlContractTests
     }
 
     [Fact]
+    public void ElectricalWorkspace_ShowsCommittedSpeedAndLoadReferencesWithExplicitStepSemantics()
+    {
+        var document = LoadMainWindow();
+        var textBindings = document.Descendants()
+            .Select(static element => (string?)element.Attribute("Text"))
+            .Where(static text => text is not null)
+            .ToHashSet(StringComparer.Ordinal);
+
+        Assert.Contains("{Binding SelectedTurbineSpeedReferenceText}", textBindings);
+        Assert.Contains("{Binding SelectedGeneratorLoadReferenceText}", textBindings);
+        Assert.Contains("{Binding GeneratorSetpointStepSummaryText}", textBindings);
+        Assert.Contains("{Binding TrainingPenaltyRuleText}", textBindings);
+
+        var labels = document.Descendants()
+            .Select(static element => (string?)element.Attribute("Text"))
+            .Where(static text => text is not null)
+            .ToHashSet(StringComparer.Ordinal);
+        Assert.Contains("SPEED REFERENCE · MODEL", labels);
+        Assert.Contains("REQUESTED LOAD · MODEL", labels);
+    }
+
+    [Fact]
     public void ElectricalWorkspace_UsesParalleledAwareSynchronizationPresentation()
     {
         var document = LoadMainWindow();
@@ -202,7 +224,7 @@ public sealed class MainWindowXamlContractTests
 
 
     [Fact]
-    public void RuntimeProgressIndicator_BindsToRunStateAndLogicalStepBesideHostControls()
+    public void RuntimeProgressIndicator_UsesThreeDedicatedRowsAndIsTheOnlyCurrentStepReadout()
     {
         var document = LoadMainWindow();
         var progress = Assert.Single(
@@ -210,11 +232,19 @@ public sealed class MainWindowXamlContractTests
             static element => element.Name.LocalName == "ProgressBar"
                 && (string?)element.Attribute("IsIndeterminate") == "{Binding IsRuntimeRunning}");
 
-        Assert.Equal("90", (string?)progress.Attribute("Width"));
-        Assert.Contains(
+        Assert.Equal("1", (string?)progress.Attribute("Grid.Row"));
+        Assert.Equal("Stretch", (string?)progress.Attribute("HorizontalAlignment"));
+        Assert.Equal("True", (string?)progress.Attribute("ClipToBounds"));
+        var progressText = Assert.Single(
             document.Descendants(),
             static element => element.Name.LocalName == "TextBlock"
                 && (string?)element.Attribute("Text") == "{Binding RuntimeProgressText}");
+        Assert.Equal("2", (string?)progressText.Attribute("Grid.Row"));
+
+        Assert.DoesNotContain(
+            document.Descendants(),
+            static element => (string?)element.Attribute("Text") == "LOGICAL STEP"
+                || (string?)element.Attribute("Label") == "LOGICAL STEP");
     }
 
     [Fact]
@@ -223,6 +253,7 @@ public sealed class MainWindowXamlContractTests
         var document = LoadMainWindow();
         var root = Assert.IsType<XElement>(document.Root);
         Assert.Equal("1340", (string?)root.Attribute("MinWidth"));
+        Assert.Equal("Maximized", (string?)root.Attribute("WindowState"));
 
         var centerScroll = Assert.Single(
             document.Descendants(),
@@ -235,7 +266,7 @@ public sealed class MainWindowXamlContractTests
         Assert.Equal("Disabled", (string?)centerScroll.Attribute("HorizontalScrollBarVisibility"));
 
         var paddedContent = Assert.Single(centerScroll.Elements(), static element => element.Name.LocalName == "Border");
-        Assert.Equal("28", (string?)paddedContent.Attribute("Padding"));
+        Assert.Equal("18", (string?)paddedContent.Attribute("Padding"));
         Assert.Null(paddedContent.Attribute("MinWidth"));
         Assert.Null(paddedContent.Attribute("HorizontalAlignment"));
 
@@ -256,7 +287,7 @@ public sealed class MainWindowXamlContractTests
         var centerGrid = Assert.IsType<XElement>(centerHost.Parent);
         Assert.Equal("Grid", centerGrid.Name.LocalName);
         Assert.Equal("1", (string?)centerGrid.Attribute("Grid.Row"));
-        Assert.Equal("188,*,300", (string?)centerGrid.Attribute("ColumnDefinitions"));
+        Assert.Equal("172,*,260", (string?)centerGrid.Attribute("ColumnDefinitions"));
         Assert.Equal("True", (string?)centerGrid.Attribute("ClipToBounds"));
     }
 

@@ -39,6 +39,30 @@ public sealed class ControlRoomInstrumentTrendSnapshotTests
         Assert.Null(reset.RatePerLogicalStep);
     }
 
+    [Theory]
+    [InlineData(10d, 14d, ControlRoomInstrumentTrendDirection.RisingRapidly, "↑↑", "RISING RAPIDLY")]
+    [InlineData(14d, 10d, ControlRoomInstrumentTrendDirection.FallingRapidly, "↓↓", "FALLING RAPIDLY")]
+    public void Between_DistinguishesRapidChangesForOperatorArrows(
+        double previous,
+        double current,
+        ControlRoomInstrumentTrendDirection expectedDirection,
+        string expectedArrow,
+        string expectedText)
+    {
+        var trend = ControlRoomInstrumentTrendSnapshot.Between(
+            previousLogicalStep: 10,
+            previous,
+            currentLogicalStep: 12,
+            current,
+            steadyTolerance: 0.000001d,
+            unit: "kPa",
+            rapidTolerance: 1d);
+
+        Assert.Equal(expectedDirection, trend.Direction);
+        Assert.Equal(expectedArrow, trend.ArrowText);
+        Assert.Equal(expectedText, trend.DirectionText);
+    }
+
     [Fact]
     public void Between_RejectsInvalidInputsButNotAValidLogicalStepReset()
     {
@@ -48,5 +72,7 @@ public sealed class ControlRoomInstrumentTrendSnapshotTests
             ControlRoomInstrumentTrendSnapshot.Between(0, 1d, -1, 2d, 0d, "MW"));
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             ControlRoomInstrumentTrendSnapshot.Between(0, 1d, 1, 2d, -1d, "MW"));
+        Assert.Throws<ArgumentOutOfRangeException>(() =>
+            ControlRoomInstrumentTrendSnapshot.Between(0, 1d, 1, 2d, 1d, "MW", rapidTolerance: 1d));
     }
 }

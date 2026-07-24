@@ -50,11 +50,31 @@ public sealed record GeneratorPresentationSnapshot(
     public string SynchronizationLabel => BreakerClosed ? "PARALLELED" : "SYNC";
 
     [JsonIgnore]
-    public string DisplaySynchronizationText => BreakerClosed
-        ? "PARALLELED — breaker closed; the pre-close synchronization permissive is no longer an operator warning."
-        : SynchronizationConditionsSatisfied
-            ? "SYNC READY — canonical frequency, phase and voltage close-check limits are satisfied."
-            : "SYNC NOT READY — inspect the close-check differences below before closing the breaker.";
+    public string DisplaySynchronizationText
+    {
+        get
+        {
+            if (BreakerClosed)
+            {
+                return "PARALLELED — breaker closed; the pre-close synchronization permissive is no longer an operator warning.";
+            }
+
+            if (SynchronizationConditionsSatisfied)
+            {
+                return "SYNC READY — canonical frequency, phase and voltage close-check limits are satisfied.";
+            }
+
+            var phaseOutside = MaximumSynchronizationPhaseDifferenceDegrees > 0d
+                && CloseCheckPhaseDifferenceDegrees > MaximumSynchronizationPhaseDifferenceDegrees;
+            var nearlyZeroSlip = CloseCheckFrequencyDifferenceHz <= 0.01d;
+            if (phaseOutside && nearlyZeroSlip)
+            {
+                return "SYNC NOT READY — phase is outside the close window and is effectively stationary. Waiting alone will not re-synchronize: use SPEED RAISE/LOWER to create a small phase slip, then return near synchronous speed when phase enters the window.";
+            }
+
+            return "SYNC NOT READY — inspect Δf, Δphase and ΔV. Use SPEED RAISE/LOWER to create or reduce phase slip; close only when all three checks are OK.";
+        }
+    }
 
     [JsonIgnore]
     public string SynchronizationDetailText

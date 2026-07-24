@@ -20,6 +20,22 @@ public sealed class SimplifiedWaterSteamThermodynamicModelTests
         Assert.True(properties.SaturatedVaporInternalEnergy > properties.SaturatedLiquidInternalEnergy);
     }
 
+
+    [Fact]
+    public void SaturationProperties_ByPressure_RoundTripTheSupportedSaturationBoundary()
+    {
+        var byTemperature = _model.GetSaturationProperties(Temperature.FromDegreesCelsius(100d));
+
+        var byPressure = _model.GetSaturationProperties(byTemperature.Pressure);
+
+        Assert.Equal(byTemperature.Temperature.Kelvins, byPressure.Temperature.Kelvins, 6);
+        Assert.Equal(byTemperature.Pressure.Pascals, byPressure.Pressure.Pascals, 3);
+        Assert.Equal(
+            byTemperature.SaturatedLiquidInternalEnergy.JoulesPerKilogram,
+            byPressure.SaturatedLiquidInternalEnergy.JoulesPerKilogram,
+            3);
+    }
+
     [Fact]
     public void SaturatedMixture_RoundTripsTemperaturePressureAndQuality()
     {

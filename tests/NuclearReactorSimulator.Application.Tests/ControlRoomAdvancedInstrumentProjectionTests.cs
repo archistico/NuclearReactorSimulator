@@ -1,6 +1,7 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
+using NuclearReactorSimulator.Application.Scenarios.Training;
 using Xunit;
 
 namespace NuclearReactorSimulator.Application.Tests.ControlRoom;
@@ -77,4 +78,30 @@ public sealed class ControlRoomAdvancedInstrumentProjectionTests
         Assert.Equal("MEASURED", value.ProvenanceText);
         Assert.Equal("NO CANONICAL OPERATING/TARGET/PROTECTION BAND", value.ScaleSemanticsText);
     }
+    [Fact]
+    public void SustainedGenerationProjection_PublishesLowLevelAlarmProtectionAndLiquidInventoryDiagnostics()
+    {
+        var snapshot = new DesktopSustainedGenerationInitialConditionFactory()
+            .CreateRuntimeEngine()
+            .CreatePresentationSnapshot(ControlRoomRunState.Paused);
+
+        var drum = Assert.Single(snapshot.PrimaryCircuit.SteamDrums);
+        var scale = Assert.IsType<ControlRoomInstrumentScaleSnapshot>(drum.Level.InstrumentScale);
+
+        Assert.Contains(scale.OperatingBands, static band =>
+            band.Kind == ControlRoomInstrumentBandKind.Warning
+            && band.Minimum == 10d
+            && band.Maximum == 25d
+            && band.Label.Contains("LEVEL LOW", StringComparison.Ordinal));
+        Assert.Contains(scale.ProtectionLimits, static limit =>
+            limit.Direction == ControlRoomLimitDirection.Low
+            && limit.Threshold == 10d
+            && limit.Label == "STEAM-DRUM-LOW-LOW-LEVEL");
+        Assert.Equal(ControlRoomInstrumentProvenance.Model, drum.SeparableLiquidInventory.Provenance);
+        Assert.Equal(ControlRoomInstrumentProvenance.Model, drum.SeparableLiquidMassFraction.Provenance);
+        Assert.True((drum.SeparableLiquidInventory.NumericValue ?? 0d) > 0d);
+        Assert.InRange(drum.SeparableLiquidMassFraction.NumericValue ?? double.NaN, 0d, 100d);
+        Assert.False(string.IsNullOrWhiteSpace(drum.LiquidInventoryStatus));
+    }
+
 }

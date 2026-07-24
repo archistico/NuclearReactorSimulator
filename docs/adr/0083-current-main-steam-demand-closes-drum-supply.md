@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4 Hotfix 16 candidate.
+Historical Hotfix 16 decision. **Superseded for explicit current-v2 steam-source profiles by ADR 0094.**
 
 ## Context
 

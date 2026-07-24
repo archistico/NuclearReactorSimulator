@@ -259,7 +259,7 @@ public sealed class ControlRoomPlantMimicControl : Panel
     {
         Text = text,
         FontSize = size,
-        FontFamily = new FontFamily("Consolas"),
+        FontFamily = ControlRoomTypography.InterfaceFont,
         Foreground = brush,
         TextWrapping = TextWrapping.Wrap,
     };

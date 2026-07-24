@@ -13,6 +13,14 @@ A schematic must answer, without requiring the operator to infer hidden topology
 - which values are important now;
 - whether a line represents fluid, mechanical/electrical energy, measurement, control, feedback, alarm or protection override.
 
+Presentation layout constraints:
+
+- a schematic row contains at most four equipment nodes;
+- additional equipment continues on a new row with explicit directional routing;
+- node inputs and outputs occupy two separate text rows;
+- node text is size-bounded, ellipsized when necessary and clipped to the node surface;
+- connection values live in the reserved `LINES & SIGNALS` band rather than overlapping equipment or arrows.
+
 ## Presentation ownership
 
 Subsystem diagrams are Application-owned presentation topology derived from existing immutable control-room snapshots. They are not a second simulation network.

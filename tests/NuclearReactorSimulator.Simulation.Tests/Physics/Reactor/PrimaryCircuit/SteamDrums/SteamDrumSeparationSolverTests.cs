@@ -49,19 +49,142 @@ public sealed class SteamDrumSeparationSolverTests
         var circulation = new MainCirculationSystemSolver(fixture.Solver.Definition.MainCirculationSystem)
             .Solve(fixture.State);
 
-        var result = fixture.Solver.Solve(fixture.State, circulation);
+        var result = fixture.Solver.Solve(fixture.State, circulation, TimeSpan.FromMilliseconds(10));
         var drum = result.Snapshot.GetDrum("drum-a");
         var loop = circulation.GetLoop("loop");
         var expectedLiquidKilogramsPerSecond = loop.Pumps
             .Sum(static pump => Math.Max(0d, pump.MassFlowRate.KilogramsPerSecond));
 
         Assert.Equal(expectedLiquidKilogramsPerSecond, drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(expectedLiquidKilogramsPerSecond, drum.RequestedLiquidRecirculationMassFlowRate.KilogramsPerSecond, 12);
+        Assert.False(drum.LiquidRecirculationInventoryLimited);
+        Assert.True(drum.HasSeparableLiquidInventory);
         var drumBalance = result.SourceTerms.FluidNodeBalances["drum-node"];
         Assert.Equal(
             -(drum.SeparatedSteamMassFlowRate.KilogramsPerSecond + drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond),
             drumBalance.NetMassFlowRate.KilogramsPerSecond,
             12);
         Assert.Equal(0d, result.SourceTerms.FluidNodeBalances.Values.Sum(static balance => balance.NetMassFlowRate.KilogramsPerSecond), 12);
+    }
+
+    [Fact]
+    public void Solve_CirculationDemandBalanced_FullyVaporInventoryCannotFabricateLiquidRecirculation()
+    {
+        var fixture = CreateFixture(
+            FluidPhase.SuperheatedVapor,
+            null,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced);
+        var circulation = new MainCirculationSystemSolver(fixture.Solver.Definition.MainCirculationSystem)
+            .Solve(fixture.State);
+
+        var result = fixture.Solver.Solve(fixture.State, circulation, TimeSpan.FromMilliseconds(10));
+        var drum = result.Snapshot.GetDrum("drum-a");
+
+        Assert.True(drum.RequestedLiquidRecirculationMassFlowRate > MassFlowRate.Zero);
+        Assert.Equal(Mass.Zero, drum.SeparableLiquidInventoryMass);
+        Assert.False(drum.HasSeparableLiquidInventory);
+        Assert.Equal(0d, drum.SeparableLiquidInventoryMassFraction, 12);
+        Assert.True(drum.CommittedLiquidInventoryDepleted);
+        Assert.True(drum.WaterSteamSeparationUnavailable);
+        Assert.Equal(MassFlowRate.Zero, drum.RecirculatedLiquidMassFlowRate);
+        Assert.Equal(MassFlowRate.Zero, drum.MaximumInventorySupportedLiquidRecirculationMassFlowRate);
+        Assert.Equal(drum.RequestedLiquidRecirculationMassFlowRate, drum.LiquidRecirculationInventoryDeficitMassFlowRate);
+        Assert.True(drum.LiquidRecirculationInventoryLimited);
+    }
+
+    [Fact]
+    public void Solve_CirculationDemandBalanced_CapsLiquidRecirculationBySameStepAvailableLiquid()
+    {
+        var fixture = CreateFixture(
+            FluidPhase.SaturatedMixture,
+            0.25d,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced);
+        var circulation = new MainCirculationSystemSolver(fixture.Solver.Definition.MainCirculationSystem)
+            .Solve(fixture.State);
+        var interval = TimeSpan.FromDays(1);
+
+        var result = fixture.Solver.Solve(fixture.State, circulation, interval);
+        var drum = result.Snapshot.GetDrum("drum-a");
+        var expectedIncomingLiquid = drum.IncomingReturnMassFlowRate.KilogramsPerSecond
+            - drum.SeparatedSteamMassFlowRate.KilogramsPerSecond;
+        var expectedMaximum = expectedIncomingLiquid + (drum.SeparableLiquidInventoryMass.Kilograms / interval.TotalSeconds);
+
+        Assert.Equal(750d, drum.SeparableLiquidInventoryMass.Kilograms, 9);
+        Assert.Equal(0.75d, drum.SeparableLiquidInventoryMassFraction, 12);
+        Assert.False(drum.CommittedLiquidInventoryDepleted);
+        Assert.False(drum.WaterSteamSeparationUnavailable);
+        Assert.True(drum.RequestedLiquidRecirculationMassFlowRate > drum.MaximumInventorySupportedLiquidRecirculationMassFlowRate);
+        Assert.Equal(expectedMaximum, drum.MaximumInventorySupportedLiquidRecirculationMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(expectedMaximum, drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond, 12);
+        Assert.True(drum.LiquidRecirculationInventoryLimited);
+    }
+
+    [Fact]
+    public void Solve_CurrentSteamSource_WithoutReturnEnergySurplusOrStoredVaporProducesNoSteam()
+    {
+        var fixture = CreateFixture(
+            FluidPhase.SubcooledLiquid,
+            null,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            steamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d);
+
+        var drum = fixture.Solver
+            .Solve(fixture.State, TimeSpan.FromMilliseconds(10))
+            .Snapshot
+            .GetDrum("drum-a");
+
+        Assert.True(drum.UsesPressureEnergyInventorySteamSource);
+        Assert.True(drum.SteamSourcePressureDrivenCapacityMassFlowRate > MassFlowRate.Zero);
+        Assert.Equal(Mass.Zero, drum.SteamSourceStoredVaporInventoryMass);
+        Assert.Equal(MassFlowRate.Zero, drum.SteamSourceIncomingEnergySupportedMassFlowRate);
+        Assert.Equal(MassFlowRate.Zero, drum.SeparatedSteamMassFlowRate);
+        Assert.True(drum.SteamSourceAvailabilityLimited);
+    }
+
+    [Fact]
+    public void Solve_CurrentSteamSource_IncreasingReturnEnergyIncreasesAvailableSteamMonotonically()
+    {
+        var lower = CreateFixture(
+            FluidPhase.SubcooledLiquid,
+            null,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            steamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
+            outletSpecificEnergyKilojoulesPerKilogram: 1_200d);
+        var higher = CreateFixture(
+            FluidPhase.SubcooledLiquid,
+            null,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            steamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
+            outletSpecificEnergyKilojoulesPerKilogram: 1_800d);
+
+        var lowerDrum = lower.Solver.Solve(lower.State, TimeSpan.FromMilliseconds(10)).Snapshot.GetDrum("drum-a");
+        var higherDrum = higher.Solver.Solve(higher.State, TimeSpan.FromMilliseconds(10)).Snapshot.GetDrum("drum-a");
+
+        Assert.True(lowerDrum.SteamSourceIncomingEnergySupportedMassFlowRate > MassFlowRate.Zero);
+        Assert.True(higherDrum.SteamSourceIncomingEnergySupportedMassFlowRate > lowerDrum.SteamSourceIncomingEnergySupportedMassFlowRate);
+        Assert.True(higherDrum.SteamSourceAvailableMassFlowRate > lowerDrum.SteamSourceAvailableMassFlowRate);
+    }
+
+    [Fact]
+    public void Solve_CurrentSteamSource_IsPressureBoundedAndInternallyConservative()
+    {
+        var fixture = CreateFixture(
+            FluidPhase.SaturatedMixture,
+            0.25d,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            steamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100_000d,
+            outletSpecificEnergyKilojoulesPerKilogram: 1_800d);
+
+        var result = fixture.Solver.Solve(fixture.State, TimeSpan.FromMilliseconds(10));
+        var drum = result.Snapshot.GetDrum("drum-a");
+
+        Assert.True(drum.UsesPressureEnergyInventorySteamSource);
+        Assert.True(drum.SteamSourcePressureDrivenCapacityMassFlowRate > MassFlowRate.Zero);
+        Assert.True(drum.SteamSourceAvailableMassFlowRate > drum.SteamSourcePressureDrivenCapacityMassFlowRate);
+        Assert.Equal(drum.SteamSourcePressureDrivenCapacityMassFlowRate, drum.SeparatedSteamMassFlowRate);
+        Assert.True(drum.SteamSourcePressureLimited);
+        Assert.Equal(0d, result.SourceTerms.FluidNodeBalances.Values.Sum(static balance => balance.NetMassFlowRate.KilogramsPerSecond), 12);
+        Assert.Equal(0d, result.SourceTerms.FluidNodeBalances.Values.Sum(static balance => balance.NetEnergyRate.Watts), 6);
     }
 
     [Fact]
@@ -76,6 +199,26 @@ public sealed class SteamDrumSeparationSolverTests
         Assert.Equal(Power.Zero, result.SourceTerms.ExternalPower);
         Assert.Equal(0d, result.Snapshot.GetDrum("drum-a").SeparationMassResidualKilogramsPerSecond, 12);
         Assert.Equal(0d, result.Snapshot.GetDrum("drum-a").SeparationEnergyResidualWatts, 6);
+    }
+
+    [Fact]
+    public void Solve_LegacyReturnSplit_IgnoresIntegrationIntervalAndRetainsHistoricalSplit()
+    {
+        var fixture = CreateFixture(
+            FluidPhase.SaturatedMixture,
+            0.25d,
+            SteamDrumLiquidRecirculationMode.LegacyReturnSplit);
+
+        var drum = fixture.Solver
+            .Solve(fixture.State, TimeSpan.FromDays(1))
+            .Snapshot
+            .GetDrum("drum-a");
+        var expectedLiquid = drum.IncomingReturnMassFlowRate - drum.SeparatedSteamMassFlowRate;
+
+        Assert.Equal(expectedLiquid, drum.RecirculatedLiquidMassFlowRate);
+        Assert.Equal(expectedLiquid, drum.RequestedLiquidRecirculationMassFlowRate);
+        Assert.Equal(expectedLiquid, drum.MaximumInventorySupportedLiquidRecirculationMassFlowRate);
+        Assert.False(drum.LiquidRecirculationInventoryLimited);
     }
 
     [Fact]
@@ -107,16 +250,25 @@ public sealed class SteamDrumSeparationSolverTests
     private static Fixture CreateFixture(
         FluidPhase drumPhase,
         double? quality,
-        SteamDrumLiquidRecirculationMode liquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit)
+        SteamDrumLiquidRecirculationMode liquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
+        double? steamSourceResistancePascalSecondsSquaredPerKilogramSquared = null,
+        double outletSpecificEnergyKilojoulesPerKilogram = 625d)
     {
         var thermodynamics = new SimplifiedWaterSteamThermodynamicModel();
         var saturation = thermodynamics.GetSaturationProperties(Temperature.FromDegreesCelsius(280d));
         var plant = BuildPlant();
 
-        FluidNodeState SimpleFluid(string id, double pressureMpa, double temperatureCelsius, double massKilograms = 8_000d)
+        FluidNodeState SimpleFluid(
+            string id,
+            double pressureMpa,
+            double temperatureCelsius,
+            double massKilograms = 8_000d,
+            double specificEnergyKilojoulesPerKilogram = 625d)
             => new(
                 plant.GetFluidNode(id),
-                new FluidNodeInventory(Mass.FromKilograms(massKilograms), Energy.FromMegajoules(5_000)),
+                new FluidNodeInventory(
+                    Mass.FromKilograms(massKilograms),
+                    Energy.FromJoules(specificEnergyKilojoulesPerKilogram * 1_000d * massKilograms)),
                 new FluidThermodynamicState(
                     Pressure.FromMegapascals(pressureMpa),
                     Temperature.FromDegreesCelsius(temperatureCelsius),
@@ -159,7 +311,7 @@ public sealed class SteamDrumSeparationSolverTests
             {
                 SimpleFluid("suction", 6.0d, 270d),
                 SimpleFluid("pressure", 7.4d, 272d),
-                SimpleFluid("outlet", 7.0d, 285d),
+                SimpleFluid("outlet", 7.0d, 285d, specificEnergyKilojoulesPerKilogram: outletSpecificEnergyKilojoulesPerKilogram),
                 drumState,
                 SimpleFluid("steam-outlet", 6.0d, 280d, 500d),
             },
@@ -227,7 +379,12 @@ public sealed class SteamDrumSeparationSolverTests
                     "loop",
                     "drum-node",
                     "steam-outlet",
-                    liquidRecirculationMode),
+                    liquidRecirculationMode,
+                    steamSourceResistancePascalSecondsSquaredPerKilogramSquared.HasValue
+                        ? new SteamDrumSteamSourceDefinition(
+                            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(
+                                steamSourceResistancePascalSecondsSquaredPerKilogramSquared.Value))
+                        : null),
             });
 
         return new Fixture(state, new SteamDrumSeparationSolver(drums));

@@ -14,7 +14,8 @@ public sealed class CondenserDefinition
         string hotwellNodeId,
         string coolingBoundaryId,
         MassFlowRate maximumCondensationMassFlowRate,
-        ThermalConductance? overallHeatTransferConductance = null)
+        ThermalConductance? overallHeatTransferConductance = null,
+        CondenserCondensateEnergyMode condensateEnergyMode = CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -62,6 +63,11 @@ public sealed class CondenserDefinition
                 "Condenser overall heat-transfer conductance must be greater than zero when supplied.");
         }
 
+        if (!Enum.IsDefined(condensateEnergyMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(condensateEnergyMode), condensateEnergyMode, "Unsupported condenser condensate-energy mode.");
+        }
+
         Id = id.Trim();
         TurbineStageGroupId = turbineStageGroupId.Trim();
         SteamSpaceNodeId = steamSpaceNodeId.Trim();
@@ -69,6 +75,7 @@ public sealed class CondenserDefinition
         CoolingBoundaryId = coolingBoundaryId.Trim();
         MaximumCondensationMassFlowRate = maximumCondensationMassFlowRate;
         OverallHeatTransferConductance = overallHeatTransferConductance;
+        CondensateEnergyMode = condensateEnergyMode;
     }
 
     public string Id { get; }
@@ -88,4 +95,11 @@ public sealed class CondenserDefinition
     /// Null preserves the historical capacity-only condenser law for isolated legacy definitions.
     /// </summary>
     public ThermalConductance? OverallHeatTransferConductance { get; }
+
+    /// <summary>
+    /// Selects the internal-energy state assigned to condensed mass entering the hotwell.
+    /// Legacy definitions retain the historical hotwell-state transfer; current-v2 may opt into
+    /// pressure-resolved saturated-liquid condensate without changing the generic network transport law.
+    /// </summary>
+    public CondenserCondensateEnergyMode CondensateEnergyMode { get; }
 }

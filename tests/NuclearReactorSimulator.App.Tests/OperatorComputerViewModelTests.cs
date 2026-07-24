@@ -89,6 +89,7 @@ public sealed class OperatorComputerViewModelTests
         Assert.Equal("RUNNING", viewModel.RuntimeStateText);
         Assert.Equal("00000123", viewModel.LogicalStepText);
         Assert.Contains("PAGE LOG", viewModel.StatusLineText);
+        Assert.DoesNotContain("STEP ", viewModel.StatusLineText);
         Assert.Contains("ALARMS 4/3 UNACK", viewModel.StatusLineText);
         Assert.Contains("SIGNALS 2 INVALID", viewModel.StatusLineText);
         Assert.Contains("PROTECTION ACTIVE", viewModel.StatusLineText);

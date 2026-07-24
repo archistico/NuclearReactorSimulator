@@ -30,6 +30,11 @@ public sealed class ControlRoomSubsystemSchematicProjectionTests
         {
             Assert.NotEmpty(schematic.Nodes);
             Assert.NotEmpty(schematic.Connections);
+            Assert.All(
+                schematic.Nodes.GroupBy(static node => Math.Round(node.Y, 1, MidpointRounding.AwayFromZero)),
+                static row => Assert.True(
+                    row.Count() <= 4,
+                    $"Schematic row {row.Key:0.0} contains {row.Count()} nodes; the HMI maximum is four."));
             Assert.All(schematic.Nodes, static node =>
             {
                 Assert.StartsWith("IN ·", node.InputText);

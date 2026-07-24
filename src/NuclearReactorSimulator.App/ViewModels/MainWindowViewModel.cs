@@ -730,6 +730,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(SelectedGeneratorSynchronizationText));
             OnPropertyChanged(nameof(SelectedGeneratorSynchronizationDetailText));
             OnPropertyChanged(nameof(SelectedGeneratorRotorId));
+            OnPropertyChanged(nameof(SelectedTurbineSpeedReferenceText));
+            OnPropertyChanged(nameof(SelectedGeneratorLoadReferenceText));
             OnPropertyChanged(nameof(BreakerCloseCommandState));
             OnPropertyChanged(nameof(TurbineSpeedCommandState));
             OnPropertyChanged(nameof(GeneratorLoadCommandState));
@@ -760,6 +762,30 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public string SelectedGeneratorRotorId => Electrical.Generators.Count == 0
         ? "—"
         : Electrical.Generators[Math.Clamp(_selectedGeneratorIndex, 0, Electrical.Generators.Count - 1)].RotorId;
+
+    public string SelectedTurbineSpeedReferenceText
+    {
+        get
+        {
+            var rotorId = SelectedGeneratorRotorId;
+            var rotor = TurbineSecondary.Rotors.FirstOrDefault(
+                item => string.Equals(item.RotorId, rotorId, StringComparison.Ordinal));
+            var setpoint = rotor?.Speed.InstrumentScale?.Setpoint;
+            return setpoint.HasValue
+                ? FormattableString.Invariant($"{setpoint.Value:0} rpm")
+                : "—";
+        }
+    }
+
+    public string SelectedGeneratorLoadReferenceText => SelectedGenerator is null
+        ? "—"
+        : $"{SelectedGenerator.RequestedElectricalPower.ValueText} {SelectedGenerator.RequestedElectricalPower.Unit}".Trim();
+
+    public string GeneratorSetpointStepSummaryText => FormattableString.Invariant(
+        $"SPEED ± changes the speed reference by {ControlRoomRuntimeCommandPolicy.Default.TurbineSpeedSetpointIncrementRpm:0} rpm per accepted press · LOAD ± changes requested electrical load by {ControlRoomRuntimeCommandPolicy.Default.GeneratorLoadSetpointIncrementWatts / 1_000_000d:0.#} MWe per accepted press.");
+
+    public string TrainingPenaltyRuleText =>
+        "Scoring penalties are triggered only by accepted manual operator commands listed by the scenario; automatic protection trips do not subtract those command penalties by themselves.";
 
     public ControlRoomVisualState TurbineTripCommandState => _snapshot.RunState == ControlRoomRunState.ShellOnly
         ? ControlRoomVisualState.Unavailable
@@ -1556,6 +1582,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(SelectedGeneratorSynchronizationText));
         OnPropertyChanged(nameof(SelectedGeneratorSynchronizationDetailText));
         OnPropertyChanged(nameof(SelectedGeneratorRotorId));
+        OnPropertyChanged(nameof(SelectedTurbineSpeedReferenceText));
+        OnPropertyChanged(nameof(SelectedGeneratorLoadReferenceText));
         OnPropertyChanged(nameof(TurbineSpeedCommandState));
         OnPropertyChanged(nameof(GeneratorLoadCommandState));
         OnPropertyChanged(nameof(TurbineTripCommandState));
@@ -1618,13 +1646,15 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     {
         var scale = current.InstrumentScale;
         var steadyTolerance = scale is null ? 1e-9d : (scale.Maximum - scale.Minimum) * 1e-6d;
+        var rapidTolerance = scale is null ? (double?)null : (scale.Maximum - scale.Minimum) * 0.001d;
         return ControlRoomInstrumentTrendSnapshot.Between(
             previousLogicalStep,
             previous.NumericValue,
             currentLogicalStep,
             current.NumericValue,
             steadyTolerance,
-            current.Unit);
+            current.Unit,
+            rapidTolerance);
     }
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)

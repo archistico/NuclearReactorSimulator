@@ -218,3 +218,10 @@ This preserves the 500 kJ/kg design cap at the validated operating point while m
 `TurbineStageGroupSnapshot` publishes the pressure/temperature availability, inlet-energy bound, effective ideal work, extracted work and `ThermodynamicWorkLimited`. The Application projection exposes available/extracted kJ/kg so long-running failures identify whether the limitation comes from steam flow or steam quality/expansion authority.
 
 This remains an educational closure, not a complete isentropic steam-table or multi-cylinder stage map. The optional definition keeps that backend replaceable without changing turbine topology or rotor ownership.
+
+
+## M10.9.4.1-D.1 admission phase policy
+
+Historical turbine stages retain `LegacyUnrestricted` admission. Sustained current-v2 stages explicitly use `VaporMassFractionLimited`: the raw hydraulic stage request is multiplied by the committed inlet vapor mass fraction before the conservative inlet→exhaust transfer is built. A liquid inlet therefore cannot pass through the turbine as a zero-work bypass. For a wet mixture, only the vapor fraction is admitted and the thermodynamic specific-work law is evaluated per kilogram of admitted vapor, so vapor quality is not applied twice.
+
+This is deliberately not a detailed wet-steam blade model. Valve/stage authority, Stodola/effective-area alternatives and actuator tracking anti-windup remain later Phase-D work.

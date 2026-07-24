@@ -211,7 +211,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
     public string ProtectionStatusText => _snapshot.RuntimeStatus.AnyTripActive ? "PROTECTION ACTIVE" : "PROTECTION CLEAR";
 
     public string StatusLineText =>
-        $"PAGE {SelectedPageLabel}  |  {RuntimeStateText}  |  STEP {LogicalStepText}  |  {AlarmStatusText}  |  {SignalStatusText}  |  {ProtectionStatusText}";
+        $"PAGE {SelectedPageLabel}  |  {RuntimeStateText}  |  {AlarmStatusText}  |  {SignalStatusText}  |  {ProtectionStatusText}";
 
     public ICommand SelectGuidancePageCommand { get; }
     public ICommand SelectInfoPageCommand { get; }

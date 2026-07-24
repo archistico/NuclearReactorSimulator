@@ -40,4 +40,5 @@ public sealed class InstrumentationSnapshot
     public InstrumentChannelDiagnosticSnapshot GetDiagnostic(string channelId)
         => Diagnostics.FirstOrDefault(diagnostic => string.Equals(diagnostic.ChannelId, channelId, StringComparison.Ordinal))
             ?? throw new KeyNotFoundException($"Unknown instrument diagnostic '{channelId}'.");
+
 }

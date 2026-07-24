@@ -48,6 +48,73 @@ public sealed class CondenserSystemSolverTests
         Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.EnergyClosureResidualJoules), 0d, 1e-3d);
     }
 
+
+    [Fact]
+    public void Step_PressureResolvedCondensateEnergyTransfersSaturatedLiquidEnergyIntoHotwell()
+    {
+        var model = new FixedSaturationPreservingThermodynamicModel(SpecificEnergy.FromKilojoulesPerKilogram(400d));
+        var fixture = CreateFixture(
+            Power.FromMegawatts(100d),
+            model,
+            condensateEnergyMode: CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure);
+        var solver = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel);
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var condenser = Assert.Single(result.Snapshot.Condensers);
+
+        Assert.Equal(10d, condenser.ActualCondensationMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(400d, condenser.CondensateSpecificInternalEnergy.KilojoulesPerKilogram, 12);
+        Assert.Equal(1_600d, condenser.SpecificCondensationEnergyDrop.KilojoulesPerKilogram, 12);
+        Assert.Equal(4d, condenser.HotwellEnergyAdditionRate.Megawatts, 12);
+        Assert.Equal(16d, condenser.HeatRejectionPower.Megawatts, 12);
+        Assert.NotNull(model.LastRequestedSaturationPressure);
+        Assert.Equal(Pressure.FromMegapascals(0.1d), model.LastRequestedSaturationPressure.Value);
+        Assert.True(condenser.MaximumFlowLimitActive);
+        Assert.False(condenser.InventoryLimitActive);
+        Assert.False(condenser.ThermalLimitActive);
+        Assert.Equal("MAXIMUM FLOW", condenser.ActiveCondensationLimits);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalancePowerResidualWatts), 0d, 1e-6d);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.EnergyClosureResidualJoules), 0d, 1e-3d);
+    }
+
+    [Fact]
+    public void Step_LegacyCondensateEnergyPreservesCommittedHotwellSpecificEnergy()
+    {
+        var fixture = CreateFixture(Power.FromMegawatts(100d), new PreservingThermodynamicModel());
+        var solver = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel);
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var condenser = Assert.Single(result.Snapshot.Condensers);
+
+        Assert.Equal(CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy,
+            Assert.Single(fixture.Definition.Condensers).CondensateEnergyMode);
+        Assert.Equal(500d, condenser.CondensateSpecificInternalEnergy.KilojoulesPerKilogram, 12);
+        Assert.Equal(5d, condenser.HotwellEnergyAdditionRate.Megawatts, 12);
+        Assert.Equal(15d, condenser.HeatRejectionPower.Megawatts, 12);
+    }
+
+    [Fact]
+    public void Constructor_PressureResolvedCondensateEnergyRequiresSaturationPropertyProvider()
+    {
+        var fixture = CreateFixture(
+            Power.FromMegawatts(100d),
+            new PreservingThermodynamicModel(),
+            condensateEnergyMode: CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure);
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+            new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel));
+
+        Assert.Contains("saturation-property provider", exception.Message);
+    }
+
     [Fact]
     public void Step_CoolingBoundaryCapacityLimitsCondensationRate()
     {
@@ -66,8 +133,59 @@ public sealed class CondenserSystemSolverTests
         Assert.Equal(1d, condenser.ActualCondensationMassFlowRate.KilogramsPerSecond, 12);
         Assert.Equal(1.5d, boundary.UsedHeatRejectionPower.Megawatts, 9);
         Assert.Equal(Power.Zero, boundary.UnusedHeatRejectionPower);
+        Assert.True(boundary.InstalledCoolingCapacityLimitActive);
+        Assert.False(boundary.SurfaceHeatTransferLimitActive);
+        Assert.Equal("INSTALLED CAPACITY", boundary.ActiveHeatRejectionLimits);
     }
 
+
+    [Fact]
+    public void Step_ExplicitInstalledCapacityCapsOtherwiseAvailableCoolingPower()
+    {
+        var fixture = CreateFixture(
+            Power.FromMegawatts(10d),
+            new PreservingThermodynamicModel(),
+            installedHeatRejectionCapacity: Power.FromMegawatts(3d));
+        var solver = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel);
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var boundary = Assert.Single(result.Snapshot.CoolingBoundaries);
+
+        Assert.Equal(3d, boundary.InstalledHeatRejectionCapacity.Megawatts, 12);
+        Assert.Equal(10d, boundary.AvailableHeatRejectionPower.Megawatts, 12);
+        Assert.Equal(3d, boundary.EffectiveHeatRejectionCapacity.Megawatts, 12);
+        Assert.True(boundary.InstalledCoolingCapacityLimitActive);
+        Assert.False(boundary.AvailableCoolingCapacityLimitActive);
+        Assert.Equal("INSTALLED CAPACITY", boundary.ActiveHeatRejectionLimits);
+    }
+
+    [Fact]
+    public void Step_RuntimeAvailabilityCanFallBelowInstalledCapacityWithoutChangingPlantDefinition()
+    {
+        var fixture = CreateFixture(
+            Power.FromMegawatts(3d),
+            new PreservingThermodynamicModel(),
+            installedHeatRejectionCapacity: Power.FromMegawatts(10d));
+        var solver = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel);
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromSeconds(1d));
+        var boundary = Assert.Single(result.Snapshot.CoolingBoundaries);
+
+        Assert.Equal(10d, boundary.InstalledHeatRejectionCapacity.Megawatts, 12);
+        Assert.Equal(3d, boundary.AvailableHeatRejectionPower.Megawatts, 12);
+        Assert.Equal(3d, boundary.EffectiveHeatRejectionCapacity.Megawatts, 12);
+        Assert.False(boundary.InstalledCoolingCapacityLimitActive);
+        Assert.True(boundary.AvailableCoolingCapacityLimitActive);
+        Assert.Equal("AVAILABLE COOLING", boundary.ActiveHeatRejectionLimits);
+    }
 
     [Fact]
     public void Step_SurfaceHeatTransferUaLimitsHeatRejectionBelowAvailableCoolingCapacity()
@@ -92,6 +210,9 @@ public sealed class CondenserSystemSolverTests
         Assert.Equal(1.3d, condenser.EffectiveHeatRejectionCapacity.Megawatts, 9);
         Assert.Equal(1.3d, boundary.SurfaceHeatTransferLimitedPower.Megawatts, 9);
         Assert.Equal(1.3d, boundary.EffectiveHeatRejectionCapacity.Megawatts, 9);
+        Assert.False(boundary.InstalledCoolingCapacityLimitActive);
+        Assert.True(boundary.SurfaceHeatTransferLimitActive);
+        Assert.Equal("SURFACE UA", boundary.ActiveHeatRejectionLimits);
         Assert.Equal(1.3d / 1.5d, condenser.ThermalLimitedCondensationMassFlowRate.KilogramsPerSecond, 9);
         Assert.Equal(1.3d, condenser.HeatRejectionPower.Megawatts, 9);
     }
@@ -223,7 +344,9 @@ public sealed class CondenserSystemSolverTests
         IFluidThermodynamicModel thermodynamicModel,
         ThermalConductance? overallHeatTransferConductance = null,
         Temperature? coolantTemperature = null,
-        double exhaustTemperatureCelsius = 280d)
+        Power? installedHeatRejectionCapacity = null,
+        double exhaustTemperatureCelsius = 280d,
+        CondenserCondensateEnergyMode condensateEnergyMode = CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -378,9 +501,16 @@ public sealed class CondenserSystemSolverTests
                 new CondenserDefinition(
                     "condenser", "stage", "exhaust", "hotwell", "cooling",
                     MassFlowRate.FromKilogramsPerSecond(10d),
-                    overallHeatTransferConductance),
+                    overallHeatTransferConductance,
+                    condensateEnergyMode),
             },
-            new[] { new CondenserCoolingBoundaryDefinition("cooling", "condenser") });
+            new[]
+            {
+                new CondenserCoolingBoundaryDefinition(
+                    "cooling",
+                    "condenser",
+                    installedHeatRejectionCapacity),
+            });
 
         var primaryBoundaryInputs = new PrimaryCircuitBoundaryInputs(
             boundaries,
@@ -427,6 +557,45 @@ public sealed class CondenserSystemSolverTests
             FluidThermodynamicState previousState)
             => previousState;
     }
+
+
+
+    private sealed class FixedSaturationPreservingThermodynamicModel : IFluidThermodynamicModel, IWaterSteamSaturationPropertyProvider
+    {
+        private readonly SpecificEnergy _saturatedLiquidInternalEnergy;
+
+        public FixedSaturationPreservingThermodynamicModel(SpecificEnergy saturatedLiquidInternalEnergy)
+        {
+            _saturatedLiquidInternalEnergy = saturatedLiquidInternalEnergy;
+        }
+
+        public Pressure? LastRequestedSaturationPressure { get; private set; }
+
+        public FluidThermodynamicState Resolve(
+            FluidNodeDefinition definition,
+            FluidNodeInventory inventory,
+            FluidThermodynamicState previousState)
+            => previousState;
+
+        public WaterSteamSaturationProperties GetSaturationProperties(Temperature temperature)
+            => CreateProperties(temperature, Pressure.FromMegapascals(0.1d));
+
+        public WaterSteamSaturationProperties GetSaturationProperties(Pressure pressure)
+        {
+            LastRequestedSaturationPressure = pressure;
+            return CreateProperties(Temperature.FromDegreesCelsius(100d), pressure);
+        }
+
+        private WaterSteamSaturationProperties CreateProperties(Temperature temperature, Pressure pressure)
+            => new(
+                temperature,
+                pressure,
+                Density.FromKilogramsPerCubicMetre(950d),
+                Density.FromKilogramsPerCubicMetre(0.6d),
+                _saturatedLiquidInternalEnergy,
+                SpecificEnergy.FromKilojoulesPerKilogram(2_600d));
+    }
+
 
     private sealed class ExhaustMassPressureThermodynamicModel : IFluidThermodynamicModel
     {

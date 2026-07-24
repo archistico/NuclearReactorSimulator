@@ -23,6 +23,34 @@ public sealed class OperatorExperienceM1094SubsystemSchematicsTests
     }
 
     [Fact]
+    public void OperationalSchematics_AreImmediatelyFollowedByTheirControlDeck()
+    {
+        var document = LoadMainWindow();
+        var operationalSnapshots = new[]
+        {
+            "{Binding ReactorCoreSchematic}",
+            "{Binding PrimarySteamDrumSchematic}",
+            "{Binding TurbineSecondarySchematic}",
+            "{Binding GeneratorGridSchematic}",
+        };
+
+        foreach (var snapshot in operationalSnapshots)
+        {
+            var schematic = Assert.Single(
+                document.Descendants(),
+                element => element.Name.LocalName == "ControlRoomSubsystemSchematicControl"
+                    && (string?)element.Attribute("Snapshot") == snapshot);
+            var schematicPanel = schematic.Ancestors()
+                .First(element => element.Name.LocalName == "Border"
+                    && (string?)element.Attribute("Classes") == "schematicPanel");
+            var nextPanel = schematicPanel.ElementsAfterSelf().First();
+
+            Assert.Equal("Border", nextPanel.Name.LocalName);
+            Assert.Equal("controlDeck", (string?)nextPanel.Attribute("Classes"));
+        }
+    }
+
+    [Fact]
     public void TurbineAndElectricalWorkspaces_ExplainShaftColorAndZeroMWePowerPath()
     {
         var texts = LoadMainWindow().Descendants()

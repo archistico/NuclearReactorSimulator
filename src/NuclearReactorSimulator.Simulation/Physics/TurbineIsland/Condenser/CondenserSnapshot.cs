@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 
@@ -40,4 +41,52 @@ public sealed record CondenserSnapshot(
     Temperature InitialHotwellTemperature,
     Temperature FinalHotwellTemperature,
     FluidPhase InitialHotwellPhase,
-    FluidPhase FinalHotwellPhase);
+    FluidPhase FinalHotwellPhase)
+{
+    private const double FlowToleranceKilogramsPerSecond = 1e-9d;
+
+    [JsonIgnore]
+    public SpecificEnergy SpecificCondensationEnergyDrop => SpecificEnergy.FromJoulesPerKilogram(Math.Max(
+        0d,
+        SteamSpecificInternalEnergy.JoulesPerKilogram - CondensateSpecificInternalEnergy.JoulesPerKilogram));
+
+    [JsonIgnore]
+    public bool MaximumFlowLimitActive => IsActiveLimit(MaximumCondensationMassFlowRate);
+
+    [JsonIgnore]
+    public bool InventoryLimitActive => IsActiveLimit(InventoryLimitedCondensationMassFlowRate);
+
+    [JsonIgnore]
+    public bool ThermalLimitActive => IsActiveLimit(ThermalLimitedCondensationMassFlowRate);
+
+    [JsonIgnore]
+    public MassFlowRate MaximumFlowMargin => Margin(MaximumCondensationMassFlowRate);
+
+    [JsonIgnore]
+    public MassFlowRate InventoryFlowMargin => Margin(InventoryLimitedCondensationMassFlowRate);
+
+    [JsonIgnore]
+    public MassFlowRate ThermalFlowMargin => Margin(ThermalLimitedCondensationMassFlowRate);
+
+    [JsonIgnore]
+    public string ActiveCondensationLimits
+    {
+        get
+        {
+            var limits = new List<string>(3);
+            if (MaximumFlowLimitActive) limits.Add("MAXIMUM FLOW");
+            if (InventoryLimitActive) limits.Add("INVENTORY");
+            if (ThermalLimitActive) limits.Add("THERMAL");
+            return limits.Count == 0 ? "UNCONSTRAINED / ZERO DEMAND" : string.Join(" + ", limits);
+        }
+    }
+
+    private bool IsActiveLimit(MassFlowRate limit)
+        => Math.Abs(limit.KilogramsPerSecond - ActualCondensationMassFlowRate.KilogramsPerSecond)
+            <= FlowToleranceKilogramsPerSecond;
+
+    private MassFlowRate Margin(MassFlowRate limit)
+        => MassFlowRate.FromKilogramsPerSecond(Math.Max(
+            0d,
+            limit.KilogramsPerSecond - ActualCondensationMassFlowRate.KilogramsPerSecond));
+}

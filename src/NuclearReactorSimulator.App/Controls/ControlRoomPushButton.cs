@@ -28,12 +28,15 @@ public sealed class ControlRoomPushButton : Button
     public ControlRoomPushButton()
     {
         MinWidth = 150;
-        MinHeight = 44;
-        Padding = new Thickness(14, 10);
+        MinHeight = 50;
+        Padding = new Thickness(15, 11);
         HorizontalAlignment = HorizontalAlignment.Stretch;
         HorizontalContentAlignment = HorizontalAlignment.Center;
         VerticalContentAlignment = VerticalAlignment.Center;
         Background = Brushes.Transparent;
+        CornerRadius = new CornerRadius(4);
+        FontSize = 12.5;
+        FontWeight = FontWeight.Bold;
         Cursor = new Cursor(StandardCursorType.Hand);
 
         _pressFeedbackTimer = new DispatcherTimer
@@ -109,7 +112,7 @@ public sealed class ControlRoomPushButton : Button
             ? $"{Label} — ACTIVE"
             : Label;
         BorderBrush = ControlRoomPalette.Accent(State);
-        BorderThickness = new Thickness(2);
+        BorderThickness = persistentOrPressActive ? new Thickness(2) : new Thickness(1, 1, 1, 3);
         Background = ControlRoomPalette.ControlBackground(State, persistentOrPressActive);
         Foreground = ControlRoomPalette.ControlForeground(State, persistentOrPressActive);
         IsEnabled = State != ControlRoomVisualState.Unavailable && IsCommandEnabled;

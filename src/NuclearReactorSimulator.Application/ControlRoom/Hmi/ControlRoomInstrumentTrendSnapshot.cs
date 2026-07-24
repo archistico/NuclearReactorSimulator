@@ -34,17 +34,21 @@ public sealed class ControlRoomInstrumentTrendSnapshot
 
     public string ArrowText => Direction switch
     {
+        ControlRoomInstrumentTrendDirection.FallingRapidly => "↓↓",
         ControlRoomInstrumentTrendDirection.Falling => "↓",
         ControlRoomInstrumentTrendDirection.Steady => "→",
         ControlRoomInstrumentTrendDirection.Rising => "↑",
+        ControlRoomInstrumentTrendDirection.RisingRapidly => "↑↑",
         _ => "—",
     };
 
     public string DirectionText => Direction switch
     {
+        ControlRoomInstrumentTrendDirection.FallingRapidly => "FALLING RAPIDLY",
         ControlRoomInstrumentTrendDirection.Falling => "FALLING",
         ControlRoomInstrumentTrendDirection.Steady => "STEADY",
         ControlRoomInstrumentTrendDirection.Rising => "RISING",
+        ControlRoomInstrumentTrendDirection.RisingRapidly => "RISING RAPIDLY",
         _ => "TREND —",
     };
 
@@ -58,7 +62,8 @@ public sealed class ControlRoomInstrumentTrendSnapshot
         long currentLogicalStep,
         double? currentValue,
         double steadyTolerance,
-        string unit)
+        string unit,
+        double? rapidTolerance = null)
     {
         if (previousLogicalStep < 0)
         {
@@ -72,6 +77,14 @@ public sealed class ControlRoomInstrumentTrendSnapshot
         {
             throw new ArgumentOutOfRangeException(nameof(steadyTolerance));
         }
+        if (rapidTolerance.HasValue
+            && (!double.IsFinite(rapidTolerance.Value) || rapidTolerance.Value <= steadyTolerance))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(rapidTolerance),
+                rapidTolerance,
+                "Rapid-trend tolerance must be finite and greater than steady-trend tolerance.");
+        }
         if (!previousValue.HasValue
             || !currentValue.HasValue
             || !double.IsFinite(previousValue.Value)
@@ -82,9 +95,14 @@ public sealed class ControlRoomInstrumentTrendSnapshot
         }
 
         var rate = (currentValue.Value - previousValue.Value) / (currentLogicalStep - previousLogicalStep);
-        var direction = Math.Abs(rate) <= steadyTolerance
+        var absoluteRate = Math.Abs(rate);
+        var direction = absoluteRate <= steadyTolerance
             ? ControlRoomInstrumentTrendDirection.Steady
-            : rate > 0d
+            : rapidTolerance.HasValue && absoluteRate >= rapidTolerance.Value
+                ? rate > 0d
+                    ? ControlRoomInstrumentTrendDirection.RisingRapidly
+                    : ControlRoomInstrumentTrendDirection.FallingRapidly
+                : rate > 0d
                 ? ControlRoomInstrumentTrendDirection.Rising
                 : ControlRoomInstrumentTrendDirection.Falling;
 

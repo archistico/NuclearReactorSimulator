@@ -16,7 +16,8 @@ public sealed class TurbineStageGroupDefinition
         SpecificEnergy nominalSpecificWork,
         TurbineEfficiency efficiency,
         QuadraticHydraulicResistance? expansionResistance = null,
-        TurbineThermodynamicWorkDefinition? thermodynamicWork = null)
+        TurbineThermodynamicWorkDefinition? thermodynamicWork = null,
+        TurbineAdmissionPhasePolicy admissionPhasePolicy = TurbineAdmissionPhasePolicy.LegacyUnrestricted)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -48,6 +49,11 @@ public sealed class TurbineStageGroupDefinition
             throw new ArgumentOutOfRangeException(nameof(efficiency), efficiency, "Turbine efficiency must be greater than zero and no greater than one.");
         }
 
+        if (!Enum.IsDefined(admissionPhasePolicy))
+        {
+            throw new ArgumentOutOfRangeException(nameof(admissionPhasePolicy), admissionPhasePolicy, "Unknown turbine admission phase policy.");
+        }
+
         Id = id.Trim();
         AdmissionBoundaryId = admissionBoundaryId.Trim();
         ExhaustNodeId = exhaustNodeId.Trim();
@@ -56,6 +62,7 @@ public sealed class TurbineStageGroupDefinition
         Efficiency = efficiency;
         ExpansionResistance = expansionResistance;
         ThermodynamicWork = thermodynamicWork;
+        AdmissionPhasePolicy = admissionPhasePolicy;
     }
 
     public string Id { get; }
@@ -80,4 +87,10 @@ public sealed class TurbineStageGroupDefinition
     /// Optional current-model work closure. Null preserves the historical fixed nominal-specific-work law.
     /// </summary>
     public TurbineThermodynamicWorkDefinition? ThermodynamicWork { get; }
+
+    /// <summary>
+    /// Versioned admission-phase policy. Legacy definitions admit the historical total mixture; current-v2 may opt into
+    /// vapor-mass-fraction-limited admission so liquid inventory cannot pass through the stage as a zero-work bypass.
+    /// </summary>
+    public TurbineAdmissionPhasePolicy AdmissionPhasePolicy { get; }
 }

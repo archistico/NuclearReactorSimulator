@@ -86,6 +86,34 @@ public sealed class InstrumentSignalSourceCatalog
                 $"main-circulation-loop/{loopId}/header-pressure-rise",
                 "Pa",
                 snapshot => snapshot.IntegratedCycle.PrimaryCircuit.MainCirculation.GetLoop(loopId).HeaderPressureRise.Pascals));
+
+            foreach (var pumpId in loop.PumpIds)
+            {
+                var capturedPumpId = pumpId;
+                sources.Add(new InstrumentSignalSource(
+                    $"main-circulation-pump/{capturedPumpId}/mass-flow",
+                    "kg/s",
+                    snapshot => snapshot.IntegratedCycle.PrimaryCircuit.MainCirculation.GetLoop(loopId).Pumps
+                        .Single(item => string.Equals(item.PumpId, capturedPumpId, StringComparison.Ordinal))
+                        .MassFlowRate.KilogramsPerSecond));
+            }
+
+            foreach (var branch in loop.Branches)
+            {
+                var groupId = branch.FuelChannelGroupId;
+                sources.Add(new InstrumentSignalSource(
+                    $"main-circulation-branch/{loopId}/{groupId}/channel-flow",
+                    "kg/s",
+                    snapshot => snapshot.IntegratedCycle.PrimaryCircuit.MainCirculation.GetLoop(loopId).Branches
+                        .Single(item => string.Equals(item.FuelChannelGroupId, groupId, StringComparison.Ordinal))
+                        .ChannelMassFlowRate.KilogramsPerSecond));
+                sources.Add(new InstrumentSignalSource(
+                    $"main-circulation-branch/{loopId}/{groupId}/return-flow",
+                    "kg/s",
+                    snapshot => snapshot.IntegratedCycle.PrimaryCircuit.MainCirculation.GetLoop(loopId).Branches
+                        .Single(item => string.Equals(item.FuelChannelGroupId, groupId, StringComparison.Ordinal))
+                        .ReturnMassFlowRate.KilogramsPerSecond));
+            }
         }
 
         foreach (var drum in definition.PrimaryCircuit.SteamDrumSystem.Drums)
@@ -99,6 +127,14 @@ public sealed class InstrumentSignalSourceCatalog
                 $"steam-drum/{drumId}/level",
                 "fraction",
                 snapshot => snapshot.IntegratedCycle.PrimaryCircuit.SteamDrums.GetDrum(drumId).LiquidLevelFraction.Fraction));
+            sources.Add(new InstrumentSignalSource(
+                $"steam-drum/{drumId}/incoming-return-flow",
+                "kg/s",
+                snapshot => snapshot.IntegratedCycle.PrimaryCircuit.SteamDrums.GetDrum(drumId).IncomingReturnMassFlowRate.KilogramsPerSecond));
+            sources.Add(new InstrumentSignalSource(
+                $"steam-drum/{drumId}/liquid-recirculation-flow",
+                "kg/s",
+                snapshot => snapshot.IntegratedCycle.PrimaryCircuit.SteamDrums.GetDrum(drumId).RecirculatedLiquidMassFlowRate.KilogramsPerSecond));
         }
 
         foreach (var rotor in definition.TurbineExpansionSystem.Rotors)

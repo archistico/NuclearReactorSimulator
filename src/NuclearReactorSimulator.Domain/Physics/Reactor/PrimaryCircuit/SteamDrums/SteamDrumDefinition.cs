@@ -11,13 +11,15 @@ public sealed record SteamDrumDefinition
         string mainCirculationLoopId,
         string inventoryNodeId,
         string steamOutletNodeId,
-        SteamDrumLiquidRecirculationMode liquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit)
+        SteamDrumLiquidRecirculationMode liquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
+        SteamDrumSteamSourceDefinition? steamSource = null)
     {
         Id = ValidateId(id, nameof(id), "Steam drum");
         MainCirculationLoopId = ValidateId(mainCirculationLoopId, nameof(mainCirculationLoopId), "Main-circulation loop");
         InventoryNodeId = ValidateId(inventoryNodeId, nameof(inventoryNodeId), "Steam-drum inventory node");
         SteamOutletNodeId = ValidateId(steamOutletNodeId, nameof(steamOutletNodeId), "Steam-outlet node");
         LiquidRecirculationMode = liquidRecirculationMode;
+        SteamSource = steamSource;
 
         if (!Enum.IsDefined(liquidRecirculationMode))
         {
@@ -39,6 +41,11 @@ public sealed record SteamDrumDefinition
     public string SteamOutletNodeId { get; }
 
     public SteamDrumLiquidRecirculationMode LiquidRecirculationMode { get; }
+
+    /// <summary>
+    /// Optional current-version pressure/energy/inventory-driven steam-source closure. Null preserves historical separation behavior.
+    /// </summary>
+    public SteamDrumSteamSourceDefinition? SteamSource { get; }
 
     private static string ValidateId(string value, string parameterName, string label)
     {

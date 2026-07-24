@@ -6,4 +6,6 @@ public enum ControlRoomInstrumentTrendDirection
     Falling = 1,
     Steady = 2,
     Rising = 3,
+    FallingRapidly = 4,
+    RisingRapidly = 5,
 }

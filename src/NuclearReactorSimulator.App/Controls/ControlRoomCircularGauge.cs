@@ -30,6 +30,7 @@ public sealed class ControlRoomCircularGauge : Border
     private readonly TextBlock _scaleStatus;
     private readonly TextBlock _semantics;
     private readonly TextBlock _trend;
+    private readonly ControlRoomAutomaticTrendTracker _automaticTrend = new();
 
     public ControlRoomCircularGauge()
     {
@@ -52,7 +53,7 @@ public sealed class ControlRoomCircularGauge : Border
         {
             FontSize = 25,
             FontWeight = FontWeight.SemiBold,
-            FontFamily = new FontFamily("Consolas"),
+            FontFamily = ControlRoomTypography.InterfaceFont,
             HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
         };
         _unit = new TextBlock
@@ -73,14 +74,15 @@ public sealed class ControlRoomCircularGauge : Border
         _semantics = new TextBlock
         {
             FontSize = 9,
-            FontFamily = new FontFamily("Consolas"),
+            FontFamily = ControlRoomTypography.InterfaceFont,
             Foreground = ControlRoomPalette.TextMuted,
             TextWrapping = TextWrapping.Wrap,
         };
         _trend = new TextBlock
         {
-            FontSize = 10,
-            FontFamily = new FontFamily("Consolas"),
+            FontSize = 12,
+            FontWeight = FontWeight.SemiBold,
+            FontFamily = ControlRoomTypography.InterfaceFont,
             Foreground = ControlRoomPalette.TextMuted,
             HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
         };
@@ -129,8 +131,20 @@ public sealed class ControlRoomCircularGauge : Border
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
+        if (change.Property == ControlRoomTrendScope.LogicalStepProperty && !_automaticTrend.HasBaseline)
+        {
+            _automaticTrend.Observe(GetValue(ControlRoomTrendScope.LogicalStepProperty), Snapshot);
+            UpdateVisuals();
+            return;
+        }
+
         if (change.Property == LabelProperty || change.Property == SnapshotProperty || change.Property == TrendProperty)
         {
+            if (change.Property == SnapshotProperty)
+            {
+                _automaticTrend.Observe(GetValue(ControlRoomTrendScope.LogicalStepProperty), Snapshot);
+            }
+
             UpdateVisuals();
         }
     }
@@ -143,7 +157,7 @@ public sealed class ControlRoomCircularGauge : Border
         }
 
         var snapshot = Snapshot;
-        var trend = Trend ?? ControlRoomInstrumentTrendSnapshot.Unavailable;
+        var trend = Trend ?? _automaticTrend.Current;
         var scale = snapshot?.InstrumentScale;
         var state = snapshot?.State ?? ControlRoomVisualState.Unavailable;
 
@@ -169,6 +183,10 @@ public sealed class ControlRoomCircularGauge : Border
         _trend.Text = trend.Direction == ControlRoomInstrumentTrendDirection.Unavailable
             ? "TREND —"
             : $"{trend.ArrowText} {trend.DirectionText} · {trend.RateText}";
+        _trend.Foreground = trend.Direction is ControlRoomInstrumentTrendDirection.RisingRapidly
+            or ControlRoomInstrumentTrendDirection.FallingRapidly
+            ? ControlRoomPalette.InformationAccentStrong
+            : ControlRoomPalette.TextMuted;
 
         _track.Snapshot = snapshot;
         _track.InvalidateVisual();
@@ -185,7 +203,7 @@ public sealed class ControlRoomCircularGauge : Border
     private static TextBlock ScaleLabel(Avalonia.Layout.HorizontalAlignment alignment) => new()
     {
         FontSize = 9,
-        FontFamily = new FontFamily("Consolas"),
+        FontFamily = ControlRoomTypography.InterfaceFont,
         Foreground = ControlRoomPalette.TextMuted,
         HorizontalAlignment = alignment,
     };

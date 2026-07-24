@@ -668,7 +668,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.9.4 are VALIDATED. The final manual HMI / engineering-schematic checklist passed, so M10.9.4 is the official baseline. M10.9.4.1-A has executed and repeatedly trips near 70 simulated seconds. The action signature identifies condenser high backpressure. A.2 Hotfix 1 is the current candidate, adding one-second evidence and isolated current-v2 condenser-capacity headroom. The remaining M10.9.4.1 physical/numerical phases stay before M10.9.5 so later consequence, challenge and scoring work is built over stable canonical behavior. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
+M10 is **IN PROGRESS**. M10.1–M10.9.4 are VALIDATED and M10.9.4 remains the official milestone baseline. The original M10.9.4.1-A long-run failure has been resolved by correcting the current-v2 operating seed energy/hydraulic balance rather than weakening protection: the exact 300-second sustained journey, explicit 60-second synchronization journey, build and ordinary suite are locally green. Phase B has B.1 liquid-inventory-safe drum recirculation, B.2 pressure/energy/inventory-driven drum steam source and B.3 low-inventory/separation diagnostics plus measured low-level warning and low-low drum-level protection locally user-validated. C.1 condenser phase-change energy closure is also locally user-validated; C.2 explicit installed-capacity ownership is the active candidate. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
 
 Two independent axes are mandatory:
 
@@ -770,18 +770,21 @@ Two independent axes are mandatory:
 - primary/steam-drum and turbine/secondary engineering schematics;
 - generator/grid schematic;
 - instrumentation/control/protection signal-flow schematic with a grammar distinct from piping and explicit protection priority;
+- post-validation HMI readability hardening keeps alarm flashing geometry stable, separates runtime/progress/step content, removes duplicate current-step readouts and limits subsystem schematic rows to at most four nodes;
+- the visual design system and printable user manual apply the same maximum-four-elements-per-row rule, using vertical flow or consecutive diagram segments instead of shrinking labels;
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
-- final manual schematic/HMI checklist passed; M10.9.4 is validated and Phase A audit evidence is now the active gate.
+- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; Phase B.1–B.3 and C.1–C.2 are present in the user-supplied consolidated continuation base. The earlier isolated 300-second wall-clock budget overrun remains tracked as performance evidence, while the user has explicitly resumed development at Phase D. D.1 turbine admission phase-policy closure is implemented with local validation pending; D.2 turbine admission authority evidence is the active candidate.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (A.2 candidate)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (user-supplied consolidated A/B/C base; D.1 implemented / D.2 audit candidate)
 
-- Phase A audit implementation compiles and the ordinary suite passes, but the intended healthy 300-second/5 MWe journey trips near 70 simulated seconds; conservation remains closed and the action signature identifies `condenser-high-backpressure`;
+- Phase A audit exposed a repeatable ~70 s protection trip; root cause was later traced to current-v2 seed energy/hydraulic starvation rather than the thermodynamic resolver; the corrected seed now passes the exact 300-second sustained journey;
 - Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
-- Phase A.2 preserves the 24.5 MW initial `UA * ΔT` point while raising current-v2 installed cooling capacity to 40 MW and maximum condensation flow to 20 kg/s; validation pending;
-- Phase B closes drum/source mass, energy, phase and liquid-inventory behavior before low-level protection;
-- Phase C closes condenser phase-change/hotwell energy and independent limiting semantics;
+- Phase A.2 condenser headroom remains present in the current-v2 source, but is no longer considered the root-cause fix; its independent necessity remains a Phase C evidence question;
+- Phase A.3 preserves reproducible scale evidence (49.348 MJ rotor energy, `H=0.049348 s` at 1,000 MW versus `H=4.934802 s` at 10 MW, 0.75 rpm droop displacement at 5 MW and explicit coupling-authority ratios) and contains the locally validated current-v2 operating-seed energy/hydraulic closure; no generator scale migration was performed;
+- Phase B closes drum/source mass, energy, phase and liquid-inventory behavior before protection; B.1 locally validated the liquid-inventory cap, B.2 locally validated the drum-owned pressure/energy/inventory steam source, and B.3 adds low-inventory/separation diagnostics plus measured low-level warning and low-low protection;
+- Phase C closes condenser phase-change/hotwell energy and independent limiting semantics; C.1 is locally green with pressure-resolved saturated-liquid condensate energy. C.2 makes 40 MW installed cooling capacity definition-owned and distinct from runtime availability while retaining 20 kg/s as an independent condensation-throughput ceiling and preserving the existing `UA·ΔT` law;
 - Phase D aligns turbine admission phase policy and governor authority;
-- Phase E resolves reference-plant scale and adds bidirectional generator/grid coupling before reverse-power/underfrequency/loss-of-synchronism protection;
+- Phase E implements the accepted reference-plant scale migration and adds bidirectional generator/grid coupling before reverse-power/underfrequency/loss-of-synchronism protection;
 - Phase F adds choked compressible flow and conservative relief/bypass topology;
 - Phase G performs a dedicated flow-work/enthalpy transport migration;
 - Phase H measures numerical stiffness before choosing adaptive substepping or semi-implicit coupling;
@@ -837,4 +840,3 @@ Every implementation milestone must continue to satisfy:
 - configuration-driven plant constants rather than hidden RBMK constants in the generic engine;
 - ADR/documentation update when a durable architecture decision changes;
 - local user validation before a baseline is marked validated.
-

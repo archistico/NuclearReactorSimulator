@@ -19,11 +19,20 @@ public sealed class ControlRoomSubsystemSchematicControl : Panel
     private readonly SchematicConnectionLayer _connectionLayer = new() { IsHitTestVisible = false };
     private readonly List<(ControlRoomSubsystemSchematicNodeSnapshot Snapshot, Border Card)> _nodeCards = new();
     private readonly List<(ControlRoomSubsystemSchematicConnectionSnapshot Snapshot, Border Label)> _connectionLabels = new();
+    private readonly TextBlock _connectionLegendHeading = new()
+    {
+        Text = "LINES & SIGNALS · LIVE VALUES",
+        FontSize = 10d,
+        FontWeight = FontWeight.Bold,
+        Foreground = ControlRoomPalette.InformationAccent,
+        LetterSpacing = 1d,
+        IsHitTestVisible = false,
+    };
 
     public ControlRoomSubsystemSchematicControl()
     {
         ClipToBounds = true;
-        MinHeight = 500d;
+        MinHeight = 620d;
         RebuildChildren();
     }
 
@@ -44,11 +53,13 @@ public sealed class ControlRoomSubsystemSchematicControl : Panel
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        var desired = new Size(
-            double.IsInfinity(availableSize.Width) ? 1120d : Math.Max(780d, availableSize.Width),
-            double.IsInfinity(availableSize.Height) ? 560d : Math.Max(500d, availableSize.Height));
+        var width = double.IsInfinity(availableSize.Width) ? 1120d : Math.Max(780d, availableSize.Width);
+        var columns = Math.Max(2, (int)(width / 205d));
+        var rows = Math.Max(1, (int)Math.Ceiling(_connectionLabels.Count / (double)columns));
+        var legendHeight = 38d + (rows * 58d);
+        var desired = new Size(width, Math.Max(620d, 450d + legendHeight));
 
-        _connectionLayer.Measure(desired);
+        _connectionLayer.Measure(new Size(desired.Width, 450d));
         foreach (var (_, card) in _nodeCards)
         {
             card.Measure(desired);
@@ -56,34 +67,44 @@ public sealed class ControlRoomSubsystemSchematicControl : Panel
 
         foreach (var (_, label) in _connectionLabels)
         {
-            label.Measure(new Size(200d, 78d));
+            label.Measure(new Size((desired.Width - ((columns - 1) * 8d)) / columns, 54d));
         }
+        _connectionLegendHeading.Measure(new Size(desired.Width, 24d));
 
         return desired;
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        _connectionLayer.Arrange(new Rect(0d, 0d, finalSize.Width, finalSize.Height));
+        var columns = Math.Max(2, (int)(finalSize.Width / 205d));
+        var rows = Math.Max(1, (int)Math.Ceiling(_connectionLabels.Count / (double)columns));
+        var legendHeight = 38d + (rows * 58d);
+        var diagramHeight = Math.Max(430d, finalSize.Height - legendHeight);
+        _connectionLayer.Arrange(new Rect(0d, 0d, finalSize.Width, diagramHeight));
 
         foreach (var (snapshot, card) in _nodeCards)
         {
             card.Arrange(new Rect(
                 snapshot.X * finalSize.Width,
-                snapshot.Y * finalSize.Height,
-                Math.Max(86d, snapshot.Width * finalSize.Width),
-                Math.Max(72d, snapshot.Height * finalSize.Height)));
+                snapshot.Y * diagramHeight,
+                Math.Max(102d, snapshot.Width * finalSize.Width),
+                Math.Max(108d, snapshot.Height * diagramHeight)));
         }
 
-        foreach (var (snapshot, label) in _connectionLabels)
+        var legendTop = diagramHeight + 12d;
+        _connectionLegendHeading.Arrange(new Rect(4d, legendTop, finalSize.Width - 8d, 22d));
+        var gap = 8d;
+        var itemWidth = (finalSize.Width - ((columns - 1) * gap)) / columns;
+        for (var index = 0; index < _connectionLabels.Count; index++)
         {
-            var width = Math.Min(190d, Math.Max(105d, finalSize.Width * 0.145d));
-            var height = Math.Min(74d, label.DesiredSize.Height + 7d);
+            var (_, label) = _connectionLabels[index];
+            var row = index / columns;
+            var column = index % columns;
             label.Arrange(new Rect(
-                (snapshot.LabelX * finalSize.Width) - (width / 2d),
-                (snapshot.LabelY * finalSize.Height) - (height / 2d),
-                width,
-                height));
+                column * (itemWidth + gap),
+                legendTop + 28d + (row * 58d),
+                itemWidth,
+                52d));
         }
 
         return finalSize;
@@ -97,6 +118,7 @@ public sealed class ControlRoomSubsystemSchematicControl : Panel
 
         _connectionLayer.Snapshot = Snapshot;
         Children.Add(_connectionLayer);
+        Children.Add(_connectionLegendHeading);
 
         var snapshot = Snapshot;
         if (snapshot is null)
@@ -128,86 +150,119 @@ public sealed class ControlRoomSubsystemSchematicControl : Panel
         {
             Kind = node.Kind,
             State = node.State,
-            Height = 34d,
+            Width = 34d,
+            Height = 28d,
             HorizontalAlignment = HorizontalAlignment.Stretch,
         };
 
-        var stack = new StackPanel { Spacing = 2.5d };
-        stack.Children.Add(glyph);
-        stack.Children.Add(new TextBlock
+        var heading = new Grid
+        {
+            ColumnDefinitions = new ColumnDefinitions("34,*"),
+            ColumnSpacing = 7d,
+        };
+        heading.Children.Add(glyph);
+        var headingText = new StackPanel { Spacing = 0d };
+        headingText.Children.Add(new TextBlock
         {
             Text = node.DisplayName,
-            FontSize = 10.5d,
+            FontSize = 11.5d,
             FontWeight = FontWeight.Bold,
             Foreground = Brushes.White,
             TextWrapping = TextWrapping.Wrap,
+            MaxLines = 2,
         });
-        stack.Children.Add(new TextBlock
+        headingText.Children.Add(new TextBlock
         {
             Text = node.StatusText,
-            FontSize = 8d,
+            FontSize = 9.5d,
             FontWeight = FontWeight.SemiBold,
             Foreground = ControlRoomPalette.Accent(node.State),
-            TextWrapping = TextWrapping.Wrap,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            MaxLines = 1,
         });
-        stack.Children.Add(Mono(node.PrimaryText, 8.5d, Brushes.White));
-        stack.Children.Add(Mono(node.SecondaryText, 7.6d, ControlRoomPalette.TextMuted));
+        Grid.SetColumn(headingText, 1);
+        heading.Children.Add(headingText);
 
-        var ports = new Grid { ColumnDefinitions = new ColumnDefinitions("*,*"), ColumnSpacing = 5d };
+        var stack = new StackPanel { Spacing = 3d };
+        stack.Children.Add(heading);
+        stack.Children.Add(Mono(node.PrimaryText, 10.5d, Brushes.White));
+        stack.Children.Add(Mono(node.SecondaryText, 9.5d, ControlRoomPalette.TextMuted));
+
+        var ports = new StackPanel { Spacing = 1d };
         ports.Children.Add(new TextBlock
         {
-            Text = node.InputText,
-            FontSize = 6.7d,
+            Text = $"IN  ‹ {NormalizePortText(node.InputText, "IN")}",
+            FontSize = 9.5d,
+            FontWeight = FontWeight.SemiBold,
             Foreground = ControlRoomPalette.InformationAccent,
-            TextWrapping = TextWrapping.Wrap,
+            TextWrapping = TextWrapping.NoWrap,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            MaxLines = 1,
         });
         var output = new TextBlock
         {
-            Text = node.OutputText,
-            FontSize = 6.7d,
+            Text = $"{NormalizePortText(node.OutputText, "OUT")} ›  OUT",
+            FontSize = 9.5d,
+            FontWeight = FontWeight.SemiBold,
             Foreground = ControlRoomPalette.InformationAccent,
-            TextWrapping = TextWrapping.Wrap,
-            TextAlignment = TextAlignment.Right,
+            TextWrapping = TextWrapping.NoWrap,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            MaxLines = 1,
         };
-        Grid.SetColumn(output, 1);
         ports.Children.Add(output);
         stack.Children.Add(ports);
 
         return new Border
         {
-            Padding = new Thickness(7d, 6d),
-            CornerRadius = new CornerRadius(6d),
-            Background = Brush.Parse("#E911161D"),
+            Padding = new Thickness(8d, 7d),
+            CornerRadius = new CornerRadius(4d),
+            Background = Brush.Parse("#F20C1820"),
             BorderBrush = ControlRoomPalette.Accent(node.State),
-            BorderThickness = new Thickness(1.15d),
+            BorderThickness = new Thickness(1.4d),
             Child = stack,
+            ClipToBounds = true,
             IsHitTestVisible = false,
         };
     }
 
     private static Border BuildConnectionLabel(ControlRoomSubsystemSchematicConnectionSnapshot connection)
     {
-        var stack = new StackPanel { Spacing = 0.5d };
+        var colorKey = new Border
+        {
+            Width = 5d,
+            CornerRadius = new CornerRadius(2d),
+            Background = ConnectionBrush(connection.Kind, connection.State),
+        };
+        var stack = new StackPanel { Spacing = 1d };
         stack.Children.Add(new TextBlock
         {
             Text = connection.Label,
-            FontSize = 7.4d,
+            FontSize = 10d,
             FontWeight = FontWeight.Bold,
             Foreground = ConnectionBrush(connection.Kind, connection.State),
-            TextWrapping = TextWrapping.Wrap,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            MaxLines = 1,
         });
-        stack.Children.Add(Mono(connection.PrimaryText, 7.3d, Brushes.White));
-        stack.Children.Add(Mono(connection.SecondaryText, 6.8d, ControlRoomPalette.TextMuted));
+        stack.Children.Add(Mono($"{connection.PrimaryText}  ·  {connection.SecondaryText}", 9.5d, Brushes.White));
+
+        var layout = new Grid
+        {
+            ColumnDefinitions = new ColumnDefinitions("5,*"),
+            ColumnSpacing = 7d,
+        };
+        layout.Children.Add(colorKey);
+        Grid.SetColumn(stack, 1);
+        layout.Children.Add(stack);
 
         return new Border
         {
             IsHitTestVisible = false,
-            Padding = new Thickness(4d, 2.5d),
-            CornerRadius = new CornerRadius(3d),
-            Background = Brush.Parse("#E30B1016"),
-            BorderBrush = Brush.Parse("#3345505B"),
+            Padding = new Thickness(8d, 6d),
+            CornerRadius = new CornerRadius(4d),
+            Background = Brush.Parse("#E6101C24"),
+            BorderBrush = ControlRoomPalette.Border,
             BorderThickness = new Thickness(1d),
-            Child = stack,
+            Child = layout,
         };
     }
 
@@ -215,10 +270,26 @@ public sealed class ControlRoomSubsystemSchematicControl : Panel
     {
         Text = text,
         FontSize = size,
-        FontFamily = new FontFamily("Consolas"),
+        FontFamily = ControlRoomTypography.DataFont,
         Foreground = brush,
-        TextWrapping = TextWrapping.Wrap,
+        TextTrimming = TextTrimming.CharacterEllipsis,
+        MaxLines = 1,
     };
+
+    private static string NormalizePortText(string text, string prefix)
+    {
+        var value = text?.Trim() ?? string.Empty;
+        foreach (var separator in new[] { " · ", ":", " " })
+        {
+            var marker = prefix + separator;
+            if (value.StartsWith(marker, StringComparison.OrdinalIgnoreCase))
+            {
+                return value[marker.Length..].Trim();
+            }
+        }
+
+        return value;
+    }
 
     private static IBrush ConnectionBrush(ControlRoomSubsystemSchematicConnectionKind kind, ControlRoomVisualState state)
     {
@@ -256,6 +327,16 @@ public sealed class ControlRoomSubsystemSchematicControl : Panel
             if (snapshot is null || Bounds.Width <= 0d || Bounds.Height <= 0d)
             {
                 return;
+            }
+
+            var gridPen = new Pen(Brush.Parse("#162A3440"), 1d);
+            for (var x = 0d; x < Bounds.Width; x += 80d)
+            {
+                context.DrawLine(gridPen, new Point(x, 0d), new Point(x, Bounds.Height));
+            }
+            for (var y = 0d; y < Bounds.Height; y += 64d)
+            {
+                context.DrawLine(gridPen, new Point(0d, y), new Point(Bounds.Width, y));
             }
 
             foreach (var connection in snapshot.Connections)

@@ -328,10 +328,17 @@ public sealed class OperationalEnvelopeExtendedAuditTests
         private double _maximumInventoryCondensationLimitKilogramsPerSecond = double.NegativeInfinity;
         private double _maximumCondenserCapacityMegawatts = double.NegativeInfinity;
         private double _maximumCondenserSurfaceLimitMegawatts = double.NegativeInfinity;
+        private double _minimumCondensateSpecificInternalEnergyKilojoulesPerKilogram = double.PositiveInfinity;
+        private double _maximumCondensateSpecificInternalEnergyKilojoulesPerKilogram = double.NegativeInfinity;
+        private double _minimumSpecificCondensationEnergyDropKilojoulesPerKilogram = double.PositiveInfinity;
+        private double _maximumSpecificCondensationEnergyDropKilojoulesPerKilogram = double.NegativeInfinity;
+        private double _minimumCondenserCapacityMarginMegawatts = double.PositiveInfinity;
         private double _minimumExhaustMassKilograms = double.PositiveInfinity;
         private double _maximumExhaustMassKilograms = double.NegativeInfinity;
         private string _lastProtectionState = "—";
         private string _latchedProtectionFunctions = "—";
+        private string _lastCondensationLimits = "—";
+        private string _lastHeatRejectionLimits = "—";
         private long _lastLogicalStep;
 
         public OperatingEnvelopeAudit(string journey)
@@ -349,6 +356,7 @@ public sealed class OperationalEnvelopeExtendedAuditTests
             var thermofluid = fullPlant.IntegratedCycle.ThermofluidAudit;
             var drum = Assert.Single(fullPlant.IntegratedCycle.PrimaryCircuit.SteamDrums.Drums);
             var condenser = Assert.Single(fullPlant.IntegratedCycle.Condenser.Condensers);
+            var coolingBoundary = Assert.Single(fullPlant.IntegratedCycle.Condenser.CoolingBoundaries);
             var rotor = Assert.Single(fullPlant.IntegratedCycle.TurbineExpansion.Rotors);
             var stage = Assert.Single(fullPlant.IntegratedCycle.TurbineExpansion.StageGroups);
             var generator = Assert.Single(fullPlant.IntegratedCycle.Generators);
@@ -373,6 +381,9 @@ public sealed class OperationalEnvelopeExtendedAuditTests
                 condenser.InventoryLimitedCondensationMassFlowRate.KilogramsPerSecond,
                 condenser.EffectiveHeatRejectionCapacity.Megawatts,
                 condenser.SurfaceHeatTransferLimitedPower.Megawatts,
+                condenser.CondensateSpecificInternalEnergy.KilojoulesPerKilogram,
+                condenser.SpecificCondensationEnergyDrop.KilojoulesPerKilogram,
+                coolingBoundary.EffectiveCapacityMargin.Megawatts,
                 exhaust.Mass.Kilograms);
 
             _samples++;
@@ -423,6 +434,23 @@ public sealed class OperationalEnvelopeExtendedAuditTests
             _maximumCondenserSurfaceLimitMegawatts = Math.Max(
                 _maximumCondenserSurfaceLimitMegawatts,
                 condenser.SurfaceHeatTransferLimitedPower.Megawatts);
+            _minimumCondensateSpecificInternalEnergyKilojoulesPerKilogram = Math.Min(
+                _minimumCondensateSpecificInternalEnergyKilojoulesPerKilogram,
+                condenser.CondensateSpecificInternalEnergy.KilojoulesPerKilogram);
+            _maximumCondensateSpecificInternalEnergyKilojoulesPerKilogram = Math.Max(
+                _maximumCondensateSpecificInternalEnergyKilojoulesPerKilogram,
+                condenser.CondensateSpecificInternalEnergy.KilojoulesPerKilogram);
+            _minimumSpecificCondensationEnergyDropKilojoulesPerKilogram = Math.Min(
+                _minimumSpecificCondensationEnergyDropKilojoulesPerKilogram,
+                condenser.SpecificCondensationEnergyDrop.KilojoulesPerKilogram);
+            _maximumSpecificCondensationEnergyDropKilojoulesPerKilogram = Math.Max(
+                _maximumSpecificCondensationEnergyDropKilojoulesPerKilogram,
+                condenser.SpecificCondensationEnergyDrop.KilojoulesPerKilogram);
+            _minimumCondenserCapacityMarginMegawatts = Math.Min(
+                _minimumCondenserCapacityMarginMegawatts,
+                coolingBoundary.EffectiveCapacityMargin.Megawatts);
+            _lastCondensationLimits = condenser.ActiveCondensationLimits;
+            _lastHeatRejectionLimits = coolingBoundary.ActiveHeatRejectionLimits;
             _minimumExhaustMassKilograms = Math.Min(_minimumExhaustMassKilograms, exhaust.Mass.Kilograms);
             _maximumExhaustMassKilograms = Math.Max(_maximumExhaustMassKilograms, exhaust.Mass.Kilograms);
             _lastProtectionState = protectedControl.Protection.LatchedActions.ToString();
@@ -498,6 +526,9 @@ public sealed class OperationalEnvelopeExtendedAuditTests
                 FormattableString.Invariant($"thermal-limit={_minimumThermalCondensationLimitKilogramsPerSecond:0.###}..{_maximumThermalCondensationLimitKilogramsPerSecond:0.###} kg/s; "),
                 FormattableString.Invariant($"inventory-limit={_minimumInventoryCondensationLimitKilogramsPerSecond:0.###}..{_maximumInventoryCondensationLimitKilogramsPerSecond:0.###} kg/s; "),
                 FormattableString.Invariant($"condenser-capacity={_maximumCondenserCapacityMegawatts:0.###} MW; surface-limit-max={_maximumCondenserSurfaceLimitMegawatts:0.###} MW; "),
+                FormattableString.Invariant($"condensate-u={_minimumCondensateSpecificInternalEnergyKilojoulesPerKilogram:0.###}..{_maximumCondensateSpecificInternalEnergyKilojoulesPerKilogram:0.###} kJ/kg; "),
+                FormattableString.Invariant($"phase-change-du={_minimumSpecificCondensationEnergyDropKilojoulesPerKilogram:0.###}..{_maximumSpecificCondensationEnergyDropKilojoulesPerKilogram:0.###} kJ/kg; "),
+                FormattableString.Invariant($"limits={_lastCondensationLimits}/{_lastHeatRejectionLimits}; capacity-margin-min={_minimumCondenserCapacityMarginMegawatts:0.###} MW; "),
                 FormattableString.Invariant($"exhaust-mass={_minimumExhaustMassKilograms:0.###}..{_maximumExhaustMassKilograms:0.###} kg; "),
                 FormattableString.Invariant($"protection={_lastProtectionState}; functions={_latchedProtectionFunctions}"));
 

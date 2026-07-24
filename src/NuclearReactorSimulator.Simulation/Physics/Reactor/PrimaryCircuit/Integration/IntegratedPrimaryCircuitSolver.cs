@@ -79,7 +79,7 @@ public sealed class IntegratedPrimaryCircuitSolver
         var core = _coreSolver.Solve(inputs.CoreState, inputs.TotalFissionThermalPower, committedPlantState);
         var channelGroups = _channelGroupSolver.Solve(core, inputs.TotalDecayHeatPower, committedPlantState);
         var circulation = _circulationSolver.Solve(committedPlantState);
-        var steamDrums = _steamDrumSolver.Solve(committedPlantState, circulation);
+        var steamDrums = _steamDrumSolver.Solve(committedPlantState, circulation, deltaTime);
         var boundaries = _boundarySolver.Solve(committedPlantState, inputs.BoundaryInputs);
 
         var combinedSourceTerms = PlantNetworkSourceTerms.Combine(

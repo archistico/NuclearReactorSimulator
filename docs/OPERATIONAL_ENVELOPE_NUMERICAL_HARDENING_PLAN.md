@@ -2,15 +2,15 @@
 
 ## Status
 
-**IN PROGRESS — Phase A failure attributed; A.2 Hotfix 1 candidate pending validation**
+**IN PROGRESS — corrected A.3 operating seed, B.1–B.3 drum/inventory/protection closure and C.1 condenser phase-change energy locally validated; C.2 explicit condenser installed-capacity ownership active candidate**
 
 **Validated prerequisite:** M10.9.4 — Subsystem Engineering Schematics.
 
-M10.9.4.1-A Hotfix 1 compiles and the ordinary suite passes, but the explicit extended audit is not green. The repeated 300-second steady/5 MWe journey latched turbine and generator trip near 70 simulated seconds. The action signature and bounded speed/frequency identify `condenser-high-backpressure`. A.2 Hotfix 1 is the current candidate.
+The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified the root cause upstream of the condenser: the current-v2 sustained-generation seed returned only part of fuel/structure power to the coolant, primary circulation was severely under-driven, and the drum/main-steam path slowly exhausted available internal energy. The corrected current-v2 seed now closes conservative solid-to-coolant heat transfer, primary hydraulic circulation and initial steam-line conditions while preserving historical v1 seeds and all protection thresholds. The user locally validated the exact 300-second sustained journey, the explicit 60-second synchronization journey, a zero-warning/zero-error build and 895 ordinary tests with 11 explicit tests filtered out and zero failures. B.1–B.3 have passed local compilation/tests and Phase B is locally green. C.1 also passed locally and is the validated condenser phase-change-energy checkpoint. C.2 is the active candidate for explicit installed-capacity ownership.
 
 ## Purpose
 
-Hotfix 13–23 repaired canonical defects discovered by the M10.9.4 long-running gameplay tests. The first 300-second audit now proves that the 60-second validated point does not remain healthy over the extended envelope. Remaining work is physical/numerical hardening and must stay separate from HMI/schematic scope.
+Hotfix 13–23 and the corrected current-v2 sustained-generation seed repaired canonical defects discovered by the long-running gameplay/audit gates. The 300-second audit proved valuable by exposing an integrated energy/hydraulic seed imbalance that the shorter journey did not reveal. Remaining work is physical/numerical hardening and must stay separate from HMI/schematic scope.
 
 ## Governing rules
 
@@ -25,7 +25,7 @@ Hotfix 13–23 repaired canonical defects discovered by the M10.9.4 long-running
 9. Legacy compatibility is isolated and may not constrain current-model correctness.
 10. Any future steady-state trim is offline/versioned; runtime hidden repair is forbidden.
 
-## Phase A — Extended operating-envelope audit — EXECUTED / FAILURE FOUND
+## Phase A — Extended operating-envelope audit — EXECUTED / ROOT CAUSE RESOLVED
 
 Implemented evidence includes:
 
@@ -37,13 +37,13 @@ Implemented evidence includes:
 - mass/energy audit, drum pressure/level, condenser pressure, turbine speed, generator frequency and protection state;
 - replay/checkpoint equivalence.
 
-Observed failure is recorded in `M10_9_4_1_A_EXTENDED_AUDIT.md`. The audit fulfilled its purpose by exposing a long-horizon trip; Phase A cannot be promoted as green.
+The historical failure and its corrected root-cause analysis are recorded in `M10_9_4_1_A_EXTENDED_AUDIT.md`. The corrected current-v2 seed has passed the exact 300-second sustained journey locally without weakening protection thresholds.
 
-## Phase A.1 — Audit Evidence Completion — IMPLEMENTED IN A.2 CANDIDATE
+## Phase A.1 — Audit Evidence Completion — IMPLEMENTED / CONTINUING AS CROSS-PHASE EVIDENCE
 
 ### Goal
 
-Publish direct one-second protection/limiter/exhaust evidence around the already attributed condenser-backpressure edge.
+Publish direct one-second protection/limiter/exhaust evidence around any long-horizon protection edge so downstream trip functions can be distinguished from upstream root causes.
 
 ### Required diagnostic additions
 
@@ -69,7 +69,7 @@ Publish direct one-second protection/limiter/exhaust evidence around the already
 The journey extends to 600 seconds only if the 300-second final-window slope remains ambiguous after the trip cause is removed or isolated. Runtime must not be lengthened merely to obtain a green result.
 
 
-## Phase A.2 — Condenser Installed-Capacity Headroom — CURRENT CANDIDATE
+## Phase A.2 — Condenser Installed-Capacity Headroom — IMPLEMENTED CANDIDATE, NOT ROOT-CAUSE FIX
 
 ### Scope
 
@@ -86,9 +86,24 @@ The previous boundary ceiling clipped the existing `min(Q_available, UA * ΔT)` 
 
 ### Gate
 
-Build, ordinary suite, both `GameplayLong` journeys and the complete `OperationalEnvelopeAudit` trait must pass. The new one-second evidence must show no unexplained trip and identify the active condenser limiter throughout the healthy reference journey.
+The condenser-capacity change must be evaluated independently during Phase C against the now-corrected operating seed. It must not be credited as the fix for the historical ~70-second failure. Build, ordinary suite, long journeys and condenser-limiter evidence must remain green before any condenser change is promoted.
 
-## Phase B — Drum and Source Inventory Closure
+## Phase A.3 — Reference Plant Scale Evidence / Corrected Operating Seed — LOCALLY GREEN CHECKPOINT
+
+### Scope
+
+- freeze the current 1,000 MW generator nameplate, 1,000 kg·m² rotor, 5 MW request, 150 rpm full-load droop and 10 MW coupling values as explicit evidence rather than implicit constants;
+- derive stored rotor energy, inertia constants against 1,000 MW and 10 MW references, droop displacement, synchronizing-authority ratios and constant-power acceleration scales;
+- publish the results in `REFERENCE_PLANT_SCALE_EVIDENCE.md` and provisionally favor a reduced-scale educational unit while prohibiting any isolated nameplate change;
+- close the current-v2 sustained-generation seed by returning fuel/structure heat conservatively to coolant, matching current-v2 primary hydraulic resistance and aligning current-v2 steam-line initial conditions/control-valve bias;
+- preserve historical v1 seeds and all protection thresholds;
+- keep the scale evidence observational: no generator-nameplate, inertia, droop or coupling migration is performed in A.3.
+
+### Gate
+
+The explicit `ReferencePlantScaleAudit` must compile and reproduce the documented values. The corrected current-v2 sustained-generation seed must keep the exact 300-second and explicit synchronization journeys green. A final scale decision still requires turbine capability evidence, controlled rotor-response evidence and a coordinated versioned migration plan.
+
+## Phase B — Drum and Source Inventory Closure — IN PROGRESS
 
 ### Scope
 
@@ -97,6 +112,25 @@ Build, ordinary suite, both `GameplayLong` journeys and the complete `Operationa
 - define behavior when the drum loses separable liquid;
 - publish low-inventory and pressure-outside-design-envelope diagnostics;
 - add low-drum-level protection/interlock only after the physical inventory semantics are correct.
+
+### Delivery split
+
+**B.1 — Steam-drum liquid-inventory closure — USER VALIDATED LOCALLY**
+
+- current-v2 `CirculationDemandBalanced` recirculation is limited by physically separable liquid inventory plus same-step incoming liquid;
+- a fully vaporized drum cannot fabricate a liquid recirculation source;
+- requested/maximum/actual recirculation and separable liquid inventory are explicit diagnostics;
+- legacy `LegacyReturnSplit` behavior remains unchanged;
+- HMI also exposes committed SPEED and LOAD references, and scoring regression locks the rule that automatic protection trips do not incur manual-command penalties.
+
+**B.2 — Drum-to-main-steam source closure — USER VALIDATED LOCALLY**
+
+- remove the remaining demand-following source from `MainSteamNetworkSolver`;
+- current-v2 explicitly enables a drum-owned source whose availability is derived from positive return-flow energy surplus plus committed separable vapor inventory;
+- independently cap actual source flow by forward drum-to-steam-outlet pressure head through an explicit source hydraulic resistance;
+- keep all source terms internally conservative and integrated exactly once;
+- expose non-serialized diagnostics for pressure capacity, energy/inventory availability and active limiting side;
+- preserve null-source historical/v1 behavior explicitly.
 
 ### Required regressions
 
@@ -107,6 +141,10 @@ Build, ordinary suite, both `GameplayLong` journeys and the complete `Operationa
 - current and legacy profiles remain explicit.
 
 ## Phase C — Condenser Phase-Change Closure
+
+### C.1 locally validated — pressure-resolved condensate energy
+
+C.1 and B.3 are locally user-validated. C.1 does not change the existing A.2 condenser capacity values: the current-v2 phase-change control volume assigns condensed mass saturated-liquid specific internal energy at committed condenser pressure, while legacy definitions retain the historical receiving-hotwell energy rule. C.2 is the active candidate and formalizes the retained current-v2 ceilings without retuning them: 40 MW becomes definition-owned installed cooling capacity, runtime available cooling remains a separate operating/fault input, `UA·ΔT` remains the independent surface-transfer limit, and 20 kg/s remains the independent maximum condensation-flow ceiling. Maximum-flow, inventory, thermal and cooling-capacity constraints remain separately observable with margins.
 
 ### Scope
 
@@ -124,7 +162,28 @@ Build, ordinary suite, both `GameplayLong` journeys and the complete `Operationa
 - cooling degradation raises backpressure without hidden state repair;
 - no over-condensation or inventory depletion is masked by seed retuning.
 
-## Phase D — Turbine Admission and Governor Authority
+## Phase D — Turbine Admission and Governor Authority — IN PROGRESS
+
+### D.1 — Admission phase-policy closure — CANDIDATE / LOCAL VALIDATION PENDING
+
+- add an explicit versioned stage admission policy;
+- current-v2 admits only the committed vapor mass fraction, so liquid cannot become a zero-work mass bypass;
+- wet-steam mass-flow scaling and thermodynamic-work scaling share one policy and do not apply vapor quality twice;
+- legacy definitions preserve unrestricted historical transfer semantics.
+
+### D.2 — Valve/stage authority evidence — CANDIDATE / AUDIT-ONLY
+
+- freeze the canonical current-v2 resistance budget and linear control-valve characteristic without changing production physics;
+- quantify the analytical authority map from 10–100% valve opening, including the current 28% seed point;
+- collect a deterministic +10 rpm / -10 rpm operational perturbation with control-valve position, admission pressure, raw/effective stage flow and shaft power;
+- treat the static resistance map as an indicator only; dynamic plant evidence decides whether correction is needed;
+- defer resistance rescaling, effective area or a Stodola/ellipse-style law to a follow-up correction gate only if the evidence demonstrates inadequate authority.
+
+### D.3 — Governor/actuator tracking — CONDITIONAL
+
+- measure controller command versus physical valve position during finite travel;
+- add tracking anti-windup only if command/position divergence produces material persistent integral windup;
+- review torque-reference continuity separately.
 
 ### Scope
 
@@ -248,3 +307,22 @@ Only after this gate passes does work advance to M10.9.5.
 3. M10.9.7 Mission & Performance Workstation.
 4. M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 5. M11 release hardening, packaging and final validation.
+
+
+### C.2 — Explicit condenser installed-capacity ownership
+
+C.1 is locally validated. C.2 retains the green 40 MW / 20 kg/s current-v2 values but removes their semantic ambiguity:
+
+- 40 MW becomes an optional plant-definition-owned installed heat-rejection ceiling;
+- runtime `AvailableHeatRejectionPower` remains the operating/fault-dependent capacity available now;
+- `UA·ΔT` remains the surface-transfer ceiling;
+- effective heat rejection uses the minimum of installed, available and surface-transfer capacity;
+- 20 kg/s remains the independent maximum condensation-throughput ceiling.
+
+Acceptance requires focused installed-vs-available-vs-UA regressions, unchanged legacy/null-definition behavior, replay-v1 presentation compatibility, ordinary suite, explicit 60-second journeys and the healthy 300-second operational-envelope audit. No capacity retuning is part of C.2.
+
+## C.2 Hotfix 1 observed primary hydraulic chatter
+
+User observation on the locally validated C.2 baseline: operator-facing instantaneous primary flows can alternate strongly at the 10 ms step scale (liquid recirculation roughly 0–20 kg/s, MCP roughly -10–120 kg/s, drum inlet roughly 0–200 kg/s, channel groups roughly -20–120 kg/s, return collector roughly 0–200 kg/s). Long-horizon conservation gates remain green, so this is not presently classified as inventory divergence; it is evidence of explicit/algebraic hydraulic stiffness that must be quantified before any solver-level correction.
+
+C.2 Hotfix 1 therefore adds only deterministic 0.5 s operator-facing flow instrumentation. It does **not** claim to resolve the raw numerical chatter. The later numerical decision gate must measure sign-change frequency, peak-to-peak amplitude, timestep sensitivity and convergence under reduced step/substep trials before choosing among substepping, semi-implicit pressure-flow treatment or explicit hydraulic-inertia state.

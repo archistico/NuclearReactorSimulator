@@ -83,7 +83,7 @@ public sealed class MainSteamNetworkSolverTests
     }
 
     [Fact]
-    public void Step_CirculationDemandBalanced_ReplenishesMainSteamLineFromDrumConservatively()
+    public void Step_CurrentSteamSource_IsPressureEnergyInventoryDrivenRatherThanDemandFollowing()
     {
         var fixture = CreateFixture(circulationDemandBalanced: true);
         var solver = new MainSteamNetworkSolver(fixture.Definition, new PreservingThermodynamicModel());
@@ -94,16 +94,23 @@ public sealed class MainSteamNetworkSolverTests
         var result = solver.Step(fixture.State, fixture.Inputs, deltaTime);
 
         var line = Assert.Single(result.Snapshot.SteamLines);
+        var drum = result.Snapshot.PrimaryCircuit.SteamDrums.GetDrum("drum-a");
         var candidateDrum = result.CandidateState.GetFluidNode("drum");
         var candidateSteam = result.CandidateState.GetFluidNode("steam");
-        var transferredMass = line.MassFlowRate.KilogramsPerSecond * deltaTime.TotalSeconds;
-        var transferredEnergy = initialSteam.SpecificInternalEnergy.JoulesPerKilogram * transferredMass;
+        var sourceMass = drum.SeparatedSteamMassFlowRate.KilogramsPerSecond * deltaTime.TotalSeconds;
+        var lineMass = line.MassFlowRate.KilogramsPerSecond * deltaTime.TotalSeconds;
+        var sourceEnergy = drum.SteamSpecificInternalEnergy.JoulesPerKilogram * sourceMass;
+        var lineEnergy = initialSteam.SpecificInternalEnergy.JoulesPerKilogram * lineMass;
 
         Assert.True(line.MassFlowRate > MassFlowRate.Zero);
-        Assert.Equal(initialSteam.Mass.Kilograms, candidateSteam.Mass.Kilograms, 9);
-        Assert.Equal(initialSteam.InternalEnergy.Joules, candidateSteam.InternalEnergy.Joules, 3);
-        Assert.Equal(initialDrum.Mass.Kilograms - transferredMass, candidateDrum.Mass.Kilograms, 9);
-        Assert.Equal(initialDrum.InternalEnergy.Joules - transferredEnergy, candidateDrum.InternalEnergy.Joules, 3);
+        Assert.True(drum.UsesPressureEnergyInventorySteamSource);
+        Assert.True(drum.SeparatedSteamMassFlowRate > MassFlowRate.Zero);
+        Assert.Equal(initialDrum.SpecificInternalEnergy, drum.SteamSpecificInternalEnergy);
+        Assert.NotEqual(line.MassFlowRate, drum.SeparatedSteamMassFlowRate);
+        Assert.Equal(initialSteam.Mass.Kilograms + sourceMass - lineMass, candidateSteam.Mass.Kilograms, 9);
+        Assert.Equal(initialSteam.InternalEnergy.Joules + sourceEnergy - lineEnergy, candidateSteam.InternalEnergy.Joules, 3);
+        Assert.Equal(initialDrum.Mass.Kilograms - sourceMass, candidateDrum.Mass.Kilograms, 9);
+        Assert.Equal(initialDrum.InternalEnergy.Joules - sourceEnergy, candidateDrum.InternalEnergy.Joules, 3);
         Assert.InRange(Math.Abs(result.Snapshot.Audit.BalanceMassRateResidualKilogramsPerSecond), 0d, 1e-12d);
         Assert.InRange(Math.Abs(result.Snapshot.Audit.BalancePowerResidualWatts), 0d, 1e-6d);
     }
@@ -193,9 +200,9 @@ public sealed class MainSteamNetworkSolverTests
             {
                 Fluid("suction", 6d, FluidPhase.SubcooledLiquid),
                 Fluid("pressure", 6d, FluidPhase.SubcooledLiquid),
-                Fluid("outlet", 6d, FluidPhase.SubcooledLiquid),
-                Fluid("drum", 6d, FluidPhase.SubcooledLiquid),
-                Fluid("steam", 7d, FluidPhase.SuperheatedVapor),
+                Fluid("outlet", circulationDemandBalanced ? 7d : 6d, FluidPhase.SubcooledLiquid),
+                Fluid("drum", circulationDemandBalanced ? 7d : 6d, circulationDemandBalanced ? FluidPhase.SuperheatedVapor : FluidPhase.SubcooledLiquid),
+                Fluid("steam", circulationDemandBalanced ? 6.8d : 7d, FluidPhase.SuperheatedVapor),
                 Fluid("header", 6.5d, FluidPhase.SuperheatedVapor),
                 Fluid("stop-out", 6d, FluidPhase.SuperheatedVapor),
                 Fluid("control-out", 5.5d, FluidPhase.SuperheatedVapor),
@@ -248,7 +255,11 @@ public sealed class MainSteamNetworkSolverTests
                     "steam",
                     circulationDemandBalanced
                         ? SteamDrumLiquidRecirculationMode.CirculationDemandBalanced
-                        : SteamDrumLiquidRecirculationMode.LegacyReturnSplit),
+                        : SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
+                    circulationDemandBalanced
+                        ? new SteamDrumSteamSourceDefinition(
+                            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(100_000d))
+                        : null),
             });
         var boundaries = new PrimaryCircuitBoundarySystemDefinition(
             "boundaries",

@@ -1,4 +1,9 @@
-> **Current checkpoint:** M10.9.4 is VALIDATED. M10.9.4.1-A repeatedly exposes condenser-high-backpressure trip near 70 simulated seconds. M10.9.4.1-A.2 Hotfix 1 is the current candidate: one-second direct trip/limiter evidence plus isolated current-v2 condenser installed-capacity headroom; local validation pending.
+> **Current development:** M10.9.4.1-D.1 candidate on the user-supplied consolidated continuation base. Current-v2 turbine admission is vapor-mass-fraction limited; D.2 valve/governor authority evidence is next.
+
+> **Current development checkpoint:** M10.9.4.1-D.2 turbine-admission authority evidence is an audit-only candidate, cumulative on D.1. It does not retune production physics; see `docs/TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`.
+
+
+> **Current checkpoint:** M10.9.4 is the official validated milestone baseline. The current-v2 A.3 operating seed, B.1–B.3 drum/inventory/protection closure and C.1 condenser phase-change energy closure are locally user-validated. M10.9.4.1-C.2 is locally user-validated. Development is at C.2 Hotfix 1: current-v2 primary operational flow presentation uses deterministic 0.5 s instrument filtering and generator re-synchronization guidance now explains the zero-slip/phase-offset condition; underlying raw hydraulic chatter remains a numerical-hardening item.
 
 # Nuclear Reactor Simulator
 
@@ -13,11 +18,11 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 The current official milestone baseline is **M10.9.4 — Subsystem Engineering Schematics — VALIDATED**.
 
-The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 are validated. **M10.9.4.1-A — Extended Operating-Envelope Audit** has been executed: compilation and the ordinary suite pass, while the explicit healthy-reference journey latches turbine/generator trip near 70 simulated seconds. The original audit remains non-green. **M10.9.4.1-A.2 Hotfix 1** is the current candidate: it preserves the initial 24.5 MW `UA * ΔT` point while raising current-v2 installed cooling capacity to 40 MW and maximum condensation flow to 20 kg/s, with direct one-second protection/limiter evidence.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 are validated. The extended M10.9.4.1-A audit first exposed a repeatable trip near 70 simulated seconds, but the root cause was subsequently traced to the **current-v2 operating seed**: only the direct 20% coolant heat-deposition share reached the coolant, primary circulation was only about 0.07 kg/s, while the drum exported about 13 kg/s of steam. The corrected v2 seed now returns fuel/structure heat conservatively to the coolant, uses matched primary hydraulic resistance and aligned steam-line/control-valve initial conditions. Historical v1 seeds and protection thresholds remain unchanged. The exact 300-second journey, explicit 60-second synchronization journey, build and ordinary suite are locally green. **M10.9.4.1-B.1** and **M10.9.4.1-B.2** are locally user-validated. **M10.9.4.1-B.3** and **C.1** are locally user-validated. **M10.9.4.1-C.2** is locally user-validated. **C.2 Hotfix 1** is the active candidate: it stabilizes operator-facing current-v2 primary flow readouts with deterministic 0.5 s instrumentation lag and clarifies manual phase-slip re-synchronization after breaker opening without changing solver laws.
 
 Hotfix 19 validates opt-in non-return semantics on current-v2 condensate/feedwater pumps. Hotfix 20 Fix 2 validates measured turbine overspeed, condenser high-backpressure and generator overfrequency trips. Hotfix 21 validates finite actuator travel; Hotfix 22 validates breaker-aware speed/load droop; Hotfix 23 validates pressure/temperature/vapor-dependent turbine work. Remaining physical/numerical hardening is moved out of schematic scope into **M10.9.4.1 — Operational Envelope & Numerical Hardening** before M10.9.5.
 
-See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0091. M10 closes only after M10.9.8; release hardening remains M11.
+See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0097. M10 closes only after M10.9.8; release hardening remains M11.
 
 ## Architectural principles
 
@@ -450,7 +455,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. M10.9.4.1-A compilation/ordinary tests pass, but the explicit extended audit found condenser-high-backpressure trip near 70 simulated seconds; A.2 Hotfix 1 validation is pending.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. The M10.9.4.1 extended audit exposed a current-v2 seed energy/hydraulic imbalance that is now corrected and locally user-validated through the exact 300-second journey, explicit synchronization journey, zero-warning build and 895-test ordinary suite. M10.9.4.1-B.1–B.3 and C.1 are locally user-validated; C.2 explicit condenser installed-capacity ownership is locally validated; C.2 Hotfix 1 primary-flow presentation/re-synchronization usability is the active candidate.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -577,4 +582,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. M10.9.4.1-A has executed and exposed a non-green 300-second reference journey; A.2 Hotfix 1 and later hardening phases remain before M10.9.5.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. The M10.9.4.1-A failure has been traced to and corrected in the current-v2 sustained-generation seed; the corrected A.3 checkpoint is locally green through the exact 300-second and explicit synchronization journeys, build and ordinary suite. M10.9.4.1-B.1–B.3 and C.1 are locally user-validated; C.2 explicit condenser installed-capacity ownership is the active candidate before the later hardening phases.

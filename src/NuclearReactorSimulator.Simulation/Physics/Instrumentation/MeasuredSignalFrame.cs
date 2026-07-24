@@ -34,4 +34,5 @@ public sealed class MeasuredSignalFrame
     public MeasuredSignal GetSignal(string channelId)
         => Signals.FirstOrDefault(signal => string.Equals(signal.ChannelId, channelId, StringComparison.Ordinal))
             ?? throw new KeyNotFoundException($"Unknown measured signal '{channelId}'.");
+
 }

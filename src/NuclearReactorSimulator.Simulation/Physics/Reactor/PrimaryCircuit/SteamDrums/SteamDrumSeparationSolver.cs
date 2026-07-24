@@ -32,12 +32,34 @@ public sealed class SteamDrumSeparationSolver
     public SteamDrumStepResult Solve(PlantState committedPlantState)
     {
         ArgumentNullException.ThrowIfNull(committedPlantState);
-        return Solve(committedPlantState, _circulationSolver.Solve(committedPlantState));
+        return SolveCore(committedPlantState, _circulationSolver.Solve(committedPlantState), integrationInterval: null);
+    }
+
+    public SteamDrumStepResult Solve(PlantState committedPlantState, TimeSpan integrationInterval)
+    {
+        ArgumentNullException.ThrowIfNull(committedPlantState);
+        ValidateIntegrationInterval(integrationInterval);
+        return SolveCore(committedPlantState, _circulationSolver.Solve(committedPlantState), integrationInterval);
     }
 
     public SteamDrumStepResult Solve(
         PlantState committedPlantState,
         MainCirculationSystemSnapshot circulation)
+        => SolveCore(committedPlantState, circulation, integrationInterval: null);
+
+    public SteamDrumStepResult Solve(
+        PlantState committedPlantState,
+        MainCirculationSystemSnapshot circulation,
+        TimeSpan integrationInterval)
+    {
+        ValidateIntegrationInterval(integrationInterval);
+        return SolveCore(committedPlantState, circulation, integrationInterval);
+    }
+
+    private SteamDrumStepResult SolveCore(
+        PlantState committedPlantState,
+        MainCirculationSystemSnapshot circulation,
+        TimeSpan? integrationInterval)
     {
         ArgumentNullException.ThrowIfNull(committedPlantState);
         ArgumentNullException.ThrowIfNull(circulation);
@@ -67,11 +89,27 @@ public sealed class SteamDrumSeparationSolver
             var drumState = committedPlantState.GetFluidNode(drum.InventoryNodeId);
             var split = ResolvePhaseSplit(drumState);
             var incoming = SumPositiveReturnInflows(loopSnapshot);
-            var steamFlow = incoming * split.VaporMassFraction;
-            var liquidFlow = ResolveLiquidRecirculationFlow(drum, loopSnapshot, incoming, steamFlow);
+            var steamSource = ResolveSteamSource(
+                drum,
+                loopSnapshot,
+                committedPlantState,
+                drumState,
+                split,
+                incoming,
+                integrationInterval);
+            var steamFlow = steamSource.ActualFlow;
+            var separableLiquidInventory = ResolveSeparableLiquidInventoryMass(drumState);
+            var liquidRecirculation = ResolveLiquidRecirculation(
+                drum,
+                loopSnapshot,
+                incoming,
+                steamFlow,
+                separableLiquidInventory,
+                integrationInterval);
+            var liquidFlow = liquidRecirculation.ActualFlow;
             var totalSeparatedOutflow = steamFlow + liquidFlow;
-            var steamEnergyRate = split.VaporSpecificEnergy * steamFlow;
-            var liquidEnergyRate = split.LiquidSpecificEnergy * liquidFlow;
+            var steamEnergyRate = steamSource.SteamSpecificEnergy * steamFlow;
+            var liquidEnergyRate = steamSource.LiquidSpecificEnergy * liquidFlow;
             var totalEnergyRate = steamEnergyRate + liquidEnergyRate;
 
             AddBalance(
@@ -104,12 +142,25 @@ public sealed class SteamDrumSeparationSolver
                 incoming,
                 steamFlow,
                 liquidFlow,
-                split.VaporSpecificEnergy,
-                split.LiquidSpecificEnergy,
+                steamSource.SteamSpecificEnergy,
+                steamSource.LiquidSpecificEnergy,
                 steamEnergyRate,
                 liquidEnergyRate,
                 (-totalSeparatedOutflow + steamFlow + liquidFlow).KilogramsPerSecond,
-                (-totalEnergyRate + steamEnergyRate + liquidEnergyRate).Watts));
+                (-totalEnergyRate + steamEnergyRate + liquidEnergyRate).Watts)
+            {
+                SeparableLiquidInventoryMass = separableLiquidInventory,
+                RequestedLiquidRecirculationMassFlowRate = liquidRecirculation.RequestedFlow,
+                MaximumInventorySupportedLiquidRecirculationMassFlowRate = liquidRecirculation.MaximumInventorySupportedFlow,
+                LiquidRecirculationInventoryLimited = liquidRecirculation.IsInventoryLimited,
+                UsesPressureEnergyInventorySteamSource = steamSource.UsesCurrentSourceClosure,
+                SteamSourcePressureDrivenCapacityMassFlowRate = steamSource.PressureDrivenCapacity,
+                SteamSourceAvailableMassFlowRate = steamSource.AvailableFlow,
+                SteamSourceIncomingEnergySupportedMassFlowRate = steamSource.IncomingEnergySupportedFlow,
+                SteamSourceStoredVaporInventoryMass = steamSource.StoredVaporInventoryMass,
+                SteamSourcePressureLimited = steamSource.IsPressureLimited,
+                SteamSourceAvailabilityLimited = steamSource.IsAvailabilityLimited,
+            });
         }
 
         var sourceTerms = new PlantNetworkSourceTerms(
@@ -162,18 +213,189 @@ public sealed class SteamDrumSeparationSolver
     }
 
 
-    private static MassFlowRate ResolveLiquidRecirculationFlow(
+    private SteamSourceResolution ResolveSteamSource(
+        SteamDrumDefinition drum,
+        MainCirculationLoopSnapshot loopSnapshot,
+        PlantState committedPlantState,
+        FluidNodeState drumState,
+        PhaseSplit split,
+        MassFlowRate incomingReturnFlow,
+        TimeSpan? integrationInterval)
+    {
+        if (drum.SteamSource is null)
+        {
+            var legacyFlow = incomingReturnFlow * split.VaporMassFraction;
+            return new SteamSourceResolution(
+                legacyFlow,
+                legacyFlow,
+                legacyFlow,
+                legacyFlow,
+                Mass.Zero,
+                split.VaporSpecificEnergy,
+                split.LiquidSpecificEnergy,
+                false,
+                false,
+                false);
+        }
+
+        if (!integrationInterval.HasValue)
+        {
+            throw new InvalidOperationException(
+                $"Steam drum '{drum.Id}' uses the current pressure/energy/inventory steam-source closure and therefore requires an integration interval.");
+        }
+
+        var saturation = _thermodynamicModel.GetSaturationProperties(drumState.Temperature);
+        var liquidSpecificEnergy = drumState.Phase == FluidPhase.SubcooledLiquid
+            ? drumState.SpecificInternalEnergy
+            : saturation.SaturatedLiquidInternalEnergy;
+        var steamSpecificEnergy = drumState.Phase == FluidPhase.SuperheatedVapor
+            ? drumState.SpecificInternalEnergy
+            : saturation.SaturatedVaporInternalEnergy;
+        var vaporizationEnergy = steamSpecificEnergy.JoulesPerKilogram - liquidSpecificEnergy.JoulesPerKilogram;
+        if (!double.IsFinite(vaporizationEnergy) || vaporizationEnergy <= 0d)
+        {
+            throw new InvalidOperationException(
+                $"Steam drum '{drum.Id}' cannot resolve a positive vaporization-energy interval for the current steam-source closure.");
+        }
+
+        var incomingEnergyRateWatts = SumPositiveReturnEnergyRateWatts(loopSnapshot, committedPlantState);
+        var incomingLiquidReferencePowerWatts = liquidSpecificEnergy.JoulesPerKilogram * incomingReturnFlow.KilogramsPerSecond;
+        var incomingExcessPowerWatts = Math.Max(0d, incomingEnergyRateWatts - incomingLiquidReferencePowerWatts);
+        var incomingEnergySupportedFlow = MassFlowRate.FromKilogramsPerSecond(Math.Min(
+            incomingReturnFlow.KilogramsPerSecond,
+            incomingExcessPowerWatts / vaporizationEnergy));
+
+        var storedVaporInventoryMass = ResolveSeparableVaporInventoryMass(drumState);
+        var storedVaporAvailableFlow = storedVaporInventoryMass.Per(integrationInterval.Value);
+        var availableFlow = incomingEnergySupportedFlow + storedVaporAvailableFlow;
+
+        var steamOutletState = committedPlantState.GetFluidNode(drum.SteamOutletNodeId);
+        var drivingPressurePascals = Math.Max(0d, drumState.Pressure.Pascals - steamOutletState.Pressure.Pascals);
+        var pressureDrivenCapacity = MassFlowRate.FromKilogramsPerSecond(Math.Sqrt(
+            drivingPressurePascals / drum.SteamSource.HydraulicResistance.PascalSecondsSquaredPerKilogramSquared));
+        var actualFlow = MassFlowRate.FromKilogramsPerSecond(Math.Min(
+            pressureDrivenCapacity.KilogramsPerSecond,
+            availableFlow.KilogramsPerSecond));
+
+        return new SteamSourceResolution(
+            actualFlow,
+            pressureDrivenCapacity,
+            availableFlow,
+            incomingEnergySupportedFlow,
+            storedVaporInventoryMass,
+            steamSpecificEnergy,
+            liquidSpecificEnergy,
+            true,
+            pressureDrivenCapacity < availableFlow,
+            availableFlow <= pressureDrivenCapacity);
+    }
+
+    private static double SumPositiveReturnEnergyRateWatts(
+        MainCirculationLoopSnapshot loopSnapshot,
+        PlantState committedPlantState)
+    {
+        var totalWatts = 0d;
+        var compensation = 0d;
+
+        foreach (var branchSnapshot in loopSnapshot.Branches)
+        {
+            var positiveFlow = Math.Max(0d, branchSnapshot.ReturnMassFlowRate.KilogramsPerSecond);
+            if (positiveFlow == 0d)
+            {
+                continue;
+            }
+
+            var returnPipe = committedPlantState.Definition.GetPipe(branchSnapshot.ReturnPipeId);
+            var upstream = committedPlantState.GetFluidNode(returnPipe.FromNodeId);
+            var value = upstream.SpecificInternalEnergy.JoulesPerKilogram * positiveFlow;
+            var adjusted = value - compensation;
+            var next = totalWatts + adjusted;
+            compensation = (next - totalWatts) - adjusted;
+            totalWatts = next;
+        }
+
+        return totalWatts;
+    }
+
+    private static Mass ResolveSeparableVaporInventoryMass(FluidNodeState state)
+        => state.Phase switch
+        {
+            FluidPhase.SubcooledLiquid => Mass.Zero,
+            FluidPhase.SuperheatedVapor => state.Mass,
+            FluidPhase.SaturatedMixture => state.Mass * (state.VaporQuality?.Fraction
+                ?? throw new InvalidOperationException($"Steam-drum saturated mixture '{state.Id}' is missing vapor quality.")),
+            _ => Mass.Zero,
+        };
+
+    private static LiquidRecirculationResolution ResolveLiquidRecirculation(
         SteamDrumDefinition drum,
         MainCirculationLoopSnapshot loop,
         MassFlowRate incomingReturnFlow,
-        MassFlowRate separatedSteamFlow)
-        => drum.LiquidRecirculationMode switch
+        MassFlowRate separatedSteamFlow,
+        Mass separableLiquidInventory,
+        TimeSpan? integrationInterval)
+    {
+        if (drum.LiquidRecirculationMode == SteamDrumLiquidRecirculationMode.LegacyReturnSplit)
         {
-            SteamDrumLiquidRecirculationMode.LegacyReturnSplit => incomingReturnFlow - separatedSteamFlow,
-            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced => SumPositivePumpOutflows(loop),
-            _ => throw new InvalidOperationException(
-                $"Steam drum '{drum.Id}' uses unsupported liquid-recirculation mode '{drum.LiquidRecirculationMode}'."),
+            var legacyFlow = incomingReturnFlow - separatedSteamFlow;
+            return new LiquidRecirculationResolution(legacyFlow, legacyFlow, legacyFlow, false);
+        }
+
+        if (drum.LiquidRecirculationMode != SteamDrumLiquidRecirculationMode.CirculationDemandBalanced)
+        {
+            throw new InvalidOperationException(
+                $"Steam drum '{drum.Id}' uses unsupported liquid-recirculation mode '{drum.LiquidRecirculationMode}'.");
+        }
+
+        var requestedFlow = SumPositivePumpOutflows(loop);
+        var incomingLiquidFlow = MassFlowRate.FromKilogramsPerSecond(Math.Max(
+            0d,
+            incomingReturnFlow.KilogramsPerSecond - separatedSteamFlow.KilogramsPerSecond));
+
+        if (separableLiquidInventory == Mass.Zero)
+        {
+            return new LiquidRecirculationResolution(
+                requestedFlow,
+                MassFlowRate.Zero,
+                MassFlowRate.Zero,
+                requestedFlow > MassFlowRate.Zero);
+        }
+
+        if (!integrationInterval.HasValue)
+        {
+            // Compatibility/diagnostic overloads without an integration horizon retain their historical instantaneous
+            // demand result. Production current-v2 integration always supplies deltaTime and therefore uses the cap below.
+            return new LiquidRecirculationResolution(requestedFlow, requestedFlow, requestedFlow, false);
+        }
+
+        var maximumInventorySupportedFlow = incomingLiquidFlow + separableLiquidInventory.Per(integrationInterval.Value);
+        var actualFlow = MassFlowRate.FromKilogramsPerSecond(Math.Min(
+            requestedFlow.KilogramsPerSecond,
+            maximumInventorySupportedFlow.KilogramsPerSecond));
+        return new LiquidRecirculationResolution(
+            requestedFlow,
+            actualFlow,
+            maximumInventorySupportedFlow,
+            actualFlow < requestedFlow);
+    }
+
+    private static Mass ResolveSeparableLiquidInventoryMass(FluidNodeState state)
+        => state.Phase switch
+        {
+            FluidPhase.SubcooledLiquid => state.Mass,
+            FluidPhase.SuperheatedVapor => Mass.Zero,
+            FluidPhase.SaturatedMixture => state.Mass * (1d - (state.VaporQuality?.Fraction
+                ?? throw new InvalidOperationException($"Steam-drum saturated mixture '{state.Id}' is missing vapor quality."))),
+            _ => Mass.Zero,
         };
+
+    private static void ValidateIntegrationInterval(TimeSpan integrationInterval)
+    {
+        if (integrationInterval <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(integrationInterval), "Integration interval must be positive.");
+        }
+    }
 
     private static MassFlowRate SumPositivePumpOutflows(MainCirculationLoopSnapshot loop)
     {
@@ -216,6 +438,24 @@ public sealed class SteamDrumSeparationSolver
             ? existing + balance
             : balance;
     }
+
+    private sealed record LiquidRecirculationResolution(
+        MassFlowRate RequestedFlow,
+        MassFlowRate ActualFlow,
+        MassFlowRate MaximumInventorySupportedFlow,
+        bool IsInventoryLimited);
+
+    private sealed record SteamSourceResolution(
+        MassFlowRate ActualFlow,
+        MassFlowRate PressureDrivenCapacity,
+        MassFlowRate AvailableFlow,
+        MassFlowRate IncomingEnergySupportedFlow,
+        Mass StoredVaporInventoryMass,
+        SpecificEnergy SteamSpecificEnergy,
+        SpecificEnergy LiquidSpecificEnergy,
+        bool UsesCurrentSourceClosure,
+        bool IsPressureLimited,
+        bool IsAvailabilityLimited);
 
     private sealed record PhaseSplit(
         double VaporMassFraction,

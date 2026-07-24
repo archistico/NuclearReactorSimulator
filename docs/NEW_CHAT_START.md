@@ -1,3 +1,11 @@
+# Current bootstrap override — M10.9.4.1-D.2
+
+Use the current D.2 candidate cumulatively on D.1. D.1 local validation is still pending. D.2 changes no production physics: it freezes the turbine admission resistance budget and adds deterministic static/runtime authority evidence. Do not retune the 21,400 stage resistance, 1,000 valve resistances, governor gains or actuator travel until `scripts\run-turbine-admission-authority-audit.cmd` has been executed and reviewed.
+
+# Previous bootstrap note — M10.9.4.1-D.1
+
+Use the user-supplied consolidated `M10.9.4.1_nuova` tree as the source base. D.1 is implemented with local validation pending; D.2 authority evidence is the active candidate: current-v2 turbine stage admission is vapor-mass-fraction limited; legacy stage admission remains unrestricted. Do not retune stage/control-valve resistance or governor gains until D.2 authority evidence is measured.
+
 # New Chat Start — Nuclear Reactor Simulator
 
 We are continuing the **Nuclear Reactor Simulator** project.
@@ -14,43 +22,49 @@ We are continuing the **Nuclear Reactor Simulator** project.
 8. `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`
 9. `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`
 10. `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
-11. `docs/KNOWN_MODEL_LIMITATIONS.md`
-12. `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`
-13. `docs/milestones/M10.9.3.md`
-14. `docs/INTERACTIVE_FULL_PLANT_MIMIC.md`
-15. `docs/ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md`
-16. `docs/OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`
-17. ADR 0075–ADR 0091
+11. `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`
+12. `docs/KNOWN_MODEL_LIMITATIONS.md`
+13. `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`
+14. `docs/milestones/M10.9.3.md`
+15. `docs/INTERACTIVE_FULL_PLANT_MIMIC.md`
+16. `docs/ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md`
+17. `docs/OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`
+18. `docs/usermanual/MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md`
+19. ADR 0075–ADR 0094
 
 ## Exact checkpoint
 
 - M7, M8, M9 gates: **COMPLETE / VALIDATED**.
 - M10.1–M10.9.4: **VALIDATED**.
 - Official milestone baseline: **M10.9.4 — Subsystem Engineering Schematics**.
-- Hotfix 23 validation: compilation, complete ordinary suite and both explicit 60-second gameplay journeys passed.
-- Final M10.9.4 manual HMI / engineering-schematic checklist: **PASSED**.
-- Current activity: **M10.9.4.1-A.2 Hotfix 1 condenser-headroom candidate; local validation pending**.
-- A.1 evidence completion is implemented in the candidate: one-second sampling, exact latched-function reporting and independent condenser-limit/exhaust-inventory diagnostics.
-- Confirmed initiating protection: `condenser-high-backpressure`; the unchanged 30 kPa threshold was crossed between ten-second samples near 70 s.
-- A.2 changes only current-v2 installed cooling capacity 24.5→40 MW and maximum condensation flow 15→20 kg/s; `UA`, cooling-water temperature, solver law, thresholds and legacy seeds remain unchanged.
-- Broader next phase after A.2 validation: **M10.9.4.1-B — Drum and Source Inventory Closure**.
+- Hotfix 23 and final M10.9.4 manual HMI/schematic checklist: **PASSED**.
+- The former ~70 s A-audit trip was resolved in the current-v2 operating seed, not by weakening protection. Root cause: only 20% direct coolant heat deposition, ~0.07 kg/s primary circulation, ~13 kg/s drum steam export.
+- Corrected current-v2 seed: conservative fuel/structure→coolant links, matched primary hydraulic resistance, aligned steam-line initial conditions/control-valve bias; v1 seeds and protection thresholds unchanged.
+- User validation: exact 300-second sustained journey **PASSED in 2m 07s**; explicit 60-second synchronization journey **PASSED**; build **0 warnings / 0 errors**; ordinary suite **895 passed / 11 explicit skipped / 0 failed**.
+- A.3 reference-scale evidence remains an open design decision; no one-line nameplate migration is authorized.
+- M10.9.4.1-B.1 — Steam-Drum Liquid Inventory Closure: **USER VALIDATED LOCALLY** (compilation and tests passed).
+- M10.9.4.1-B.2 — Drum-to-Main-Steam Source Closure: **USER VALIDATED LOCALLY** (compilation and tests passed).
+- Current activity: **M10.9.4.1-C.2 Hotfix 2 — Synchronization-seed drum-inventory closure**, cumulative over Hotfix 1 primary operational-flow presentation stabilization and re-synchronization guidance, built on locally validated B.3 + C.1 + C.2. Build, ordinary tests and both 60-second journeys are green; the isolated 300-second audit currently exceeds its performance budget (334.460 s > 300 s), so the candidate remains unpromoted.
+- B.1 also adds explicit HMI feedback for speed/load references and documents that game penalties are triggered only by accepted manual commands.
+- `SPEED RAISE/LOWER`: ±10 rpm per accepted press. `LOAD RAISE/LOWER`: ±5 MWe per accepted press.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
 ## Approved forward sequence
 
-1. Validate M10.9.4.1-A.2 Hotfix 1 through build, ordinary suite, both gameplay-long journeys and the full audit pack.
-2. M10.9.4.1-B drum and source inventory closure.
-3. M10.9.4.1-C condenser phase-change closure.
-4. M10.9.4.1-D turbine admission and governor authority.
-5. M10.9.4.1-E generator/grid scale and bidirectional coupling.
-6. M10.9.4.1-F relief/bypass with choked flow.
-7. M10.9.4.1-G flow-work and enthalpy transport.
-8. M10.9.4.1-H numerical stiffness decision gate.
-9. M10.9.4.1-I compatibility and engineering hardening.
-10. M10.9.5 Contextual Command Consequence Model.
-11. M10.9.6 Operational Challenge & Energy-Demand Framework.
-12. M10.9.7 Mission & Performance Workstation.
-13. M10.9.8 Integrated Human-Automation-HMI Validation Gate.
+1. Validate M10.9.4.1-B.3 through clean build, ordinary suite, focused protection/HMI regressions, 60-second journeys and the 300-second operational-envelope audit.
+2. Close Phase B if B.3 remains green; keep general node pressure/design-envelope diagnostics tracked separately rather than mixing them into drum protection.
+3. Complete remaining Phase B diagnostics, then add low-drum-level protection only after inventory semantics are physically closed.
+4. M10.9.4.1 continuation: use the user-supplied consolidated A/B/C base. Phase D has started; D.1 turbine admission phase-policy closure is implemented with local validation pending; D.2 turbine admission authority evidence is the active candidate. Keep the earlier wall-clock performance-budget observation tracked for the later numerical/performance gate.
+5. M10.9.4.1-D turbine admission and governor authority.
+6. M10.9.4.1-E generator/grid scale and bidirectional coupling.
+7. M10.9.4.1-F relief/bypass with choked flow.
+8. M10.9.4.1-G flow-work and enthalpy transport.
+9. M10.9.4.1-H numerical stiffness decision gate.
+10. M10.9.4.1-I compatibility and engineering hardening.
+11. M10.9.5 Contextual Command Consequence Model.
+12. M10.9.6 Operational Challenge & Energy-Demand Framework.
+13. M10.9.7 Mission & Performance Workstation.
+14. M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 ## Why M10.9.4.1 is separate
 
@@ -120,3 +134,8 @@ Repeated `exhaust` failures were traced upstream of the condenser: the v2 recipe
 ## M10.9.4 Hotfix 15 historical correction
 
 The Hotfix 14 ordinary suite is locally green. Long gameplay exposed a second monotonic inventory defect in the steam drum: historical separation cancelled canonical return inflow while leaving feedwater as a one-way addition. Hotfix 15 changes current v2 liquid recirculation to committed MCP demand, removing `dm_drum/dt = F_feedwater >= 0` by construction. Legacy behavior is isolated explicitly; current-model correctness has priority.
+
+
+## M10.9.4.1-C.2 authoritative continuation
+
+The user supplied a consolidated M10.9.4.1 source tree after additional local changes and explicitly requested continuation at Phase D. Treat that tree as the source base. D.1 is implemented with local validation pending; D.2 authority evidence is the active candidate; do not retune valve/stage resistance or governor gains until D.2 authority evidence is measured. The earlier 300-second wall-clock performance-budget observation remains tracked separately.

@@ -71,6 +71,19 @@ Breaker close is fail-closed at the presentation boundary when:
 
 This UI gating is only an operator-safety presentation rule. **M4.5 remains the final authority** that validates synchronization and accepts or rejects breaker closure.
 
+## Committed speed/load reference feedback
+
+The generator-control area publishes the committed operator references next to the momentary commands:
+
+- `SPEED REFERENCE · MODEL` shows the current turbine speed reference associated with the selected generator rotor;
+- `REQUESTED LOAD · MODEL` shows the current requested electrical load for the selected generator;
+- each accepted `SPEED RAISE` / `SPEED LOWER` command changes the speed reference by exactly **10 rpm**;
+- each accepted `LOAD RAISE` / `LOAD LOWER` command changes requested electrical load by exactly **5 MWe**.
+
+The push buttons remain momentary intents. The indicators show the committed reference after the deterministic runtime step processes the accepted command; they are not a direct actuator-position display and must not be confused with actual rotor speed or actual electrical output.
+
+Training scoring follows accepted operator actions, not automatic protection consequences: a protection-initiated SCRAM/trip does not by itself incur a penalty defined for a manual SCRAM/trip command.
+
 ## Synchronization and load command intents
 
 M6.5 adds typed operator intents for:

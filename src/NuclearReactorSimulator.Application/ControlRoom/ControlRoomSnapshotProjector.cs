@@ -232,8 +232,9 @@ public static class ControlRoomSnapshotProjector
             .OrderBy(static loop => loop.LoopId, StringComparer.Ordinal)
             .Select(loop =>
             {
-                var measuredFlow = ProjectMeasuredSource(
+                var measuredFlow = ProjectMeasuredChannelOrSource(
                     measuredFrame,
+                    $"primary-display-loop-{loop.LoopId}-flow",
                     $"main-circulation-loop/{loop.LoopId}/total-pump-flow",
                     "kg/s",
                     1d,
@@ -252,25 +253,50 @@ public static class ControlRoomSnapshotProjector
                         loop.LoopId,
                         pump.IsRunning,
                         Value(pump.EffectiveSpeed.Percent, "% rated", "0.0"),
-                        Value(pump.MassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
+                        ProjectMeasuredChannelOrModel(
+                            measuredFrame,
+                            $"primary-display-pump-{pump.PumpId}-flow",
+                            pump.MassFlowRate.KilogramsPerSecond,
+                            "kg/s",
+                            "0.0"),
                         Value(pump.ActivePressureBoost.Megapascals, "MPa", "0.000"),
                         commandablePumpIds.Contains(pump.PumpId)))
                     .ToArray();
 
                 var branches = loop.Branches
                     .OrderBy(static branch => branch.FuelChannelGroupId, StringComparer.Ordinal)
-                    .Select(branch => new PrimaryCircuitBranchPresentationSnapshot(
-                        branch.FuelChannelGroupId,
-                        branch.RepresentedChannelCount,
-                        Value(branch.ChannelMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
-                        Value(branch.ReturnMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
-                        Value(branch.PerChannelMassFlowRate.KilogramsPerSecond, "kg/s/ch", "0.000"),
-                        Value(branch.ChannelPressureDifference.Megapascals, "MPa", "0.000"),
-                        branch.OutletPhase.ToString().ToUpperInvariant(),
-                        FlowDirection(branch.ChannelMassFlowRate.KilogramsPerSecond),
-                        branch.OutletVoidFraction.HasValue
-                            ? $"Void {branch.OutletVoidFraction.Value.Percent:0.0}%"
-                            : "Void —"))
+                    .Select(branch =>
+                    {
+                        var channelFlow = ProjectMeasuredChannelOrModel(
+                            measuredFrame,
+                            $"primary-display-branch-{loop.LoopId}-{branch.FuelChannelGroupId}-channel-flow",
+                            branch.ChannelMassFlowRate.KilogramsPerSecond,
+                            "kg/s",
+                            "0.0");
+                        var returnFlow = ProjectMeasuredChannelOrModel(
+                            measuredFrame,
+                            $"primary-display-branch-{loop.LoopId}-{branch.FuelChannelGroupId}-return-flow",
+                            branch.ReturnMassFlowRate.KilogramsPerSecond,
+                            "kg/s",
+                            "0.0");
+                        var perChannel = channelFlow.NumericValue.HasValue
+                            ? Value(channelFlow.NumericValue.Value / branch.RepresentedChannelCount, "kg/s/ch", "0.000")
+                            : ControlRoomValueSnapshot.Unavailable("kg/s/ch", ControlRoomInstrumentProvenance.Measured);
+                        var directionValue = channelFlow.NumericValue ?? branch.ChannelMassFlowRate.KilogramsPerSecond;
+
+                        return new PrimaryCircuitBranchPresentationSnapshot(
+                            branch.FuelChannelGroupId,
+                            branch.RepresentedChannelCount,
+                            channelFlow,
+                            returnFlow,
+                            perChannel,
+                            Value(branch.ChannelPressureDifference.Megapascals, "MPa", "0.000"),
+                            branch.OutletPhase.ToString().ToUpperInvariant(),
+                            FlowDirection(directionValue),
+                            branch.OutletVoidFraction.HasValue
+                                ? $"Void {branch.OutletVoidFraction.Value.Percent:0.0}%"
+                                : "Void —");
+                    })
                     .ToArray();
 
                 return new PrimaryCircuitLoopPresentationSnapshot(
@@ -305,11 +331,28 @@ public static class ControlRoomSnapshotProjector
                         "%",
                         100d,
                         "0.0"),
-                    BuildSteamDrumLevelScale(snapshot)),
+                    BuildSteamDrumLevelScale(snapshot, drum.DrumId)),
                 Value(drum.Temperature.DegreesCelsius, "°C", "0.0"),
-                Value(drum.IncomingReturnMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
+                ProjectMeasuredChannelOrModel(
+                    measuredFrame,
+                    $"primary-display-drum-{drum.DrumId}-inlet-flow",
+                    drum.IncomingReturnMassFlowRate.KilogramsPerSecond,
+                    "kg/s",
+                    "0.0"),
                 Value(drum.SeparatedSteamMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
-                Value(drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
+                ProjectMeasuredChannelOrModel(
+                    measuredFrame,
+                    $"primary-display-drum-{drum.DrumId}-recirculation-flow",
+                    drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond,
+                    "kg/s",
+                    "0.0"),
+                Value(drum.SeparableLiquidInventoryMass.Kilograms, "kg", "0.0"),
+                Value(drum.SeparableLiquidInventoryMassFraction * 100d, "% mass", "0.0"),
+                drum.WaterSteamSeparationUnavailable
+                    ? "SEPARATION UNAVAILABLE · NO COMMITTED LIQUID"
+                    : drum.LiquidRecirculationInventoryLimited
+                        ? "LIQUID INVENTORY LIMITED"
+                        : "LIQUID INVENTORY AVAILABLE",
                 drum.Phase.ToString().ToUpperInvariant()))
             .ToArray();
 
@@ -436,7 +479,10 @@ public static class ControlRoomSnapshotProjector
 
         var condensers = condenserSystem.Condensers
             .OrderBy(static condenser => condenser.CondenserId, StringComparer.Ordinal)
-            .Select(condenser => new CondenserPresentationSnapshot(
+            .Select(condenser =>
+            {
+                var coolingBoundary = condenserSystem.GetCoolingBoundary(condenser.CoolingBoundaryId);
+                return new CondenserPresentationSnapshot(
                 condenser.CondenserId,
                 condenser.TurbineStageGroupId,
                 ProjectMeasuredSource(
@@ -461,7 +507,15 @@ public static class ControlRoomSnapshotProjector
                 Value(condenser.HeatRejectionPower.Megawatts, "MW", "0.0"),
                 Value(condenser.FinalSteamSpaceTemperature.DegreesCelsius, "°C", "0.0"),
                 Value(condenser.FinalHotwellTemperature.DegreesCelsius, "°C", "0.0"),
-                condenser.FinalSteamSpacePhase.ToString().ToUpperInvariant()))
+                condenser.FinalSteamSpacePhase.ToString().ToUpperInvariant(),
+                Value(condenser.CondensateSpecificInternalEnergy.KilojoulesPerKilogram, "kJ/kg", "0.0"),
+                Value(condenser.SpecificCondensationEnergyDrop.KilojoulesPerKilogram, "kJ/kg", "0.0"),
+                condenser.ActiveCondensationLimits,
+                Value(coolingBoundary.InstalledHeatRejectionCapacity.Megawatts, "MW", "0.0"),
+                Value(coolingBoundary.AvailableHeatRejectionPower.Megawatts, "MW", "0.0"),
+                Value(coolingBoundary.SurfaceHeatTransferLimitedPower.Megawatts, "MW", "0.0"),
+                coolingBoundary.ActiveHeatRejectionLimits);
+            })
             .ToArray();
 
         var feedwaterTrains = feedwaterSystem.Trains
@@ -694,6 +748,71 @@ public static class ControlRoomSnapshotProjector
         return "NO FLOW";
     }
 
+    private static ControlRoomValueSnapshot ProjectMeasuredChannelOrSource(
+        MeasuredSignalFrame frame,
+        string preferredChannelId,
+        string fallbackSourceId,
+        string displayUnit,
+        double engineeringScale,
+        string format)
+    {
+        var preferred = ProjectMeasuredChannel(frame, preferredChannelId, displayUnit, engineeringScale, format);
+        return preferred.NumericValue.HasValue
+            ? preferred
+            : ProjectMeasuredSource(frame, fallbackSourceId, displayUnit, engineeringScale, format);
+    }
+
+    private static ControlRoomValueSnapshot ProjectMeasuredChannelOrModel(
+        MeasuredSignalFrame frame,
+        string channelId,
+        double modelValue,
+        string displayUnit,
+        string format)
+    {
+        var measured = ProjectMeasuredChannel(frame, channelId, displayUnit, 1d, format);
+        return measured.NumericValue.HasValue ? measured : Value(modelValue, displayUnit, format);
+    }
+
+    private static ControlRoomValueSnapshot ProjectMeasuredChannel(
+        MeasuredSignalFrame frame,
+        string channelId,
+        string displayUnit,
+        double engineeringScale,
+        string format)
+    {
+        var channel = frame.Definition.Channels.FirstOrDefault(item => string.Equals(item.Id, channelId, StringComparison.Ordinal));
+        if (channel is null)
+        {
+            return ControlRoomValueSnapshot.Unavailable(displayUnit, ControlRoomInstrumentProvenance.Measured);
+        }
+
+        var signal = frame.GetSignal(channel.Id);
+        if (signal.Validity != SignalValidity.Valid
+            || !signal.EngineeringValue.HasValue
+            || !double.IsFinite(signal.EngineeringValue.Value)
+            || signal.Quality is SignalQuality.Bad or SignalQuality.Unavailable)
+        {
+            return ControlRoomValueSnapshot.Unavailable(displayUnit, ControlRoomInstrumentProvenance.Measured);
+        }
+
+        var scaled = signal.EngineeringValue.Value * engineeringScale;
+        var state = signal.Quality == SignalQuality.Suspect || signal.OutOfMeasurementRange
+            ? ControlRoomVisualState.Warning
+            : ControlRoomVisualState.Normal;
+
+        return new ControlRoomValueSnapshot(
+            scaled.ToString(format, CultureInfo.InvariantCulture),
+            displayUnit,
+            scaled,
+            state)
+        {
+            Provenance = ControlRoomInstrumentProvenance.Measured,
+            Quality = signal.Quality == SignalQuality.Suspect || signal.OutOfMeasurementRange
+                ? ControlRoomInstrumentQuality.Suspect
+                : ControlRoomInstrumentQuality.Good,
+        };
+    }
+
     private static ControlRoomValueSnapshot ProjectMeasuredSource(
         MeasuredSignalFrame frame,
         string sourceId,
@@ -765,15 +884,98 @@ public static class ControlRoomSnapshotProjector
             ? value.Value
             : null;
 
-    private static ControlRoomInstrumentScaleSnapshot BuildSteamDrumLevelScale(IntegratedAutomaticOperationSnapshot snapshot)
+    private static ControlRoomInstrumentScaleSnapshot BuildSteamDrumLevelScale(
+        IntegratedAutomaticOperationSnapshot snapshot,
+        string drumId)
     {
-        var levelLoop = snapshot.Control.ProtectedControl.TurbineSecondary.Loops
+        var protectedControl = snapshot.Control.ProtectedControl;
+        var instrumentation = protectedControl.Protection.Definition.Instrumentation;
+        var sourceId = $"steam-drum/{drumId}/level";
+
+        var alarmThresholds = snapshot.Control.Alarms.Definition.Alarms
+            .Select(static alarm => (Alarm: alarm, Condition: alarm.Condition as MeasuredAlarmConditionDefinition))
+            .Where(static pair => pair.Condition is not null)
+            .Where(pair => string.Equals(
+                instrumentation.GetChannel(pair.Condition!.MeasurementChannelId).SourceId,
+                sourceId,
+                StringComparison.Ordinal))
+            .Select(pair => (
+                Threshold: pair.Condition!.Threshold * 100d,
+                Comparison: pair.Condition.Comparison,
+                Severity: pair.Alarm.Severity,
+                Title: pair.Alarm.Title))
+            .ToArray();
+
+        var protectionThresholds = protectedControl.Protection.Definition.TripFunctions
+            .Where(function => string.Equals(
+                instrumentation.GetChannel(function.MeasurementChannelId).SourceId,
+                sourceId,
+                StringComparison.Ordinal))
+            .Select(function => (
+                Threshold: function.TripThreshold * 100d,
+                Comparison: function.Comparison,
+                Label: function.Id))
+            .ToArray();
+
+        var bands = new List<ControlRoomInstrumentBandSnapshot>();
+        foreach (var alarm in alarmThresholds)
+        {
+            if (alarm.Comparison == AlarmComparison.Low && alarm.Threshold > 0d)
+            {
+                var nextLimit = protectionThresholds
+                    .Where(item => item.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.Low
+                        && item.Threshold < alarm.Threshold)
+                    .Select(static item => item.Threshold)
+                    .DefaultIfEmpty(0d)
+                    .Max();
+                if (alarm.Threshold > nextLimit)
+                {
+                    bands.Add(new ControlRoomInstrumentBandSnapshot(
+                        nextLimit,
+                        Math.Min(100d, alarm.Threshold),
+                        alarm.Severity == AlarmSeverity.Trip
+                            ? ControlRoomInstrumentBandKind.Alarm
+                            : ControlRoomInstrumentBandKind.Warning,
+                        alarm.Title.ToUpperInvariant()));
+                }
+            }
+            else if (alarm.Comparison == AlarmComparison.High && alarm.Threshold < 100d)
+            {
+                var nextLimit = protectionThresholds
+                    .Where(item => item.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.High
+                        && item.Threshold > alarm.Threshold)
+                    .Select(static item => item.Threshold)
+                    .DefaultIfEmpty(100d)
+                    .Min();
+                if (nextLimit > alarm.Threshold)
+                {
+                    bands.Add(new ControlRoomInstrumentBandSnapshot(
+                        Math.Max(0d, alarm.Threshold),
+                        Math.Min(100d, nextLimit),
+                        alarm.Severity == AlarmSeverity.Trip
+                            ? ControlRoomInstrumentBandKind.Alarm
+                            : ControlRoomInstrumentBandKind.Warning,
+                        alarm.Title.ToUpperInvariant()));
+                }
+            }
+        }
+
+        var limits = protectionThresholds.Select(item => new ControlRoomProtectionLimitSnapshot(
+            item.Threshold,
+            item.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.High
+                ? ControlRoomLimitDirection.High
+                : ControlRoomLimitDirection.Low,
+            item.Label.ToUpperInvariant())).ToArray();
+
+        var levelLoop = protectedControl.TurbineSecondary.Loops
             .FirstOrDefault(static loop => loop.Kind == NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineSecondaryControlLoopKind.SteamDrumLevelFeedwater);
         double? setpointPercent = levelLoop is null ? null : levelLoop.Setpoint * 100d;
         return new ControlRoomInstrumentScaleSnapshot(
             0d,
             100d,
-            setpoint: WithinScale(setpointPercent, 0d, 100d));
+            bands,
+            setpoint: WithinScale(setpointPercent, 0d, 100d),
+            protectionLimits: limits);
     }
 
     private static ControlRoomInstrumentScaleSnapshot BuildTurbineSpeedScale(

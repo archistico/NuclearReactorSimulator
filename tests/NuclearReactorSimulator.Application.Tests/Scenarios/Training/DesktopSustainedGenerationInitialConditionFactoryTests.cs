@@ -1,8 +1,13 @@
 using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Training;
+using NuclearReactorSimulator.Domain.Physics.Control.Alarms;
 using NuclearReactorSimulator.Domain.Physics.Control.Protection;
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
+using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Condenser;
+using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
 using NuclearReactorSimulator.Simulation.Physics.Control.Protection;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
 using Xunit;
@@ -27,16 +32,31 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         var legacyStage = Assert.Single(legacyEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
         Assert.False(legacyStage.ExpansionResistance.HasValue);
         Assert.Null(legacyStage.ThermodynamicWork);
+        Assert.Equal(TurbineAdmissionPhasePolicy.LegacyUnrestricted, legacyStage.AdmissionPhasePolicy);
         var legacyDrum = Assert.Single(legacyEngine.CurrentState.PlantDefinition
             .TurbineExpansionSystem.MainSteamNetwork.PrimaryCircuit.SteamDrumSystem.Drums);
         Assert.Equal(SteamDrumLiquidRecirculationMode.LegacyReturnSplit, legacyDrum.LiquidRecirculationMode);
+        Assert.Null(legacyDrum.SteamSource);
+        Assert.Empty(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.HeatTransfers);
         var legacyCondenser = Assert.Single(legacyEngine.CurrentState.PlantDefinition
             .CondensateFeedwaterSystem.CondenserSystem.Condensers);
         Assert.False(legacyCondenser.OverallHeatTransferConductance.HasValue);
+        Assert.Equal(CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy, legacyCondenser.CondensateEnergyMode);
+        var legacyCoolingDefinition = Assert.Single(legacyEngine.CurrentState.PlantDefinition
+            .CondensateFeedwaterSystem.CondenserSystem.CoolingBoundaries);
+        Assert.Null(legacyCoolingDefinition.MaximumInstalledHeatRejectionPower);
         var legacyGeneratorDefinition = Assert.Single(legacyEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
         Assert.Null(legacyGeneratorDefinition.GridCoupling);
         Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
         Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
+        Assert.Equal(
+            100_000d,
+            legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPipe("channel").Resistance.PascalSecondsSquaredPerKilogramSquared,
+            12);
+        Assert.Equal(
+            100_000_000d,
+            legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("pump").InternalResistance.PascalSecondsSquaredPerKilogramSquared,
+            12);
         Assert.All(
             legacyEngine.CurrentState.TurbineSecondaryControlState.Definition.ActuatorSystem.Actuators
                 .Where(static actuator => actuator.TargetKind is
@@ -46,6 +66,13 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Null(legacyEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
+        var currentDrumInventory = currentEngine.CurrentState.PlantState.PlantState.GetFluidNode("drum");
+        Assert.Equal(FluidPhase.SaturatedMixture, currentDrumInventory.Phase);
+        Assert.NotNull(currentDrumInventory.VaporQuality);
+        Assert.InRange(
+            currentEngine.CurrentState.MeasuredSignals.GetSignal("level").EngineeringValue ?? double.NaN,
+            0.49d,
+            0.51d);
         var stageDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
         Assert.True(stageDefinition.ExpansionResistance.HasValue);
         Assert.Equal(
@@ -56,9 +83,32 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Equal(2.1d, thermodynamicWork.VaporSpecificHeatAtConstantPressure.KilojoulesPerKilogramKelvin, 12);
         Assert.Equal(1.3d, thermodynamicWork.HeatCapacityRatio, 12);
         Assert.Equal(0.8d, thermodynamicWork.MaximumInletInternalEnergyExtractionFraction, 12);
+        Assert.Equal(TurbineAdmissionPhasePolicy.VaporMassFractionLimited, stageDefinition.AdmissionPhasePolicy);
         var currentDrum = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .TurbineExpansionSystem.MainSteamNetwork.PrimaryCircuit.SteamDrumSystem.Drums);
         Assert.Equal(SteamDrumLiquidRecirculationMode.CirculationDemandBalanced, currentDrum.LiquidRecirculationMode);
+        var currentSteamSource = Assert.IsType<SteamDrumSteamSourceDefinition>(currentDrum.SteamSource);
+        Assert.Equal(
+            100d,
+            currentSteamSource.HydraulicResistance.PascalSecondsSquaredPerKilogramSquared,
+            12);
+        var currentCoreThermalLinks = currentEngine.CurrentState.PlantDefinition.PlantDefinition.HeatTransfers;
+        Assert.Collection(
+            currentCoreThermalLinks,
+            link =>
+            {
+                Assert.Equal("fuel-to-coolant", link.Id);
+                Assert.Equal("fuel", link.FromDomainId);
+                Assert.Equal("outlet", link.ToDomainId);
+                Assert.Equal(1d, link.Conductance.MegawattsPerKelvin, 12);
+            },
+            link =>
+            {
+                Assert.Equal("structure-to-coolant", link.Id);
+                Assert.Equal("structure", link.FromDomainId);
+                Assert.Equal("outlet", link.ToDomainId);
+                Assert.Equal(0.5d, link.Conductance.MegawattsPerKelvin, 12);
+            });
         var currentCondenserDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .CondensateFeedwaterSystem.CondenserSystem.Condensers);
         Assert.True(currentCondenserDefinition.OverallHeatTransferConductance.HasValue);
@@ -67,6 +117,12 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             currentCondenserDefinition.OverallHeatTransferConductance.GetValueOrDefault().MegawattsPerKelvin,
             12);
         Assert.Equal(20d, currentCondenserDefinition.MaximumCondensationMassFlowRate.KilogramsPerSecond, 12);
+        var currentCoolingDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition
+            .CondensateFeedwaterSystem.CondenserSystem.CoolingBoundaries);
+        Assert.Equal(40d, currentCoolingDefinition.MaximumInstalledHeatRejectionPower.GetValueOrDefault().Megawatts, 12);
+        Assert.Equal(
+            CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure,
+            currentCondenserDefinition.CondensateEnergyMode);
         var currentCoolingBoundary = Assert.Single(
             currentEngine.PersistentInputs
                 .PlantInputs
@@ -82,6 +138,18 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Equal(10d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
         Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
         Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
+        Assert.Equal(
+            25d,
+            currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPipe("channel").Resistance.PascalSecondsSquaredPerKilogramSquared,
+            12);
+        Assert.Equal(
+            25d,
+            currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPipe("return").Resistance.PascalSecondsSquaredPerKilogramSquared,
+            12);
+        Assert.Equal(
+            25d,
+            currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("pump").InternalResistance.PascalSecondsSquaredPerKilogramSquared,
+            12);
         var currentActuators = currentEngine.CurrentState.TurbineSecondaryControlState.Definition.ActuatorSystem;
         Assert.Equal(
             0.5d,
@@ -105,8 +173,39 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Equal("generator", currentGovernorDroop.GeneratorId);
         Assert.Equal(150d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
 
+        var currentInstrumentation = currentEngine.CurrentState.InstrumentationState.Definition;
+        Assert.Equal(
+            TimeSpan.FromSeconds(0.5d),
+            currentInstrumentation.GetChannel("primary-display-loop-loop-flow").LagTimeConstant);
+        Assert.Equal(
+            TimeSpan.FromSeconds(0.5d),
+            currentInstrumentation.GetChannel("primary-display-pump-pump-flow").LagTimeConstant);
+        Assert.Equal(
+            TimeSpan.FromSeconds(0.5d),
+            currentInstrumentation.GetChannel("primary-display-branch-loop-group-channel-flow").LagTimeConstant);
+        Assert.Equal(
+            TimeSpan.FromSeconds(0.5d),
+            currentInstrumentation.GetChannel("primary-display-branch-loop-group-return-flow").LagTimeConstant);
+        Assert.Equal(
+            TimeSpan.FromSeconds(0.5d),
+            currentInstrumentation.GetChannel("primary-display-drum-drum-a-inlet-flow").LagTimeConstant);
+        Assert.Equal(
+            TimeSpan.FromSeconds(0.5d),
+            currentInstrumentation.GetChannel("primary-display-drum-drum-a-recirculation-flow").LagTimeConstant);
+
         var coordinator = new ControlRoomRuntimeCoordinator(currentEngine);
         var snapshot = coordinator.Current;
+        var primaryLoop = Assert.Single(snapshot.PrimaryCircuit.Loops);
+        var primaryPump = Assert.Single(primaryLoop.Pumps);
+        var primaryBranch = Assert.Single(primaryLoop.Branches);
+        var primaryDrum = Assert.Single(snapshot.PrimaryCircuit.SteamDrums);
+        Assert.Equal(ControlRoomInstrumentProvenance.Measured, primaryLoop.TotalPumpFlow.Provenance);
+        Assert.Equal(ControlRoomInstrumentProvenance.Measured, primaryPump.MassFlow.Provenance);
+        Assert.Equal(ControlRoomInstrumentProvenance.Measured, primaryBranch.ChannelFlow.Provenance);
+        Assert.Equal(ControlRoomInstrumentProvenance.Measured, primaryBranch.ReturnFlow.Provenance);
+        Assert.Equal(ControlRoomInstrumentProvenance.Measured, primaryDrum.IncomingReturnFlow.Provenance);
+        Assert.Equal(ControlRoomInstrumentProvenance.Measured, primaryDrum.RecirculationFlow.Provenance);
+
         var generator = Assert.Single(snapshot.Electrical.Generators);
         var steamLine = Assert.Single(snapshot.TurbineSecondary.SteamLines);
         var rotor = Assert.Single(snapshot.TurbineSecondary.Rotors);
@@ -126,6 +225,13 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.InRange(rotor.ShaftPower.NumericValue ?? double.NaN, 4.5d, 20d);
         Assert.InRange(snapshot.TurbineSecondary.EffectiveTurbineSteamFlow.NumericValue ?? double.NaN, 12.5d, 30d);
         Assert.True((condenser.CondensationFlow.NumericValue ?? 0d) > 10d);
+        Assert.True((condenser.CondensateSpecificInternalEnergy.NumericValue ?? double.NaN) >= 0d);
+        Assert.True((condenser.SpecificCondensationEnergyDrop.NumericValue ?? double.NaN) > 0d);
+        Assert.False(string.IsNullOrWhiteSpace(condenser.CondensationLimitStatus));
+        Assert.Equal(40d, condenser.InstalledCoolingCapacity.NumericValue ?? double.NaN, 9);
+        Assert.Equal(40d, condenser.AvailableCoolingCapacity.NumericValue ?? double.NaN, 9);
+        Assert.True((condenser.SurfaceHeatTransferLimit.NumericValue ?? 0d) > 0d);
+        Assert.False(string.IsNullOrWhiteSpace(condenser.HeatRejectionLimitStatus));
         Assert.True((feedwater.CondensatePump.MassFlow.NumericValue ?? 0d) > 10d);
         Assert.True((feedwater.FeedwaterPump.MassFlow.NumericValue ?? 0d) > 10d);
     }
@@ -185,6 +291,8 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Throws<KeyNotFoundException>(() => legacyProtection.GetTripFunction("turbine-overspeed"));
         Assert.Throws<KeyNotFoundException>(() => legacyProtection.GetTripFunction("condenser-high-backpressure"));
         Assert.Throws<KeyNotFoundException>(() => legacyProtection.GetTripFunction("generator-overfrequency"));
+        Assert.Throws<KeyNotFoundException>(() => legacyProtection.GetTripFunction("steam-drum-low-low-level"));
+        Assert.Throws<KeyNotFoundException>(() => legacyEngine.CurrentState.AlarmState.Definition.GetAlarm("steam-drum-level-low"));
 
         var expectedMeasuredChannelIds = currentEngine.CurrentState.InstrumentationDefinition.Channels
             .Select(static channel => channel.Id)
@@ -209,7 +317,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.InRange(expectedGeneratorFrequencyHertz, 49.9d, 50.1d);
 
         var currentProtection = currentEngine.CurrentState.ProtectionState.Definition;
-        Assert.Equal(4, currentProtection.TripFunctions.Count);
+        Assert.Equal(5, currentProtection.TripFunctions.Count);
 
         AssertProtection(
             currentProtection.GetTripFunction("turbine-overspeed"),
@@ -232,6 +340,21 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             53d,
             51.5d,
             ProtectionAction.GeneratorTrip);
+        AssertProtection(
+            currentProtection.GetTripFunction("steam-drum-low-low-level"),
+            "level",
+            ProtectionComparison.Low,
+            0.10d,
+            0.20d,
+            ProtectionAction.ReactorScram | ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip);
+
+        var lowLevelAlarm = currentEngine.CurrentState.AlarmState.Definition.GetAlarm("steam-drum-level-low");
+        var lowLevelCondition = Assert.IsType<MeasuredAlarmConditionDefinition>(lowLevelAlarm.Condition);
+        Assert.Equal(AlarmSeverity.Warning, lowLevelAlarm.Severity);
+        Assert.Equal(AlarmLatchingMode.NonLatching, lowLevelAlarm.LatchingMode);
+        Assert.Equal("level", lowLevelCondition.MeasurementChannelId);
+        Assert.Equal(AlarmComparison.Low, lowLevelCondition.Comparison);
+        Assert.Equal(0.25d, lowLevelCondition.Threshold, 12);
 
         Assert.False(new ControlRoomRuntimeCoordinator(currentEngine).Current.AnyTripActive);
     }
@@ -261,6 +384,11 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
                 "generator-frequency",
                 54d,
                 ProtectionAction.GeneratorTrip),
+            new ProtectionTriggerCase(
+                "steam-drum-low-low-level",
+                "level",
+                0.05d,
+                ProtectionAction.ReactorScram | ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip),
         };
 
         foreach (var testCase in cases)

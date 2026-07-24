@@ -98,7 +98,8 @@ public sealed class ControlRoomComputerControlXamlContractTests
 
         Assert.Contains(
             document.Descendants(),
-            static element => element.Name.LocalName == "TextBlock" && (string?)element.Attribute("FontFamily") == "Consolas");
+            static element => element.Name.LocalName == "TextBlock"
+                && (string?)element.Attribute("FontFamily") == "{StaticResource InterfaceFont}");
         Assert.DoesNotContain(
             document.Descendants(),
             static element => element.Name.LocalName == "ControlRoomPushButton");

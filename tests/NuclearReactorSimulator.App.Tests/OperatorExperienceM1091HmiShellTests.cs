@@ -6,16 +6,16 @@ namespace NuclearReactorSimulator.App.Tests.Views;
 public sealed class OperatorExperienceM1091HmiShellTests
 {
     [Fact]
-    public void Shell_UsesSituationStripCompactNavigationCentralWorkspaceInspectorAndAlarmStrip()
+    public void Shell_UsesSituationStripPersistentTopAlarmZoneCompactNavigationWorkspaceAndInspector()
     {
         var document = LoadMainWindow();
         var rootGrid = Assert.Single(document.Root!.Elements(), static element => element.Name.LocalName == "Grid");
-        Assert.Equal("Auto,*,Auto", (string?)rootGrid.Attribute("RowDefinitions"));
+        Assert.Equal("Auto,*", (string?)rootGrid.Attribute("RowDefinitions"));
 
         var bodyGrid = Assert.Single(
             rootGrid.Elements(),
             static element => element.Name.LocalName == "Grid" && (string?)element.Attribute("Grid.Row") == "1");
-        Assert.Equal("188,*,300", (string?)bodyGrid.Attribute("ColumnDefinitions"));
+        Assert.Equal("172,*,260", (string?)bodyGrid.Attribute("ColumnDefinitions"));
 
         Assert.Contains(
             bodyGrid.Descendants(),
@@ -24,12 +24,14 @@ public sealed class OperatorExperienceM1091HmiShellTests
             bodyGrid.Descendants(),
             static element => element.Name.LocalName == "TextBlock" && (string?)element.Attribute("Text") == "SYSTEMS");
 
-        var alarmStrip = Assert.Single(
-            rootGrid.Elements(),
-            static element => element.Name.LocalName == "Border" && (string?)element.Attribute("Grid.Row") == "2");
-        Assert.Contains(
-            alarmStrip.Descendants(),
-            static element => (string?)element.Attribute("Text") == "{Binding LatestEventText}");
+        var alarmZone = Assert.Single(
+            rootGrid.Descendants(),
+            static element => element.Name.LocalName == "ControlRoomAlarmBanner");
+        Assert.Equal("2", (string?)alarmZone.Attribute("Grid.Row"));
+        Assert.Equal("{Binding AlarmEvents}", (string?)alarmZone.Attribute("Snapshot"));
+        Assert.Equal(
+            "{Binding OpenOperatorComputerAlarmsPageCommand}",
+            (string?)alarmZone.Attribute("OpenAlarmsCommand"));
     }
 
     [Fact]

@@ -19,12 +19,14 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `M10_9_4_1_A_EXTENDED_AUDIT.md` — executed non-green extended audit and exact ~70-second trip evidence.
 - `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` — adjudication of the two external LLM reviews and accepted planning decisions.
 - `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` — revised A.1–I evidence/physics/numerical hardening sequence.
-- `REFERENCE_PLANT_SCALE_CONTRACT.md` — open nominal scale/inertia/droop/capacity engineering decision.
+- `REFERENCE_PLANT_SCALE_CONTRACT.md` — provisional reduced-scale direction and coordinated migration gate for nameplate/inertia/droop/coupling.
+- `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible current-v2 rotor energy, inertia, droop and synchronizing-authority calculations.
 - `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
 - `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
 - `ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md` — gauge semantics, provenance/quality, off-scale and logical-step trend rules.
 - `milestones/M10.9.1.md` — validated HMI information-architecture/visual-language baseline.
 - `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md` — approved M10.9.1–M10.9.8 operator-experience, schematics, consequence and challenge architecture.
+- `HMI_VISUAL_DESIGN_SYSTEM.md` — normative visual design system for shell, alarms, schematics, controls, typography, spacing and UI acceptance.
 - `milestones/M10.8.md` / `OPERATOR_COMPUTER_INTEGRATED_UI.md` — validated integrated operator-computer baseline retained beneath the refactor.
 
 ## Decision records
@@ -48,10 +50,10 @@ At this documentation/planning checkpoint:
 - M7, M8 and M9 gates are complete / validated.
 - M10.1–M10.9.4 are validated.
 - Official milestone baseline: M10.9.4.
-- M10.9.4.1-A Hotfix 1 compiles and the ordinary suite passes.
-- The explicit 300-second healthy-reference audit fails near 70 simulated seconds with latched turbine/generator trip.
-- M10.9.4.1-A is not validated; the failure is preserved as evidence.
-- Next checkpoint: M10.9.4.1-A.1 Audit Evidence Completion, still without production-physics changes.
+- The M10.9.4.1 extended audit exposed a long-horizon current-v2 operating-seed imbalance; the root cause has been corrected without changing historical v1 seeds or protection thresholds.
+- User-validated local evidence for the corrected A.3 checkpoint: exact 300-second sustained journey passed in 2m 07s, explicit 60-second synchronization journey passed, build 0 warnings / 0 errors, ordinary suite 895 passed / 11 explicit skipped / 0 failed.
+- Active development candidate: M10.9.4.1-B.1 Steam-Drum Liquid Inventory Closure.
+- B.1 also clarifies operator feedback: manual-command penalties only, visible SPEED/LOAD references, ±10 rpm and ±5 MWe accepted-command increments.
 - M10 closes after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
@@ -85,3 +87,9 @@ See `PROJECT_HANDOFF.md` for the full authoritative statement.
 - `SUPERVISORY_AUTOMATIC_OPERATION.md` — M10.6 M5-owned bounded supervisory objectives, measured-signal degradation, protection priority and bumpless takeover.
 
 - `OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md` — M10.7 replay-backed session/checkpoint/save/load workspace.
+
+
+- `usermanual/MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md` — manuale utente educativo e operativo completo.
+- `M10_9_4_1_B1_VALIDATION_CHECKLIST.md` — gate di validazione mirato per inventario liquido del corpo cilindrico, feedback SPEED/LOAD e regressione penalità manuali.
+- `M10_9_4_1_B2_VALIDATION_CHECKLIST.md` — gate di validazione della sorgente corpo cilindrico→linea vapore basata su pressione, energia e inventario.
+- `M10_9_4_1_B3_VALIDATION_CHECKLIST.md` — gate di validazione per diagnostica di basso inventario, allarme livello basso e protezione low-low current-v2.

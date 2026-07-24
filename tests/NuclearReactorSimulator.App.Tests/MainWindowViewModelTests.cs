@@ -95,6 +95,35 @@ public sealed class MainWindowViewModelTests
     }
 
     [Fact]
+    public void SynchronizationPresentation_ExplainsWhyWaitingAtZeroSlipCannotCorrectPhase()
+    {
+        var generator = new GeneratorPresentationSnapshot(
+            "generator",
+            "rotor",
+            "breaker",
+            ControlRoomValueSnapshot.Unavailable("Hz"),
+            ControlRoomValueSnapshot.Unavailable("MWe"),
+            ControlRoomValueSnapshot.Unavailable("kV"),
+            ControlRoomValueSnapshot.Unavailable("kV"),
+            ControlRoomValueSnapshot.Unavailable("°"),
+            ControlRoomValueSnapshot.Unavailable("MW"),
+            ControlRoomValueSnapshot.Unavailable("MW"),
+            SynchronizationConditionsSatisfied: false,
+            BreakerClosed: false,
+            CloseCommandAccepted: false,
+            CloseCommandRejected: false,
+            CloseCheckFrequencyDifferenceHz: 0.005d,
+            MaximumSynchronizationFrequencyDifferenceHz: 0.2d,
+            CloseCheckPhaseDifferenceDegrees: 30d,
+            MaximumSynchronizationPhaseDifferenceDegrees: 10d,
+            CloseCheckVoltageDifferenceKilovolts: 0d,
+            MaximumSynchronizationVoltageDifferenceKilovolts: 10d);
+
+        Assert.Contains("Waiting alone will not re-synchronize", generator.DisplaySynchronizationText, StringComparison.Ordinal);
+        Assert.Contains("SPEED RAISE/LOWER", generator.DisplaySynchronizationText, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public void BreakerButtons_ReflectActualPersistentBreakerState()
     {
         var closed = CreateViewModel(CreateSnapshot(synchronizationConditionsSatisfied: false, breakerClosed: true));

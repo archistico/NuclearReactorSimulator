@@ -1,5 +1,17 @@
+# Current continuation override — M10.9.4.1-D.2
+
+D.2 is the active **audit-only** candidate, cumulative on D.1 (local validation still pending). No production physics changes in D.2. The current-v2 28% control-valve seed has materially more theoretical authority than the older 46% audit point, but authority compresses strongly above ~60% opening. Run `scripts\run-turbine-admission-authority-audit.cmd` and review control position / inlet pressure / commanded-effective flow / shaft power before choosing any resistance, effective-area or Stodola correction.
+
+See `TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`, ADR 0100 and `M10_9_4_1_D2_VALIDATION_CHECKLIST.md`.
+
 # Project Handoff — Nuclear Reactor Simulator
 
+
+## Previous Phase-D step — M10.9.4.1-D.1 (implemented; local validation pending)
+
+The user supplied `NuclearReactorSimulator_M10.9.4.1_nuova.zip` as the authoritative continuation source and requested development to resume at Phase D. D.1 adds explicit turbine admission phase ownership: current-v2 sustained profiles use `VaporMassFractionLimited`, legacy definitions remain `LegacyUnrestricted`, pure liquid cannot cross the stage as a zero-work bypass, and wet-steam quality is not applied twice to total shaft work. No valve/stage resistance or governor tuning is changed yet.
+
+D.2 is now implemented as the active audit-only candidate. Run its dedicated authority audit before selecting any hydraulic/control-law correction. The historical 300-second wall-clock performance-budget observation remains tracked for the later performance/numerical gate.
 This is the **authoritative continuity checkpoint** for restarting the project in a new conversation.
 
 ## 1. Exact current truth
@@ -17,13 +29,22 @@ M9 gate — COMPLETE / VALIDATED
         ↓
 M10.1–M10.9.4 — VALIDATED
         ↓
-M10.9.4.1-A Extended Operating-Envelope Audit — EXECUTED / FAILURE FOUND
+M10.9.4.1-A extended audit — FAILURE FOUND, ROOT CAUSE RESOLVED IN CURRENT-V2 SEED
         ↓
-M10.9.4.1-A.1 Audit Evidence Completion — IMPLEMENTED IN CANDIDATE
+M10.9.4.1-A.3 corrected operating seed — USER-VALIDATED LOCAL CHECKPOINT
         ↓
-M10.9.4.1-A.2 Condenser Capacity Headroom — CANDIDATE / VALIDATION PENDING
+M10.9.4.1-B.1 steam-drum liquid-inventory closure — USER VALIDATED LOCALLY
         ↓
-M10.9.4.1-B through I Operational Envelope & Numerical Hardening
+M10.9.4.1-B.2 drum-to-main-steam source closure — USER VALIDATED LOCALLY
+
+M10.9.4.1-B.3 low-inventory diagnostics / low-low drum-level protection — USER VALIDATED LOCALLY
+        ↓
+M10.9.4.1-C.1 condenser phase-change energy closure — USER VALIDATED LOCALLY
+        ↓
+M10.9.4.1-C.2 explicit condenser installed-capacity ownership — LOCALLY VALIDATED
+M10.9.4.1-C.2 Hotfix 2 synchronization-seed drum-inventory closure — ACTIVE CANDIDATE
+        ↓
+M10.9.4.1-C.2 through I Operational Envelope & Numerical Hardening
         ↓
 M10.9.5 Contextual Command Consequence Model
 M10.9.6 Operational Challenge & Energy-Demand Framework
@@ -33,21 +54,39 @@ M10.9.8 Integrated Human-Automation-HMI Validation Gate
 M10 COMPLETE
 ```
 
-### Current audit result
+### Current A-resolution / B.1–B.3 + C.1–C.2 locally validated / C.2 Hotfix 2 candidate
 
-**M10.9.4.1-A — Extended Operating-Envelope Audit** has been executed on the validated Hotfix 23 source baseline. Hotfix 1 fixed only a test-diagnostic compile error. The solution compiles and the ordinary suite passes locally, but the explicit extended audit is not green.
+The earlier 300-second failure near 70 simulated seconds is now understood as an upstream current-v2 seed imbalance, not as a thermodynamic-resolver defect. Only the direct 20% coolant deposition share reached the coolant; the explicit fuel/structure inventories retained the other 80% without a return path, primary circulation was only about 0.07 kg/s, and the drum continued exporting about 13 kg/s of steam until internal energy drifted into the high-backpressure trip.
 
-The intended 300-second healthy 5 MWe journey failed at checkpoint 7/30, logical step 7000 (~70 simulated seconds), with `TurbineTrip | GeneratorTrip` latched. Conservation residuals remained effectively zero, while sampled drum pressure rose to 7.821 MPa, drum level reached 100%, condenser pressure reached 28.593 kPa and sampled feedwater flow reached 0 kg/s.
+The corrected current-v2 seed now:
 
-The action signature now identifies the initiating function: overspeed is excluded by the observed 3000.241 rpm maximum, overfrequency is excluded by 50.004 Hz, and only `condenser-high-backpressure` produces the observed combined `TurbineTrip | GeneratorTrip`. The 28.593 kPa ten-second sample therefore brackets an unobserved crossing of the unchanged 30 kPa threshold.
+- returns fuel/structure energy conservatively to the coolant through canonical thermal links;
+- uses matched low-resistance current-v2 primary circulation;
+- aligns current-v2 steam-line initial conditions and control-valve bias to the sustained operating point;
+- preserves historical v1 seeds and all protection thresholds.
 
-M10.9.4.1-A.2 Hotfix 1 is the current candidate. It samples once per simulated second and reports the exact latched function plus condenser limits and exhaust inventory. It preserves 20 °C cooling water and `UA = 1.225 MW/K`, so the 40 °C design point remains 24.5 MW, but raises the installed current-v2 cooling ceiling to 40 MW and the maximum condensation-flow ceiling to 20 kg/s. No solver equation, threshold, timestep or legacy seed changes.
+User validation evidence:
 
-**Next:** local build, ordinary suite, both 60-second journeys and the complete `OperationalEnvelopeAudit` gate on A.2 Hotfix 1. See `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, ADR 0091 and `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`.
+- exact 300-second sustained 5 MWe journey: **PASSED in 2m 07s**;
+- explicit 60-second synchronization journey: **PASSED**;
+- build: **0 warnings / 0 errors**;
+- ordinary suite: **895 passed / 11 explicit skipped / 0 failed**.
 
-### Scope sequence after Hotfix 23
+The earlier A.2 condenser-capacity headroom remains in current-v2 but is no longer treated as the root-cause correction; its independent necessity is deferred to Phase C evidence. A.3 reference-scale evidence remains an open design contract.
 
-M10.9.4.1 must finish before M10.9.5 so consequence chains and later challenge/scoring logic are built over a stable canonical operating envelope. Phase A found the failure; A.1 adds direct evidence; A.2 tests one isolated current-v2 condenser-capacity correction before the broader physical/numerical phases B–I.
+**M10.9.4.1-B.1 is user-validated locally.** It inventory-limits current-v2 demand-balanced liquid recirculation and forbids fabricated liquid recirculation from a fully vaporized drum. It also clarifies the HMI/game contract: penalties apply to accepted manual operator commands, `SPEED ±` changes the speed reference by 10 rpm per accepted press, and `LOAD ±` changes requested load by 5 MWe per accepted press with explicit reference indicators.
+
+**M10.9.4.1-B.2 is user-validated locally.** It removes the temporary demand-following drum→steam supplement from `MainSteamNetworkSolver`. Current-v2 explicitly owns a drum steam-source definition: available steam comes from positive return-flow energy surplus plus committed separable-vapor inventory, while actual transfer is independently limited by forward drum→steam-outlet pressure head. The transfer remains internally mass/energy conservative and null-source historical/v1 behavior remains explicit.
+
+**M10.9.4.1-B.3 is locally validated.** It does not change B.1/B.2 source physics. It adds read-only committed-liquid/separation diagnostics, a 25% measured low-level warning, and a distinct 10% low-low protection with 20% reset threshold and ReactorScram + TurbineTrip + GeneratorTrip actions for current-v2 enhanced-protection profiles only.
+
+**M10.9.4.1-C.1 is locally user-validated.** The two sustained current-v2 condenser definitions use pressure-resolved saturated-liquid condensate internal energy so condensation can change hotwell energy physically within the existing internal-energy control-volume convention. Legacy definitions preserve their historical rule. C.1 also exposes independent condensation/cooling limit status and margins.
+
+**M10.9.4.1-C.2 is locally validated. Current development candidate: C.2 Hotfix 1.** The user observed strong 10 ms step-to-step variation in raw current-v2 primary flow diagnostics and difficulty understanding why a generator did not become synchronizable again after opening the breaker. Hotfix 1 does not retune the validated primary hydraulics: it adds 0.5 s deterministic presentation instrumentation for operator-facing primary flows and makes zero-slip/out-of-phase re-synchronization guidance explicit. The underlying raw hydraulic chatter remains a numerical-hardening item for the later timestep/stiffness decision gate.
+
+**Superseded continuation note:** the earlier C.2 Hotfix 2 package reached the 300-second journey's final performance assertion without an earlier physics failure but exceeded the then-current wall-clock budget on one workstation. The user has since supplied a consolidated `M10.9.4.1_nuova` source tree and explicitly resumed development at Phase D. The wall-clock observation remains tracked for the performance/numerical gate; D.1 is implemented with local validation pending; D.2 authority evidence is now the active candidate.
+
+**Validation order:** `docs/M10_9_4_1_C2_VALIDATION_CHECKLIST.md`, then the ordinary suite and explicit 60/300-second gates required by that checklist.
 
 ## 2. Operator-experience objective
 
@@ -251,3 +290,8 @@ The structural audit and ordered remediation plan are authoritative in `docs/STR
 Hotfix 14 compiled and the complete ordinary suite passed. The explicit long gameplay journeys then failed in the canonical `drum` node with specific volume about 0.001307 m^3/kg. The root cause is another algebraic inventory ratchet: the physical return pipe adds `F_return`, historical separator source terms remove exactly `F_return`, and canonical feedwater adds `F_feedwater`, leaving `dm_drum/dt = F_feedwater >= 0`.
 
 Hotfix 15 introduces explicit `SteamDrumLiquidRecirculationMode`. Historical profiles remain `LegacyReturnSplit`; current v2 sustained-generation and synchronization profiles use `CirculationDemandBalanced`, where liquid recirculation follows positive committed MCP demand. The drum balance is therefore `F_return + F_feedwater - F_MCP - F_steam`, so inventory is no longer forced to increase by construction. See ADR 0082 and `STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`.
+
+
+## M10.9.4.1-C.2 authoritative continuation
+
+The user-supplied consolidated continuation base contains the accumulated Phase-B and Phase-C work, including explicit condenser installed-capacity ownership and the sustained synchronization-drum corrections. Development now resumes at Phase D. D.1 closes the turbine liquid/wet-steam admission-policy mismatch without retuning hydraulic authority. The earlier 300-second wall-clock budget observation remains a tracked performance item rather than being silently discarded.

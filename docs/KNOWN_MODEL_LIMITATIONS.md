@@ -12,23 +12,23 @@ The current seed is manually parameterized and deterministic, but the 300-second
 
 ### A2. Condenser limiter ownership and long-horizon headroom
 
-The condenser uses inventory, heat-transfer/cooling-capacity and maximum-flow bounds. A.2 adds one-second stage/actual/inventory/thermal/capacity/surface-limit and exhaust-mass evidence. The candidate also raises only current-v2 installed cooling capacity and maximum flow while preserving the initial `UA * ΔT` point. Full active-limiter margins and hotwell phase-change closure remain unresolved.
+The condenser uses inventory, heat-transfer and maximum-flow bounds. C.1 is locally green with pressure-resolved saturated-liquid condensate energy. C.2 now separates 40 MW **installed** cooling capacity from runtime **available** capacity and the `UA·ΔT` surface limit; 20 kg/s remains an independent maximum condensation-flow ceiling. These validated values are retained as explicit current-v2 design ceilings rather than operating-point tuning constants. Detailed circulating-water dynamics, non-condensables and the later system-wide enthalpy/flow-work migration remain unresolved.
 
 ### A3. Pressure outside the intended design envelope is not an explicit node diagnostic
 
 Compressed-liquid resolution may return finite pressures above the intended plant operating envelope. Mathematical resolvability and design-envelope validity are currently not separate snapshot semantics.
 
-### A4. Turbine admission phase policy is incomplete
+### A4. Turbine admission phase policy — D.1 CANDIDATE
 
-Current pressure-driven stage flow can remain positive for liquid or highly wet inlet states while current-v2 thermodynamic work can fall to zero. A shared admission-quality policy is not yet defined.
+The inherited model allowed pressure-driven stage flow to remain positive for liquid or highly wet inlet states while thermodynamic work could fall to zero. M10.9.4.1-D.1 introduces an explicit current-v2 vapor-mass-fraction-limited admission policy: liquid is blocked from stage transfer and wet admission transfers only the vapor fraction without applying quality twice to specific work. This remains candidate behavior until local build/journey validation passes. Detailed droplet transport, erosion and moisture-separation physics remain out of scope.
 
 ### A5. Generator/grid coupling is one-directional
 
 Negative electromagnetic power/motoring is not represented by the current clamp. Reverse-power and complete synchronous-restoring behavior therefore cannot yet be modeled faithfully.
 
-### A6. Drum low-inventory behavior is incomplete
+### A6. Drum low-inventory behavior is only partially closed
 
-Current recirculation demand, phase separation and low-liquid inventory require further closure. Low-drum-level protection is intentionally deferred until the physical owner is corrected.
+M10.9.4.1-B.1 inventory-limits current-v2 demand-balanced liquid recirculation and prevents a fully vaporized drum from fabricating a liquid recirculation source. M10.9.4.1-B.2, now locally validated, replaces the temporary demand-following drum-to-main-steam supplement with an explicit current-v2 pressure/energy/inventory-driven source. B.3 adds explicit committed-liquid/separation diagnostics plus measured low-level warning and low-low drum-level protection. General node design-envelope pressure diagnostics remain tracked separately under A3.
 
 ### A7. Advective energy uses specific internal energy
 
@@ -66,3 +66,10 @@ Versioned compatibility paths are isolated through optional definitions, but the
 ## Review rule
 
 Update this register whenever a limitation is corrected, superseded, accepted as deliberate scope or found to be an actual defect. The authoritative behavior remains the versioned code, ADRs and validated milestone records.
+
+
+## Current-v2 primary instantaneous hydraulic chatter
+
+The current-v2 sustained seed intentionally uses low primary hydraulic resistances to obtain the required circulation scale. With the current explicit 10 ms network integration and nearly incompressible liquid pressure response, raw algebraic pipe/pump flow diagnostics can alternate strongly from one solver step to the next even while long-horizon mass/energy balances and plant inventories remain bounded. This must not be interpreted as a real 100 Hz plant oscillation.
+
+C.2 Hotfix 1 adds a deterministic 0.5 s instrumentation lag for the operator-facing current-v2 primary flow readouts. This is a presentation/measurement treatment only: the raw solver chatter is still tracked as numerical-hardening debt and requires the later timestep/stiffness/semi-implicit decision gate before it can be considered physically resolved.

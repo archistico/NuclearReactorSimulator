@@ -11,7 +11,7 @@
     <Style Selector="Button.terminalPage">
       <Setter Property="MinHeight" Value="40" />
       <Setter Property="Padding" Value="8,7" />
-      <Setter Property="FontFamily" Value="Consolas" />
+      <Setter Property="FontFamily" Value="{StaticResource InterfaceFont}" />
       <Setter Property="FontSize" Value="10" />
       <Setter Property="FontWeight" Value="SemiBold" />
       <Setter Property="Cursor" Value="Hand" />
@@ -25,12 +25,12 @@
       <Setter Property="CornerRadius" Value="3" />
     </Style>
     <Style Selector="TextBlock.terminalCaption">
-      <Setter Property="FontFamily" Value="Consolas" />
+      <Setter Property="FontFamily" Value="{StaticResource InterfaceFont}" />
       <Setter Property="FontSize" Value="9" />
       <Setter Property="Foreground" Value="#6FC7D6" />
     </Style>
     <Style Selector="TextBlock.terminalValue">
-      <Setter Property="FontFamily" Value="Consolas" />
+      <Setter Property="FontFamily" Value="{StaticResource InterfaceFont}" />
       <Setter Property="FontSize" Value="12" />
       <Setter Property="Foreground" Value="#D7E7EA" />
     </Style>
@@ -42,12 +42,12 @@
         <Grid RowDefinitions="Auto,Auto" RowSpacing="12">
           <Grid ColumnDefinitions="*,Auto">
             <StackPanel Spacing="2">
-              <TextBlock FontFamily="Consolas" FontSize="11" Foreground="#6FC7D6" Text="NRS // OPERATOR COMPUTER" />
-              <TextBlock FontFamily="Consolas" FontSize="18" FontWeight="SemiBold" Foreground="#B9F2F7" Text="INTEGRATED OPERATOR COMPUTER" />
-              <TextBlock FontFamily="Consolas" FontSize="9" Foreground="#5E8791" Text="F1–F8 page access · TAB / SHIFT+TAB focus · ARROWS list navigation · ENTER execute" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="11" Foreground="#6FC7D6" Text="NRS // OPERATOR COMPUTER" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="18" FontWeight="SemiBold" Foreground="#B9F2F7" Text="INTEGRATED OPERATOR COMPUTER" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="9" Foreground="#5E8791" Text="F1–F8 page access · TAB / SHIFT+TAB focus · ARROWS list navigation · ENTER execute" />
             </StackPanel>
             <Border Grid.Column="1" Padding="10,5" Background="#102630" BorderBrush="#2B6170" BorderThickness="1" CornerRadius="3">
-              <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" Text="SYS ONLINE" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" Text="SYS ONLINE" />
             </Border>
           </Grid>
 
@@ -89,7 +89,7 @@
       </Border>
 
       <Border Grid.Row="1" Padding="10" Background="#081218" BorderBrush="#2B6170" BorderThickness="0,0,0,1">
-        <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="7">
+        <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="7">
           <Border Grid.Column="0" Classes="terminalMetric">
             <StackPanel Spacing="2">
               <TextBlock Classes="terminalCaption" Text="RUNTIME" />
@@ -98,23 +98,17 @@
           </Border>
           <Border Grid.Column="1" Classes="terminalMetric">
             <StackPanel Spacing="2">
-              <TextBlock Classes="terminalCaption" Text="LOGICAL STEP" />
-              <TextBlock Classes="terminalValue" Text="{Binding LogicalStepText}" />
-            </StackPanel>
-          </Border>
-          <Border Grid.Column="2" Classes="terminalMetric">
-            <StackPanel Spacing="2">
               <TextBlock Classes="terminalCaption" Text="ALARMS" />
               <TextBlock Classes="terminalValue" Text="{Binding AlarmStatusText}" TextTrimming="CharacterEllipsis" />
             </StackPanel>
           </Border>
-          <Border Grid.Column="3" Classes="terminalMetric">
+          <Border Grid.Column="2" Classes="terminalMetric">
             <StackPanel Spacing="2">
               <TextBlock Classes="terminalCaption" Text="SIGNALS" />
               <TextBlock Classes="terminalValue" Text="{Binding SignalStatusText}" TextTrimming="CharacterEllipsis" />
             </StackPanel>
           </Border>
-          <Border Grid.Column="4" Classes="terminalMetric">
+          <Border Grid.Column="3" Classes="terminalMetric">
             <StackPanel Spacing="2">
               <TextBlock Classes="terminalCaption" Text="PROTECTION" />
               <TextBlock Classes="terminalValue" Text="{Binding ProtectionStatusText}" TextTrimming="CharacterEllipsis" />
@@ -127,44 +121,44 @@
         <StackPanel Margin="18" Spacing="14">
           <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
             <Border Padding="10,6" Background="#102630" BorderBrush="#2B6170" BorderThickness="1" CornerRadius="3" VerticalAlignment="Top">
-              <TextBlock FontFamily="Consolas" FontSize="18" FontWeight="SemiBold" Foreground="#B9F2F7" Text="{Binding SelectedPageLabel}" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="18" FontWeight="SemiBold" Foreground="#B9F2F7" Text="{Binding SelectedPageLabel}" />
             </Border>
             <StackPanel Grid.Column="1" Spacing="3">
-              <TextBlock FontFamily="Consolas" FontSize="19" FontWeight="SemiBold" Foreground="#D7E7EA" Text="{Binding SelectedPageTitle}" />
-              <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding SelectedPageStateText}" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="19" FontWeight="SemiBold" Foreground="#D7E7EA" Text="{Binding SelectedPageTitle}" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding SelectedPageStateText}" />
             </StackPanel>
           </Grid>
 
           <Border Padding="14" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
-            <TextBlock FontFamily="Consolas" FontSize="11" Foreground="#B8D1D6" TextWrapping="Wrap" Text="{Binding SelectedPageDescription}" />
+            <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="11" Foreground="#B8D1D6" TextWrapping="Wrap" Text="{Binding SelectedPageDescription}" />
           </Border>
 
           <Border IsVisible="{Binding IsStandardContentPageSelected}" Padding="16" Background="#071014" BorderBrush="#2B6170" BorderThickness="1" CornerRadius="4">
-            <TextBlock FontFamily="Consolas" FontSize="11" LineHeight="19" Foreground="#D7E7EA" TextWrapping="Wrap"
+            <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="11" LineHeight="19" Foreground="#D7E7EA" TextWrapping="Wrap"
                        Text="{Binding SelectedPageContentText}" />
           </Border>
 
           <Grid IsVisible="{Binding IsCommandsPageSelected}" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10">
             <Border Grid.Row="0" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="4">
-                <TextBlock FontFamily="Consolas" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="CONTEXTUAL TYPED COMMAND CATALOG" />
-                <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="CONTEXTUAL TYPED COMMAND CATALOG" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
                            Text="TAB focuses the catalog · UP/DOWN selects · ENTER dispatches. Availability is advisory; canonical runtime/scenario validation remains authoritative and fail-closed." />
               </StackPanel>
             </Border>
 
             <ListBox Grid.Row="1" MinHeight="260" MaxHeight="420" ItemsSource="{Binding CommandEntries}" SelectedItem="{Binding SelectedCommand, Mode=TwoWay}"
-                     Background="#071014" BorderBrush="#2B6170" BorderThickness="1" FontFamily="Consolas">
+                     Background="#071014" BorderBrush="#2B6170" BorderThickness="1" FontFamily="{StaticResource InterfaceFont}">
               <ListBox.KeyBindings>
                 <KeyBinding Gesture="Enter" Command="{Binding ExecuteSelectedCommandCommand}" />
               </ListBox.KeyBindings>
               <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="computer:OperatorComputerCommandSnapshot">
                   <Grid ColumnDefinitions="88,82,*,120" ColumnSpacing="8" Margin="4,3">
-                    <TextBlock Grid.Column="0" FontFamily="Consolas" FontSize="9" Foreground="#6FC7D6" Text="{Binding AvailabilityText}" />
-                    <TextBlock Grid.Column="1" FontFamily="Consolas" FontSize="9" Foreground="#8FB8C0" Text="{Binding GroupText}" />
-                    <TextBlock Grid.Column="2" FontFamily="Consolas" FontSize="10" Foreground="#D7E7EA" TextTrimming="CharacterEllipsis" Text="{Binding DisplayName}" />
-                    <TextBlock Grid.Column="3" FontFamily="Consolas" FontSize="9" Foreground="#8FB8C0" TextTrimming="CharacterEllipsis" Text="{Binding TargetText}" />
+                    <TextBlock Grid.Column="0" FontFamily="{StaticResource InterfaceFont}" FontSize="9" Foreground="#6FC7D6" Text="{Binding AvailabilityText}" />
+                    <TextBlock Grid.Column="1" FontFamily="{StaticResource InterfaceFont}" FontSize="9" Foreground="#8FB8C0" Text="{Binding GroupText}" />
+                    <TextBlock Grid.Column="2" FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#D7E7EA" TextTrimming="CharacterEllipsis" Text="{Binding DisplayName}" />
+                    <TextBlock Grid.Column="3" FontFamily="{StaticResource InterfaceFont}" FontSize="9" Foreground="#8FB8C0" TextTrimming="CharacterEllipsis" Text="{Binding TargetText}" />
                   </Grid>
                 </DataTemplate>
               </ListBox.ItemTemplate>
@@ -172,21 +166,21 @@
 
             <Border Grid.Row="2" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
-                <TextBlock FontFamily="Consolas" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedCommandDetailText}" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedCommandDetailText}" />
                 <Button Grid.Column="1" Classes="terminalPage" MinWidth="170" Command="{Binding ExecuteSelectedCommandCommand}" Content="EXECUTE [ENTER]" />
               </Grid>
             </Border>
 
             <Border Grid.Row="3" Padding="10" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
-              <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding CommandConsoleStatus}" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding CommandConsoleStatus}" />
             </Border>
           </Grid>
 
           <Grid IsVisible="{Binding IsModesPageSelected}" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10">
             <Border Grid.Row="0" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="6">
-                <TextBlock FontFamily="Consolas" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="TRAINING ASSISTANCE — PRESENTATION ONLY" />
-                <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="TRAINING ASSISTANCE — PRESENTATION ONLY" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
                            Text="Independent from plant control authority. Changing assistance never changes physics, controller behavior or scoring." />
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
                   <Button Grid.Column="0" Classes="terminalPage" Command="{Binding SetTrainingNoneCommand}" Content="NONE / HIDDEN" />
@@ -198,8 +192,8 @@
 
             <Border Grid.Row="1" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="6">
-                <TextBlock FontFamily="Consolas" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="PLANT CONTROL AUTHORITY — M5 OWNED" />
-                <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="PLANT CONTROL AUTHORITY — M5 OWNED" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
                            Text="MANUAL performs bumpless takeover. ASSISTED leaves local M5 controller modes/setpoints under operator authority. SUPERVISORY requires a bounded objective and remains subordinate to protection/interlocks." />
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
                   <Button Grid.Column="0" Classes="terminalPage" Command="{Binding SetPlantManualCommand}" Content="MANUAL" />
@@ -211,8 +205,8 @@
 
             <Border Grid.Row="2" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="6">
-                <TextBlock FontFamily="Consolas" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="SUPERVISORY OBJECTIVE" />
-                <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="SUPERVISORY OBJECTIVE" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
                            Text="Capture the current measured reactor-power and turbine-speed operating point, then coordinate only the existing canonical M5 local controllers. No derived physical result is assigned directly." />
                 <Button Classes="terminalPage" Command="{Binding HoldCurrentOperatingPointCommand}" Content="HOLD CURRENT OPERATING POINT" />
               </StackPanel>
@@ -220,8 +214,8 @@
 
             <Border Grid.Row="3" Padding="12" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="8">
-                <TextBlock FontFamily="Consolas" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedPageContentText}" />
-                <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding ModesStatus}" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedPageContentText}" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding ModesStatus}" />
               </StackPanel>
             </Border>
           </Grid>
@@ -229,10 +223,10 @@
           <Grid IsVisible="{Binding IsSessionPageSelected}" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
             <Border Grid.Row="0" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="6">
-                <TextBlock FontFamily="Consolas" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="SESSION // M9.1 REPLAY-BACKED LIFECYCLE" />
-                <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="SESSION // M9.1 REPLAY-BACKED LIFECYCLE" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
                            Text="No opaque solver-state dump is created. Checkpoint/save/load always reconstruct exact versioned scenario inputs and verify deterministic fingerprints fail-closed." />
-                <TextBlock FontFamily="Consolas" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedPageContentText}" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedPageContentText}" />
               </StackPanel>
             </Border>
 
@@ -244,12 +238,12 @@
             </Grid>
 
             <ListBox Grid.Row="2" MinHeight="220" MaxHeight="360" ItemsSource="{Binding SessionCheckpoints}" SelectedItem="{Binding SelectedSessionCheckpoint, Mode=TwoWay}"
-                     Background="#071014" BorderBrush="#2B6170" BorderThickness="1" FontFamily="Consolas">
+                     Background="#071014" BorderBrush="#2B6170" BorderThickness="1" FontFamily="{StaticResource InterfaceFont}">
               <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="computer:OperatorComputerSessionCheckpointSnapshot">
                   <Grid ColumnDefinitions="*,90" ColumnSpacing="8" Margin="6,4">
-                    <TextBlock Grid.Column="0" FontFamily="Consolas" FontSize="10" Foreground="#D7E7EA" TextTrimming="CharacterEllipsis" Text="{Binding CheckpointId}" />
-                    <TextBlock Grid.Column="1" FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" Text="{Binding LogicalStep}" />
+                    <TextBlock Grid.Column="0" FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#D7E7EA" TextTrimming="CharacterEllipsis" Text="{Binding CheckpointId}" />
+                    <TextBlock Grid.Column="1" FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" Text="{Binding LogicalStep}" />
                   </Grid>
                 </DataTemplate>
               </ListBox.ItemTemplate>
@@ -257,7 +251,7 @@
 
             <Border Grid.Row="3" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
-                <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedSessionCheckpointDetailText}" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedSessionCheckpointDetailText}" />
                 <Grid Grid.Row="1" ColumnDefinitions="*,*" ColumnSpacing="8">
                   <Button Grid.Column="0" Classes="terminalPage" Click="RestoreSelectedCheckpoint_Click" Content="RESTORE SELECTED" />
                   <Button Grid.Column="1" Classes="terminalPage" Click="LoadSessionArchive_Click" Content="LOAD ARCHIVE" />
@@ -266,7 +260,7 @@
             </Border>
 
             <Border Grid.Row="4" Padding="10" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
-              <TextBlock FontFamily="Consolas" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding SessionStatus}" />
+              <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding SessionStatus}" />
             </Border>
           </Grid>
         </StackPanel>
@@ -274,8 +268,8 @@
 
       <Border Grid.Row="3" Padding="10,7" Background="#0B1820" BorderBrush="#2B6170" BorderThickness="0,1,0,0">
         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
-          <TextBlock FontFamily="Consolas" FontSize="9" Foreground="#6FC7D6" TextTrimming="CharacterEllipsis" Text="{Binding StatusLineText}" />
-          <TextBlock Grid.Column="1" FontFamily="Consolas" FontSize="9" Foreground="#5E8791" Text="F1–F8 PAGES · TAB FOCUS · ↑↓ SELECT · ENTER ACTIVATE" />
+          <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="9" Foreground="#6FC7D6" TextTrimming="CharacterEllipsis" Text="{Binding StatusLineText}" />
+          <TextBlock Grid.Column="1" FontFamily="{StaticResource InterfaceFont}" FontSize="9" Foreground="#5E8791" Text="F1–F8 PAGES · TAB FOCUS · ↑↓ SELECT · ENTER ACTIVATE" />
         </Grid>
       </Border>
     </Grid>

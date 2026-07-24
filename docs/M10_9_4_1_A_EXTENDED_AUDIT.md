@@ -2,11 +2,11 @@
 
 ## Status
 
-**AUDIT EXECUTED — FAILURE ATTRIBUTED — A.2 HOTFIX 1 CANDIDATE**
+**AUDIT EXECUTED — ROOT CAUSE RESOLVED IN CURRENT-V2 OPERATING SEED — B.1 ACTIVE CANDIDATE**
 
 **Validated prerequisite:** M10.9.4 — Subsystem Engineering Schematics, including Hotfix 23.
 
-Hotfix 1 corrected only the invariant diagnostic formatting compile error. The user subsequently confirmed that the solution compiles and the ordinary tests pass. The separately filtered explicit operational-envelope run repeatedly fails because the intended 300-second steady/5 MWe journey trips near 70 simulated seconds. A.2 Hotfix 1 is now the current correction candidate; validation is pending.
+Hotfix 1 corrected only the invariant diagnostic formatting compile error. The extended audit then exposed a repeatable trip near 70 simulated seconds. Subsequent root-cause work showed that the thermodynamic resolver was not at fault: the current-v2 seed delivered only the direct 20% heat-deposition share to coolant, primary circulation was about 0.07 kg/s and the drum exported about 13 kg/s of steam. The corrected current-v2 seed adds conservative fuel/structure→coolant heat return, matched primary circulation and aligned steam-line/control-valve initial conditions. The user then confirmed the exact 300-second journey, explicit 60-second synchronization journey, build and ordinary suite are green. Phase B is now active.
 
 ## Boundary
 
@@ -35,6 +35,18 @@ The only production-facing addition is an internal read-only test seam exposing 
 - wall-clock execution evidence for the 300-second journey under a deliberately broad audit ceiling.
 
 Failures are evidence. Thresholds must not be weakened to make a journey green.
+
+
+## Resolution evidence — current-v2 operating seed
+
+The historical failure section below is retained as audit provenance. It is no longer the current state. The actual resolution was upstream of the condenser:
+
+- 80% of fission heat deposited in explicit fuel/structure inventories now returns conservatively to coolant through canonical heat-transfer links;
+- current-v2 primary hydraulic resistance was corrected so circulation is commensurate with the operating steam demand;
+- current-v2 steam-line initial pressures/temperatures and control-valve bias were realigned;
+- historical v1 seeds and protection thresholds remain unchanged.
+
+Validated locally by the user: 300-second sustained journey passed in 2m 07s, 60-second synchronization journey passed, build 0 warnings/0 errors, ordinary suite 895 passed with 11 explicit skipped and 0 failures.
 
 ## Observed long-run failure — 24 July 2026
 
@@ -102,6 +114,19 @@ A.2 also preserves the 24.5 MW initial surface-transfer point while raising inst
 
 See `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` and `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`.
 
+## A.3 reference-scale evidence
+
+A.3 adds an explicit, fast audit that derives the electromechanical consequences of the current definitions without advancing the plant or modifying production behavior. It records:
+
+- 49.348 MJ stored rotor energy at 3,000 rpm;
+- `H = 0.049348 s` at the configured 1,000 MW nameplate;
+- `H = 4.934802 s` at a candidate 10 MW educational reference;
+- 0.5% current load fraction and 0.75 rpm droop displacement at 5 MW;
+- synchronizing correction equal to 1% of nameplate and 200% of current dispatch;
+- local constant-power acceleration scale of approximately 30.396 rpm/s per MW imbalance.
+
+The evidence provisionally favors a reduced-scale educational unit but authorizes no constant change. See `REFERENCE_PLANT_SCALE_EVIDENCE.md`.
+
 ## Running
 
 First run the ordinary gate and the unchanged 60-second gameplay gate:
@@ -134,7 +159,7 @@ dotnet test --project tests/NuclearReactorSimulator.Application.Tests/NuclearRea
 
 ## Promotion gate
 
-M10.9.4.1-A cannot be marked validated while the unexplained trip remains. Promotion requires:
+The original unexplained trip gate has been cleared by the corrected current-v2 seed. Future M10.9.4.1 candidates must continue to preserve the following promotion gates:
 
 ```text
 clean restore/build succeeds with warnings as errors

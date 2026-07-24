@@ -4,8 +4,8 @@ namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Condenser;
 
 /// <summary>
 /// M4.3 replaceable cooling-water/environment boundary for one condenser step.
-/// AvailableHeatRejectionPower is an upper capacity ceiling; current surface-condenser definitions may also
-/// close actual heat transfer through their canonical UA against CoolantTemperature.
+/// AvailableHeatRejectionPower is the currently available external cooling capacity after environment/fault effects.
+/// Current definitions may independently declare an installed hardware ceiling and a UA surface-transfer ceiling.
 /// </summary>
 public sealed record CondenserCoolingBoundaryInput
 {
@@ -34,7 +34,7 @@ public sealed record CondenserCoolingBoundaryInput
 
     public string BoundaryId { get; }
 
-    /// <summary>External cooling-system capacity ceiling available to the condenser.</summary>
+    /// <summary>Current external cooling capacity available after operating-condition and fault effects.</summary>
     public Power AvailableHeatRejectionPower { get; }
 
     /// <summary>Effective cooling-water/environment temperature seen by the condenser surface.</summary>

@@ -42,6 +42,32 @@ public sealed class TurbineExpansionSystemDefinitionTests
         Assert.Same(mainSteam, definition.MainSteamNetwork);
         Assert.Same(rotor, definition.GetRotor("rotor"));
         Assert.Equal("exhaust", definition.GetStageGroup("stage").ExhaustNodeId);
+        Assert.Equal(
+            TurbineAdmissionPhasePolicy.LegacyUnrestricted,
+            definition.GetStageGroup("stage").AdmissionPhasePolicy);
+    }
+
+    [Fact]
+    public void StageDefinition_CanOptIntoVaporFractionLimitedAdmissionAndRejectsUnknownPolicy()
+    {
+        var stage = new TurbineStageGroupDefinition(
+            "stage",
+            "boundary",
+            "exhaust",
+            "rotor",
+            SpecificEnergy.FromKilojoulesPerKilogram(500d),
+            TurbineEfficiency.FromPercent(80d),
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimited);
+
+        Assert.Equal(TurbineAdmissionPhasePolicy.VaporMassFractionLimited, stage.AdmissionPhasePolicy);
+        Assert.Throws<ArgumentOutOfRangeException>(() => new TurbineStageGroupDefinition(
+            "invalid",
+            "boundary",
+            "exhaust",
+            "rotor",
+            SpecificEnergy.FromKilojoulesPerKilogram(500d),
+            TurbineEfficiency.FromPercent(80d),
+            admissionPhasePolicy: (TurbineAdmissionPhasePolicy)999));
     }
 
     [Fact]

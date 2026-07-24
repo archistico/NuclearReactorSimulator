@@ -26,20 +26,24 @@ public sealed class ControlRoomSelector : Border
 
     public ControlRoomSelector()
     {
-        Padding = new Thickness(12, 10);
-        CornerRadius = new CornerRadius(6);
+        Padding = new Thickness(13, 10);
+        CornerRadius = new CornerRadius(4);
         Background = ControlRoomPalette.SurfaceInset;
         BorderBrush = ControlRoomPalette.Border;
-        BorderThickness = new Thickness(1);
+        BorderThickness = new Thickness(1, 1, 1, 3);
 
         _label = new TextBlock
         {
-            FontSize = 11,
+            FontSize = 10.5,
+            FontWeight = FontWeight.SemiBold,
+            LetterSpacing = 0.7,
             Foreground = ControlRoomPalette.TextMuted,
         };
         _selector = new ComboBox
         {
             MinWidth = 150,
+            MinHeight = 38,
+            FontSize = 12.5,
         };
         _selector.SelectionChanged += (_, _) =>
         {
@@ -50,7 +54,7 @@ public sealed class ControlRoomSelector : Border
         };
         _stateText = new TextBlock
         {
-            FontSize = 10,
+            FontSize = 9.5,
             FontWeight = FontWeight.SemiBold,
         };
 

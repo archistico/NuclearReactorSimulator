@@ -9,8 +9,9 @@ namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
 /// M10.9.4 generation-ready desktop seed. Version 2 intentionally leaves the historical M9.7 v1 seed untouched for
-/// replay/archive compatibility while providing a thermodynamically pressurized steam path, matched low-load steam/condensate/feedwater
-/// capacity, explicit condenser headroom above the 24.5 MW surface-transfer design point and bumpless controller biases suitable for sustained turbine-generator-grid operation.
+/// replay/archive compatibility while providing matched primary circulation, a half-full saturated steam drum and solid-to-coolant heat transfer, a
+/// thermodynamically pressurized steam path, matched low-load steam/condensate/feedwater capacity, explicit condenser
+/// headroom above the 24.5 MW surface-transfer design point and bumpless controller biases suitable for sustained turbine-generator-grid operation.
 /// </summary>
 public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersionedInitialConditionFactory
 {
@@ -22,7 +23,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
     public InitialConditionDescriptor Descriptor { get; } = new(
         Reference,
         "Integrated Operations Sustained Generation Runtime v2",
-        "M10.9.4 generation-ready desktop seed preserving the v1 replay baseline while establishing a continuously pressure-graded staged steam path, matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory, 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law, bumpless control biases and finite heat rejection for sustained low-load electrical export.");
+        "M10.9.4 generation-ready desktop seed preserving the v1 replay baseline while establishing matched primary circulation, a half-full saturated steam drum with a coherent level-control setpoint, conservative solid-to-coolant heat transfer, a continuously pressure-graded staged steam path, matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory, 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law, pressure-resolved saturated-liquid condensate energy, bumpless control biases and finite heat rejection for sustained low-load electrical export.");
 
     public IControlRoomRuntimeEngine CreateRuntimeEngine()
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
@@ -36,11 +37,13 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialRequestedElectricalPowerMegawatts: 5d,
             initialCondenserCoolingPowerMegawatts: 40d,
             initialTurbineSpeedSetpointRpm: 3_000d,
-            initialControlValvePercentOpen: 46d,
-            initialHeaderSteamTemperatureCelsius: 275d,
-            initialStopOutletSteamTemperatureCelsius: 269.5d,
-            initialControlOutletSteamTemperatureCelsius: 253d,
-            initialTurbineInletSteamTemperatureCelsius: 246d,
+            initialControlValvePercentOpen: 28d,
+            initialHeaderSteamTemperatureCelsius: 278.5d,
+            initialStopOutletSteamTemperatureCelsius: 277d,
+            initialControlOutletSteamTemperatureCelsius: 249.5d,
+            initialTurbineInletSteamTemperatureCelsius: 246.5d,
+            primaryCirculationPipeResistancePascalSecondsSquaredPerKilogramSquared: 25d,
+            mainCirculationPumpResistancePascalSecondsSquaredPerKilogramSquared: 25d,
             mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared: 1_000d,
             turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared: 1_000d,
             speedControllerIntegralGainPerSecond: 0.02d,
@@ -48,8 +51,10 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             hotwellControllerProportionalGain: -0.01d,
             includeTurbineShaftPowerInstrumentation: true,
             maximumCondenserMassFlowRateKilogramsPerSecond: 20d,
+            condenserInstalledHeatRejectionCapacityMegawatts: 40d,
             condenserOverallHeatTransferConductanceMegawattsPerKelvin: 1.225d,
             condenserCoolingWaterTemperatureCelsius: 20d,
+            usePressureResolvedCondenserCondensateEnergy: true,
             secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared: 500d,
             initialCondensatePumpPercent: 42d,
             initialFeedwaterPumpPercent: 97d,
@@ -66,5 +71,10 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
             governorFullLoadSpeedReferenceRiseRpm: 150d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            steamDrumSteamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
+            includeCoreThermalCoupling: true,
+            primaryOperationalFlowDisplayLagSeconds: 0.5d,
+            initialSteamDrumLiquidLevelFraction: 0.5d,
+            useVaporFractionLimitedTurbineAdmission: true,
             deterministicSeedStepCount: 2);
 }

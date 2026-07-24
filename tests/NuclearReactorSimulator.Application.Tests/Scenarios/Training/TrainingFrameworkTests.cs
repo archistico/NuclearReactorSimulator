@@ -68,6 +68,45 @@ public sealed class TrainingFrameworkTests
 
 
     [Fact]
+    public void Tracker_AutomaticProtectionStateDoesNotTriggerManualCommandPenalty()
+    {
+        var factory = new FakeInitialConditionFactory(reactorScramActive: true);
+        var scenario = new ScenarioDefinition(
+            "automatic-protection-penalty",
+            "Automatic protection penalty",
+            "Automatic protection state must not be scored as a manual command",
+            factory.Descriptor.Reference,
+            objectives: new[] { new ScenarioObjectiveDefinition("avoid-manual-scram", "Avoid manual SCRAM", "Do not issue manual SCRAM") },
+            allowedOperatorActions: new[] { ControlRoomCommandKind.ReactorScram });
+        var plan = new ScenarioTrainingPlan(
+            scenario.ScenarioId,
+            Array.Empty<TrainingCheckpointDefinition>(),
+            new[]
+            {
+                new TrainingEvaluationCriterionDefinition(
+                    "no-manual-scram",
+                    "No manual SCRAM",
+                    "No accepted manual SCRAM command",
+                    TrainingEvaluationCriterionKind.OperatorActionNotObserved,
+                    operatorActions: new[] { ControlRoomCommandKind.ReactorScram }),
+            },
+            new[] { new TrainingObjectiveEvaluationDefinition("avoid-manual-scram", 100, new[] { "no-manual-scram" }) },
+            new[] { new TrainingPenaltyDefinition("manual-scram-penalty", "Manual SCRAM deviation", "Manual command penalty", ControlRoomCommandKind.ReactorScram, 10) });
+        var session = new ScenarioSessionFactory(new VersionedInitialConditionRegistry(new[] { factory })).Load(scenario);
+        var tracker = new ScenarioTrainingTracker(session, plan, new NeverCalledCheckpointEvaluator());
+
+        Assert.True(session.Coordinator.Current.ReactorScramActive);
+        Assert.Empty(session.OperatorActions.Actions);
+        Assert.Equal(0, tracker.Assessment.PenaltyPoints);
+        Assert.Equal(100, tracker.Assessment.TotalScore);
+
+        session.CommandDispatcher.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.ReactorScram));
+
+        Assert.Equal(10, tracker.Assessment.PenaltyPoints);
+        Assert.True(Assert.Single(tracker.Assessment.Penalties).IsTriggered);
+    }
+
+    [Fact]
     public void Tracker_EvaluatesAcceptedActionOrderAndProcedurePenaltyDeterministically()
     {
         var factory = new FakeInitialConditionFactory();
@@ -153,16 +192,30 @@ public sealed class TrainingFrameworkTests
 
     private sealed class FakeInitialConditionFactory : IVersionedInitialConditionFactory
     {
+        private readonly bool _reactorScramActive;
+
+        public FakeInitialConditionFactory(bool reactorScramActive = false)
+        {
+            _reactorScramActive = reactorScramActive;
+        }
+
         public InitialConditionDescriptor Descriptor { get; } = new(
             new InitialConditionReference("training-reference", 1),
             "Training reference",
             "Deterministic training reference");
 
-        public IControlRoomRuntimeEngine CreateRuntimeEngine() => new FakeRuntimeEngine();
+        public IControlRoomRuntimeEngine CreateRuntimeEngine() => new FakeRuntimeEngine(_reactorScramActive);
     }
 
     private sealed class FakeRuntimeEngine : IControlRoomRuntimeEngine
     {
+        private readonly bool _reactorScramActive;
+
+        public FakeRuntimeEngine(bool reactorScramActive = false)
+        {
+            _reactorScramActive = reactorScramActive;
+        }
+
         public long LogicalStep { get; private set; }
 
         public ControlRoomSnapshot CreatePresentationSnapshot(ControlRoomRunState runState) => Snapshot(runState);
@@ -179,6 +232,6 @@ public sealed class TrainingFrameworkTests
         }
 
         private ControlRoomSnapshot Snapshot(ControlRoomRunState runState)
-            => new(LogicalStep, runState, 0, 0, 0, 0, false, false, false);
+            => new(LogicalStep, runState, 0, 0, 0, 0, _reactorScramActive, false, false);
     }
 }

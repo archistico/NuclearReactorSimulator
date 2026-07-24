@@ -164,7 +164,7 @@ public sealed class TurbineExpansionSolverTests
     }
 
     [Fact]
-    public void Step_ThermodynamicWorkDegradesToZeroForLiquidAdmissionWithoutThrowing()
+    public void Step_LegacyAdmissionPolicy_PreservesHistoricalLiquidMassTransferWithZeroWork()
     {
         var fixture = CreateFixture(
             3_000d,
@@ -181,13 +181,69 @@ public sealed class TurbineExpansionSolverTests
             TimeSpan.FromMilliseconds(1d));
         var stage = Assert.Single(result.Snapshot.StageGroups);
 
+        Assert.Equal(1d, stage.CommandedMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(1d, stage.EffectiveMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(Power.Zero, stage.ShaftPower);
+        Assert.Equal(stage.InletEnergyFlowRate, stage.ExhaustEnergyFlowRate);
+    }
+
+    [Fact]
+    public void Step_ThermodynamicWorkDegradesToZeroForLiquidAdmissionWithoutThrowing()
+    {
+        var fixture = CreateFixture(
+            3_000d,
+            Torque.Zero,
+            tripCommand: false,
+            thermodynamicWork: CurrentThermodynamicWork(),
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimited,
+            inletPhase: FluidPhase.SubcooledLiquid);
+        var solver = new TurbineExpansionSolver(fixture.Definition, new PreservingThermodynamicModel());
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromMilliseconds(1d));
+        var stage = Assert.Single(result.Snapshot.StageGroups);
+
         Assert.True(stage.ThermodynamicWorkModelActive);
         Assert.True(stage.ThermodynamicWorkLimited);
+        Assert.Equal(1d, stage.CommandedMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(MassFlowRate.Zero, stage.EffectiveMassFlowRate);
         Assert.Equal(SpecificEnergy.Zero, stage.PressureTemperatureAvailableSpecificWork);
         Assert.Equal(SpecificEnergy.Zero, stage.EffectiveIdealSpecificWork);
         Assert.Equal(SpecificEnergy.Zero, stage.ExtractedSpecificWork);
         Assert.Equal(Power.Zero, stage.ShaftPower);
         Assert.Equal(stage.InletEnergyFlowRate, stage.ExhaustEnergyFlowRate);
+    }
+
+    [Fact]
+    public void Step_CurrentAdmissionPolicy_TransfersOnlyVaporFractionWithoutDoublePenalizingSpecificWork()
+    {
+        var fixture = CreateFixture(
+            3_000d,
+            Torque.Zero,
+            tripCommand: false,
+            thermodynamicWork: CurrentThermodynamicWork(),
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimited,
+            inletPhase: FluidPhase.SaturatedMixture,
+            inletVaporQuality: VaporQuality.FromPercent(25d));
+        var solver = new TurbineExpansionSolver(fixture.Definition, new PreservingThermodynamicModel());
+
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            TimeSpan.FromMilliseconds(1d));
+        var stage = Assert.Single(result.Snapshot.StageGroups);
+
+        Assert.Equal(1d, stage.CommandedMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(0.25d, stage.EffectiveMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(500d, stage.EffectiveIdealSpecificWork.KilojoulesPerKilogram, 9);
+        Assert.InRange(stage.ExtractedSpecificWork.KilojoulesPerKilogram, 399.9d, 400.1d);
+        Assert.InRange(stage.ShaftPower.Kilowatts, 99.9d, 100.1d);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalanceMassRateResidualKilogramsPerSecond), 0d, 1e-12d);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalancePowerResidualWatts), 0d, 1e-6d);
     }
 
     [Fact]
@@ -240,6 +296,7 @@ public sealed class TurbineExpansionSolverTests
         Torque loadTorque,
         bool tripCommand,
         TurbineThermodynamicWorkDefinition? thermodynamicWork = null,
+        TurbineAdmissionPhasePolicy admissionPhasePolicy = TurbineAdmissionPhasePolicy.LegacyUnrestricted,
         double inletPressureMegapascals = 5d,
         double exhaustPressureMegapascals = 0.1d,
         FluidPhase inletPhase = FluidPhase.SuperheatedVapor,
@@ -388,7 +445,8 @@ public sealed class TurbineExpansionSolverTests
                     SpecificEnergy.FromKilojoulesPerKilogram(500d),
                     TurbineEfficiency.FromPercent(80d),
                     expansionResistance: null,
-                    thermodynamicWork: thermodynamicWork),
+                    thermodynamicWork: thermodynamicWork,
+                    admissionPhasePolicy: admissionPhasePolicy),
             });
 
         var primaryBoundaryInputs = new PrimaryCircuitBoundaryInputs(

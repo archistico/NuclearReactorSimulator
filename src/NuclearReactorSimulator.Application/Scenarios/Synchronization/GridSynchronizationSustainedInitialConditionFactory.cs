@@ -9,8 +9,10 @@ namespace NuclearReactorSimulator.Application.Scenarios.Synchronization;
 
 /// <summary>
 /// M10.9.4 opt-in generation-ready synchronization seed used by long gameplay/system acceptance. The historical M7.5
-/// v1 seed remains unchanged. This v2 profile retains zero initial generator load while using a bumpless spinning-reserve governor bias,
-/// a staged pressurized steam inventory and matched steam/condensation/feedwater capacity with condenser headroom for deliberate post-synchronization loading.
+/// v1 seed remains unchanged. This v2 profile retains zero initial generator load while using matched primary circulation,
+/// a half-full saturated steam drum and solid-to-coolant heat transfer, a bumpless spinning-reserve governor bias, a staged
+/// pressurized steam inventory and matched steam/condensation/feedwater capacity with condenser headroom for deliberate
+/// post-synchronization loading.
 /// </summary>
 public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersionedInitialConditionFactory
 {
@@ -22,7 +24,7 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
     public InitialConditionDescriptor Descriptor { get; } = new(
         Reference,
         "Pre-Synchronization / Sustained Initial Loading v2",
-        "M10.9.4 long-gameplay synchronization seed preserving M7.5 v1 while providing a continuously pressure-graded staged steam path and matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory and 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law for post-synchronization load acceptance.");
+        "M10.9.4 long-gameplay synchronization seed preserving M7.5 v1 while providing matched primary circulation, a half-full saturated steam drum with a coherent level-control setpoint and conservative solid-to-coolant heat transfer, a continuously pressure-graded staged steam path and matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory and 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law, pressure-resolved saturated-liquid condensate energy for post-synchronization load acceptance.");
 
     public IControlRoomRuntimeEngine CreateRuntimeEngine()
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
@@ -36,11 +38,13 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             initialRequestedElectricalPowerMegawatts: 0d,
             initialCondenserCoolingPowerMegawatts: 40d,
             initialTurbineSpeedSetpointRpm: 3_000d,
-            initialControlValvePercentOpen: 46d,
-            initialHeaderSteamTemperatureCelsius: 275d,
-            initialStopOutletSteamTemperatureCelsius: 269.5d,
-            initialControlOutletSteamTemperatureCelsius: 253d,
-            initialTurbineInletSteamTemperatureCelsius: 246d,
+            initialControlValvePercentOpen: 28d,
+            initialHeaderSteamTemperatureCelsius: 278.5d,
+            initialStopOutletSteamTemperatureCelsius: 277d,
+            initialControlOutletSteamTemperatureCelsius: 249.5d,
+            initialTurbineInletSteamTemperatureCelsius: 246.5d,
+            primaryCirculationPipeResistancePascalSecondsSquaredPerKilogramSquared: 25d,
+            mainCirculationPumpResistancePascalSecondsSquaredPerKilogramSquared: 25d,
             mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared: 1_000d,
             turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared: 1_000d,
             speedControllerProportionalGain: 0.5d,
@@ -48,8 +52,10 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             hotwellControllerProportionalGain: -0.01d,
             includeTurbineShaftPowerInstrumentation: true,
             maximumCondenserMassFlowRateKilogramsPerSecond: 20d,
+            condenserInstalledHeatRejectionCapacityMegawatts: 40d,
             condenserOverallHeatTransferConductanceMegawattsPerKelvin: 1.225d,
             condenserCoolingWaterTemperatureCelsius: 20d,
+            usePressureResolvedCondenserCondensateEnergy: true,
             secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared: 500d,
             initialCondensatePumpPercent: 42d,
             initialFeedwaterPumpPercent: 97d,
@@ -66,5 +72,10 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
             governorFullLoadSpeedReferenceRiseRpm: 150d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            steamDrumSteamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
+            includeCoreThermalCoupling: true,
+            primaryOperationalFlowDisplayLagSeconds: 0.5d,
+            initialSteamDrumLiquidLevelFraction: 0.5d,
+            useVaporFractionLimitedTurbineAdmission: true,
             deterministicSeedStepCount: 2);
 }

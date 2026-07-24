@@ -185,3 +185,13 @@ The user confirmed Hotfix 17 passes compilation, the ordinary suite and both exp
 The user confirmed Hotfix 22 passes compilation, the ordinary suite and both explicit 60-second journeys. Hotfix 23 changes only current-v2 turbine specific-work availability. The long-run diagnostic now prints extracted/available stage work together with `THERMO` and `LIMITED` flags.
 
 Both journeys must be rerun because sustained shaft and electrical export depend directly on this closure. The validated low-load design point is intentionally preserved by the 500 kJ/kg stage cap; failures must be diagnosed from inlet/exhaust pressure, vapor content, available/extracted kJ/kg, shaft power and generator evidence before changing seed or controller parameters.
+
+## M10.9.4.1-A.3 reference-plant scale evidence
+
+A.3 adds a fast explicit audit that does not advance the runtime and does not change production physics. It freezes the current generator/rotor/governor/coupling definitions and derives their scale consequences.
+
+```text
+scripts\run-reference-plant-scale-audit.cmd
+```
+
+The test also carries `Category=OperationalEnvelopeAudit`, so it is included in the complete A-series audit pack. See `REFERENCE_PLANT_SCALE_EVIDENCE.md`.

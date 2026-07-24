@@ -26,7 +26,10 @@ public sealed class CondenserSystemDefinitionTests
             "condenser", "stage", "exhaust", "hotwell", "cooling",
             MassFlowRate.FromKilogramsPerSecond(100d),
             ThermalConductance.FromMegawattsPerKelvin(1.225d));
-        var cooling = new CondenserCoolingBoundaryDefinition("cooling", "condenser");
+        var cooling = new CondenserCoolingBoundaryDefinition(
+            "cooling",
+            "condenser",
+            Power.FromMegawatts(40d));
 
         var definition = new CondenserSystemDefinition(
             "condensers",
@@ -38,9 +41,48 @@ public sealed class CondenserSystemDefinitionTests
         Assert.Same(condenser, definition.GetCondenser("condenser"));
         Assert.True(condenser.OverallHeatTransferConductance.HasValue);
         Assert.Equal(1.225d, condenser.OverallHeatTransferConductance.GetValueOrDefault().MegawattsPerKelvin, 12);
+        Assert.Equal(CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy, condenser.CondensateEnergyMode);
         Assert.Same(cooling, definition.GetCoolingBoundary("cooling"));
+        Assert.Equal(40d, cooling.MaximumInstalledHeatRejectionPower.GetValueOrDefault().Megawatts, 12);
     }
 
+    [Fact]
+    public void CoolingBoundaryDefinition_RejectsNonPositiveInstalledCapacityWhenConfigured()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new CondenserCoolingBoundaryDefinition(
+            "cooling",
+            "condenser",
+            Power.Zero));
+    }
+
+    [Fact]
+    public void Definition_AllowsExplicitPressureResolvedCondensateEnergyMode()
+    {
+        var condenser = new CondenserDefinition(
+            "condenser",
+            "stage",
+            "exhaust",
+            "hotwell",
+            "cooling",
+            MassFlowRate.FromKilogramsPerSecond(100d),
+            ThermalConductance.FromMegawattsPerKelvin(1.225d),
+            CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure);
+
+        Assert.Equal(CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure, condenser.CondensateEnergyMode);
+    }
+
+    [Fact]
+    public void Definition_RejectsUnknownCondensateEnergyMode()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new CondenserDefinition(
+            "condenser",
+            "stage",
+            "exhaust",
+            "hotwell",
+            "cooling",
+            MassFlowRate.FromKilogramsPerSecond(100d),
+            condensateEnergyMode: (CondenserCondensateEnergyMode)999));
+    }
 
     [Fact]
     public void Definition_RejectsNonPositiveOverallHeatTransferConductanceWhenConfigured()

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\src\NuclearReactorSimulator.App\App.axaml" Link="App.axaml" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\src\NuclearReactorSimulator.App\Views\MainWindow.axaml" Link="MainWindow.axaml" CopyToOutputDirectory="PreserveNewest" />
     <None Include="..\..\src\NuclearReactorSimulator.App\Controls\ControlRoomComputerControl.axaml" Link="ControlRoomComputerControl.axaml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

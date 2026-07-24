@@ -27,6 +27,25 @@ public sealed class SteamDrumSystemDefinitionTests
     }
 
     [Fact]
+    public void Constructor_PreservesOptionalCurrentSteamSourceDefinition()
+    {
+        var fixture = CreateFixture();
+        var source = new SteamDrumSteamSourceDefinition(
+            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(100d));
+        var drum = new SteamDrumDefinition(
+            "drum-a",
+            "loop-a",
+            "drum-node",
+            "steam-outlet",
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            source);
+        var definition = new SteamDrumSystemDefinition("drums", fixture.Circulation, new[] { drum });
+
+        Assert.Same(source, definition.Drums.Single().SteamSource);
+        Assert.Equal(100d, definition.Drums.Single().SteamSource!.HydraulicResistance.PascalSecondsSquaredPerKilogramSquared, 12);
+    }
+
+    [Fact]
     public void Constructor_RejectsInventoryNodeThatIsNotLoopReturnCollector()
     {
         var fixture = CreateFixture();

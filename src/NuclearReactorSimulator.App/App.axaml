@@ -3,7 +3,23 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     RequestedThemeVariant="Dark">
+  <Application.Resources>
+    <FontFamily x:Key="InterfaceFont">Inter</FontFamily>
+    <FontFamily x:Key="DataFont">Cascadia Mono,Consolas</FontFamily>
+  </Application.Resources>
   <Application.Styles>
     <FluentTheme />
+    <Style Selector="Window">
+      <Setter Property="FontFamily" Value="{StaticResource InterfaceFont}" />
+      <Setter Property="Foreground" Value="#E8F2F5" />
+    </Style>
+    <Style Selector="ToolTip">
+      <Setter Property="FontFamily" Value="{StaticResource InterfaceFont}" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="Background" Value="#16232C" />
+      <Setter Property="Foreground" Value="#E8F2F5" />
+      <Setter Property="BorderBrush" Value="#365463" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
   </Application.Styles>
 </Application>

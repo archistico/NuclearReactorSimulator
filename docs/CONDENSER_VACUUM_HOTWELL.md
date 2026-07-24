@@ -64,11 +64,16 @@ Condensation is staged as an internal transfer:
 steam space  --mass-->  hotwell
 ```
 
-For the actual condensation mass flow `m_dot`:
+For the actual condensation mass flow `m_dot`, the historical law and the current-v2 C.1 law are explicit:
+
+- **legacy/default:** the hotwell receives condensed mass at the already-committed hotwell specific internal energy, preserving historical fixture/replay behavior;
+- **current-v2 C.1 validated behavior:** the hotwell receives condensed mass at saturated-liquid specific internal energy resolved from the committed condenser steam-space pressure.
+
+In both modes:
 
 - the steam-space node loses `m_dot` and `u_steam * m_dot`;
-- the hotwell gains `m_dot` and `u_hotwell * m_dot`;
-- the difference `(u_steam - u_hotwell) * m_dot` is declared as signed external heat rejection.
+- the hotwell gains `m_dot` and `u_condensate * m_dot`;
+- the difference `(u_steam - u_condensate) * m_dot` is declared as signed external heat rejection.
 
 Therefore:
 
@@ -86,6 +91,9 @@ The condenser steam-space pressure is the pressure resolved from the canonical e
 
 Snapshots expose:
 
+- current condensate transfer specific internal energy and phase-change `Δu`;
+- maximum-flow, inventory and thermal condensation limits with non-serialized active-limit/margin diagnostics;
+- installed cooling capacity, surface-`UA` capacity, effective capacity and non-serialized active-limit/margin diagnostics;
 - initial and final absolute steam-space pressure;
 - initial and final vacuum below standard atmosphere;
 - temperature, phase and vapor quality;
@@ -104,15 +112,22 @@ Snapshots expose its initial/final:
 - temperature;
 - phase.
 
-M4.3 only establishes and fills the condensate inventory. Pumps, heaters/deaeration and replacement of the simplified M3 feedwater source belong to M4.4.
+M4.3 established and filled the condensate inventory. M10.9.4.1-C.1 adds a locally validated opt-in current-v2 phase-change energy closure so incoming condensate can change hotwell energy according to condenser pressure rather than being mathematically neutral to the receiving inventory. Pumps and the downstream condensate/feedwater path remain owned by M4.4. Detailed heaters/deaeration remain future fidelity work.
 
 ## Cooling-water/environment boundary
 
 `CondenserCoolingBoundaryDefinition` is a replaceable seam.
 
-For M4.3 the per-step input is only an available heat-rejection power. The condenser uses no more than that capacity and exposes used/unused power in the snapshot.
+Legacy definitions preserve the original M4.3 rule in which the per-step available heat-rejection input is the only external capacity ceiling. M10.9.4.1-C.2 adds an optional **definition-owned installed-capacity ceiling**. For current-v2 sustained profiles the meanings are now distinct:
 
-A later higher-fidelity cooling-water or environmental model can replace this boundary input without changing condenser ownership of:
+- **installed capacity:** physical design ceiling owned by the plant definition (40 MW in the current sustained profile);
+- **available capacity:** runtime cooling capacity after operating-condition/fault effects;
+- **surface-transfer capacity:** the existing `UA·ΔT` limit;
+- **effective capacity:** the minimum of installed, available and surface-transfer capacity.
+
+The independent condenser maximum condensation-flow ceiling remains 20 kg/s in current-v2 and is not a substitute for any of the three heat-rejection limits.
+
+A later higher-fidelity cooling-water or environmental model can replace the runtime availability input without changing condenser ownership of:
 
 - turbine exhaust;
 - condensation;

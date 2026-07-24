@@ -106,3 +106,56 @@ dm_drum/dt = F_return + F_feedwater - F_MCP - F_steam
 The liquid recirculation target remains the canonical loop suction header and its flow is the sum of positive committed MCP flows for that loop. This is still a staged internal transfer: `PlantNetworkOrchestrator` remains the only inventory integrator.
 
 `LegacyReturnSplit` remains available only as an explicit compatibility seam for historical profiles. It is not the preferred current physical closure.
+
+
+## M10.9.4.1-B.2 current-v2 drum-to-steam source closure — locally validated
+
+B.1 closes the liquid side. B.2, locally user-validated, separately removes the temporary current-v2 rule that replenished the steam-outlet node according to downstream main-steam demand.
+
+Current-v2 sustained-operation profiles now explicitly configure a `SteamDrumSteamSourceDefinition`. The drum source is evaluated from the committed source-side state only:
+
+```text
+positive return-flow energy surplus
+        +
+committed separable vapor inventory
+        ↓
+energy/inventory-supported steam availability
+        ↓  min with
+forward drum → steam-outlet pressure capacity
+        ↓
+actual conservative steam source
+```
+
+The source therefore does **not** inspect turbine requested load, main-steam-line demand or valve demand. A forward pressure head is necessary, and pressure capacity alone cannot create steam when neither return energy nor vapor inventory supports it.
+
+The internal transfer remains:
+
+```text
+drum inventory  -m_dot_steam, -u_steam*m_dot_steam
+steam outlet    +m_dot_steam, +u_steam*m_dot_steam
+```
+
+The existing canonical main-steam pipe remains the only transport from the steam-outlet node to the header. Historical profiles with no `SteamDrumSteamSourceDefinition` preserve the earlier return-phase-split behavior.
+
+Read-only diagnostics expose pressure-driven capacity, energy/inventory-supported availability, return-energy-supported production, committed vapor inventory and the active limiting side. These fields are not replay-serialized.
+
+> B.2 remains intentionally within the simulator's current specific-internal-energy transport convention. A future enthalpy/flow-work migration is tracked separately and is not folded into this source-closure step.
+
+## M10.9.4.1-B.3 low-inventory diagnostics and low-low level protection — locally validated
+
+B.3 does **not** change the B.1 liquid-recirculation law or the B.2 steam-source law. It makes low-inventory state explicit and adds current-v2 measured protection semantics only after those source closures have been locally validated.
+
+Read-only, non-serialized diagnostics now expose:
+
+- separable-liquid inventory mass and committed liquid mass fraction;
+- committed-liquid depletion;
+- all-vapor state with unavailable water/steam separation;
+- liquid-recirculation deficit caused by inventory limiting.
+
+For enhanced current-v2 protection profiles, the canonical measured `steam-drum/drum-a/level` channel owns:
+
+- warning alarm below **25%** (`steam-drum-level-low`);
+- low-low protection at **10%**, reset eligibility at **20%** (`steam-drum-low-low-level`);
+- actions: **ReactorScram + TurbineTrip + GeneratorTrip**.
+
+These are simulator training thresholds, not universal nuclear-plant setpoints. Historical v1/minimal-protection profiles do not receive the new function. The drum-level gauge projects the warning band and low-low protection marker from canonical alarm/protection definitions rather than hard-coding UI thresholds.

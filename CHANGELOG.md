@@ -1,3 +1,115 @@
+## M10.9.4.1-D.2 — Turbine admission authority evidence — CANDIDATE
+
+## M10.9.4.1-D.2 Hotfix 1 — Turbine Admission Authority Audit Compile Fix — CANDIDATE
+
+- Corrects the D.2 audit test to use the canonical `SteamDrumSystemDefinition.Drums` property.
+- Replaces four `Where(...)+Assert.Single(...)` assertions with the xUnit v3 predicate overload required by analyzer rule xUnit2031.
+- Test-only correction: no production source, physics, seed, protection, replay, HMI, or D.1 behavior is changed.
+- Local build/test validation pending.
+
+
+- Builds cumulatively on D.1, which remains pending local validation. D.2 is audit-only and changes no production physics.
+- Freezes the current-v2 hydraulic authority budget: 100 Pa·s²/kg² drum steam source, 1,000 main-steam line, 1,000 base resistance for each stop/control/admission valve, 21,400 stage expansion resistance, linear control-valve characteristic and 28% sustained seed bias.
+- Adds a deterministic analytical resistance map from 10% to 100% control-valve position. At the current 28% seed the control valve owns about 34.24% of the idealized total series resistance and retains about 20.87% theoretical flow-capacity headroom to full open; authority compresses strongly above 60%.
+- Adds an explicit +10 rpm / -10 rpm governor-reference runtime evidence journey that records control-valve position, turbine-inlet pressure, commanded/effective stage flow and shaft power without retuning any law.
+- Adds dedicated D.2 audit runners, ADR 0100, authority-evidence documentation and a validation checklist.
+- Defers all resistance rescaling, effective-area/Stodola selection and governor retuning until the runtime evidence is reviewed.
+
+## M10.9.4.1-D.1 — Turbine admission phase-policy closure — CANDIDATE
+
+- Starts Phase D from the user-supplied consolidated M10.9.4.1 continuation base; prior B/C work remains the inherited foundation and the historical 300-second wall-clock performance observation remains tracked separately from physics correctness.
+- Adds explicit `TurbineAdmissionPhasePolicy` with legacy default `LegacyUnrestricted` and current-v2 opt-in `VaporMassFractionLimited`.
+- Current-v2 sustained desktop and synchronization seeds admit only the committed vapor mass fraction through the turbine stage. Pure liquid admission therefore produces zero stage mass transfer instead of a silent zero-work liquid bypass.
+- For wet steam, the effective transferred mass flow is reduced by vapor mass fraction while thermodynamic work is evaluated per kilogram of admitted vapor; vapor quality is not applied twice, preserving the intended first-order total shaft-work scaling.
+- Historical/v1 stage definitions retain total-mixture transfer semantics exactly by default. No valve/stage resistance, governor tuning, actuator travel, condenser, generator/grid, protection threshold, timestep or replay contract is retuned in D.1.
+- Adds focused regressions for legacy preservation, pure-liquid blocking, wet-steam vapor-fraction transfer, conservation closure and explicit current-v2 seed ownership. D.2 remains responsible for measured valve/stage authority before any Stodola/effective-area/resistance choice.
+
+## M10.9.4.1-C.2 Hotfix 2 — Application test namespace compile fix — CANDIDATE
+
+- Fixed the `NuclearReactorSimulator.Application.Tests` compile failure introduced by C.2 Hotfix 1 by importing the canonical HMI namespace that owns `ControlRoomInstrumentProvenance` in `DesktopSustainedGenerationInitialConditionFactoryTests`.
+- Test-only compile fix: no production code, solver, HMI behavior, instrumentation policy, protection threshold, replay contract, seed, or physics changed.
+
+## M10.9.4.1-C.2 Hotfix 1 — Primary operational-flow presentation stabilization & re-synchronization guidance
+
+- Records user-observed 10 ms primary hydraulic diagnostic chatter in the current-v2 low-resistance circuit without disguising it as a physical plant oscillation or retuning the validated 25 Pa·s²/kg² hydraulic seed.
+- Adds opt-in 0.5 s deterministic presentation instrumentation for current-v2 MCP total/pump flow, fuel-channel and return flow, drum inlet flow and liquid recirculation. Controllers keep their existing canonical measurement channels; legacy/v1 instrumentation remains unchanged.
+- Primary HMI now presents the operational flow paths through these filtered measured channels while retaining raw thermodynamic/pressure diagnostics as MODEL data. The underlying explicit hydraulic chatter remains a known numerical-hardening item rather than being hidden or claimed fixed.
+- Clarifies generator re-synchronization after breaker opening: if Δf is essentially zero while phase is outside the close window, waiting alone cannot change phase. The HMI explicitly instructs the operator to use SPEED RAISE/LOWER to create phase slip, then return near synchronous speed and close only when Δf/Δphase/ΔV are all valid.
+- Adds regression contracts for the 0.5 s current-v2 presentation channels and the zero-slip/out-of-phase synchronization guidance. No solver law, protection threshold, replay schema, condenser calibration or B-phase physics is intentionally changed.
+
+## M10.9.4.1-C.2 — Explicit condenser installed-capacity ownership — USER VALIDATED LOCAL CHECKPOINT
+
+- Builds on user-validated B.3 + C.1: the cumulative candidate compiles and tests pass locally.
+- Separates current-v2 condenser **installed cooling capacity** from **runtime available cooling capacity**. `CondenserCoolingBoundaryDefinition` may now own an optional physical installed-capacity ceiling; legacy/null definitions preserve the historical input-only ceiling semantics.
+- The two sustained current-v2 profiles explicitly define 40 MW installed heat-rejection capacity while their runtime boundary input starts at 40 MW available. Faults/transients continue to reduce only runtime availability and no longer redefine the plant's installed hardware capacity.
+- Effective condenser heat-rejection capacity is now the minimum of installed capacity, runtime available capacity and the existing `UA·ΔT` surface-transfer limit. The existing 20 kg/s maximum condensation-flow ceiling remains an independent physical throughput limit.
+- Adds separate MODEL diagnostics/HMI for installed cooling, available cooling, surface-UA limit and the active heat-rejection limiting side. New presentation diagnostics remain `JsonIgnore` for replay-v1 fingerprint compatibility.
+- Adds focused regressions for explicit installed-capacity validation, legacy fallback semantics, installed-capacity limiting, runtime-availability limiting, current-v2 40 MW ownership and presentation-only compatibility.
+- Retains the validated numerical values 40 MW / 20 kg/s / 1.225 MW/K / 20 °C; C.2 changes ownership/semantics rather than retuning the validated operating point.
+- No B.1/B.2/B.3 drum law, C.1 condensate-energy law, turbine/generator law, protection threshold, timestep, replay schema or historical v1 seed behavior is intentionally changed. Local build, ordinary suite and 60/300-second gates remain required.
+
+## M10.9.4.1-C.1 — Condenser phase-change energy closure — USER VALIDATED LOCAL CHECKPOINT
+
+- Built on M10.9.4.1-B.3; the user subsequently confirmed the cumulative B.3 + C.1 candidate compiles and tests pass locally.
+- Adds explicit `CondenserCondensateEnergyMode`: legacy definitions keep the historical receiving-hotwell energy rule, while the two sustained current-v2 seeds opt into saturated-liquid condensate energy resolved at committed condenser steam-space pressure.
+- Adds optional `IWaterSteamSaturationPropertyProvider` capability without widening the generic fluid thermodynamic interface; the production simplified water/steam model provides pressure- and temperature-based saturation properties.
+- Current-v2 condensation now removes `u_steam * m_dot` from the steam space, adds `u_sat_liquid(p_condenser) * m_dot` to the hotwell and rejects the difference as the explicit external heat sink, preserving single-integration mass/energy ownership.
+- Adds non-serialized diagnostics for phase-change `Δu`, maximum/inventory/thermal flow limits and margins, and active installed-capacity/surface-`UA` limits only when effective cooling capacity is actually exhausted.
+- Extends the condenser HMI with `CONDENSATE ENERGY · MODEL`, `PHASE-CHANGE Δu · MODEL` and `ACTIVE CONDENSATION LIMIT · MODEL`.
+- Does not change the A.2 current-v2 values (40 MW installed cooling, 20 kg/s maximum condensation flow, 1.225 MW/K UA, 20 °C cooling water); C.2 must decide their independent necessity from post-C.1 evidence.
+- No generic pipe enthalpy/flow-work migration, turbine/generator law, protection threshold, timestep, replay schema or legacy/v1 seed behavior is intentionally changed. User confirmation: cumulative B.3 + C.1 compiles and tests pass locally; C.1 is the validated condenser phase-change-energy checkpoint used as the base for C.2.
+
+## M10.9.4.1-B.3 — Steam-drum low-inventory diagnostics and low-low-level protection — USER VALIDATED LOCAL CHECKPOINT
+
+- Builds on user-validated M10.9.4.1-B.2: compilation and tests passed locally.
+- Adds non-serialized current-v2 diagnostics for separable-liquid inventory mass fraction, committed-liquid depletion, unavailable water/steam separation and liquid-recirculation inventory deficit without changing B.1/B.2 mass or energy source laws.
+- Extends the primary-circuit HMI with MODEL indicators for separable-liquid mass, liquid inventory mass fraction and inventory/separation status.
+- Adds a current-v2 measured low-level warning at 25% drum level and a distinct low-low protection at 10% with reset eligibility above 20%. These are simulator training thresholds, not universal real-plant values.
+- The low-low protection acts on the existing measured `level` channel and latches ReactorScram + TurbineTrip + GeneratorTrip; historical v1/minimal-protection profiles remain unchanged.
+- Projects the warning band and low-low protection marker directly onto the drum-level gauge so the HMI does not invent thresholds.
+- Adds focused regressions for legacy isolation, alarm/protection thresholds and actions, measured-signal latching, current-v2 model diagnostics and HMI scale semantics.
+- No steam-source law, liquid-recirculation law, protection threshold outside this new function, timestep, replay schema, condenser/turbine/generator physics or historical seed behavior changes. User confirmation: cumulative B.3 + C.1 compiles and tests pass locally; B.3 therefore closes Phase B and is the validated base for Phase C.
+
+## M10.9.4.1-B.2 — Drum-to-main-steam pressure/energy/inventory source closure — USER VALIDATED LOCAL CHECKPOINT
+
+- Builds on user-validated M10.9.4.1-B.1: compilation and tests passed locally.
+- Removes the temporary current-v2 demand-following main-steam supplement introduced by Hotfix 16; `MainSteamNetworkSolver` no longer computes drum supply from downstream main-steam-line demand.
+- Adds optional `SteamDrumSteamSourceDefinition`; null preserves historical behavior, while current-v2 sustained-operation seeds explicitly enable a forward pressure/energy/inventory-driven source with 100 Pa·s²/kg² hydraulic resistance.
+- Current-v2 steam availability is derived from positive return-flow energy above the liquid reference state plus committed separable-vapor inventory; actual source flow is independently capped by drum-to-steam-outlet pressure head.
+- Keeps the source as one conservative internal drum→steam-outlet transfer before the single canonical plant-network integration boundary.
+- Carries committed superheated-vapor specific internal energy when the drum inventory is superheated; saturated/subcooled source formation uses the saturation reference at committed drum temperature. B.2 intentionally remains within the existing internal-energy transport convention; enthalpy/flow-work migration stays deferred.
+- Adds non-serialized diagnostics for pressure capacity, energy/inventory availability, incoming-energy-supported steam rate, stored vapor mass and active limiting side.
+- Adds focused regressions for zero-energy/no-vapor suppression, monotonic energy support, pressure limiting, conservation, explicit current-v2 source ownership and legacy/null-source preservation.
+- Historical v1 seeds, protection thresholds, timestep, replay schema, turbine law and condenser law remain unchanged.
+- User confirmation: candidate compiles and tests pass locally; B.2 is the validated source-closure checkpoint used as the base for B.3.
+
+## M10.9.4.1-B.1 — Steam-drum liquid-inventory closure and operator-feedback clarification — USER VALIDATED LOCAL CHECKPOINT
+
+- Builds on the user-validated current-v2 operating-seed correction: exact 300-second sustained 5 MWe journey passed in 2m 07s, explicit 60-second synchronization journey passed, build completed with 0 warnings / 0 errors, and the ordinary suite passed 895 tests with 11 explicit tests skipped and 0 failures.
+- Clarifies gameplay scoring in the HMI with a regression that automatic protection state alone does not trigger penalties defined for accepted manual operator commands.
+- Adds explicit generator-control feedback: `SPEED REFERENCE · MODEL`, `REQUESTED LOAD · MODEL`, and the canonical command increments (±10 rpm per accepted SPEED press; ±5 MWe per accepted LOAD press).
+- Starts Phase B with current-v2 liquid-inventory closure: demand-balanced drum recirculation is capped by same-step incoming liquid plus committed separable-liquid inventory over the integration interval.
+- A fully vaporized current-v2 drum can no longer fabricate liquid recirculation merely because main-circulation pumps demand flow. Legacy `LegacyReturnSplit` behavior remains unchanged.
+- Adds read-only drum diagnostics for separable liquid mass, requested recirculation, inventory-supported maximum recirculation and inventory-limited state.
+- Does not yet replace the current demand-balanced steam-supply supplement; that remains the next isolated Phase B source-closure step. No protection threshold, replay schema or legacy/v1 seed is changed.
+- User confirmation: candidate compiles and tests pass locally; B.1 is therefore the validated Phase-B inventory checkpoint used as the base for B.2.
+
+## M10.9.4.1-A.3 operating-seed energy/hydraulic closure — USER VALIDATED LOCAL CHECKPOINT
+
+- The repeated ~70 s `condenser-high-backpressure` trip was traced upstream to the current-v2 operating seed rather than to the thermodynamic resolver: only the direct 20% coolant heat-deposition share reached the coolant, primary circulation was approximately 0.07 kg/s, while the drum supplied approximately 13 kg/s of steam and slowly depleted its internal-energy inventory.
+- Enables conservative fuel/structure-to-coolant thermal links for current sustained-operation seeds so the 80% fission heat deposited in explicit solid inventories returns through the canonical heat-transfer owner instead of remaining trapped in the solids.
+- Reduces current-v2 primary hydraulic resistances to establish matched circulation, and retunes only current-v2 initial steam-line pressures/temperatures and control-valve bias to the corrected operating point. Historical v1 seeds and all protection thresholds remain unchanged.
+- User validation: exact 300-second long-run passed in 2m 07s; explicit 60-second synchronization journey passed; build 0 warnings / 0 errors; ordinary suite 895 passed, 11 explicit skipped, 0 failed.
+- The earlier A.2 condenser-capacity headroom remains present in the current-v2 source but is no longer identified as the root-cause correction. Its independent physical necessity remains a Phase C evidence question.
+
+## M10.9.4.1-A.3 — Reference plant scale evidence and provisional direction — CANDIDATE
+
+- Adds an explicit test-only `ReferencePlantScaleAudit` layered on the pending A.2 source without adding another production-physics change.
+- Freezes the current hybrid values: 1,000 MW generator nameplate, 1,000 kg·m² rotor, 5 MW request, 150 rpm full-load droop and 10 MW synchronizing/frequency-damping coefficients.
+- Derives 49.348 MJ stored rotor energy, `H = 0.049348 s` at the configured nameplate, `H = 4.934802 s` at a 10 MW educational reference, 0.75 rpm current droop displacement and approximately 30.396 rpm/s per MW local acceleration scale.
+- Publishes `REFERENCE_PLANT_SCALE_EVIDENCE.md` and provisionally favors a coordinated reduced-scale educational-unit migration while explicitly prohibiting a one-line nameplate correction.
+- No `src/` file, seed, solver, controller, protection, timestep, replay schema or physical coefficient is changed beyond the already pending A.2 candidate. Local build/test remains required.
+
 ## M10.9.4.1-A.2 Hotfix 1 — Condenser installed-capacity headroom / per-second trip evidence — CANDIDATE
 
 - Confirms the repeated 300-second audit failure is not intermittent: the only automatic function capable of producing the observed `TurbineTrip | GeneratorTrip` at ~70 s with rotor/frequency inside bounds is `condenser-high-backpressure` crossing its unchanged 30 kPa measured threshold.

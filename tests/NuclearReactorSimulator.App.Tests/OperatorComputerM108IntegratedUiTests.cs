@@ -77,13 +77,12 @@ public sealed class OperatorComputerM108IntegratedUiTests
     }
 
     [Fact]
-    public void Terminal_AlwaysShowsRuntimeStepAlarmSignalAndProtectionSummaryAboveScrollablePageContent()
+    public void Terminal_DoesNotDuplicateTheShellStepAboveScrollablePageContent()
     {
         var document = LoadTerminal();
         var bindings = new[]
         {
             "{Binding RuntimeStateText}",
-            "{Binding LogicalStepText}",
             "{Binding AlarmStatusText}",
             "{Binding SignalStatusText}",
             "{Binding ProtectionStatusText}",
@@ -106,6 +105,10 @@ public sealed class OperatorComputerM108IntegratedUiTests
                 element => element.Name.LocalName == "TextBlock"
                     && (string?)element.Attribute("Text") == binding);
         }
+
+        Assert.DoesNotContain(
+            fixedSummary.Descendants(),
+            static element => (string?)element.Attribute("Text") == "{Binding LogicalStepText}");
     }
 
     [Fact]

@@ -126,3 +126,31 @@ canonical exhaust node
 `MainSteamNetworkSolver` retains its original three-argument API for validated M4.1 behavior and adds a backward-compatible supplemental-source-term overload for M4.2 and later turbine-island phases. All thermofluid balances still compose before one `PlantNetworkOrchestrator` integration.
 
 See `docs/TURBINE_EXPANSION_AND_ROTOR.md` and ADR 0033.
+
+
+## M10.9.4.1-B.2 source-side ownership — locally validated
+
+The temporary Hotfix 16 current-v2 demand closure in `MainSteamNetworkSolver` was removed in B.2 and the user confirmed compilation/tests passed locally. The main-steam solver no longer calculates drum supply as a function of committed main-steam-line flow.
+
+For explicit current-v2 profiles, steam creation/availability is owned upstream by the steam-drum source closure. `MainSteamNetworkSolver` again owns transport/admission composition only:
+
+```text
+drum source physics
+    ↓
+canonical steam-outlet inventory
+    ↓  pressure-driven canonical pipe
+main-steam header
+    ↓
+stop / control / admission valves
+    ↓
+turbine inlet
+```
+
+This restores a one-way dependency: downstream demand may change steam-outlet pressure and therefore indirectly change the source pressure head on later deterministic steps, but downstream flow is not copied back as an invented source term.
+
+Historical/null-source profiles remain explicit compatibility paths. See ADR 0094.
+
+
+## D.1 turbine-boundary phase semantics
+
+The main-steam/admission train still establishes the hydraulic state at `turbine-inlet`. The current-v2 turbine stage then applies its own explicit `VaporMassFractionLimited` policy at the expansion boundary. This prevents a pressure difference from forcing liquid inventory through the stage merely because a hydraulic request exists. Legacy stages retain their historical unrestricted transfer semantics.
