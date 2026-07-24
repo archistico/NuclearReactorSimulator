@@ -204,14 +204,24 @@ public sealed class GeneratorGridSolver
         var frequencySlipHertz = generatorFrequency.Hertz - _definition.Grid.NominalFrequency.Hertz;
         var frequencyCorrectionPower = coupling.FrequencyDampingPowerAtOneHertzSlip * frequencySlipHertz;
         var unconstrainedMechanicalPower = requestedMechanicalPower + phaseCorrectionPower + frequencyCorrectionPower;
-        var maximumMechanicalPower = generator.MaximumElectricalPower / generator.Efficiency.Fraction;
+        var maximumGeneratingMechanicalPower = generator.MaximumElectricalPower / generator.Efficiency.Fraction;
+        var minimumMotoringMechanicalPower = coupling.PowerFlowMode == SynchronousGridPowerFlowMode.Bidirectional
+            ? -(generator.MaximumElectricalPower * generator.Efficiency.Fraction).Watts
+            : 0d;
         var effectiveMechanicalWatts = Math.Clamp(
             unconstrainedMechanicalPower.Watts,
-            0d,
-            maximumMechanicalPower.Watts);
+            minimumMotoringMechanicalPower,
+            maximumGeneratingMechanicalPower.Watts);
+        var currentElectricalMechanicalSpeed = (2d * Math.PI * generatorFrequency.Hertz) / generator.PolePairs;
+        // E.2 uses actual electrical speed near synchronism so commanded signed power does not silently scale with rotor speed.
+        // Until E.3 owns loss-of-synchronism protection, keep a bounded 10% rated-speed floor to avoid a torque singularity.
+        var torqueReferenceSpeed = coupling.PowerFlowMode == SynchronousGridPowerFlowMode.Bidirectional
+            ? Math.Max(
+                0.1d * rotorDefinition.RatedAngularSpeed.RadiansPerSecond,
+                currentElectricalMechanicalSpeed)
+            : rotorDefinition.RatedAngularSpeed.RadiansPerSecond;
 
-        return Torque.FromNewtonMetres(
-            effectiveMechanicalWatts / rotorDefinition.RatedAngularSpeed.RadiansPerSecond);
+        return Torque.FromNewtonMetres(effectiveMechanicalWatts / torqueReferenceSpeed);
     }
 
     private static double SignedShortestPhaseLeadRadians(PhaseAngle generatorPhase, PhaseAngle gridPhase)
@@ -237,7 +247,7 @@ public sealed class GeneratorGridSolver
             .Select(rotorInput =>
             {
                 var generator = _definition.GetGeneratorForRotor(rotorInput.RotorId);
-                return new TurbineRotorInput(
+                return TurbineRotorInput.FromSignedElectromagneticTorque(
                     rotorInput.RotorId,
                     electricalWorking[generator.Id].CommandedElectromagneticTorque,
                     rotorInput.TripCommand);
@@ -274,7 +284,7 @@ public sealed class GeneratorGridSolver
                 generator.PolePairs * rotor.AverageAngularSpeed.RadiansPerSecond * deltaTime.TotalSeconds);
             var finalFrequency = generator.ElectricalFrequencyAt(rotor.FinalAngularSpeed);
             var mechanicalInputPower = working.BreakerFinallyClosed ? rotor.ExternalLoadPower : Power.Zero;
-            var electricalOutputPower = mechanicalInputPower * generator.Efficiency.Fraction;
+            var electricalOutputPower = ResolveSignedElectricalGridPower(mechanicalInputPower, generator.Efficiency);
             var conversionLossPower = mechanicalInputPower - electricalOutputPower;
 
             result.Add(new SynchronousGeneratorSnapshot(
@@ -308,6 +318,11 @@ public sealed class GeneratorGridSolver
 
         return result.OrderBy(static item => item.GeneratorId, StringComparer.Ordinal).ToArray();
     }
+
+    private static Power ResolveSignedElectricalGridPower(Power signedShaftExchangePower, GeneratorEfficiency efficiency)
+        => signedShaftExchangePower.Watts >= 0d
+            ? signedShaftExchangePower * efficiency.Fraction
+            : signedShaftExchangePower / efficiency.Fraction;
 
     private static GeneratorElectricalAudit BuildAudit(IEnumerable<SynchronousGeneratorSnapshot> snapshots)
     {

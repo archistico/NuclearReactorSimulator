@@ -24,6 +24,15 @@ namespace NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Turbine
 public sealed class TurbineExpansionSolverTests
 {
     [Fact]
+    public void TurbineRotorInput_PublicManualLoadContractStillRejectsNegativeTorque()
+    {
+        var exception = Assert.Throws<ArgumentOutOfRangeException>(
+            () => new TurbineRotorInput("rotor", Torque.FromNewtonMetres(-1d)));
+
+        Assert.Equal("externalLoadTorque", exception.ParamName);
+    }
+
+    [Fact]
     public void Step_TransfersSteamToExhaustExtractsShaftPowerAndClosesBothAudits()
     {
         var ratedSpeed = AngularSpeed.FromRevolutionsPerMinute(3_000d);

@@ -179,6 +179,54 @@ public sealed class GeneratorGridSolverTests
     }
 
     [Fact]
+    public void Step_BidirectionalGridCoupling_MotorsSlowConnectedRotorAndKeepsLossesPositive()
+    {
+        var fixture = CreateFixture(
+            2_970d,
+            breakerClosed: true,
+            generatorPhaseDegrees: 0d,
+            gridPhaseDegrees: 0d,
+            gridCouplingSynchronizingPowerMegawatts: 10d,
+            gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
+            generatorMaximumElectricalPowerMegawatts: 10d,
+            gridPowerFlowMode: SynchronousGridPowerFlowMode.Bidirectional,
+            requestedElectricalPowerKilowatts: 300d);
+        var result = new GeneratorGridSolver(fixture.Definition, fixture.ThermodynamicModel)
+            .Step(fixture.PlantState, fixture.TurbineState, fixture.ElectricalState, fixture.Inputs, TimeSpan.FromMilliseconds(1d));
+        var generator = Assert.Single(result.Snapshot.Generators);
+
+        Assert.True(generator.CommandedElectromagneticTorque < Torque.Zero);
+        Assert.True(generator.MechanicalInputPower < Power.Zero);
+        Assert.True(generator.ElectricalOutputPower < Power.Zero);
+        Assert.True(generator.ConversionLossPower > Power.Zero);
+        Assert.True(Math.Abs(generator.ElectricalOutputPower.Megawatts) > Math.Abs(generator.MechanicalInputPower.Megawatts));
+        Assert.InRange(Math.Abs(result.Snapshot.ElectricalAudit.PowerClosureResidualWatts), 0d, 1e-6d);
+    }
+
+    [Fact]
+    public void Step_GenerationOnlyGridCoupling_StillClampsNegativeCorrectionAtZero()
+    {
+        var fixture = CreateFixture(
+            2_970d,
+            breakerClosed: true,
+            generatorPhaseDegrees: 0d,
+            gridPhaseDegrees: 0d,
+            gridCouplingSynchronizingPowerMegawatts: 10d,
+            gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
+            generatorMaximumElectricalPowerMegawatts: 10d,
+            gridPowerFlowMode: SynchronousGridPowerFlowMode.GenerationOnly,
+            requestedElectricalPowerKilowatts: 300d);
+        var result = new GeneratorGridSolver(fixture.Definition, fixture.ThermodynamicModel)
+            .Step(fixture.PlantState, fixture.TurbineState, fixture.ElectricalState, fixture.Inputs, TimeSpan.FromMilliseconds(1d));
+        var generator = Assert.Single(result.Snapshot.Generators);
+
+        Assert.Equal(Torque.Zero, generator.CommandedElectromagneticTorque);
+        Assert.Equal(Power.Zero, generator.MechanicalInputPower);
+        Assert.Equal(Power.Zero, generator.ElectricalOutputPower);
+        Assert.Equal(Power.Zero, generator.ConversionLossPower);
+    }
+
+    [Fact]
     public void Definition_RejectsGeneratorThatDoesNotCoverCanonicalTurbineRotor()
     {
         var fixture = CreateFixture(3_000d, breakerClosed: false, generatorPhaseDegrees: 0d, gridPhaseDegrees: 0d);
@@ -266,7 +314,10 @@ public sealed class GeneratorGridSolverTests
         bool openCommand = false,
         double terminalVoltageKilovolts = 400d,
         double? gridCouplingSynchronizingPowerMegawatts = null,
-        double? gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts = null)
+        double? gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts = null,
+        double generatorMaximumElectricalPowerMegawatts = 1_000d,
+        SynchronousGridPowerFlowMode gridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly,
+        double requestedElectricalPowerKilowatts = 300d)
     {
         var thermodynamicModel = new PreservingThermodynamicModel();
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
@@ -443,7 +494,7 @@ public sealed class GeneratorGridSolverTests
             "breaker",
             polePairs: 1,
             ElectricPotential.FromKilovolts(400d),
-            Power.FromMegawatts(1_000d),
+            Power.FromMegawatts(generatorMaximumElectricalPowerMegawatts),
             GeneratorEfficiency.FromPercent(98d),
             Frequency.FromHertz(0.2d),
             PhaseAngleDifference.FromDegrees(10d),
@@ -451,7 +502,8 @@ public sealed class GeneratorGridSolverTests
             gridCouplingSynchronizingPowerMegawatts.HasValue
                 ? new SynchronousGridCouplingDefinition(
                     Power.FromMegawatts(gridCouplingSynchronizingPowerMegawatts.Value),
-                    Power.FromMegawatts(gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value))
+                    Power.FromMegawatts(gridCouplingFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value),
+                    gridPowerFlowMode)
                 : null);
         var definition = new GeneratorGridSystemDefinition("electrical", feedwater, grid, new[] { generator });
 
@@ -484,7 +536,7 @@ public sealed class GeneratorGridSolverTests
                 new SynchronousGeneratorInput(
                     "generator",
                     ElectricPotential.FromKilovolts(terminalVoltageKilovolts),
-                    Power.FromKilowatts(300d),
+                    Power.FromKilowatts(requestedElectricalPowerKilowatts),
                     closeCommand,
                     openCommand),
             });

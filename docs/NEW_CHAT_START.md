@@ -1,10 +1,14 @@
-# Current bootstrap override — M10.9.4.1-D.3
+# Current bootstrap override — M10.9.4.1-E.2 Hotfix 1
 
-Use the current D.3 audit candidate cumulatively on the locally validated D.1 + D.2 Hotfix 1 checkpoint. D.1 and D.2 Hotfix 1 are locally validated. D.3 is the active audit-only governor/actuator tracking gate. Do not add actuator-position tracking anti-windup unless `scripts\run-turbine-governor-actuator-tracking-audit.cmd` reaches the documented material-integral-excursion trigger.
+Use this E.2 Hotfix 1 candidate as the active continuation tree only after confirming it is the package under test. D.1–D.3 are locally validated and Phase D is closed; the user selected the reduced-scale educational identity in E.1. E.2 migrates only the current-v2 sustained reference profiles to 10 MWe, keeps 5 MWe as the 50% normal point, preserves the existing 5 MWe droop offset with a 1.5 rpm full-load rise, enables signed bidirectional generator/grid coupling and signed electrical import/export, and migrates HMI/load limits to the 10 MWe scale. Legacy v1 remains unchanged. E.2 local validation is pending; do not start E.3 protections until E.2 is green.
+
+# Current bootstrap override — M10.9.4.1-E.1
+
+Use the user-supplied `M10.9.4.1-D.3 validated` tree as the authoritative continuation base. D.1–D.3 are locally validated. D.3 measured 23.418 pp maximum governor-command/valve-position lag with only 0.134 pp integral excursion, so do not add tracking anti-windup. The PLANT schematic rework in that validated tree is authoritative. E.1 accepts the 10 MWe reduced-scale educational target but changes no runtime constants. The next implementation is E.2: coordinated 10 MWe current-v2 migration plus signed bidirectional generator/grid coupling, followed by E.3 protections only after those states are validated.
 
 # Previous bootstrap note — M10.9.4.1-D.1
 
-Use the user-supplied consolidated `M10.9.4.1_nuova` tree as the source base. D.1 and D.2 Hotfix 1 are locally validated; D.3 governor/actuator tracking evidence is the active audit candidate: current-v2 turbine stage admission is vapor-mass-fraction limited; legacy stage admission remains unrestricted. Do not add actuator-position tracking anti-windup unless the D.3 material-integral-excursion gate is triggered. Keep the D.2 authority evidence as the basis for any future admission-law retuning.
+Use the user-supplied `M10.9.4.1-D.3 validated` tree as the authoritative source base. D.1–D.3 are locally validated; no D.3.1 tracking anti-windup is justified. E.1 accepts the 10 MWe reduced-scale target without changing active runtime constants. E.2 is the next coordinated migration. Keep D.2 authority evidence as the basis for any later admission-law retuning.
 
 # New Chat Start — Nuclear Reactor Simulator
 
@@ -54,7 +58,7 @@ We are continuing the **Nuclear Reactor Simulator** project.
 1. Validate M10.9.4.1-B.3 through clean build, ordinary suite, focused protection/HMI regressions, 60-second journeys and the 300-second operational-envelope audit.
 2. Close Phase B if B.3 remains green; keep general node pressure/design-envelope diagnostics tracked separately rather than mixing them into drum protection.
 3. Complete remaining Phase B diagnostics, then add low-drum-level protection only after inventory semantics are physically closed.
-4. M10.9.4.1 continuation: use the user-supplied consolidated A/B/C base. Phase D has started; D.1 turbine admission phase-policy closure and D.2 Hotfix 1 authority evidence are locally validated; D.3 governor/actuator tracking evidence is the active audit candidate. Keep the earlier wall-clock performance-budget observation tracked for the later numerical/performance gate.
+4. M10.9.4.1 continuation: use the user-supplied consolidated A/B/C base. Phase D is locally validated and closed. E.1 accepts the 10 MWe reduced-scale target without runtime changes; E.2 is the next coordinated runtime migration. Keep the earlier wall-clock performance-budget observation tracked for the later numerical/performance gate.
 5. M10.9.4.1-D turbine admission and governor authority.
 6. M10.9.4.1-E generator/grid scale and bidirectional coupling.
 7. M10.9.4.1-F relief/bypass with choked flow.
@@ -138,4 +142,4 @@ The Hotfix 14 ordinary suite is locally green. Long gameplay exposed a second mo
 
 ## M10.9.4.1-C.2 authoritative continuation
 
-The user supplied a consolidated M10.9.4.1 source tree after additional local changes and explicitly requested continuation at Phase D. Treat that tree as the source base. D.1 and D.2 Hotfix 1 are locally validated; D.3 governor/actuator tracking evidence is the active audit candidate; do not add actuator-position tracking anti-windup unless the D.3 gate is triggered; any later valve/stage retuning must remain evidence-based. The earlier 300-second wall-clock performance-budget observation remains tracked separately.
+The user supplied a consolidated M10.9.4.1 source tree after additional local changes and explicitly requested continuation at Phase D. Treat that tree as the source base. D.1–D.3 are locally validated; D.3 does not justify tracking anti-windup. E.1 accepts the 10 MWe scale target without runtime changes; E.2 is next. Any later valve/stage retuning must remain evidence-based. The earlier 300-second wall-clock performance-budget observation remains tracked separately.

@@ -1,3 +1,5 @@
+> **M10.9.4.1-E.2 candidate:** the user accepted the reduced-scale educational identity. Current-v2 sustained profiles now target a coordinated 10 MWe nameplate with a 5 MWe normal 50% point, preserved 0.75 rpm droop displacement at 5 MWe, signed bidirectional generator/grid coupling and signed HMI power ranges. Legacy v1/default profiles remain historical. Local validation is pending.
+
 > **Current development:** M10.9.4.1-D.1 candidate on the user-supplied consolidated continuation base. Current-v2 turbine admission is vapor-mass-fraction limited; D.2 valve/governor authority evidence is next.
 
 > **Current development checkpoint:** M10.9.4.1-D.1 and D.2 Hotfix 1 are locally validated. M10.9.4.1-D.3 governor/actuator tracking evidence is the active audit-only candidate; see `docs/TURBINE_GOVERNOR_ACTUATOR_TRACKING_EVIDENCE.md`.

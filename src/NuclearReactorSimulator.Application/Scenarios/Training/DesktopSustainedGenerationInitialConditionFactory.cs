@@ -2,6 +2,7 @@ using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
+using NuclearReactorSimulator.Domain.Physics.Electrical;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
 
@@ -69,12 +70,14 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             includeEnhancedSecondaryProtections: true,
             secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
-            governorFullLoadSpeedReferenceRiseRpm: 150d,
+            governorFullLoadSpeedReferenceRiseRpm: 1.5d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             steamDrumSteamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
             includeCoreThermalCoupling: true,
             primaryOperationalFlowDisplayLagSeconds: 0.5d,
             initialSteamDrumLiquidLevelFraction: 0.5d,
             useVaporFractionLimitedTurbineAdmission: true,
+            generatorMaximumElectricalPowerMegawatts: 10d,
+            generatorGridPowerFlowMode: SynchronousGridPowerFlowMode.Bidirectional,
             deterministicSeedStepCount: 2);
 }

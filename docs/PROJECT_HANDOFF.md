@@ -1,6 +1,10 @@
+# Current continuation override — M10.9.4.1-E.2 Hotfix 1
+
+Use this tree as the E.2 Hotfix 1 candidate built on the user-validated D.3 baseline plus accepted E.1 scale decision. Phase D is closed without tracking anti-windup. The user explicitly selected the reduced-scale educational identity. E.2 applies a 10 MWe current-v2 nameplate, keeps 5 MWe as the normal 50% point, preserves the validated 0.75 rpm droop displacement at 5 MWe by using a 1.5 rpm full-load rise, enables signed bidirectional generator/grid coupling, positive conversion losses in generation and motoring, signed -10..+10 MWe HMI ranges and a 10 MWe load-request clamp. Legacy v1 profiles remain historical. E.2 is not validated until local build, ordinary suite and explicit 60/300-second gates pass. E.3 protections remain deferred.
+
 # Current continuation override — M10.9.4.1-D.2
 
-D.1 and D.2 Hotfix 1 are locally validated. D.3 is the active **audit-only** governor/actuator tracking candidate; it changes no production physics or controller law. The current-v2 28% control-valve seed has materially more theoretical authority than the older 46% audit point, but authority compresses strongly above ~60% opening. D.2 authority evidence is now validated as an evidence baseline. Run `scripts\run-turbine-governor-actuator-tracking-audit.cmd` for D.3 before adding any actuator-position tracking anti-windup.
+D.1 and D.2 Hotfix 1 are locally validated. D.3 is locally validated and no D.3.1 anti-windup change is required; E.1 is the accepted scale-target checkpoint; it changes no production physics or controller law. The current-v2 28% control-valve seed has materially more theoretical authority than the older 46% audit point, but authority compresses strongly above ~60% opening. D.2 authority evidence is now validated as an evidence baseline. The validated D.3 audit measured 23.418 pp maximum lag and 0.134 pp integral excursion; do not add actuator-position tracking anti-windup unless future physics changes invalidate that evidence.
 
 See `TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`, ADR 0100 and `M10_9_4_1_D2_VALIDATION_CHECKLIST.md`.
 
@@ -11,7 +15,7 @@ See `TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`, ADR 0100 and `M10_9_4_1_D2_VALIDA
 
 The user supplied `NuclearReactorSimulator_M10.9.4.1_nuova.zip` as the authoritative continuation source and requested development to resume at Phase D. D.1 adds explicit turbine admission phase ownership: current-v2 sustained profiles use `VaporMassFractionLimited`, legacy definitions remain `LegacyUnrestricted`, pure liquid cannot cross the stage as a zero-work bypass, and wet-steam quality is not applied twice to total shaft work. No valve/stage resistance or governor tuning is changed yet.
 
-D.2 Hotfix 1 is locally validated. D.3 is the active audit-only candidate and measures whether rate-limited valve travel produces material integral accumulation before any tracking correction is allowed. The historical 300-second wall-clock performance-budget observation remains tracked for the later performance/numerical gate.
+D.2 Hotfix 1 is locally validated. D.3 is locally validated: 23.418 pp maximum command/position lag produced only 0.134 pp integral excursion, so no tracking correction is justified. E.1 accepts the 10 MWe scale target and E.2 is the next coordinated runtime migration. The historical 300-second wall-clock performance-budget observation remains tracked for the later performance/numerical gate.
 This is the **authoritative continuity checkpoint** for restarting the project in a new conversation.
 
 ## 1. Exact current truth
@@ -84,7 +88,7 @@ The earlier A.2 condenser-capacity headroom remains in current-v2 but is no long
 
 **M10.9.4.1-C.2 is locally validated. Current development candidate: C.2 Hotfix 1.** The user observed strong 10 ms step-to-step variation in raw current-v2 primary flow diagnostics and difficulty understanding why a generator did not become synchronizable again after opening the breaker. Hotfix 1 does not retune the validated primary hydraulics: it adds 0.5 s deterministic presentation instrumentation for operator-facing primary flows and makes zero-slip/out-of-phase re-synchronization guidance explicit. The underlying raw hydraulic chatter remains a numerical-hardening item for the later timestep/stiffness decision gate.
 
-**Superseded continuation note:** the earlier C.2 Hotfix 2 package reached the 300-second journey's final performance assertion without an earlier physics failure but exceeded the then-current wall-clock budget on one workstation. The user has since supplied a consolidated `M10.9.4.1_nuova` source tree and explicitly resumed development at Phase D. The wall-clock observation remains tracked for the performance/numerical gate; D.1 and D.2 Hotfix 1 are locally validated; D.3 governor/actuator tracking evidence is now the active audit candidate.
+**Superseded continuation note:** the earlier C.2 Hotfix 2 package reached the 300-second journey's final performance assertion without an earlier physics failure but exceeded the then-current wall-clock budget on one workstation. The user has since supplied a consolidated `M10.9.4.1_nuova` source tree and explicitly resumed development at Phase D. The wall-clock observation remains tracked for the performance/numerical gate; D.1 and D.2 Hotfix 1 are locally validated; D.3 governor/actuator tracking evidence is locally validated and closes without tracking anti-windup; E.1 accepts the 10 MWe reduced-scale educational target without changing runtime constants.
 
 **Validation order:** `docs/M10_9_4_1_C2_VALIDATION_CHECKLIST.md`, then the ordinary suite and explicit 60/300-second gates required by that checklist.
 
@@ -298,4 +302,4 @@ The user-supplied consolidated continuation base contains the accumulated Phase-
 
 ## M10.9.4.1-D.3 current audit gate
 
-D.1 admission phase-policy closure and D.2 Hotfix 1 authority evidence are locally validated. D.3 changes no production law: it measures controller-command versus committed control-valve position during a canonical +50 rpm / restore disturbance. A >=5 percentage-point lag must be exercised; >=2 percentage points of integral excursion while materially lagged triggers a separate D.3.1 tracking anti-windup correction. Otherwise D.3 closes evidence-only.
+D.1 admission phase-policy closure and D.2 Hotfix 1 authority evidence are locally validated. D.3 is locally validated: the audit exercised 23.418 percentage points of command/position lag and measured only 0.134 percentage points of integral excursion, below the 2 pp correction gate. No D.3.1 tracking anti-windup is introduced. E.1 accepts the 10 MWe reduced-scale target without changing production constants; E.2 performs the coordinated migration.

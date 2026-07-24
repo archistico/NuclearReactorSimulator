@@ -4,6 +4,7 @@ using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Training;
 using NuclearReactorSimulator.Domain.Physics.Control.Alarms;
 using NuclearReactorSimulator.Domain.Physics.Control.Protection;
+using NuclearReactorSimulator.Domain.Physics.Electrical;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Condenser;
@@ -46,6 +47,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             .CondensateFeedwaterSystem.CondenserSystem.CoolingBoundaries);
         Assert.Null(legacyCoolingDefinition.MaximumInstalledHeatRejectionPower);
         var legacyGeneratorDefinition = Assert.Single(legacyEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
+        Assert.Equal(1_000d, legacyGeneratorDefinition.MaximumElectricalPower.Megawatts, 12);
         Assert.Null(legacyGeneratorDefinition.GridCoupling);
         Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
         Assert.False(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
@@ -134,8 +136,10 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         var currentGeneratorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
         var gridCoupling = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridCouplingDefinition>(
             currentGeneratorDefinition.GridCoupling);
+        Assert.Equal(10d, currentGeneratorDefinition.MaximumElectricalPower.Megawatts, 12);
         Assert.Equal(10d, gridCoupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
         Assert.Equal(10d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
+        Assert.Equal(SynchronousGridPowerFlowMode.Bidirectional, gridCoupling.PowerFlowMode);
         Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("condensate-pump").HasDischargeCheckValve);
         Assert.True(currentEngine.CurrentState.PlantDefinition.PlantDefinition.GetPump("feedwater-pump").HasDischargeCheckValve);
         Assert.Equal(
@@ -171,7 +175,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             currentEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
         Assert.Equal("speed-control", currentGovernorDroop.SpeedControllerId);
         Assert.Equal("generator", currentGovernorDroop.GeneratorId);
-        Assert.Equal(150d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
+        Assert.Equal(1.5d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
 
         var currentInstrumentation = currentEngine.CurrentState.InstrumentationState.Definition;
         Assert.Equal(

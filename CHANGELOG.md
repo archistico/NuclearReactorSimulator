@@ -1,3 +1,33 @@
+# M10.9.4.1-E.2 Hotfix 1 — Signed generator torque seam compatibility — CANDIDATE
+
+- Fixes the E.2 bidirectional-motoring failure where `GeneratorGridSolver` correctly produced negative electromagnetic torque but the historical public `TurbineRotorInput` M4.2 contract rejected all negative external-load torque before the rotor solver could apply it.
+- Preserves the public/manual legacy contract: direct `TurbineRotorInput` construction still rejects negative load torque.
+- Adds an internal generator/grid-only signed electromagnetic torque seam. Positive torque still resists the rotor; negative torque represents grid motoring and assists rotor rotation.
+- `GeneratorGridSolver` now uses that explicit internal seam when rewriting rotor inputs, allowing E.2 bidirectional current-v2 coupling to reach the already sign-consistent turbine rotor balance and electrical loss accounting.
+- Adds a regression proving the public legacy input contract remains non-negative. The existing E.2 motoring test remains the end-to-end regression for negative torque, negative shaft/electrical exchange, positive losses and audit closure.
+- No E.2 scale values, droop, grid stiffness, HMI ranges, protections, turbine admission law, replay schema or legacy generator power-flow policy are retuned.
+
+# M10.9.4.1-E.2 — Coordinated 10 MWe Runtime Migration & Bidirectional Generator/Grid Coupling — CANDIDATE
+
+- Applies the user-accepted reduced-scale educational identity to the two current-v2 sustained reference profiles: generator nameplate 10 MWe, normal sustained point 5 MWe = 50% load, legacy v1 profiles unchanged at their historical defaults.
+- Renormalizes current-v2 governor droop from 150 rpm full-load rise to 1.5 rpm full-load rise so the already validated 5 MWe operating point retains the same 0.75 rpm breaker-closed droop displacement during the scale migration.
+- Adds versioned `SynchronousGridPowerFlowMode`; legacy coupling defaults to `GenerationOnly`, while current-v2 opts into `Bidirectional`.
+- Bidirectional coupling now permits signed motoring torque, uses current electrical speed as the torque power reference, clamps generating and motoring shaft power consistently with the 10 MWe electrical nameplate and 98% efficiency, and reports signed electrical export/import with positive conversion loss in both directions.
+- Retains the existing 10 MW synchronizing correction and 10 MW/Hz frequency-damping stiffness explicitly rather than rescaling them by ratio alone; their dynamic adequacy remains a validation item.
+- HMI generator and gross electrical-output scales become signed -10..+10 MWe for bidirectional current-v2 profiles; LOAD RAISE/LOWER remains 5 MWe per accepted command and clamps at the new 10 MWe nameplate.
+- Adds current-v2/legacy scale-contract regressions, bidirectional motoring/loss-accounting tests, HMI/load-clamp tests, ADR 0103 and an E.2 validation checklist.
+- Reverse-power, supervised underfrequency and loss-of-synchronism protection remain deferred to E.3 after E.2 is locally validated.
+
+# M10.9.4.1-E.1 — Reference Plant Scale Target Decision — CANDIDATE
+
+- Records user validation of D.3: build/test gates green; dedicated governor/actuator audit 3/3 green; maximum command/position lag 23.418 pp with only 0.134 pp integral excursion, so D.3 closes without tracking anti-windup.
+- Records the validated PLANT schematic refresh as part of the authoritative D.3 base.
+- Accepts a 10 MWe reduced-scale educational reference target for the current-v2 plant, retaining the 1,000 kg·m² rotor at 3,000 rpm (`H ≈ 4.934802 s`) and treating 5 MWe as the normal 50% reference point.
+- E.1 intentionally changes no production constants or `src/` physics. The active runtime remains pre-migration until E.2.
+- Adds `REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md`, ADR 0102 and an E.1 validation checklist.
+- E.2 must migrate nameplate, governor normalization, signed bidirectional coupling, loss accounting, HMI ranges and reference trajectories together; isolated `MaximumElectricalPower` edits remain prohibited.
+- Reverse-power, supervised-underfrequency and loss-of-synchronism protection remain deferred to E.3 after E.2 makes those states physically representable.
+
 # M10.9.4.1-D.3 — Turbine Governor/Actuator Tracking Evidence
 
 ## M10.9.4.1-D.3 Hotfix 1 — Pre-synchronization governor-tracking audit stimulus

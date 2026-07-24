@@ -40,9 +40,11 @@ public sealed record FullPlantPerformanceDiagnostics(
             electrical,
             audit.CondenserHeatRejectionPower,
             audit.GeneratorConversionLossPower,
-            RatioOrNull(electrical.Watts, reactorThermal.Watts),
+            electrical.Watts > 0d ? RatioOrNull(electrical.Watts, reactorThermal.Watts) : null,
             RatioOrNull(shaft.Watts, reactorThermal.Watts),
-            RatioOrNull(electrical.Watts, generatorMechanical.Watts),
+            electrical.Watts > 0d && generatorMechanical.Watts > 0d
+                ? RatioOrNull(electrical.Watts, generatorMechanical.Watts)
+                : null,
             reactorThermal.Watts > 0d && electrical.Watts > 0d
                 ? reactorThermal.Watts / electrical.Watts
                 : null);

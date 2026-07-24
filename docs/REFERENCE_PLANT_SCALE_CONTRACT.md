@@ -2,9 +2,9 @@
 
 ## Status
 
-**PROVISIONAL ENGINEERING DIRECTION — M10.9.4.1-A.3; NO SCALE CONSTANT CHANGED**
+**ACCEPTED SCALE TARGET — M10.9.4.1-E.1; PRODUCTION MIGRATION PENDING E.2**
 
-This document does not itself change constants. A.2 changes condenser capacity headroom only. A.3 adds reproducible electromechanical scale evidence and provisionally favors a reduced-scale educational unit, but implementation remains gated by A.2 validation and an accepted coordinated migration plan.
+This document now records the accepted scale direction for the current-v2 educational reference plant. E.1 changes no production constants; the coordinated runtime migration is deferred to E.2.
 
 ## Problem
 
@@ -34,25 +34,25 @@ The current-v2 definitions imply:
 
 These values are frozen by `ReferencePlantScaleAuditTests` and fully tabulated in `REFERENCE_PLANT_SCALE_EVIDENCE.md`.
 
-## Provisional direction
+## Accepted direction
 
-Static evidence favors **Option B — reduced-scale educational unit**, because the present rotor yields a conventional multi-second inertia constant near a 10 MW reference and the turbine/condenser path is already low-megawatt in scale. This is not authorization to change `MaximumElectricalPower` alone. Nameplate, inertia, droop, grid coupling, protections, UI ranges and versioned baselines must migrate together.
+**The reduced-scale educational unit is accepted.** The target current-v2 reference generator is 10 MWe, retaining the existing 1,000 kg·m² rotor and 3,000 rpm rated speed. The normal sustained 5 MWe point becomes 50% load. This is still not authorization to change `MaximumElectricalPower` alone: E.2 must migrate nameplate, governor normalization, bidirectional grid coupling, HMI ranges and versioned trajectory evidence together. See `REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md`.
 
-## Decision to make
+## Decision record
 
-Confirm or reject the provisional reduced-scale direction and document one coherent interpretation:
+The reduced-scale direction is accepted. The alternatives below are retained as the decision history:
 
-### Option A — full-scale unit at very low load
+### Rejected alternative — full-scale unit at very low load
 
 The reference generator remains a nominal 1 GW-class machine operating at approximately 0.5% load. The rotor inertia, turbine/condenser capacity, droop policy and low-load operating envelope must then be scaled consistently with that interpretation.
 
-### Option B — reduced-scale educational unit
+### Accepted direction — reduced-scale educational unit
 
 The reference plant becomes an intentionally scaled approximately 5–10 MWe trainer. Generator nameplate power, rotor inertia, turbine/condenser capacities, protection ranges and performance terminology must be consistently rescaled while retaining dimensionally correct laws.
 
 A hybrid interpretation is not acceptable unless every non-geometric scaling rule is explicit.
 
-## Evidence required before decision
+## Evidence used for the decision
 
 - effective inertia constant at the current operating point;
 - rotor acceleration/deceleration under known torque imbalance;
@@ -78,11 +78,4 @@ A scale decision may require coordinated changes to:
 
 ## Gate
 
-No nameplate, inertia, droop or synchronizing-limit correction may be promoted until:
-
-- A.2 validation evidence is available;
-- turbine capability and controlled rotor-response evidence are recorded;
-- the provisional reduced-scale direction is formally accepted or rejected;
-- a coordinated versioned migration plan is accepted.
-
-Changing only `MaximumElectricalPower` remains explicitly prohibited.
+The direction decision is closed in E.1. Production constants remain unchanged until E.2 completes a coordinated versioned migration. Changing only `MaximumElectricalPower` remains explicitly prohibited. E.2 must include signed bidirectional generator/grid coupling and must revalidate governor normalization, HMI ranges, synchronization and sustained trajectories before promotion.

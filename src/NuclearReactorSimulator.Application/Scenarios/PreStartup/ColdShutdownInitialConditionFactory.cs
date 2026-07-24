@@ -126,6 +126,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? primaryOperationalFlowDisplayLagSeconds = null,
         double? initialSteamDrumLiquidLevelFraction = null,
         bool useVaporFractionLimitedTurbineAdmission = false,
+        double generatorMaximumElectricalPowerMegawatts = 1_000d,
+        SynchronousGridPowerFlowMode generatorGridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly,
         int deterministicSeedStepCount = 1)
     {
         if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
@@ -190,7 +192,9 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             includeCoreThermalCoupling,
             primaryOperationalFlowDisplayLagSeconds,
             initialSteamDrumLiquidLevelFraction,
-            useVaporFractionLimitedTurbineAdmission);
+            useVaporFractionLimitedTurbineAdmission,
+            generatorMaximumElectricalPowerMegawatts,
+            generatorGridPowerFlowMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -276,7 +280,9 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool includeCoreThermalCoupling,
         double? primaryOperationalFlowDisplayLagSeconds,
         double? initialSteamDrumLiquidLevelFraction,
-        bool useVaporFractionLimitedTurbineAdmission)
+        bool useVaporFractionLimitedTurbineAdmission,
+        double generatorMaximumElectricalPowerMegawatts,
+        SynchronousGridPowerFlowMode generatorGridPowerFlowMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -475,14 +481,28 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 initialPrimaryLiquidCompressionFraction,
                 "Operational seed primary-liquid compression fraction must be finite and between 0 and 0.005.");
         }
+        if (!double.IsFinite(generatorMaximumElectricalPowerMegawatts) || generatorMaximumElectricalPowerMegawatts <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(generatorMaximumElectricalPowerMegawatts),
+                generatorMaximumElectricalPowerMegawatts,
+                "Generator maximum electrical power must be finite and greater than zero.");
+        }
+        if (!Enum.IsDefined(generatorGridPowerFlowMode))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(generatorGridPowerFlowMode),
+                generatorGridPowerFlowMode,
+                "Unsupported generator/grid power-flow mode.");
+        }
         if (!double.IsFinite(initialRequestedElectricalPowerMegawatts)
             || initialRequestedElectricalPowerMegawatts < 0d
-            || initialRequestedElectricalPowerMegawatts > 1_000d)
+            || initialRequestedElectricalPowerMegawatts > generatorMaximumElectricalPowerMegawatts)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(initialRequestedElectricalPowerMegawatts),
                 initialRequestedElectricalPowerMegawatts,
-                "Operational seed requested electrical power must be finite and between 0 and 1000 MWe.");
+                $"Operational seed requested electrical power must be finite and between 0 and {generatorMaximumElectricalPowerMegawatts:0.###} MWe.");
         }
         if (initialRequestedElectricalPowerMegawatts > 0d && !initialGeneratorBreakerClosed)
         {
@@ -865,7 +885,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             "breaker",
             polePairs: 1,
             ElectricPotential.FromKilovolts(400d),
-            Power.FromMegawatts(1_000d),
+            Power.FromMegawatts(generatorMaximumElectricalPowerMegawatts),
             GeneratorEfficiency.FromPercent(98d),
             Frequency.FromHertz(0.2d),
             PhaseAngleDifference.FromDegrees(10d),
@@ -873,7 +893,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             generatorMaximumSynchronizingCorrectionPowerMegawatts.HasValue
                 ? new SynchronousGridCouplingDefinition(
                     Power.FromMegawatts(generatorMaximumSynchronizingCorrectionPowerMegawatts.Value),
-                    Power.FromMegawatts(generatorFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value))
+                    Power.FromMegawatts(generatorFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value),
+                    generatorGridPowerFlowMode)
                 : null);
         var generatorGrid = new GeneratorGridSystemDefinition("electrical", feedwater, grid, new[] { generator });
         var fullPlantDefinition = new IntegratedSecondaryCycleDefinition("secondary-cycle", generatorGrid);
