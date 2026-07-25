@@ -1,10 +1,10 @@
-> **Current continuation candidate:** M10.9.4.1-D.3.2 Hotfix 3 preserves D.3.1 passive rotor loss, D.3.2 admission-train isolation and the uniform PLANT renderer; the loaded desktop main-steam-line resistance is 850 Pa·s²/kg² while synchronization remains 1,000 Pa·s²/kg².
+> **Current continuation candidate:** cumulative M10.9.4.1 D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator turbine-valve station. M10.9.4 is still the validated baseline. Fast gates are green; long-running and manual gates are pending.
 
-# Active continuation — M10.9.4.1-D.3.2 Hotfix 3
+# Active continuation — cumulative M10.9.4.1 D/E/operator-authority candidate
 
-D.1, D.2 and D.2 Hotfix 1 are locally user-validated. D.3.1 added optional current-v2 rotor loss after breaker-open evidence showed indefinite zero-load coasting. D.3.2 made the complete admission train authoritative, corrected the synchronization PI contract and preserved the uniform PLANT schematic. Hotfix 1 was rejected because 30% control bias did not move the bottleneck. Hotfix 2 corrected the stop pressure grade, but local evidence still measured 11.792118 kg/s and 4.349755 MW while the stop-valve head had already risen to 193.421 kPa. Hotfix 3 changes only the loaded desktop main-steam-line resistance from 1,000 to 850 Pa·s²/kg²; synchronization remains at 1,000. Validate build, ordinary suite, both turbine audits, long-running gates and PLANT before deciding on anti-windup or Phase E.
+D.1, D.2 and D.2 Hotfix 1 are locally user-validated. D.3.1 adds current-v2 passive rotor loss; D.3.2 makes the complete admission train authoritative; Hotfix 3 changes only the loaded desktop main-steam-line resistance from 1,000 to 850 Pa·s²/kg². E.1 accepts a 10 MWe current-v2 target and E.2 plus signed-torque Hotfix 1 implements bidirectional generation/motoring. The operator station exposes canonical stop/admission OPEN/CLOSE, control-valve AUTO/MANUAL and explicit manual demand. On 2026-07-25 build, ordinary suite and all focused D/E audits passed. Run long and manual gates before promotion or E.3.
 
-# Superseded D.3 audit bootstrap — see active D.3.2 Hotfix 3 override above
+# Superseded D.3 audit bootstrap — retained as historical evidence
 
 D.1, D.2 and D.2 Hotfix 1 are locally user-validated. Use D.3.1 as the active source. D.3 evidence proved that the breaker-open rotor could remain indefinitely near 3301 rpm with zero valve, zero effective steam flow and zero shaft power because no passive load torque existed. D.3.1 adds optional 0.5 MW rated-speed loss only to sustained current-v2 profiles. Do not add tracking anti-windup until the corrected post-loss evidence is reviewed; do not compensate for the current +0.75 rpm per 5 MWe droop displacement before Phase E scale work.
 
@@ -43,28 +43,26 @@ We are continuing the **Nuclear Reactor Simulator** project.
 - The former ~70 s A-audit trip was resolved in the current-v2 operating seed, not by weakening protection. Root cause: only 20% direct coolant heat deposition, ~0.07 kg/s primary circulation, ~13 kg/s drum steam export.
 - Corrected current-v2 seed: conservative fuel/structure→coolant links, matched primary hydraulic resistance, aligned steam-line initial conditions/control-valve bias; v1 seeds and protection thresholds unchanged.
 - User validation: exact 300-second sustained journey **PASSED in 2m 07s**; explicit 60-second synchronization journey **PASSED**; build **0 warnings / 0 errors**; ordinary suite **895 passed / 11 explicit skipped / 0 failed**.
-- A.3 reference-scale evidence remains an open design decision; no one-line nameplate migration is authorized.
+- A.3 is historical pre-migration evidence; E.1 accepted 10 MWe and E.2 implements the coordinated current-v2 migration. Isolated one-line scale edits remain prohibited.
 - M10.9.4.1-B.1 — Steam-Drum Liquid Inventory Closure: **USER VALIDATED LOCALLY** (compilation and tests passed).
 - M10.9.4.1-B.2 — Drum-to-Main-Steam Source Closure: **USER VALIDATED LOCALLY** (compilation and tests passed).
-- Current activity: **M10.9.4.1-D.3.1 — Breaker-Open Rotor Mechanical-Loss Closure**, cumulative over the locally validated D.1/D.2 chain. D.3 evidence showed an open-breaker rotor fixed near 3301 rpm with zero steam torque and zero generator torque. D.3.1 adds optional speed-dependent passive drag to sustained current-v2 profiles, closes energy accounting and requires any overspeed latch to become reset-safe and be explicitly reset before the authority journey continues. The historical 300-second wall-clock budget observation remains open for Phase H.
+- Current activity: **promote the cumulative D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator-valve candidate**. Fast evidence is green: build 0 warnings/errors; ordinary 944 passed / 17 explicit skipped; admission 3/3; governor 2/2; scale/migration 2/2. Remaining: both 60-second journeys, complete operational-envelope audit and manual PLANT/TURBINE/GENERATOR checks. The historical 300-second wall-clock observation remains open for Phase H.
 - B.1 also adds explicit HMI feedback for speed/load references and documents that game penalties are triggered only by accepted manual commands.
 - `SPEED RAISE/LOWER`: ±10 rpm per accepted press. `LOAD RAISE/LOWER`: ±5 MWe per accepted press.
 - M10 closes only after **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**.
 
 ## Approved forward sequence
 
-1. Validate D.3.1 through clean build, ordinary suite, both D.2/D.3 explicit audits and long-running gates.
-2. Confirm that breaker-open speed decays, any overspeed turbine/generator latch reaches its canonical reset-safe thresholds, and `PROTECTION RESET` is accepted before the ±10 rpm authority journey.
-3. Add tracking anti-windup only if the corrected evidence shows material recovery delay attributable to actuator mismatch rather than saturation, protection or plant scale.
-4. Otherwise close Phase D and proceed to M10.9.4.1-E generator/grid scale, inertia and bidirectional coupling as one coordinated contract.
-5. Continue with Phase F relief/bypass and choked flow only after Phase E is validated.
-8. M10.9.4.1-G flow-work and enthalpy transport.
-9. M10.9.4.1-H numerical stiffness decision gate.
-10. M10.9.4.1-I compatibility and engineering hardening.
-11. M10.9.5 Contextual Command Consequence Model.
-12. M10.9.6 Operational Challenge & Energy-Demand Framework.
-13. M10.9.7 Mission & Performance Workstation.
-14. M10.9.8 Integrated Human-Automation-HMI Validation Gate.
+1. Run both explicit 60-second journeys.
+2. Run the complete operational-envelope audit, including the 300-second sustained trajectory and replay/checkpoint cases.
+3. Manually validate PLANT rendering, TURBINE valve target/actual/authority behavior and GENERATOR signed -10..+10 MWe presentation.
+4. Promote D.3.2/E.1/E.2/operator authority only if all gates are green; otherwise patch the smallest canonical owner and restart the fast gate.
+5. Implement E.3 reverse-power, supervised-underfrequency and loss-of-synchronism protection as a separate evidence-first candidate.
+6. Continue with Phase F relief/bypass and choked flow.
+7. Continue with Phase G flow-work and enthalpy transport.
+8. Execute Phase H numerical stiffness decision gate.
+9. Close Phase I compatibility and engineering hardening.
+10. Advance through M10.9.5–M10.9.8; M10 closes only at the integrated validation gate.
 
 ## Why M10.9.4.1 is separate
 
@@ -138,4 +136,4 @@ The Hotfix 14 ordinary suite is locally green. Long gameplay exposed a second mo
 
 ## M10.9.4.1-C.2 authoritative continuation
 
-The user supplied a consolidated M10.9.4.1 source tree after additional local changes and explicitly requested continuation at Phase D. D.1, D.2 and D.2 Hotfix 1 are locally user-validated. D.3 evidence exposed missing breaker-open passive drag; D.3.1 is the active candidate. Do not add tracking anti-windup, retune valve/stage resistance or compensate for the 1,000 MWe scale contract until the corrected D.2/D.3 evidence is reviewed. The earlier 300-second wall-clock performance-budget observation remains tracked separately.
+Historical continuation note: the supplied consolidated source resumed at Phase D, where D.3 evidence exposed missing breaker-open passive drag. That issue is now included in the cumulative candidate together with D.3.2, the accepted/implemented E scale migration and operator valve authority. Tracking anti-windup remains deferred because focused evidence is green without it. The earlier 300-second wall-clock performance-budget observation remains tracked separately.

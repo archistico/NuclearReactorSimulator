@@ -2,7 +2,7 @@
 
 ## Status
 
-Candidate decision implemented in M10.9.4.1-E.2; local validation pending.
+Candidate decision implemented in M10.9.4.1-E.2. Focused scale/migration audit green on 2026-07-25; long-running and manual promotion gates pending.
 
 ## Context
 

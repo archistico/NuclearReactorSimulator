@@ -2,13 +2,28 @@
 
 ## Status
 
-**M10.9.4.1-A.3 — AUDIT-ONLY CANDIDATE; NO SCALE CONSTANT CHANGED**
+**A.3 PRE-MIGRATION EVIDENCE — SUPERSEDED FOR CURRENT-V2 BY E.1/E.2 CANDIDATE**
 
-**Source basis:** M10.9.4.1-A.2 Hotfix 1 candidate.
+**Current source basis:** E.1 accepted target + E.2 bidirectional migration + signed-torque Hotfix 1.
 
-This document makes the current electromechanical scale numerically explicit. It does not declare the current hybrid configuration correct and does not authorize a generator-nameplate, rotor-inertia, droop, coupling or protection change.
+The A.3 tables below preserve the evidence that exposed the old hybrid scale. They are historical pre-migration values, not the current-v2 runtime contract. The current candidate uses 10 MWe, a 5 MWe/50% normal point, 1.5 rpm full-load droop rise and bidirectional signed coupling; see `REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md`.
 
-## Current configured values
+## Current candidate evidence
+
+| Quantity | Current-v2 candidate |
+|---|---:|
+| Generator maximum electrical power | 10 MWe |
+| Normal sustained point | 5 MWe / 50% |
+| Rotor inertia / rated speed | 1,000 kg·m² / 3,000 rpm |
+| Inertia constant | 4.934802 s |
+| Full-load governor reference rise | 1.5 rpm |
+| Droop displacement at 5 MWe | 0.75 rpm |
+| Grid power-flow mode | Bidirectional |
+| Electrical presentation range | -10..+10 MWe |
+
+The focused reference-scale/migration audit passed 2/2 tests on 2026-07-25. Long-running promotion evidence remains pending.
+
+## Historical pre-migration configured values
 
 | Quantity | Current value |
 |---|---:|
@@ -25,7 +40,7 @@ This document makes the current electromechanical scale numerically explicit. It
 | A.2 installed condenser cooling ceiling | 40 MW |
 | A.2 maximum condensation flow | 20 kg/s |
 
-## Derived evidence
+## Historical derived evidence
 
 The audit derives the following values directly from the canonical current-v2 definitions:
 
@@ -45,7 +60,7 @@ The audit derives the following values directly from the canonical current-v2 de
 | Maximum synchronizing correction / current request | 200% | Twice the current 5 MW dispatch |
 | Frequency damping at 0.2 Hz synchronization tolerance | 2 MW | 40% of current requested output |
 
-## Governor authority map under the current normalization
+## Historical governor authority map under the 1,000 MW normalization
 
 | Requested load | Fraction of 1,000 MW nameplate | Droop reference rise |
 |---:|---:|---:|
@@ -82,9 +97,9 @@ A nominal value around 10 MWe is materially closer to the current turbine/conden
 
 Changing only `MaximumElectricalPower` to 10 MW is therefore prohibited.
 
-## Provisional direction
+## Historical provisional direction — resolved by E.1
 
-The static evidence favors **Option B — a reduced-scale educational unit** as the more internally coherent target. This is a provisional engineering direction, not an implemented decision.
+The static evidence favored **Option B — a reduced-scale educational unit**. E.1 subsequently accepted that target and E.2 implemented the coordinated current-v2 candidate.
 
 Before promotion, the project still requires:
 
@@ -103,7 +118,7 @@ Category=OperationalEnvelopeAudit
 Category=ReferencePlantScaleAudit
 ```
 
-The test freezes current values and all derived calculations above. It intentionally does not assert that 1,000 MW or 10 MW is the correct final rating. A future scale migration must change the contract, the evidence document and the test in the same candidate.
+The audit now covers the migrated current-v2 contract and preserved legacy behavior. Any further scale, inertia, droop or coupling change must update the contract, migration plan, evidence and tests in the same candidate.
 
 Run through the complete operational audit:
 

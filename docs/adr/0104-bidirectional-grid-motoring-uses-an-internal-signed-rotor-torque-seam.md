@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4.1-E.2 Hotfix 1 candidate. Local validation pending.
+Accepted for M10.9.4.1-E.2 Hotfix 1 candidate. Focused scale/migration audit green on 2026-07-25; long-running and manual promotion gates pending.
 
 ## Context
 

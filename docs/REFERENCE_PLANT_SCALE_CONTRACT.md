@@ -2,11 +2,22 @@
 
 ## Status
 
-**PROVISIONAL ENGINEERING DIRECTION — M10.9.4.1-A.3; NO SCALE CONSTANT CHANGED**
+**DECISION ACCEPTED IN E.1 — 10 MWe CURRENT-V2 TARGET; E.2 + HOTFIX 1 IMPLEMENTED CANDIDATE**
 
-This document does not itself change constants. A.2 changes condenser capacity headroom only. A.3 adds reproducible electromechanical scale evidence and provisionally favors a reduced-scale educational unit, but implementation remains gated by A.2 validation and an accepted coordinated migration plan.
+This contract records the accepted scale decision. E.2 applies it only to current-v2 sustained profiles; historical/default definitions retain legacy scale and generation-only coupling. The current candidate is focused-audit green but remains unpromoted until the complete long-running and operational-envelope gates pass.
 
-## Problem
+## Current candidate contract
+
+- generator nameplate: 10 MWe;
+- normal sustained point: 5 MWe (50%);
+- rated speed / rotor inertia: 3,000 rpm / 1,000 kg·m²;
+- inertia constant: approximately 4.934802 s;
+- full-load governor reference rise: 1.5 rpm, preserving 0.75 rpm at 5 MWe;
+- current-v2 grid mode: bidirectional; legacy/default: generation-only;
+- current-v2 electrical presentation: -10..+10 MWe;
+- operator requested-load range: 0..10 MWe with the existing 5 MWe command increment.
+
+## Pre-migration problem record
 
 The intended current-v2 5 MWe operating point combines values associated with different apparent plant scales:
 
@@ -38,9 +49,9 @@ These values are frozen by `ReferencePlantScaleAuditTests` and fully tabulated i
 
 Static evidence favors **Option B — reduced-scale educational unit**, because the present rotor yields a conventional multi-second inertia constant near a 10 MW reference and the turbine/condenser path is already low-megawatt in scale. This is not authorization to change `MaximumElectricalPower` alone. Nameplate, inertia, droop, grid coupling, protections, UI ranges and versioned baselines must migrate together.
 
-## Decision to make
+## Decision record
 
-Confirm or reject the provisional reduced-scale direction and document one coherent interpretation:
+E.1 selected Option B. The alternatives below are retained as the decision history:
 
 ### Option A — full-scale unit at very low load
 
@@ -52,7 +63,7 @@ The reference plant becomes an intentionally scaled approximately 5–10 MWe tra
 
 A hybrid interpretation is not acceptable unless every non-geometric scaling rule is explicit.
 
-## Evidence required before decision
+## Evidence required for promotion
 
 - effective inertia constant at the current operating point;
 - rotor acceleration/deceleration under known torque imbalance;
@@ -76,13 +87,14 @@ A scale decision may require coordinated changes to:
 - UI nameplate/range metadata;
 - reference-validation trajectories and versioned seeds.
 
-## Gate
+## Remaining gate
 
-No nameplate, inertia, droop or synchronizing-limit correction may be promoted until:
+The implemented current-v2 migration may not be promoted until:
 
 - A.2 validation evidence is available;
 - turbine capability and controlled rotor-response evidence are recorded;
-- the provisional reduced-scale direction is formally accepted or rejected;
-- a coordinated versioned migration plan is accepted.
+- both explicit 60-second journeys and the 300-second operational-envelope trajectory pass;
+- signed generation/motoring and replay/checkpoint behavior are recorded;
+- HMI and protection-supervision consequences are manually reviewed.
 
 Changing only `MaximumElectricalPower` remains explicitly prohibited.

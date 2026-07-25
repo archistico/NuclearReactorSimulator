@@ -993,7 +993,7 @@ main steam header → STOP → CONTROL → ADMISSION → turbine inlet
 ### CONTROL valve
 
 **Funzione:** regolazione principale dell'ammissione per la velocità/carico secondo il regolatore di velocità e i controller.  
-**Riferimento current-v2:** apertura iniziale del seed di generazione circa **46%**, ma non deve essere trattata come valore universale di esercizio.
+**Riferimento current-v2:** apertura iniziale del seed di generazione circa **28%**, ma non deve essere trattata come valore universale di esercizio.
 
 ### ADMISSION valve
 
@@ -1007,6 +1007,16 @@ main steam header → STOP → CONTROL → ADMISSION → turbine inlet
 **Dinamica current-v2**
 
 Le valvole secondarie hanno corsa finita; il riferimento current-v2 usa una velocità massima di circa **50 punti percentuali al secondo**.
+
+**Comandi operatore nel pannello TURBINE**
+
+- `STOP OPEN` / `STOP CLOSE`: cambiano la richiesta persistente della valvola di intercettazione;
+- `ADMISSION OPEN` / `ADMISSION CLOSE`: cambiano la richiesta persistente della valvola di ammissione;
+- `CONTROL AUTO`: restituisce la control valve al governor;
+- `CONTROL MANUAL`: abilita la richiesta manuale;
+- lo slider `0–100% OPEN` prepara un valore; il comando `APPLY` lo invia al simulatore.
+
+Muovere lo slider da solo non impartisce un comando. Durante la corsa, `TARGET` e posizione reale possono essere diversi. Uno scatto turbina ha priorità: può lasciare visibile la richiesta dell'operatore ma forzare la STOP valve effettiva chiusa. Un interblocco può inoltre bloccare un comando di apertura senza trasferire autorità alla UI.
 
 **Effetti**
 
@@ -2562,6 +2572,17 @@ Le valvole principali del treno sono:
 - admission valve.
 
 Il loro effetto combinato determina quanta massa raggiunge lo stadio turbina.
+
+### VALVE CONTROL STATION
+
+La stazione mostra, per il treno selezionato:
+
+- posizione reale e `TARGET` di STOP, CONTROL e ADMISSION;
+- modo `AUTO / GOVERNOR` oppure `MANUAL` della control valve;
+- slider della richiesta manuale e comando `APPLY`;
+- testo di autorità normale, apertura inibita dalla protezione oppure STOP forzata chiusa da trip.
+
+La posizione reale segue il target con corsa finita. La protezione resta superiore ai comandi normali e non viene aggirata dalla modalità manuale.
 
 ### ROTOR SPEED · MEASURED
 

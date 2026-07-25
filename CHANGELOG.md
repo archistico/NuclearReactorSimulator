@@ -1,3 +1,12 @@
+## M10.9.4.1 cumulative documentation and validation checkpoint — D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator valve station
+
+- Records the operator-facing turbine valve station added after the prior documentation checkpoint: stop/admission OPEN/CLOSE, control-valve AUTO/MANUAL and an explicit bounded manual-demand slider with APPLY.
+- Keeps requested/manual-demand/actual valve positions distinct during finite travel and preserves protection as the later authority that can inhibit opening or force the stop valve closed without erasing the operator lineup.
+- Aligns the M10.9.4.1 milestone, operational hardening plan, roadmap, status, handoff, new-chat brief, scale contract/evidence, limitations register and user manual with the current cumulative source.
+- Records the accepted/implemented current-v2 10 MWe E.1/E.2 migration and signed bidirectional grid coupling while preserving legacy/default generation-only semantics.
+- Records the 2026-07-25 fast gate: build 0 warnings/errors; ordinary suite 944 passed / 17 explicit skipped / 0 failed; turbine-admission audit 3/3; governor-tracking audit 2/2; scale/migration audit 2/2.
+- Does not promote the candidate: both 60-second journeys, the complete operational-envelope audit and manual PLANT/TURBINE/GENERATOR validation remain required.
+
 ## M10.9.4.1-D.3.2 Hotfix 3 — Loaded desktop main-steam capacity rebalance — CANDIDATE
 
 - Uses the second local failure as evidence that the Hotfix 2 stop-valve pressure-grade correction was not the remaining limiting element: the loaded desktop main-steam line still capped the initial series train near 12 kg/s.

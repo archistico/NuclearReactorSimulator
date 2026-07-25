@@ -2,13 +2,13 @@
 
 ## Status
 
-**M10.9.4.1-E.2 — COORDINATED RUNTIME MIGRATION CANDIDATE**
+**M10.9.4.1-E.2 + HOTFIX 1 — IMPLEMENTED CANDIDATE / FOCUSED AUDIT GREEN; LONG PROMOTION GATES PENDING**
 
-E.1 closed the scale-direction decision. E.2 now applies that accepted target to the current-v2 sustained runtime while preserving legacy v1 semantics.
+E.1 closed the scale-direction decision. E.2 applies that accepted target to the current-v2 sustained runtime while preserving legacy v1 semantics; Hotfix 1 carries signed motoring torque through the generator/grid-owned internal rotor seam. On 2026-07-25 the focused scale/migration audit passed 2/2 tests. The candidate still requires both 60-second journeys, the complete operational-envelope audit and manual HMI validation.
 
 ## Accepted target
 
-The current-v2 educational reference plant will migrate to a **10 MWe nominal generator scale**.
+The current-v2 candidate uses a **10 MWe nominal generator scale**.
 
 | Quantity | Accepted target / rule |
 |---|---:|

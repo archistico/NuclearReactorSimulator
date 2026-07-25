@@ -1,6 +1,6 @@
-> **Current continuation candidate:** M10.9.4.1-D.3.2 Hotfix 3. It preserves D.3.1 passive rotor loss, D.3.2 admission-train isolation and the uniform PLANT renderer; only the loaded desktop main-steam-line resistance changes from 1,000 to 850 Pa·s²/kg².
+> **Current continuation candidate:** cumulative M10.9.4.1 D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator turbine-valve station. M10.9.4 remains the validated baseline. Build, ordinary suite and all focused D/E audits are green; long-running and manual gates are pending.
 
-# Current continuation override — M10.9.4.1-D.3.2 Hotfix 3
+# Current continuation override — cumulative M10.9.4.1 D/E/operator-authority candidate
 
 D.1, D.2 and D.2 Hotfix 1 are locally user-validated. D.3 evidence identified missing breaker-open passive deceleration; D.3.1 added optional 0.5 MW rated-speed rotor loss. D.3.2 then closed the discovered pressure-driven-stage bypass of the stop/control/admission train, corrected the synchronization PI contract and restored the uniform PLANT engineering-schematic visual language.
 
@@ -15,7 +15,9 @@ See `TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`, `TURBINE_ROTOR_MECHANICAL_LOSS_CL
 
 The user supplied `NuclearReactorSimulator_M10.9.4.1_nuova.zip` as the authoritative continuation source and requested development to resume at Phase D. D.1 adds explicit turbine admission phase ownership: current-v2 sustained profiles use `VaporMassFractionLimited`, legacy definitions remain `LegacyUnrestricted`, pure liquid cannot cross the stage as a zero-work bypass, and wet-steam quality is not applied twice to total shaft work. D.2 freezes the analytical authority map without production retuning; Hotfix 1 aligns the audit tests with the canonical API. The user confirmed the cumulative tree builds and all tests pass locally.
 
-D.3.1 passive rotor loss and D.3.2 admission-train isolation are included in the active tree. D.3.2 Hotfix 3 is the current candidate and rebalances only the loaded desktop main-steam-line capacity; tracking anti-windup remains deferred until the corrected evidence is reviewed. The historical 300-second wall-clock performance-budget observation remains tracked for the later performance/numerical gate.
+D.3.1 passive rotor loss and D.3.2 admission-train isolation are included in the active tree. D.3.2 Hotfix 3 rebalances only the loaded desktop main-steam-line capacity. E.1/E.2 also migrate current-v2 coherently to 10 MWe and bidirectional grid coupling; Hotfix 1 permits signed motoring torque to reach the rotor through an internal seam. The latest operator station adds typed stop/admission OPEN/CLOSE and control-valve AUTO/MANUAL/manual-demand commands without changing protection priority. Tracking anti-windup remains unnecessary on current focused evidence. The historical 300-second wall-clock observation remains tracked.
+
+Fast gate on 2026-07-25: build 0 warnings/errors; ordinary suite 944 passed / 17 explicit skipped / 0 failed; admission audit 3/3; governor tracking 2/2; scale/migration 2/2. The current candidate is not validated until both 60-second journeys, the complete operational-envelope audit and manual PLANT/TURBINE/GENERATOR checks pass.
 This is the **authoritative continuity checkpoint** for restarting the project in a new conversation.
 
 ## 1. Exact current truth
@@ -46,9 +48,11 @@ M10.9.4.1-B.3 low-inventory diagnostics / low-low drum-level protection — USER
 M10.9.4.1-C.1 condenser phase-change energy closure — USER VALIDATED LOCALLY
         ↓
 M10.9.4.1-C.2 explicit condenser installed-capacity ownership — LOCALLY VALIDATED
-M10.9.4.1-C.2 Hotfix 2 synchronization-seed drum-inventory closure — ACTIVE CANDIDATE
+M10.9.4.1-C.2 Hotfix 2 synchronization-seed drum-inventory closure — SUPERSEDED CHECKPOINT / INCLUDED
         ↓
-M10.9.4.1-C.2 through I Operational Envelope & Numerical Hardening
+M10.9.4.1-D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator valve station — ACTIVE CUMULATIVE CANDIDATE
+        ↓
+M10.9.4.1-E.3 through I Operational Envelope & Numerical Hardening — PLANNED AFTER PROMOTION
         ↓
 M10.9.5 Contextual Command Consequence Model
 M10.9.6 Operational Challenge & Energy-Demand Framework
@@ -58,7 +62,7 @@ M10.9.8 Integrated Human-Automation-HMI Validation Gate
 M10 COMPLETE
 ```
 
-### Current A-resolution / B.1–B.3 + C.1–C.2 locally validated / C.2 Hotfix 2 candidate
+### Historical A-resolution / B.1–B.3 + C.1–C.2 locally validated checkpoint
 
 The earlier 300-second failure near 70 simulated seconds is now understood as an upstream current-v2 seed imbalance, not as a thermodynamic-resolver defect. Only the direct 20% coolant deposition share reached the coolant; the explicit fuel/structure inventories retained the other 80% without a return path, primary circulation was only about 0.07 kg/s, and the drum continued exporting about 13 kg/s of steam until internal energy drifted into the high-backpressure trip.
 
@@ -76,7 +80,7 @@ User validation evidence:
 - build: **0 warnings / 0 errors**;
 - ordinary suite: **895 passed / 11 explicit skipped / 0 failed**.
 
-The earlier A.2 condenser-capacity headroom remains in current-v2 but is no longer treated as the root-cause correction; its independent necessity is deferred to Phase C evidence. A.3 reference-scale evidence remains an open design contract.
+The earlier A.2 condenser-capacity headroom remains in current-v2 but is no longer treated as the root-cause correction; Phase C later made its ownership explicit. A.3 is now the historical pre-migration evidence; E.1 accepted the 10 MWe contract and E.2 implemented the current candidate.
 
 **M10.9.4.1-B.1 is user-validated locally.** It inventory-limits current-v2 demand-balanced liquid recirculation and forbids fabricated liquid recirculation from a fully vaporized drum. It also clarifies the HMI/game contract: penalties apply to accepted manual operator commands, `SPEED ±` changes the speed reference by 10 rpm per accepted press, and `LOAD ±` changes requested load by 5 MWe per accepted press with explicit reference indicators.
 
@@ -86,7 +90,7 @@ The earlier A.2 condenser-capacity headroom remains in current-v2 but is no long
 
 **M10.9.4.1-C.1 is locally user-validated.** The two sustained current-v2 condenser definitions use pressure-resolved saturated-liquid condensate internal energy so condensation can change hotwell energy physically within the existing internal-energy control-volume convention. Legacy definitions preserve their historical rule. C.1 also exposes independent condensation/cooling limit status and margins.
 
-**M10.9.4.1-C.2 is locally validated. Current development candidate: C.2 Hotfix 1.** The user observed strong 10 ms step-to-step variation in raw current-v2 primary flow diagnostics and difficulty understanding why a generator did not become synchronizable again after opening the breaker. Hotfix 1 does not retune the validated primary hydraulics: it adds 0.5 s deterministic presentation instrumentation for operator-facing primary flows and makes zero-slip/out-of-phase re-synchronization guidance explicit. The underlying raw hydraulic chatter remains a numerical-hardening item for the later timestep/stiffness decision gate.
+**Historical C.2 checkpoint:** C.2 is locally validated. C.2 Hotfix 1 did not retune primary hydraulics; it added 0.5 s deterministic operator-facing flow instrumentation and explicit re-synchronization guidance. The raw hydraulic chatter remains a Phase-H numerical-hardening item. This is no longer the active candidate.
 
 **Superseded continuation note:** the earlier C.2 Hotfix 2 package reached the 300-second journey's final performance assertion without an earlier physics failure but exceeded the then-current wall-clock budget on one workstation. The user has since supplied a consolidated `M10.9.4.1_nuova` source tree and explicitly resumed development at Phase D. The wall-clock observation remains tracked for the performance/numerical gate; D.1, D.2 and D.2 Hotfix 1 are locally validated and D.3 tracking evidence is active.
 
@@ -271,9 +275,11 @@ Then manually verify `docs/milestones/M10.9.4.md`.
 
 Do not mark M10.9.4 validated until the user explicitly confirms the normal gate **and** the requested long gameplay test outcome is understood/green.
 
-## 10. Next after validation
+## 10. Next after current-candidate promotion
 
-**M10.9.5 — Contextual Command Consequence Model**.
+1. Implement E.3 protection over already physical signed electrical states: reverse power, supervised underfrequency and loss of synchronism.
+2. Continue M10.9.4.1 with F relief/bypass/choked flow, G enthalpy/flow-work migration, H numerical stiffness and I compatibility/engineering hardening.
+3. Advance to **M10.9.5 — Contextual Command Consequence Model** only after the complete M10.9.4.1 acceptance gate closes.
 
 ## 11. Delivery convention
 

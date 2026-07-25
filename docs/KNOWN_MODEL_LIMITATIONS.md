@@ -6,9 +6,9 @@ This register distinguishes deliberate educational simplifications, unresolved d
 
 ## A. Active investigation in M10.9.4.1
 
-### A1. Sustained-generation seed equilibrium is unproved
+### A1. Sustained-generation seed equilibrium remains a promotion gate
 
-The current seed is manually parameterized and deterministic, but the 300-second audit has already shown a protection trip near 70 seconds. It must not be described as a proven steady state until final-window slopes and full inventory trajectories are within an accepted equilibrium budget.
+The historical current-v2 seed produced a protection trip near 70 seconds; that root cause was corrected by conservative solid-to-coolant heat return, matched primary circulation and aligned steam-path initial conditions. A corrected 300-second journey has passed previously, but the present cumulative D.3.2/E.2/operator-control candidate must re-run the complete trajectory. It must not be described as a proven steady state until current final-window slopes and full inventory trajectories are within the accepted equilibrium budget.
 
 ### A2. Condenser limiter ownership and long-horizon headroom
 
@@ -26,9 +26,9 @@ The inherited model allowed pressure-driven stage flow to remain positive for li
 
 D.3 evidence showed a disconnected rotor fixed near 3301 rpm after the control valve closed because both generator electromagnetic torque and passive mechanical losses were zero. D.3.1 adds an optional speed-dependent rotor-loss law to sustained current-v2 profiles. The 0.5 MW rated-speed value and its interaction with low-load headroom remain candidate behavior until local long-running validation passes.
 
-### A5. Generator/grid coupling is one-directional
+### A5. Bidirectional generator/grid coupling is candidate behavior
 
-Negative electromagnetic power/motoring is not represented by the current clamp. Reverse-power and complete synchronous-restoring behavior therefore cannot yet be modeled faithfully.
+E.2 current-v2 profiles now represent signed generation and grid motoring through versioned bidirectional coupling and an internal signed rotor-torque seam. The focused migration audit is green, but the long-running signed-power/slip trajectories are not yet promoted. Dedicated reverse-power, supervised underfrequency and loss-of-synchronism protections remain absent and are gated to E.3.
 
 ### A6. Drum low-inventory behavior is only partially closed
 
@@ -38,9 +38,9 @@ M10.9.4.1-B.1 inventory-limits current-v2 demand-balanced liquid recirculation a
 
 Pipe/source transport currently follows the model's specific-internal-energy convention. Flow work/enthalpy transport is not explicit and requires a dedicated whole-network migration to avoid double counting with pumps and turbines.
 
-### A8. Reference-plant scale is not yet coherent
+### A8. Reference-plant scale migration is implemented but not promoted
 
-Generator nameplate, rotor inertia and low-load turbine/condenser capacities require the decision recorded in `REFERENCE_PLANT_SCALE_CONTRACT.md`.
+E.1 accepts a 10 MWe current-v2 educational unit and E.2 coordinates nameplate, 1.5 rpm droop normalization, signed coupling and HMI range while retaining the 1,000 kg·m² rotor and 5 MWe normal point. Historical/default definitions remain unchanged. Focused evidence is green; long-running dynamics, protection supervision and versioned trajectory promotion remain open.
 
 ### A9. Legacy/current option combinations are not formally enumerated
 
