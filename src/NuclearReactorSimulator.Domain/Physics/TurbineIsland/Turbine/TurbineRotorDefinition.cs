@@ -11,7 +11,8 @@ public sealed class TurbineRotorDefinition
         string id,
         MomentOfInertia momentOfInertia,
         AngularSpeed ratedAngularSpeed,
-        AngularSpeed overspeedThreshold)
+        AngularSpeed overspeedThreshold,
+        TurbineRotorMechanicalLossDefinition? mechanicalLoss = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -37,6 +38,7 @@ public sealed class TurbineRotorDefinition
         MomentOfInertia = momentOfInertia;
         RatedAngularSpeed = ratedAngularSpeed;
         OverspeedThreshold = overspeedThreshold;
+        MechanicalLoss = mechanicalLoss;
     }
 
     public string Id { get; }
@@ -46,4 +48,6 @@ public sealed class TurbineRotorDefinition
     public AngularSpeed RatedAngularSpeed { get; }
 
     public AngularSpeed OverspeedThreshold { get; }
+
+    public TurbineRotorMechanicalLossDefinition? MechanicalLoss { get; }
 }

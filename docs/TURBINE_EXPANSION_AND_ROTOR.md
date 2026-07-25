@@ -225,3 +225,7 @@ This remains an educational closure, not a complete isentropic steam-table or mu
 Historical turbine stages retain `LegacyUnrestricted` admission. Sustained current-v2 stages explicitly use `VaporMassFractionLimited`: the raw hydraulic stage request is multiplied by the committed inlet vapor mass fraction before the conservative inlet→exhaust transfer is built. A liquid inlet therefore cannot pass through the turbine as a zero-work bypass. For a wet mixture, only the vapor fraction is admitted and the thermodynamic specific-work law is evaluated per kilogram of admitted vapor, so vapor quality is not applied twice.
 
 This is deliberately not a detailed wet-steam blade model. Valve/stage authority, Stodola/effective-area alternatives and actuator tracking anti-windup remain later Phase-D work.
+
+## Current-v2 passive rotor losses
+
+M10.9.4.1-D.3.1 adds optional `TurbineRotorMechanicalLossDefinition`. The loss torque is proportional to angular speed and its dissipated power is proportional to speed squared. Sustained current-v2 profiles use 0.5 MW at 3000 rpm; legacy/default definitions omit the model. Passive loss is separate from generator electromagnetic load and appears in mechanical/full-cycle energy closure diagnostics without changing historical replay JSON.

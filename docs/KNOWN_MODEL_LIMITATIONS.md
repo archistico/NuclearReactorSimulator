@@ -18,9 +18,13 @@ The condenser uses inventory, heat-transfer and maximum-flow bounds. C.1 is loca
 
 Compressed-liquid resolution may return finite pressures above the intended plant operating envelope. Mathematical resolvability and design-envelope validity are currently not separate snapshot semantics.
 
-### A4. Turbine admission phase policy — D.1 CANDIDATE
+### A4. Turbine admission phase policy — D.1 LOCALLY VALIDATED
 
-The inherited model allowed pressure-driven stage flow to remain positive for liquid or highly wet inlet states while thermodynamic work could fall to zero. M10.9.4.1-D.1 introduces an explicit current-v2 vapor-mass-fraction-limited admission policy: liquid is blocked from stage transfer and wet admission transfers only the vapor fraction without applying quality twice to specific work. This remains candidate behavior until local build/journey validation passes. Detailed droplet transport, erosion and moisture-separation physics remain out of scope.
+The inherited model allowed pressure-driven stage flow to remain positive for liquid or highly wet inlet states while thermodynamic work could fall to zero. M10.9.4.1-D.1 introduced an explicit current-v2 vapor-mass-fraction-limited admission policy: liquid is blocked from stage transfer and wet admission transfers only the vapor fraction without applying quality twice to specific work. D.3.2 additionally closes the discovered admission-train bypass: current-v2 pressure-driven stage flow is bounded by stop/control/admission valve capacity, so any closed valve enforces zero stage transfer. Detailed droplet transport, erosion, moisture separation and calibrated Stodola/effective-area behavior remain out of scope.
+
+### A4b. Breaker-open rotor had no passive deceleration path — D.3.1 CANDIDATE
+
+D.3 evidence showed a disconnected rotor fixed near 3301 rpm after the control valve closed because both generator electromagnetic torque and passive mechanical losses were zero. D.3.1 adds an optional speed-dependent rotor-loss law to sustained current-v2 profiles. The 0.5 MW rated-speed value and its interaction with low-load headroom remain candidate behavior until local long-running validation passes.
 
 ### A5. Generator/grid coupling is one-directional
 

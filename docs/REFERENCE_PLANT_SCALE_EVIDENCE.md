@@ -2,15 +2,15 @@
 
 ## Status
 
-**M10.9.4.1-A.3 — HISTORICAL SCALE EVIDENCE; SUPERSEDED FOR CURRENT-V2 BY E.2**
+**M10.9.4.1-A.3 — AUDIT-ONLY CANDIDATE; NO SCALE CONSTANT CHANGED**
 
 **Source basis:** M10.9.4.1-A.2 Hotfix 1 candidate.
 
-This document preserves the pre-E.2 A.3 scale evidence that exposed the former hybrid electromechanical configuration. It is historical evidence, not the current-v2 runtime contract. E.1 subsequently accepted the reduced-scale educational identity and E.2 migrates the current-v2 sustained profiles to a 10 MWe nameplate while preserving legacy/default profiles.
+This document makes the current electromechanical scale numerically explicit. It does not declare the current hybrid configuration correct and does not authorize a generator-nameplate, rotor-inertia, droop, coupling or protection change.
 
-## Historical pre-E.2 configured values
+## Current configured values
 
-| Quantity | Historical A.3 value |
+| Quantity | Current value |
 |---|---:|
 | Requested electrical power | 5 MW |
 | Generator maximum electrical power | 1,000 MW |
@@ -27,7 +27,7 @@ This document preserves the pre-E.2 A.3 scale evidence that exposed the former h
 
 ## Derived evidence
 
-The original A.3 audit derived the following values from the then-current current-v2 definitions:
+The audit derives the following values directly from the canonical current-v2 definitions:
 
 | Derived quantity | Result | Interpretation |
 |---|---:|---|
@@ -45,7 +45,7 @@ The original A.3 audit derived the following values from the then-current curren
 | Maximum synchronizing correction / current request | 200% | Twice the current 5 MW dispatch |
 | Frequency damping at 0.2 Hz synchronization tolerance | 2 MW | 40% of current requested output |
 
-## Historical governor authority map under the pre-E.2 normalization
+## Governor authority map under the current normalization
 
 | Requested load | Fraction of 1,000 MW nameplate | Droop reference rise |
 |---:|---:|---:|
@@ -55,11 +55,11 @@ The original A.3 audit derived the following values from the then-current curren
 | 100 MW | 10% | 15 rpm |
 | 1,000 MW | 100% | 150 rpm |
 
-The table demonstrated why the pre-E.2 1,000 MW normalization made the 5 MWe point only 0.5% load. E.2 no longer uses that normalization for the current-v2 sustained profiles.
+The table proves that the implemented 5% full-load droop law is mathematically present but has negligible reference displacement at the currently requested 5 MW because the normalization denominator is 1,000 MW.
 
 ## Engineering interpretation
 
-### Historical alternative — retain a 1,000 MW-class reference unit
+### Option A — retain a 1,000 MW-class reference unit
 
 Retaining the configured nameplate would require the rest of the current-v2 secondary plant to be reconciled with that scale. In particular:
 
@@ -70,7 +70,7 @@ Retaining the configured nameplate would require the rest of the current-v2 seco
 
 Changing only rotor inertia would not close the scale contract.
 
-### Accepted direction — adopt a reduced-scale educational unit
+### Option B — adopt a reduced-scale educational unit
 
 A nominal value around 10 MWe is materially closer to the current turbine/condenser/rotor configuration:
 
@@ -82,19 +82,17 @@ A nominal value around 10 MWe is materially closer to the current turbine/conden
 
 Changing only `MaximumElectricalPower` to 10 MW is therefore prohibited.
 
-## Accepted direction and E.2 current-v2 contract
+## Provisional direction
 
-The user accepted the **reduced-scale educational unit** as the project identity. E.2 therefore migrates the current-v2 sustained profiles to:
+The static evidence favors **Option B — a reduced-scale educational unit** as the more internally coherent target. This is a provisional engineering direction, not an implemented decision.
 
-- 10 MWe generator nameplate;
-- 5 MWe normal reference point = 50% load;
-- unchanged 1,000 kg·m² rotor at 3,000 rpm, giving `H ≈ 4.934802 s`;
-- 1.5 rpm full-load governor reference rise, preserving the previously validated 0.75 rpm displacement at 5 MWe;
-- signed bidirectional grid coupling for generation and motoring;
-- signed -10..+10 MWe electrical HMI ranges;
-- legacy/default definitions preserved at their historical scale and generation-only semantics.
+Before promotion, the project still requires:
 
-The 10 MW synchronizing-correction and 10 MW/Hz damping magnitudes are intentionally retained pending dynamic validation rather than automatically ratio-scaled. E.3 protection extensions remain blocked until E.2 is locally green.
+1. successful validation of A.2 or direct evidence explaining any remaining condenser trip;
+2. measured turbine mass-flow and shaft-power capability over the supported load range;
+3. measured rotor response to controlled load imbalance;
+4. a versioned migration plan covering nameplate, inertia, droop, grid coupling, protections, HMI ranges and reference trajectories;
+5. explicit preservation or migration policy for legacy replay profiles.
 
 ## Automated evidence
 
@@ -105,7 +103,7 @@ Category=OperationalEnvelopeAudit
 Category=ReferencePlantScaleAudit
 ```
 
-The audit now preserves the historical A.3 evidence and asserts the accepted E.2 current-v2 10 MWe contract. Legacy/default scale evidence remains explicit so replay-compatible profiles are not silently migrated.
+The test freezes current values and all derived calculations above. It intentionally does not assert that 1,000 MW or 10 MW is the correct final rating. A future scale migration must change the contract, the evidence document and the test in the same candidate.
 
 Run through the complete operational audit:
 

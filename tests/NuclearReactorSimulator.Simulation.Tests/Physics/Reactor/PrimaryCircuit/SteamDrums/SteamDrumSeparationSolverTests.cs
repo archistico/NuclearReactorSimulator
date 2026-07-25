@@ -68,6 +68,32 @@ public sealed class SteamDrumSeparationSolverTests
     }
 
     [Fact]
+    public void Solve_CirculationDemandBalanced_RecirculatesIncomingLiquidWhenItExceedsPumpDemand()
+    {
+        var fixture = CreateFixture(
+            FluidPhase.SaturatedMixture,
+            0.25d,
+            SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
+            pumpSpeedPercent: 10d);
+        var circulation = new MainCirculationSystemSolver(fixture.Solver.Definition.MainCirculationSystem)
+            .Solve(fixture.State);
+
+        var drum = fixture.Solver
+            .Solve(fixture.State, circulation, TimeSpan.FromMilliseconds(10))
+            .Snapshot
+            .GetDrum("drum-a");
+        var pumpDemand = circulation.GetLoop("loop").Pumps
+            .Sum(static pump => Math.Max(0d, pump.MassFlowRate.KilogramsPerSecond));
+        var incomingLiquid = drum.IncomingReturnMassFlowRate.KilogramsPerSecond
+            - drum.SeparatedSteamMassFlowRate.KilogramsPerSecond;
+
+        Assert.True(incomingLiquid > pumpDemand);
+        Assert.Equal(incomingLiquid, drum.RequestedLiquidRecirculationMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(incomingLiquid, drum.RecirculatedLiquidMassFlowRate.KilogramsPerSecond, 12);
+        Assert.False(drum.LiquidRecirculationInventoryLimited);
+    }
+
+    [Fact]
     public void Solve_CirculationDemandBalanced_FullyVaporInventoryCannotFabricateLiquidRecirculation()
     {
         var fixture = CreateFixture(
@@ -252,7 +278,8 @@ public sealed class SteamDrumSeparationSolverTests
         double? quality,
         SteamDrumLiquidRecirculationMode liquidRecirculationMode = SteamDrumLiquidRecirculationMode.LegacyReturnSplit,
         double? steamSourceResistancePascalSecondsSquaredPerKilogramSquared = null,
-        double outletSpecificEnergyKilojoulesPerKilogram = 625d)
+        double outletSpecificEnergyKilojoulesPerKilogram = 625d,
+        double pumpSpeedPercent = 100d)
     {
         var thermodynamics = new SimplifiedWaterSteamThermodynamicModel();
         var saturation = thermodynamics.GetSaturationProperties(Temperature.FromDegreesCelsius(280d));
@@ -316,7 +343,7 @@ public sealed class SteamDrumSeparationSolverTests
                 SimpleFluid("steam-outlet", 6.0d, 280d, 500d),
             },
             Array.Empty<ValveState>(),
-            new[] { new PumpState("mcp", PumpSpeed.Rated) },
+            new[] { new PumpState("mcp", PumpSpeed.FromPercent(pumpSpeedPercent)) },
             new[]
             {
                 ThermalBodyState.FromTemperature(plant.GetThermalBody("fuel"), Temperature.FromDegreesCelsius(700d)),

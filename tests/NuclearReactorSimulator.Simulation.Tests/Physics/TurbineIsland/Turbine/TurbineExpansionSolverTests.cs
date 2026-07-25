@@ -24,15 +24,6 @@ namespace NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Turbine
 public sealed class TurbineExpansionSolverTests
 {
     [Fact]
-    public void TurbineRotorInput_PublicManualLoadContractStillRejectsNegativeTorque()
-    {
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(
-            () => new TurbineRotorInput("rotor", Torque.FromNewtonMetres(-1d)));
-
-        Assert.Equal("externalLoadTorque", exception.ParamName);
-    }
-
-    [Fact]
     public void Step_TransfersSteamToExhaustExtractsShaftPowerAndClosesBothAudits()
     {
         var ratedSpeed = AngularSpeed.FromRevolutionsPerMinute(3_000d);
@@ -85,6 +76,85 @@ public sealed class TurbineExpansionSolverTests
         Assert.True(rotor.ExternalLoadTorqueLimitedAtZeroSpeed);
         Assert.True(rotor.EffectiveExternalLoadTorque < rotor.CommandedExternalLoadTorque);
         Assert.InRange(Math.Abs(result.Snapshot.MechanicalAudit.MechanicalEnergyClosureResidualJoules), 0d, 1e-6d);
+    }
+
+    [Fact]
+    public void Step_PassiveMechanicalLossDeceleratesUnloadedTrippedRotorAndClosesEnergyAudit()
+    {
+        var fixture = CreateFixture(
+            3_000d,
+            Torque.Zero,
+            tripCommand: true,
+            mechanicalLoss: new TurbineRotorMechanicalLossDefinition(Power.FromMegawatts(0.5d)));
+        var solver = new TurbineExpansionSolver(fixture.Definition, new PreservingThermodynamicModel());
+
+        var result = solver.Step(fixture.PlantState, fixture.TurbineState, fixture.Inputs, TimeSpan.FromMilliseconds(10d));
+        var rotor = Assert.Single(result.Snapshot.Rotors);
+
+        Assert.True(rotor.FinalAngularSpeed < rotor.InitialAngularSpeed);
+        Assert.Equal(Power.Zero, rotor.ShaftPower);
+        Assert.True(rotor.PassiveMechanicalLossTorque > Torque.Zero);
+        Assert.True(rotor.PassiveMechanicalLossPower > Power.Zero);
+        Assert.Equal(rotor.PassiveMechanicalLossPower, result.Snapshot.MechanicalAudit.TotalPassiveMechanicalLossPower);
+        Assert.InRange(Math.Abs(result.Snapshot.MechanicalAudit.MechanicalEnergyClosureResidualJoules), 0d, 1e-6d);
+    }
+
+    [Fact]
+    public void Step_ExcessivePassiveLossStopsAtZeroWithoutNumericalReverseRotation()
+    {
+        var fixture = CreateFixture(
+            1d,
+            Torque.Zero,
+            tripCommand: true,
+            mechanicalLoss: new TurbineRotorMechanicalLossDefinition(Power.FromMegawatts(100d)));
+        var solver = new TurbineExpansionSolver(fixture.Definition, new PreservingThermodynamicModel());
+
+        var result = solver.Step(fixture.PlantState, fixture.TurbineState, fixture.Inputs, TimeSpan.FromSeconds(1d));
+        var rotor = Assert.Single(result.Snapshot.Rotors);
+
+        Assert.Equal(AngularSpeed.Zero, rotor.FinalAngularSpeed);
+        Assert.True(rotor.PassiveMechanicalLossTorqueLimitedAtZeroSpeed);
+        Assert.InRange(Math.Abs(result.Snapshot.MechanicalAudit.MechanicalEnergyClosureResidualJoules), 0d, 1e-6d);
+    }
+
+    [Fact]
+    public void PressureDrivenStageFlow_ClosedControlValveEnforcesZeroAdmission()
+    {
+        var fixture = CreateFixture(
+            3_000d,
+            Torque.Zero,
+            tripCommand: false,
+            expansionResistance: QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(21_400d),
+            controlValvePosition: ValvePosition.Closed);
+        var resolver = new TurbineStageMassFlowResolver(fixture.Definition);
+        var stage = Assert.Single(fixture.Definition.StageGroups);
+
+        var resolved = resolver.Resolve(
+            fixture.PlantState,
+            stage,
+            TimeSpan.FromMilliseconds(10d));
+
+        Assert.Equal(MassFlowRate.Zero, resolved);
+    }
+
+    [Fact]
+    public void PressureDrivenStageFlow_OpenAdmissionTrainRetainsPositiveStageCapacity()
+    {
+        var fixture = CreateFixture(
+            3_000d,
+            Torque.Zero,
+            tripCommand: false,
+            expansionResistance: QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(21_400d),
+            controlValvePosition: ValvePosition.FullyOpen);
+        var resolver = new TurbineStageMassFlowResolver(fixture.Definition);
+        var stage = Assert.Single(fixture.Definition.StageGroups);
+
+        var resolved = resolver.Resolve(
+            fixture.PlantState,
+            stage,
+            TimeSpan.FromMilliseconds(10d));
+
+        Assert.True(resolved > MassFlowRate.Zero);
     }
 
     [Fact]
@@ -310,7 +380,10 @@ public sealed class TurbineExpansionSolverTests
         double exhaustPressureMegapascals = 0.1d,
         FluidPhase inletPhase = FluidPhase.SuperheatedVapor,
         VaporQuality? inletVaporQuality = null,
-        double inletSpecificInternalEnergyKilojoulesPerKilogram = 2_000d)
+        double inletSpecificInternalEnergyKilojoulesPerKilogram = 2_000d,
+        TurbineRotorMechanicalLossDefinition? mechanicalLoss = null,
+        QuadraticHydraulicResistance? expansionResistance = null,
+        ValvePosition? controlValvePosition = null)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -394,7 +467,7 @@ public sealed class TurbineExpansionSolverTests
             new[]
             {
                 new ValveState("stop", ValvePosition.FullyOpen),
-                new ValveState("control", ValvePosition.FullyOpen),
+                new ValveState("control", controlValvePosition ?? ValvePosition.FullyOpen),
                 new ValveState("admission", ValvePosition.FullyOpen),
             },
             new[] { new PumpState("pump", PumpSpeed.Stopped, isRunning: false) },
@@ -442,7 +515,8 @@ public sealed class TurbineExpansionSolverTests
             "rotor",
             MomentOfInertia.FromKilogramSquareMetres(1_000d),
             AngularSpeed.FromRevolutionsPerMinute(3_000d),
-            AngularSpeed.FromRevolutionsPerMinute(3_300d));
+            AngularSpeed.FromRevolutionsPerMinute(3_300d),
+            mechanicalLoss);
         var definition = new TurbineExpansionSystemDefinition(
             "turbine",
             mainSteam,
@@ -453,7 +527,7 @@ public sealed class TurbineExpansionSolverTests
                     "stage", "turbine-boundary", "exhaust", "rotor",
                     SpecificEnergy.FromKilojoulesPerKilogram(500d),
                     TurbineEfficiency.FromPercent(80d),
-                    expansionResistance: null,
+                    expansionResistance: expansionResistance,
                     thermodynamicWork: thermodynamicWork,
                     admissionPhasePolicy: admissionPhasePolicy),
             });

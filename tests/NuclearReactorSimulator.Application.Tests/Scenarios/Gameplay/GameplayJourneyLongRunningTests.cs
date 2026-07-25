@@ -161,8 +161,10 @@ public sealed class GameplayJourneyLongRunningTests
         var condenser = snapshot.TurbineSecondary.Condensers.FirstOrDefault();
         var feedwater = snapshot.TurbineSecondary.FeedwaterTrains.FirstOrDefault();
         var drum = snapshot.PrimaryCircuit.SteamDrums.FirstOrDefault();
+        var coreZone = snapshot.ReactorCore.Zones.FirstOrDefault();
         return string.Join(
             " | ",
+            FormattableString.Invariant($"REACTOR={snapshot.ReactorCore.ReactorThermalPower.NumericValue:0.###} MWth; REACTIVITY={snapshot.ReactorCore.TotalReactivity.NumericValue:0.###} cents; FUEL={coreZone?.FuelTemperatureCelsius:0.###} °C; COOLANT={coreZone?.CoolantTemperatureCelsius:0.###} °C"),
             ControlRoomSubsystemSchematicProjector.BuildGeneratorPowerPathDiagnostic(snapshot),
             generator is null ? "GENERATOR —" : FormattableString.Invariant($"BREAKER={generator.BreakerText}; MWe={generator.ElectricalOutput.NumericValue:0.###}; MECH={generator.MechanicalInputPower.NumericValue:0.###}; REQUEST={generator.RequestedElectricalPower.NumericValue:0.###}"),
             rotor is null ? "ROTOR —" : FormattableString.Invariant($"RPM={rotor.Speed.NumericValue:0.###}; SHAFT={rotor.ShaftPower.NumericValue:0.###}"),
@@ -178,7 +180,7 @@ public sealed class GameplayJourneyLongRunningTests
                 : FormattableString.Invariant($"CONDENSER={condenser.Pressure.NumericValue:0.###} kPa/{condenser.SteamSpaceTemperature.NumericValue:0.###} °C; CONDENSE={condenser.CondensationFlow.NumericValue:0.###} kg/s; QREJ={condenser.HeatRejectionPower.NumericValue:0.###} MW; HOTWELL={condenser.HotwellMass.NumericValue:0.###} kg"),
             feedwater is null
                 ? "FEEDWATER —"
-                : FormattableString.Invariant($"COND-PUMP={feedwater.CondensatePump.MassFlow.NumericValue:0.###} kg/s; FW-PUMP={feedwater.FeedwaterPump.MassFlow.NumericValue:0.###} kg/s"),
+                : FormattableString.Invariant($"COND-PUMP={feedwater.CondensatePump.OperatingText}/{feedwater.CondensatePump.Speed.NumericValue:0.###}%/{feedwater.CondensatePump.MassFlow.NumericValue:0.###} kg/s; FW-PUMP={feedwater.FeedwaterPump.OperatingText}/{feedwater.FeedwaterPump.Speed.NumericValue:0.###}%/{feedwater.FeedwaterPump.MassFlow.NumericValue:0.###} kg/s; FW-INV={feedwater.FeedwaterInventoryMass.NumericValue:0.###} kg/{feedwater.FeedwaterTemperature.NumericValue:0.###} °C"),
             drum is null
                 ? "DRUM —"
                 : FormattableString.Invariant($"DRUM={drum.Pressure.NumericValue:0.###} MPa/{drum.Temperature.NumericValue:0.###} °C/{drum.Level.NumericValue:0.###}%; PHASE={drum.Phase}; RETURN={drum.IncomingReturnFlow.NumericValue:0.###} kg/s; STEAM={drum.SteamFlow.NumericValue:0.###} kg/s; RECIRC={drum.RecirculationFlow.NumericValue:0.###} kg/s; FEED={snapshot.PrimaryCircuit.TotalFeedwaterFlow.NumericValue:0.###} kg/s; EXPORT={snapshot.PrimaryCircuit.TotalSteamExportFlow.NumericValue:0.###} kg/s"));

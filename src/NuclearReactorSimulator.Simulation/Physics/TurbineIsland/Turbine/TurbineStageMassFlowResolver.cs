@@ -55,8 +55,24 @@ internal sealed class TurbineStageMassFlowResolver
         // Keep the source-term drain bounded even under extreme transient pressure differentials. This guard does not set
         // the steady-state flow; it only prevents one fixed step from removing more than half of the committed inlet mass.
         var drainableKilogramsPerSecond = 0.5d * inlet.Mass.Kilograms / deltaTime.TotalSeconds;
+        var pressureDrivenKilogramsPerSecond = Math.Min(
+            hydraulicKilogramsPerSecond,
+            drainableKilogramsPerSecond);
+
+        // A pressure-driven current-v2 stage remains physically downstream of the complete admission train.
+        // The stage law may therefore request no more mass than can cross every upstream isolation/governing valve
+        // from the same committed state. This preserves zero-flow isolation at any closed valve while retaining
+        // the historical pressure-driven expansion resistance as the downstream stage capacity law.
+        var train = _definition.MainSteamNetwork.GetAdmissionTrain(boundary.AdmissionTrainId);
+        var stopKilogramsPerSecond = SolvePositiveValveFlow(state, train.StopValveId);
+        var controlKilogramsPerSecond = SolvePositiveValveFlow(state, train.ControlValveId);
+        var admissionKilogramsPerSecond = SolvePositiveValveFlow(state, train.AdmissionValveId);
+        var admissionTrainKilogramsPerSecond = Math.Min(
+            stopKilogramsPerSecond,
+            Math.Min(controlKilogramsPerSecond, admissionKilogramsPerSecond));
+
         return MassFlowRate.FromKilogramsPerSecond(
-            Math.Min(hydraulicKilogramsPerSecond, drainableKilogramsPerSecond));
+            Math.Min(pressureDrivenKilogramsPerSecond, admissionTrainKilogramsPerSecond));
     }
 
     private MassFlowRate ResolveLegacyUpstreamMinimum(PlantState state, string admissionBoundaryId)

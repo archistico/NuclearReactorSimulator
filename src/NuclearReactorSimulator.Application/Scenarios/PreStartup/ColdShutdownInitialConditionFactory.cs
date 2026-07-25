@@ -111,8 +111,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double levelControllerIntegralGainPerSecond = 0d,
         double hotwellControllerIntegralGainPerSecond = 0d,
         double exhaustSteamSpaceVolumeCubicMetres = 10d,
+        double pressurizedSteamPathNodeVolumeCubicMetres = 10d,
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared = null,
         bool useThermodynamicTurbineWork = false,
+        double turbineStageEfficiencyPercent = 80d,
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts = null,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts = null,
         bool secondaryPumpsHaveDischargeCheckValves = false,
@@ -126,8 +128,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? primaryOperationalFlowDisplayLagSeconds = null,
         double? initialSteamDrumLiquidLevelFraction = null,
         bool useVaporFractionLimitedTurbineAdmission = false,
-        double generatorMaximumElectricalPowerMegawatts = 1_000d,
-        SynchronousGridPowerFlowMode generatorGridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly,
+        double? turbineRotorRatedSpeedMechanicalLossMegawatts = null,
         int deterministicSeedStepCount = 1)
     {
         if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
@@ -178,8 +179,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             levelControllerIntegralGainPerSecond,
             hotwellControllerIntegralGainPerSecond,
             exhaustSteamSpaceVolumeCubicMetres,
+            pressurizedSteamPathNodeVolumeCubicMetres,
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
             useThermodynamicTurbineWork,
+            turbineStageEfficiencyPercent,
             generatorMaximumSynchronizingCorrectionPowerMegawatts,
             generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
             secondaryPumpsHaveDischargeCheckValves,
@@ -193,8 +196,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             primaryOperationalFlowDisplayLagSeconds,
             initialSteamDrumLiquidLevelFraction,
             useVaporFractionLimitedTurbineAdmission,
-            generatorMaximumElectricalPowerMegawatts,
-            generatorGridPowerFlowMode);
+            turbineRotorRatedSpeedMechanicalLossMegawatts);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -266,8 +268,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double levelControllerIntegralGainPerSecond,
         double hotwellControllerIntegralGainPerSecond,
         double exhaustSteamSpaceVolumeCubicMetres,
+        double pressurizedSteamPathNodeVolumeCubicMetres,
         double? turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared,
         bool useThermodynamicTurbineWork,
+        double turbineStageEfficiencyPercent,
         double? generatorMaximumSynchronizingCorrectionPowerMegawatts,
         double? generatorFrequencyDampingPowerAtOneHertzSlipMegawatts,
         bool secondaryPumpsHaveDischargeCheckValves,
@@ -281,8 +285,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? primaryOperationalFlowDisplayLagSeconds,
         double? initialSteamDrumLiquidLevelFraction,
         bool useVaporFractionLimitedTurbineAdmission,
-        double generatorMaximumElectricalPowerMegawatts,
-        SynchronousGridPowerFlowMode generatorGridPowerFlowMode)
+        double? turbineRotorRatedSpeedMechanicalLossMegawatts)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -297,6 +300,15 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 nameof(initialCondenserCoolingPowerMegawatts),
                 initialCondenserCoolingPowerMegawatts,
                 "Initial condenser cooling power must be finite and non-negative.");
+        }
+        if (!double.IsFinite(turbineStageEfficiencyPercent)
+            || turbineStageEfficiencyPercent <= 0d
+            || turbineStageEfficiencyPercent > 100d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(turbineStageEfficiencyPercent),
+                turbineStageEfficiencyPercent,
+                "Operational-seed turbine-stage efficiency must be finite, greater than zero and no greater than 100 percent.");
         }
 
         if (!double.IsFinite(initialPrimaryTemperatureCelsius) || initialPrimaryTemperatureCelsius < 40d || initialPrimaryTemperatureCelsius > 300d)
@@ -330,6 +342,15 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 nameof(governorFullLoadSpeedReferenceRiseRpm),
                 governorFullLoadSpeedReferenceRiseRpm,
                 "Governor full-load speed-reference rise must be finite, greater than zero and no greater than 600 rpm.");
+        }
+        if (turbineRotorRatedSpeedMechanicalLossMegawatts.HasValue
+            && (!double.IsFinite(turbineRotorRatedSpeedMechanicalLossMegawatts.Value)
+                || turbineRotorRatedSpeedMechanicalLossMegawatts.Value <= 0d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(turbineRotorRatedSpeedMechanicalLossMegawatts),
+                turbineRotorRatedSpeedMechanicalLossMegawatts,
+                "Rated-speed turbine-rotor mechanical-loss power must be finite and greater than zero when specified.");
         }
         if (initialSteamPathTemperatureCelsius.HasValue
             && (!double.IsFinite(initialSteamPathTemperatureCelsius.Value)
@@ -481,28 +502,14 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 initialPrimaryLiquidCompressionFraction,
                 "Operational seed primary-liquid compression fraction must be finite and between 0 and 0.005.");
         }
-        if (!double.IsFinite(generatorMaximumElectricalPowerMegawatts) || generatorMaximumElectricalPowerMegawatts <= 0d)
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(generatorMaximumElectricalPowerMegawatts),
-                generatorMaximumElectricalPowerMegawatts,
-                "Generator maximum electrical power must be finite and greater than zero.");
-        }
-        if (!Enum.IsDefined(generatorGridPowerFlowMode))
-        {
-            throw new ArgumentOutOfRangeException(
-                nameof(generatorGridPowerFlowMode),
-                generatorGridPowerFlowMode,
-                "Unsupported generator/grid power-flow mode.");
-        }
         if (!double.IsFinite(initialRequestedElectricalPowerMegawatts)
             || initialRequestedElectricalPowerMegawatts < 0d
-            || initialRequestedElectricalPowerMegawatts > generatorMaximumElectricalPowerMegawatts)
+            || initialRequestedElectricalPowerMegawatts > 1_000d)
         {
             throw new ArgumentOutOfRangeException(
                 nameof(initialRequestedElectricalPowerMegawatts),
                 initialRequestedElectricalPowerMegawatts,
-                $"Operational seed requested electrical power must be finite and between 0 and {generatorMaximumElectricalPowerMegawatts:0.###} MWe.");
+                "Operational seed requested electrical power must be finite and between 0 and 1000 MWe.");
         }
         if (initialRequestedElectricalPowerMegawatts > 0d && !initialGeneratorBreakerClosed)
         {
@@ -516,6 +523,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 nameof(exhaustSteamSpaceVolumeCubicMetres),
                 exhaustSteamSpaceVolumeCubicMetres,
                 "Operational-seed condenser steam-space volume must be finite and greater than zero.");
+        }
+        if (!double.IsFinite(pressurizedSteamPathNodeVolumeCubicMetres) || pressurizedSteamPathNodeVolumeCubicMetres <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(pressurizedSteamPathNodeVolumeCubicMetres),
+                pressurizedSteamPathNodeVolumeCubicMetres,
+                "Operational-seed pressurized steam-path node volume must be finite and greater than zero.");
         }
         if (turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.HasValue
             && (!double.IsFinite(turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.Value)
@@ -613,8 +627,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             "educational-reference-plant",
             new[]
             {
-                Node("suction"), Node("pressure"), Node("outlet"), Node("drum"), Node("steam"),
-                Node("header"), Node("stop-out"), Node("control-out"), Node("turbine-inlet"), Node("exhaust", exhaustSteamSpaceVolumeCubicMetres),
+                Node("suction"), Node("pressure"), Node("outlet"), Node("drum"), Node("steam", pressurizedSteamPathNodeVolumeCubicMetres),
+                Node("header", pressurizedSteamPathNodeVolumeCubicMetres),
+                Node("stop-out", pressurizedSteamPathNodeVolumeCubicMetres),
+                Node("control-out", pressurizedSteamPathNodeVolumeCubicMetres),
+                Node("turbine-inlet", pressurizedSteamPathNodeVolumeCubicMetres),
+                Node("exhaust", exhaustSteamSpaceVolumeCubicMetres),
                 Node("hotwell"), Node("feedwater-inventory"),
             },
             new[]
@@ -819,14 +837,18 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "rotor",
                     MomentOfInertia.FromKilogramSquareMetres(1_000d),
                     AngularSpeed.FromRevolutionsPerMinute(3_000d),
-                    AngularSpeed.FromRevolutionsPerMinute(3_300d)),
+                    AngularSpeed.FromRevolutionsPerMinute(3_300d),
+                    turbineRotorRatedSpeedMechanicalLossMegawatts.HasValue
+                        ? new TurbineRotorMechanicalLossDefinition(
+                            Power.FromMegawatts(turbineRotorRatedSpeedMechanicalLossMegawatts.Value))
+                        : null),
             },
             new[]
             {
                 new TurbineStageGroupDefinition(
                     "stage", "turbine-boundary", "exhaust", "rotor",
                     SpecificEnergy.FromKilojoulesPerKilogram(500d),
-                    TurbineEfficiency.FromPercent(80d),
+                    TurbineEfficiency.FromPercent(turbineStageEfficiencyPercent),
                     turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.HasValue
                         ? QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(
                             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared.Value)
@@ -885,7 +907,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             "breaker",
             polePairs: 1,
             ElectricPotential.FromKilovolts(400d),
-            Power.FromMegawatts(generatorMaximumElectricalPowerMegawatts),
+            Power.FromMegawatts(1_000d),
             GeneratorEfficiency.FromPercent(98d),
             Frequency.FromHertz(0.2d),
             PhaseAngleDifference.FromDegrees(10d),
@@ -893,8 +915,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             generatorMaximumSynchronizingCorrectionPowerMegawatts.HasValue
                 ? new SynchronousGridCouplingDefinition(
                     Power.FromMegawatts(generatorMaximumSynchronizingCorrectionPowerMegawatts.Value),
-                    Power.FromMegawatts(generatorFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value),
-                    generatorGridPowerFlowMode)
+                    Power.FromMegawatts(generatorFrequencyDampingPowerAtOneHertzSlipMegawatts!.Value))
                 : null);
         var generatorGrid = new GeneratorGridSystemDefinition("electrical", feedwater, grid, new[] { generator });
         var fullPlantDefinition = new IntegratedSecondaryCycleDefinition("secondary-cycle", generatorGrid);

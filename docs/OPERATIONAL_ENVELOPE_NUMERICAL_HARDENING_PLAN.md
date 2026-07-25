@@ -92,7 +92,7 @@ The condenser-capacity change must be evaluated independently during Phase C aga
 
 ### Scope
 
-- preserve the historical A.3 1,000 MW generator nameplate, 1,000 kg·m² rotor, 5 MW request, 150 rpm full-load droop and 10 MW coupling values as explicit pre-migration evidence rather than treating them as the current-v2 contract;
+- freeze the current 1,000 MW generator nameplate, 1,000 kg·m² rotor, 5 MW request, 150 rpm full-load droop and 10 MW coupling values as explicit evidence rather than implicit constants;
 - derive stored rotor energy, inertia constants against 1,000 MW and 10 MW references, droop displacement, synchronizing-authority ratios and constant-power acceleration scales;
 - publish the results in `REFERENCE_PLANT_SCALE_EVIDENCE.md` and provisionally favor a reduced-scale educational unit while prohibiting any isolated nameplate change;
 - close the current-v2 sustained-generation seed by returning fuel/structure heat conservatively to coolant, matching current-v2 primary hydraulic resistance and aligning current-v2 steam-line initial conditions/control-valve bias;
@@ -162,24 +162,24 @@ C.1 and B.3 are locally user-validated. C.1 does not change the existing A.2 con
 - cooling degradation raises backpressure without hidden state repair;
 - no over-condensation or inventory depletion is masked by seed retuning.
 
-## Phase D — Turbine Admission and Governor Authority — LOCALLY VALIDATED / CLOSED
+## Phase D — Turbine Admission and Governor Authority — IN PROGRESS
 
-### D.1 — Admission phase-policy closure — LOCALLY VALIDATED
+### D.1 — Admission phase-policy closure — USER VALIDATED LOCALLY
 
 - add an explicit versioned stage admission policy;
 - current-v2 admits only the committed vapor mass fraction, so liquid cannot become a zero-work mass bypass;
 - wet-steam mass-flow scaling and thermodynamic-work scaling share one policy and do not apply vapor quality twice;
 - legacy definitions preserve unrestricted historical transfer semantics.
 
-### D.2 — Valve/stage authority evidence — LOCALLY VALIDATED / AUDIT-ONLY
+### D.2 — Valve/stage authority evidence — CANDIDATE / AUDIT-ONLY
 
 - freeze the canonical current-v2 resistance budget and linear control-valve characteristic without changing production physics;
-- quantify the analytical authority map from 10–100% valve opening, including the current 28% seed point;
+- quantify the analytical authority map from 10–100% valve opening, including the shared 28% sustained seed point and the rejected 30% comparison point;
 - collect a deterministic +10 rpm / -10 rpm operational perturbation with control-valve position, admission pressure, raw/effective stage flow and shaft power;
 - treat the static resistance map as an indicator only; dynamic plant evidence decides whether correction is needed;
 - defer resistance rescaling, effective area or a Stodola/ellipse-style law to a follow-up correction gate only if the evidence demonstrates inadequate authority.
 
-### D.3 — Governor/actuator tracking — LOCALLY VALIDATED / NO D.3.1 REQUIRED
+### D.3 — Governor/actuator tracking — CONDITIONAL
 
 - measure controller command versus physical valve position during finite travel;
 - add tracking anti-windup only if command/position divergence produces material persistent integral windup;
@@ -200,31 +200,7 @@ C.1 and B.3 are locally user-validated. C.1 does not change the existing A.2 con
 - rate-limited actuator response remains bounded without persistent integral windup;
 - load raise/lower is deterministic and returns to the accepted trajectory.
 
-## Phase E — Generator/Grid Scale and Bidirectional Coupling — IN PROGRESS
-
-
-### E.1 — Reference-plant scale target — ACCEPTED / NO PRODUCTION CONSTANT CHANGE
-
-- accept a 10 MWe reduced-scale educational reference generator target;
-- retain the 1,000 kg·m², 3,000 rpm rotor as the migration basis (`H ≈ 4.935 s` at 10 MWe);
-- treat the normal 5 MWe sustained point as 50% load and retain the current 0–10 MWe training envelope target;
-- keep the active runtime definitions unchanged in E.1;
-- prohibit isolated nameplate edits and require one coordinated E.2 migration.
-
-### E.2 — Coordinated runtime scale migration + signed coupling — ACTIVE CANDIDATE
-
-- current-v2 sustained profiles use a 10 MWe nameplate and 5 MWe normal 50% reference point;
-- governor full-load reference rise is 1.5 rpm so the validated 5 MWe droop displacement remains 0.75 rpm;
-- signed electromagnetic power/torque supports generation and motoring with positive conversion-loss accounting in both directions;
-- 10 MW synchronizing correction and 10 MW/Hz damping are explicitly retained pending dynamic validation rather than ratio-scaled;
-- HMI output ranges migrate to -10..+10 MWe and requested load clamps at 10 MWe;
-- historical/v1 profile behavior remains preserved.
-
-### E.3 — Electrical protection extensions — DEFERRED UNTIL E.2 GREEN
-
-- reverse power;
-- supervised underfrequency;
-- loss of synchronism.
+## Phase E — Generator/Grid Scale and Bidirectional Coupling
 
 ### Scope
 

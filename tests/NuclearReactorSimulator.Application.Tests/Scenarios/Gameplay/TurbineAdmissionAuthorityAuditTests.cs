@@ -1,4 +1,5 @@
 using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.Scenarios.Synchronization;
 using NuclearReactorSimulator.Application.Scenarios.Training;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
@@ -13,7 +14,7 @@ namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 /// </summary>
 public sealed class TurbineAdmissionAuthorityAuditTests
 {
-    private static readonly double[] AuditPositionsPercent = [10d, 20d, 28d, 40d, 46d, 60d, 80d, 100d];
+    private static readonly double[] AuditPositionsPercent = [10d, 20d, 28d, 30d, 40d, 46d, 60d, 80d, 100d];
 
     [Fact(Explicit = true)]
     [Trait("Category", "TurbineAdmissionAuthorityAudit")]
@@ -42,7 +43,7 @@ public sealed class TurbineAdmissionAuthorityAuditTests
         var stageResistance = expansionResistance.PascalSecondsSquaredPerKilogramSquared;
 
         Assert.Equal(100d, sourceResistance, 9);
-        Assert.Equal(1_000d, mainLineResistance, 9);
+        Assert.Equal(850d, mainLineResistance, 9);
         Assert.Equal(1_000d, stopValve.Pipe.Resistance.PascalSecondsSquaredPerKilogramSquared, 9);
         Assert.Equal(1_000d, controlValve.Pipe.Resistance.PascalSecondsSquaredPerKilogramSquared, 9);
         Assert.Equal(1_000d, admissionValve.Pipe.Resistance.PascalSecondsSquaredPerKilogramSquared, 9);
@@ -76,11 +77,11 @@ public sealed class TurbineAdmissionAuthorityAuditTests
         var eighty = Assert.Single(evidence, static item => item.PositionPercent == 80d);
         var full = Assert.Single(evidence, static item => item.PositionPercent == 100d);
 
-        Assert.InRange(current.NormalizedFlowCapacity, 0.8272d, 0.8275d);
-        Assert.InRange(current.FullOpenCapacityGainFraction, 0.208d, 0.210d);
-        Assert.InRange(current.ControlValveResistanceShare, 0.342d, 0.343d);
+        Assert.InRange(current.NormalizedFlowCapacity, 0.8263d, 0.8268d);
+        Assert.InRange(current.FullOpenCapacityGainFraction, 0.209d, 0.211d);
+        Assert.InRange(current.ControlValveResistanceShare, 0.343d, 0.345d);
 
-        // The current 28% seed retains material opening headroom, but authority compresses rapidly once the valve is
+        // The loaded desktop and synchronization 28% seeds retain material opening headroom, but authority compresses rapidly once the valve is
         // already well open because fixed source/main-line/stop/admission/stage resistance dominates the series budget.
         Assert.True(sixty.ControlValveResistanceShare < 0.11d);
         Assert.True(eighty.ControlValveResistanceShare < 0.061d);
@@ -89,25 +90,42 @@ public sealed class TurbineAdmissionAuthorityAuditTests
     }
 
 
+
+    [Fact]
+    public void CurrentV2SustainedProfiles_FreezeDistinctMainSteamLineCapacityContracts()
+    {
+        var loaded = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+        var synchronization = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            new GridSynchronizationSustainedInitialConditionFactory().CreateRuntimeEngine());
+
+        Assert.Equal(850d, ResolveMainSteamLineResistance(loaded), 9);
+        Assert.Equal(1_000d, ResolveMainSteamLineResistance(synchronization), 9);
+    }
+
     [Fact(Explicit = true)]
     [Trait("Category", "TurbineAdmissionAuthorityAudit")]
     public void CurrentV2TenRpmGovernorPerturbation_CollectsOperationalAuthorityEvidenceWithoutRetuning()
     {
+        // Breaker-open v2 is required here: while paralleled, the droop adapter intentionally derives the effective
+        // speed-controller setpoint from requested electrical load and therefore supersedes direct SPEED RAISE/LOWER.
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+            new GridSynchronizationSustainedInitialConditionFactory().CreateRuntimeEngine());
         var coordinator = new ControlRoomRuntimeCoordinator(engine);
         var rotorId = Assert.Single(engine.CurrentState.PlantDefinition.TurbineExpansionSystem.Rotors).Id;
 
         coordinator.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.Run));
-        Advance(coordinator, 5 * 100);
-        var baseline = CaptureOperationalEvidence(engine, "baseline");
+        var baseline = AdvanceUntilBreakerOpenGovernorControllable(coordinator, engine);
+        Assert.False(baseline.BreakerClosed);
+        Assert.False(baseline.TurbineTripActive);
+        Assert.False(baseline.GeneratorTripActive);
 
         coordinator.Dispatch(new ControlRoomCommand(
             ControlRoomCommandKind.TurbineSpeedRaise,
             rotorId,
             ControlRoomCommandTargetKind.TurbineRotor));
-        Advance(coordinator, 10 * 100);
-        var raised = CaptureOperationalEvidence(engine, "+10 rpm reference");
+        var raisedSamples = AdvanceAndCapture(coordinator, engine, 10 * 100, "+10 rpm reference");
+        var raised = raisedSamples[^1];
 
         coordinator.Dispatch(new ControlRoomCommand(
             ControlRoomCommandKind.TurbineSpeedLower,
@@ -120,13 +138,18 @@ public sealed class TurbineAdmissionAuthorityAuditTests
         Console.WriteLine(raised);
         Console.WriteLine(restored);
 
-        Assert.True(raised.ControlValvePercentOpen > baseline.ControlValvePercentOpen);
+        Assert.All(raisedSamples, item =>
+            Assert.Equal(baseline.EffectiveGovernorSetpointRpm + 10d, item.EffectiveGovernorSetpointRpm, 9));
+        Assert.Equal(baseline.EffectiveGovernorSetpointRpm, restored.EffectiveGovernorSetpointRpm, 9);
+        Assert.True(raisedSamples.Max(static item => item.ControlValvePercentOpen) > baseline.ControlValvePercentOpen);
         Assert.All(new[] { baseline, raised, restored }, static item =>
         {
             Assert.True(double.IsFinite(item.TurbineInletPressureMegapascals));
             Assert.True(double.IsFinite(item.CommandedStageFlowKilogramsPerSecond));
             Assert.True(double.IsFinite(item.EffectiveStageFlowKilogramsPerSecond));
             Assert.True(double.IsFinite(item.ShaftPowerMegawatts));
+            Assert.True(double.IsFinite(item.PassiveMechanicalLossMegawatts));
+            Assert.True(item.PassiveMechanicalLossMegawatts >= 0d);
             Assert.True(item.CommandedStageFlowKilogramsPerSecond >= 0d);
             Assert.True(item.EffectiveStageFlowKilogramsPerSecond >= 0d);
         });
@@ -174,22 +197,119 @@ public sealed class TurbineAdmissionAuthorityAuditTests
     }
 
 
+
+    private static double ResolveMainSteamLineResistance(IntegratedAutomaticOperationRuntimeEngine engine)
+    {
+        var definition = engine.CurrentState.PlantDefinition;
+        var line = Assert.Single(definition.TurbineExpansionSystem.MainSteamNetwork.SteamLines);
+        return definition.PlantDefinition
+            .GetPipe(line.PipeId)
+            .Resistance.PascalSecondsSquaredPerKilogramSquared;
+    }
+
     private static OperationalAuthorityEvidence CaptureOperationalEvidence(
         IntegratedAutomaticOperationRuntimeEngine engine,
         string label)
     {
-        var cycle = engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant.IntegratedCycle;
+        var protectedControl = engine.LatestCanonicalSnapshot.Control.ProtectedControl;
+        var cycle = protectedControl.FullPlant.IntegratedCycle;
+        var speedLoop = Assert.Single(
+            protectedControl.TurbineSecondary.Loops,
+            static loop => loop.Kind == NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineSecondaryControlLoopKind.TurbineSpeedAdmission);
         var train = Assert.Single(cycle.TurbineExpansion.MainSteamNetwork.AdmissionTrains);
         var stage = Assert.Single(cycle.TurbineExpansion.StageGroups);
+        var rotor = Assert.Single(cycle.TurbineExpansion.Rotors);
+        var generator = Assert.Single(cycle.Generators);
 
         return new OperationalAuthorityEvidence(
             label,
             engine.LogicalStep,
+            generator.BreakerFinallyClosed,
+            protectedControl.Protection.TurbineTripActive,
+            protectedControl.Protection.GeneratorTripActive,
+            speedLoop.Setpoint,
+            rotor.FinalAngularSpeed.RevolutionsPerMinute,
             100d * train.ControlValve.EffectivePosition.Fraction,
             train.TurbineInletPressure.Megapascals,
             stage.CommandedMassFlowRate.KilogramsPerSecond,
             stage.EffectiveMassFlowRate.KilogramsPerSecond,
-            stage.ShaftPower.Megawatts);
+            stage.ShaftPower.Megawatts,
+            rotor.PassiveMechanicalLossPower.Megawatts);
+    }
+
+
+    private static OperationalAuthorityEvidence AdvanceUntilBreakerOpenGovernorControllable(
+        ControlRoomRuntimeCoordinator coordinator,
+        IntegratedAutomaticOperationRuntimeEngine engine)
+    {
+        const int stepsPerSecond = 100;
+        const int sampleStrideSteps = 10;
+        const int maximumSettlingSeconds = 90;
+        OperationalAuthorityEvidence candidate = CaptureOperationalEvidence(engine, "settling start");
+
+        for (var elapsedSteps = 0; elapsedSteps < maximumSettlingSeconds * stepsPerSecond; elapsedSteps += sampleStrideSteps)
+        {
+            Advance(coordinator, sampleStrideSteps);
+            ResetProtectionWhenAvailable(coordinator);
+            candidate = CaptureOperationalEvidence(engine, "baseline");
+            var speedErrorMagnitude = Math.Abs(candidate.EffectiveGovernorSetpointRpm - candidate.RotorSpeedRpm);
+            if (!candidate.BreakerClosed
+                && !candidate.TurbineTripActive
+                && !candidate.GeneratorTripActive
+                && speedErrorMagnitude <= 5d
+                && candidate.ControlValvePercentOpen > 0.1d
+                && candidate.EffectiveStageFlowKilogramsPerSecond > 0d
+                && candidate.ShaftPowerMegawatts > 0d)
+            {
+                return candidate;
+            }
+        }
+
+        Console.WriteLine(candidate);
+        Assert.Fail(
+            $"Breaker-open turbine did not enter the controllable ±5 rpm band with protection clear within {maximumSettlingSeconds} simulated seconds.");
+        return candidate;
+    }
+
+    private static void ResetProtectionWhenAvailable(ControlRoomRuntimeCoordinator coordinator)
+    {
+        var snapshot = coordinator.Current;
+        if (!snapshot.TurbineTripActive && !snapshot.GeneratorTripActive)
+        {
+            return;
+        }
+
+        Assert.False(snapshot.ReactorScramActive);
+        if (!snapshot.ProtectionReset.CanResetNow)
+        {
+            return;
+        }
+
+        coordinator.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.ProtectionReset));
+        Advance(coordinator, 1);
+        Assert.True(coordinator.Current.ProtectionReset.LastResetAccepted);
+        Assert.False(coordinator.Current.TurbineTripActive);
+        Assert.False(coordinator.Current.GeneratorTripActive);
+    }
+
+    private static IReadOnlyList<OperationalAuthorityEvidence> AdvanceAndCapture(
+        ControlRoomRuntimeCoordinator coordinator,
+        IntegratedAutomaticOperationRuntimeEngine engine,
+        int stepCount,
+        string label)
+    {
+        const int sampleStrideSteps = 10;
+        var samples = new List<OperationalAuthorityEvidence>();
+        var remaining = stepCount;
+        while (remaining > 0)
+        {
+            var requested = Math.Min(remaining, sampleStrideSteps);
+            Advance(coordinator, requested);
+            remaining -= requested;
+            samples.Add(CaptureOperationalEvidence(engine, label));
+        }
+
+        return samples;
     }
 
     private static void Advance(ControlRoomRuntimeCoordinator coordinator, int stepCount)
@@ -242,17 +362,25 @@ public sealed class TurbineAdmissionAuthorityAuditTests
     private sealed record OperationalAuthorityEvidence(
         string Label,
         long LogicalStep,
+        bool BreakerClosed,
+        bool TurbineTripActive,
+        bool GeneratorTripActive,
+        double EffectiveGovernorSetpointRpm,
+        double RotorSpeedRpm,
         double ControlValvePercentOpen,
         double TurbineInletPressureMegapascals,
         double CommandedStageFlowKilogramsPerSecond,
         double EffectiveStageFlowKilogramsPerSecond,
-        double ShaftPowerMegawatts)
+        double ShaftPowerMegawatts,
+        double PassiveMechanicalLossMegawatts)
     {
         public override string ToString()
-            => $"{Label}: step={LogicalStep}; control={ControlValvePercentOpen:F3}%; "
+            => $"{Label}: step={LogicalStep}; breaker={(BreakerClosed ? "CLOSED" : "OPEN")}; "
+             + $"trip={TurbineTripActive}/{GeneratorTripActive}; "
+             + $"governor-sp/rotor={EffectiveGovernorSetpointRpm:F6}/{RotorSpeedRpm:F6} rpm; control={ControlValvePercentOpen:F3}%; "
              + $"pin={TurbineInletPressureMegapascals:F6} MPa; "
              + $"stage={CommandedStageFlowKilogramsPerSecond:F6}/{EffectiveStageFlowKilogramsPerSecond:F6} kg/s; "
-             + $"shaft={ShaftPowerMegawatts:F6} MW";
+             + $"shaft={ShaftPowerMegawatts:F6} MW; passive-loss={PassiveMechanicalLossMegawatts:F6} MW";
     }
 
     private sealed record AuthorityEvidence(

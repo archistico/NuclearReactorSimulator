@@ -2,11 +2,11 @@
 
 ## Status
 
-Accepted / M10.9.4.1-D.2 Hotfix 1 locally validated.
+Proposed / M10.9.4.1-D.2 candidate.
 
 ## Context
 
-An earlier external audit, based on an older control-valve bias near 46%, estimated that the 21,400 Pa·s²/kg² turbine-stage resistance dominated the 1,000 Pa·s²/kg² valve paths strongly enough to leave little governor authority. The consolidated continuation base has since moved the sustained current-v2 control-valve seed to 28%, so the old numerical conclusion cannot be carried forward unchanged.
+An earlier external audit, based on an older control-valve bias near 46%, estimated that the 21,400 Pa·s²/kg² turbine-stage resistance dominated the 1,000 Pa·s²/kg² valve paths strongly enough to leave little governor authority. The consolidated continuation base moved the sustained current-v2 control-valve seed to 28%, so the old numerical conclusion could not be carried forward unchanged. D.3.2 Hotfix 1 briefly tested 30% on the loaded desktop, but local evidence rejected that bias-only hypothesis; Hotfix 2 restores both sustained profiles to 28% and rebalances the loaded stop-out pressure seed instead.
 
 Changing stage resistance, valve resistance or the flow law before measuring the new operating point would risk another tuning-driven fix.
 
@@ -22,6 +22,6 @@ No resistance rescaling, effective-area admission model, Stodola/ellipse law or 
 
 ## Consequences
 
-The current 28% seed is recognized as materially different from the older 46% audit point: it retains about 20.9% idealized full-open flow-capacity headroom. Authority nevertheless compresses rapidly above roughly 60% opening because fixed stage/upstream resistance dominates.
+The shared 28% sustained seed remains materially different from the older 46% audit point and retains about 20.9% idealized full-open flow-capacity headroom. The rejected 30% point remains only a comparison datum at about 18.2% headroom. Authority nevertheless compresses rapidly above roughly 60% opening because fixed stage/upstream resistance dominates.
 
 D.2 may therefore close without a physics change if runtime evidence shows adequate authority around the validated operating point. If evidence shows inadequate authority or saturation over the required load envelope, a separate correction checkpoint must choose and validate the smallest physically coherent law change.

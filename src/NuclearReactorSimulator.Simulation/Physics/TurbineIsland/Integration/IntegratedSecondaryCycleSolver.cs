@@ -108,6 +108,7 @@ public sealed class IntegratedSecondaryCycleSolver
             - classifiedSupplementalPower.Watts;
         var shaftTransferResidual = mechanical.TotalShaftPower.Watts - turbine.TotalShaftPower.Watts;
         var mechanicalToElectricalResidual = mechanical.TotalExternalLoadPower.Watts - electrical.MechanicalInputPower.Watts;
+        var passiveMechanicalLossPower = mechanical.TotalPassiveMechanicalLossPower;
 
         var initialCoupledEnergy = thermofluid.InitialTotalStoredEnergy + mechanical.InitialRotorKineticEnergy;
         var finalCoupledEnergy = thermofluid.FinalTotalStoredEnergy + mechanical.FinalRotorKineticEnergy;
@@ -115,14 +116,16 @@ public sealed class IntegratedSecondaryCycleSolver
 
         var coupledDomainExpectedPower = thermofluid.ExpectedExternalPower
             + mechanical.TotalShaftPower
-            - mechanical.TotalExternalLoadPower;
+            - mechanical.TotalExternalLoadPower
+            - passiveMechanicalLossPower;
         var coupledDomainResidual = coupledStoredEnergyChange.Joules
             - coupledDomainExpectedPower.Over(deltaTime).Joules;
 
         var netReactorToGridExternalPower = thermofluid.ExpectedExternalPower
             + turbine.TotalShaftPower
             - electrical.ElectricalExportPower
-            - electrical.ConversionLossPower;
+            - electrical.ConversionLossPower
+            - passiveMechanicalLossPower;
         var fullEnergyPathResidual = coupledStoredEnergyChange.Joules
             - netReactorToGridExternalPower.Over(deltaTime).Joules;
 
@@ -150,6 +153,9 @@ public sealed class IntegratedSecondaryCycleSolver
             coupledDomainResidual,
             fullEnergyPathResidual,
             thermofluid.ExpectedExternalMassFlowRate,
-            thermofluid.MassClosureResidualKilograms);
+            thermofluid.MassClosureResidualKilograms)
+        {
+            PassiveRotorMechanicalLossPower = passiveMechanicalLossPower,
+        };
     }
 }

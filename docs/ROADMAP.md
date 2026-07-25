@@ -773,9 +773,9 @@ Two independent axes are mandatory:
 - post-validation HMI readability hardening keeps alarm flashing geometry stable, separates runtime/progress/step content, removes duplicate current-step readouts and limits subsystem schematic rows to at most four nodes;
 - the visual design system and printable user manual apply the same maximum-four-elements-per-row rule, using vertical flow or consecutive diagram segments instead of shrinking labels;
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
-- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; Phase B.1–B.3 and C.1–C.2 are present in the user-supplied consolidated continuation base. The earlier isolated 300-second wall-clock budget overrun remains tracked as performance evidence, while the user has explicitly resumed development at Phase D. D.1 turbine admission phase-policy closure, D.2 Hotfix 1 authority evidence and D.3 governor/actuator tracking evidence are locally validated. D.3 measured 23.418 pp maximum command/position lag with only 0.134 pp integral excursion, so no D.3.1 tracking anti-windup is justified. Phase D is closed and E.1 accepts the 10 MWe reduced-scale educational target without changing production constants.
+- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; Phase B.1–B.3 and C.1–C.2 are present in the user-supplied consolidated continuation base. The earlier isolated 300-second wall-clock budget overrun remains tracked as performance evidence. D.1, D.2 and D.2 Hotfix 1 are locally user-validated; D.3.1 passive rotor loss and D.3.2 admission-train isolation/PLANT preservation are included; D.3.2 Hotfix 3 loaded desktop main-steam capacity rebalance is the active candidate.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (A/B/C + D validated; E.1 accepted / E.2 migration candidate)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (D.1/D.2 locally validated; D.3.2 Hotfix 3 loaded main-steam capacity rebalance candidate)
 
 - Phase A audit exposed a repeatable ~70 s protection trip; root cause was later traced to current-v2 seed energy/hydraulic starvation rather than the thermodynamic resolver; the corrected seed now passes the exact 300-second sustained journey;
 - Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
@@ -783,8 +783,8 @@ Two independent axes are mandatory:
 - Phase A.3 preserves reproducible scale evidence (49.348 MJ rotor energy, `H=0.049348 s` at 1,000 MW versus `H=4.934802 s` at 10 MW, 0.75 rpm droop displacement at 5 MW and explicit coupling-authority ratios) and contains the locally validated current-v2 operating-seed energy/hydraulic closure; no generator scale migration was performed;
 - Phase B closes drum/source mass, energy, phase and liquid-inventory behavior before protection; B.1 locally validated the liquid-inventory cap, B.2 locally validated the drum-owned pressure/energy/inventory steam source, and B.3 adds low-inventory/separation diagnostics plus measured low-level warning and low-low protection;
 - Phase C closes condenser phase-change/hotwell energy and independent limiting semantics; C.1 is locally green with pressure-resolved saturated-liquid condensate energy. C.2 makes 40 MW installed cooling capacity definition-owned and distinct from runtime availability while retaining 20 kg/s as an independent condensation-throughput ceiling and preserving the existing `UA·ΔT` law;
-- Phase D aligns turbine admission phase policy and governor authority; D.1–D.3 are locally validated and no tracking anti-windup change is required.
-- Phase E implements the accepted 10 MWe reference-plant scale migration and adds bidirectional generator/grid coupling before reverse-power/underfrequency/loss-of-synchronism protection; E.1 records the accepted target and E.2 now implements the coordinated runtime migration as the active candidate.
+- Phase D aligns turbine admission phase policy and governor authority: D.1/D.2 are locally validated; D.3 evidence identified indefinite breaker-open coasting; D.3.1 adds a versioned passive rotor-loss path before any anti-windup or Phase-E scale decision;
+- Phase E implements the accepted reference-plant scale migration and adds bidirectional generator/grid coupling before reverse-power/underfrequency/loss-of-synchronism protection;
 - Phase F adds choked compressible flow and conservative relief/bypass topology;
 - Phase G performs a dedicated flow-work/enthalpy transport migration;
 - Phase H measures numerical stiffness before choosing adaptive substepping or semi-implicit coupling;
@@ -840,11 +840,3 @@ Every implementation milestone must continue to satisfy:
 - configuration-driven plant constants rather than hidden RBMK constants in the generic engine;
 - ADR/documentation update when a durable architecture decision changes;
 - local user validation before a baseline is marked validated.
-
-## M10.9.4.1-E.1 current scale-contract gate
-
-D.1, D.2 Hotfix 1 and D.3 are locally validated. D.3 exercised 23.418 percentage points of command/position lag while integral excursion remained 0.134 percentage points, so D.3 closes without actuator-position tracking anti-windup. E.1 accepts a 10 MWe reduced-scale educational reference target with the existing 1,000 kg·m², 3,000 rpm rotor. E.1 changes no production constants. E.2 must apply nameplate, governor normalization, signed bidirectional grid coupling, HMI/range migration and trajectory evidence together.
-
-## M10.9.4.1-E.2 coordinated runtime migration candidate
-
-E.2 applies the accepted reduced-scale educational identity only to the current-v2 sustained profiles. The generator nameplate becomes 10 MWe; 5 MWe is the normal 50% reference point; the rotor remains 1,000 kg·m² at 3,000 rpm (`H ≈ 4.934802 s`). Governor full-load speed-reference rise becomes 1.5 rpm so the validated 5 MWe breaker-closed droop displacement remains 0.75 rpm during migration. Current-v2 coupling opts into signed bidirectional power flow; negative shaft exchange represents grid motoring, electrical import is negative export, and conversion loss remains positive. Legacy coupling defaults to generation-only. Existing 10 MW synchronizing correction and 10 MW/Hz damping are retained explicitly pending dynamic validation rather than ratio-scaled. HMI output ranges are signed -10..+10 MWe and load requests clamp at 10 MWe. E.3 reverse-power/underfrequency/loss-of-synchronism protection remains blocked until E.2 passes local build, ordinary tests and explicit operating journeys.

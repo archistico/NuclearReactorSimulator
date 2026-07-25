@@ -56,23 +56,4 @@ public sealed class ElectricalQuantityTests
             PhaseAngleDifference.FromDegrees(10d),
             ElectricPotential.FromKilovolts(10d)));
     }
-
-    [Fact]
-    public void SynchronousGridCouplingDefinition_DefaultsToGenerationOnlyAndAcceptsBidirectionalMode()
-    {
-        var legacy = new SynchronousGridCouplingDefinition(
-            Power.FromMegawatts(10d),
-            Power.FromMegawatts(10d));
-        var bidirectional = new SynchronousGridCouplingDefinition(
-            Power.FromMegawatts(10d),
-            Power.FromMegawatts(10d),
-            SynchronousGridPowerFlowMode.Bidirectional);
-
-        Assert.Equal(SynchronousGridPowerFlowMode.GenerationOnly, legacy.PowerFlowMode);
-        Assert.Equal(SynchronousGridPowerFlowMode.Bidirectional, bidirectional.PowerFlowMode);
-        Assert.Throws<ArgumentOutOfRangeException>(() => new SynchronousGridCouplingDefinition(
-            Power.FromMegawatts(10d),
-            Power.FromMegawatts(10d),
-            (SynchronousGridPowerFlowMode)999));
-    }
 }

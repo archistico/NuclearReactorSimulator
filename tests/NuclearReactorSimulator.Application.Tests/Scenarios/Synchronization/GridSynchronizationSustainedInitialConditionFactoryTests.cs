@@ -1,7 +1,6 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Synchronization;
-using NuclearReactorSimulator.Domain.Physics.Electrical;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Condenser;
@@ -22,6 +21,10 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
         Assert.Equal(new InitialConditionReference("pre-synchronization-grid-loading", 2), current.Descriptor.Reference);
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
+        var currentPlant = currentEngine.CurrentState.PlantDefinition.PlantDefinition;
+        Assert.All(
+            new[] { "steam", "header", "stop-out", "control-out", "turbine-inlet" },
+            nodeId => Assert.Equal(100d, currentPlant.GetFluidNode(nodeId).Volume.CubicMetres, 12));
         var currentDrumInventory = currentEngine.CurrentState.PlantState.PlantState.GetFluidNode("drum");
         Assert.Equal(FluidPhase.SaturatedMixture, currentDrumInventory.Phase);
         Assert.NotNull(currentDrumInventory.VaporQuality);
@@ -31,21 +34,23 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
             0.51d);
         var currentGovernorDroop = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineGovernorDroopDefinition>(
             currentEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
-        Assert.Equal(1.5d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
+        Assert.Equal(150d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
         var currentDrum = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .TurbineExpansionSystem.MainSteamNetwork.PrimaryCircuit.SteamDrumSystem.Drums);
         var currentSteamSource = Assert.IsType<SteamDrumSteamSourceDefinition>(currentDrum.SteamSource);
         Assert.Equal(100d, currentSteamSource.HydraulicResistance.PascalSecondsSquaredPerKilogramSquared, 12);
         var stageDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.StageGroups);
+        Assert.Equal(0.86d, stageDefinition.Efficiency.Fraction, 12);
         Assert.IsType<TurbineThermodynamicWorkDefinition>(stageDefinition.ThermodynamicWork);
         Assert.Equal(TurbineAdmissionPhasePolicy.VaporMassFractionLimited, stageDefinition.AdmissionPhasePolicy);
+        var rotorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.Rotors);
+        var mechanicalLoss = Assert.IsType<TurbineRotorMechanicalLossDefinition>(rotorDefinition.MechanicalLoss);
+        Assert.Equal(0.5d, mechanicalLoss.RatedSpeedLossPower.Megawatts, 12);
         var generatorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.GeneratorGridSystem.Generators);
         var gridCoupling = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridCouplingDefinition>(
             generatorDefinition.GridCoupling);
-        Assert.Equal(10d, generatorDefinition.MaximumElectricalPower.Megawatts, 12);
-        Assert.Equal(10d, gridCoupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
-        Assert.Equal(10d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
-        Assert.Equal(SynchronousGridPowerFlowMode.Bidirectional, gridCoupling.PowerFlowMode);
+        Assert.Equal(0.5d, gridCoupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
+        Assert.Equal(2d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
         var condenserDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .CondensateFeedwaterSystem.CondenserSystem.Condensers);
         Assert.Equal(20d, condenserDefinition.MaximumCondensationMassFlowRate.KilogramsPerSecond, 12);

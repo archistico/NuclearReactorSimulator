@@ -1,7 +1,6 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Domain.Physics.Control;
-using NuclearReactorSimulator.Domain.Physics.Electrical;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
@@ -63,22 +62,23 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             levelControllerIntegralGainPerSecond: 0.001d,
             hotwellControllerIntegralGainPerSecond: -0.000001d,
             exhaustSteamSpaceVolumeCubicMetres: 1_000d,
+            pressurizedSteamPathNodeVolumeCubicMetres: 100d,
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared: 21_400d,
             useThermodynamicTurbineWork: true,
-            generatorMaximumSynchronizingCorrectionPowerMegawatts: 10d,
-            generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
+            turbineStageEfficiencyPercent: 86d,
+            generatorMaximumSynchronizingCorrectionPowerMegawatts: 0.5d,
+            generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 2d,
             secondaryPumpsHaveDischargeCheckValves: true,
             includeEnhancedSecondaryProtections: true,
             secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
-            governorFullLoadSpeedReferenceRiseRpm: 1.5d,
+            governorFullLoadSpeedReferenceRiseRpm: 150d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             steamDrumSteamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
             includeCoreThermalCoupling: true,
             primaryOperationalFlowDisplayLagSeconds: 0.5d,
             initialSteamDrumLiquidLevelFraction: 0.5d,
             useVaporFractionLimitedTurbineAdmission: true,
-            generatorMaximumElectricalPowerMegawatts: 10d,
-            generatorGridPowerFlowMode: SynchronousGridPowerFlowMode.Bidirectional,
+            turbineRotorRatedSpeedMechanicalLossMegawatts: 0.5d,
             deterministicSeedStepCount: 2);
 }

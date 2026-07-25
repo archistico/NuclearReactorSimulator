@@ -2,7 +2,6 @@ using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
-using NuclearReactorSimulator.Domain.Physics.Electrical;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
 
@@ -18,6 +17,15 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
 {
     private static readonly NeutronPopulation GenerationReadySeed = NeutronPopulation.FromRelative(0.30d);
     private static readonly ControlRodPosition CriticalRodPosition = ControlRodPosition.FromPercentWithdrawn(50d);
+    private const double LoadedControlValveBiasPercent = 28d;
+
+    // D.3.2 Hotfix 3: retain the Hotfix 2 pressure-grade correction, then remove the actual upstream
+    // bottleneck identified by local evidence. The loaded desktop main-steam line is sized at 850
+    // Pa·s²/kg² so its initial capacity no longer masks control-valve authority.
+    // The 28% seed bias then remains an admission-authority measurement point instead of being
+    // retuned around the upstream bottleneck.
+    private const double LoadedStopOutletSteamTemperatureCelsius = 276.755d;
+    private const double LoadedMainSteamLineResistancePascalSecondsSquaredPerKilogramSquared = 850d;
 
     public static InitialConditionReference Reference { get; } = new("integrated-operations-desktop-stable", 2);
 
@@ -38,14 +46,14 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialRequestedElectricalPowerMegawatts: 5d,
             initialCondenserCoolingPowerMegawatts: 40d,
             initialTurbineSpeedSetpointRpm: 3_000d,
-            initialControlValvePercentOpen: 28d,
+            initialControlValvePercentOpen: LoadedControlValveBiasPercent,
             initialHeaderSteamTemperatureCelsius: 278.5d,
-            initialStopOutletSteamTemperatureCelsius: 277d,
+            initialStopOutletSteamTemperatureCelsius: LoadedStopOutletSteamTemperatureCelsius,
             initialControlOutletSteamTemperatureCelsius: 249.5d,
             initialTurbineInletSteamTemperatureCelsius: 246.5d,
             primaryCirculationPipeResistancePascalSecondsSquaredPerKilogramSquared: 25d,
             mainCirculationPumpResistancePascalSecondsSquaredPerKilogramSquared: 25d,
-            mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared: 1_000d,
+            mainSteamLineResistancePascalSecondsSquaredPerKilogramSquared: LoadedMainSteamLineResistancePascalSecondsSquaredPerKilogramSquared,
             turbineAdmissionValveResistancePascalSecondsSquaredPerKilogramSquared: 1_000d,
             speedControllerIntegralGainPerSecond: 0.02d,
             speedControllerDerivativeGainSeconds: 0.2d,
@@ -62,22 +70,23 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             levelControllerIntegralGainPerSecond: 0.001d,
             hotwellControllerIntegralGainPerSecond: -0.000001d,
             exhaustSteamSpaceVolumeCubicMetres: 1_000d,
+            pressurizedSteamPathNodeVolumeCubicMetres: 100d,
             turbineExpansionResistancePascalSecondsSquaredPerKilogramSquared: 21_400d,
             useThermodynamicTurbineWork: true,
-            generatorMaximumSynchronizingCorrectionPowerMegawatts: 10d,
-            generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 10d,
+            turbineStageEfficiencyPercent: 86d,
+            generatorMaximumSynchronizingCorrectionPowerMegawatts: 0.5d,
+            generatorFrequencyDampingPowerAtOneHertzSlipMegawatts: 2d,
             secondaryPumpsHaveDischargeCheckValves: true,
             includeEnhancedSecondaryProtections: true,
             secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
-            governorFullLoadSpeedReferenceRiseRpm: 1.5d,
+            governorFullLoadSpeedReferenceRiseRpm: 150d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             steamDrumSteamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
             includeCoreThermalCoupling: true,
             primaryOperationalFlowDisplayLagSeconds: 0.5d,
             initialSteamDrumLiquidLevelFraction: 0.5d,
             useVaporFractionLimitedTurbineAdmission: true,
-            generatorMaximumElectricalPowerMegawatts: 10d,
-            generatorGridPowerFlowMode: SynchronousGridPowerFlowMode.Bidirectional,
+            turbineRotorRatedSpeedMechanicalLossMegawatts: 0.5d,
             deterministicSeedStepCount: 2);
 }

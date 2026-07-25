@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 
 namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Turbine;
@@ -12,6 +13,9 @@ public sealed record TurbineMechanicalAudit(
     Power TotalExternalLoadPower,
     double MechanicalEnergyClosureResidualJoules)
 {
+    [JsonIgnore]
+    public Power TotalPassiveMechanicalLossPower { get; init; }
+
     public bool IsEnergyClosedWithin(double toleranceJoules)
     {
         if (!double.IsFinite(toleranceJoules) || toleranceJoules < 0d)

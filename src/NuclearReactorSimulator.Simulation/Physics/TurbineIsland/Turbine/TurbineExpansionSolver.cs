@@ -243,18 +243,33 @@ public sealed class TurbineExpansionSolver
                     .OrderBy(static item => item.Definition.Id, StringComparer.Ordinal)
                     .Sum(static item => item.ShaftTorque.NewtonMetres));
 
+            var passiveMechanicalLossTorque = rotor.MechanicalLoss?.ResolveTorque(
+                    rotorState.AngularSpeed,
+                    rotor.RatedAngularSpeed)
+                ?? Torque.Zero;
             var maximumLoadWithoutReverse = turbineTorque.NewtonMetres
                 + (rotor.MomentOfInertia.KilogramSquareMetres * rotorState.AngularSpeed.RadiansPerSecond / seconds);
-            var loadLimitedAtZeroSpeed = rotorInput.ExternalLoadTorque.NewtonMetres > maximumLoadWithoutReverse;
-            var effectiveLoadNewtonMetres = Math.Min(rotorInput.ExternalLoadTorque.NewtonMetres, maximumLoadWithoutReverse);
-            var effectiveLoadTorque = Torque.FromNewtonMetres(effectiveLoadNewtonMetres);
-            var netTorque = turbineTorque - effectiveLoadTorque;
+            var effectiveExternalLoadNewtonMetres = Math.Min(
+                rotorInput.ExternalLoadTorque.NewtonMetres,
+                maximumLoadWithoutReverse);
+            var remainingLoadCapacityNewtonMetres = Math.Max(
+                0d,
+                maximumLoadWithoutReverse - effectiveExternalLoadNewtonMetres);
+            var effectivePassiveLossNewtonMetres = Math.Min(
+                passiveMechanicalLossTorque.NewtonMetres,
+                remainingLoadCapacityNewtonMetres);
+            var loadLimitedAtZeroSpeed = rotorInput.ExternalLoadTorque.NewtonMetres > effectiveExternalLoadNewtonMetres;
+            var passiveLossLimitedAtZeroSpeed = passiveMechanicalLossTorque.NewtonMetres > effectivePassiveLossNewtonMetres;
+            var effectiveLoadTorque = Torque.FromNewtonMetres(effectiveExternalLoadNewtonMetres);
+            var effectivePassiveLossTorque = Torque.FromNewtonMetres(effectivePassiveLossNewtonMetres);
+            var netTorque = turbineTorque - effectiveLoadTorque - effectivePassiveLossTorque;
             var finalRadiansPerSecond = rotorState.AngularSpeed.RadiansPerSecond
                 + (netTorque.NewtonMetres / rotor.MomentOfInertia.KilogramSquareMetres * seconds);
 
             // When the anti-reverse limiter is active, its analytical solution is exactly zero speed.
             // Canonicalize only round-off around that constrained stop; do not erase genuine low-speed motion.
-            if (loadLimitedAtZeroSpeed && Math.Abs(finalRadiansPerSecond) <= 1e-12d)
+            if ((loadLimitedAtZeroSpeed || passiveLossLimitedAtZeroSpeed)
+                && Math.Abs(finalRadiansPerSecond) <= 1e-12d)
             {
                 finalRadiansPerSecond = 0d;
             }
@@ -269,6 +284,7 @@ public sealed class TurbineExpansionSolver
                 0.5d * (rotorState.AngularSpeed.RadiansPerSecond + finalRadiansPerSecond));
             var shaftPower = turbineTorque.At(averageAngularSpeed);
             var loadPower = effectiveLoadTorque.At(averageAngularSpeed);
+            var passiveMechanicalLossPower = effectivePassiveLossTorque.At(averageAngularSpeed);
 
             result.Add(
                 rotor.Id,
@@ -278,12 +294,15 @@ public sealed class TurbineExpansionSolver
                     rotorInput,
                     turbineTorque,
                     effectiveLoadTorque,
+                    effectivePassiveLossTorque,
                     netTorque,
                     finalAngularSpeed,
                     averageAngularSpeed,
                     shaftPower,
                     loadPower,
-                    loadLimitedAtZeroSpeed));
+                    passiveMechanicalLossPower,
+                    loadLimitedAtZeroSpeed,
+                    passiveLossLimitedAtZeroSpeed));
         }
 
         return result;
@@ -403,7 +422,12 @@ public sealed class TurbineExpansionSolver
             rotor.Input.TripCommand,
             rotor.CommittedState.AngularSpeed >= rotor.Definition.OverspeedThreshold,
             rotor.FinalAngularSpeed >= rotor.Definition.OverspeedThreshold,
-            rotor.ExternalLoadTorqueLimitedAtZeroSpeed);
+            rotor.ExternalLoadTorqueLimitedAtZeroSpeed)
+        {
+            PassiveMechanicalLossTorque = rotor.PassiveMechanicalLossTorque,
+            PassiveMechanicalLossPower = rotor.PassiveMechanicalLossPower,
+            PassiveMechanicalLossTorqueLimitedAtZeroSpeed = rotor.PassiveMechanicalLossTorqueLimitedAtZeroSpeed,
+        };
     }
 
     private static TurbineMechanicalAudit BuildMechanicalAudit(
@@ -415,7 +439,9 @@ public sealed class TurbineExpansionSolver
         var finalEnergy = Energy.FromJoules(canonical.Sum(static item => item.FinalKineticEnergy.Joules));
         var shaftPower = Power.FromWatts(canonical.Sum(static item => item.ShaftPower.Watts));
         var loadPower = Power.FromWatts(canonical.Sum(static item => item.ExternalLoadPower.Watts));
-        var expectedDeltaJoules = (shaftPower - loadPower).Over(deltaTime).Joules;
+        var passiveMechanicalLossPower = Power.FromWatts(
+            canonical.Sum(static item => item.PassiveMechanicalLossPower.Watts));
+        var expectedDeltaJoules = (shaftPower - loadPower - passiveMechanicalLossPower).Over(deltaTime).Joules;
         var actualDeltaJoules = finalEnergy.Joules - initialEnergy.Joules;
 
         return new TurbineMechanicalAudit(
@@ -423,7 +449,10 @@ public sealed class TurbineExpansionSolver
             finalEnergy,
             shaftPower,
             loadPower,
-            actualDeltaJoules - expectedDeltaJoules);
+            actualDeltaJoules - expectedDeltaJoules)
+        {
+            TotalPassiveMechanicalLossPower = passiveMechanicalLossPower,
+        };
     }
 
     private static void AddBalance(
@@ -458,12 +487,15 @@ public sealed class TurbineExpansionSolver
         TurbineRotorInput Input,
         Torque TurbineTorque,
         Torque EffectiveExternalLoadTorque,
+        Torque PassiveMechanicalLossTorque,
         Torque NetTorque,
         AngularSpeed FinalAngularSpeed,
         AngularSpeed AverageAngularSpeed,
         Power ShaftPower,
         Power ExternalLoadPower,
-        bool ExternalLoadTorqueLimitedAtZeroSpeed);
+        Power PassiveMechanicalLossPower,
+        bool ExternalLoadTorqueLimitedAtZeroSpeed,
+        bool PassiveMechanicalLossTorqueLimitedAtZeroSpeed);
 
     private sealed record StageSolution(TurbineStageGroupSnapshot Snapshot);
 }

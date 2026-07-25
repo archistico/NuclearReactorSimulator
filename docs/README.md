@@ -31,7 +31,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI decisions are ADR 0046–0090.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI and hardening decisions are ADR 0046–0102.
 
 ## Milestone records
 
@@ -52,8 +52,9 @@ At this documentation/planning checkpoint:
 - Official milestone baseline: M10.9.4.
 - The M10.9.4.1 extended audit exposed a long-horizon current-v2 operating-seed imbalance; the root cause has been corrected without changing historical v1 seeds or protection thresholds.
 - User-validated local evidence for the corrected A.3 checkpoint: exact 300-second sustained journey passed in 2m 07s, explicit 60-second synchronization journey passed, build 0 warnings / 0 errors, ordinary suite 895 passed / 11 explicit skipped / 0 failed.
-- Active development candidate: M10.9.4.1-B.1 Steam-Drum Liquid Inventory Closure.
-- B.1 also clarifies operator feedback: manual-command penalties only, visible SPEED/LOAD references, ±10 rpm and ±5 MWe accepted-command increments.
+- B.1–B.3, C.1–C.2, D.1, D.2 and D.2 Hotfix 1 are locally user-validated.
+- D.3 evidence identified indefinite breaker-open coasting at about 3301 rpm with zero steam and generator torque.
+- Active development candidate: M10.9.4.1-D.3.1 Breaker-Open Rotor Mechanical-Loss Closure; any canonical overspeed latch must become reset-safe and be explicitly reset before the authority journey continues.
 - M10 closes after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
@@ -93,3 +94,13 @@ See `PROJECT_HANDOFF.md` for the full authoritative statement.
 - `M10_9_4_1_B1_VALIDATION_CHECKLIST.md` — gate di validazione mirato per inventario liquido del corpo cilindrico, feedback SPEED/LOAD e regressione penalità manuali.
 - `M10_9_4_1_B2_VALIDATION_CHECKLIST.md` — gate di validazione della sorgente corpo cilindrico→linea vapore basata su pressione, energia e inventario.
 - `M10_9_4_1_B3_VALIDATION_CHECKLIST.md` — gate di validazione per diagnostica di basso inventario, allarme livello basso e protezione low-low current-v2.
+
+## M10.9.4.1 Phase-D evidence
+
+- `TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md` — D.2 analytical and breaker-open turbine-admission authority map.
+- `TURBINE_GOVERNOR_ACTUATOR_TRACKING_EVIDENCE.md` — D.3 effective-setpoint, PID saturation/anti-windup and physical control-valve tracking audit.
+- `M10_9_4_1_D3_VALIDATION_CHECKLIST.md` — superseded D.3 evidence checklist retained as the audit record.
+- `TURBINE_ROTOR_MECHANICAL_LOSS_CLOSURE.md` — D.3.1 passive-loss law, energy ownership and breaker-open recovery method.
+- `M10_9_4_1_D3_1_VALIDATION_CHECKLIST.md` — cumulative D.3.1 build, ordinary, protection-reset, D.2/D.3 and long-running gates.
+- `adr/0101-governor-effective-setpoint-and-actuator-tracking-are-audited-before-new-anti-windup.md` — evidence boundary before any tracking anti-windup law.
+- `adr/0102-current-v2-breaker-open-rotor-has-passive-mechanical-losses.md` — current-v2 passive rotor-loss and explicit recovery decision.

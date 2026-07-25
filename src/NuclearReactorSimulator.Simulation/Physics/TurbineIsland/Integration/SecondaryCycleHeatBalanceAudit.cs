@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 
 namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Integration;
@@ -33,6 +34,9 @@ public sealed record SecondaryCycleHeatBalanceAudit(
     MassFlowRate ExternalMassFlowRate,
     double MassClosureResidualKilograms)
 {
+    [JsonIgnore]
+    public Power PassiveRotorMechanicalLossPower { get; init; }
+
     public bool IsFullEnergyPathClosedWithin(double toleranceJoules)
     {
         if (!double.IsFinite(toleranceJoules) || toleranceJoules < 0d)

@@ -347,10 +347,13 @@ public sealed class SteamDrumSeparationSolver
                 $"Steam drum '{drum.Id}' uses unsupported liquid-recirculation mode '{drum.LiquidRecirculationMode}'.");
         }
 
-        var requestedFlow = SumPositivePumpOutflows(loop);
+        var pumpDemandFlow = SumPositivePumpOutflows(loop);
         var incomingLiquidFlow = MassFlowRate.FromKilogramsPerSecond(Math.Max(
             0d,
             incomingReturnFlow.KilogramsPerSecond - separatedSteamFlow.KilogramsPerSecond));
+        var requestedFlow = MassFlowRate.FromKilogramsPerSecond(Math.Max(
+            pumpDemandFlow.KilogramsPerSecond,
+            incomingLiquidFlow.KilogramsPerSecond));
 
         if (separableLiquidInventory == Mass.Zero)
         {

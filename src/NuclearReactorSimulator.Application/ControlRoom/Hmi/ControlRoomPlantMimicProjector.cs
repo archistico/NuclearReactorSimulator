@@ -3,7 +3,7 @@ using NuclearReactorSimulator.Application.ControlRoom;
 namespace NuclearReactorSimulator.Application.ControlRoom.Hmi;
 
 /// <summary>
-/// Builds the whole-plant engineering schematic from the already projected immutable control-room snapshot.
+/// Builds the M10.9.3 whole-plant mimic from the already projected immutable control-room snapshot.
 /// This is presentation composition only: it does not infer hidden plant state or introduce new topology ownership.
 /// </summary>
 public static class ControlRoomPlantMimicProjector
@@ -15,7 +15,6 @@ public static class ControlRoomPlantMimicProjector
         var reactor = snapshot.ReactorCore;
         var primary = snapshot.PrimaryCircuit;
         var turbine = snapshot.TurbineSecondary;
-        var admissionTrain = turbine.AdmissionTrains.FirstOrDefault();
         var electrical = snapshot.Electrical;
         var shellOnly = snapshot.RunState == ControlRoomRunState.ShellOnly;
 
@@ -70,19 +69,16 @@ public static class ControlRoomPlantMimicProjector
 
             new ControlRoomPlantMimicElementSnapshot(
                 "turbine",
-                "STEAM ADMISSION / TURBINE",
+                "STEAM TURBINE",
                 ControlRoomPlantMimicElementKind.Turbine,
                 0.61d, 0.18d, 0.14d, 0.23d,
-                turbine.TurbineTripActive ? ControlRoomVisualState.Trip : Worst(
-                    turbine.EffectiveTurbineSteamFlow,
-                    turbine.TotalTurbineShaftPower,
-                    admissionTrain?.ControlValvePosition ?? ControlRoomValueSnapshot.Unavailable("%")),
+                turbine.TurbineTripActive ? ControlRoomVisualState.Trip : Worst(turbine.EffectiveTurbineSteamFlow, turbine.TotalTurbineShaftPower),
                 shellOnly ? "TURBINE DATA UNAVAILABLE" : turbine.TurbineTripActive ? "TURBINE TRIP ACTIVE" : turbine.Rotors.Count == 0 ? "ROTOR DATA UNAVAILABLE" : turbine.Rotors[0].ProtectionText,
-                Display("ADMITTED", turbine.EffectiveTurbineSteamFlow),
-                admissionTrain is null ? "CONTROL VALVE -" : Display("CONTROL", admissionTrain.ControlValvePosition),
-                "IN · MAIN STEAM / GOVERNED ADMISSION",
+                Display("STEAM", turbine.EffectiveTurbineSteamFlow),
+                Display("SHAFT", turbine.TotalTurbineShaftPower),
+                "IN · MAIN STEAM",
                 "OUT · SHAFT POWER + EXHAUST STEAM",
-                TurbineDetail(turbine, admissionTrain),
+                turbine.Rotors.Count == 0 ? "No canonical rotor is projected." : $"{turbine.Rotors.Count} ROTOR(S) · {Display("SPEED", turbine.Rotors[0].Speed)}",
                 ControlRoomWorkspaceId.TurbineSecondary),
 
             new ControlRoomPlantMimicElementSnapshot(
@@ -155,7 +151,7 @@ public static class ControlRoomPlantMimicProjector
                 (0.37d,0.39d),(0.395d,0.39d),(0.395d,0.295d),(0.42d,0.295d)),
             Connection("drums-mcp", "steam-drums", "main-circulation", ControlRoomPlantMimicMedium.PrimaryCoolant, "LIQUID RECIRCULATION", DisplayValue(Sum(primary.SteamDrums.Select(static drum => drum.RecirculationFlow), "kg/s")), drumTemperature, Worst(primary.SteamDrums.Select(static drum => drum.RecirculationFlow)), 0.29d, 0.67d,
                 (0.44d,0.41d),(0.40d,0.41d),(0.40d,0.60d),(0.205d,0.60d),(0.205d,0.68d),(0.19d,0.68d)),
-            Connection("drums-turbine", "steam-drums", "turbine", ControlRoomPlantMimicMedium.Steam, "GOVERNED STEAM ADMISSION", DisplayValue(turbine.EffectiveTurbineSteamFlow), admissionTrain is null ? $"{drumPressure} · {drumTemperature}" : $"{Display("CONTROL", admissionTrain.ControlValvePosition)} · {drumPressure}", Worst(turbine.EffectiveTurbineSteamFlow, admissionTrain?.ControlValvePosition ?? ControlRoomValueSnapshot.Unavailable("%")), 0.565d, 0.115d,
+            Connection("drums-turbine", "steam-drums", "turbine", ControlRoomPlantMimicMedium.Steam, "MAIN STEAM", DisplayValue(primary.TotalSteamExportFlow), $"{drumPressure} · {drumTemperature}", Worst(primary.TotalSteamExportFlow), 0.565d, 0.115d,
                 (0.565d,0.255d),(0.61d,0.255d)),
             Connection("turbine-generator", "turbine", "generator", ControlRoomPlantMimicMedium.Mechanical, "SHAFT", DisplayValue(turbine.TotalTurbineShaftPower), turbine.Rotors.Count == 0 ? "SPEED —" : DisplayValue(turbine.Rotors[0].Speed), Worst(turbine.TotalTurbineShaftPower), 0.745d, 0.105d,
                 (0.75d,0.255d),(0.785d,0.255d)),
@@ -172,21 +168,7 @@ public static class ControlRoomPlantMimicProjector
         return new ControlRoomPlantMimicSnapshot(
             elements,
             connections,
-            "MAIN CIRCULATION → REACTOR → STEAM DRUMS → GOVERNED ADMISSION → TURBINE → GENERATOR → GRID   ·   TURBINE → CONDENSER → FEEDWATER → STEAM DRUMS");
-    }
-
-    private static string TurbineDetail(
-        TurbineSecondaryPanelSnapshot turbine,
-        TurbineAdmissionTrainPresentationSnapshot? admissionTrain)
-    {
-        var rotor = turbine.Rotors.FirstOrDefault();
-        var rotorText = rotor is null
-            ? "No canonical rotor is projected."
-            : $"{turbine.Rotors.Count} ROTOR(S) · {Display("SPEED", rotor.Speed)}";
-        var authorityText = admissionTrain is null
-            ? "No canonical admission train is projected."
-            : $"{admissionTrain.StopValveText} · {admissionTrain.ControlValveText} · {admissionTrain.AdmissionValveText}";
-        return $"{rotorText} · {authorityText} · D.3 TRACKING AUDIT: NO CORRECTION ADDED";
+            "MAIN CIRCULATION → REACTOR → STEAM DRUMS → TURBINE → GENERATOR → GRID   ·   TURBINE → CONDENSER → FEEDWATER → STEAM DRUMS");
     }
 
     private static ControlRoomPlantMimicConnectionSnapshot Connection(

@@ -5,7 +5,6 @@ using NuclearReactorSimulator.Domain.Physics.Instrumentation;
 using NuclearReactorSimulator.Simulation.Physics.Control.Alarms;
 using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
-using NuclearReactorSimulator.Domain.Physics.Electrical;
 
 namespace NuclearReactorSimulator.Application.ControlRoom;
 
@@ -599,11 +598,7 @@ public static class ControlRoomSnapshotProjector
                             "MWe",
                             1d / 1_000_000d,
                             "0.0"),
-                        new ControlRoomInstrumentScaleSnapshot(
-                            definition.GridCoupling?.PowerFlowMode == SynchronousGridPowerFlowMode.Bidirectional
-                                ? -definition.MaximumElectricalPower.Megawatts
-                                : 0d,
-                            definition.MaximumElectricalPower.Megawatts)),
+                        new ControlRoomInstrumentScaleSnapshot(0d, definition.MaximumElectricalPower.Megawatts)),
                     WithScale(
                         Value(generator.TerminalLineVoltage.Kilovolts, "kV", "0.0"),
                         BuildGeneratorVoltageScale(generator.GridLineVoltage.Kilovolts, definition.MaximumSynchronizationVoltageDifference.Kilovolts)),
@@ -644,10 +639,7 @@ public static class ControlRoomSnapshotProjector
                     1d / 1_000_000d,
                     "0.0"),
                 new ControlRoomInstrumentScaleSnapshot(
-                    generatorGrid.Definition.Generators.Any(static definition =>
-                        definition.GridCoupling?.PowerFlowMode == SynchronousGridPowerFlowMode.Bidirectional)
-                            ? -Math.Max(1d, generatorGrid.Definition.Generators.Sum(static definition => definition.MaximumElectricalPower.Megawatts))
-                            : 0d,
+                    0d,
                     Math.Max(1d, generatorGrid.Definition.Generators.Sum(static definition => definition.MaximumElectricalPower.Megawatts)))),
             protectedControl.Protection.GeneratorTripActive);
     }

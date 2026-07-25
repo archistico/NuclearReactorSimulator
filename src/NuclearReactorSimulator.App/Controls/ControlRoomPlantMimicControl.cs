@@ -8,8 +8,9 @@ using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 namespace NuclearReactorSimulator.App.Controls;
 
 /// <summary>
-/// Interactive whole-plant engineering schematic. Layout/topology/value semantics arrive from the Application HMI snapshot;
-/// this control only renders them and publishes the selected presentation element id.
+/// Interactive whole-plant engineering schematic. It deliberately shares the same card, typography, process-line,
+/// arrow and live-value grammar used by the subsystem schematics while preserving whole-plant element selection.
+/// Layout/topology/value semantics remain Application-owned presentation data.
 /// </summary>
 public sealed class ControlRoomPlantMimicControl : Panel
 {
@@ -24,7 +25,7 @@ public sealed class ControlRoomPlantMimicControl : Panel
     private readonly List<(ControlRoomPlantMimicConnectionSnapshot Snapshot, Border Label)> _connectionLabels = new();
     private readonly TextBlock _connectionLegendHeading = new()
     {
-        Text = "LINES & SIGNALS · LIVE VALUES",
+        Text = "PROCESS PATHS · LIVE VALUES",
         FontSize = 10d,
         FontWeight = FontWeight.Bold,
         Foreground = ControlRoomPalette.InformationAccent,
@@ -35,7 +36,7 @@ public sealed class ControlRoomPlantMimicControl : Panel
     public ControlRoomPlantMimicControl()
     {
         ClipToBounds = true;
-        MinHeight = 620d;
+        MinHeight = 680d;
         RebuildChildren();
     }
 
@@ -67,43 +68,42 @@ public sealed class ControlRoomPlantMimicControl : Panel
     protected override Size MeasureOverride(Size availableSize)
     {
         var width = double.IsInfinity(availableSize.Width) ? 1120d : Math.Max(780d, availableSize.Width);
-        var columns = Math.Max(2, (int)(width / 205d));
+        var columns = Math.Max(2, (int)(width / 225d));
         var rows = Math.Max(1, (int)Math.Ceiling(_connectionLabels.Count / (double)columns));
         var legendHeight = 38d + (rows * 58d);
-        var desired = new Size(width, Math.Max(620d, 450d + legendHeight));
+        var desired = new Size(width, Math.Max(680d, 500d + legendHeight));
 
-        _connectionLayer.Measure(new Size(desired.Width, 450d));
+        _connectionLayer.Measure(new Size(desired.Width, 500d));
         foreach (var (_, card) in _elementCards)
         {
             card.Measure(desired);
         }
 
+        var labelWidth = (desired.Width - ((columns - 1) * 8d)) / columns;
         foreach (var (_, label) in _connectionLabels)
         {
-            label.Measure(new Size((desired.Width - ((columns - 1) * 8d)) / columns, 54d));
+            label.Measure(new Size(labelWidth, 54d));
         }
-        _connectionLegendHeading.Measure(new Size(desired.Width, 24d));
 
+        _connectionLegendHeading.Measure(new Size(desired.Width, 24d));
         return desired;
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        var columns = Math.Max(2, (int)(finalSize.Width / 205d));
+        var columns = Math.Max(2, (int)(finalSize.Width / 225d));
         var rows = Math.Max(1, (int)Math.Ceiling(_connectionLabels.Count / (double)columns));
         var legendHeight = 38d + (rows * 58d);
-        var diagramHeight = Math.Max(430d, finalSize.Height - legendHeight);
+        var diagramHeight = Math.Max(500d, finalSize.Height - legendHeight);
         _connectionLayer.Arrange(new Rect(0d, 0d, finalSize.Width, diagramHeight));
 
         foreach (var (snapshot, card) in _elementCards)
         {
-            var width = Math.Max(102d, snapshot.Width * finalSize.Width);
-            var height = Math.Max(116d, snapshot.Height * diagramHeight);
             card.Arrange(new Rect(
-                Math.Min(snapshot.X * finalSize.Width, Math.Max(0d, finalSize.Width - width)),
-                Math.Min(snapshot.Y * diagramHeight, Math.Max(0d, diagramHeight - height)),
-                width,
-                height));
+                snapshot.X * finalSize.Width,
+                snapshot.Y * diagramHeight,
+                Math.Max(112d, snapshot.Width * finalSize.Width),
+                Math.Max(108d, snapshot.Height * diagramHeight)));
         }
 
         var legendTop = diagramHeight + 12d;
@@ -199,21 +199,30 @@ public sealed class ControlRoomPlantMimicControl : Panel
         Grid.SetColumn(headingText, 1);
         heading.Children.Add(headingText);
 
-        var ports = new StackPanel { Spacing = 1d };
-        ports.Children.Add(Port(element.InputText));
-        ports.Children.Add(Port(element.OutputText));
-
-        var content = new StackPanel
+        var content = new StackPanel { Spacing = 3d };
+        content.Children.Add(heading);
+        content.Children.Add(Mono(element.PrimaryValueText, 10.5d, Brushes.White));
+        content.Children.Add(Mono(element.SecondaryValueText, 9.5d, ControlRoomPalette.TextMuted));
+        content.Children.Add(new TextBlock
         {
-            Spacing = 3d,
-            Children =
-            {
-                heading,
-                Mono(element.PrimaryValueText, 10.5d, Brushes.White),
-                Mono(element.SecondaryValueText, 9.5d, ControlRoomPalette.TextMuted),
-                ports,
-            },
-        };
+            Text = $"IN  ‹ {NormalizePortText(element.InputText, "IN")}",
+            FontSize = 9.5d,
+            FontWeight = FontWeight.SemiBold,
+            Foreground = ControlRoomPalette.InformationAccent,
+            TextWrapping = TextWrapping.NoWrap,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            MaxLines = 1,
+        });
+        content.Children.Add(new TextBlock
+        {
+            Text = $"{NormalizePortText(element.OutputText, "OUT")} ›  OUT",
+            FontSize = 9.5d,
+            FontWeight = FontWeight.SemiBold,
+            Foreground = ControlRoomPalette.InformationAccent,
+            TextWrapping = TextWrapping.NoWrap,
+            TextTrimming = TextTrimming.CharacterEllipsis,
+            MaxLines = 1,
+        });
 
         var border = new Border
         {
@@ -223,8 +232,8 @@ public sealed class ControlRoomPlantMimicControl : Panel
             BorderBrush = ControlRoomPalette.Accent(element.State),
             BorderThickness = new Thickness(1.4d),
             Child = content,
-            Focusable = true,
             ClipToBounds = true,
+            Focusable = true,
         };
 
         border.GotFocus += (_, _) => SetCurrentValue(SelectedElementIdProperty, element.ElementId);
@@ -234,14 +243,11 @@ public sealed class ControlRoomPlantMimicControl : Panel
 
     private static Border BuildConnectionLabel(ControlRoomPlantMimicConnectionSnapshot connection)
     {
-        var brush = connection.State == ControlRoomVisualState.Trip
-            ? ControlRoomPalette.Accent(ControlRoomVisualState.Trip)
-            : MediumBrush(connection.Medium);
         var colorKey = new Border
         {
             Width = 5d,
             CornerRadius = new CornerRadius(2d),
-            Background = brush,
+            Background = ConnectionBrush(connection),
         };
         var stack = new StackPanel { Spacing = 1d };
         stack.Children.Add(new TextBlock
@@ -249,7 +255,7 @@ public sealed class ControlRoomPlantMimicControl : Panel
             Text = connection.MediumText,
             FontSize = 10d,
             FontWeight = FontWeight.Bold,
-            Foreground = brush,
+            Foreground = ConnectionBrush(connection),
             TextTrimming = TextTrimming.CharacterEllipsis,
             MaxLines = 1,
         });
@@ -281,9 +287,11 @@ public sealed class ControlRoomPlantMimicControl : Panel
         foreach (var (snapshot, card) in _elementCards)
         {
             var selected = string.Equals(snapshot.ElementId, SelectedElementId, StringComparison.Ordinal);
-            card.BorderBrush = selected ? ControlRoomPalette.InformationAccentStrong : ControlRoomPalette.Accent(snapshot.State);
-            card.BorderThickness = selected ? new Thickness(2.4d) : new Thickness(1.4d);
-            card.Opacity = selected || string.IsNullOrEmpty(SelectedElementId) ? 1d : 0.72d;
+            card.BorderBrush = selected
+                ? ControlRoomPalette.InformationAccentStrong
+                : ControlRoomPalette.Accent(snapshot.State);
+            card.BorderThickness = selected ? new Thickness(2.5d) : new Thickness(1.4d);
+            card.Opacity = selected || string.IsNullOrEmpty(SelectedElementId) ? 1d : 0.78d;
         }
 
         foreach (var (snapshot, label) in _connectionLabels)
@@ -291,7 +299,7 @@ public sealed class ControlRoomPlantMimicControl : Panel
             var related = string.IsNullOrEmpty(SelectedElementId)
                 || string.Equals(snapshot.FromElementId, SelectedElementId, StringComparison.Ordinal)
                 || string.Equals(snapshot.ToElementId, SelectedElementId, StringComparison.Ordinal);
-            label.Opacity = related ? 1d : 0.34d;
+            label.Opacity = related ? 1d : 0.30d;
         }
 
         _connectionLayer.SelectedElementId = SelectedElementId;
@@ -308,16 +316,25 @@ public sealed class ControlRoomPlantMimicControl : Panel
         MaxLines = 1,
     };
 
-    private static TextBlock Port(string text) => new()
+    private static string NormalizePortText(string text, string prefix)
     {
-        Text = text,
-        FontSize = 9.5d,
-        FontWeight = FontWeight.SemiBold,
-        Foreground = ControlRoomPalette.InformationAccent,
-        TextWrapping = TextWrapping.NoWrap,
-        TextTrimming = TextTrimming.CharacterEllipsis,
-        MaxLines = 1,
-    };
+        var value = text?.Trim() ?? string.Empty;
+        foreach (var separator in new[] { " · ", ":", " " })
+        {
+            var marker = prefix + separator;
+            if (value.StartsWith(marker, StringComparison.OrdinalIgnoreCase))
+            {
+                return value[marker.Length..].Trim();
+            }
+        }
+
+        return value;
+    }
+
+    private static IBrush ConnectionBrush(ControlRoomPlantMimicConnectionSnapshot connection)
+        => connection.State == ControlRoomVisualState.Trip
+            ? ControlRoomPalette.Accent(ControlRoomVisualState.Trip)
+            : MediumBrush(connection.Medium);
 
     private static IBrush MediumBrush(ControlRoomPlantMimicMedium medium) => medium switch
     {
@@ -364,11 +381,8 @@ public sealed class ControlRoomPlantMimicControl : Panel
                 var related = string.IsNullOrEmpty(SelectedElementId)
                     || string.Equals(connection.FromElementId, SelectedElementId, StringComparison.Ordinal)
                     || string.Equals(connection.ToElementId, SelectedElementId, StringComparison.Ordinal);
-                var medium = MediumBrush(connection.Medium);
-                var brush = connection.State == ControlRoomVisualState.Trip
-                    ? ControlRoomPalette.Accent(ControlRoomVisualState.Trip)
-                    : medium;
-                var thickness = related ? 3d : 1.5d;
+                var brush = ConnectionBrush(connection);
+                var thickness = related ? 2.8d : 1.25d;
 
                 for (var index = 1; index < connection.Route.Count; index++)
                 {
@@ -379,7 +393,7 @@ public sealed class ControlRoomPlantMimicControl : Panel
 
                 var penultimate = Map(connection.Route[^2]);
                 var last = Map(connection.Route[^1]);
-                DrawArrow(context, brush, penultimate, last, related ? 8d : 6d);
+                DrawArrow(context, brush, penultimate, last, related ? 7d : 5d);
             }
         }
 

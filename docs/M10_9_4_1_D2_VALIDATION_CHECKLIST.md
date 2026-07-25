@@ -1,6 +1,6 @@
-# M10.9.4.1-D.2 Validation Checklist
+# M10.9.4.1-D.2 + Hotfix 1 Validation Checklist
 
-D.2 is audit-only and is cumulative with the still-pending local validation of D.1.
+D.1, D.2 and D.2 Hotfix 1 are locally user-validated. D.3 corrects the operational evidence method to use a breaker-open speed-reference perturbation while retaining D.2 production physics unchanged.
 
 ## Build and ordinary regression suite
 
@@ -23,7 +23,7 @@ Verify the D.1 turbine admission tests remain green, especially pure-liquid bloc
 scripts\run-turbine-admission-authority-audit.cmd
 ```
 
-Review the emitted baseline / +10 rpm / restored-reference evidence for:
+Review the emitted breaker-open baseline / +10 rpm / restored-reference evidence for:
 
 - control-valve position;
 - turbine-inlet pressure;

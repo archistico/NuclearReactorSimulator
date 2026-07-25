@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using System.Collections.ObjectModel;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
@@ -36,6 +37,7 @@ public sealed class TurbineExpansionSnapshot
         TotalSteamMassFlowRate = SumMassFlow(canonicalStageGroups.Select(static item => item.EffectiveMassFlowRate));
         TotalShaftPower = SumPower(canonicalStageGroups.Select(static item => item.ShaftPower));
         TotalExternalLoadPower = SumPower(canonicalRotors.Select(static item => item.ExternalLoadPower));
+        TotalPassiveMechanicalLossPower = SumPower(canonicalRotors.Select(static item => item.PassiveMechanicalLossPower));
     }
 
     public TurbineExpansionSystemDefinition Definition { get; }
@@ -53,6 +55,9 @@ public sealed class TurbineExpansionSnapshot
     public Power TotalShaftPower { get; }
 
     public Power TotalExternalLoadPower { get; }
+
+    [JsonIgnore]
+    public Power TotalPassiveMechanicalLossPower { get; }
 
     public PlantNetworkAudit ThermofluidAudit => MainSteamNetwork.Audit;
 

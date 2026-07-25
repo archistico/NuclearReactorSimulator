@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 
 namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Turbine;
@@ -21,4 +22,14 @@ public sealed record TurbineRotorSnapshot(
     bool TripCommandActive,
     bool OverspeedDetectedAtStart,
     bool OverspeedDetectedAtEnd,
-    bool ExternalLoadTorqueLimitedAtZeroSpeed);
+    bool ExternalLoadTorqueLimitedAtZeroSpeed)
+{
+    [JsonIgnore]
+    public Torque PassiveMechanicalLossTorque { get; init; }
+
+    [JsonIgnore]
+    public Power PassiveMechanicalLossPower { get; init; }
+
+    [JsonIgnore]
+    public bool PassiveMechanicalLossTorqueLimitedAtZeroSpeed { get; init; }
+}

@@ -5,7 +5,7 @@
 **Destinazione:** formazione, comprensione del ciclo d'impianto, uso del simulatore e addestramento operativo  
 
 > **Importante**  
-> Nuclear Reactor Simulator è un simulatore **educativo in scala ridotta, ispirato all'architettura e ai fenomeni operativi di un impianto RBMK**. Riproduce in forma deterministica e semplificata molti fenomeni di un impianto nucleare ad acqua con circuito di ricircolo, separazione vapore, turbina, condensatore e generatore, ma **non è dimensionato 1:1 rispetto a una centrale reale**. Non è un simulatore di progetto, autorizzazione o sicurezza nucleare e non deve essere usato come riferimento per la conduzione di un impianto reale.
+> Nuclear Reactor Simulator è un simulatore **educativo**. Riproduce in forma deterministica e semplificata molti fenomeni di un impianto nucleare ad acqua con circuito di ricircolo, separazione vapore, turbina, condensatore e generatore. Non è un simulatore di progetto, autorizzazione o sicurezza nucleare e non deve essere usato come riferimento per la conduzione di un impianto reale.
 
 ## Nota sulla lingua e sui nomi mostrati dal software
 
@@ -344,6 +344,8 @@ Tre grandezze sono diverse:
 - **potenza meccanica**, cioè il lavoro trasferito nell'unità di tempo.
 
 Quando la coppia motrice della turbina supera la coppia resistente, il rotore accelera. Quando è inferiore, rallenta.
+
+Nei profili operativi current-v2 il modello considera anche perdite passive di cuscinetti, ventilazione e trascinamento del gruppo. Perciò, con interruttore di gruppo aperto e valvola di regolazione chiusa, il rotore rallenta gradualmente invece di mantenere indefinitamente la stessa velocità. Questa decelerazione rende possibile riportare il gruppo nella finestra di sincronizzazione dopo un'apertura dell'interruttore. Se la precedente sovravelocità ha memorizzato lo scatto di turbina e generatore, attendere che la velocità scenda nella zona di reset — per la sovravelocità, circa **3150 rpm o meno** — quindi usare **PROTECTION RESET**; attendere da sola non cancella uno scatto memorizzato.
 
 ```mermaid
 flowchart TD
@@ -1282,13 +1284,7 @@ Trasforma potenza meccanica dell'albero in potenza elettrica.
 - tensione nominale modellata: **400 kV**;
 - frequenza nominale: **50 Hz**;
 - efficienza semplificata: **98%**;
-- targa nominale della configurazione educativa current-v2: **10 MWe**; il punto operativo normale da **5 MWe** corrisponde quindi al **50% del carico nominale**. Le configurazioni storiche conservano i propri valori per compatibilità.
-
-**Segno della potenza elettrica nella configurazione current-v2**
-
-- valore **positivo**: il generatore esporta potenza verso la rete;
-- valore **negativo**: la rete sta motorizzando la macchina, cioè sta fornendo energia elettrica che viene convertita in coppia meccanica sull'albero;
-- la scala HMI current-v2 è **-10..+10 MWe**.
+- targa massima corrente del modello: **1000 MW**, ma questa scala non è coerente con tutti gli altri sottosistemi ed è in revisione; non rappresenta un target di gioco.
 
 **Operazione tipica**
 
@@ -3660,7 +3656,7 @@ Allineamento di frequenza, tensione e fase del generatore con la rete prima dell
 
 ## Statismo (*droop*)
 
-Caratteristica del regolatore di velocità per cui il riferimento di equilibrio cambia con il carico. Consente a più generatori collegati alla stessa rete di condividere le variazioni di potenza senza comportarsi tutti come regolatori perfettamente isocroni. Nella configurazione educativa current-v2 da 10 MWe, il valore di riferimento aumenta complessivamente di **1,5 giri/min dal carico nullo al carico nominale**; al normale punto da 5 MWe (50%) il contributo è quindi **0,75 giri/min**.
+Caratteristica del regolatore di velocità per cui il riferimento di equilibrio cambia con il carico. Consente a più generatori collegati alla stessa rete di condividere le variazioni di potenza senza comportarsi tutti come regolatori perfettamente isocroni.
 
 ## Subcritico (*subcritical*)
 
@@ -3774,15 +3770,25 @@ La turbina possiede una legge pressure-driven e un lavoro termodinamico dipenden
 
 ## 16.8 Generatore e scala nominale
 
-L'audit M10.9.4.1-A.3 aveva evidenziato una scala ibrida. La configurazione educativa current-v2 adotta ora una **targa da 10 MWe**, mantenendo il rotore da 1.000 kg·m² a 3.000 giri/min. Il punto normale da 5 MWe è quindi un punto al 50% del carico nominale, coerente con la natura di simulatore educativo in scala ridotta ispirato all'RBMK e non dimensionato 1:1 rispetto a un gruppo reale.
+L'audit M10.9.4.1-A.3 ha evidenziato che i parametri correnti combinano scale diverse:
 
-Le configurazioni storiche restano disponibili per compatibilità e riesecuzione deterministica.
+- generatore nominale configurato a 1000 MW;
+- punto operativo didattico tipico intorno a 5 MWe;
+- inerzia del rotore più coerente con una macchina educativa molto più piccola.
+
+Per questo la futura revisione non dovrà cambiare una sola costante isolata, ma coordinare:
+
+- targa;
+- inerzia;
+- statismo;
+- accoppiamento con la rete;
+- protezioni;
+- scale HMI;
+- baseline e riesecuzione deterministica.
 
 ## 16.9 Accoppiamento elettrico
 
-L’accoppiamento current-v2 è **bidirezionale**: in generazione la potenza elettrica positiva indica esportazione verso la rete; in motorizzazione la potenza elettrica negativa indica importazione dalla rete per fornire coppia all'albero. Le perdite di conversione restano positive in entrambi i versi.
-
-Le protezioni dedicate di potenza inversa, sottofrequenza supervisionata e perdita di sincronismo sono introdotte solo nella fase successiva, dopo la validazione di questa dinamica.
+L’accoppiamento current-v2 stabilizza il generatore rispetto alla rete, ma la modellazione completa della motorizzazione, potenza inversa e perdita di sincronismo è prevista in una fase successiva.
 
 ## 16.10 Corpo cilindrico di separazione acqua-vapore
 

@@ -339,6 +339,8 @@ public sealed class OperationalEnvelopeExtendedAuditTests
         private string _latchedProtectionFunctions = "—";
         private string _lastCondensationLimits = "—";
         private string _lastHeatRejectionLimits = "—";
+        private string _lastSteamSource = "—";
+        private string _lastPowerPoint = "—";
         private long _lastLogicalStep;
 
         public OperatingEnvelopeAudit(string journey)
@@ -359,9 +361,12 @@ public sealed class OperationalEnvelopeExtendedAuditTests
             var coolingBoundary = Assert.Single(fullPlant.IntegratedCycle.Condenser.CoolingBoundaries);
             var rotor = Assert.Single(fullPlant.IntegratedCycle.TurbineExpansion.Rotors);
             var stage = Assert.Single(fullPlant.IntegratedCycle.TurbineExpansion.StageGroups);
+            var mainSteam = fullPlant.IntegratedCycle.TurbineExpansion.MainSteamNetwork;
             var generator = Assert.Single(fullPlant.IntegratedCycle.Generators);
             var train = Assert.Single(fullPlant.IntegratedCycle.CondensateFeedwater.Trains);
             var exhaust = fullPlant.CandidatePlant.GetFluidNode(condenser.SteamSpaceNodeId);
+            var steamOutlet = fullPlant.CandidatePlant.GetFluidNode(drum.SteamOutletNodeId);
+            var steamLine = Assert.Single(mainSteam.SteamLines);
 
             RequireFinite(
                 heatBalance.MassClosureResidualKilograms,
@@ -451,6 +456,14 @@ public sealed class OperationalEnvelopeExtendedAuditTests
                 coolingBoundary.EffectiveCapacityMargin.Megawatts);
             _lastCondensationLimits = condenser.ActiveCondensationLimits;
             _lastHeatRejectionLimits = coolingBoundary.ActiveHeatRejectionLimits;
+            _lastSteamSource = string.Concat(
+                FormattableString.Invariant($"drum/outlet={drum.Pressure.Megapascals:0.###}/{steamOutlet.Pressure.Megapascals:0.###} MPa; "),
+                FormattableString.Invariant($"source={drum.SeparatedSteamMassFlowRate.KilogramsPerSecond:0.###}/capacity={drum.SteamSourcePressureDrivenCapacityMassFlowRate.KilogramsPerSecond:0.###}/available={drum.SteamSourceAvailableMassFlowRate.KilogramsPerSecond:0.###}/energy={drum.SteamSourceIncomingEnergySupportedMassFlowRate.KilogramsPerSecond:0.###} kg/s; "),
+                FormattableString.Invariant($"stored-vapor={drum.SteamSourceStoredVaporInventoryMass.Kilograms:0.###} kg; line={steamLine.MassFlowRate.KilogramsPerSecond:0.###} kg/s; limited={drum.SteamSourcePressureLimited}/{drum.SteamSourceAvailabilityLimited}"));
+            var presentationGenerator = Assert.Single(presentation.Electrical.Generators);
+            var presentationRotor = Assert.Single(presentation.TurbineSecondary.Rotors);
+            _lastPowerPoint = FormattableString.Invariant(
+                $"requested/gross/shaft={presentationGenerator.RequestedElectricalPower.NumericValue:0.###}/{presentationGenerator.ElectricalOutput.NumericValue:0.###}/{presentationRotor.ShaftPower.NumericValue:0.###} MW");
             _minimumExhaustMassKilograms = Math.Min(_minimumExhaustMassKilograms, exhaust.Mass.Kilograms);
             _maximumExhaustMassKilograms = Math.Max(_maximumExhaustMassKilograms, exhaust.Mass.Kilograms);
             _lastProtectionState = protectedControl.Protection.LatchedActions.ToString();
@@ -530,6 +543,8 @@ public sealed class OperationalEnvelopeExtendedAuditTests
                 FormattableString.Invariant($"phase-change-du={_minimumSpecificCondensationEnergyDropKilojoulesPerKilogram:0.###}..{_maximumSpecificCondensationEnergyDropKilojoulesPerKilogram:0.###} kJ/kg; "),
                 FormattableString.Invariant($"limits={_lastCondensationLimits}/{_lastHeatRejectionLimits}; capacity-margin-min={_minimumCondenserCapacityMarginMegawatts:0.###} MW; "),
                 FormattableString.Invariant($"exhaust-mass={_minimumExhaustMassKilograms:0.###}..{_maximumExhaustMassKilograms:0.###} kg; "),
+                FormattableString.Invariant($"steam-source={_lastSteamSource}; "),
+                FormattableString.Invariant($"power={_lastPowerPoint}; "),
                 FormattableString.Invariant($"protection={_lastProtectionState}; functions={_latchedProtectionFunctions}"));
 
         private static string FormatProtectionFunction(NuclearReactorSimulator.Simulation.Physics.Control.Protection.ProtectionFunctionSnapshot function)
