@@ -169,6 +169,69 @@ public sealed class MainWindowViewModelTests
         Assert.Equal(ControlRoomCommandTargetKind.Generator, command.TargetKind);
     }
 
+    [Fact]
+    public void TurbineControlValveSlider_DispatchesBoundedManualDemandOnlyWhenApplied()
+    {
+        var dispatcher = new RecordingDispatcher();
+        var viewModel = CreateViewModel(
+            new InMemoryControlRoomSnapshotSource(CreateSnapshot(includeAdmissionTrain: true, controlValveManualMode: true)),
+            dispatcher);
+
+        viewModel.TurbineControlValveManualDemandPercent = 42d;
+        Assert.Empty(dispatcher.Commands);
+        Assert.True(viewModel.TurbineControlValveManualDemandApplyEnabled);
+
+        viewModel.ApplyTurbineControlValveManualDemandCommand.Execute(null);
+
+        var command = Assert.Single(dispatcher.Commands);
+        Assert.Equal(ControlRoomCommandKind.TurbineControlValveManualDemandSet, command.Kind);
+        Assert.Equal("control", command.TargetId);
+        Assert.Equal(ControlRoomCommandTargetKind.Valve, command.TargetKind);
+        Assert.Equal(42d, command.NumericValue);
+    }
+
+    [Fact]
+    public void TurbineStopAndAdmissionButtons_DispatchTheirCanonicalValveTargets()
+    {
+        var dispatcher = new RecordingDispatcher();
+        var viewModel = CreateViewModel(
+            new InMemoryControlRoomSnapshotSource(CreateSnapshot(includeAdmissionTrain: true)),
+            dispatcher);
+
+        viewModel.TurbineStopValveCloseCommand.Execute(null);
+        viewModel.TurbineAdmissionValveOpenCommand.Execute(null);
+
+        Assert.Collection(
+            dispatcher.Commands,
+            command =>
+            {
+                Assert.Equal(ControlRoomCommandKind.TurbineValveClose, command.Kind);
+                Assert.Equal("stop", command.TargetId);
+            },
+            command =>
+            {
+                Assert.Equal(ControlRoomCommandKind.TurbineValveOpen, command.Kind);
+                Assert.Equal("admission", command.TargetId);
+            });
+    }
+
+    [Fact]
+    public void TurbineValveStation_XamlContainsPercentSliderAndExplicitApplyCommand()
+    {
+        var document = XDocument.Load(Path.Combine(AppContext.BaseDirectory, "MainWindow.axaml"));
+        var slider = Assert.Single(
+            document.Descendants(),
+            static element => element.Name.LocalName == "Slider"
+                && (string?)element.Attribute("Value") == "{Binding TurbineControlValveManualDemandPercent, Mode=TwoWay}");
+
+        Assert.Equal("0", (string?)slider.Attribute("Minimum"));
+        Assert.Equal("100", (string?)slider.Attribute("Maximum"));
+        Assert.Contains(
+            document.Descendants(),
+            static element => element.Name.LocalName == "ControlRoomPushButton"
+                && (string?)element.Attribute("Command") == "{Binding ApplyTurbineControlValveManualDemandCommand}");
+    }
+
     private static MainWindowViewModel CreateViewModel(ControlRoomSnapshot snapshot)
         => CreateViewModel(new InMemoryControlRoomSnapshotSource(snapshot), new RecordingDispatcher());
 
@@ -185,7 +248,9 @@ public sealed class MainWindowViewModelTests
         bool turbineTripActive = false,
         bool synchronizationConditionsSatisfied = true,
         bool breakerClosed = true,
-        int generatorCount = 1)
+        int generatorCount = 1,
+        bool includeAdmissionTrain = false,
+        bool controlValveManualMode = false)
     {
         var normal = new ControlRoomValueSnapshot("0", string.Empty, 0d, ControlRoomVisualState.Normal);
         var generators = Enumerable.Range(1, generatorCount)
@@ -210,9 +275,32 @@ public sealed class MainWindowViewModelTests
             generators,
             normal,
             generatorTripActive);
+        var admissionTrains = includeAdmissionTrain
+            ? new[]
+            {
+                new TurbineAdmissionTrainPresentationSnapshot(
+                    "train-a",
+                    "header",
+                    "turbine-inlet",
+                    "stop",
+                    normal with { Unit = "% open", NumericValue = 100d, ValueText = "100.0" },
+                    "control",
+                    normal with { Unit = "% open", NumericValue = 55d, ValueText = "55.0" },
+                    "admission",
+                    normal with { Unit = "% open", NumericValue = 100d, ValueText = "100.0" },
+                    normal,
+                    normal,
+                    normal,
+                    "STEAM")
+                {
+                    ControlValveManualMode = controlValveManualMode,
+                    ControlValveManualDemand = normal with { Unit = "% open", NumericValue = 55d, ValueText = "55.0" },
+                },
+            }
+            : Array.Empty<TurbineAdmissionTrainPresentationSnapshot>();
         var turbine = new TurbineSecondaryPanelSnapshot(
             Array.Empty<MainSteamLinePresentationSnapshot>(),
-            Array.Empty<TurbineAdmissionTrainPresentationSnapshot>(),
+            admissionTrains,
             Array.Empty<TurbineRotorPresentationSnapshot>(),
             Array.Empty<TurbineStageGroupPresentationSnapshot>(),
             Array.Empty<CondenserPresentationSnapshot>(),

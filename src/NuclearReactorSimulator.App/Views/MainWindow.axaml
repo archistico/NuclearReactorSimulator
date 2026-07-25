@@ -575,6 +575,103 @@
               </StackPanel>
             </Border>
 
+            <Border Classes="controlDeck">
+              <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="260,*,Auto" ColumnSpacing="14">
+                  <controls:ControlRoomSelector Grid.Column="0"
+                      Label="ADMISSION TRAIN"
+                      OptionsText="{Binding TurbineAdmissionTrainOptionsText}"
+                      SelectedIndex="{Binding SelectedTurbineAdmissionTrainIndex, Mode=TwoWay}"
+                      State="{Binding TurbineValveCommandState}" />
+                  <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                    <TextBlock Classes="sectionHeading" Text="TURBINE VALVE OPERATOR STATION" />
+                    <TextBlock FontSize="18" FontWeight="SemiBold" Text="{Binding SelectedTurbineAdmissionTrainId}" />
+                    <TextBlock FontSize="11" Foreground="#9CB2BC" TextWrapping="Wrap"
+                               Text="STOP and ADMISSION use deliberate OPEN/CLOSE requests. CONTROL supports AUTO governor authority or a bounded manual demand." />
+                  </StackPanel>
+                  <TextBlock Grid.Column="2" VerticalAlignment="Center" FontWeight="SemiBold"
+                             Text="{Binding SelectedTurbineValveAuthorityText}" />
+                </Grid>
+
+                <Grid ColumnDefinitions="0.9*,1.4*,0.9*" ColumnSpacing="10">
+                  <Border Grid.Column="0" Padding="14" Background="#11161D" CornerRadius="6" BorderThickness="1" BorderBrush="#303846">
+                    <StackPanel Spacing="9">
+                      <TextBlock Classes="sectionHeading" Text="STOP / ISOLATION VALVE" />
+                      <TextBlock FontWeight="SemiBold" Text="{Binding SelectedStopValveActualText}" />
+                      <TextBlock FontSize="11" Foreground="#9CB2BC" Text="{Binding SelectedStopValveTargetText}" />
+                      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <controls:ControlRoomPushButton Grid.Column="0" Label="OPEN"
+                            State="{Binding TurbineValveCommandState}"
+                            IsCommandEnabled="{Binding TurbineValveOpenCommandEnabled}"
+                            Command="{Binding TurbineStopValveOpenCommand}" />
+                        <controls:ControlRoomPushButton Grid.Column="1" Label="CLOSE"
+                            State="{Binding TurbineValveCommandState}"
+                            IsCommandEnabled="{Binding TurbineValveCloseCommandEnabled}"
+                            Command="{Binding TurbineStopValveCloseCommand}" />
+                      </Grid>
+                    </StackPanel>
+                  </Border>
+
+                  <Border Grid.Column="1" Padding="14" Background="#11161D" CornerRadius="6" BorderThickness="1" BorderBrush="#303846">
+                    <StackPanel Spacing="9">
+                      <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Classes="sectionHeading" Text="CONTROL VALVE" />
+                        <TextBlock Grid.Column="1" FontWeight="SemiBold" Text="{Binding SelectedControlValveModeText}" />
+                      </Grid>
+                      <TextBlock FontWeight="SemiBold" Text="{Binding SelectedControlValveActualText}" />
+                      <TextBlock FontSize="11" Foreground="#9CB2BC" Text="{Binding SelectedControlValveTargetText}" />
+                      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <controls:ControlRoomPushButton Grid.Column="0" Label="AUTO / GOVERNOR"
+                            State="{Binding TurbineValveCommandState}"
+                            IsActive="{Binding TurbineControlValveAutomaticModeActive}"
+                            IsCommandEnabled="{Binding TurbineControlValveModeCommandEnabled}"
+                            Command="{Binding TurbineControlValveAutomaticModeCommand}" />
+                        <controls:ControlRoomPushButton Grid.Column="1" Label="MANUAL"
+                            State="{Binding TurbineValveCommandState}"
+                            IsActive="{Binding TurbineControlValveManualModeActive}"
+                            IsCommandEnabled="{Binding TurbineControlValveModeCommandEnabled}"
+                            Command="{Binding TurbineControlValveManualModeCommand}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                        <Slider Grid.Column="0" Minimum="0" Maximum="100" TickFrequency="1"
+                                IsSnapToTickEnabled="True"
+                                IsEnabled="{Binding TurbineControlValveManualDemandEnabled}"
+                                Value="{Binding TurbineControlValveManualDemandPercent, Mode=TwoWay}" />
+                        <TextBlock Grid.Column="1" MinWidth="80" VerticalAlignment="Center" HorizontalAlignment="Right"
+                                   FontSize="16" FontWeight="SemiBold" Text="{Binding TurbineControlValveManualDemandText}" />
+                      </Grid>
+                      <Grid ColumnDefinitions="*,170" ColumnSpacing="10">
+                        <TextBlock VerticalAlignment="Center" FontSize="11" Foreground="#9CB2BC"
+                                   Text="{Binding TurbineControlValveManualDemandPendingText}" />
+                        <controls:ControlRoomPushButton Grid.Column="1" Label="APPLY DEMAND"
+                            State="{Binding TurbineValveCommandState}"
+                            IsCommandEnabled="{Binding TurbineControlValveManualDemandApplyEnabled}"
+                            Command="{Binding ApplyTurbineControlValveManualDemandCommand}" />
+                      </Grid>
+                    </StackPanel>
+                  </Border>
+
+                  <Border Grid.Column="2" Padding="14" Background="#11161D" CornerRadius="6" BorderThickness="1" BorderBrush="#303846">
+                    <StackPanel Spacing="9">
+                      <TextBlock Classes="sectionHeading" Text="ADMISSION VALVE" />
+                      <TextBlock FontWeight="SemiBold" Text="{Binding SelectedAdmissionValveActualText}" />
+                      <TextBlock FontSize="11" Foreground="#9CB2BC" Text="{Binding SelectedAdmissionValveTargetText}" />
+                      <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                        <controls:ControlRoomPushButton Grid.Column="0" Label="OPEN"
+                            State="{Binding TurbineValveCommandState}"
+                            IsCommandEnabled="{Binding TurbineValveOpenCommandEnabled}"
+                            Command="{Binding TurbineAdmissionValveOpenCommand}" />
+                        <controls:ControlRoomPushButton Grid.Column="1" Label="CLOSE"
+                            State="{Binding TurbineValveCommandState}"
+                            IsCommandEnabled="{Binding TurbineValveCloseCommandEnabled}"
+                            Command="{Binding TurbineAdmissionValveCloseCommand}" />
+                      </Grid>
+                    </StackPanel>
+                  </Border>
+                </Grid>
+              </StackPanel>
+            </Border>
+
             <Border Padding="20" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
               <StackPanel Spacing="12">
                 <TextBlock Classes="sectionHeading" Text="MAIN STEAM LINES · MODEL DIAGNOSTICS" />

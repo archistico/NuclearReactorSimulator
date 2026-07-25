@@ -9,4 +9,5 @@ public enum ControlRoomCommandTargetKind
     TurbineRotor = 4,
     Generator = 5,
     Alarm = 6,
+    Valve = 7,
 }

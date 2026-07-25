@@ -4,6 +4,7 @@ using NuclearReactorSimulator.Domain.Physics.Control.Alarms;
 using NuclearReactorSimulator.Domain.Physics.Instrumentation;
 using NuclearReactorSimulator.Simulation.Physics.Control.Alarms;
 using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
+using NuclearReactorSimulator.Simulation.Physics.Control.TurbineSecondary;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
 
 namespace NuclearReactorSimulator.Application.ControlRoom;
@@ -20,7 +21,8 @@ public static class ControlRoomSnapshotProjector
     public static ControlRoomSnapshot Project(
         long logicalStep,
         ControlRoomRunState runState,
-        IntegratedAutomaticOperationSnapshot snapshot)
+        IntegratedAutomaticOperationSnapshot snapshot,
+        TurbineSecondaryControlInputs? requestedSecondaryInputs = null)
     {
         ArgumentNullException.ThrowIfNull(snapshot);
         if (logicalStep < 0)
@@ -44,7 +46,7 @@ public static class ControlRoomSnapshotProjector
             protection.GeneratorTripActive,
             ProjectReactorCore(snapshot),
             ProjectPrimaryCircuit(snapshot),
-            ProjectTurbineSecondary(snapshot),
+            ProjectTurbineSecondary(snapshot, requestedSecondaryInputs),
             ProjectElectrical(snapshot),
             ProjectAlarmEvents(logicalStep, alarms),
             protectionReset: ProjectProtectionReset(protection));
@@ -401,7 +403,9 @@ public static class ControlRoomSnapshotProjector
             Value(primary.TotalSteamExportMassFlowRate.KilogramsPerSecond, "kg/s", "0.0"));
     }
 
-    private static TurbineSecondaryPanelSnapshot ProjectTurbineSecondary(IntegratedAutomaticOperationSnapshot snapshot)
+    private static TurbineSecondaryPanelSnapshot ProjectTurbineSecondary(
+        IntegratedAutomaticOperationSnapshot snapshot,
+        TurbineSecondaryControlInputs? requestedSecondaryInputs)
     {
         var measuredFrame = snapshot.NextMeasuredSignals;
         var protectedControl = snapshot.Control.ProtectedControl;
@@ -410,6 +414,9 @@ public static class ControlRoomSnapshotProjector
         var mainSteam = turbine.MainSteamNetwork;
         var condenserSystem = integrated.Condenser;
         var feedwaterSystem = integrated.CondensateFeedwater;
+        var secondaryControl = protectedControl.TurbineSecondary;
+        var protection = protectedControl.Protection;
+        var arbitration = protectedControl.Arbitration;
 
         var steamLines = mainSteam.SteamLines
             .OrderBy(static line => line.LineId, StringComparer.Ordinal)
@@ -424,20 +431,63 @@ public static class ControlRoomSnapshotProjector
 
         var admissionTrains = mainSteam.AdmissionTrains
             .OrderBy(static train => train.TrainId, StringComparer.Ordinal)
-            .Select(train => new TurbineAdmissionTrainPresentationSnapshot(
-                train.TrainId,
-                train.HeaderNodeId,
-                train.TurbineInletNodeId,
-                train.StopValve.ValveId,
-                Value(train.StopValve.EffectivePosition.Percent, "% open", "0.0"),
-                train.ControlValve.ValveId,
-                Value(train.ControlValve.EffectivePosition.Percent, "% open", "0.0"),
-                train.AdmissionValve.ValveId,
-                Value(train.AdmissionValve.EffectivePosition.Percent, "% open", "0.0"),
-                Value(train.AdmissionValve.MassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
-                Value(train.TurbineInletPressure.Megapascals, "MPa", "0.000"),
-                Value(train.TurbineInletTemperature.DegreesCelsius, "°C", "0.0"),
-                train.TurbineInletPhase.ToString().ToUpperInvariant()))
+            .Select(train =>
+            {
+                var controlActuator = secondaryControl.Definition.ActuatorSystem.Actuators.Single(item =>
+                    item.TargetKind == NuclearReactorSimulator.Domain.Physics.Control.ActuatorTargetKind.Valve
+                    && string.Equals(item.TargetId, train.ControlValve.ValveId, StringComparison.Ordinal));
+                var controlInput = requestedSecondaryInputs?.Controllers.Controllers.FirstOrDefault(item =>
+                    string.Equals(item.ControllerId, controlActuator.ControllerId, StringComparison.Ordinal));
+                var controlCommand = secondaryControl.ControlAndActuator.ActuatorCommands.ValveCommands.FirstOrDefault(item =>
+                    string.Equals(item.ValveId, train.ControlValve.ValveId, StringComparison.Ordinal));
+                var admissionCommand = secondaryControl.ControlAndActuator.ActuatorCommands.ValveCommands.FirstOrDefault(item =>
+                    string.Equals(item.ValveId, train.AdmissionValve.ValveId, StringComparison.Ordinal));
+                var stopCommand = requestedSecondaryInputs?.IsolationValveCommands.FirstOrDefault(item =>
+                    string.Equals(item.ValveId, train.StopValve.ValveId, StringComparison.Ordinal));
+                var manualDemandPercent = controlInput is null
+                    ? train.ControlValve.EffectivePosition.Percent
+                    : ((controlInput.ManualOutput - controlActuator.InputRange.Minimum)
+                        / controlActuator.InputRange.Span) * 100d;
+
+                return new TurbineAdmissionTrainPresentationSnapshot(
+                    train.TrainId,
+                    train.HeaderNodeId,
+                    train.TurbineInletNodeId,
+                    train.StopValve.ValveId,
+                    Value(train.StopValve.EffectivePosition.Percent, "% open", "0.0"),
+                    train.ControlValve.ValveId,
+                    Value(train.ControlValve.EffectivePosition.Percent, "% open", "0.0"),
+                    train.AdmissionValve.ValveId,
+                    Value(train.AdmissionValve.EffectivePosition.Percent, "% open", "0.0"),
+                    Value(train.AdmissionValve.MassFlowRate.KilogramsPerSecond, "kg/s", "0.0"),
+                    Value(train.TurbineInletPressure.Megapascals, "MPa", "0.000"),
+                    Value(train.TurbineInletTemperature.DegreesCelsius, "°C", "0.0"),
+                    train.TurbineInletPhase.ToString().ToUpperInvariant())
+                {
+                    StopValveRequestedPosition = Value(
+                        (stopCommand?.RequestedPosition ?? train.StopValve.EffectivePosition).Percent,
+                        "% open",
+                        "0.0"),
+                    ControlValveRequestedPosition = Value(
+                        (controlCommand?.RequestedPosition ?? train.ControlValve.EffectivePosition).Percent,
+                        "% open",
+                        "0.0"),
+                    ControlValveManualDemand = Value(
+                        Math.Clamp(manualDemandPercent, 0d, 100d),
+                        "% open",
+                        "0.0"),
+                    AdmissionValveRequestedPosition = Value(
+                        (admissionCommand?.RequestedPosition ?? train.AdmissionValve.EffectivePosition).Percent,
+                        "% open",
+                        "0.0"),
+                    ControlValveManualMode = controlInput?.Mode
+                        == NuclearReactorSimulator.Domain.Physics.Control.ControllerMode.Manual,
+                    TurbineAdmissionOpeningInhibited = protection.TurbineAdmissionOpeningInhibited,
+                    StopValveForcedClosed = arbitration.StopValvesForcedClosed.Contains(
+                        train.StopValve.ValveId,
+                        StringComparer.Ordinal),
+                };
+            })
             .ToArray();
 
         var rotors = turbine.Rotors

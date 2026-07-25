@@ -24,4 +24,9 @@ public enum ControlRoomCommandKind
     AlarmReset = 19,
     AlarmAcknowledgeAll = 20,
     AlarmResetAll = 21,
+    TurbineValveOpen = 22,
+    TurbineValveClose = 23,
+    TurbineControlValveManualMode = 24,
+    TurbineControlValveAutomaticMode = 25,
+    TurbineControlValveManualDemandSet = 26,
 }

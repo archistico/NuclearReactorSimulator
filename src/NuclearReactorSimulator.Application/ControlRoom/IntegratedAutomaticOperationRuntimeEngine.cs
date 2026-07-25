@@ -129,7 +129,11 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
     internal IntegratedAutomaticOperationSnapshot LatestCanonicalSnapshot => _lastSnapshot;
 
     public ControlRoomSnapshot CreatePresentationSnapshot(ControlRoomRunState runState)
-        => ControlRoomSnapshotProjector.Project(_logicalStep, runState, _lastSnapshot);
+        => ControlRoomSnapshotProjector.Project(
+            _logicalStep,
+            runState,
+            _lastSnapshot,
+            _persistentInputs.TurbineSecondaryInputs);
 
     public ControlRoomSnapshot Step(ControlRoomRunState runState)
     {
@@ -145,7 +149,11 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
         _lastSnapshot = result.Snapshot;
         _logicalStep++;
         ClearTransientCommands();
-        return ControlRoomSnapshotProjector.Project(_logicalStep, runState, _lastSnapshot);
+        return ControlRoomSnapshotProjector.Project(
+            _logicalStep,
+            runState,
+            _lastSnapshot,
+            _persistentInputs.TurbineSecondaryInputs);
     }
 
     public PlantControlAuthorityPresentationSnapshot CreateAutomationSnapshot()
@@ -249,6 +257,21 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
                 break;
             case ControlRoomCommandKind.GeneratorBreakerOpen:
                 SetBreakerCommand(command, close: false);
+                break;
+            case ControlRoomCommandKind.TurbineValveOpen:
+                SetTurbineIsolationOrAdmissionValvePosition(command, open: true);
+                break;
+            case ControlRoomCommandKind.TurbineValveClose:
+                SetTurbineIsolationOrAdmissionValvePosition(command, open: false);
+                break;
+            case ControlRoomCommandKind.TurbineControlValveManualMode:
+                SetTurbineControlValveMode(command, ControllerMode.Manual);
+                break;
+            case ControlRoomCommandKind.TurbineControlValveAutomaticMode:
+                SetTurbineControlValveMode(command, ControllerMode.Automatic);
+                break;
+            case ControlRoomCommandKind.TurbineControlValveManualDemandSet:
+                SetTurbineControlValveManualDemand(command);
                 break;
             case ControlRoomCommandKind.AlarmAcknowledge:
                 _acknowledgeAlarmIds.Add(RequireTarget(command, ControlRoomCommandTargetKind.Alarm));
@@ -854,7 +877,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
         var baseline = _persistentInputs.TurbineSecondaryInputs;
         return new TurbineSecondaryControlInputs(
             baseline.Definition,
-            BuildControllerInputs(baseline.Controllers));
+            BuildControllerInputs(baseline.Controllers),
+            baseline.IsolationValveCommands);
     }
 
     private ControllerInputs BuildControllerInputs(ControllerInputs baseline)
@@ -1079,6 +1103,110 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
         ReplacePersistentInputs(plantInputs: new IntegratedSecondaryCycleInputs(existingPlant.Definition, generatorGridInputs));
     }
 
+    private void SetTurbineIsolationOrAdmissionValvePosition(ControlRoomCommand command, bool open)
+    {
+        var valveId = RequireTarget(command, ControlRoomCommandTargetKind.Valve);
+        var existing = _persistentInputs.TurbineSecondaryInputs;
+        var definition = existing.Definition;
+        var train = definition.PlantDefinition.TurbineExpansionSystem.MainSteamNetwork.AdmissionTrains
+            .SingleOrDefault(item =>
+                string.Equals(item.StopValveId, valveId, StringComparison.Ordinal)
+                || string.Equals(item.AdmissionValveId, valveId, StringComparison.Ordinal))
+            ?? throw new InvalidOperationException(
+                $"Valve '{valveId}' is not a canonical turbine STOP or ADMISSION valve.");
+
+        if (string.Equals(train.AdmissionValveId, valveId, StringComparison.Ordinal))
+        {
+            var actuator = FindValveActuator(definition, valveId);
+            var output = open ? actuator.InputRange.Maximum : actuator.InputRange.Minimum;
+            ReplaceSecondaryController(actuator.ControllerId, input =>
+                new ControllerInput(input.ControllerId, ControllerMode.Manual, input.Setpoint, output));
+            return;
+        }
+
+        var normalControlActuator = FindValveActuator(definition, train.ControlValveId);
+        var requested = open ? ValvePosition.FullyOpen : ValvePosition.Closed;
+        var replacement = new TurbineIsolationValveCommand(valveId, requested, normalControlActuator.TravelRate);
+        var commands = existing.IsolationValveCommands
+            .Where(item => !string.Equals(item.ValveId, valveId, StringComparison.Ordinal))
+            .Append(replacement)
+            .OrderBy(static item => item.ValveId, StringComparer.Ordinal)
+            .ToArray();
+        ReplacePersistentInputs(secondaryInputs: new TurbineSecondaryControlInputs(
+            definition,
+            existing.Controllers,
+            commands));
+    }
+
+    private void SetTurbineControlValveMode(ControlRoomCommand command, ControllerMode mode)
+    {
+        var valveId = RequireTarget(command, ControlRoomCommandTargetKind.Valve);
+        var definition = _persistentInputs.TurbineSecondaryInputs.Definition;
+        RequireControlValve(definition, valveId);
+        var actuator = FindValveActuator(definition, valveId);
+        var currentPosition = _state.PlantState.PlantState.GetValve(valveId).Position;
+
+        ReplaceSecondaryController(actuator.ControllerId, input =>
+        {
+            var manualOutput = input.ManualOutput;
+            if (mode == ControllerMode.Manual)
+            {
+                manualOutput = actuator.InputRange.Minimum
+                    + (currentPosition.Fraction * actuator.InputRange.Span);
+            }
+
+            return new ControllerInput(input.ControllerId, mode, input.Setpoint, manualOutput);
+        });
+    }
+
+    private void SetTurbineControlValveManualDemand(ControlRoomCommand command)
+    {
+        var valveId = RequireTarget(command, ControlRoomCommandTargetKind.Valve);
+        var percent = command.NumericValue
+            ?? throw new ArgumentException("A turbine control-valve manual demand requires a numeric percent value.", nameof(command));
+        if (!double.IsFinite(percent) || percent < 0d || percent > 100d)
+        {
+            throw new ArgumentOutOfRangeException(nameof(command), percent, "Manual valve demand must be between 0 and 100 percent.");
+        }
+
+        var definition = _persistentInputs.TurbineSecondaryInputs.Definition;
+        RequireControlValve(definition, valveId);
+        var actuator = FindValveActuator(definition, valveId);
+        ReplaceSecondaryController(actuator.ControllerId, input =>
+        {
+            if (input.Mode != ControllerMode.Manual)
+            {
+                throw new InvalidOperationException(
+                    $"Control valve '{valveId}' must be in MANUAL mode before changing manual demand.");
+            }
+
+            var manualOutput = actuator.InputRange.Minimum
+                + ((percent / 100d) * actuator.InputRange.Span);
+            return new ControllerInput(input.ControllerId, ControllerMode.Manual, input.Setpoint, manualOutput);
+        });
+    }
+
+    private static ActuatorDefinition FindValveActuator(
+        TurbineSecondaryControlSystemDefinition definition,
+        string valveId)
+        => definition.ActuatorSystem.Actuators.SingleOrDefault(item =>
+            item.TargetKind == ActuatorTargetKind.Valve
+            && string.Equals(item.TargetId, valveId, StringComparison.Ordinal))
+            ?? throw new InvalidOperationException(
+                $"Valve '{valveId}' is not bound to a canonical turbine/secondary actuator.");
+
+    private static void RequireControlValve(
+        TurbineSecondaryControlSystemDefinition definition,
+        string valveId)
+    {
+        var isControlValve = definition.PlantDefinition.TurbineExpansionSystem.MainSteamNetwork.AdmissionTrains
+            .Any(item => string.Equals(item.ControlValveId, valveId, StringComparison.Ordinal));
+        if (!isControlValve)
+        {
+            throw new InvalidOperationException($"Valve '{valveId}' is not a canonical turbine CONTROL valve.");
+        }
+    }
+
     private void SetBreakerCommand(ControlRoomCommand command, bool close)
     {
         var breakerId = RequireTarget(command, ControlRoomCommandTargetKind.Breaker);
@@ -1111,7 +1239,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
             string.Equals(input.ControllerId, controllerId, StringComparison.Ordinal) ? replace(input) : input).ToArray();
         var secondaryInputs = new TurbineSecondaryControlInputs(
             existing.Definition,
-            new ControllerInputs(existing.Controllers.Definition, controllers));
+            new ControllerInputs(existing.Controllers.Definition, controllers),
+            existing.IsolationValveCommands);
         ReplacePersistentInputs(secondaryInputs: secondaryInputs);
     }
 
@@ -1126,7 +1255,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
             secondaryInputs ?? _persistentInputs.TurbineSecondaryInputs,
             _persistentInputs.ProtectionInputs,
             _persistentInputs.AlarmInputs,
-            _persistentInputs.InstrumentationInputs);
+            _persistentInputs.InstrumentationInputs,
+            _persistentInputs.HydraulicFaultInputs);
     }
 
     private void ClearTransientCommands()

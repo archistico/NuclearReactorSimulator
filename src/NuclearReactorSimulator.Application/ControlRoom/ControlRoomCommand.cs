@@ -7,4 +7,5 @@ namespace NuclearReactorSimulator.Application.ControlRoom;
 public sealed record ControlRoomCommand(
     ControlRoomCommandKind Kind,
     string? TargetId = null,
-    ControlRoomCommandTargetKind? TargetKind = null);
+    ControlRoomCommandTargetKind? TargetKind = null,
+    double? NumericValue = null);

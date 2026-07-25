@@ -85,6 +85,7 @@ public sealed class TurbineSecondaryControlSolver
         var commandedPlantState = ApplyCommands(
             committedFullPlantState.PlantState,
             controlStep.Snapshot.ActuatorCommands,
+            inputs.IsolationValveCommands,
             deltaTime);
         var commandedFullPlantState = new FullPlantState(
             committedFullPlantState.Definition,
@@ -163,8 +164,16 @@ public sealed class TurbineSecondaryControlSolver
     }
 
     private PlantState ApplyCommands(PlantState committed, ActuatorCommandFrame commands, TimeSpan deltaTime)
+        => ApplyCommands(committed, commands, Array.Empty<TurbineIsolationValveCommand>(), deltaTime);
+
+    private PlantState ApplyCommands(
+        PlantState committed,
+        ActuatorCommandFrame commands,
+        IReadOnlyList<TurbineIsolationValveCommand> isolationValveCommands,
+        TimeSpan deltaTime)
     {
         var valvesById = commands.ValveCommands.ToDictionary(static item => item.ValveId, StringComparer.Ordinal);
+        var isolationValvesById = isolationValveCommands.ToDictionary(static item => item.ValveId, StringComparer.Ordinal);
         var pumpsById = commands.PumpCommands.ToDictionary(static item => item.PumpId, StringComparer.Ordinal);
         var valveActuatorsByTarget = _definition.ActuatorSystem.Actuators
             .Where(static actuator => actuator.TargetKind == ActuatorTargetKind.Valve)
@@ -175,22 +184,35 @@ public sealed class TurbineSecondaryControlSolver
 
         var valves = committed.Valves.Select(state =>
         {
-            if (!valvesById.TryGetValue(state.ValveId, out var command))
+            if (valvesById.TryGetValue(state.ValveId, out var command))
             {
-                return state;
+                var actuator = valveActuatorsByTarget[state.ValveId];
+                var requestedFraction = command.RequestedPosition.Fraction;
+                var effectiveFraction = MoveTowards(
+                    state.Position.Fraction,
+                    requestedFraction,
+                    actuator.TravelRate,
+                    deltaTime);
+                return new ValveState(
+                    state.ValveId,
+                    ValvePosition.FromFraction(effectiveFraction),
+                    state.IsFailSafeActive);
             }
 
-            var actuator = valveActuatorsByTarget[state.ValveId];
-            var requestedFraction = command.RequestedPosition.Fraction;
-            var effectiveFraction = MoveTowards(
-                state.Position.Fraction,
-                requestedFraction,
-                actuator.TravelRate,
-                deltaTime);
-            return new ValveState(
-                state.ValveId,
-                ValvePosition.FromFraction(effectiveFraction),
-                state.IsFailSafeActive);
+            if (isolationValvesById.TryGetValue(state.ValveId, out var isolationCommand))
+            {
+                var effectiveFraction = MoveTowards(
+                    state.Position.Fraction,
+                    isolationCommand.RequestedPosition.Fraction,
+                    isolationCommand.TravelRate,
+                    deltaTime);
+                return new ValveState(
+                    state.ValveId,
+                    ValvePosition.FromFraction(effectiveFraction),
+                    state.IsFailSafeActive);
+            }
+
+            return state;
         }).ToArray();
 
         var pumps = committed.Pumps.Select(state =>

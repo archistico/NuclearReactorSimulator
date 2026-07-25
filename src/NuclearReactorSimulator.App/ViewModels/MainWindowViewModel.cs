@@ -50,7 +50,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private int _selectedRodIndex;
     private int _selectedPumpIndex;
     private int _selectedGeneratorIndex;
+    private int _selectedTurbineAdmissionTrainIndex;
     private int _selectedAlarmIndex;
+    private double _turbineControlValveManualDemandPercent;
+    private bool _turbineControlValveManualDemandDirty;
     private string _commandStatus;
     private string _lastControlActionText = "LAST CONTROL ACTION · none issued yet";
     private bool _runtimeSubscriptionsDetached;
@@ -102,6 +105,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         Workspaces = ControlRoomWorkspaceCatalog.Default;
         _selectedWorkspace = Workspaces[0];
         _snapshot = snapshotSource.Current;
+        _turbineControlValveManualDemandPercent = _snapshot.TurbineSecondary.AdmissionTrains
+            .FirstOrDefault()?.ControlValveManualDemand.NumericValue ?? 0d;
         _plantMimic = ControlRoomPlantMimicProjector.Project(_snapshot);
         _subsystemSchematics = ControlRoomSubsystemSchematicProjector.Project(_snapshot);
         _selectedMimicElementId = _plantMimic.Elements.FirstOrDefault()?.ElementId;
@@ -127,6 +132,13 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         PumpStartCommand = new DelegateCommand(() => DispatchPump(ControlRoomCommandKind.MainCirculationPumpStart));
         PumpStopCommand = new DelegateCommand(() => DispatchPump(ControlRoomCommandKind.MainCirculationPumpStop));
         TurbineTripCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.TurbineTrip));
+        TurbineStopValveOpenCommand = new DelegateCommand(() => DispatchSelectedTurbineValve(ControlRoomCommandKind.TurbineValveOpen, static train => train.StopValveId));
+        TurbineStopValveCloseCommand = new DelegateCommand(() => DispatchSelectedTurbineValve(ControlRoomCommandKind.TurbineValveClose, static train => train.StopValveId));
+        TurbineAdmissionValveOpenCommand = new DelegateCommand(() => DispatchSelectedTurbineValve(ControlRoomCommandKind.TurbineValveOpen, static train => train.AdmissionValveId));
+        TurbineAdmissionValveCloseCommand = new DelegateCommand(() => DispatchSelectedTurbineValve(ControlRoomCommandKind.TurbineValveClose, static train => train.AdmissionValveId));
+        TurbineControlValveManualModeCommand = new DelegateCommand(() => DispatchSelectedTurbineValve(ControlRoomCommandKind.TurbineControlValveManualMode, static train => train.ControlValveId));
+        TurbineControlValveAutomaticModeCommand = new DelegateCommand(() => DispatchSelectedTurbineValve(ControlRoomCommandKind.TurbineControlValveAutomaticMode, static train => train.ControlValveId));
+        ApplyTurbineControlValveManualDemandCommand = new DelegateCommand(ApplyTurbineControlValveManualDemand);
         GeneratorTripCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.GeneratorTrip));
         GeneratorBreakerCloseCommand = new DelegateCommand(() => DispatchBreaker(ControlRoomCommandKind.GeneratorBreakerClose));
         GeneratorBreakerOpenCommand = new DelegateCommand(() => DispatchBreaker(ControlRoomCommandKind.GeneratorBreakerOpen));
@@ -795,6 +807,133 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public string TurbineTripCommandLabel => TurbineSecondary.TurbineTripActive ? "TURBINE TRIP — ACTIVE" : "TURBINE TRIP";
 
+    public string TurbineAdmissionTrainOptionsText => TurbineSecondary.AdmissionTrains.Count == 0
+        ? "NO ADMISSION TRAINS"
+        : string.Join("|", TurbineSecondary.AdmissionTrains.Select(static train => train.TrainId));
+
+    public int SelectedTurbineAdmissionTrainIndex
+    {
+        get => _selectedTurbineAdmissionTrainIndex;
+        set
+        {
+            var maximum = Math.Max(0, TurbineSecondary.AdmissionTrains.Count - 1);
+            var next = Math.Clamp(value, 0, maximum);
+            if (_selectedTurbineAdmissionTrainIndex == next)
+            {
+                return;
+            }
+
+            _selectedTurbineAdmissionTrainIndex = next;
+            _turbineControlValveManualDemandDirty = false;
+            SynchronizeTurbineControlValveDemand();
+            NotifyTurbineValveProperties();
+        }
+    }
+
+    private TurbineAdmissionTrainPresentationSnapshot? SelectedTurbineAdmissionTrain =>
+        TurbineSecondary.AdmissionTrains.Count == 0
+            ? null
+            : TurbineSecondary.AdmissionTrains[Math.Clamp(
+                _selectedTurbineAdmissionTrainIndex,
+                0,
+                TurbineSecondary.AdmissionTrains.Count - 1)];
+
+    public string SelectedTurbineAdmissionTrainId => SelectedTurbineAdmissionTrain?.TrainId ?? "—";
+
+    public string SelectedTurbineValveAuthorityText => SelectedTurbineAdmissionTrain?.ValveAuthorityText
+        ?? "VALVE AUTHORITY UNAVAILABLE";
+
+    public string SelectedStopValveActualText => FormatValvePosition(
+        SelectedTurbineAdmissionTrain?.StopValveId,
+        SelectedTurbineAdmissionTrain?.StopValvePosition,
+        "ACTUAL");
+
+    public string SelectedStopValveTargetText => FormatValvePosition(
+        SelectedTurbineAdmissionTrain?.StopValveId,
+        SelectedTurbineAdmissionTrain?.StopValveRequestedPosition,
+        "TARGET");
+
+    public string SelectedControlValveActualText => FormatValvePosition(
+        SelectedTurbineAdmissionTrain?.ControlValveId,
+        SelectedTurbineAdmissionTrain?.ControlValvePosition,
+        "ACTUAL");
+
+    public string SelectedControlValveTargetText => FormatValvePosition(
+        SelectedTurbineAdmissionTrain?.ControlValveId,
+        SelectedTurbineAdmissionTrain?.ControlValveRequestedPosition,
+        "ACTUATOR TARGET");
+
+    public string SelectedAdmissionValveActualText => FormatValvePosition(
+        SelectedTurbineAdmissionTrain?.AdmissionValveId,
+        SelectedTurbineAdmissionTrain?.AdmissionValvePosition,
+        "ACTUAL");
+
+    public string SelectedAdmissionValveTargetText => FormatValvePosition(
+        SelectedTurbineAdmissionTrain?.AdmissionValveId,
+        SelectedTurbineAdmissionTrain?.AdmissionValveRequestedPosition,
+        "TARGET");
+
+    public string SelectedControlValveModeText => SelectedTurbineAdmissionTrain?.ControlValveModeText ?? "UNAVAILABLE";
+
+    public double TurbineControlValveManualDemandPercent
+    {
+        get => _turbineControlValveManualDemandPercent;
+        set
+        {
+            if (!double.IsFinite(value))
+            {
+                return;
+            }
+
+            var next = Math.Clamp(value, 0d, 100d);
+            if (Math.Abs(_turbineControlValveManualDemandPercent - next) < 0.0001d)
+            {
+                return;
+            }
+
+            _turbineControlValveManualDemandPercent = next;
+            _turbineControlValveManualDemandDirty = true;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(TurbineControlValveManualDemandText));
+            OnPropertyChanged(nameof(TurbineControlValveManualDemandPendingText));
+            OnPropertyChanged(nameof(TurbineControlValveManualDemandApplyEnabled));
+        }
+    }
+
+    public string TurbineControlValveManualDemandText =>
+        FormattableString.Invariant($"{_turbineControlValveManualDemandPercent:0}% OPEN");
+
+    public string TurbineControlValveManualDemandPendingText => _turbineControlValveManualDemandDirty
+        ? "PENDING · PRESS APPLY"
+        : "APPLIED MANUAL DEMAND";
+
+    public ControlRoomVisualState TurbineValveCommandState => _snapshot.RunState == ControlRoomRunState.ShellOnly
+        ? ControlRoomVisualState.Unavailable
+        : SelectedTurbineAdmissionTrain is { StopValveForcedClosed: true }
+            ? ControlRoomVisualState.Trip
+            : SelectedTurbineAdmissionTrain is { TurbineAdmissionOpeningInhibited: true }
+                ? ControlRoomVisualState.Warning
+                : ControlRoomVisualState.Normal;
+
+    public bool TurbineValveCloseCommandEnabled =>
+        _snapshot.RunState != ControlRoomRunState.ShellOnly && SelectedTurbineAdmissionTrain is not null;
+
+    public bool TurbineValveOpenCommandEnabled => TurbineValveCloseCommandEnabled
+        && !TurbineSecondary.TurbineTripActive
+        && SelectedTurbineAdmissionTrain is { TurbineAdmissionOpeningInhibited: false };
+
+    public bool TurbineControlValveManualModeActive => SelectedTurbineAdmissionTrain?.ControlValveManualMode == true;
+
+    public bool TurbineControlValveAutomaticModeActive => SelectedTurbineAdmissionTrain is { ControlValveManualMode: false };
+
+    public bool TurbineControlValveModeCommandEnabled => TurbineValveOpenCommandEnabled;
+
+    public bool TurbineControlValveManualDemandEnabled => TurbineControlValveModeCommandEnabled
+        && TurbineControlValveManualModeActive;
+
+    public bool TurbineControlValveManualDemandApplyEnabled => TurbineControlValveManualDemandEnabled
+        && _turbineControlValveManualDemandDirty;
+
     public ControlRoomVisualState GeneratorSelectionState =>
         _snapshot.RunState == ControlRoomRunState.ShellOnly || Electrical.Generators.Count == 0
             ? ControlRoomVisualState.Unavailable
@@ -1012,6 +1151,13 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public ICommand PumpStartCommand { get; }
     public ICommand PumpStopCommand { get; }
     public ICommand TurbineTripCommand { get; }
+    public ICommand TurbineStopValveOpenCommand { get; }
+    public ICommand TurbineStopValveCloseCommand { get; }
+    public ICommand TurbineAdmissionValveOpenCommand { get; }
+    public ICommand TurbineAdmissionValveCloseCommand { get; }
+    public ICommand TurbineControlValveManualModeCommand { get; }
+    public ICommand TurbineControlValveAutomaticModeCommand { get; }
+    public ICommand ApplyTurbineControlValveManualDemandCommand { get; }
     public ICommand GeneratorTripCommand { get; }
     public ICommand GeneratorBreakerCloseCommand { get; }
     public ICommand GeneratorBreakerOpenCommand { get; }
@@ -1176,6 +1322,11 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         ControlRoomCommandKind.GeneratorLoadRaise => "GENERATOR LOAD RAISE",
         ControlRoomCommandKind.GeneratorLoadLower => "GENERATOR LOAD LOWER",
         ControlRoomCommandKind.ProtectionReset => "PROTECTION RESET",
+        ControlRoomCommandKind.TurbineValveOpen => "OPEN TURBINE VALVE",
+        ControlRoomCommandKind.TurbineValveClose => "CLOSE TURBINE VALVE",
+        ControlRoomCommandKind.TurbineControlValveManualMode => "CONTROL VALVE MANUAL",
+        ControlRoomCommandKind.TurbineControlValveAutomaticMode => "CONTROL VALVE AUTO",
+        ControlRoomCommandKind.TurbineControlValveManualDemandSet => "SET CONTROL VALVE MANUAL DEMAND",
         _ => kind.ToString().ToUpperInvariant(),
     };
 
@@ -1325,6 +1476,48 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             $"{kind} command for Generator '{target}' dispatched through the application boundary.");
     }
 
+    private void DispatchSelectedTurbineValve(
+        ControlRoomCommandKind kind,
+        Func<TurbineAdmissionTrainPresentationSnapshot, string> targetSelector)
+    {
+        var train = SelectedTurbineAdmissionTrain;
+        if (train is null)
+        {
+            CommandStatus = $"{kind} not dispatched: no canonical turbine admission train is available.";
+            return;
+        }
+
+        var target = targetSelector(train);
+        TryDispatch(
+            new ControlRoomCommand(kind, target, ControlRoomCommandTargetKind.Valve),
+            $"{kind} command for Valve '{target}' dispatched through the application boundary.");
+    }
+
+    private void ApplyTurbineControlValveManualDemand()
+    {
+        var train = SelectedTurbineAdmissionTrain;
+        if (train is null)
+        {
+            CommandStatus = "Manual valve demand not dispatched: no canonical turbine admission train is available.";
+            return;
+        }
+
+        var accepted = TryDispatch(
+            new ControlRoomCommand(
+                ControlRoomCommandKind.TurbineControlValveManualDemandSet,
+                train.ControlValveId,
+                ControlRoomCommandTargetKind.Valve,
+                _turbineControlValveManualDemandPercent),
+            FormattableString.Invariant(
+                $"Manual demand {_turbineControlValveManualDemandPercent:0.#}% for Valve '{train.ControlValveId}' dispatched through the application boundary."));
+        if (accepted)
+        {
+            _turbineControlValveManualDemandDirty = false;
+            OnPropertyChanged(nameof(TurbineControlValveManualDemandPendingText));
+            OnPropertyChanged(nameof(TurbineControlValveManualDemandApplyEnabled));
+        }
+    }
+
     private void DispatchAlarm(ControlRoomCommandKind kind)
     {
         if (AlarmEvents.Alarms.Count == 0)
@@ -1339,20 +1532,66 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             $"{kind} command for Alarm '{target}' dispatched through the application boundary. Protection state is unaffected by annunciator commands.");
     }
 
-    private void TryDispatch(ControlRoomCommand command, string successMessage)
+    private bool TryDispatch(ControlRoomCommand command, string successMessage)
     {
         try
         {
             _commandDispatcher.Dispatch(command);
             CommandStatus = successMessage;
             LastControlActionText = DescribeLastControlAction(command, accepted: true, reason: null);
+            return true;
         }
         catch (InvalidOperationException exception)
         {
             CommandStatus = $"Command blocked by the loaded scenario: {exception.Message}";
             LastControlActionText = DescribeLastControlAction(command, accepted: false, reason: exception.Message);
+            return false;
         }
     }
+
+    private void SynchronizeTurbineControlValveDemand()
+    {
+        if (_turbineControlValveManualDemandDirty)
+        {
+            return;
+        }
+
+        _turbineControlValveManualDemandPercent =
+            SelectedTurbineAdmissionTrain?.ControlValveManualDemand.NumericValue ?? 0d;
+    }
+
+    private void NotifyTurbineValveProperties()
+    {
+        OnPropertyChanged(nameof(SelectedTurbineAdmissionTrainIndex));
+        OnPropertyChanged(nameof(SelectedTurbineAdmissionTrainId));
+        OnPropertyChanged(nameof(SelectedTurbineValveAuthorityText));
+        OnPropertyChanged(nameof(SelectedStopValveActualText));
+        OnPropertyChanged(nameof(SelectedStopValveTargetText));
+        OnPropertyChanged(nameof(SelectedControlValveActualText));
+        OnPropertyChanged(nameof(SelectedControlValveTargetText));
+        OnPropertyChanged(nameof(SelectedAdmissionValveActualText));
+        OnPropertyChanged(nameof(SelectedAdmissionValveTargetText));
+        OnPropertyChanged(nameof(SelectedControlValveModeText));
+        OnPropertyChanged(nameof(TurbineControlValveManualDemandPercent));
+        OnPropertyChanged(nameof(TurbineControlValveManualDemandText));
+        OnPropertyChanged(nameof(TurbineControlValveManualDemandPendingText));
+        OnPropertyChanged(nameof(TurbineValveCommandState));
+        OnPropertyChanged(nameof(TurbineValveCloseCommandEnabled));
+        OnPropertyChanged(nameof(TurbineValveOpenCommandEnabled));
+        OnPropertyChanged(nameof(TurbineControlValveManualModeActive));
+        OnPropertyChanged(nameof(TurbineControlValveAutomaticModeActive));
+        OnPropertyChanged(nameof(TurbineControlValveModeCommandEnabled));
+        OnPropertyChanged(nameof(TurbineControlValveManualDemandEnabled));
+        OnPropertyChanged(nameof(TurbineControlValveManualDemandApplyEnabled));
+    }
+
+    private static string FormatValvePosition(
+        string? valveId,
+        ControlRoomValueSnapshot? position,
+        string prefix)
+        => valveId is null || position is null
+            ? $"{prefix} —"
+            : $"{prefix} · {valveId} · {position.ValueText} {position.Unit}".TrimEnd();
 
     private static string DescribeLastControlAction(ControlRoomCommand command, bool accepted, string? reason)
     {
@@ -1500,6 +1739,16 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _selectedGeneratorIndex = _snapshot.Electrical.Generators.Count - 1;
         }
 
+        if (_snapshot.TurbineSecondary.AdmissionTrains.Count == 0)
+        {
+            _selectedTurbineAdmissionTrainIndex = 0;
+        }
+        else if (_selectedTurbineAdmissionTrainIndex >= _snapshot.TurbineSecondary.AdmissionTrains.Count)
+        {
+            _selectedTurbineAdmissionTrainIndex = _snapshot.TurbineSecondary.AdmissionTrains.Count - 1;
+        }
+        SynchronizeTurbineControlValveDemand();
+
         if (_snapshot.AlarmEvents.Alarms.Count == 0)
         {
             _selectedAlarmIndex = 0;
@@ -1589,6 +1838,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(TurbineTripCommandState));
         OnPropertyChanged(nameof(TurbineTripCommandEnabled));
         OnPropertyChanged(nameof(TurbineTripCommandLabel));
+        OnPropertyChanged(nameof(TurbineAdmissionTrainOptionsText));
+        NotifyTurbineValveProperties();
         OnPropertyChanged(nameof(GeneratorSelectionState));
         OnPropertyChanged(nameof(GeneratorTripCommandState));
         OnPropertyChanged(nameof(GeneratorTripCommandEnabled));
