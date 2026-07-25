@@ -6,7 +6,7 @@ E.1 is a contract/decision checkpoint. It intentionally changes no production ph
 
 - [ ] `docs/REFERENCE_PLANT_SCALE_CONTRACT.md` marks the 10 MWe reduced-scale direction as accepted for the current-v2 educational reference plant.
 - [ ] `docs/REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md` records the exact scale basis and E.2 migration gates.
-- [ ] ADR 0102 is present and consistent with the migration plan.
+- [ ] ADR 0109 is present and consistent with the migration plan.
 - [ ] D.3 is recorded as validated: max actuator lag 23.418 pp, integral excursion 0.134 pp, no D.3.1 anti-windup change.
 - [ ] E.1 changes no `src/` or test physics.
 - [ ] The active source remains pre-migration until E.2; documentation must not claim that 10 MWe is already live in runtime definitions.

@@ -1,11 +1,20 @@
-## M10.9.4.1 cumulative documentation and validation checkpoint — D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator valve station
+## M10.9.4.1-D.4 — Turbine Valve Operator Authority — VALIDATED
+
+- Promotes the cumulative D.3.2 Hotfix 3 + D.4 source after the complete local automated gate passed on 2026-07-25.
+- Ordinary run: 961 discovered, 944 passed, 0 failed and 17 explicit tests skipped.
+- All 17 unique explicit tests then passed: admission authority 3/3, governor/actuator tracking 2/2, gameplay long runs 2/2, operational envelope 9/9 and reference scale 2/2; one scale test is shared by two script categories.
+- Records D.4 typed STOP/ADMISSION OPEN/CLOSE, control-valve AUTO/MANUAL and explicit manual demand while preserving finite travel and protection priority.
+- Corrects the documentation/source mismatch: E.1 is an accepted 10 MWe target decision, while E.2 bidirectional migration and its signed-torque seam are not implemented in this source.
+- Renumbers duplicate ADRs to unique identifiers 0107–0111 and marks ADR 0110–0111 as proposed E.2 designs.
+
+## Superseded documentation checkpoint — incorrectly described E.2 as implemented
 
 - Records the operator-facing turbine valve station added after the prior documentation checkpoint: stop/admission OPEN/CLOSE, control-valve AUTO/MANUAL and an explicit bounded manual-demand slider with APPLY.
 - Keeps requested/manual-demand/actual valve positions distinct during finite travel and preserves protection as the later authority that can inhibit opening or force the stop valve closed without erasing the operator lineup.
 - Aligns the M10.9.4.1 milestone, operational hardening plan, roadmap, status, handoff, new-chat brief, scale contract/evidence, limitations register and user manual with the current cumulative source.
-- Records the accepted/implemented current-v2 10 MWe E.1/E.2 migration and signed bidirectional grid coupling while preserving legacy/default generation-only semantics.
-- Records the 2026-07-25 fast gate: build 0 warnings/errors; ordinary suite 944 passed / 17 explicit skipped / 0 failed; turbine-admission audit 3/3; governor-tracking audit 2/2; scale/migration audit 2/2.
-- Does not promote the candidate: both 60-second journeys, the complete operational-envelope audit and manual PLANT/TURBINE/GENERATOR validation remain required.
+- Historical note: this checkpoint incorrectly described E.2 as implemented. The D.4 validation checkpoint above supersedes that statement; only E.1 target acceptance is current.
+- Historical partial gate: ordinary 944 passed / 17 explicit skipped / 0 failed; turbine-admission 3/3; governor-tracking 2/2; reference-scale 2/2.
+- Superseded by the later D.4 validation: both long journeys and the complete operational-envelope audit subsequently passed.
 
 ## M10.9.4.1-D.3.2 Hotfix 3 — Loaded desktop main-steam capacity rebalance — CANDIDATE
 

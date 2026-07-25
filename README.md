@@ -1,7 +1,7 @@
-> **Current development checkpoint:** M10.9.4 remains the validated baseline. The cumulative M10.9.4.1 candidate contains D.3.2 Hotfix 3, the E.1/E.2 10 MWe bidirectional migration plus signed-torque Hotfix 1, and the operator turbine-valve station. Build, ordinary suite and focused explicit audits are green; long-running and manual gates remain pending.
+> **Current development checkpoint:** M10.9.4.1-D.4 is VALIDATED. The baseline includes D.3.2 Hotfix 3 and the operator turbine-valve station. The ordinary suite passed 944/944 non-explicit tests, and all 17 unique explicit tests passed across admission, governor, long-running, operational-envelope and reference-scale gates. E.1 accepts a future 10 MWe target; E.2 is not yet implemented.
 
 # Nuclear Reactor Simulator
-> **Current candidate:** cumulative M10.9.4.1 D/E/operator-authority checkpoint. D.3.2 Hotfix 3 retains the 28% desktop bias and 276.7 °C stop-out seed, changes only the loaded main-steam-line resistance from 1,000 to 850 Pa·s²/kg², and leaves synchronization at 1,000 Pa·s²/kg². E.2 applies the accepted 10 MWe current-v2 scale and bidirectional coupling; the TURBINE station now exposes canonical valve authority without moving physics into Avalonia.
+> **Validated M10.9.4.1-D.4 baseline:** D.3.2 Hotfix 3 retains the 28% desktop bias and 276.7 °C stop-out seed, changes only the loaded main-steam-line resistance from 1,000 to 850 Pa·s²/kg², and leaves synchronization at 1,000 Pa·s²/kg². The TURBINE station exposes canonical valve authority without moving physics into Avalonia. The runtime generator/grid contract remains pre-E.
 
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
@@ -13,13 +13,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The current official milestone baseline is **M10.9.4 — Subsystem Engineering Schematics — VALIDATED**.
+The current official continuation baseline is **M10.9.4.1-D.4 — Turbine Valve Operator Authority — VALIDATED**, built cumulatively on validated M10.9.4.
 
-The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 are validated. The extended M10.9.4.1-A audit first exposed a repeatable trip near 70 simulated seconds, but the root cause was subsequently traced to the **current-v2 operating seed**: only the direct 20% coolant heat-deposition share reached the coolant, primary circulation was only about 0.07 kg/s, while the drum exported about 13 kg/s of steam. The corrected v2 seed now returns fuel/structure heat conservatively to the coolant, uses matched primary hydraulic resistance and aligned steam-line/control-valve initial conditions. Historical v1 seeds and protection thresholds remain unchanged. **M10.9.4.1-B.1–B.3, C.1 and C.2** are locally user-validated. **D.1, D.2 and D.2 Hotfix 1** are also locally user-validated. **D.3 evidence** identified that the breaker-open rotor had no physical deceleration path. **D.3.1 passive rotor loss and D.3.2 admission-train isolation/PLANT preservation are included in the current tree. D.3.2 Hotfix 3** retains 28% control-valve bias and uses 850 Pa·s²/kg² only on the loaded desktop main-steam line. **E.1 accepts a 10 MWe current-v2 target; E.2 and its signed-torque hotfix implement bidirectional generation/motoring as a candidate.** The operator valve station adds stop/admission OPEN/CLOSE plus control-valve AUTO/MANUAL and an explicit manual demand while preserving finite travel and protection priority. On 2026-07-25 build, 944 ordinary tests and all 7 focused explicit D/E audits passed; long-running and manual promotion gates remain pending.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 remain validated. M10.9.4.1-A–C and D.1–D.3.2 have been consolidated into the current D.4 baseline. D.3.2 Hotfix 3 retains the 28% control-valve bias and uses 850 Pa·s²/kg² only on the loaded desktop main-steam line. D.4 adds typed stop/admission OPEN/CLOSE commands, control-valve AUTO/MANUAL selection and explicit manual demand while preserving finite actuator travel and protection priority. Validation on 2026-07-25 passed 944 ordinary tests with zero failures and all 17 unique explicit tests: admission 3/3, governor 2/2, gameplay long-run 2/2, operational envelope 9/9 and reference scale 2/2. E.1 accepts a future 10 MWe educational target, but the active source remains at the pre-E 1,000 MW / 150 rpm / correction-only generator-grid contract; E.2 remains planned.
 
 Hotfix 19 validates opt-in non-return semantics on current-v2 condensate/feedwater pumps. Hotfix 20 Fix 2 validates measured turbine overspeed, condenser high-backpressure and generator overfrequency trips. Hotfix 21 validates finite actuator travel; Hotfix 22 validates breaker-aware speed/load droop; Hotfix 23 validates pressure/temperature/vapor-dependent turbine work. Remaining physical/numerical hardening is moved out of schematic scope into **M10.9.4.1 — Operational Envelope & Numerical Hardening** before M10.9.5.
 
-See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0105. M10 closes only after M10.9.8; release hardening remains M11.
+See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0111. M10 closes only after M10.9.8; release hardening remains M11.
 
 ## Architectural principles
 
@@ -452,7 +452,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. M10.9.4.1-B.1–B.3, C.1–C.2 and D.1–D.2 Hotfix 1 are locally user-validated. The cumulative candidate contains D.3.2 Hotfix 3, E.1/E.2 Hotfix 1 and the operator valve station. The 2026-07-25 build, ordinary suite and focused D/E audits are green; explicit long-running and manual validation remain open.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 are validated, and the cumulative M10.9.4.1-D.4 continuation is now validated. Its ordinary suite and all 17 unique explicit tests are green. E.1 is an accepted target decision; E.2 remains a future coordinated migration.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -579,4 +579,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 are validated; M10.9.4 is the official milestone baseline. The M10.9.4.1-A failure was traced to and corrected in the current-v2 sustained-generation seed. B.1–B.3 and C.1–C.2 are locally user-validated; the cumulative D.3.2/E.2/operator-valve candidate is ordinary/focused-audit green and awaits long-running/manual promotion.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 are validated, and M10.9.4.1-D.4 is the current validated continuation baseline. The former M10.9.4.1-A failure was corrected in the current-v2 sustained-generation seed; D.3.2 Hotfix 3 and the operator-valve station then passed the complete ordinary and explicit validation pack. E.2 is not present in this source.

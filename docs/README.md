@@ -19,8 +19,8 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `M10_9_4_1_A_EXTENDED_AUDIT.md` — executed non-green extended audit and exact ~70-second trip evidence.
 - `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` — adjudication of the two external LLM reviews and accepted planning decisions.
 - `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` — revised A.1–I evidence/physics/numerical hardening sequence.
-- `REFERENCE_PLANT_SCALE_CONTRACT.md` — provisional reduced-scale direction and coordinated migration gate for nameplate/inertia/droop/coupling.
-- `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible current-v2 rotor energy, inertia, droop and synchronizing-authority calculations.
+- `REFERENCE_PLANT_SCALE_CONTRACT.md` — active pre-E runtime contract, accepted E.1 10 MWe target and coordinated E.2 migration gate.
+- `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible active pre-E rotor energy, inertia, droop and synchronizing-authority calculations.
 - `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
 - `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
 - `ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md` — gauge semantics, provenance/quality, off-scale and logical-step trend rules.
@@ -102,5 +102,6 @@ See `PROJECT_HANDOFF.md` for the full authoritative statement.
 - `M10_9_4_1_D3_VALIDATION_CHECKLIST.md` — superseded D.3 evidence checklist retained as the audit record.
 - `TURBINE_ROTOR_MECHANICAL_LOSS_CLOSURE.md` — D.3.1 passive-loss law, energy ownership and breaker-open recovery method.
 - `M10_9_4_1_D3_1_VALIDATION_CHECKLIST.md` — cumulative D.3.1 build, ordinary, protection-reset, D.2/D.3 and long-running gates.
+- `M10_9_4_1_D4_VALIDATION_CHECKLIST.md` — validated operator turbine-valve station and complete ordinary/explicit gate evidence.
 - `adr/0101-governor-effective-setpoint-and-actuator-tracking-are-audited-before-new-anti-windup.md` — evidence boundary before any tracking anti-windup law.
 - `adr/0102-current-v2-breaker-open-rotor-has-passive-mechanical-losses.md` — current-v2 passive rotor-loss and explicit recovery decision.

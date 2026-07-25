@@ -8,7 +8,7 @@ This register distinguishes deliberate educational simplifications, unresolved d
 
 ### A1. Sustained-generation seed equilibrium remains a promotion gate
 
-The historical current-v2 seed produced a protection trip near 70 seconds; that root cause was corrected by conservative solid-to-coolant heat return, matched primary circulation and aligned steam-path initial conditions. A corrected 300-second journey has passed previously, but the present cumulative D.3.2/E.2/operator-control candidate must re-run the complete trajectory. It must not be described as a proven steady state until current final-window slopes and full inventory trajectories are within the accepted equilibrium budget.
+The historical current-v2 seed produced a protection trip near 70 seconds; that root cause was corrected by conservative solid-to-coolant heat return, matched primary circulation and aligned steam-path initial conditions. A corrected 300-second journey has passed previously, but the cumulative D.3.2 Hotfix 3 + D.4 source has now re-run and passed the long gameplay and complete operational-envelope gates. The accepted equilibrium budgets remain the controlling evidence for future physics changes.
 
 ### A2. Condenser limiter ownership and long-horizon headroom
 
@@ -22,13 +22,13 @@ Compressed-liquid resolution may return finite pressures above the intended plan
 
 The inherited model allowed pressure-driven stage flow to remain positive for liquid or highly wet inlet states while thermodynamic work could fall to zero. M10.9.4.1-D.1 introduced an explicit current-v2 vapor-mass-fraction-limited admission policy: liquid is blocked from stage transfer and wet admission transfers only the vapor fraction without applying quality twice to specific work. D.3.2 additionally closes the discovered admission-train bypass: current-v2 pressure-driven stage flow is bounded by stop/control/admission valve capacity, so any closed valve enforces zero stage transfer. Detailed droplet transport, erosion, moisture separation and calibrated Stodola/effective-area behavior remain out of scope.
 
-### A4b. Breaker-open rotor had no passive deceleration path — D.3.1 CANDIDATE
+### A4b. Breaker-open rotor passive deceleration path — D.3.1 VALIDATED
 
-D.3 evidence showed a disconnected rotor fixed near 3301 rpm after the control valve closed because both generator electromagnetic torque and passive mechanical losses were zero. D.3.1 adds an optional speed-dependent rotor-loss law to sustained current-v2 profiles. The 0.5 MW rated-speed value and its interaction with low-load headroom remain candidate behavior until local long-running validation passes.
+D.3 evidence showed a disconnected rotor fixed near 3301 rpm after the control valve closed because both generator electromagnetic torque and passive mechanical losses were zero. D.3.1 adds an optional speed-dependent rotor-loss law to sustained current-v2 profiles. The 0.5 MW rated-speed value has passed the cumulative ordinary, long-running and operational-envelope gates; future scale migration must re-audit its interaction with the new nameplate.
 
-### A5. Bidirectional generator/grid coupling is candidate behavior
+### A5. Bidirectional generator/grid coupling is not yet implemented
 
-E.2 current-v2 profiles now represent signed generation and grid motoring through versioned bidirectional coupling and an internal signed rotor-torque seam. The focused migration audit is green, but the long-running signed-power/slip trajectories are not yet promoted. Dedicated reverse-power, supervised underfrequency and loss-of-synchronism protections remain absent and are gated to E.3.
+The validated D.4 source retains correction-only/generation-only coupling and a non-negative rotor-load path. E.1 accepts a 10 MWe target; E.2 must still introduce versioned bidirectional coupling, signed electrical exchange and an internal signed rotor-torque seam. Dedicated reverse-power, supervised underfrequency and loss-of-synchronism protections remain gated to E.3.
 
 ### A6. Drum low-inventory behavior is only partially closed
 
@@ -38,9 +38,9 @@ M10.9.4.1-B.1 inventory-limits current-v2 demand-balanced liquid recirculation a
 
 Pipe/source transport currently follows the model's specific-internal-energy convention. Flow work/enthalpy transport is not explicit and requires a dedicated whole-network migration to avoid double counting with pumps and turbines.
 
-### A8. Reference-plant scale migration is implemented but not promoted
+### A8. Reference-plant scale migration is accepted in principle but not implemented
 
-E.1 accepts a 10 MWe current-v2 educational unit and E.2 coordinates nameplate, 1.5 rpm droop normalization, signed coupling and HMI range while retaining the 1,000 kg·m² rotor and 5 MWe normal point. Historical/default definitions remain unchanged. Focused evidence is green; long-running dynamics, protection supervision and versioned trajectory promotion remain open.
+E.1 accepts a 10 MWe current-v2 educational target while the active source remains at 1,000 MW, 150 rpm full-load droop and correction-only/generation-only coupling. E.2 must coordinate nameplate, governor normalization, signed coupling, HMI range, replay and trajectory evidence while preserving historical/default definitions.
 
 ### A9. Legacy/current option combinations are not formally enumerated
 

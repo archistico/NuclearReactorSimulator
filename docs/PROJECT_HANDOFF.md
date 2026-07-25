@@ -1,307 +1,177 @@
-> **Current continuation candidate:** cumulative M10.9.4.1 D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator turbine-valve station. M10.9.4 remains the validated baseline. Build, ordinary suite and all focused D/E audits are green; long-running and manual gates are pending.
-
-# Current continuation override — cumulative M10.9.4.1 D/E/operator-authority candidate
-
-D.1, D.2 and D.2 Hotfix 1 are locally user-validated. D.3 evidence identified missing breaker-open passive deceleration; D.3.1 added optional 0.5 MW rated-speed rotor loss. D.3.2 then closed the discovered pressure-driven-stage bypass of the stop/control/admission train, corrected the synchronization PI contract and restored the uniform PLANT engineering-schematic visual language.
-
-The first ordinary-suite run of D.3.2 measured `11.784841 kg/s` initial effective stage flow and `4.352905 MW` shaft power after ten simulated seconds. Hotfix 1 was disproved locally: 30% produced only `11.792118 kg/s`. Hotfix 2 restored 28% and corrected the stop pressure grade, but local execution still measured `11.792118 kg/s`, `4.349755 MW` shaft power and `193.421 kPa` across the stop valve. That evidence identifies the upstream loaded main-steam line, not the stop/control pair, as the remaining bottleneck. Hotfix 3 therefore changes only the loaded desktop main-steam-line resistance from 1,000 to 850 Pa·s²/kg²; synchronization remains at 1,000. Re-run the ordinary suite, both explicit turbine audits, long-running gates and the manual PLANT check before validation.
-
-See `TURBINE_ADMISSION_AUTHORITY_EVIDENCE.md`, `TURBINE_ROTOR_MECHANICAL_LOSS_CLOSURE.md`, ADR 0102–0106 and `M10_9_4_1_D3_2_HOTFIX3_VALIDATION_CHECKLIST.md`.
-
 # Project Handoff — Nuclear Reactor Simulator
 
-
-## Validated Phase-D foundation — M10.9.4.1-D.1 + D.2 + Hotfix 1
-
-The user supplied `NuclearReactorSimulator_M10.9.4.1_nuova.zip` as the authoritative continuation source and requested development to resume at Phase D. D.1 adds explicit turbine admission phase ownership: current-v2 sustained profiles use `VaporMassFractionLimited`, legacy definitions remain `LegacyUnrestricted`, pure liquid cannot cross the stage as a zero-work bypass, and wet-steam quality is not applied twice to total shaft work. D.2 freezes the analytical authority map without production retuning; Hotfix 1 aligns the audit tests with the canonical API. The user confirmed the cumulative tree builds and all tests pass locally.
-
-D.3.1 passive rotor loss and D.3.2 admission-train isolation are included in the active tree. D.3.2 Hotfix 3 rebalances only the loaded desktop main-steam-line capacity. E.1/E.2 also migrate current-v2 coherently to 10 MWe and bidirectional grid coupling; Hotfix 1 permits signed motoring torque to reach the rotor through an internal seam. The latest operator station adds typed stop/admission OPEN/CLOSE and control-valve AUTO/MANUAL/manual-demand commands without changing protection priority. Tracking anti-windup remains unnecessary on current focused evidence. The historical 300-second wall-clock observation remains tracked.
-
-Fast gate on 2026-07-25: build 0 warnings/errors; ordinary suite 944 passed / 17 explicit skipped / 0 failed; admission audit 3/3; governor tracking 2/2; scale/migration 2/2. The current candidate is not validated until both 60-second journeys, the complete operational-envelope audit and manual PLANT/TURBINE/GENERATOR checks pass.
-This is the **authoritative continuity checkpoint** for restarting the project in a new conversation.
+> **Current validated continuation:** M10.9.4.1-D.4. The cumulative D.3.2 Hotfix 3 + operator turbine-valve station passed the complete ordinary and explicit automated validation pack. E.1 is an accepted target decision; E.2 is not implemented.
 
 ## 1. Exact current truth
 
-### Official validated milestone baseline
-
-**M10.9.4 — Subsystem Engineering Schematics — VALIDATED**
-
-The user confirmed the complete final manual HMI / engineering-schematic checklist passed after Hotfix 23 had already passed compilation, the complete ordinary suite and both explicit 60-second gameplay journeys.
+Validated sequence:
 
 ```text
 M7 gate — COMPLETE / VALIDATED
 M8 gate — COMPLETE / VALIDATED
 M9 gate — COMPLETE / VALIDATED
-        ↓
 M10.1–M10.9.4 — VALIDATED
-        ↓
-M10.9.4.1-A extended audit — FAILURE FOUND, ROOT CAUSE RESOLVED IN CURRENT-V2 SEED
-        ↓
-M10.9.4.1-A.3 corrected operating seed — USER-VALIDATED LOCAL CHECKPOINT
-        ↓
-M10.9.4.1-B.1 steam-drum liquid-inventory closure — USER VALIDATED LOCALLY
-        ↓
-M10.9.4.1-B.2 drum-to-main-steam source closure — USER VALIDATED LOCALLY
-
-M10.9.4.1-B.3 low-inventory diagnostics / low-low drum-level protection — USER VALIDATED LOCALLY
-        ↓
-M10.9.4.1-C.1 condenser phase-change energy closure — USER VALIDATED LOCALLY
-        ↓
-M10.9.4.1-C.2 explicit condenser installed-capacity ownership — LOCALLY VALIDATED
-M10.9.4.1-C.2 Hotfix 2 synchronization-seed drum-inventory closure — SUPERSEDED CHECKPOINT / INCLUDED
-        ↓
-M10.9.4.1-D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator valve station — ACTIVE CUMULATIVE CANDIDATE
-        ↓
-M10.9.4.1-E.3 through I Operational Envelope & Numerical Hardening — PLANNED AFTER PROMOTION
-        ↓
-M10.9.5 Contextual Command Consequence Model
-M10.9.6 Operational Challenge & Energy-Demand Framework
-M10.9.7 Mission & Performance Workstation
-M10.9.8 Integrated Human-Automation-HMI Validation Gate
-        ↓
-M10 COMPLETE
+M10.9.4.1 A–C — VALIDATED IN THE CUMULATIVE SOURCE
+M10.9.4.1 D.1–D.3.2 Hotfix 3 — VALIDATED IN THE CUMULATIVE SOURCE
+M10.9.4.1-D.4 — CURRENT VALIDATED CONTINUATION BASELINE
 ```
 
-### Historical A-resolution / B.1–B.3 + C.1–C.2 locally validated checkpoint
+M10 remains in progress and closes only at M10.9.8.
 
-The earlier 300-second failure near 70 simulated seconds is now understood as an upstream current-v2 seed imbalance, not as a thermodynamic-resolver defect. Only the direct 20% coolant deposition share reached the coolant; the explicit fuel/structure inventories retained the other 80% without a return path, primary circulation was only about 0.07 kg/s, and the drum continued exporting about 13 kg/s of steam until internal energy drifted into the high-backpressure trip.
+## 2. Validation evidence
 
-The corrected current-v2 seed now:
+User-confirmed local result on 2026-07-25:
 
-- returns fuel/structure energy conservatively to the coolant through canonical thermal links;
-- uses matched low-resistance current-v2 primary circulation;
-- aligns current-v2 steam-line initial conditions and control-valve bias to the sustained operating point;
-- preserves historical v1 seeds and all protection thresholds.
+- ordinary test discovery: **961**;
+- ordinary passed: **944**;
+- ordinary failed: **0**;
+- explicit/opt-in skipped by the ordinary run: **17**.
 
-User validation evidence:
+All 17 unique explicit tests were then executed and passed:
 
-- exact 300-second sustained 5 MWe journey: **PASSED in 2m 07s**;
-- explicit 60-second synchronization journey: **PASSED**;
-- build: **0 warnings / 0 errors**;
-- ordinary suite: **895 passed / 11 explicit skipped / 0 failed**.
+| Gate | Result |
+|---|---:|
+| Turbine admission authority | 3/3 |
+| Governor/actuator tracking | 2/2 |
+| Gameplay long-running journeys | 2/2 |
+| Operational-envelope audit | 9/9 |
+| Reference-plant scale audit | 2/2 |
 
-The earlier A.2 condenser-capacity headroom remains in current-v2 but is no longer treated as the root-cause correction; Phase C later made its ownership explicit. A.3 is now the historical pre-migration evidence; E.1 accepted the 10 MWe contract and E.2 implemented the current candidate.
+The script totals contain one shared scale test, so 18 script executions correspond to 17 unique explicit tests.
 
-**M10.9.4.1-B.1 is user-validated locally.** It inventory-limits current-v2 demand-balanced liquid recirculation and forbids fabricated liquid recirculation from a fully vaporized drum. It also clarifies the HMI/game contract: penalties apply to accepted manual operator commands, `SPEED ±` changes the speed reference by 10 rpm per accepted press, and `LOAD ±` changes requested load by 5 MWe per accepted press with explicit reference indicators.
+## 3. Validated D.3.2 Hotfix 3
 
-**M10.9.4.1-B.2 is user-validated locally.** It removes the temporary demand-following drum→steam supplement from `MainSteamNetworkSolver`. Current-v2 explicitly owns a drum steam-source definition: available steam comes from positive return-flow energy surplus plus committed separable-vapor inventory, while actual transfer is independently limited by forward drum→steam-outlet pressure head. The transfer remains internally mass/energy conservative and null-source historical/v1 behavior remains explicit.
+The loaded desktop main-steam path had remained the upstream flow bottleneck after the stop-valve pressure-grade correction.
 
-**M10.9.4.1-B.3 is locally validated.** It does not change B.1/B.2 source physics. It adds read-only committed-liquid/separation diagnostics, a 25% measured low-level warning, and a distinct 10% low-low protection with 20% reset threshold and ReactorScram + TurbineTrip + GeneratorTrip actions for current-v2 enhanced-protection profiles only.
+The active contract is:
 
-**M10.9.4.1-C.1 is locally user-validated.** The two sustained current-v2 condenser definitions use pressure-resolved saturated-liquid condensate internal energy so condensation can change hotwell energy physically within the existing internal-energy control-volume convention. Legacy definitions preserve their historical rule. C.1 also exposes independent condensation/cooling limit status and margins.
+- loaded desktop main-steam-line resistance: **850 Pa·s²/kg²**;
+- synchronization main-steam-line resistance: **1,000 Pa·s²/kg²**;
+- loaded desktop control-valve seed: **28%**;
+- loaded stop-out steam seed: **276.7 °C**;
+- generation-ready flow and power floors unchanged;
+- complete stop/control/admission train remains authoritative over pressure-driven stage flow.
 
-**Historical C.2 checkpoint:** C.2 is locally validated. C.2 Hotfix 1 did not retune primary hydraulics; it added 0.5 s deterministic operator-facing flow instrumentation and explicit re-synchronization guidance. The raw hydraulic chatter remains a Phase-H numerical-hardening item. This is no longer the active candidate.
+No PID/PI gain, actuator travel, turbine work law, passive rotor-loss law, protection threshold, timestep or replay contract was changed by Hotfix 3.
 
-**Superseded continuation note:** the earlier C.2 Hotfix 2 package reached the 300-second journey's final performance assertion without an earlier physics failure but exceeded the then-current wall-clock budget on one workstation. The user has since supplied a consolidated `M10.9.4.1_nuova` source tree and explicitly resumed development at Phase D. The wall-clock observation remains tracked for the performance/numerical gate; D.1, D.2 and D.2 Hotfix 1 are locally validated and D.3 tracking evidence is active.
+## 4. Validated D.4 operator valve station
 
-**Validation order:** `docs/M10_9_4_1_C2_VALIDATION_CHECKLIST.md`, then the ordinary suite and explicit 60/300-second gates required by that checklist.
+The TURBINE workstation now exposes canonical typed commands for:
 
-## 2. Operator-experience objective
+- STOP valve OPEN / CLOSE;
+- ADMISSION valve OPEN / CLOSE;
+- control valve AUTO / MANUAL;
+- explicit bounded 0–100% manual demand with APPLY.
 
-The simulator remains educational through **learning by operating**: the user must execute startup/shutdown/testing/power/stability/fault-recovery tasks efficiently and later track deterministic external electrical demand with safety-dominant scoring.
+Validated semantics:
 
-The HMI must make plant connectivity, operating ranges, command effects and the difference between process state, alarms and protection immediately understandable.
+- slider movement alone sends no command;
+- requested, manual-demand and actual positions remain distinct;
+- finite actuator travel remains authoritative;
+- manual demand is rejected outside MANUAL mode;
+- AUTO returns authority to the governor;
+- protection is applied later and can force STOP closed without erasing the operator request;
+- trip override is visible in presentation state.
 
-## 3. Validated HMI foundation
+See `M10_9_4_1_D4_VALIDATION_CHECKLIST.md`.
 
-- M10.9.1: five-region HMI shell and formal range semantics.
-- M10.9.2 Hotfix 2: advanced linear/circular gauges, target/setpoint/protection bands, provenance/quality/off-scale and logical-step trends.
-- M10.9.3: Application-owned interactive whole-plant mimic with equipment IN/OUT, directional medium-aware paths, connected-path emphasis and navigation-only subsystem drill-down.
+## 5. Active generator/grid scale contract
 
-## 3A. M10.9.4 Hotfix 13 current finding
+The source is still **pre-E**. The dedicated 2/2 scale audit proves:
 
-The user confirmed Hotfix 4 compiled and the ordinary/classic test suite passed locally. Hotfix 5 then fixed cooperative batching in the explicit long-gameplay harness; the subsequent explicit run finally reached plant behavior and exposed two canonical operating-seed defects rather than a UI problem:
+- generator nameplate: **1,000 MW**;
+- requested sustained load: **5 MWe = 0.5%**;
+- rotor: **1,000 kg·m² at 3,000 rpm**;
+- full-load governor rise: **150 rpm**;
+- droop displacement at 5 MWe: **0.75 rpm**;
+- maximum synchronizing correction: **0.5 MW**;
+- frequency damping: **2 MW/Hz**;
+- grid coupling remains correction-only/generation-only;
+- no internal signed generator/grid torque seam exists;
+- electrical output and HMI remain non-negative under this contract.
 
-- desktop at logical step 1000 / 10 simulated seconds: breaker closed, 5 MWe requested, ~2.406 MWe actual, ~2.455 MW generator mechanical input, rotor ~1442.615 rpm, MODEL rotor shaft 0 MW;
-- synchronization/load journey: `WaterSteamStateOutOfRangeException` at `control-out` (`v≈2.758 m³/kg`, `u≈2.497 MJ/kg`).
+E.1 accepts a future **10 MWe educational target**. E.2 must still implement nameplate, governor normalization, bidirectional coupling, signed power/torque, positive losses, HMI ranges and replay/checkpoint behavior as one coordinated candidate.
 
-Root-cause review found the historical v1 desktop/synchronization seeds were designed for numerical/runtime stability, not sustained low-load generation: a ~120 °C nearly isobaric steam path, 100,000 Pa·s²/kg² admission resistance and proportional-only speed governor could not maintain the ~12.75 kg/s turbine flow required by the simplified 5 MWe stage/generator model. The legacy `TotalSteamFlow` HMI field also came from the M4.1 turbine-admission boundary seam, which is zero while M5.4 derives actual turbine stage flow from canonical stop/control/admission valve hydraulics.
+ADR 0109 records the accepted target. ADR 0110–0111 are proposed E.2 designs, not current behavior.
 
-Hotfix 6 does **not mutate v1**. It adds exact-version v2 initial-condition factories, keeps v1 registered for archive/replay, points new desktop sessions to v2, and gives the explicit sync journey its own v2 origin. The v2 recipe adds a staged pressurized steam path, matched admission resistance, bumpless PI governor bias, measured aggregate shaft channel, condenser capacity/heat rejection and condensate/feedwater pump capacity/bias. `EffectiveTurbineSteamFlow` is new `[JsonIgnore]` presentation metadata derived from turbine stage effective flow; fingerprint-v1 retains the historical serialized field.
+## 6. Remaining D.4.1 hardening
 
+Before the scale migration, implement the smallest isolated follow-up:
 
-Hotfix 7 corrected condenser capacity but the same `exhaust` depletion persisted. Hotfix 8 identifies the upstream root cause: v2 initialized `steam` and `header` at the same 280 °C saturated state, so the canonical main-steam line supplied 0 kg/s while the admission train temporarily drained only preloaded downstream inventories. Hotfix 8 adds a backward-compatible optional header steam temperature and uses a continuous v2 pressure staircase (280 → 275 → 269.5 → 253 → 246 °C from drum steam through turbine inlet), producing approximately 13 kg/s through every canonical steam-path segment with existing v2 resistances. Historical v1 defaults remain exact.
+1. replay/checkpoint regressions for STOP, ADMISSION, AUTO/MANUAL and manual demand;
+2. checkpoint while requested and actual valve positions differ during finite travel;
+3. trip → request preserved → canonical reset → travel resumes;
+4. stop-valve-owned travel-rate configuration instead of borrowing control-valve configuration;
+5. manual TURBINE-station usability review for command enablement, pending/APPLY, target/actual feedback and trip override.
 
-The ordinary synchronization regression now exercises the intended operator path (close breaker → raise load → run) rather than treating prolonged breaker-open/no-load operation as the generation endurance point. M10.9.4 is still **NOT VALIDATED** until both the ordinary suite and the explicit 60-second gameplay pack pass on Hotfix 8.
+These are hardening items, not failures of the validated D.4 automated gate.
 
-Hotfix 8 established continuous upstream replenishment but local tests still showed `exhaust` leaving the simplified thermodynamic envelope and the initial shaft-support assertion failing. The remaining structural mismatch is the generic 10 m³ low-pressure exhaust node: at ~40 °C it contains only about 0.5 kg of vapor while the v2 turbine moves ~13 kg/s, so each 0.01 s step moves a large fraction of the entire inventory. Hotfix 9 changed only v2 to a 1,000 m³ condenser steam-space, preserved the historical 10 m³ default for v1 and retained the then-current 1,800 Pa·s²/kg² steam/admission resistance with 24.5 MW initial condenser rejection. The next local run proved the thermodynamic crash was removed but exposed two remaining issues: the first public seed snapshot still showed zero turbine-stage flow, and after 10 simulated seconds the rotor settled low at ~2928 rpm with ~4.13 MW shaft power. Hotfix 10 therefore adds deterministic v2-only seed preconditioning and increases available steam-path control authority without changing v1 or any M4/M5 solver law.
+## 7. Approved forward sequence
 
-### Structural root cause confirmed after Hotfix 10
+1. **M10.9.4.1-D.4.1** operator-valve hardening.
+2. **M10.9.4.1-E.2** coordinated 10 MWe and bidirectional generator/grid migration.
+3. Re-run the complete ordinary and explicit validation pack.
+4. **E.3** reverse-power, supervised-underfrequency and loss-of-synchronism protection, derived from measured E.2 trajectories.
+5. Phase F relief/bypass/choked flow.
+6. Phase G flow-work/enthalpy migration.
+7. Phase H numerical stiffness decision gate.
+8. Phase I compatibility and engineering hardening.
+9. M10.9.5–M10.9.8.
 
-The explicit gameplay runs proved the remaining failure was not a condenser/seed tuning problem. Both M5.4 and M5.5 duplicated the same stage-flow law: `min(stopFlow, controlFlow, admissionFlow)`. Because the canonical plant orchestrator already integrates each valve as a real mass transfer and the turbine expansion source term drains only `turbine-inlet`, the combined `stop-out + control-out + turbine-inlet` inventory obeyed `dM/dt = F_stop - F_stage >= 0` under that law. The admission train therefore behaved as a monotonic accumulator, equalized toward the steam header and inevitably drove stage flow to zero.
+## 8. Architecture rules
 
-Hotfix 13 rebases on Hotfix 10 and withdraws unvalidated Hotfix 11/12 workaround branches. `TurbineStageGroupDefinition` now optionally owns an expansion resistance; current v2 uses 21,400 Pa·s²/kg² and one shared M4 `TurbineStageMassFlowResolver` computes pressure-driven inlet→exhaust flow with no reverse flow and a per-step inventory guard. Null remains only as an isolated legacy law. An ordinary 200-step invariant regression checks admission-train inventory boundedness and admission/stage-flow agreement.
+Do not break these boundaries:
 
-Replay policy is also clarified: legacy replay compatibility is a read/migration concern, not a veto on correcting current physics. Pre-release legacy versions may be isolated, migrated or deprecated rather than contaminating the active model.
+- deterministic fixed timestep independent of UI cadence and wall clock;
+- canonical M2/M3/M4/M5 plant ownership;
+- Application owns presentation projection and typed intents;
+- Avalonia renders and dispatches only;
+- measured consumers do not substitute true/model state;
+- protection overrides normal and supervisory control;
+- no hidden runtime steady-state repair;
+- legacy/current behavior is versioned explicitly;
+- replay/checkpoint behavior is fail-closed and deterministic;
+- one physical/control owner per state variable.
 
-## 4. M10.9.4 Hotfix 23 validated structural checkpoint
+## 9. Primary files for the next work
 
-M10.9.4 retains the five detailed engineering schematic families and the validated structural corrections through Hotfix 23. Automated, explicit long-running and final manual HMI/schematic gates are all green; M10.9.4 is the official validated milestone baseline.
+D.4 runtime and presentation:
 
-The five schematic families remain:
-
-1. Reactor / Core
-2. Primary Circuit / Steam Drums
-3. Turbine / Secondary
-4. Generator / Grid
-5. Instrumentation / Control / Protection
-
-New Application-owned contracts/projector:
-
-- `ControlRoomSubsystemSchematic*`
-- `ControlRoomSubsystemSchematicProjector`
-
-New Avalonia renderer:
-
-- `ControlRoomSubsystemSchematicControl`
-
-Avalonia renders supplied presentation topology only. It does not infer physics, process topology, alarm/protection rules or command consequences.
-
-## 5. Turbine → generator → grid investigation
-
-The user observed that the M10.9.3 whole-plant SHAFT path is amber and that continued simulation can eventually show `0 MWe`.
-
-Important findings from code review:
-
-- amber SHAFT is the **mechanical-energy medium color**, not a warning;
-- electrical output is not produced merely because the rotor is spinning;
-- with the breaker closed, requested electrical load produces electromagnetic load torque;
-- actual generator output derives from mechanical power transferred by the rotor to that load;
-- if sustained steam/turbine shaft production is insufficient, rotor kinetic energy can be consumed, speed can decay and output can collapse;
-- therefore the observation is not automatically operator error.
-
-The previous ordinary desktop stability test ran 1,000 steps / 10 simulated seconds but only required finite rotor speed; it did not assert sustained positive MWe. M10.9.4 closes this coverage gap.
-
-### Generator/Grid HMI diagnostic
-
-The GRID workspace now distinguishes:
-
-- sync ready/not ready;
-- breaker open/closed/paralleled;
-- requested electrical load;
-- actual electrical output;
-- turbine shaft power / generator mechanical input;
-- turbine/generator trip state.
-
-The diagnostic tells the operator whether 0 MWe is expected because the breaker is open or requested load is zero, or whether a requested-load/shaft/output mismatch needs investigation.
-
-## 6. Separately runnable long gameplay/system tests
-
-`GameplayJourneyLongRunningTests` contains xUnit v3 **explicit** acceptance tests so they do not run in the ordinary fast suite.
-
-They cover:
-
-- actual desktop integrated seed for 60 simulated seconds;
-- deliberate synchronization → close breaker → load raise → 60-second sustained export journey.
-
-Normal suite:
-
-```text
-dotnet test --no-build
-```
-
-Explicit long gameplay pack only:
-
-```text
-scripts\run-gameplay-long-tests.cmd
-```
-
-or:
-
-```text
-dotnet test --project tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj --no-build -- --explicit only
-```
-
-For M10.9.4 promotion, run the explicit pack once in addition to the normal build/test gate. If it fails, use its checkpoint diagnostic and patch the smallest canonical owner; do not weaken the test merely to promote the milestone.
-
-## 7. Non-negotiable architecture rules
-
-- fixed deterministic timestep; wall clock/UI cadence never changes physics;
-- M2 owns reactor physics;
-- M3 owns primary thermohydraulics/inventories;
-- M4 owns secondary/turbine/condenser/feedwater/generator/grid;
-- M5 owns instrumentation/control/protection/alarms/supervisory automation;
-- M7 owns guidance/checklists/training semantics;
-- M9.1 owns recorder/checkpoints/full replay;
-- M9.2 owns immutable post-incident analysis;
-- UI/ViewModels own no physics, alarm, protection, controller or topology algorithms;
-- measured consumers never silently read true/model state;
-- protection always overrides normal/supervisory control;
-- training assistance and plant-control authority remain independent axes;
-- mimic/schematic selection is presentation-only;
-- no free-form/NLP command surface.
-
-## 8. Primary M10.9.4 implementation files
-
-- `src/NuclearReactorSimulator.Application/ControlRoom/Hmi/ControlRoomSubsystemSchematic*.cs`
-- `src/NuclearReactorSimulator.Application/ControlRoom/Hmi/ControlRoomSubsystemSchematicProjector.cs`
-- `src/NuclearReactorSimulator.Application/ControlRoom/GeneratorPresentationSnapshot.cs`
+- `src/NuclearReactorSimulator.Application/ControlRoom/IntegratedAutomaticOperationRuntimeEngine.cs`
+- `src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomCommandKind.cs`
 - `src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs`
-- `src/NuclearReactorSimulator.App/Controls/ControlRoomSubsystemSchematicControl.cs`
+- `src/NuclearReactorSimulator.Application/ControlRoom/TurbineAdmissionTrainPresentationSnapshot.cs`
 - `src/NuclearReactorSimulator.App/ViewModels/MainWindowViewModel.cs`
 - `src/NuclearReactorSimulator.App/Views/MainWindow.axaml`
-- `tests/NuclearReactorSimulator.Application.Tests/ControlRoom/ControlRoomSubsystemSchematicProjectionTests.cs`
-- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/GameplayJourneyLongRunningTests.cs`
-- `tests/NuclearReactorSimulator.App.Tests/OperatorExperienceM1094SubsystemSchematicsTests.cs`
-- `scripts/run-gameplay-long-tests.cmd`
-- `scripts/run-gameplay-long-tests.ps1`
-- `docs/milestones/M10.9.4.md`
-- `docs/SUBSYSTEM_ENGINEERING_SCHEMATICS.md`
-- `docs/GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md`
-- ADR 0078
-- ADR 0080 — turbine expansion is a pressure-driven hydraulic element
-- ADR 0081 — legacy replay compatibility does not constrain current-model correctness
+- `tests/NuclearReactorSimulator.Application.Tests/ControlRoom/TurbineValveOperatorControlTests.cs`
+- `tests/NuclearReactorSimulator.App.Tests/MainWindowViewModelTests.cs`
 
-The four user-provided SVG schematics remain design references under `docs/reference/hmi/`; they are not authoritative runtime topology.
+Scale and coupling:
 
-## 9. Validate current candidate
+- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/ReferencePlantScaleAuditTests.cs`
+- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/ReferencePlantScaleMigrationTests.cs`
+- `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
+- `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`
+- `docs/REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md`
+- ADR 0109–0111.
 
-Run locally:
+## 10. Validation commands
 
 ```text
-dotnet clean
-dotnet restore
-dotnet build --no-restore
 dotnet test --no-build
+scriptsun-turbine-admission-authority-audit.cmd
+scriptsun-turbine-governor-actuator-tracking-audit.cmd
+scriptsun-gameplay-long-tests.cmd
+scriptsun-operational-envelope-audit.cmd
+scriptsun-reference-plant-scale-audit.cmd
 ```
 
-Then run the separate long gameplay acceptance pack:
-
-```text
-scripts\run-gameplay-long-tests.cmd
-```
-
-Then manually verify `docs/milestones/M10.9.4.md`.
-
-Do not mark M10.9.4 validated until the user explicitly confirms the normal gate **and** the requested long gameplay test outcome is understood/green.
-
-## 10. Next after current-candidate promotion
-
-1. Implement E.3 protection over already physical signed electrical states: reverse power, supervised underfrequency and loss of synchronism.
-2. Continue M10.9.4.1 with F relief/bypass/choked flow, G enthalpy/flow-work migration, H numerical stiffness and I compatibility/engineering hardening.
-3. Advance to **M10.9.5 — Contextual Command Consequence Model** only after the complete M10.9.4.1 acceptance gate closes.
+Any production edit reopens the applicable gates.
 
 ## 11. Delivery convention
 
-- deliver complete ZIP packages;
-- keep validated baseline and current candidate distinct;
-- patch the smallest responsible layer when failures appear;
-- never create a second physics/topology/control owner in UI code.
-
-
-## 3B. M10.9.4 Hotfix 14 current test-contract correction
-
-Hotfix 14 keeps Hotfix 13 production code unchanged. The 200-step turbine hydraulic regression no longer requires `AdmissionFlow == StageFlow` to 3 decimals because a compressible `turbine-inlet` plenum may accumulate/deplete transiently. Instead it keeps the ±5% final combined admission-train inventory bound, samples the trajectory and requires at least one negative inventory increment to directly refute the historical monotonic-accumulator invariant. Finite positive/in-range admission and stage flows remain required.
-
-The structural audit and ordered remediation plan are authoritative in `docs/STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`. Do not tune seeds/boundaries to compensate for missing feedback laws.
-
-## M10.9.4 Hotfix 15 historical structural finding
-
-Hotfix 14 compiled and the complete ordinary suite passed. The explicit long gameplay journeys then failed in the canonical `drum` node with specific volume about 0.001307 m^3/kg. The root cause is another algebraic inventory ratchet: the physical return pipe adds `F_return`, historical separator source terms remove exactly `F_return`, and canonical feedwater adds `F_feedwater`, leaving `dm_drum/dt = F_feedwater >= 0`.
-
-Hotfix 15 introduces explicit `SteamDrumLiquidRecirculationMode`. Historical profiles remain `LegacyReturnSplit`; current v2 sustained-generation and synchronization profiles use `CirculationDemandBalanced`, where liquid recirculation follows positive committed MCP demand. The drum balance is therefore `F_return + F_feedwater - F_MCP - F_steam`, so inventory is no longer forced to increase by construction. See ADR 0082 and `STRUCTURAL_PLANT_MODEL_STABILIZATION_PLAN.md`.
-
-
-## M10.9.4.1-C.2 authoritative continuation
-
-The user-supplied consolidated continuation base contains the accumulated Phase-B and Phase-C work, including explicit condenser installed-capacity ownership and the sustained synchronization-drum corrections. Development now resumes at Phase D. D.1 closes the turbine liquid/wet-steam admission-policy mismatch without retuning hydraulic authority. The earlier 300-second wall-clock budget observation remains a tracked performance item rather than being silently discarded.
+- deliver a ZIP containing only changed/added files;
+- include complete files and preserve project-relative paths;
+- list files that must be deleted when a rename cannot be represented by extraction alone;
+- keep validated baseline and candidate identity distinct;
+- do not weaken acceptance floors or protection thresholds to make tests green.

@@ -102,6 +102,6 @@ D.3.1 does not change:
 - governor droop;
 - turbine hydraulic resistance or Stodola/effective-area law;
 - rotor inertia;
-- generator nameplate or bidirectional grid coupling;
+- generator nameplate or generator/grid power-flow mode;
 - protection thresholds;
 - timestep or replay schema.

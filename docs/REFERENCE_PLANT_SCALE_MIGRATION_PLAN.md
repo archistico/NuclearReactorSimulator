@@ -2,131 +2,91 @@
 
 ## Status
 
-**M10.9.4.1-E.2 + HOTFIX 1 — IMPLEMENTED CANDIDATE / FOCUSED AUDIT GREEN; LONG PROMOTION GATES PENDING**
+**M10.9.4.1-E.2 — PLANNED / NOT IMPLEMENTED**
 
-E.1 closed the scale-direction decision. E.2 applies that accepted target to the current-v2 sustained runtime while preserving legacy v1 semantics; Hotfix 1 carries signed motoring torque through the generator/grid-owned internal rotor seam. On 2026-07-25 the focused scale/migration audit passed 2/2 tests. The candidate still requires both 60-second journeys, the complete operational-envelope audit and manual HMI validation.
+M10.9.4.1-D.4 is the validated source baseline. E.1 accepted a reduced-scale 10 MWe educational target, but the runtime still uses the pre-E 1,000 MW nameplate, 150 rpm droop normalization and correction-only/generation-only grid coupling. The 2/2 reference-scale audit passed because it freezes that current contract and verifies that Phase E remains deferred.
 
 ## Accepted target
 
-The current-v2 candidate uses a **10 MWe nominal generator scale**.
-
-| Quantity | Accepted target / rule |
+| Quantity | E.1 target / rule |
 |---|---:|
 | Generator nameplate | 10 MWe |
-| Normal sustained reference point | 5 MWe |
-| Supported requested-load envelope for the current training profile | 0–10 MWe |
+| Normal sustained point | 5 MWe |
+| Requested-load envelope | 0–10 MWe |
 | Rotor rated speed | 3,000 rpm |
-| Rotor moment of inertia | 1,000 kg·m² retained |
-| Stored rotor energy at rated speed | 49.348 MJ |
-| Inertia constant at 10 MWe | 4.934802 s |
+| Rotor moment of inertia | 1,000 kg·m² retained unless evidence requires revision |
+| Stored rotor energy | 49.348 MJ |
+| Target inertia constant | 4.934802 s |
 | Generator efficiency | 98% retained |
-| Operator LOAD RAISE / LOWER increment | 5 MWe retained for the present training profile |
+| LOAD RAISE / LOWER increment | 5 MWe retained unless a separate UX decision changes it |
 
-The resulting 5 MWe sustained point is a 50% load point rather than the previous hybrid interpretation of 0.5% of a 1,000 MW nameplate.
+## Current source before migration
 
-## Why the target is accepted
+- generator nameplate: 1,000 MW;
+- 5 MWe request: 0.5% load;
+- governor full-load rise: 150 rpm;
+- droop displacement at 5 MWe: 0.75 rpm;
+- maximum synchronizing correction: 0.5 MW;
+- frequency damping: 2 MW/Hz;
+- no versioned bidirectional power-flow mode;
+- electromagnetic power and rotor-load path remain non-negative;
+- no internal signed generator/grid torque seam;
+- electrical presentation remains non-negative.
 
-The accumulated A–D evidence supports the reduced-scale interpretation:
-
-- the existing rotor stores 49.348 MJ at 3,000 rpm, giving `H ≈ 4.935 s` against a 10 MWe rating;
-- the turbine, condenser and steam-path capacities are already in a low-megawatt educational range;
-- the sustained reference point is 5 MWe;
-- D.1 closed the turbine phase-policy mismatch;
-- D.2 showed material admission authority around the current operating bias and identified authority compression only at high opening;
-- D.3 exercised 23.418 percentage points of command/position lag while integral excursion remained only 0.134 percentage points, so actuator tracking anti-windup is not required before scale migration.
-
-Retaining a 1,000 MW nameplate would require an explicit full-scale/very-low-load scaling policy for rotor inertia, steam path, condenser, governor and protection. That interpretation is rejected for the current educational reference profile.
-
-## What E.1 does not change
-
-E.1 changed documentation and migration ownership only. E.2 now sets the current-v2 sustained reference generator to 10 MWe; historical/default profiles retain the 1,000 MW legacy default for replay and compatibility.
-
-E.1 therefore does **not** silently change:
-
-- `MaximumElectricalPower`;
-- rotor inertia or rated speed;
-- governor droop rise;
-- synchronizing correction or frequency damping;
-- generator/grid torque law;
-- protection thresholds;
-- HMI ranges derived from the active generator definition;
-- replay/reference trajectories.
-
-## E.2 coordinated migration requirements
-
-E.2 must apply the scale change as one versioned physical migration, not as an isolated nameplate edit.
+## Required E.2 implementation
 
 ### 1. Nameplate and inertia
 
-- set the current-v2 reference generator nameplate to 10 MWe;
-- retain 1,000 kg·m² rotor inertia and 3,000 rpm rated speed unless a focused regression proves a change is necessary;
-- prove the derived inertia constant and rotor acceleration response.
+- set only the current-v2 sustained reference generator to 10 MWe;
+- preserve historical/default profiles;
+- retain 1,000 kg·m² and 3,000 rpm unless focused evidence justifies a change;
+- prove inertia constant and controlled acceleration/deceleration response.
 
 ### 2. Governor normalization
 
-The current 150 rpm full-load rise cannot be copied blindly onto the new 10 MWe normalization because it would change the 5 MWe closed-loop reference from 0.75 rpm to 75 rpm.
-
-E.2 must choose and test a versioned current-v2 droop value using these gates:
-
-- bumpless or deliberately bounded transition at the validated 5 MWe point;
-- material but controllable load authority;
-- no persistent saturation;
-- D.3 integral-windup result remains valid or is re-audited if controller gains/travel are changed.
+The existing 150 rpm full-load rise cannot be copied onto a 10 MWe denominator. A candidate value of 1.5 rpm preserves the already validated 0.75 rpm displacement at 5 MWe, but it remains an E.2 decision that must be encoded and tested.
 
 ### 3. Bidirectional generator/grid coupling
 
-E.2 must replace the present non-negative electromagnetic-power clamp with signed coupling semantics before reverse-power or loss-of-synchronism protection is added.
+Introduce a versioned mode with:
 
-Required behavior:
+- `GenerationOnly` as the compatibility default;
+- `Bidirectional` enabled only by current-v2 sustained profiles;
+- positive electromagnetic torque opposing the turbine during generation;
+- negative electromagnetic torque assisting the rotor during motoring;
+- bounded signed shaft/electrical exchange;
+- positive conversion losses in both directions;
+- a generator/grid-owned internal signed torque seam while the public/manual rotor-input contract remains non-negative.
 
-- positive electromagnetic load opposes the turbine as generation;
-- negative electromagnetic load accelerates the rotor as motoring;
-- both positive and negative slip directions have restoring behavior when paralleled;
-- coupling magnitude is bounded independently and cannot be inferred solely from the nameplate;
-- conversion losses remain positive in both power directions.
+### 4. Synchronizing magnitudes
 
-### 4. Synchronizing/coupling magnitudes
-
-The current 10 MW synchronizing correction and 10 MW-per-Hz damping values are pre-migration values. E.2 must retune or explicitly retain them from dynamic evidence; they must not be rescaled by ratio alone.
+The current 0.5 MW correction and 2 MW/Hz damping values must be either retained deliberately or retuned from dynamic evidence. They must not be ratio-scaled automatically.
 
 ### 5. HMI and operator semantics
 
-- nameplate/ranges must show the migrated 10 MWe scale;
-- the normal 5 MWe point must be clearly presented as 50% load;
-- LOAD RAISE/LOWER remains 5 MWe per accepted command for the current training profile unless a separate UX decision changes it;
-- requested load, actual electrical power and machine rating remain visually distinct.
+- signed current-v2 electrical ranges, provisionally -10..+10 MWe;
+- clear separation of requested load, actual signed exchange and nameplate;
+- 5 MWe represented as 50% load;
+- LOAD commands clamped to 0..10 MWe.
 
-### 6. Protection sequencing
+### 6. Compatibility and replay
 
-Reverse power, supervised underfrequency and loss-of-synchronism protection remain **E.3**, after E.2 proves that the corresponding negative-power/slip states exist physically and deterministically.
+- historical/v1 definitions and replay identities unchanged;
+- checkpoint/replay equivalence for new signed states;
+- no hidden runtime migration of old sessions.
 
 ## Required E.2 regressions
 
-- 10 MWe nameplate and 1,000 kg·m² inertia are explicit current-v2 ownership;
-- 5 MWe is exactly 50% requested load;
-- generator inputs reject requests above the migrated nameplate;
-- signed motoring and generation are both representable;
-- grid coupling restores phase/frequency error in both slip directions;
-- generator conversion losses remain non-negative in both directions;
-- 60-second synchronization and 300-second sustained journeys remain healthy;
-- replay/checkpoint determinism remains unchanged for preserved historical profiles;
-- HMI ranges and labels follow the migrated definition rather than hard-coded values.
+- explicit 10 MWe current-v2 ownership and preserved legacy defaults;
+- 5 MWe equals 50% load;
+- request clamping at 10 MWe;
+- generation and motoring unit tests;
+- restoring behavior for positive and negative slip;
+- positive losses in both directions;
+- signed torque reaches the rotor only through the internal grid seam;
+- HMI ranges derive from the active definition;
+- 60-second journeys, complete operational-envelope audit and replay/checkpoint gates remain green.
 
-## Compatibility rule
+## Protection sequencing
 
-Historical/v1 profiles remain on their historical definitions. The scale migration is current-v2/current-hardening ownership and must not rewrite old replay physics implicitly.
-
-## E.2 implemented candidate decisions
-
-- current-v2 sustained nameplate: **10 MWe**; legacy/default: unchanged;
-- current-v2 normal point: **5 MWe = 50%**;
-- current-v2 governor full-load rise: **1.5 rpm**, chosen to preserve the already validated **0.75 rpm** droop displacement at 5 MWe rather than retuning governor behavior during the scale migration;
-- current-v2 grid power-flow mode: **Bidirectional**; legacy coupling defaults to **GenerationOnly**;
-- signed shaft exchange: positive = generation loading, negative = grid motoring;
-- signed electrical power: positive = export, negative = import; conversion loss remains positive in both directions;
-- bidirectional torque uses current electrical speed as the power-to-torque reference near synchronous operation, with a bounded 10% rated-speed floor until E.3 loss-of-synchronism protection exists;
-- shaft-side clamps correspond to ±10 MWe electrical nameplate with 98% conversion efficiency;
-- synchronizing correction 10 MW and frequency damping 10 MW/Hz are explicitly retained, not automatically ratio-scaled;
-- current-v2 HMI electrical scale: **-10..+10 MWe**; LOAD ± remains **5 MWe** and request clamps at **10 MWe**.
-
-These choices are candidate until E.2 local validation passes.
+Reverse-power, supervised-underfrequency and loss-of-synchronism protection remain **E.3**. They must be based on observed E.2 signed trajectories, not added before those states exist in the canonical model.

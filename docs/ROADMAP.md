@@ -668,7 +668,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.9.4 are VALIDATED and M10.9.4 remains the official milestone baseline. M10.9.4.1 phases B/C and D.1/D.2 are locally green. The cumulative current candidate contains D.3.2 Hotfix 3, E.1/E.2 Hotfix 1 and the operator turbine-valve station. On 2026-07-25 its build, 944-test ordinary suite and seven focused D/E explicit tests passed; 60-second journeys, the complete operational-envelope audit and manual HMI validation remain pending. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
+M10 is **IN PROGRESS**. M10.1–M10.9.4 and the cumulative M10.9.4.1-D.4 continuation are VALIDATED. On 2026-07-25 the D.4 source passed 944 ordinary tests and all 17 unique explicit tests, including both long-running journeys and the complete operational-envelope pack. E.1 accepts a 10 MWe target; E.2 remains unimplemented. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
 
 Two independent axes are mandatory:
 
@@ -773,18 +773,18 @@ Two independent axes are mandatory:
 - post-validation HMI readability hardening keeps alarm flashing geometry stable, separates runtime/progress/step content, removes duplicate current-step readouts and limits subsystem schematic rows to at most four nodes;
 - the visual design system and printable user manual apply the same maximum-four-elements-per-row rule, using vertical flow or consecutive diagram segments instead of shrinking labels;
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
-- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; B/C and D.1/D.2 are locally green. The current cumulative candidate contains D.3.2 Hotfix 3, E.1/E.2 Hotfix 1 and the operator valve station. Its fast gates are green; long/manual promotion and the earlier wall-clock performance observation remain open.
+- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; B/C and D.1/D.2 are locally green. The current validated D.4 baseline contains D.3.2 Hotfix 3 and the operator valve station. All ordinary and explicit automated gates are green. E.2 remains future work.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (cumulative D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator-valve candidate)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (D.4 validated; D.4.1/E.2 next)
 
 - Phase A audit exposed a repeatable ~70 s protection trip; root cause was later traced to current-v2 seed energy/hydraulic starvation rather than the thermodynamic resolver; the corrected seed now passes the exact 300-second sustained journey;
 - Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
 - Phase A.2 condenser headroom remains present in the current-v2 source, but is no longer considered the root-cause fix; its independent necessity remains a Phase C evidence question;
-- Phase A.3 preserves the historical pre-migration scale evidence; E.1 has since accepted the coherent 10 MWe educational target and E.2 implements its coordinated current-v2 migration;
+- Phase A.3 preserves the active pre-E scale evidence; E.1 accepts the coherent 10 MWe educational target and E.2 must still implement its coordinated current-v2 migration;
 - Phase B closes drum/source mass, energy, phase and liquid-inventory behavior before protection; B.1 locally validated the liquid-inventory cap, B.2 locally validated the drum-owned pressure/energy/inventory steam source, and B.3 adds low-inventory/separation diagnostics plus measured low-level warning and low-low protection;
 - Phase C closes condenser phase-change/hotwell energy and independent limiting semantics; C.1 is locally green with pressure-resolved saturated-liquid condensate energy. C.2 makes 40 MW installed cooling capacity definition-owned and distinct from runtime availability while retaining 20 kg/s as an independent condensation-throughput ceiling and preserving the existing `UA·ΔT` law;
 - Phase D aligns turbine admission phase policy and governor authority: D.1/D.2 are locally validated; D.3.1 adds passive rotor loss; D.3.2 Hotfix 3 closes admission capacity; D.4 exposes operator valve authority through typed commands while preserving finite travel and protection priority;
-- Phase E.1 accepts the 10 MWe current-v2 target; E.2 plus Hotfix 1 implements bidirectional generation/motoring and is focused-audit green; E.3 reverse-power/underfrequency/loss-of-synchronism protection is next only after long/manual promotion;
+- Phase E.1 accepts the 10 MWe current-v2 target as a decision; E.2 remains the next coordinated nameplate/governor/bidirectional-coupling migration; E.3 reverse-power/underfrequency/loss-of-synchronism protection follows only after signed E.2 trajectories are validated;
 - Phase F adds choked compressible flow and conservative relief/bypass topology;
 - Phase G performs a dedicated flow-work/enthalpy transport migration;
 - Phase H measures numerical stiffness before choosing adaptive substepping or semi-implicit coupling;

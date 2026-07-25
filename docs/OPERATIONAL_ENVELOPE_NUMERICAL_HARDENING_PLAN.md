@@ -2,11 +2,11 @@
 
 ## Status
 
-**IN PROGRESS — cumulative D.3.2 Hotfix 3 + E.2 Hotfix 1 + operator-valve-station candidate; ordinary and focused explicit gates green, long/manual promotion gates pending**
+**IN PROGRESS — M10.9.4.1-D.4 VALIDATED; D.4.1 AND E.2 NEXT**
 
-**Validated prerequisite:** M10.9.4 — Subsystem Engineering Schematics.
+**Validated prerequisite and continuation:** M10.9.4 plus cumulative M10.9.4.1-D.4.
 
-The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified the root cause upstream of the condenser: the current-v2 sustained-generation seed returned only part of fuel/structure power to the coolant, primary circulation was severely under-driven, and the drum/main-steam path slowly exhausted available internal energy. The corrected current-v2 seed closes conservative solid-to-coolant heat transfer, primary hydraulic circulation and initial steam-line conditions while preserving historical v1 seeds and protection thresholds. Phases B and C are locally green. The current source also contains D.3.2 Hotfix 3, the accepted/implemented E.1–E.2 10 MWe bidirectional migration and the operator valve station. On 2026-07-25 it built with zero warnings/errors, passed 944 ordinary tests with 17 explicit tests excluded, and passed all focused turbine-authority (3), governor-tracking (2) and scale/migration (2) explicit tests. Promotion still requires the long-running, full operational-envelope and manual HMI gates.
+The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative source passed 944 ordinary tests and all 17 unique explicit tests, including both long-running journeys, the nine-test operational-envelope pack and the two-test reference-scale audit. E.1 accepts a 10 MWe target, but the validated source remains pre-E; E.2 is not implemented.
 
 ## Purpose
 
@@ -101,7 +101,7 @@ The condenser-capacity change must be evaluated independently during Phase C aga
 
 ### Gate
 
-The explicit `ReferencePlantScaleAudit` must compile and reproduce the documented values. E.1 subsequently closed the scale decision and E.2 implemented the coordinated candidate. The corrected current-v2 sustained-generation seed must still keep the exact 300-second and explicit synchronization journeys green before promotion.
+The explicit reference-scale audit reproduces the active pre-E values and verifies that migration remains deferred. E.1 closes the scale-direction decision; E.2 must still implement the coordinated candidate. The corrected sustained-generation source has passed the exact long-running and operational-envelope gates.
 
 ## Phase B — Drum and Source Inventory Closure — LOCALLY GREEN
 
@@ -179,27 +179,27 @@ C.1 and B.3 are locally user-validated. C.1 does not change the existing A.2 con
 - treat the static resistance map as an indicator only; dynamic plant evidence decides whether correction is needed;
 - defer resistance rescaling, effective area or a Stodola/ellipse-style law to a follow-up correction gate only if the evidence demonstrates inadequate authority.
 
-### D.3 — Governor/actuator tracking and admission closure — IMPLEMENTED CANDIDATE
+### D.3 — Governor/actuator tracking and admission closure — VALIDATED
 
 - measure controller command versus physical valve position during finite travel;
 - add tracking anti-windup only if command/position divergence produces material persistent integral windup;
 - review torque-reference continuity separately.
 
-Current cumulative implementation also includes:
+Validated cumulative implementation includes:
 
 - D.3.1 optional 0.5 MW rated-speed passive rotor loss for sustained current-v2 profiles;
 - D.3.2 complete stop/control/admission authority over pressure-driven stage flow;
 - D.3.2 Hotfix 3 loaded desktop main-steam resistance of 850 Pa·s²/kg² while synchronization remains at 1,000;
 - no tracking anti-windup, because the focused tracking evidence remains green without it.
 
-### D.4 — Operator-facing valve authority — IMPLEMENTED / ORDINARY GREEN
+### D.4 — Operator-facing valve authority — VALIDATED
 
 - typed stop/admission valve open/close commands cross the Application boundary;
 - the control valve exposes explicit MANUAL/AUTO ownership and a bounded 0–100% manual-demand slider with an explicit APPLY action;
 - requested, manual-demand and actual positions are published separately;
 - finite actuator travel remains authoritative;
 - protection opening inhibits and forced stop-valve closure remain later arbitration and are visible without erasing the operator request;
-- manual validation must cover command enablement, slider pending/apply behavior, target-vs-actual travel and trip override.
+- the automated gate is green; D.4.1 retains the manual usability pass plus replay/checkpoint and trip-reset-resume hardening.
 
 ### Scope
 
@@ -216,99 +216,97 @@ Current cumulative implementation also includes:
 - rate-limited actuator response remains bounded without persistent integral windup;
 - load raise/lower is deterministic and returns to the accepted trajectory.
 
-## Phase E — Generator/Grid Scale and Bidirectional Coupling — IMPLEMENTED CANDIDATE
+## Phase E — Generator/Grid Scale and Bidirectional Coupling — E.1 ACCEPTED / E.2 PLANNED
 
-### E.1 — Scale target — ACCEPTED
+### E.1 — Scale target — ACCEPTED DECISION ONLY
 
-The current-v2 educational reference target is 10 MWe with a 5 MWe normal point, 3,000 rpm rated speed and 1,000 kg·m² inertia. Legacy/default profiles remain on historical definitions.
+The future current-v2 educational target is 10 MWe with a 5 MWe normal point, 3,000 rpm rated speed and 1,000 kg·m² inertia. Legacy/default profiles remain on historical definitions. The active D.4 runtime remains pre-E.
 
-### E.2 + Hotfix 1 — Coordinated runtime migration — IMPLEMENTED / FOCUSED AUDIT GREEN
+### E.2 — Coordinated runtime migration — NOT IMPLEMENTED
+
+E.2 must add, as one versioned candidate:
 
 - 10 MWe current-v2 generator nameplate;
-- 1.5 rpm current-v2 full-load governor rise, preserving the prior 0.75 rpm displacement at 5 MWe;
-- versioned `Bidirectional` grid power-flow mode for current-v2 and legacy `GenerationOnly` default;
+- explicitly selected governor normalization, provisionally 1.5 rpm full-load rise to preserve the current 0.75 rpm displacement at 5 MWe;
+- `GenerationOnly` compatibility default plus current-v2 `Bidirectional` opt-in;
 - signed generation/motoring shaft exchange and electrical output;
 - positive conversion loss in both directions;
-- internal signed rotor-torque factory used only by the generator/grid integration owner;
-- HMI electrical scale -10..+10 MWe and requested-load clamp 0..10 MWe;
-- focused reference-scale/migration audit green on 2026-07-25.
+- internal signed rotor-torque seam owned only by generator/grid integration;
+- signed HMI electrical ranges and requested-load clamp 0..10 MWe;
+- focused generation, motoring, replay/checkpoint and HMI regressions.
 
-### E.3 — Protection over signed electrical states — NEXT, GATED
+The active source instead retains 1,000 MW, 150 rpm, 0.5 MW synchronizing correction, 2 MW/Hz damping and correction-only/generation-only behavior. The 2/2 reference-scale audit verifies this pre-E contract.
 
-Reverse-power, supervised underfrequency and loss-of-synchronism protection may begin only after the current cumulative candidate passes both 60-second journeys, the complete operational-envelope audit and replay/checkpoint evidence. Thresholds and supervision must be derived from recorded signed-power/slip trajectories.
+### E.3 — Protection over signed electrical states — AFTER E.2
 
-### Scope
+Reverse-power, supervised underfrequency and loss-of-synchronism protection may begin only after E.2 produces deterministic signed-power/slip trajectories and passes the complete validation gate. Thresholds and supervision must be derived from recorded evidence.
 
-- resolve `REFERENCE_PLANT_SCALE_CONTRACT.md`;
-- align machine rating, rotor inertia, load range, droop and synchronizing limits;
-- support signed electromagnetic power/torque and motoring;
-- add reverse power, supervised underfrequency and loss-of-synchronism only after the physical states exist;
-- review power/torque conversion at actual versus rated speed.
-
-### Required regressions
+### Required E.2 regressions
 
 - both positive generation and negative motoring are physically representable;
 - disconnected/coast-down conditions do not create false electrical trips;
 - breaker-closed synchronization has restoring behavior in both slip directions;
 - inertia and droop produce the documented scale response;
-- replay remains deterministic across protection events.
+- replay remains deterministic across signed-power and protection events.
 
 ## Detailed execution plan from the current checkpoint
 
-### Gate 0 — Documentation and candidate identity
+### Gate 0 — Documentation and baseline identity — COMPLETE
 
-1. Treat M10.9.4 as the only official validated baseline.
-2. Identify the current source as one cumulative candidate containing D.3.2 Hotfix 3, E.1/E.2 Hotfix 1 and the operator valve station.
-3. Keep legacy/v1 behavior and current-v2 behavior explicit in every test and document.
-4. Do not mark any component validated from the ordinary suite alone.
+1. Treat M10.9.4.1-D.4 as the current validated continuation baseline.
+2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4 operator valve authority.
+3. Record E.1 as a decision and E.2 as unimplemented future work.
+4. Keep legacy/v1 and current-v2 behavior explicit in every test and document.
 
-**Exit:** README, status, handoff, milestone, scale contract/evidence, limitations register and user manual agree on the same candidate.
+**Exit:** complete. README, status, handoff, milestone, scale contract/evidence and limitations register describe the same source.
 
-### Gate 1 — Fast automated regression — GREEN 2026-07-25
+### Gate 1 — Complete automated regression — GREEN 2026-07-25
 
-1. Build with warnings as errors: 0 warnings / 0 errors.
-2. Run the ordinary suite: 944 passed / 17 explicit skipped / 0 failed.
-3. Run focused admission-authority audit: 3/3 passed.
-4. Run focused governor-tracking audit: 2/2 passed.
-5. Run focused scale/migration audit: 2/2 passed.
+1. Ordinary suite: 944 passed / 17 explicit skipped / 0 failed.
+2. Admission-authority audit: 3/3 passed.
+3. Governor-tracking audit: 2/2 passed.
+4. Gameplay long-running journeys: 2/2 passed.
+5. Operational-envelope audit: 9/9 passed.
+6. Reference-scale audit: 2/2 passed.
+7. All 17 unique explicit tests passed.
 
 **Exit:** complete. Any later production edit reopens this gate.
 
-### Gate 2 — Operator valve authority
+### Gate 2 — D.4.1 operator-valve hardening — NEXT
 
-1. Verify STOP OPEN/CLOSE and ADMISSION OPEN/CLOSE dispatch only typed valve-targeted commands.
-2. Verify CONTROL AUTO/MANUAL ownership switches without a command discontinuity.
-3. Verify slider motion is pending only; APPLY dispatches the bounded demand.
-4. Step the simulation and confirm target differs from actual during finite travel, then converges.
-5. Trip the turbine while an open request exists; confirm requested position remains visible while actual stop position is forced closed.
-6. Reset only inside canonical permissives and confirm normal authority returns without hidden state repair.
+1. Add replay/checkpoint regressions for STOP, ADMISSION, AUTO/MANUAL and manual demand.
+2. Checkpoint while requested and actual positions differ during finite travel.
+3. Verify trip → request preserved → canonical reset → travel resumes.
+4. Give the stop valve an explicit owned travel-rate contract rather than borrowing control-valve configuration.
+5. Manually review command enablement, slider pending/APPLY behavior, target/actual feedback and trip override.
 
-**Exit:** focused automated contracts and manual TURBINE-station checklist green.
+**Exit:** focused tests and manual TURBINE-station checklist green.
 
-### Gate 3 — Coupled long-running promotion
+### Gate 3 — E.2 coordinated implementation
 
-1. Run both explicit 60-second gameplay journeys.
-2. Run the complete operational-envelope audit, including the 300-second sustained trajectory.
-3. Record extrema, final-window slopes, active limiters, protection edges, signed electrical power, rotor torque and admission-train inventory.
-4. Re-run replay/checkpoint equivalence over load step, breaker open, generator trip and turbine trip.
-5. Compare wall-clock cost with the recorded budget; do not hide a physics pass behind an unexplained performance failure.
+1. Implement the versioned 10 MWe scale and governor normalization.
+2. Implement bidirectional coupling and the internal signed rotor-torque seam.
+3. Implement signed HMI semantics and compatibility-preserving replay/checkpoint behavior.
+4. Add focused generation/motoring and range regressions.
 
-**Exit:** no unexplained trip, bounded inventory/conservation slopes, deterministic replay and accepted performance.
+**Exit:** E.2 source exists and focused tests fail on the D.4 baseline but pass on the E.2 candidate.
 
-### Gate 4 — Manual integrated acceptance
+### Gate 4 — E.2 cumulative promotion
 
-1. Verify PLANT retains the uniform engineering-schematic renderer.
-2. Verify TURBINE valve controls, requested/actual feedback, authority text and disabled states at supported window sizes.
-3. Verify GENERATOR presents -10..+10 MWe, distinguishes export/import and keeps requested load distinct from actual output.
-4. Verify protection, alarm and reset feedback for trip-forced valve closure and breaker-open/coast-down behavior.
+1. Re-run the ordinary suite.
+2. Re-run admission and governor audits.
+3. Re-run both 60-second gameplay journeys.
+4. Re-run the complete operational-envelope and reference-scale audits.
+5. Re-run replay/checkpoint cases over load step, breaker open, generator trip, turbine trip and signed-power transitions.
+6. Manually verify signed GENERATOR presentation and import/export semantics.
 
-**Exit:** user confirms the checklist. Only then promote the cumulative candidate.
+**Exit:** no unexplained trip, bounded inventories, deterministic replay and accepted manual HMI behavior.
 
 ### Gate 5 — Next implementation decision
 
-1. If Gates 2–4 are green, close D and promote E.1/E.2.
-2. Start E.3 as a separate candidate, beginning with evidence-only reverse-power/underfrequency/loss-of-synchronism trajectories.
-3. If a long gate fails, patch the smallest canonical owner and repeat from Gate 1; do not proceed to E.3.
+1. Promote E.2 only after Gate 4 is green.
+2. Start E.3 as a separate evidence-first candidate.
+3. If any gate fails, patch the smallest canonical owner and repeat from Gate 1.
 4. After E.3 validation, continue to Phase F, then G, H and I.
 
 ## Phase F — Relief and Bypass with Choked Flow
