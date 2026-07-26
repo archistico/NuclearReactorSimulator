@@ -81,3 +81,9 @@ A checkpoint with mismatched scenario/version, unsupported schema/fingerprint al
 ## M10.5/M10.6 replay extension
 
 M10.5/M10.6 automation intents remain separate from `ControlRoomCommandKind`. `ScenarioAutomationIntentJournal` records accepted authority/objective requests as semantic replay inputs. Full replay and checkpoint seek reapply the applicable intents at `N + 1`, alongside the existing operator-action prefix, before stepping the deterministic runtime. The versioned `ControlRoomSnapshot` fingerprint contract remains unchanged; automation intent equality is verified separately by full replay.
+
+## M10.9.4.1-D.4.1 valve-command regression
+
+D.4.1 verifies that the existing recorder/replay contract applies without special cases to the turbine valve station. Typed STOP/ADMISSION OPEN/CLOSE, control-valve AUTO/MANUAL and numeric manual-demand commands remain ordinary accepted operator actions and are replayed at the same next-step boundary.
+
+The focused regression creates a checkpoint while finite actuator travel leaves requested and actual positions different. `SeekAndVerify` reconstructs that in-flight state from the exact versioned seed and command prefix, then verifies the existing v1 snapshot fingerprint. No private actuator state dump, target repair or valve-specific replay channel is introduced.

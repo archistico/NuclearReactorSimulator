@@ -2,11 +2,11 @@
 
 ## Status
 
-**IN PROGRESS — M10.9.4.1-D.4 VALIDATED; D.4.1 AND E.2 NEXT**
+**IN PROGRESS — M10.9.4.1-D.4 VALIDATED; D.4.1 CANDIDATE; E.2 FOLLOWS VALIDATION**
 
 **Validated prerequisite and continuation:** M10.9.4 plus cumulative M10.9.4.1-D.4.
 
-The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative source passed 944 ordinary tests and all 17 unique explicit tests, including both long-running journeys, the nine-test operational-envelope pack and the two-test reference-scale audit. E.1 accepts a 10 MWe target, but the validated source remains pre-E; E.2 is not implemented.
+The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative D.4 source passed 944 ordinary tests and all 17 unique explicit tests, including both long-running journeys, the nine-test operational-envelope pack and the two-test reference-scale audit. D.4.1 is now implemented as a narrow candidate adding STOP-owned travel, replay/checkpoint coverage and trip-reset resumption; its local validation is pending. E.1 accepts a 10 MWe target, but the validated source remains pre-E; E.2 is not implemented.
 
 ## Purpose
 
@@ -199,7 +199,8 @@ Validated cumulative implementation includes:
 - requested, manual-demand and actual positions are published separately;
 - finite actuator travel remains authoritative;
 - protection opening inhibits and forced stop-valve closure remain later arbitration and are visible without erasing the operator request;
-- the automated gate is green; D.4.1 retains the manual usability pass plus replay/checkpoint and trip-reset-resume hardening.
+- the automated D.4 gate is green;
+- D.4.1 now implements STOP-owned travel plus replay/checkpoint and trip-reset-resume hardening as a candidate, while its complete automated and manual usability gate remains pending.
 
 ### Scope
 
@@ -272,15 +273,16 @@ Reverse-power, supervised underfrequency and loss-of-synchronism protection may 
 
 **Exit:** complete. Any later production edit reopens this gate.
 
-### Gate 2 — D.4.1 operator-valve hardening — NEXT
+### Gate 2 — D.4.1 operator-valve hardening — CANDIDATE IMPLEMENTED / VALIDATION PENDING
 
-1. Add replay/checkpoint regressions for STOP, ADMISSION, AUTO/MANUAL and manual demand.
-2. Checkpoint while requested and actual positions differ during finite travel.
-3. Verify trip → request preserved → canonical reset → travel resumes.
-4. Give the stop valve an explicit owned travel-rate contract rather than borrowing control-valve configuration.
-5. Manually review command enablement, slider pending/APPLY behavior, target/actual feedback and trip override.
+1. Replay/checkpoint regressions now cover STOP, ADMISSION, AUTO/MANUAL and manual demand.
+2. The checkpoint is captured while requested and actual positions differ during finite travel.
+3. The trip → request preserved → canonical reset → travel resumes path is now locked by regression.
+4. The stop valve owns an optional travel-rate contract and no longer borrows control-valve configuration; the new public factory parameter is appended for positional source compatibility.
+5. Current-v2 sustained profiles explicitly preserve the validated 0.5/s STOP rate, while `null` preserves instantaneous legacy behavior even when other secondary valves are rate-limited.
+6. Local build, focused/ordinary/explicit tests and manual command enablement, slider pending/APPLY, target/actual and trip-override review remain pending.
 
-**Exit:** focused tests and manual TURBINE-station checklist green.
+**Exit:** complete automated gate and manual TURBINE-station checklist green, followed by explicit user promotion.
 
 ### Gate 3 — E.2 coordinated implementation
 

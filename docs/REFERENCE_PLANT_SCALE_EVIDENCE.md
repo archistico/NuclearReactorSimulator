@@ -70,7 +70,7 @@ They remain coordinated E.2 work.
 The dedicated script is:
 
 ```text
-scriptsun-reference-plant-scale-audit.cmd
+scripts\run-reference-plant-scale-audit.cmd
 ```
 
 On 2026-07-25 it passed **2/2** explicit tests:

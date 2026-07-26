@@ -1,3 +1,5 @@
+using NuclearReactorSimulator.Domain.Physics.Control;
+
 namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.MainSteam;
 
 /// <summary>
@@ -12,7 +14,8 @@ public sealed record TurbineAdmissionTrainDefinition
         string stopValveId,
         string controlValveId,
         string admissionValveId,
-        string turbineInletNodeId)
+        string turbineInletNodeId,
+        ActuatorTravelRate? stopValveTravelRate = null)
     {
         Id = ValidateId(id, nameof(id), "Turbine-admission train");
         HeaderNodeId = ValidateId(headerNodeId, nameof(headerNodeId), "Main-steam header node");
@@ -20,6 +23,7 @@ public sealed record TurbineAdmissionTrainDefinition
         ControlValveId = ValidateId(controlValveId, nameof(controlValveId), "Control valve");
         AdmissionValveId = ValidateId(admissionValveId, nameof(admissionValveId), "Admission valve");
         TurbineInletNodeId = ValidateId(turbineInletNodeId, nameof(turbineInletNodeId), "Turbine-inlet node");
+        StopValveTravelRate = stopValveTravelRate;
     }
 
     public string Id { get; }
@@ -33,6 +37,12 @@ public sealed record TurbineAdmissionTrainDefinition
     public string AdmissionValveId { get; }
 
     public string TurbineInletNodeId { get; }
+
+    /// <summary>
+    /// Optional normal operator-command travel limit owned by this stop/isolation valve. Null preserves
+    /// the historical instantaneous movement contract for legacy admission-train definitions.
+    /// </summary>
+    public ActuatorTravelRate? StopValveTravelRate { get; }
 
     private static string ValidateId(string value, string parameterName, string label)
     {

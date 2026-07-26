@@ -1124,9 +1124,8 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
             return;
         }
 
-        var normalControlActuator = FindValveActuator(definition, train.ControlValveId);
         var requested = open ? ValvePosition.FullyOpen : ValvePosition.Closed;
-        var replacement = new TurbineIsolationValveCommand(valveId, requested, normalControlActuator.TravelRate);
+        var replacement = new TurbineIsolationValveCommand(valveId, requested, train.StopValveTravelRate);
         var commands = existing.IsolationValveCommands
             .Where(item => !string.Equals(item.ValveId, valveId, StringComparison.Ordinal))
             .Append(replacement)

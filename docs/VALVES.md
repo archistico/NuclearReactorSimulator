@@ -90,3 +90,15 @@ M1.4 does not yet model:
 - pump-generated head.
 
 These are intentionally deferred so the valve abstraction remains small, deterministic and composable.
+
+## M10.9.4.1-D.4.1 turbine stop-valve travel ownership
+
+The original M1.4 hydraulic valve definition remains unchanged. D.4.1 adds only a control-side ownership contract for turbine stop/isolation valves:
+
+- `TurbineAdmissionTrainDefinition.StopValveTravelRate` optionally owns normal STOP OPEN/CLOSE stroke rate;
+- current versioned sustained profiles declare the rate explicitly;
+- `null` preserves historical instantaneous movement for legacy admission-train definitions;
+- control and admission valve actuator rates do not implicitly own STOP movement;
+- protection may still force the effective STOP position closed after normal travel is evaluated, without rewriting the persistent operator target.
+
+This is deterministic actuator motion, not a change to valve hydraulic characteristic, fail-safe law or pressure-driven flow.

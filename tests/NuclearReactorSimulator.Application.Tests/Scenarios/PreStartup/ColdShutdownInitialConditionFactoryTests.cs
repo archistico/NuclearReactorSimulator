@@ -1,6 +1,9 @@
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
+using NuclearReactorSimulator.Domain.Physics.Control;
+using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
+using NuclearReactorSimulator.Domain.Physics.Quantities;
 using Xunit;
 
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.PreStartup;
@@ -32,6 +35,65 @@ public sealed class ColdShutdownInitialConditionFactoryTests
             Assert.InRange(Math.Abs(train.ControlValvePosition.NumericValue ?? double.NaN), 0d, 1e-8d);
             Assert.InRange(Math.Abs(train.AdmissionValvePosition.NumericValue ?? double.NaN), 0d, 1e-8d);
         });
+    }
+
+
+    [Fact]
+    public void LegacyOperationalSeed_WithoutStopValveTravelRate_RetainsInstantaneousStopMovement()
+    {
+        var engine = ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
+            NeutronPopulation.FromRelative(0.10d),
+            mainCirculationRunning: true,
+            initialRodPosition: ControlRodPosition.FromPercentWithdrawn(50d),
+            initialPrimaryTemperatureCelsius: 120d,
+            turbineStartupLineup: false,
+            secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d));
+        var initial = Assert.Single(engine.CreatePresentationSnapshot(ControlRoomRunState.Paused)
+            .TurbineSecondary.AdmissionTrains);
+        Assert.Equal(0d, initial.StopValvePosition.NumericValue!.Value, 6);
+
+        engine.QueueOperatorCommand(new ControlRoomCommand(
+            ControlRoomCommandKind.TurbineValveOpen,
+            initial.StopValveId,
+            ControlRoomCommandTargetKind.Valve));
+        var stepped = Assert.Single(engine.Step(ControlRoomRunState.Paused)
+            .TurbineSecondary.AdmissionTrains);
+
+        Assert.Equal(100d, stepped.StopValveRequestedPosition.NumericValue!.Value, 6);
+        Assert.Equal(100d, stepped.StopValvePosition.NumericValue!.Value, 6);
+    }
+
+    [Fact]
+    public void OperationalSeed_StopValveUsesItsOwnTravelRateInsteadOfControlOrAdmissionActuatorRate()
+    {
+        var engine = ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
+            NeutronPopulation.FromRelative(0.10d),
+            mainCirculationRunning: true,
+            initialRodPosition: ControlRodPosition.FromPercentWithdrawn(50d),
+            initialPrimaryTemperatureCelsius: 120d,
+            turbineStartupLineup: true,
+            initialRotorSpeedRpm: 3_000d,
+            secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(1d),
+            turbineStopValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d));
+        var initial = Assert.Single(engine.CreatePresentationSnapshot(ControlRoomRunState.Paused)
+            .TurbineSecondary.AdmissionTrains);
+
+        engine.QueueOperatorCommand(new ControlRoomCommand(
+            ControlRoomCommandKind.TurbineValveClose,
+            initial.StopValveId,
+            ControlRoomCommandTargetKind.Valve));
+        engine.QueueOperatorCommand(new ControlRoomCommand(
+            ControlRoomCommandKind.TurbineValveClose,
+            initial.AdmissionValveId,
+            ControlRoomCommandTargetKind.Valve));
+        var stepped = Assert.Single(engine.Step(ControlRoomRunState.Paused)
+            .TurbineSecondary.AdmissionTrains);
+
+        var stopTravel = initial.StopValvePosition.NumericValue!.Value - stepped.StopValvePosition.NumericValue!.Value;
+        var admissionTravel = initial.AdmissionValvePosition.NumericValue!.Value - stepped.AdmissionValvePosition.NumericValue!.Value;
+        Assert.True(stopTravel > 0d);
+        Assert.True(admissionTravel > stopTravel);
+        Assert.Equal(4d, admissionTravel / stopTravel, 6);
     }
 
     [Fact]

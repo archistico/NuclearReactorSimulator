@@ -1,6 +1,6 @@
 # Project Handoff — Nuclear Reactor Simulator
 
-> **Current validated continuation:** M10.9.4.1-D.4. The cumulative D.3.2 Hotfix 3 + operator turbine-valve station passed the complete ordinary and explicit automated validation pack. E.1 is an accepted target decision; E.2 is not implemented.
+> **Current validated continuation:** M10.9.4.1-D.4. **Working source:** M10.9.4.1-D.4.1 CANDIDATE. The candidate hardens STOP travel ownership, deterministic replay/checkpoint restoration and trip-reset travel resumption. E.1 is an accepted target decision; E.2 is not implemented.
 
 ## 1. Exact current truth
 
@@ -14,6 +14,7 @@ M10.1–M10.9.4 — VALIDATED
 M10.9.4.1 A–C — VALIDATED IN THE CUMULATIVE SOURCE
 M10.9.4.1 D.1–D.3.2 Hotfix 3 — VALIDATED IN THE CUMULATIVE SOURCE
 M10.9.4.1-D.4 — CURRENT VALIDATED CONTINUATION BASELINE
+M10.9.4.1-D.4.1 — WORKING CANDIDATE, VALIDATION PENDING
 ```
 
 M10 remains in progress and closes only at M10.9.8.
@@ -94,29 +95,31 @@ E.1 accepts a future **10 MWe educational target**. E.2 must still implement nam
 
 ADR 0109 records the accepted target. ADR 0110–0111 are proposed E.2 designs, not current behavior.
 
-## 6. Remaining D.4.1 hardening
+## 6. D.4.1 hardening candidate
 
-Before the scale migration, implement the smallest isolated follow-up:
+The working source now implements the smallest isolated follow-up:
 
-1. replay/checkpoint regressions for STOP, ADMISSION, AUTO/MANUAL and manual demand;
-2. checkpoint while requested and actual valve positions differ during finite travel;
-3. trip → request preserved → canonical reset → travel resumes;
-4. stop-valve-owned travel-rate configuration instead of borrowing control-valve configuration;
-5. manual TURBINE-station usability review for command enablement, pending/APPLY, target/actual feedback and trip override.
+1. replay/checkpoint regressions for STOP, ADMISSION, AUTO/MANUAL and numeric manual demand;
+2. checkpoint seek while requested and actual valve positions differ during finite travel;
+3. turbine trip → STOP OPEN request preserved → canonical reset accepted → finite travel resumes;
+4. STOP-valve-owned optional travel-rate configuration, with `null` preserving legacy instantaneous behavior even when other secondary valves are rate-limited;
+5. the optional public factory parameter appended for positional source compatibility;
+6. a differential-rate regression proving STOP and ADMISSION no longer share accidental travel ownership.
 
-These are hardening items, not failures of the validated D.4 automated gate.
+The remaining work is validation, not additional physics: local compilation, focused tests, complete ordinary and explicit gates, and manual TURBINE-station usability review. See `M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md`. D.4 remains the official validated baseline until those gates are confirmed.
 
 ## 7. Approved forward sequence
 
-1. **M10.9.4.1-D.4.1** operator-valve hardening.
-2. **M10.9.4.1-E.2** coordinated 10 MWe and bidirectional generator/grid migration.
-3. Re-run the complete ordinary and explicit validation pack.
-4. **E.3** reverse-power, supervised-underfrequency and loss-of-synchronism protection, derived from measured E.2 trajectories.
-5. Phase F relief/bypass/choked flow.
-6. Phase G flow-work/enthalpy migration.
-7. Phase H numerical stiffness decision gate.
-8. Phase I compatibility and engineering hardening.
-9. M10.9.5–M10.9.8.
+1. Validate **M10.9.4.1-D.4.1** with the focused, ordinary, explicit and manual gates.
+2. Promote D.4.1 only after explicit user confirmation.
+3. Implement **M10.9.4.1-E.2** as the coordinated 10 MWe and bidirectional generator/grid migration.
+4. Re-run the complete ordinary and explicit validation pack after E.2.
+5. **E.3** reverse-power, supervised-underfrequency and loss-of-synchronism protection, derived from measured E.2 trajectories.
+6. Phase F relief/bypass/choked flow.
+7. Phase G flow-work/enthalpy migration.
+8. Phase H numerical stiffness decision gate.
+9. Phase I compatibility and engineering hardening.
+10. M10.9.5–M10.9.8.
 
 ## 8. Architecture rules
 
@@ -133,18 +136,19 @@ Do not break these boundaries:
 - replay/checkpoint behavior is fail-closed and deterministic;
 - one physical/control owner per state variable.
 
-## 9. Primary files for the next work
+## 9. Primary files for the current candidate and next work
 
-D.4 runtime and presentation:
+D.4.1 runtime, definition and regression files:
 
 - `src/NuclearReactorSimulator.Application/ControlRoom/IntegratedAutomaticOperationRuntimeEngine.cs`
-- `src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomCommandKind.cs`
-- `src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs`
-- `src/NuclearReactorSimulator.Application/ControlRoom/TurbineAdmissionTrainPresentationSnapshot.cs`
-- `src/NuclearReactorSimulator.App/ViewModels/MainWindowViewModel.cs`
-- `src/NuclearReactorSimulator.App/Views/MainWindow.axaml`
+- `src/NuclearReactorSimulator.Domain/Physics/TurbineIsland/MainSteam/TurbineAdmissionTrainDefinition.cs`
+- `src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs`
 - `tests/NuclearReactorSimulator.Application.Tests/ControlRoom/TurbineValveOperatorControlTests.cs`
-- `tests/NuclearReactorSimulator.App.Tests/MainWindowViewModelTests.cs`
+- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Recording/TurbineValveReplayCheckpointTests.cs`
+- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/PreStartup/ColdShutdownInitialConditionFactoryTests.cs`
+- `tests/NuclearReactorSimulator.Domain.Tests/Physics/TurbineIsland/MainSteam/MainSteamNetworkDefinitionTests.cs`
+- `docs/M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md`
+- `docs/adr/0112-turbine-stop-valve-travel-rate-is-owned-by-the-admission-train.md`
 
 Scale and coupling:
 
@@ -158,20 +162,21 @@ Scale and coupling:
 ## 10. Validation commands
 
 ```text
-dotnet test --no-build
-scriptsun-turbine-admission-authority-audit.cmd
-scriptsun-turbine-governor-actuator-tracking-audit.cmd
-scriptsun-gameplay-long-tests.cmd
-scriptsun-operational-envelope-audit.cmd
-scriptsun-reference-plant-scale-audit.cmd
+scripts\run-turbine-valve-hardening-tests.cmd
+dotnet test
+scripts\run-turbine-admission-authority-audit.cmd
+scripts\run-turbine-governor-actuator-tracking-audit.cmd
+scripts\run-gameplay-long-tests.cmd
+scripts\run-operational-envelope-audit.cmd
+scripts\run-reference-plant-scale-audit.cmd
 ```
 
-Any production edit reopens the applicable gates.
+Any production edit reopens the applicable gates. D.4.1 is not validated until the user explicitly confirms these results and the manual TURBINE-station checklist.
 
 ## 11. Delivery convention
 
-- deliver a ZIP containing only changed/added files;
-- include complete files and preserve project-relative paths;
-- list files that must be deleted when a rename cannot be represented by extraction alone;
+- always deliver one ZIP containing the complete project;
+- preserve the exact repository-relative structure and complete files;
+- when files must be deleted or renamed, include a root-level `.cmd` script that performs those operations safely;
 - keep validated baseline and candidate identity distinct;
 - do not weaken acceptance floors or protection thresholds to make tests green.

@@ -31,7 +31,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI and hardening decisions are ADR 0046–0102.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI and hardening decisions are ADR 0046–0112.
 
 ## Milestone records
 
@@ -45,17 +45,13 @@ When modifying a subsystem, update its domain document together with the milesto
 
 ## Current restart checkpoint
 
-At this documentation/planning checkpoint:
-
 - M7, M8 and M9 gates are complete / validated.
-- M10.1–M10.9.4 are validated.
-- Official milestone baseline: M10.9.4.
-- The M10.9.4.1 extended audit exposed a long-horizon current-v2 operating-seed imbalance; the root cause has been corrected without changing historical v1 seeds or protection thresholds.
-- User-validated local evidence for the corrected A.3 checkpoint: exact 300-second sustained journey passed in 2m 07s, explicit 60-second synchronization journey passed, build 0 warnings / 0 errors, ordinary suite 895 passed / 11 explicit skipped / 0 failed.
-- B.1–B.3, C.1–C.2, D.1, D.2 and D.2 Hotfix 1 are locally user-validated.
-- D.3 evidence identified indefinite breaker-open coasting at about 3301 rpm with zero steam and generator torque.
-- Active development candidate: M10.9.4.1-D.3.1 Breaker-Open Rotor Mechanical-Loss Closure; any canonical overspeed latch must become reset-safe and be explicitly reset before the authority journey continues.
-- M10 closes after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
+- M10.1–M10.9.4 and M10.9.4.1-D.4 are validated.
+- D.4 validation evidence is 944 ordinary tests plus all 17 unique explicit tests with zero failures.
+- The working source is M10.9.4.1-D.4.1 CANDIDATE: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
+- D.4.1 still requires local build, focused and complete automated gates, all explicit audits and manual TURBINE-station validation.
+- E.1 accepts a future 10 MWe target; E.2 is not implemented.
+- M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
 
@@ -103,5 +99,6 @@ See `PROJECT_HANDOFF.md` for the full authoritative statement.
 - `TURBINE_ROTOR_MECHANICAL_LOSS_CLOSURE.md` — D.3.1 passive-loss law, energy ownership and breaker-open recovery method.
 - `M10_9_4_1_D3_1_VALIDATION_CHECKLIST.md` — cumulative D.3.1 build, ordinary, protection-reset, D.2/D.3 and long-running gates.
 - `M10_9_4_1_D4_VALIDATION_CHECKLIST.md` — validated operator turbine-valve station and complete ordinary/explicit gate evidence.
+- `M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md` — current candidate gate for STOP travel ownership, replay/checkpoint and trip-reset resumption.
 - `adr/0101-governor-effective-setpoint-and-actuator-tracking-are-audited-before-new-anti-windup.md` — evidence boundary before any tracking anti-windup law.
 - `adr/0102-current-v2-breaker-open-rotor-has-passive-mechanical-losses.md` — current-v2 passive rotor-loss and explicit recovery decision.

@@ -9,15 +9,17 @@ We are continuing the **Nuclear Reactor Simulator** project.
 3. `docs/ROADMAP.md`
 4. `docs/milestones/M10.9.4.1.md`
 5. `docs/M10_9_4_1_D4_VALIDATION_CHECKLIST.md`
-6. `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`
-7. `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
-8. `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`
-9. `docs/REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md`
-10. `docs/KNOWN_MODEL_LIMITATIONS.md`
+6. `docs/M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md`
+7. `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`
+8. `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
+9. `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`
+10. `docs/REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md`
+11. `docs/KNOWN_MODEL_LIMITATIONS.md`
 
 ## Exact checkpoint
 
 - Current validated continuation: **M10.9.4.1-D.4**.
+- Working source: **M10.9.4.1-D.4.1 CANDIDATE**; validation is pending.
 - D.3.2 Hotfix 3: loaded desktop main-steam line **850 Pa·s²/kg²**; synchronization **1,000 Pa·s²/kg²**; 28% control-valve bias and 276.7 °C stop-out retained.
 - D.4: typed STOP/ADMISSION OPEN/CLOSE, control-valve AUTO/MANUAL and explicit manual demand; finite travel and protection priority preserved.
 - Ordinary suite: **944 passed / 0 failed / 17 explicit skipped**.
@@ -29,15 +31,9 @@ We are continuing the **Nuclear Reactor Simulator** project.
 
 ## Next work
 
-Implement **M10.9.4.1-D.4.1** first:
+Validate **M10.9.4.1-D.4.1** first. The code now contains explicit STOP travel ownership, replay/checkpoint regressions, in-flight restoration and trip-reset travel resumption. Run the focused script, complete ordinary suite, all explicit audits and the manual TURBINE-station checklist. Do not promote it before explicit user confirmation.
 
-1. replay/checkpoint coverage for every valve command;
-2. checkpoint during finite valve travel;
-3. trip → request preserved → reset → travel resumes;
-4. explicit stop-valve travel-rate ownership;
-5. manual TURBINE-station usability validation.
-
-Then implement **E.2** as one coordinated versioned migration covering 10 MWe nameplate, governor normalization, bidirectional coupling, signed torque/power, positive losses, HMI ranges and replay/checkpoint behavior. E.3 protection starts only after E.2 signed trajectories are validated.
+After D.4.1 validation, implement **E.2** as one coordinated versioned migration covering 10 MWe nameplate, governor normalization, bidirectional coupling, signed torque/power, positive losses, HMI ranges and replay/checkpoint behavior. E.3 protection starts only after E.2 signed trajectories are validated.
 
 ## Non-negotiable architecture rules
 

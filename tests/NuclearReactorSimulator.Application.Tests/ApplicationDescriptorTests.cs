@@ -6,16 +6,17 @@ namespace NuclearReactorSimulator.Application.Tests;
 public sealed class ApplicationDescriptorTests
 {
     [Fact]
-    public void Current_DescribesM10941B1InventoryClosureCandidateOnLocallyGreenA3Checkpoint()
+    public void Current_DescribesM10941D41TurbineValveHardeningCandidateOnValidatedD4Baseline()
     {
         var descriptor = ApplicationDescriptor.Current;
 
         Assert.Equal("Nuclear Reactor Simulator", descriptor.ProductName);
-        Assert.Contains("M10.9.4.1-B.1", descriptor.Milestone);
-        Assert.Contains("locally green A.3 checkpoint", descriptor.Status);
-        Assert.Contains("manual-only game penalties", descriptor.Status);
-        Assert.Contains("SPEED/LOAD reference steps", descriptor.Status);
-        Assert.Contains("inventory-limits", descriptor.Status);
-        Assert.Contains("legacy/v1 behavior", descriptor.Status);
+        Assert.Contains("M10.9.4.1-D.4.1", descriptor.Milestone);
+        Assert.Contains("fully validated D.4 baseline", descriptor.Status);
+        Assert.Contains("STOP valve", descriptor.Status);
+        Assert.Contains("full replay", descriptor.Status);
+        Assert.Contains("in-flight checkpoint", descriptor.Status);
+        Assert.Contains("turbine-trip reset", descriptor.Status);
+        Assert.Contains("without hidden repair", descriptor.Status);
     }
 }

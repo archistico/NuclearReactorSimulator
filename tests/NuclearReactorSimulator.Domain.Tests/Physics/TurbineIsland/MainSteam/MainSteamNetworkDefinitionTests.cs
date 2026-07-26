@@ -1,3 +1,4 @@
+using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.Reactor.Core;
@@ -33,6 +34,31 @@ public sealed class MainSteamNetworkDefinitionTests
         Assert.Equal("main-steam-line", definition.GetSteamLine("line-a").PipeId);
         Assert.Equal("admission", definition.GetAdmissionTrain("train-a").AdmissionValveId);
         Assert.Equal("turbine-inlet", definition.GetTurbineAdmissionBoundary("turbine-boundary").SourceNodeId);
+    }
+
+
+    [Fact]
+    public void AdmissionTrain_StopValveTravelRate_IsOwnedExplicitlyAndRemainsOptionalForLegacyDefinitions()
+    {
+        var rate = ActuatorTravelRate.FromFullTravelTime(TimeSpan.FromSeconds(4d));
+        var current = new TurbineAdmissionTrainDefinition(
+            "train-a",
+            "header",
+            "stop",
+            "control",
+            "admission",
+            "turbine-inlet",
+            rate);
+        var legacy = new TurbineAdmissionTrainDefinition(
+            "train-b",
+            "header",
+            "stop",
+            "control",
+            "admission",
+            "turbine-inlet");
+
+        Assert.Equal(rate, current.StopValveTravelRate);
+        Assert.Null(legacy.StopValveTravelRate);
     }
 
     [Fact]

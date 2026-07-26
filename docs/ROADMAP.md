@@ -775,7 +775,7 @@ Two independent axes are mandatory:
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
 - final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; B/C and D.1/D.2 are locally green. The current validated D.4 baseline contains D.3.2 Hotfix 3 and the operator valve station. All ordinary and explicit automated gates are green. E.2 remains future work.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (D.4 validated; D.4.1/E.2 next)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (D.4 validated; D.4.1 candidate; E.2 next)
 
 - Phase A audit exposed a repeatable ~70 s protection trip; root cause was later traced to current-v2 seed energy/hydraulic starvation rather than the thermodynamic resolver; the corrected seed now passes the exact 300-second sustained journey;
 - Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
@@ -783,7 +783,7 @@ Two independent axes are mandatory:
 - Phase A.3 preserves the active pre-E scale evidence; E.1 accepts the coherent 10 MWe educational target and E.2 must still implement its coordinated current-v2 migration;
 - Phase B closes drum/source mass, energy, phase and liquid-inventory behavior before protection; B.1 locally validated the liquid-inventory cap, B.2 locally validated the drum-owned pressure/energy/inventory steam source, and B.3 adds low-inventory/separation diagnostics plus measured low-level warning and low-low protection;
 - Phase C closes condenser phase-change/hotwell energy and independent limiting semantics; C.1 is locally green with pressure-resolved saturated-liquid condensate energy. C.2 makes 40 MW installed cooling capacity definition-owned and distinct from runtime availability while retaining 20 kg/s as an independent condensation-throughput ceiling and preserving the existing `UA·ΔT` law;
-- Phase D aligns turbine admission phase policy and governor authority: D.1/D.2 are locally validated; D.3.1 adds passive rotor loss; D.3.2 Hotfix 3 closes admission capacity; D.4 exposes operator valve authority through typed commands while preserving finite travel and protection priority;
+- Phase D aligns turbine admission phase policy and governor authority: D.1/D.2 are locally validated; D.3.1 adds passive rotor loss; D.3.2 Hotfix 3 closes admission capacity; D.4 exposes operator valve authority; D.4.1 is now a candidate with STOP-owned travel rate, replay/in-flight checkpoint coverage and trip-reset travel resumption, pending complete validation;
 - Phase E.1 accepts the 10 MWe current-v2 target as a decision; E.2 remains the next coordinated nameplate/governor/bidirectional-coupling migration; E.3 reverse-power/underfrequency/loss-of-synchronism protection follows only after signed E.2 trajectories are validated;
 - Phase F adds choked compressible flow and conservative relief/bypass topology;
 - Phase G performs a dedicated flow-work/enthalpy transport migration;

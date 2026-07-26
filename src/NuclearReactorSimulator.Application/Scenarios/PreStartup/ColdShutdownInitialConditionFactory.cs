@@ -129,7 +129,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? initialSteamDrumLiquidLevelFraction = null,
         bool useVaporFractionLimitedTurbineAdmission = false,
         double? turbineRotorRatedSpeedMechanicalLossMegawatts = null,
-        int deterministicSeedStepCount = 1)
+        int deterministicSeedStepCount = 1,
+        ActuatorTravelRate? turbineStopValveTravelRate = null)
     {
         if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
         {
@@ -196,7 +197,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             primaryOperationalFlowDisplayLagSeconds,
             initialSteamDrumLiquidLevelFraction,
             useVaporFractionLimitedTurbineAdmission,
-            turbineRotorRatedSpeedMechanicalLossMegawatts);
+            turbineRotorRatedSpeedMechanicalLossMegawatts,
+            turbineStopValveTravelRate);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -285,7 +287,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? primaryOperationalFlowDisplayLagSeconds,
         double? initialSteamDrumLiquidLevelFraction,
         bool useVaporFractionLimitedTurbineAdmission,
-        double? turbineRotorRatedSpeedMechanicalLossMegawatts)
+        double? turbineRotorRatedSpeedMechanicalLossMegawatts,
+        ActuatorTravelRate? turbineStopValveTravelRate)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -826,7 +829,17 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             "main-steam",
             primary,
             new[] { new MainSteamLineDefinition("line-a", "export", "main-steam-line", "header") },
-            new[] { new TurbineAdmissionTrainDefinition("train-a", "header", "stop", "control", "admission", "turbine-inlet") },
+            new[]
+            {
+                new TurbineAdmissionTrainDefinition(
+                    "train-a",
+                    "header",
+                    "stop",
+                    "control",
+                    "admission",
+                    "turbine-inlet",
+                    turbineStopValveTravelRate),
+            },
             new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") });
         var turbine = new TurbineExpansionSystemDefinition(
             "turbine",

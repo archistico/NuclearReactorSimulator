@@ -71,6 +71,7 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             secondaryPumpsHaveDischargeCheckValves: true,
             includeEnhancedSecondaryProtections: true,
             secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
+            turbineStopValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
             governorFullLoadSpeedReferenceRiseRpm: 150d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,

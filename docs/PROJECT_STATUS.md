@@ -1,8 +1,8 @@
-> **Current validated continuation:** M10.9.4.1-D.4. The cumulative D.3.2 Hotfix 3 + operator turbine-valve station passed 944 ordinary tests and all 17 unique explicit tests with zero failures. E.1 is an accepted target decision; E.2 is not implemented.
+> **Current validated continuation:** M10.9.4.1-D.4. **Current working source:** M10.9.4.1-D.4.1 CANDIDATE, adding STOP travel ownership plus replay/checkpoint and trip-reset hardening. E.1 is an accepted target decision; E.2 is not implemented.
 
 # Project Status
 
-M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.9.4 and the cumulative M10.9.4.1-D.4 continuation are VALIDATED.** On 2026-07-25 the ordinary run passed 944 tests with 17 explicit tests skipped and zero failures; all 17 unique explicit tests then passed separately across admission authority, governor tracking, gameplay long runs, the complete operational envelope and reference-plant scale evidence. D.4 is therefore the current official continuation baseline. E.1 accepts a future 10 MWe target, while E.2 remains unimplemented.
+M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.9.4 and the cumulative M10.9.4.1-D.4 continuation are VALIDATED.** On 2026-07-25 the ordinary run passed 944 tests with 17 explicit tests skipped and zero failures; all 17 unique explicit tests then passed separately. D.4 remains the official continuation baseline. D.4.1 is implemented as a candidate and awaits local compilation, complete automated validation and manual TURBINE-station review. E.1 accepts a future 10 MWe target, while E.2 remains unimplemented.
 
 
 | Phase | Status | Validated capability |
@@ -17,7 +17,7 @@ M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.9.
 | M7 | VALIDATED | M7.1–M7.7 validated; versioned sessions, normal operating path and deterministic training/evaluation gate complete |
 | M8 | VALIDATED | M8.1–M8.7 validated; deterministic fault/scenario/safety-response gate complete |
 | M9 | COMPLETE / VALIDATED | M9.1–M9.7 validated; 760/760 tests passed and final GUI layout integrated |
-| M10 | IN PROGRESS | M10.1–M10.9.4 and M10.9.4.1-D.4 validated; E.1 target accepted; D.4.1 hardening and E.2 coordinated scale/coupling migration are next; M10 closes at M10.9.8 |
+| M10 | IN PROGRESS | M10.1–M10.9.4 and M10.9.4.1-D.4 validated; D.4.1 hardening candidate prepared; E.1 target accepted; E.2 coordinated scale/coupling migration follows validation; M10 closes at M10.9.8 |
 
 ## Validated M8 fault/scenario gate
 
@@ -48,7 +48,7 @@ M10.1 through M10.9.3 are **VALIDATED**. M10.2 provides GUIDANCE/INFO/DIAGNOSTIC
 
 The original A audit failure is now resolved at its actual source. The current-v2 sustained-generation seed had an energy/hydraulic mismatch: 80% of fission heat was deposited in explicit fuel/structure inventories without a conservative return path to the coolant, while primary circulation was far below the steam-export demand. Current-v2 now enables conservative solid-to-coolant links, matched primary hydraulic resistance and corrected steam-line/control-valve initial conditions. Historical v1 seeds and protection thresholds remain unchanged.
 
-The corrected-seed checkpoint and the cumulative D.4 source have now passed the complete automated gate: 944 ordinary tests and all 17 unique explicit tests, including both long-running journeys and the nine-test operational-envelope pack. E.1 accepts the 10 MWe target, but the active source and the 2/2 scale audit explicitly retain the pre-E contract pending E.2.
+The corrected-seed checkpoint and cumulative D.4 source passed the complete automated gate: 944 ordinary tests and all 17 unique explicit tests. The D.4.1 candidate now hardens STOP travel-rate ownership, full replay, in-flight checkpoint restoration and post-trip reset resumption without changing the validated physical operating point. E.1 accepts the 10 MWe target, but the source and scale audit retain the pre-E contract pending E.2.
 
 ## What the validated engine can already do
 
@@ -118,7 +118,7 @@ The validated core can run headlessly and deterministically with:
 
 **M9.3 — Advanced Xenon & Low-Power Transients** is validated. It composes canonical M2.8 poison state through an explicit opt-in seam into the integrated reactor/primary runtime, preserves legacy exact-version M7 v1 semantics, promotes committed xenon diagnostics through the presentation boundary, and adds two versioned xenon/low-power scenario seeds. **M9.4–M9.7 are also validated and the M9 phase gate is complete**; M9.7 hotfix 5 passed 760/760 automated tests and the final user-corrected GUI layout is integrated.
 
-**Continuation note:** M8.1–M8.7, M9.1–M9.7, M10.1–M10.9.4 and M10.9.4.1-D.4 are validated. The current source is cumulative through D.3.2 Hotfix 3 and the operator-valve station; all ordinary and explicit automated gates are green. E.2 remains future work. See `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `milestones/M10.9.4.1.md` and `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`.
+**Continuation note:** M8.1–M8.7, M9.1–M9.7, M10.1–M10.9.4 and M10.9.4.1-D.4 are validated. The current working source adds the D.4.1 valve hardening candidate; its validation is still pending. E.2 remains future work. See `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `milestones/M10.9.4.1.md` and `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`.
 
 M8.2 hotfix 2 also established the first dedicated headless `NuclearReactorSimulator.App.Tests` coverage for `MainWindowViewModel` and XAML command-state wiring; that presentation regression boundary remains validated and unchanged by M8.3–M8.7.
 
@@ -140,7 +140,7 @@ The following are planned architecture boundaries, not missing bugs:
 
 ## Approved future M10 architecture
 
-M10 is **IN PROGRESS** as **Operator Computer, Supervisory Automation & Human-Machine Integration**. M10.1–M10.9.4 and M10.9.4.1-D.4 are validated. M10.9.4.1 carries the accumulated A/B/C hardening plus D.3.2 Hotfix 3 and operator valve authority. D.4.1 hardening and E.2 implementation come before E.3 protection over signed electrical states; F–I then close physical, numerical and compatibility hardening before M10.9.5. The operator computer remains an Application/App aggregation surface; real Manual / Assisted / Supervisory Automatic plant control remains canonical M5 ownership. Training assistance (`TrainingGuidanceMode`) remains a separate independent axis.
+M10 is **IN PROGRESS** as **Operator Computer, Supervisory Automation & Human-Machine Integration**. M10.1–M10.9.4 and M10.9.4.1-D.4 are validated. M10.9.4.1 carries the accumulated A/B/C hardening plus D.3.2 Hotfix 3 and operator valve authority. D.4.1 validation and E.2 implementation come before E.3 protection over signed electrical states; F–I then close physical, numerical and compatibility hardening before M10.9.5. The operator computer remains an Application/App aggregation surface; real Manual / Assisted / Supervisory Automatic plant control remains canonical M5 ownership. Training assistance (`TrainingGuidanceMode`) remains a separate independent axis.
 
 Approved constraints include fixed menu/pages with no free-form prompt, measured-signal-only supervisory consumers, protection priority, fail-closed degraded operation, deterministic bumpless manual takeover, separation of plant/training/session intents, replay-backed session persistence, distinct instrument/operating/target/protection range semantics, and logical-time challenge scoring. See `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`, `OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`, `milestones/M10.md` and ADR 0070.
 

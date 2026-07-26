@@ -1,3 +1,14 @@
+## M10.9.4.1-D.4.1 — Turbine Valve Replay, Reset & Travel Ownership Hardening — CANDIDATE
+
+- Builds only on the fully validated D.4 baseline; no turbine thermodynamic law, hydraulic capacity, controller tuning, protection threshold, timestep or generator/grid scale is changed.
+- Gives each `TurbineAdmissionTrainDefinition` an optional STOP-valve-owned `ActuatorTravelRate`; `null` preserves legacy instantaneous behavior even when other secondary valves are rate-limited, and the optional factory parameter is appended to preserve positional source compatibility.
+- Removes the runtime dependency that borrowed the control-valve actuator travel rate for STOP OPEN/CLOSE requests.
+- Adds a differential-rate regression proving STOP and ADMISSION valves move according to their independently configured rates.
+- Adds deterministic full-replay and checkpoint-seek coverage for STOP/ADMISSION commands, control-valve AUTO/MANUAL authority and numeric manual demand while valves are still in flight.
+- Adds the full trip → preserved STOP OPEN target → canonical reset acceptance → finite opening resumption regression without hidden repair.
+- Adds ADR 0112, `scripts/run-turbine-valve-hardening-tests.cmd` and a dedicated validation checklist.
+- Candidate only until local compilation, the complete ordinary suite, all 17 unique explicit tests and the manual TURBINE-station check are confirmed.
+
 ## M10.9.4.1-D.4 — Turbine Valve Operator Authority — VALIDATED
 
 - Promotes the cumulative D.3.2 Hotfix 3 + D.4 source after the complete local automated gate passed on 2026-07-25.
