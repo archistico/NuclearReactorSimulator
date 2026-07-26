@@ -88,4 +88,4 @@ Confirm in the desktop application:
 
 ## Promotion rule
 
-Promote D.4.1 to **VALIDATED** only after the user confirms the complete ordinary suite, all focused tests, all 17 unique explicit tests and the manual TURBINE-station check. Until then, D.4 remains the official validated baseline.
+D.4.1 is **VALIDATED**. It is the parent baseline for M10.9.4.1-E.2.

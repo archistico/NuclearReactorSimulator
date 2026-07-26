@@ -81,7 +81,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             secondaryValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
             turbineStopValveTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.5d),
             secondaryPumpTravelRate: ActuatorTravelRate.FromFractionPerSecond(0.25d),
-            governorFullLoadSpeedReferenceRiseRpm: 150d,
+            governorFullLoadSpeedReferenceRiseRpm: 1.5d,
             steamDrumLiquidRecirculationMode: SteamDrumLiquidRecirculationMode.CirculationDemandBalanced,
             steamDrumSteamSourceResistancePascalSecondsSquaredPerKilogramSquared: 100d,
             includeCoreThermalCoupling: true,
@@ -89,5 +89,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialSteamDrumLiquidLevelFraction: 0.5d,
             useVaporFractionLimitedTurbineAdmission: true,
             turbineRotorRatedSpeedMechanicalLossMegawatts: 0.5d,
-            deterministicSeedStepCount: 2);
+            deterministicSeedStepCount: 2,
+            generatorMaximumElectricalPowerMegawatts: 10d,
+            generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional);
 }

@@ -19,8 +19,9 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `M10_9_4_1_A_EXTENDED_AUDIT.md` — executed non-green extended audit and exact ~70-second trip evidence.
 - `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` — adjudication of the two external LLM reviews and accepted planning decisions.
 - `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` — revised A.1–I evidence/physics/numerical hardening sequence.
-- `REFERENCE_PLANT_SCALE_CONTRACT.md` — active pre-E runtime contract, accepted E.1 10 MWe target and coordinated E.2 migration gate.
-- `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible active pre-E rotor energy, inertia, droop and synchronizing-authority calculations.
+- `REFERENCE_PLANT_SCALE_CONTRACT.md` — validated E.2 current-v2 10 MWe/bidirectional contract and legacy compatibility boundary.
+- `ELECTRICAL_PROTECTION_TRAJECTORY_AUDIT.md` — E.3.1 evidence-only reverse-power, underfrequency-supervision and phase-slip trajectory plan.
+- `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible E.2 rotor energy, inertia, droop, power-limit and synchronizing-authority calculations.
 - `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
 - `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
 - `ADVANCED_INSTRUMENT_GAUGE_SYSTEM.md` — gauge semantics, provenance/quality, off-scale and logical-step trend rules.
@@ -48,9 +49,9 @@ When modifying a subsystem, update its domain document together with the milesto
 - M7, M8 and M9 gates are complete / validated.
 - M10.1–M10.9.4 and M10.9.4.1-D.4 are validated.
 - D.4 validation evidence is 944 ordinary tests plus all 17 unique explicit tests with zero failures.
-- The working source is M10.9.4.1-D.4.1 CANDIDATE: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
-- D.4.1 still requires local build, focused and complete automated gates, all explicit audits and manual TURBINE-station validation.
-- E.1 accepts a future 10 MWe target; E.2 is not implemented.
+- M10.9.4.1-D.4.1 remains validated: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
+- M10.9.4.1-E.2 Hotfix 1 is the current validated continuation: current-v2 10 MWe scale, 1.5 rpm governor normalization, signed exchange and opt-in bidirectional grid coupling.
+- The working source is M10.9.4.1-E.3.1 Hotfix 1 CANDIDATE: four explicit signed electrical trajectory audits; E.3.2 protection remains deferred until the generated evidence is reviewed.
 - M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.

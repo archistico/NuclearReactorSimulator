@@ -34,7 +34,7 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
             0.51d);
         var currentGovernorDroop = Assert.IsType<NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary.TurbineGovernorDroopDefinition>(
             currentEngine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
-        Assert.Equal(150d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
+        Assert.Equal(1.5d, currentGovernorDroop.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
         var currentDrum = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .TurbineExpansionSystem.MainSteamNetwork.PrimaryCircuit.SteamDrumSystem.Drums);
         var currentSteamSource = Assert.IsType<SteamDrumSteamSourceDefinition>(currentDrum.SteamSource);
@@ -51,6 +51,10 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
             generatorDefinition.GridCoupling);
         Assert.Equal(0.5d, gridCoupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
         Assert.Equal(2d, gridCoupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
+        Assert.Equal(10d, generatorDefinition.MaximumElectricalPower.Megawatts, 12);
+        Assert.Equal(
+            NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
+            gridCoupling.PowerFlowMode);
         var condenserDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .CondensateFeedwaterSystem.CondenserSystem.Condensers);
         Assert.Equal(20d, condenserDefinition.MaximumCondensationMassFlowRate.KilogramsPerSecond, 12);

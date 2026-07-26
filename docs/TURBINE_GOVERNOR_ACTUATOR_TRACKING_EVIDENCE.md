@@ -1,3 +1,5 @@
+> **E.2 supersession note:** the D.3 evidence remains authoritative for controller/actuator behavior, but its 1,000 MWe / 150 rpm scale is historical. E.2 preserves the measured 0.75 rpm load-step displacement through 10 MWe / 1.5 rpm.
+
 > **D.3 outcome:** the breaker-open audit reached about 3301 rpm with controller output 0%, valve 0%, effective stage flow 0 kg/s and shaft power 0 MW, then showed exactly zero speed change. The missing element was passive rotor drag. D.3.1 supplied the passive-loss closure; D.3.2 Hotfix 2 is now the active cumulative candidate; this document remains the evidence record.
 
 # M10.9.4.1-D.3 — Governor Effective-Setpoint & Actuator-Tracking Evidence
@@ -27,7 +29,7 @@ D.3 corrects the evidence method:
 
 The corrected D.2 journey is also moved to the breaker-open sustained synchronization seed.
 
-## Existing current-v2 control contract
+## Current-v2 control contract at the D.3 checkpoint
 
 The two sustained current-v2 profiles deliberately retain distinct controller tuning:
 
@@ -74,7 +76,7 @@ Starting from `DesktopSustainedGenerationInitialConditionFactory` at 5 MWe:
 5. issue `LOAD LOWER` (`-5 MWe`);
 6. sample the recovery for 10 seconds.
 
-With the current generator nameplate of 1,000 MWe and a full-load droop rise of 150 rpm:
+At the D.3 checkpoint, the generator nameplate was 1,000 MWe and full-load droop rise was 150 rpm:
 
 ```text
 5 MWe / 1,000 MWe × 150 rpm = 0.75 rpm
@@ -82,7 +84,7 @@ With the current generator nameplate of 1,000 MWe and a full-load droop rise of 
 
 Therefore one accepted `LOAD RAISE` command changes the effective governor setpoint by only `+0.75 rpm`.
 
-This is not automatically a governor defect. It is direct evidence that low-load droop authority is coupled to the unresolved reference-plant scale contract. Any attempt to enlarge the droop response in isolation would pre-empt Phase E.
+This was not a governor defect. It established the 0.75 rpm behavioral target later preserved by the coordinated E.2 migration; isolated retuning remained prohibited.
 
 ## Decision rule
 
@@ -107,7 +109,7 @@ A separate D.3.x physics checkpoint is justified only if evidence shows:
 - sustained controller/physical-valve divergence;
 - material integral accumulation while the actuator cannot follow;
 - delayed reversal or recovery attributable to that accumulated integral term;
-- the issue persists independently of the 1,000 MWe scale mismatch and hydraulic upper-range compression.
+- the issue persists independently of the then-active reference-scale mismatch and hydraulic upper-range compression.
 
 Any new tracking law must be versioned or explicitly scoped, preserve legacy behavior, and pass controller-unit, 60-second, 300-second, conservation, protection and replay gates.
 

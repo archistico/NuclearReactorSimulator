@@ -2,28 +2,30 @@
 
 ## Status
 
-Proposed design / M10.9.4.1-E.2 follow-up. Not implemented in the validated D.4 source.
+Accepted and validated in M10.9.4.1-E.2 Hotfix 1 on 2026-07-26.
 
 ## Context
 
-The planned E.2 design introduces versioned bidirectional generator/grid coupling. In the proposed motoring path, the electrical solver must compute negative electromagnetic torque: under the turbine rotor sign convention, positive external load torque resists rotation and negative external load torque assists rotation.
+Bidirectional generator/grid coupling must apply negative electromagnetic torque when the connected rotor is below synchronous speed. Under the turbine-rotor sign convention, positive external load torque resists rotation and negative external torque assists rotation.
 
-The historical M4.2 public `TurbineRotorInput` constructor intentionally rejected negative externally commanded load torque. Passing future E.2 motoring torque through that same public seam would fail before the rotor balance is evaluated. The internal seam is therefore a design requirement for the E.2 implementation, not validated current behavior.
+The historical public `TurbineRotorInput` constructor intentionally rejects negative manually commanded load torque. Reusing that public seam for motoring would either break compatibility or reject the valid grid-owned torque before the rotor balance.
 
 ## Decision
 
-Keep the public/manual `TurbineRotorInput` contract non-negative for backward compatibility. Add an internal factory dedicated to signed generator electromagnetic torque and use it only from `GeneratorGridSolver` when it rewrites the rotor input owned by the generator/grid integration layer.
+Keep the public/manual `TurbineRotorInput` contract non-negative. Add an internal factory dedicated to signed generator electromagnetic torque and call it only from `GeneratorGridSolver` when the generator/grid integration layer rewrites rotor input.
 
-The rotor balance itself remains unchanged:
+The rotor balance remains unchanged:
 
 - positive external torque opposes turbine torque;
-- negative external torque adds motoring torque to the rotor;
-- the existing zero-speed anti-reverse limiter continues to constrain excessive positive resisting torque only.
+- negative external torque adds motoring torque;
+- the existing zero-speed anti-reverse limiter constrains excessive positive resisting torque only.
+
+Computed direction aliases remain excluded from JSON serialization so replay/checkpoint payload contracts do not change merely because convenience diagnostics were added.
 
 ## Consequences
 
-- Current-v2 bidirectional motoring will be able to reach the turbine rotor solver once E.2 is implemented.
-- Public/manual legacy callers still cannot inject arbitrary negative load torque.
-- Generation-only coupling remains unchanged.
-- Signed mechanical/electrical power and positive conversion-loss accounting remain required E.2 behavior.
-- E.3 protections remain deferred until E.2 plus this internal seam are implemented and validated.
+- Current-v2 bidirectional motoring reaches the canonical rotor solver without opening arbitrary negative manual torque.
+- Public/manual legacy callers retain their historical validation.
+- Generation-only and null-coupling behavior remain compatible.
+- Signed mechanical/electrical exchange and positive losses are owned by the generator/grid solver.
+- E.3.1 records signed trajectories; E.3.2 protection remains deferred until those reports are reviewed.

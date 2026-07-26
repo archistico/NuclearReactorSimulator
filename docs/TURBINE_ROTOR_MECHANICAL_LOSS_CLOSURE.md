@@ -45,16 +45,16 @@ rated loss power  0.5 MW
 
 All legacy/default constructors leave the optional definition absent.
 
-## Why 0.5 MW is a candidate value
+## Why 0.5 MW was selected
 
 The value is deliberately bounded rather than presented as a final reference-plant calibration:
 
-- it is 0.05% of the still-provisional 1000 MWe generator nameplate;
+- at the D.3.1 checkpoint it was 0.05% of the then-active 1000 MWe generator nameplate; after E.2 it is 5% of the 10 MWe current-v2 nameplate;
 - it is 10% of the validated 5 MWe operating point;
 - the D.2 equal-head authority map estimated about 20.9% additional admission capacity between the 28% seed bias and full open, so 0.5 MW does not consume the entire previously measured low-load headroom;
 - using the current 1000 kg·m² rotor inertia and the loss law alone, the analytical coast from 3301.147 rpm to the 3150 rpm overspeed reset threshold is about 9.3 s, and to 3005 rpm about 18.6 s. The coupled solver is not required to match these isolated estimates exactly, but must recover within the 90 s audit bound.
 
-The value remains candidate behavior until the closed-breaker 5 MWe journey, the D.2/D.3 audits and Phase-E scale evidence are reviewed together.
+The value is part of the validated D.4.1 parent behavior and is retained unchanged by E.2. Its suitability remains subject to the cumulative long-running and signed-trajectory gates.
 
 ## Energy ownership
 
@@ -102,6 +102,6 @@ D.3.1 does not change:
 - governor droop;
 - turbine hydraulic resistance or Stodola/effective-area law;
 - rotor inertia;
-- generator nameplate or generator/grid power-flow mode;
+- generator nameplate or generator/grid power-flow mode at the D.3.1 checkpoint; E.2 changes those later without changing the passive-loss law;
 - protection thresholds;
 - timestep or replay schema.

@@ -1284,17 +1284,24 @@ Trasforma potenza meccanica dell'albero in potenza elettrica.
 - richiesta di carico;
 - stato del interruttore di gruppo.
 
-**Uscita**
+**Uscita o scambio**
 
-- potenza elettrica;
-- coppia elettromagnetica resistente sull'albero.
+- potenza elettrica firmata;
+- coppia elettromagnetica sull'albero;
+- perdita di conversione sempre positiva.
 
-**Riferimenti correnti**
+**Riferimenti current-v2**
 
 - tensione nominale modellata: **400 kV**;
 - frequenza nominale: **50 Hz**;
 - efficienza semplificata: **98%**;
-- targa massima corrente del modello: **1000 MW**, ma questa scala non è coerente con tutti gli altri sottosistemi ed è in revisione; non rappresenta un target di gioco.
+- targa elettrica: **10 MWe**;
+- punto operativo didattico normale: **5 MWe**;
+- scala elettrica: **-10..+10 MWe**;
+- valore positivo: generazione ed esportazione verso la rete;
+- valore negativo: importazione dalla rete e motorizzazione del gruppo.
+
+I profili storici e predefiniti che non optano per current-v2 conservano la precedente targa da 1000 MWe e il comportamento non negativo.
 
 **Operazione tipica**
 
@@ -1330,7 +1337,7 @@ Il comando può essere disponibile nello scenario ma rifiutato dal modello elett
 
 **Effetti**
 
-Quando il interruttore di gruppo è chiuso, il generatore diventa parte del sistema elettrico e il carico elettrico produce una coppia resistente sul rotore.
+Quando l'interruttore di gruppo è chiuso, il generatore diventa parte del sistema elettrico. Se il gruppo esporta potenza, la rete applica una coppia elettromagnetica resistente. Se il rotore collegato è più lento del riferimento sincrono, il modello current-v2 può invece importare potenza dalla rete e applicare coppia motrice. Questa motorizzazione è uno stato fisico rappresentato, non un comando operativo di carico negativo.
 
 ---
 
@@ -2641,9 +2648,9 @@ Tenta il reset quando velocità, contropressione e altri consensi sono rientrati
 
 ## 9.12 Pannello GENERATOR & GRID
 
-### GROSS ELECTRICAL OUTPUT
+### GROSS GRID EXCHANGE
 
-Potenza elettrica lorda prodotta.
+Scambio elettrico lordo con la rete. Nei profili current-v2 un valore positivo indica esportazione; un valore negativo indica importazione e motorizzazione.
 
 ### GRID FREQUENCY · MODEL
 
@@ -2725,9 +2732,9 @@ Mostra lo stato effettivo dell'interruttore.
 
 Frequenza elettrica del generatore.
 
-### ELECTRICAL OUTPUT · MEASURED
+### GRID EXCHANGE · MEASURED
 
-Potenza elettrica realmente erogata secondo il modello.
+Scambio elettrico realmente calcolato dal modello: positivo in generazione/esportazione, negativo in motorizzazione/importazione. La richiesta operatore resta compresa tra 0 e 10 MWe; un valore misurato negativo nasce dalla dinamica rete-rotore, non da un carico richiesto negativo.
 
 ### TERMINAL VOLTAGE
 
@@ -3791,25 +3798,20 @@ La turbina possiede una legge pressure-driven e un lavoro termodinamico dipenden
 
 ## 16.8 Generatore e scala nominale
 
-L'audit M10.9.4.1-A.3 ha evidenziato che i parametri correnti combinano scale diverse:
+L'audit M10.9.4.1-A.3 aveva evidenziato una scala ibrida tra generatore da 1000 MWe, punto operativo da 5 MWe e rotore da 1000 kg·m². La candidate E.2 coordina il profilo current-v2 su:
 
-- generatore nominale configurato a 1000 MW;
-- punto operativo didattico tipico intorno a 5 MWe;
-- inerzia del rotore più coerente con una macchina educativa molto più piccola.
+- targa elettrica **10 MWe**;
+- punto normale **5 MWe**, pari al 50%;
+- rotore **1000 kg·m² a 3000 rpm**;
+- costante d'inerzia circa **4,935 s**;
+- statismo equivalente con aumento di riferimento a pieno carico **1,5 rpm**, che conserva lo spostamento di 0,75 rpm a 5 MWe;
+- scala HMI firmata **-10..+10 MWe**.
 
-Per questo la futura revisione non dovrà cambiare una sola costante isolata, ma coordinare:
-
-- targa;
-- inerzia;
-- statismo;
-- accoppiamento con la rete;
-- protezioni;
-- scale HMI;
-- baseline e riesecuzione deterministica.
+I profili storici/predefiniti mantengono il contratto precedente da 1000 MWe per compatibilità.
 
 ## 16.9 Accoppiamento elettrico
 
-L’accoppiamento current-v2 stabilizza il generatore rispetto alla rete, ma la modellazione completa della motorizzazione, potenza inversa e perdita di sincronismo è prevista in una fase successiva.
+L'accoppiamento current-v2 è bidirezionale: può rappresentare sia generazione/esportazione sia motorizzazione/importazione, con perdite di conversione positive in entrambi i versi. Resta però un modello didattico a rete infinita semplificata: non include transitori elettromagnetici completi, AVR, reattanze, rete multi-sbarra o flusso di carico multi-macchina. Le protezioni dedicate di potenza inversa, sottofrequenza sorvegliata e perdita di sincronismo restano una fase successiva.
 
 ## 16.10 Corpo cilindrico di separazione acqua-vapore
 
@@ -4117,9 +4119,9 @@ Questa appendice permette di collegare le etichette inglesi visibili nel softwar
 |---|---|---|
 | `GENERATOR / GRID` | Generatore / rete | Pannello elettrico principale. |
 | `GENERATOR TARGET` | Generatore selezionato | Macchina sulla quale agiscono i comandi. |
-| `GENERATOR OUTPUT` | Potenza del generatore | Potenza elettrica prodotta. |
-| `GROSS ELECTRICAL OUTPUT` | Potenza elettrica lorda | Produzione elettrica prima dei consumi ausiliari. |
-| `ELECTRICAL OUTPUT · MEASURED` | Potenza elettrica · misurata | Valore canonico dell'uscita elettrica. |
+| `GENERATOR OUTPUT` / `GRID EXCHANGE` | Scambio generatore-rete | Positivo in esportazione, negativo in importazione current-v2. |
+| `GROSS GRID EXCHANGE` | Scambio elettrico lordo | Somma firmata degli scambi: positiva verso la rete, negativa dalla rete. |
+| `GRID EXCHANGE · MEASURED` | Scambio rete · misurato | Valore canonico firmato dello scambio elettrico. |
 | `GRID FREQUENCY · MODEL` | Frequenza rete · modello | Frequenza della rete di riferimento. |
 | `GRID VOLTAGE · MODEL` | Tensione rete · modello | Tensione della rete di riferimento. |
 | `GRID PHASE · MODEL` | Fase rete · modello | Fase elettrica della rete. |

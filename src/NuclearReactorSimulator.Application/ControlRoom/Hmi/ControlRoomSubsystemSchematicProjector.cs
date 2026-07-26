@@ -310,8 +310,8 @@ public static class ControlRoomSubsystemSchematicProjector
             Node("generator", "SYNCHRONOUS GENERATOR", ControlRoomSubsystemSchematicNodeKind.Generator, .28, .27, .22, .30,
                 generator is null ? ControlRoomVisualState.Unavailable : generator.ElectricalOutput.State,
                 shellOnly || generator is null ? "UNAVAILABLE" : generator.BreakerText,
-                generator is null ? "OUTPUT —" : Display("OUTPUT", generator.ElectricalOutput),
-                generator is null ? "REQUEST —" : $"REQUEST {DisplayValue(requested)} · INPUT {DisplayValue(generator.MechanicalInputPower)}",
+                generator is null ? "EXCHANGE —" : Display("EXCHANGE", generator.ElectricalOutput),
+                generator is null ? "REQUEST —" : $"REQUEST {DisplayValue(requested)} · SHAFT EXCHANGE {DisplayValue(generator.MechanicalInputPower)}",
                 "IN · SHAFT MECHANICAL POWER", "OUT · 3-PHASE ELECTRICAL POWER"),
             Node("breaker", "GENERATOR BREAKER", ControlRoomSubsystemSchematicNodeKind.Breaker, .59, .30, .15, .24,
                 generator is null ? ControlRoomVisualState.Unavailable : generator.BreakerState,
@@ -342,8 +342,8 @@ public static class ControlRoomSubsystemSchematicProjector
         var connections = new[]
         {
             Link("shaft-generator", "shaft", "generator", ControlRoomSubsystemSchematicConnectionKind.Mechanical, "SHAFT", DisplayValue(turbine.TotalTurbineShaftPower), rotor is null ? "SPEED —" : DisplayValue(rotor.Speed), turbine.TotalTurbineShaftPower.State, .235, .38, P(.19,.42), P(.28,.42)),
-            Link("generator-breaker", "generator", "breaker", ControlRoomSubsystemSchematicConnectionKind.Electrical, "GENERATOR OUTPUT", DisplayValue(electrical.GrossElectricalOutput), generator is null ? "V —" : DisplayValue(generator.TerminalVoltage), electrical.GrossElectricalOutput.State, .545, .40, P(.50,.42), P(.59,.42)),
-            Link("breaker-grid", "breaker", "grid", ControlRoomSubsystemSchematicConnectionKind.Electrical, "GRID EXPORT", DisplayValue(electrical.GrossElectricalOutput), generator is null ? "BREAKER —" : generator.BreakerText, electrical.GrossElectricalOutput.State, .785, .40, P(.74,.42), P(.83,.42)),
+            Link("generator-breaker", "generator", "breaker", ControlRoomSubsystemSchematicConnectionKind.Electrical, "GENERATOR EXCHANGE", DisplayValue(electrical.GrossElectricalOutput), generator is null ? "V —" : DisplayValue(generator.TerminalVoltage), electrical.GrossElectricalOutput.State, .545, .40, P(.50,.42), P(.59,.42)),
+            Link("breaker-grid", "breaker", "grid", ControlRoomSubsystemSchematicConnectionKind.Electrical, "GRID EXCHANGE", DisplayValue(electrical.GrossElectricalOutput), generator is null ? "BREAKER —" : generator.BreakerText, electrical.GrossElectricalOutput.State, .785, .40, P(.74,.42), P(.83,.42)),
             Link("gen-sync", "generator", "sync", ControlRoomSubsystemSchematicConnectionKind.MeasurementSignal, "GENERATOR MEASUREMENTS", generator is null ? "f / V / φ —" : $"{DisplayValue(generator.Frequency)} · {DisplayValue(generator.TerminalVoltage)} · {DisplayValue(generator.PhaseDifference)}", "SIGNAL", generator?.Frequency.State ?? ControlRoomVisualState.Unavailable, .39, .63, P(.40,.57), P(.40,.68)),
             Link("grid-sync", "grid", "sync", ControlRoomSubsystemSchematicConnectionKind.MeasurementSignal, "GRID REFERENCE", $"{DisplayValue(electrical.Grid.Frequency)} · {DisplayValue(electrical.Grid.LineVoltage)}", "SIGNAL", electrical.Grid.Frequency.State, .66, .61, P(.89,.55), P(.89,.62), P(.56,.62), P(.56,.68)),
             Link("sync-breaker", "sync", "breaker", ControlRoomSubsystemSchematicConnectionKind.ControlSignal, "CLOSE PERMISSIVE", generator?.SynchronizationLabel ?? "SYNC —", "DOES NOT CLOSE BY ITSELF", generator?.DisplaySynchronizationState ?? ControlRoomVisualState.Unavailable, .62, .61, P(.58,.75), P(.62,.75), P(.62,.54)),

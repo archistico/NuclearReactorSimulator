@@ -903,9 +903,9 @@
                   <TextBlock Classes="sectionHeading" Text="GENERATOR &amp; GRID" />
                   <TextBlock FontSize="20" FontWeight="SemiBold" Text="Generator synchronization, breaker state and grid-facing output" />
                   <TextBlock Opacity="0.72" TextWrapping="Wrap"
-                             Text="Generator frequency and electrical output are measured instruments. Grid reference, terminal voltage, phase difference, synchronization gate and conversion diagnostics are explicitly labelled model values." />
+                             Text="Generator frequency and signed grid exchange are measured instruments. Grid reference, terminal voltage, phase difference, synchronization gate and conversion diagnostics are explicitly labelled model values." />
                 </StackPanel>
-                <controls:ControlRoomLinearGauge Label="GROSS ELECTRICAL OUTPUT" Snapshot="{Binding Electrical.GrossElectricalOutput}" Trend="{Binding GrossElectricalOutputTrend}" />
+                <controls:ControlRoomLinearGauge Label="GROSS GRID EXCHANGE" Snapshot="{Binding Electrical.GrossElectricalOutput}" Trend="{Binding GrossElectricalOutputTrend}" />
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                   <controls:ControlRoomNumericIndicator Grid.Column="0" Label="GRID FREQUENCY · MODEL" Snapshot="{Binding Electrical.Grid.Frequency}" ValueText="{Binding Electrical.Grid.Frequency.ValueText}" Unit="{Binding Electrical.Grid.Frequency.Unit}" State="{Binding Electrical.Grid.Frequency.State}" />
                   <controls:ControlRoomNumericIndicator Grid.Column="1" Label="GRID VOLTAGE · MODEL" Snapshot="{Binding Electrical.Grid.LineVoltage}" ValueText="{Binding Electrical.Grid.LineVoltage.ValueText}" Unit="{Binding Electrical.Grid.LineVoltage.Unit}" State="{Binding Electrical.Grid.LineVoltage.State}" />
@@ -930,7 +930,7 @@
                       </Grid>
                       <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="8">
                         <controls:ControlRoomLinearGauge Grid.Row="0" Grid.Column="0" Label="GENERATOR FREQUENCY" Snapshot="{Binding Frequency}" />
-                        <controls:ControlRoomLinearGauge Grid.Row="0" Grid.Column="1" Label="ELECTRICAL OUTPUT · MEASURED" Snapshot="{Binding ElectricalOutput}" />
+                        <controls:ControlRoomLinearGauge Grid.Row="0" Grid.Column="1" Label="GRID EXCHANGE · MEASURED" Snapshot="{Binding ElectricalOutput}" />
                         <controls:ControlRoomLinearGauge Grid.Row="1" Grid.Column="0" Label="TERMINAL VOLTAGE" Snapshot="{Binding TerminalVoltage}" />
                         <controls:ControlRoomLinearGauge Grid.Row="1" Grid.Column="1" Label="PHASE DIFFERENCE" Snapshot="{Binding PhaseDifference}" />
                       </Grid>

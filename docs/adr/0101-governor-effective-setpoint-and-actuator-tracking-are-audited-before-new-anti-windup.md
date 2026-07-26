@@ -16,7 +16,7 @@ The first D.2 runtime perturbation also used direct speed-reference commands fro
 
 D.3 remains evidence-only.
 
-The breaker-open audit uses direct `SPEED RAISE/LOWER` commands and verifies the effective setpoint changes by ±10 rpm. The breaker-closed audit uses `LOAD RAISE/LOWER` and verifies the droop-derived setpoint changes by 0.75 rpm per 5 MWe with the current 1,000 MWe nameplate and 150 rpm full-load rise.
+The breaker-open audit uses direct `SPEED RAISE/LOWER` commands and verifies the effective setpoint changes by ±10 rpm. The breaker-closed audit uses `LOAD RAISE/LOWER` and verifies the droop-derived setpoint changes by 0.75 rpm per 5 MWe. That displacement was originally produced by 1,000 MWe/150 rpm and is deliberately preserved by E.2 through 10 MWe/1.5 rpm.
 
 Both journeys record P/I/D terms, saturation, existing anti-windup state, bounded controller output, physical control-valve position, command/position gap, rotor speed, turbine flow and shaft power.
 
@@ -28,7 +28,7 @@ The corrected evidence distinguishes three different limitations:
 
 1. hydraulic authority compression at large valve openings — D.2;
 2. controller-output versus finite-rate actuator tracking and possible windup — D.3;
-3. low-load droop authority caused by the 1,000 MWe reference-scale contract — Phase E.
+3. reference-scale normalization of governor load fraction — resolved structurally by the coordinated E.2 scale migration while preserving the measured 0.75 rpm step.
 
 If existing conditional integration and finite valve travel recover cleanly, Phase D closes without additional controller physics. If material tracking windup is proven, a narrowly scoped D.3.x checkpoint may add a versioned tracking law. The 0.75 rpm load-step displacement is retained as scale evidence and is not corrected by isolated governor retuning.
 

@@ -89,7 +89,8 @@ public sealed class OperatorExperienceM1094SubsystemSchematicsTests
         Assert.Contains("SUCTION HEADER · MODEL", labels);
         Assert.Contains("ROTOR SPEED · MEASURED", labels);
         Assert.Contains("GRID FREQUENCY · MODEL", labels);
-        Assert.Contains("ELECTRICAL OUTPUT · MEASURED", labels);
+        Assert.Contains("GROSS GRID EXCHANGE", labels);
+        Assert.Contains("GRID EXCHANGE · MEASURED", labels);
     }
 
     private static XDocument LoadMainWindow()

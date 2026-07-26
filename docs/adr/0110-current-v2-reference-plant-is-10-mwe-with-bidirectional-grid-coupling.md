@@ -2,39 +2,35 @@
 
 ## Status
 
-Proposed design / M10.9.4.1-E.2. Not implemented in the validated D.4 source.
+Accepted and validated in M10.9.4.1-E.2 Hotfix 1 on 2026-07-26.
 
 ## Context
 
-E.1 selected the reduced-scale educational interpretation rather than a dimensionally representative 1 GWe unit. E.1 accepted a 10 MWe target because the existing 1,000 kg·m², 3,000 rpm rotor stores 49.348 MJ and therefore has an inertia constant of about 4.935 s at 10 MWe, while the validated sustained operating point is 5 MWe.
+E.1 selected a reduced-scale educational plant rather than a dimensionally representative 1 GWe unit. The existing 1,000 kg·m², 3,000 rpm rotor stores approximately 49.348 MJ, giving an inertia constant of about 4.935 s at 10 MWe. The validated sustained operating point remains 5 MWe.
 
-The active pre-migration current-v2 model still uses a 1,000 MW generator nameplate, a 150 rpm full-load droop rise and a generation-only clamp in the infinite-bus coupling. At 5 MWe this happened to produce only 0.75 rpm of droop displacement because 5 MWe was 0.5% of the old nameplate. Changing only the nameplate would have made 5 MWe a 50% point and inflated the same droop setting to 75 rpm.
-
-The current generation-only clamp also prevents the grid from applying motoring torque when a connected rotor fell below synchronous speed.
+The validated parent used a historical 1,000 MWe nameplate and 150 rpm full-load governor rise. At 5 MWe those values happened to produce a 0.75 rpm reference displacement because the requested load was only 0.5% of nameplate. A nameplate-only change would therefore have created an unintended 75 rpm displacement. The generation-only coupling also could not apply motoring torque when a connected rotor was below synchronous speed.
 
 ## Decision
 
-When E.2 is implemented, the two current-v2 sustained reference profiles will follow this proposed contract:
+The two current-v2 sustained reference profiles use this coordinated contract:
 
 1. Generator maximum electrical power is 10 MWe.
-2. The normal 5 MWe sustained point is 50% of nameplate.
-3. Rotor inertia remains 1,000 kg·m² at 3,000 rpm, giving `H ≈ 4.934802 s` at 10 MWe.
-4. Governor full-load speed-reference rise is 1.5 rpm. This preserves the previously validated 0.75 rpm displacement at the 5 MWe normal point and deliberately avoids retuning governor behavior during the scale migration.
-5. `SynchronousGridPowerFlowMode` is versioned. The default is `GenerationOnly`; current-v2 sustained profiles opt into `Bidirectional`.
-6. Bidirectional coupling permits signed shaft exchange:
-   - positive shaft exchange = generator loading / electrical export;
-   - negative shaft exchange = grid motoring / electrical import.
-7. Generating shaft power is limited by `P_e,max / efficiency`; motoring shaft delivery is limited by `P_e,max * efficiency`, so the electrical nameplate remains ±10 MWe.
-8. Bidirectional coupling converts commanded signed power to torque using current electrical speed near synchronous operation rather than always using rated speed. A 10% rated-speed floor prevents a singular torque demand before E.3 loss-of-synchronism protection exists.
-9. Signed electrical power is positive for export and negative for import. Conversion loss is positive in both directions.
-10. The active 0.5 MW maximum synchronizing correction and 2 MW/Hz frequency damping require an explicit E.2 retain-or-retune decision. They are not ratio-scaled automatically; their dynamic suitability is a validation item.
-11. Current-v2 HMI electrical-output ranges are signed -10..+10 MWe. `LOAD RAISE/LOWER` remains ±5 MWe per accepted command and clamps requested load to 0..10 MWe.
-12. Legacy/default definitions preserve the historical 1,000 MW default and generation-only coupling semantics.
+2. The normal 5 MWe point is 50% of nameplate.
+3. Rotor inertia remains 1,000 kg·m² at 3,000 rpm, giving `H ≈ 4.934802 s`.
+4. Full-load governor speed-reference rise is 1.5 rpm, preserving the validated 0.75 rpm displacement at 5 MWe.
+5. `SynchronousGridPowerFlowMode` defaults to `GenerationOnly`; current-v2 sustained profiles opt into `Bidirectional`.
+6. Positive shaft/electrical exchange represents generation/export; negative exchange represents grid motoring/import.
+7. Generating shaft absorption is limited by `P_e,max / efficiency`; motoring shaft delivery is limited by `P_e,max × efficiency`, preserving an electrical range of ±10 MWe.
+8. Bidirectional power-to-torque conversion uses current rotor speed with a 10% rated-speed floor. Null and generation-only paths retain historical rated-speed conversion.
+9. Conversion loss remains positive in both directions.
+10. The existing 0.5 MW maximum synchronizing correction and 2 MW/Hz frequency damping are retained deliberately until trajectory evidence justifies a change.
+11. Current-v2 HMI electrical ranges are -10..+10 MWe. LOAD RAISE/LOWER remains 5 MWe per accepted command and clamps requested load to 0..10 MWe.
+12. Historical/default definitions retain the 1,000 MWe default, null/GenerationOnly coupling and non-negative presentation range.
 
 ## Consequences
 
-- Reverse-power and motoring states become physically representable and deterministic, but E.2 does not yet add dedicated reverse-power, underfrequency or loss-of-synchronism protection. Those remain E.3.
-- The 5 MWe sustained trajectory should remain near-bumpless because its droop displacement is intentionally preserved.
-- Negative electrical output must be interpreted as grid import, not as invalid generation.
-- Performance ratios that only make sense during export are not reported as generation efficiency during motoring.
-- Any future change to coupling stiffness must be justified by dynamic evidence, not by simple proportional scaling.
+- Motoring and reverse-power states become deterministic representable states.
+- The 5 MWe trajectory should remain near-bumpless because its governor displacement is preserved.
+- Negative electrical exchange means grid import, not invalid generation.
+- E.2 does not add reverse-power, supervised-underfrequency or loss-of-synchronism protection; E.3.1 records trajectories and E.3.2 remains evidence-gated.
+- Coupling stiffness changes require measured trajectory evidence rather than proportional scaling.

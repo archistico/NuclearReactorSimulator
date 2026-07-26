@@ -39,6 +39,17 @@ public sealed class ElectricalQuantityTests
             Power.FromMegawatts(8d));
         Assert.Equal(10d, coupling.MaximumSynchronizingCorrectionPower.Megawatts, 12);
         Assert.Equal(8d, coupling.FrequencyDampingPowerAtOneHertzSlip.Megawatts, 12);
+        Assert.Equal(SynchronousGridPowerFlowMode.GenerationOnly, coupling.PowerFlowMode);
+
+        var bidirectional = new SynchronousGridCouplingDefinition(
+            Power.FromMegawatts(10d),
+            Power.FromMegawatts(8d),
+            SynchronousGridPowerFlowMode.Bidirectional);
+        Assert.Equal(SynchronousGridPowerFlowMode.Bidirectional, bidirectional.PowerFlowMode);
+        Assert.Throws<ArgumentOutOfRangeException>(() => new SynchronousGridCouplingDefinition(
+            Power.FromMegawatts(10d),
+            Power.FromMegawatts(8d),
+            (SynchronousGridPowerFlowMode)999));
     }
 
     [Fact]

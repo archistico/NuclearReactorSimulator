@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed / M10.9.4.1-D.4.1 candidate.
+Accepted / M10.9.4.1-D.4.1 validated on 2026-07-26.
 
 ## Context
 

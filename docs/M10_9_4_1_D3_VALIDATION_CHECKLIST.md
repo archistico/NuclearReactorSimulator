@@ -1,4 +1,4 @@
-# M10.9.4.1-D.3 Validation Checklist — superseded by D.3.1
+# M10.9.4.1-D.3 Validation Checklist — historical, superseded by D.3.1 and later E.2
 
 D.1, D.2 and D.2 Hotfix 1 are user-validated. D.3 evidence executed and exposed a missing breaker-open rotor deceleration path. Use `M10_9_4_1_D3_1_VALIDATION_CHECKLIST.md` for the active candidate.
 
@@ -52,7 +52,7 @@ Review both evidence blocks.
 - requested load changes 5 → 10 → 5 MWe;
 - effective droop setpoint changes by +0.75 rpm and returns;
 - controller/valve/integral response is captured;
-- no isolated retuning is performed to compensate for the unresolved 1,000 MWe scale contract.
+- no isolated retuning is performed to compensate for the reference-scale mismatch that was unresolved at the D.3 checkpoint; E.2 later resolves it coordinately.
 
 ## Existing long-running gates
 

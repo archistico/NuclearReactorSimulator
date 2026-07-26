@@ -7,9 +7,9 @@ using Xunit;
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 
 /// <summary>
-/// M10.9.4.1-A.3 audit-only evidence for the unresolved reference-plant scale contract.
-/// These tests intentionally freeze the current hybrid values and their derived consequences without declaring them correct.
-/// Any future scale migration must update the contract and these evidence values in the same candidate.
+/// M10.9.4.1-E.2 evidence for the accepted reduced-scale current-v2 reference plant.
+/// The audit freezes the coordinated 10 MWe nameplate, retained rotor inertia, normalized governor droop
+/// and deliberately retained synchronizing magnitudes.
 /// </summary>
 public sealed class ReferencePlantScaleAuditTests
 {
@@ -29,6 +29,7 @@ public sealed class ReferencePlantScaleAuditTests
         var droop = Assert.IsType<TurbineGovernorDroopDefinition>(
             engine.CurrentState.TurbineSecondaryControlState.Definition.GovernorDroop);
         var coupling = Assert.IsType<SynchronousGridCouplingDefinition>(generator.GridCoupling);
+        Assert.Equal(SynchronousGridPowerFlowMode.Bidirectional, coupling.PowerFlowMode);
 
         var evidence = ReferencePlantScaleEvidence.Create(
             rotor.MomentOfInertia.KilogramSquareMetres,
@@ -48,26 +49,24 @@ public sealed class ReferencePlantScaleAuditTests
         Assert.Equal(3_000d, evidence.RatedRotorSpeedRpm, 12);
         Assert.Equal(314.1592653589793d, evidence.RatedRotorSpeedRadiansPerSecond, 12);
         Assert.Equal(49.34802200544679d, evidence.StoredRotationalEnergyMegajoules, 12);
-        Assert.Equal(1_000d, evidence.GeneratorNameplateMegawatts, 12);
+        Assert.Equal(10d, evidence.GeneratorNameplateMegawatts, 12);
         Assert.Equal(5d, evidence.RequestedElectricalPowerMegawatts, 12);
-        Assert.Equal(0.005d, evidence.RequestedLoadFractionOfNameplate, 12);
+        Assert.Equal(0.5d, evidence.RequestedLoadFractionOfNameplate, 12);
         Assert.Equal(0.75d, evidence.DroopReferenceRiseAtRequestedLoadRpm, 12);
-        Assert.Equal(1_020.408163265306d, evidence.MaximumMechanicalPowerMegawatts, 12);
-        Assert.Equal(0.0493480220054468d, evidence.InertiaConstantAtConfiguredNameplateSeconds, 12);
+        Assert.Equal(10.2040816326531d, evidence.MaximumMechanicalPowerMegawatts, 12);
+        Assert.Equal(4.93480220054468d, evidence.InertiaConstantAtConfiguredNameplateSeconds, 12);
         Assert.Equal(4.93480220054468d, evidence.InertiaConstantAtCandidateReducedScaleSeconds, 12);
         Assert.Equal(30.3963550927013d, evidence.RotorAccelerationRpmPerSecondPerMegawattImbalance, 12);
         Assert.Equal(9.86960440108936d, evidence.SecondsToOverspeedAtOneMegawattImbalance, 12);
         Assert.Equal(1.97392088021787d, evidence.SecondsToOverspeedAtFiveMegawattImbalance, 12);
         Assert.Equal(0.5d, evidence.MaximumSynchronizingCorrectionMegawatts, 12);
-        Assert.Equal(0.0005d, evidence.MaximumSynchronizingCorrectionFractionOfNameplate, 12);
+        Assert.Equal(0.05d, evidence.MaximumSynchronizingCorrectionFractionOfNameplate, 12);
         Assert.Equal(0.1d, evidence.MaximumSynchronizingCorrectionMultipleOfRequestedLoad, 12);
         Assert.Equal(0.4d, evidence.FrequencyDampingAtSynchronizationToleranceMegawatts, 12);
 
         Assert.Equal(0d, evidence.DroopReferenceRiseAtLoadMegawatts(0d), 12);
         Assert.Equal(0.75d, evidence.DroopReferenceRiseAtLoadMegawatts(5d), 12);
         Assert.Equal(1.5d, evidence.DroopReferenceRiseAtLoadMegawatts(10d), 12);
-        Assert.Equal(15d, evidence.DroopReferenceRiseAtLoadMegawatts(100d), 12);
-        Assert.Equal(150d, evidence.DroopReferenceRiseAtLoadMegawatts(1_000d), 12);
     }
 
     private sealed record ReferencePlantScaleEvidence(

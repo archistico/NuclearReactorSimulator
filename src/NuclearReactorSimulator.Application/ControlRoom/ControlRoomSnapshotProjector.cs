@@ -1,6 +1,7 @@
 using System.Globalization;
 using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 using NuclearReactorSimulator.Domain.Physics.Control.Alarms;
+using NuclearReactorSimulator.Domain.Physics.Electrical;
 using NuclearReactorSimulator.Domain.Physics.Instrumentation;
 using NuclearReactorSimulator.Simulation.Physics.Control.Alarms;
 using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
@@ -648,7 +649,7 @@ public static class ControlRoomSnapshotProjector
                             "MWe",
                             1d / 1_000_000d,
                             "0.0"),
-                        new ControlRoomInstrumentScaleSnapshot(0d, definition.MaximumElectricalPower.Megawatts)),
+                        BuildGeneratorElectricalPowerScale(definition)),
                     WithScale(
                         Value(generator.TerminalLineVoltage.Kilovolts, "kV", "0.0"),
                         BuildGeneratorVoltageScale(generator.GridLineVoltage.Kilovolts, definition.MaximumSynchronizationVoltageDifference.Kilovolts)),
@@ -688,10 +689,29 @@ public static class ControlRoomSnapshotProjector
                     "MWe",
                     1d / 1_000_000d,
                     "0.0"),
-                new ControlRoomInstrumentScaleSnapshot(
-                    0d,
-                    Math.Max(1d, generatorGrid.Definition.Generators.Sum(static definition => definition.MaximumElectricalPower.Megawatts)))),
+                BuildGrossElectricalPowerScale(generatorGrid.Definition)),
             protectedControl.Protection.GeneratorTripActive);
+    }
+
+    private static ControlRoomInstrumentScaleSnapshot BuildGeneratorElectricalPowerScale(
+        SynchronousGeneratorDefinition definition)
+    {
+        var maximum = definition.MaximumElectricalPower.Megawatts;
+        var minimum = definition.GridCoupling?.PowerFlowMode == SynchronousGridPowerFlowMode.Bidirectional
+            ? -maximum
+            : 0d;
+        return new ControlRoomInstrumentScaleSnapshot(minimum, maximum);
+    }
+
+    private static ControlRoomInstrumentScaleSnapshot BuildGrossElectricalPowerScale(
+        GeneratorGridSystemDefinition definition)
+    {
+        var maximum = Math.Max(1d, definition.Generators.Sum(static generator => generator.MaximumElectricalPower.Megawatts));
+        var minimum = definition.Generators.Sum(static generator =>
+            generator.GridCoupling?.PowerFlowMode == SynchronousGridPowerFlowMode.Bidirectional
+                ? -generator.MaximumElectricalPower.Megawatts
+                : 0d);
+        return new ControlRoomInstrumentScaleSnapshot(minimum, maximum);
     }
 
     private static AlarmEventsPanelSnapshot ProjectAlarmEvents(long logicalStep, AlarmSystemSnapshot alarms)

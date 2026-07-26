@@ -1,182 +1,126 @@
 # Project Handoff — Nuclear Reactor Simulator
 
-> **Current validated continuation:** M10.9.4.1-D.4. **Working source:** M10.9.4.1-D.4.1 CANDIDATE. The candidate hardens STOP travel ownership, deterministic replay/checkpoint restoration and trip-reset travel resumption. E.1 is an accepted target decision; E.2 is not implemented.
+> **Current validated continuation:** M10.9.4.1-E.2 Hotfix 1. **Working source:** M10.9.4.1-E.3.1 Hotfix 1 CANDIDATE — evidence-only signed electrical protection trajectory audit.
 
 ## 1. Exact current truth
-
-Validated sequence:
 
 ```text
 M7 gate — COMPLETE / VALIDATED
 M8 gate — COMPLETE / VALIDATED
 M9 gate — COMPLETE / VALIDATED
 M10.1–M10.9.4 — VALIDATED
-M10.9.4.1 A–C — VALIDATED IN THE CUMULATIVE SOURCE
-M10.9.4.1 D.1–D.3.2 Hotfix 3 — VALIDATED IN THE CUMULATIVE SOURCE
-M10.9.4.1-D.4 — CURRENT VALIDATED CONTINUATION BASELINE
-M10.9.4.1-D.4.1 — WORKING CANDIDATE, VALIDATION PENDING
+M10.9.4.1 A–D.4.1 — VALIDATED IN THE CUMULATIVE SOURCE
+M10.9.4.1-E.2 Hotfix 1 — CURRENT VALIDATED CONTINUATION BASELINE
+M10.9.4.1-E.3.1 Hotfix 1 — WORKING CANDIDATE, VALIDATION PENDING
 ```
 
 M10 remains in progress and closes only at M10.9.8.
 
-## 2. Validation evidence
+## 2. E.2 validation
 
-User-confirmed local result on 2026-07-25:
+The user confirmed on 2026-07-26 that E.2 Hotfix 1 compiled and all requested ordinary, focused and long-running gates passed. E.2 Hotfix 1 is therefore promoted to VALIDATED. Exact console counts were not copied into this handoff, so no unreported count is inferred.
 
-- ordinary test discovery: **961**;
-- ordinary passed: **944**;
-- ordinary failed: **0**;
-- explicit/opt-in skipped by the ordinary run: **17**.
+Validated current-v2 contract:
 
-All 17 unique explicit tests were then executed and passed:
+- generator nameplate **10 MWe**;
+- normal point **5 MWe = 50%**;
+- rotor **1,000 kg·m² at 3,000 rpm**;
+- full-load governor rise **1.5 rpm**;
+- coupling **Bidirectional**;
+- synchronizing correction **0.5 MW**;
+- frequency damping **2 MW/Hz**;
+- signed range **-10..+10 MWe**;
+- positive exchange = export/generation;
+- negative exchange = import/motoring;
+- conversion loss remains non-negative.
 
-| Gate | Result |
-|---|---:|
-| Turbine admission authority | 3/3 |
-| Governor/actuator tracking | 2/2 |
-| Gameplay long-running journeys | 2/2 |
-| Operational-envelope audit | 9/9 |
-| Reference-plant scale audit | 2/2 |
+Historical/default definitions retain 1,000 MWe, null/GenerationOnly coupling, non-negative presentation and the public non-negative manual rotor-load contract.
 
-The script totals contain one shared scale test, so 18 script executions correspond to 17 unique explicit tests.
+## 3. E.3.1 Hotfix 1 candidate
 
-## 3. Validated D.3.2 Hotfix 3
+E.3.1 changes no production runtime or protection definition. It adds four explicit Application audit trajectories:
 
-The loaded desktop main-steam path had remained the upstream flow bottleneck after the stop-valve pressure-grade correction.
+1. normal breaker-closed 5→0→5 MWe load request;
+2. turbine trip with the electrical request lowered to zero and the breaker intentionally left closed to expose reverse power/motoring;
+3. breaker-open turbine coastdown to prove underfrequency supervision is required;
+4. breaker-closed ±15/45/90/135° phase-offset sweep over the reduced-order coupling.
 
-The active contract is:
+The audit records:
 
-- loaded desktop main-steam-line resistance: **850 Pa·s²/kg²**;
-- synchronization main-steam-line resistance: **1,000 Pa·s²/kg²**;
-- loaded desktop control-valve seed: **28%**;
-- loaded stop-out steam seed: **276.7 °C**;
-- generation-ready flow and power floors unchanged;
-- complete stop/control/admission train remains authoritative over pressure-driven stage flow.
+- signed grid and mechanical exchange;
+- conversion loss;
+- generator frequency and grid slip;
+- absolute and signed phase error;
+- breaker state;
+- turbine/generator trip action;
+- phase-wrap count in the synthetic sweep.
 
-No PID/PI gain, actuator travel, turbine work law, passive rotor-loss law, protection threshold, timestep or replay contract was changed by Hotfix 3.
+Outputs are written to:
 
-## 4. Validated D.4 operator valve station
+```text
+artifacts/e3-protection-trajectories
+```
 
-The TURBINE workstation now exposes canonical typed commands for:
+## 4. Primary E.3.1 files
 
-- STOP valve OPEN / CLOSE;
-- ADMISSION valve OPEN / CLOSE;
-- control valve AUTO / MANUAL;
-- explicit bounded 0–100% manual demand with APPLY.
+- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/ElectricalProtectionTrajectoryAuditTests.cs`
+- `scripts/run-electrical-protection-trajectory-audit.cmd`
+- `docs/ELECTRICAL_PROTECTION_TRAJECTORY_AUDIT.md`
+- `docs/M10_9_4_1_E3_1_VALIDATION_CHECKLIST.md`
+- `docs/adr/0113-electrical-protection-thresholds-are-derived-from-signed-current-v2-trajectories.md`
 
-Validated semantics:
+## 5. Validation commands
 
-- slider movement alone sends no command;
-- requested, manual-demand and actual positions remain distinct;
-- finite actuator travel remains authoritative;
-- manual demand is rejected outside MANUAL mode;
-- AUTO returns authority to the governor;
-- protection is applied later and can force STOP closed without erasing the operator request;
-- trip override is visible in presentation state.
+```text
+dotnet build
+scripts/run-electrical-protection-trajectory-audit.cmd
+dotnet test
+scripts/run-generator-grid-bidirectional-tests.cmd
+scripts/run-turbine-admission-authority-audit.cmd
+scripts/run-turbine-governor-actuator-tracking-audit.cmd
+scripts/run-gameplay-long-tests.cmd
+scripts/run-operational-envelope-audit.cmd
+scripts/run-reference-plant-scale-audit.cmd
+```
 
-See `M10_9_4_1_D4_VALIDATION_CHECKLIST.md`.
+If the validated E.2 ordinary count is unchanged, E.3.1 discovery is expected to be 952 passed, 23 explicit skipped and 975 total. This remains an expectation until the user supplies the local result.
 
-## 5. Active generator/grid scale contract
+## 6. Required evidence handoff
 
-The source is still **pre-E**. The dedicated 2/2 scale audit proves:
+After the focused audit, preserve or paste:
 
-- generator nameplate: **1,000 MW**;
-- requested sustained load: **5 MWe = 0.5%**;
-- rotor: **1,000 kg·m² at 3,000 rpm**;
-- full-load governor rise: **150 rpm**;
-- droop displacement at 5 MWe: **0.75 rpm**;
-- maximum synchronizing correction: **0.5 MW**;
-- frequency damping: **2 MW/Hz**;
-- grid coupling remains correction-only/generation-only;
-- no internal signed generator/grid torque seam exists;
-- electrical output and HMI remain non-negative under this contract.
+```text
+artifacts/e3-protection-trajectories/*.summary.txt
+```
 
-E.1 accepts a future **10 MWe educational target**. E.2 must still implement nameplate, governor normalization, bidirectional coupling, signed power/torque, positive losses, HMI ranges and replay/checkpoint behavior as one coordinated candidate.
-
-ADR 0109 records the accepted target. ADR 0110–0111 are proposed E.2 designs, not current behavior.
-
-## 6. D.4.1 hardening candidate
-
-The working source now implements the smallest isolated follow-up:
-
-1. replay/checkpoint regressions for STOP, ADMISSION, AUTO/MANUAL and numeric manual demand;
-2. checkpoint seek while requested and actual valve positions differ during finite travel;
-3. turbine trip → STOP OPEN request preserved → canonical reset accepted → finite travel resumes;
-4. STOP-valve-owned optional travel-rate configuration, with `null` preserving legacy instantaneous behavior even when other secondary valves are rate-limited;
-5. the optional public factory parameter appended for positional source compatibility;
-6. a differential-rate regression proving STOP and ADMISSION no longer share accidental travel ownership.
-
-The remaining work is validation, not additional physics: local compilation, focused tests, complete ordinary and explicit gates, and manual TURBINE-station usability review. See `M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md`. D.4 remains the official validated baseline until those gates are confirmed.
+The CSV files remain the detailed source for threshold review.
 
 ## 7. Approved forward sequence
 
-1. Validate **M10.9.4.1-D.4.1** with the focused, ordinary, explicit and manual gates.
-2. Promote D.4.1 only after explicit user confirmation.
-3. Implement **M10.9.4.1-E.2** as the coordinated 10 MWe and bidirectional generator/grid migration.
-4. Re-run the complete ordinary and explicit validation pack after E.2.
-5. **E.3** reverse-power, supervised-underfrequency and loss-of-synchronism protection, derived from measured E.2 trajectories.
-6. Phase F relief/bypass/choked flow.
-7. Phase G flow-work/enthalpy migration.
-8. Phase H numerical stiffness decision gate.
-9. Phase I compatibility and engineering hardening.
-10. M10.9.5–M10.9.8.
+1. Validate E.3.1 and review its generated reports.
+2. Design E.3.2 pickup/reset/delay/supervision from the observed envelopes.
+3. Implement reverse-power protection with explicit prime-mover-loss timing.
+4. Implement underfrequency only with breaker-closed operational supervision.
+5. Implement only the loss-of-synchronism observables supported by the reduced-order model.
+6. Validate replay/checkpoint behavior across timer pickup, trip and reset.
+7. Continue to Phase F, then G, H and I.
 
 ## 8. Architecture rules
 
-Do not break these boundaries:
-
 - deterministic fixed timestep independent of UI cadence and wall clock;
-- canonical M2/M3/M4/M5 plant ownership;
-- Application owns presentation projection and typed intents;
-- Avalonia renders and dispatches only;
-- measured consumers do not substitute true/model state;
+- one canonical owner per physical/control state;
+- Application owns typed intents and immutable presentation projection;
+- Avalonia contains no plant physics;
+- protection consumes measured signals, not true-state shortcuts;
 - protection overrides normal and supervisory control;
 - no hidden runtime steady-state repair;
-- legacy/current behavior is versioned explicitly;
-- replay/checkpoint behavior is fail-closed and deterministic;
-- one physical/control owner per state variable.
+- historical/current behavior is versioned explicitly;
+- replay/checkpoint behavior remains fail-closed and deterministic;
+- no acceptance floor or protection threshold is weakened to make a test pass.
 
-## 9. Primary files for the current candidate and next work
-
-D.4.1 runtime, definition and regression files:
-
-- `src/NuclearReactorSimulator.Application/ControlRoom/IntegratedAutomaticOperationRuntimeEngine.cs`
-- `src/NuclearReactorSimulator.Domain/Physics/TurbineIsland/MainSteam/TurbineAdmissionTrainDefinition.cs`
-- `src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs`
-- `tests/NuclearReactorSimulator.Application.Tests/ControlRoom/TurbineValveOperatorControlTests.cs`
-- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Recording/TurbineValveReplayCheckpointTests.cs`
-- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/PreStartup/ColdShutdownInitialConditionFactoryTests.cs`
-- `tests/NuclearReactorSimulator.Domain.Tests/Physics/TurbineIsland/MainSteam/MainSteamNetworkDefinitionTests.cs`
-- `docs/M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md`
-- `docs/adr/0112-turbine-stop-valve-travel-rate-is-owned-by-the-admission-train.md`
-
-Scale and coupling:
-
-- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/ReferencePlantScaleAuditTests.cs`
-- `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/ReferencePlantScaleMigrationTests.cs`
-- `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
-- `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`
-- `docs/REFERENCE_PLANT_SCALE_MIGRATION_PLAN.md`
-- ADR 0109–0111.
-
-## 10. Validation commands
-
-```text
-scripts\run-turbine-valve-hardening-tests.cmd
-dotnet test
-scripts\run-turbine-admission-authority-audit.cmd
-scripts\run-turbine-governor-actuator-tracking-audit.cmd
-scripts\run-gameplay-long-tests.cmd
-scripts\run-operational-envelope-audit.cmd
-scripts\run-reference-plant-scale-audit.cmd
-```
-
-Any production edit reopens the applicable gates. D.4.1 is not validated until the user explicitly confirms these results and the manual TURBINE-station checklist.
-
-## 11. Delivery convention
+## 9. Delivery convention
 
 - always deliver one ZIP containing the complete project;
-- preserve the exact repository-relative structure and complete files;
-- when files must be deleted or renamed, include a root-level `.cmd` script that performs those operations safely;
-- keep validated baseline and candidate identity distinct;
-- do not weaken acceptance floors or protection thresholds to make tests green.
+- preserve repository-relative paths and complete files;
+- include a root `.cmd` script whenever files must be deleted or renamed;
+- keep validated baseline and candidate identity distinct.

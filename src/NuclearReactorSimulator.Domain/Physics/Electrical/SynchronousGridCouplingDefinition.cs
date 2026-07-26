@@ -11,7 +11,8 @@ public sealed class SynchronousGridCouplingDefinition
 {
     public SynchronousGridCouplingDefinition(
         Power maximumSynchronizingCorrectionPower,
-        Power frequencyDampingPowerAtOneHertzSlip)
+        Power frequencyDampingPowerAtOneHertzSlip,
+        SynchronousGridPowerFlowMode powerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly)
     {
         if (maximumSynchronizingCorrectionPower <= Power.Zero)
         {
@@ -29,8 +30,17 @@ public sealed class SynchronousGridCouplingDefinition
                 "Frequency-damping power at one hertz slip must be greater than zero.");
         }
 
+        if (!Enum.IsDefined(powerFlowMode))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(powerFlowMode),
+                powerFlowMode,
+                "Synchronous-grid power-flow mode must be a defined value.");
+        }
+
         MaximumSynchronizingCorrectionPower = maximumSynchronizingCorrectionPower;
         FrequencyDampingPowerAtOneHertzSlip = frequencyDampingPowerAtOneHertzSlip;
+        PowerFlowMode = powerFlowMode;
     }
 
     /// <summary>
@@ -43,4 +53,10 @@ public sealed class SynchronousGridCouplingDefinition
     /// Negative slip therefore unloads the shaft and positive slip increases electromagnetic loading.
     /// </summary>
     public Power FrequencyDampingPowerAtOneHertzSlip { get; }
+
+    /// <summary>
+    /// Selects whether the coupling is restricted to opposing generator load or may also motor the shaft.
+    /// Generation-only remains the compatibility default for all historical definitions.
+    /// </summary>
+    public SynchronousGridPowerFlowMode PowerFlowMode { get; }
 }

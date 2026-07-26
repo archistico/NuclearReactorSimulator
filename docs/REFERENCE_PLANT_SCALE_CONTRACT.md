@@ -2,59 +2,51 @@
 
 ## Status
 
-**E.1 DECISION ACCEPTED — 10 MWe TARGET; E.2 NOT YET IMPLEMENTED**
+**M10.9.4.1-E.2 HOTFIX 1 — VALIDATED**
 
-M10.9.4.1-D.4 is the validated runtime baseline. The active current-v2 source still uses the pre-E generator/grid contract. E.1 records the intended reduced-scale educational direction; it does not authorize isolated runtime edits and it does not mean that the 10 MWe migration is already live.
+The user confirmed compilation and all requested gates passed on 2026-07-26. The current-v2 sustained-generation and synchronization profiles validly implement the accepted 10 MWe educational scale and opt into bidirectional generator/grid coupling. Historical/default profiles preserve their previous 1,000 MWe and generation-only behavior.
 
-## Active validated runtime contract
+## Current-v2 candidate contract
 
-- generator nameplate: 1,000 MW;
-- normal sustained request: 5 MWe, equal to 0.5% of nameplate;
-- rated speed / rotor inertia: 3,000 rpm / 1,000 kg·m²;
-- stored rotor energy at rated speed: approximately 49.348 MJ;
-- inertia constant against the configured nameplate: approximately 0.049348 s;
-- full-load governor reference rise: 150 rpm, giving 0.75 rpm at 5 MWe;
-- grid coupling: correction-only / generation-only behavior;
-- maximum synchronizing correction: 0.5 MW;
-- frequency damping at one hertz slip: 2 MW;
-- electrical output and HMI ranges remain non-negative under the current contract.
+- generator nameplate: **10 MWe**;
+- normal sustained request: **5 MWe**, equal to 50% of nameplate;
+- requested-load envelope: **0–10 MWe**;
+- LOAD RAISE / LOWER increment: **5 MWe**, clamped by the active generator definition;
+- rated speed / rotor inertia: **3,000 rpm / 1,000 kg·m²**;
+- stored rotor energy at rated speed: approximately **49.348 MJ**;
+- inertia constant at 10 MWe: approximately **4.934802 s**;
+- full-load governor reference rise: **1.5 rpm**, preserving the already validated 0.75 rpm displacement at 5 MWe;
+- maximum synchronizing correction: **0.5 MW**, deliberately retained pending dynamic evidence;
+- frequency damping at one hertz slip: **2 MW/Hz**, deliberately retained pending dynamic evidence;
+- coupling mode: **Bidirectional** for the two current-v2 sustained profiles;
+- signed electrical convention: positive = generation/export, negative = motoring/import;
+- signed mechanical convention: positive = shaft power absorbed by generation, negative = power delivered by the grid to the shaft;
+- conversion loss remains non-negative in either direction;
+- current-v2 electrical scales: **-10..+10 MWe**.
 
-These values are frozen by `ReferencePlantScaleAuditTests` and `ReferencePlantScaleMigrationTests`. On 2026-07-25 the dedicated script passed 2/2 tests and confirmed that the active source remains pre-E.
+## Compatibility contract
 
-## Accepted E.1 target
+Historical and default definitions remain unchanged unless they opt in explicitly:
 
-E.1 selects **Option B — reduced-scale educational unit** as the future current-v2 direction:
+- default generator nameplate remains **1,000 MWe**;
+- a null coupling retains the historical dispatch-torque-only model;
+- `SynchronousGridPowerFlowMode.GenerationOnly` remains the coupling default;
+- public/manual `TurbineRotorInput` still rejects negative torque;
+- only the generator/grid integration layer may create signed electromagnetic rotor torque;
+- historical presentation scales remain non-negative;
+- no old initial-condition identity is rewritten.
 
-- nominal generator scale: 10 MWe;
-- normal sustained point: 5 MWe, intended to become 50% load;
-- rated speed: 3,000 rpm;
-- rotor inertia: 1,000 kg·m² retained unless focused evidence proves otherwise;
-- resulting target inertia constant: approximately 4.934802 s;
-- requested-load envelope: 0–10 MWe for the current training profile.
+## Power limits
 
-The following remain E.2 design choices rather than active behavior:
+For a generator with electrical nameplate `Pmax` and efficiency `η`:
 
-- 1.5 rpm full-load governor rise to preserve the existing 0.75 rpm displacement at 5 MWe;
-- versioned bidirectional generator/grid coupling;
-- signed electrical output and internal signed rotor torque;
-- -10..+10 MWe presentation ranges;
-- positive conversion-loss accounting in both power directions.
+- maximum generating shaft absorption is `Pmax / η`;
+- maximum motoring shaft delivery is `Pmax × η`;
+- resulting electrical exchange is bounded to `-Pmax..+Pmax`;
+- conversion loss is `mechanical exchange - electrical exchange` and remains positive in both directions.
 
-## Why isolated edits are prohibited
+In bidirectional mode, power-to-torque conversion uses the current rotor speed with a 10% rated-speed floor. Generation-only and null-coupling paths retain their historical rated-speed conversion behavior.
 
-The current source combines values associated with different apparent scales: a 1,000 MW generator nameplate, a 1,000 kg·m² rotor, a 5 MWe operating point and low-megawatt turbine/condenser capacities. Nameplate, inertia, droop, coupling, protections, HMI ranges and reference trajectories interact. Changing only `MaximumElectricalPower` would alter several validated mechanisms at once and is explicitly prohibited.
+## Deferred protection
 
-## E.2 coordinated migration gate
-
-E.2 must be implemented as one versioned candidate covering:
-
-1. current-v2 10 MWe nameplate ownership;
-2. retained or deliberately revised rotor inertia;
-3. governor normalization and bumpless 5 MWe behavior;
-4. generation-only default plus current-v2 bidirectional opt-in;
-5. signed power and torque with positive losses in both directions;
-6. HMI range and operator-load semantics;
-7. replay/checkpoint compatibility;
-8. dedicated generation, motoring, synchronization and long-running evidence.
-
-Reverse-power, supervised-underfrequency and loss-of-synchronism protection remain E.3 and must not begin until E.2 trajectories are proven.
+E.2 represents signed states but does not add reverse-power, supervised-underfrequency or loss-of-synchronism protection. E.3.1 records the required trajectories; E.3.2 must derive protection thresholds from their reviewed evidence.

@@ -19,7 +19,7 @@ public static class ControlRoomTrendSourceCatalog
             new ControlRoomTrendSourceDescriptor(PrimaryFeedwaterFlow, "Total feedwater flow", "kg/s", "MODEL DIAGNOSTIC"),
             new ControlRoomTrendSourceDescriptor(PrimarySteamExportFlow, "Total steam export flow", "kg/s", "MODEL DIAGNOSTIC"),
             new ControlRoomTrendSourceDescriptor(TurbineShaftPower, "Turbine shaft power", "MW", "MEASURED"),
-            new ControlRoomTrendSourceDescriptor(GrossElectricalOutput, "Gross electrical output", "MWe", "MEASURED"),
+            new ControlRoomTrendSourceDescriptor(GrossElectricalOutput, "Gross grid exchange", "MWe", "MEASURED"),
             new ControlRoomTrendSourceDescriptor(UnacknowledgedAlarms, "Unacknowledged alarms", "count", "ANNUNCIATOR"),
         });
 

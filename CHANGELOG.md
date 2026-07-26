@@ -1,4 +1,44 @@
-## M10.9.4.1-D.4.1 — Turbine Valve Replay, Reset & Travel Ownership Hardening — CANDIDATE
+## M10.9.4.1-E.3.1 Hotfix 1 — Invariant trajectory-report formatting compile fix — CANDIDATE
+
+- Fixes five `CS1503` errors in `ElectricalProtectionTrajectoryAuditTests` where concatenating interpolated strings materialized a `string` before it reached `FormattableString.Invariant`.
+- Formats each invariant segment independently and concatenates the resulting strings, preserving identical report content and invariant-culture numeric formatting.
+- Changes no production source, trajectory scenario, assertion, threshold, relay behavior, test count or expected artifact.
+
+## M10.9.4.1-E.3.1 — Signed Electrical Protection Trajectory Audit — CANDIDATE
+
+- Builds on the user-validated E.2 Hotfix 1 10 MWe/bidirectional baseline.
+- Adds four explicit evidence-only trajectories: normal 5→0→5 MWe load step, turbine trip plus zero electrical request with breaker closed, breaker-open coastdown and a breaker-closed ±15/45/90/135° phase-offset sweep.
+- Persists deterministic CSV and text summaries under `artifacts/e3-protection-trajectories` through `scripts/run-electrical-protection-trajectory-audit.cmd`.
+- Records requested power, signed grid exchange, mechanical exchange, conversion loss, generator frequency, frequency slip, absolute/signed phase error, breaker state and actual trip state.
+- Adds no reverse-power, underfrequency or loss-of-synchronism function, threshold, delay or trip action.
+- Adds ADR 0113 and dedicated audit/validation documentation.
+
+## M10.9.4.1-E.2 Hotfix 1 — 10 MWe Reference Scale & Bidirectional Grid Coupling — VALIDATED
+
+- The user confirmed compilation and all requested ordinary, focused and long-running gates passed on 2026-07-26.
+- E.2 Hotfix 1 is promoted as the validated parent baseline for E.3.1.
+- Exact console counts were not copied into the handoff; no count is inferred beyond the confirmed all-green result.
+
+## M10.9.4.1-E.2 Hotfix 1 — Application test HMI namespace compile fix — VALIDATED
+
+- Adds the missing `NuclearReactorSimulator.Application.ControlRoom.Hmi` import to `ReferencePlantScaleMigrationTests`.
+- Restores compilation of `NuclearReactorSimulator.Application.Tests` without changing runtime code, physical laws, scale ownership, test behavior or expected test counts.
+- Preserved the E.2 functional contract; the complete E.2 Hotfix 1 source was later user-validated on 2026-07-26.
+
+## M10.9.4.1-E.2 — 10 MWe Reference Scale & Bidirectional Grid Coupling — VALIDATED VIA HOTFIX 1
+
+- Builds on the user-validated D.4.1 baseline without changing reactor, primary, condenser, turbine-work, protection or timestep laws.
+- Migrates only the two current-v2 sustained profiles from the historical 1,000 MWe reference to a coherent 10 MWe educational generator nameplate while retaining the validated 5 MWe normal operating point.
+- Changes current-v2 full-load governor rise from 150 rpm to 1.5 rpm, preserving the existing 0.75 rpm displacement at 5 MWe.
+- Adds versioned `GenerationOnly`/`Bidirectional` grid-coupling semantics; legacy/default definitions remain generation-only unless they opt in.
+- Adds an internal signed electromagnetic-torque seam owned only by the generator/grid integration layer while the public/manual rotor-input contract remains non-negative.
+- Supports signed mechanical and electrical exchange, electrical-nameplate clamps in both directions, current-speed torque conversion with a low-speed floor, and positive conversion losses during both generation and motoring.
+- Changes current-v2 HMI electrical ranges and labels to `-10..+10 MWe`, with positive export and negative import, while historical/default presentation remains non-negative.
+- Adds focused ordinary generation/motoring/compatibility tests, expands the explicit reference-scale pack to 4 tests and adds `scripts/run-generator-grid-bidirectional-tests.cmd`.
+- Does not add reverse-power, supervised-underfrequency or loss-of-synchronism protection; those remain E.3 after signed trajectories are validated.
+- Promoted through E.2 Hotfix 1 after the user confirmed compilation and all requested gates passed on 2026-07-26.
+
+## M10.9.4.1-D.4.1 — Turbine Valve Replay, Reset & Travel Ownership Hardening — VALIDATED
 
 - Builds only on the fully validated D.4 baseline; no turbine thermodynamic law, hydraulic capacity, controller tuning, protection threshold, timestep or generator/grid scale is changed.
 - Gives each `TurbineAdmissionTrainDefinition` an optional STOP-valve-owned `ActuatorTravelRate`; `null` preserves legacy instantaneous behavior even when other secondary valves are rate-limited, and the optional factory parameter is appended to preserve positional source compatibility.
@@ -7,7 +47,8 @@
 - Adds deterministic full-replay and checkpoint-seek coverage for STOP/ADMISSION commands, control-valve AUTO/MANUAL authority and numeric manual demand while valves are still in flight.
 - Adds the full trip → preserved STOP OPEN target → canonical reset acceptance → finite opening resumption regression without hidden repair.
 - Adds ADR 0112, `scripts/run-turbine-valve-hardening-tests.cmd` and a dedicated validation checklist.
-- Candidate only until local compilation, the complete ordinary suite, all 17 unique explicit tests and the manual TURBINE-station check are confirmed.
+- Promoted after the user confirmed on 2026-07-26 that all ordinary and long-running gates passed.
+- This is the validated parent baseline for E.2.
 
 ## M10.9.4.1-D.4 — Turbine Valve Operator Authority — VALIDATED
 

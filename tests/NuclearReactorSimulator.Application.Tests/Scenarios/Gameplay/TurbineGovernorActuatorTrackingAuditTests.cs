@@ -49,8 +49,8 @@ public sealed class TurbineGovernorActuatorTrackingAuditTests
 
         Assert.Equal(0.5d, desktopActuator.TravelRate.GetValueOrDefault().FractionPerSecond, 12);
         Assert.Equal(0.5d, synchronizationActuator.TravelRate.GetValueOrDefault().FractionPerSecond, 12);
-        Assert.Equal(150d, desktopGovernor.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
-        Assert.Equal(150d, synchronizationGovernor.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
+        Assert.Equal(1.5d, desktopGovernor.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
+        Assert.Equal(1.5d, synchronizationGovernor.FullLoadSpeedReferenceRise.RevolutionsPerMinute, 12);
         Assert.Equal(
             28d,
             desktopEngine.PersistentInputs.TurbineSecondaryInputs.Controllers.GetController("speed-control").ManualOutput,

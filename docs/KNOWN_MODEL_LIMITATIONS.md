@@ -26,9 +26,9 @@ The inherited model allowed pressure-driven stage flow to remain positive for li
 
 D.3 evidence showed a disconnected rotor fixed near 3301 rpm after the control valve closed because both generator electromagnetic torque and passive mechanical losses were zero. D.3.1 adds an optional speed-dependent rotor-loss law to sustained current-v2 profiles. The 0.5 MW rated-speed value has passed the cumulative ordinary, long-running and operational-envelope gates; future scale migration must re-audit its interaction with the new nameplate.
 
-### A5. Bidirectional generator/grid coupling is not yet implemented
+### A5. Bidirectional coupling remains an infinite-bus educational model
 
-The validated D.4 source retains correction-only/generation-only coupling and a non-negative rotor-load path. E.1 accepts a 10 MWe target; E.2 must still introduce versioned bidirectional coupling, signed electrical exchange and an internal signed rotor-torque seam. Dedicated reverse-power, supervised underfrequency and loss-of-synchronism protections remain gated to E.3.
+The validated E.2 Hotfix 1 runtime supports signed generation/motoring exchange and an internal signed rotor-torque seam, but it remains a simplified infinite-bus coupling rather than a detailed synchronous-machine/network transient model. It does not model stator/field transients, reactances, excitation/AVR dynamics, bus topology or multi-machine load flow. Dedicated reverse-power, supervised underfrequency and loss-of-synchronism protections remain unimplemented. E.3.1 records calibration trajectories; E.3.2 remains gated to evidence review.
 
 ### A6. Drum low-inventory behavior is only partially closed
 
@@ -40,7 +40,7 @@ Pipe/source transport currently follows the model's specific-internal-energy con
 
 ### A8. Reference-plant scale migration is accepted in principle but not implemented
 
-E.1 accepts a 10 MWe current-v2 educational target while the active source remains at 1,000 MW, 150 rpm full-load droop and correction-only/generation-only coupling. E.2 must coordinate nameplate, governor normalization, signed coupling, HMI range, replay and trajectory evidence while preserving historical/default definitions.
+E.2 Hotfix 1 validates the current-v2 10 MWe nameplate, 1.5 rpm governor normalization, signed coupling and HMI range while preserving historical/default definitions. The retained 0.5 MW synchronizing correction and 2 MW/Hz damping remain reduced-order calibrated values; E.3.1 records their normal, motoring and phase-offset trajectories before protection thresholds are selected.
 
 ### A9. Legacy/current option combinations are not formally enumerated
 
