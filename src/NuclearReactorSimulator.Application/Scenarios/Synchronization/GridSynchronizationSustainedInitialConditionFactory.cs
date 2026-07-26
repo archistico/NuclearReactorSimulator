@@ -27,6 +27,12 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
         "M10.9.4 long-gameplay synchronization seed preserving M7.5 v1 while providing matched primary circulation, a half-full saturated steam drum with a coherent level-control setpoint and conservative solid-to-coolant heat transfer, a continuously pressure-graded staged steam path and matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory and 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law, pressure-resolved saturated-liquid condensate energy for post-synchronization load acceptance.");
 
     public IControlRoomRuntimeEngine CreateRuntimeEngine()
+        => CreateRuntimeEngine(includeEvidenceDerivedElectricalProtections: true);
+
+    internal static IControlRoomRuntimeEngine CreateElectricalProtectionEvidenceRuntimeEngine()
+        => CreateRuntimeEngine(includeEvidenceDerivedElectricalProtections: false);
+
+    private static IControlRoomRuntimeEngine CreateRuntimeEngine(bool includeEvidenceDerivedElectricalProtections)
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
             GenerationReadySeed,
             mainCirculationRunning: true,
@@ -83,5 +89,6 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             turbineRotorRatedSpeedMechanicalLossMegawatts: 0.5d,
             deterministicSeedStepCount: 2,
             generatorMaximumElectricalPowerMegawatts: 10d,
-            generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional);
+            generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
+            includeEvidenceDerivedElectricalProtections: includeEvidenceDerivedElectricalProtections);
 }

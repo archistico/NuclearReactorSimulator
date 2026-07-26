@@ -28,7 +28,7 @@ D.3 evidence showed a disconnected rotor fixed near 3301 rpm after the control v
 
 ### A5. Bidirectional coupling remains an infinite-bus educational model
 
-The validated E.2 Hotfix 1 runtime supports signed generation/motoring exchange and an internal signed rotor-torque seam, but it remains a simplified infinite-bus coupling rather than a detailed synchronous-machine/network transient model. It does not model stator/field transients, reactances, excitation/AVR dynamics, bus topology or multi-machine load flow. Dedicated reverse-power, supervised underfrequency and loss-of-synchronism protections remain unimplemented. E.3.1 records calibration trajectories; E.3.2 remains gated to evidence review.
+The validated E.2 Hotfix 1 runtime supports signed generation/motoring exchange and an internal signed rotor-torque seam, but it remains a simplified infinite-bus coupling rather than a detailed synchronous-machine/network transient model. It does not model stator/field transients, reactances, excitation/AVR dynamics, bus topology or multi-machine load flow. E.3.2 now implements reduced-order reverse-power, breaker-supervised underfrequency and absolute-frequency-slip loss-of-synchronism protection as a candidate. It remains educational relay logic over the infinite-bus model, not impedance-based or electromagnetic transient protection.
 
 ### A6. Drum low-inventory behavior is only partially closed
 
@@ -40,7 +40,7 @@ Pipe/source transport currently follows the model's specific-internal-energy con
 
 ### A8. Reference-plant scale migration is accepted in principle but not implemented
 
-E.2 Hotfix 1 validates the current-v2 10 MWe nameplate, 1.5 rpm governor normalization, signed coupling and HMI range while preserving historical/default definitions. The retained 0.5 MW synchronizing correction and 2 MW/Hz damping remain reduced-order calibrated values; E.3.1 records their normal, motoring and phase-offset trajectories before protection thresholds are selected.
+E.2 Hotfix 1 validates the current-v2 10 MWe nameplate, 1.5 rpm governor normalization, signed coupling and HMI range while preserving historical/default definitions. The retained 0.5 MW synchronizing correction and 2 MW/Hz damping remain reduced-order calibrated values. E.3.1 recorded their normal, motoring and phase-offset trajectories; E.3.2 derives supervised delayed thresholds from that evidence.
 
 ### A9. Legacy/current option combinations are not formally enumerated
 

@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M10.9.4.1-D.4.1 — Turbine Valve Replay, Reset & Travel Ownership Hardening",
-        "Candidate on the fully validated D.4 baseline — gives each turbine STOP valve an explicit optional travel-rate contract, preserves legacy instantaneous definitions, verifies valve commands through full replay and in-flight checkpoint restoration, and proves a preserved STOP OPEN request resumes finite travel after an accepted turbine-trip reset without hidden repair");
+        "M10.9.4.1-E.3.2 Hotfix 2 — Canonical Grid Nominal-Frequency Seed",
+        "Candidate on the validated E.3.1 Hotfix 1 trajectory baseline — restores complete logical-step-zero measured instrumentation using the canonical grid nominal frequency and adds breaker-supervised delayed reverse-power, underfrequency and loss-of-synchronism generator trips derived from recorded current-v2 evidence, preserves immediate unsupervised legacy protection by default, and publishes the new trip markers without moving protection ownership out of canonical M5.5");
 }

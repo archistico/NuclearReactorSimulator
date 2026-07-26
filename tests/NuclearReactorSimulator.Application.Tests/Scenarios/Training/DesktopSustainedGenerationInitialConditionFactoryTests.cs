@@ -369,9 +369,17 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
             currentEngine.CurrentState.MeasuredSignals.GetSignal("generator-frequency").EngineeringValue ?? double.NaN,
             9);
         Assert.InRange(expectedGeneratorFrequencyHertz, 49.9d, 50.1d);
+        Assert.Equal(
+            1d,
+            currentEngine.CurrentState.MeasuredSignals.GetSignal("generator-breaker-closed").EngineeringValue ?? double.NaN,
+            12);
+        Assert.InRange(
+            currentEngine.CurrentState.MeasuredSignals.GetSignal("generator-absolute-frequency-slip").EngineeringValue ?? double.NaN,
+            0d,
+            0.2d);
 
         var currentProtection = currentEngine.CurrentState.ProtectionState.Definition;
-        Assert.Equal(5, currentProtection.TripFunctions.Count);
+        Assert.Equal(8, currentProtection.TripFunctions.Count);
 
         AssertProtection(
             currentProtection.GetTripFunction("turbine-overspeed"),

@@ -8,48 +8,56 @@ We are continuing the **Nuclear Reactor Simulator** project.
 2. `docs/PROJECT_STATUS.md`
 3. `docs/ROADMAP.md`
 4. `docs/milestones/M10.9.4.1.md`
-5. `docs/M10_9_4_1_E3_1_VALIDATION_CHECKLIST.md`
-6. `docs/ELECTRICAL_PROTECTION_TRAJECTORY_AUDIT.md`
-7. `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
-8. `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`
-9. `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`
+5. `docs/M10_9_4_1_E3_2_PROTECTION_EVIDENCE.md`
+6. `docs/M10_9_4_1_E3_2_VALIDATION_CHECKLIST.md`
+7. `docs/ELECTRICAL_PROTECTION_TRAJECTORY_AUDIT.md`
+8. `docs/PROTECTION_INTERLOCKS_TRIPS_SCRAM.md`
+9. `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`
 10. `docs/KNOWN_MODEL_LIMITATIONS.md`
 
 ## Exact checkpoint
 
-- Current validated continuation: **M10.9.4.1-E.2 Hotfix 1**.
-- User confirmed compilation and all requested ordinary, focused and long-running gates passed on **2026-07-26**.
-- Working source: **M10.9.4.1-E.3.1 Hotfix 1 Signed Electrical Protection Trajectory Audit CANDIDATE**.
-- Current-v2 sustained profiles use **10 MWe**, **5 MWe = 50%**, **1.5 rpm full-load droop**, and **Bidirectional** grid coupling.
-- Signed convention: positive = export/generation; negative = import/motoring; conversion loss remains non-negative.
-- E.3.1 adds four explicit trajectory tests and writes CSV/text evidence under `artifacts/e3-protection-trajectories`.
-- E.3.1 adds no reverse-power, underfrequency or loss-of-synchronism function.
-- Historical/default profiles remain **1,000 MWe**, null/GenerationOnly and non-negative in presentation.
+- Current validated continuation: **M10.9.4.1-E.3.1 Hotfix 1**.
+- User confirmed compilation, ordinary tests and all cumulative long-running gates passed on **2026-07-26**.
+- The complete E.3.1 CSV/summary trajectory bundle was supplied and reviewed.
+- Working source: **M10.9.4.1-E.3.2 Hotfix 3 Typed Breaker-Command Target Regression Fix CANDIDATE**.
+- Both current-v2 sustained profiles use **10 MWe**, **5 MWe = 50%**, **1.5 rpm full-load droop**, `Bidirectional` coupling and the E.3.2 relay set.
+- Reverse power: **-0.30 MWe / -0.10 MWe reset / 2.0 s**.
+- Underfrequency: **48.8 Hz / 49.5 Hz reset / 1.0 s**.
+- Loss of synchronism: **1.5 Hz absolute slip / 0.5 Hz reset / 0.5 s**.
+- All three require a measured closed generator breaker and issue canonical generator trip.
+- Historical/default protection remains zero-delay and unsupervised unless explicitly configured.
+- Dedicated evidence factories reproduce the original E.3.1 trajectories without the E.3.2 relay set.
+- The focused E.3.2 script prints three relay-implementation summaries and writes detailed CSV files for review.
+- Hotfix 1 added the two logical-step-zero signals; Hotfix 2 uses `ElectricalGridDefinition.NominalFrequency` for the initial absolute-slip calculation, matching the actual definition API and preserving exact measured-frame cardinality.
 
 ## Next work
 
-Validate E.3.1 with:
+Validate E.3.2 with:
 
 ```text
 dotnet build
-scripts\run-electrical-protection-trajectory-audit.cmd
+scripts/run-electrical-protection-implementation-tests.cmd
 dotnet test
-scripts\run-generator-grid-bidirectional-tests.cmd
-scripts\run-turbine-admission-authority-audit.cmd
-scripts\run-turbine-governor-actuator-tracking-audit.cmd
-scripts\run-gameplay-long-tests.cmd
-scripts\run-operational-envelope-audit.cmd
-scripts\run-reference-plant-scale-audit.cmd
+scripts/run-electrical-protection-trajectory-audit.cmd
+scripts/run-generator-grid-bidirectional-tests.cmd
+scripts/run-turbine-admission-authority-audit.cmd
+scripts/run-turbine-governor-actuator-tracking-audit.cmd
+scripts/run-gameplay-long-tests.cmd
+scripts/run-operational-envelope-audit.cmd
+scripts/run-reference-plant-scale-audit.cmd
 ```
 
-Preserve or paste the generated `*.summary.txt` files. Use those values to design E.3.2 pickup, reset, delay and supervision. Do not invent relay thresholds before the evidence is reviewed.
+Expected ordinary discovery: **960 passed, 26 explicit skipped, 0 failed, 986 total**.
+
+After all automated gates, manually verify the reverse-power and frequency markers plus trip/reset behavior on the GENERATOR station.
 
 ## Non-negotiable rules
 
 - deterministic fixed timestep;
 - no plant physics in Avalonia;
 - canonical simulation owners remain unique;
-- protection has priority;
+- protection consumes measured signals and has priority;
 - explicit legacy/current versioning;
 - no hidden repair;
 - no weakened tests, floors or protection thresholds;

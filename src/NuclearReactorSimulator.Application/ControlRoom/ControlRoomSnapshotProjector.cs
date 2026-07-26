@@ -641,7 +641,11 @@ public static class ControlRoomSnapshotProjector
                             "Hz",
                             1d,
                             "0.000"),
-                        BuildGeneratorFrequencyScale(grid.Frequency.Hertz, definition.MaximumSynchronizationFrequencyDifference.Hertz)),
+                        BuildGeneratorFrequencyScale(
+                            snapshot,
+                            generator.GeneratorId,
+                            grid.Frequency.Hertz,
+                            definition.MaximumSynchronizationFrequencyDifference.Hertz)),
                     WithScale(
                         ProjectMeasuredSource(
                             measuredFrame,
@@ -649,7 +653,7 @@ public static class ControlRoomSnapshotProjector
                             "MWe",
                             1d / 1_000_000d,
                             "0.0"),
-                        BuildGeneratorElectricalPowerScale(definition)),
+                        BuildGeneratorElectricalPowerScale(snapshot, generator.GeneratorId, definition)),
                     WithScale(
                         Value(generator.TerminalLineVoltage.Kilovolts, "kV", "0.0"),
                         BuildGeneratorVoltageScale(generator.GridLineVoltage.Kilovolts, definition.MaximumSynchronizationVoltageDifference.Kilovolts)),
@@ -694,13 +698,30 @@ public static class ControlRoomSnapshotProjector
     }
 
     private static ControlRoomInstrumentScaleSnapshot BuildGeneratorElectricalPowerScale(
+        IntegratedAutomaticOperationSnapshot snapshot,
+        string generatorId,
         SynchronousGeneratorDefinition definition)
     {
         var maximum = definition.MaximumElectricalPower.Megawatts;
         var minimum = definition.GridCoupling?.PowerFlowMode == SynchronousGridPowerFlowMode.Bidirectional
             ? -maximum
             : 0d;
-        return new ControlRoomInstrumentScaleSnapshot(minimum, maximum);
+        var protection = snapshot.Control.ProtectedControl.Protection;
+        var instrumentation = protection.Definition.Instrumentation;
+        var sourceId = $"generator/{generatorId}/electrical-output";
+        var limits = protection.Definition.TripFunctions
+            .Where(function => string.Equals(
+                instrumentation.GetChannel(function.MeasurementChannelId).SourceId,
+                sourceId,
+                StringComparison.Ordinal))
+            .Select(function => new ControlRoomProtectionLimitSnapshot(
+                function.TripThreshold / 1_000_000d,
+                function.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.High
+                    ? ControlRoomLimitDirection.High
+                    : ControlRoomLimitDirection.Low,
+                function.Id.ToUpperInvariant()))
+            .ToArray();
+        return new ControlRoomInstrumentScaleSnapshot(minimum, maximum, protectionLimits: limits);
     }
 
     private static ControlRoomInstrumentScaleSnapshot BuildGrossElectricalPowerScale(
@@ -1074,10 +1095,34 @@ public static class ControlRoomSnapshotProjector
     }
 
     private static ControlRoomInstrumentScaleSnapshot BuildGeneratorFrequencyScale(
+        IntegratedAutomaticOperationSnapshot snapshot,
+        string generatorId,
         double gridFrequencyHertz,
         double synchronizationToleranceHertz)
     {
-        var maximum = Math.Max(gridFrequencyHertz * 1.1d, gridFrequencyHertz + synchronizationToleranceHertz + 1d);
+        var protection = snapshot.Control.ProtectedControl.Protection;
+        var instrumentation = protection.Definition.Instrumentation;
+        var sourceId = $"generator/{generatorId}/frequency";
+        var protectionThresholds = protection.Definition.TripFunctions
+            .Where(function => string.Equals(
+                instrumentation.GetChannel(function.MeasurementChannelId).SourceId,
+                sourceId,
+                StringComparison.Ordinal))
+            .ToArray();
+        var maximumThreshold = protectionThresholds
+            .Where(static function => function.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.High)
+            .Select(static function => function.TripThreshold)
+            .DefaultIfEmpty(gridFrequencyHertz)
+            .Max();
+        var maximum = Math.Max(
+            Math.Max(gridFrequencyHertz * 1.1d, gridFrequencyHertz + synchronizationToleranceHertz + 1d),
+            maximumThreshold * 1.02d);
+        var limits = protectionThresholds.Select(function => new ControlRoomProtectionLimitSnapshot(
+            function.TripThreshold,
+            function.Comparison == NuclearReactorSimulator.Domain.Physics.Control.Protection.ProtectionComparison.High
+                ? ControlRoomLimitDirection.High
+                : ControlRoomLimitDirection.Low,
+            function.Id.ToUpperInvariant())).ToArray();
         return new ControlRoomInstrumentScaleSnapshot(
             0d,
             maximum,
@@ -1085,7 +1130,8 @@ public static class ControlRoomSnapshotProjector
                 Math.Max(0d, gridFrequencyHertz - synchronizationToleranceHertz),
                 Math.Min(maximum, gridFrequencyHertz + synchronizationToleranceHertz),
                 "SYNC WINDOW"),
-            setpoint: WithinScale(gridFrequencyHertz, 0d, maximum));
+            setpoint: WithinScale(gridFrequencyHertz, 0d, maximum),
+            protectionLimits: limits);
     }
 
     private static ControlRoomInstrumentScaleSnapshot BuildGeneratorPhaseScale(double synchronizationToleranceDegrees)

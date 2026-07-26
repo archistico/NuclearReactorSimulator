@@ -28,4 +28,4 @@ Computed direction aliases remain excluded from JSON serialization so replay/che
 - Public/manual legacy callers retain their historical validation.
 - Generation-only and null-coupling behavior remain compatible.
 - Signed mechanical/electrical exchange and positive losses are owned by the generator/grid solver.
-- E.3.1 records signed trajectories; E.3.2 protection remains deferred until those reports are reviewed.
+- E.3.1 recorded and validated signed trajectories; E.3.2 derives supervised delayed protection from the reviewed reports.

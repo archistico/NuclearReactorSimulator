@@ -32,5 +32,5 @@ The two current-v2 sustained reference profiles use this coordinated contract:
 - Motoring and reverse-power states become deterministic representable states.
 - The 5 MWe trajectory should remain near-bumpless because its governor displacement is preserved.
 - Negative electrical exchange means grid import, not invalid generation.
-- E.2 does not add reverse-power, supervised-underfrequency or loss-of-synchronism protection; E.3.1 records trajectories and E.3.2 remains evidence-gated.
+- E.2 does not add reverse-power, supervised-underfrequency or loss-of-synchronism protection; E.3.1 subsequently recorded the trajectories and E.3.2 remains a separate evidence-derived protection change.
 - Coupling stiffness changes require measured trajectory evidence rather than proportional scaling.

@@ -668,7 +668,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.9.4 and the cumulative M10.9.4.1-E.2 Hotfix 1 continuation are VALIDATED. D.4 passed 944 ordinary tests and all 17 unique explicit tests on 2026-07-25; D.4.1 and E.2 Hotfix 1 then passed all user-run gates on 2026-07-26. E.3.1 Hotfix 1 is the current evidence-only signed electrical trajectory candidate. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
+M10 is **IN PROGRESS**. M10.1–M10.9.4 and the cumulative M10.9.4.1-E.3.1 Hotfix 1 continuation are VALIDATED. D.4 passed 944 ordinary tests and all 17 unique explicit tests on 2026-07-25; D.4.1, E.2 Hotfix 1 and E.3.1 Hotfix 1 then passed all user-run gates on 2026-07-26. E.3.2 is the current evidence-derived electrical-protection candidate. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
 
 Two independent axes are mandatory:
 
@@ -773,9 +773,9 @@ Two independent axes are mandatory:
 - post-validation HMI readability hardening keeps alarm flashing geometry stable, separates runtime/progress/step content, removes duplicate current-step readouts and limits subsystem schematic rows to at most four nodes;
 - the visual design system and printable user manual apply the same maximum-four-elements-per-row rule, using vertical flow or consecutive diagram segments instead of shrinking labels;
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
-- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; B/C and D.1/D.2 are locally green. The current validated E.2 Hotfix 1 baseline contains D.3.2 Hotfix 3, the operator valve station, D.4.1 replay/reset/travel hardening and the 10 MWe bidirectional current-v2 migration. E.3.1 Hotfix 1 is the current trajectory-audit candidate.
+- final manual schematic/HMI checklist passed; M10.9.4 is validated. The later M10.9.4.1-A audit root cause is resolved in the corrected current-v2 operating seed; B/C and D.1/D.2 are locally green. The current validated E.3.1 Hotfix 1 baseline contains D.3.2 Hotfix 3, the operator valve station, D.4.1 replay/reset/travel hardening, the 10 MWe bidirectional current-v2 migration and reviewed signed trajectory evidence. E.3.2 is the current protection candidate.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (E.2 Hotfix 1 validated; E.3.1 Hotfix 1 candidate)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (E.3.1 Hotfix 1 validated; E.3.2 candidate)
 
 - Phase A audit exposed a repeatable ~70 s protection trip; root cause was later traced to current-v2 seed energy/hydraulic starvation rather than the thermodynamic resolver; the corrected seed now passes the exact 300-second sustained journey;
 - Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
@@ -784,7 +784,7 @@ Two independent axes are mandatory:
 - Phase B closes drum/source mass, energy, phase and liquid-inventory behavior before protection; B.1 locally validated the liquid-inventory cap, B.2 locally validated the drum-owned pressure/energy/inventory steam source, and B.3 adds low-inventory/separation diagnostics plus measured low-level warning and low-low protection;
 - Phase C closes condenser phase-change/hotwell energy and independent limiting semantics; C.1 is locally green with pressure-resolved saturated-liquid condensate energy. C.2 makes 40 MW installed cooling capacity definition-owned and distinct from runtime availability while retaining 20 kg/s as an independent condensation-throughput ceiling and preserving the existing `UA·ΔT` law;
 - Phase D aligns turbine admission phase policy and governor authority: D.1/D.2 are locally validated; D.3.1 adds passive rotor loss; D.3.2 Hotfix 3 closes admission capacity; D.4 exposes operator valve authority; D.4.1 validates STOP-owned travel rate, replay/in-flight checkpoint coverage and trip-reset travel resumption;
-- Phase E.1 accepts the 10 MWe current-v2 target; E.2 Hotfix 1 validates the coordinated nameplate/governor/bidirectional coupling; E.3.1 records signed protection trajectories; E.3.2 implements reverse-power/underfrequency/loss-of-synchronism only after evidence review;
+- Phase E.1 accepts the 10 MWe current-v2 target; E.2 Hotfix 1 validates the coordinated nameplate/governor/bidirectional coupling; E.3.1 Hotfix 1 validates signed protection trajectories; E.3.2 implements evidence-derived supervised/delayed reverse-power, underfrequency and absolute-slip loss-of-synchronism protection;
 - Phase F adds choked compressible flow and conservative relief/bypass topology;
 - Phase G performs a dedicated flow-work/enthalpy transport migration;
 - Phase H measures numerical stiffness before choosing adaptive substepping or semi-implicit coupling;

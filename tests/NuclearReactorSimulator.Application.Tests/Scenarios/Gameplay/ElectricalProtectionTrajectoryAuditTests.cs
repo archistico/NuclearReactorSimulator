@@ -36,7 +36,7 @@ public sealed class ElectricalProtectionTrajectoryAuditTests
 
         WriteRuntimeReport(
             "01-normal-generation-load-step",
-            "Normal breaker-closed generation and a 5→0→5 MWe operator request trajectory.",
+            "Normal breaker-closed generation and a 5->0->5 MWe operator request trajectory.",
             samples);
 
         Assert.NotEmpty(samples);
@@ -203,11 +203,11 @@ public sealed class ElectricalProtectionTrajectoryAuditTests
 
     private static IntegratedAutomaticOperationRuntimeEngine CreateDesktopEngine()
         => Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+            DesktopSustainedGenerationInitialConditionFactory.CreateElectricalProtectionEvidenceRuntimeEngine());
 
     private static IntegratedAutomaticOperationRuntimeEngine CreateSynchronizationEngine()
         => Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new GridSynchronizationSustainedInitialConditionFactory().CreateRuntimeEngine());
+            GridSynchronizationSustainedInitialConditionFactory.CreateElectricalProtectionEvidenceRuntimeEngine());
 
     private static void QueueGeneratorCommand(
         IntegratedAutomaticOperationRuntimeEngine engine,

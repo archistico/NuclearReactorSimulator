@@ -45,6 +45,8 @@ public sealed class ProtectionSystemDefinition
         EnsureUnique(functions.Select(static item => item.Id).Concat(canonicalInterlocks.Select(static item => item.Id)).Concat(permissives.Select(static item => item.Id)), "protection element");
 
         foreach (var channelId in functions.Select(static item => item.MeasurementChannelId)
+                     .Concat(functions.Where(static item => item.Supervision is not null)
+                         .Select(static item => item.Supervision!.MeasurementChannelId))
                      .Concat(canonicalInterlocks.Select(static item => item.MeasurementChannelId))
                      .Concat(permissives.Select(static item => item.MeasurementChannelId)))
         {

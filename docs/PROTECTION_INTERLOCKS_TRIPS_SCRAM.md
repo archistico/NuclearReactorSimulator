@@ -33,7 +33,9 @@ Protection never traverses `FullPlantSnapshot` directly. It consumes the same ca
 - a trip threshold;
 - a separate reset threshold for hysteresis;
 - one or more actions: reactor SCRAM, turbine trip and generator trip;
-- an explicit fail-closed policy for invalid/unavailable measurements.
+- an explicit fail-closed policy for invalid/unavailable measurements;
+- an optional deterministic pickup delay;
+- an optional measured supervision condition.
 
 A trip function latches after activation. Returning the measured variable to a safe range does not clear the latch by itself.
 
@@ -94,8 +96,9 @@ Those remain with the previously validated physical domains. M5.6 now owns alarm
 
 M5.5 contains no wall-clock or random behavior. Trip/interlock evaluation depends only on:
 
-- committed protection latch state;
+- committed protection latch and pickup-timer state;
 - one immutable measured-signal frame;
+- the fixed logical-step duration;
 - explicit manual trip/reset inputs.
 
 Scenario scheduling and fault timing remain later responsibilities.
@@ -111,4 +114,12 @@ The historical/default recipe remains intentionally minimal. The current-v2 sust
 
 The current-v2 instrumentation definition therefore adds canonical measured condenser absolute pressure and generator frequency channels. The turbine speed channel already exists. Protection still consumes only the committed `MeasuredSignalFrame`; no true-state shortcut is introduced.
 
-Generator underfrequency is deliberately deferred. The current trip primitive has no breaker/load-state supervision, so an unconditional low-frequency function would incorrectly latch while a disconnected machine is starting or coasting. Underfrequency must be added only with explicit operational supervision.
+## M10.9.4.1-E.3.2 — evidence-derived current-v2 electrical protection
+
+E.3.2 adds generic optional supervision and committed pickup timing to the same M5.5 owner. Zero delay and no supervision preserve every historical definition. Both current-v2 sustained profiles opt into:
+
+- `generator-reverse-power`: `grid exchange <= -0.30 MWe` for 2.0 s, reset-safe at `>= -0.10 MWe`;
+- `generator-underfrequency`: `frequency <= 48.8 Hz` for 1.0 s, reset-safe at `>= 49.5 Hz`;
+- `generator-loss-of-synchronism`: `absolute frequency slip >= 1.5 Hz` for 0.5 s, reset-safe at `<= 0.5 Hz`.
+
+All three require the measured generator breaker to be closed and assert the existing canonical generator-trip action. Inactive supervision clears incomplete pickup and makes a latched function reset-safe; it never clears an already completed latch without an accepted protection reset. Raw wrapped phase angle is not used because E.3.1 showed it does not discriminate normal from synthetic offset trajectories in the current reduced-order model.

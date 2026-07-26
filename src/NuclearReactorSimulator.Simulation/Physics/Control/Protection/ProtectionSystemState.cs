@@ -37,9 +37,12 @@ public sealed class ProtectionSystemState
     public IReadOnlyList<ProtectionFunctionLatchState> FunctionLatches { get; }
     public ProtectionAction ManualLatchedActions { get; }
 
-    public bool IsFunctionLatched(string functionId)
-        => FunctionLatches.FirstOrDefault(item => string.Equals(item.FunctionId, functionId, StringComparison.Ordinal))?.IsLatched
+    public ProtectionFunctionLatchState GetFunctionLatch(string functionId)
+        => FunctionLatches.FirstOrDefault(item => string.Equals(item.FunctionId, functionId, StringComparison.Ordinal))
             ?? throw new KeyNotFoundException($"Unknown protection function latch '{functionId}'.");
+
+    public bool IsFunctionLatched(string functionId)
+        => GetFunctionLatch(functionId).IsLatched;
 
     public static ProtectionSystemState CreateInitial(ProtectionSystemDefinition definition)
         => new(definition, definition.TripFunctions.Select(static item => new ProtectionFunctionLatchState(item.Id, false)));

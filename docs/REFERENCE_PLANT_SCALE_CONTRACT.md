@@ -49,4 +49,4 @@ In bidirectional mode, power-to-torque conversion uses the current rotor speed w
 
 ## Deferred protection
 
-E.2 represents signed states but does not add reverse-power, supervised-underfrequency or loss-of-synchronism protection. E.3.1 records the required trajectories; E.3.2 must derive protection thresholds from their reviewed evidence.
+E.2 represents signed states but does not add reverse-power, supervised-underfrequency or loss-of-synchronism protection. E.3.1 recorded and validated the required trajectories. E.3.2 derives its supervised delayed thresholds from the reviewed evidence bundle.

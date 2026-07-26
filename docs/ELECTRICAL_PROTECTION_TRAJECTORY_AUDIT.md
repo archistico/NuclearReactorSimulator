@@ -2,7 +2,9 @@
 
 ## Status
 
-**M10.9.4.1-E.3.1 Hotfix 1 — IMPLEMENTED CANDIDATE / LOCAL AUDIT PENDING**
+**M10.9.4.1-E.3.1 Hotfix 1 — VALIDATED / COMPLETE EVIDENCE BUNDLE REVIEWED**
+
+The user confirmed the complete audit, ordinary suite and cumulative long-running gates passed on 2026-07-26 and supplied all generated artifacts. Threshold interpretation is recorded in `M10_9_4_1_E3_2_PROTECTION_EVIDENCE.md`.
 
 The validated parent is **M10.9.4.1-E.2 Hotfix 1**. E.3.1 deliberately adds no protection thresholds and no new trip action. It records deterministic signed electrical trajectories so the later E.3.2 relay definitions can be derived from observed current-v2 behavior rather than arbitrary constants.
 

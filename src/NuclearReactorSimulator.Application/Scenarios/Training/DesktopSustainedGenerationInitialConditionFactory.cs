@@ -35,6 +35,12 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
         "M10.9.4 generation-ready desktop seed preserving the v1 replay baseline while establishing matched primary circulation, a half-full saturated steam drum with a coherent level-control setpoint, conservative solid-to-coolant heat transfer, a continuously pressure-graded staged steam path, matched admission/condenser/feedwater hydraulics, a generation-scale condenser steam-space inventory, 40 MW installed cooling-boundary headroom over the unchanged 1.225 MW/K surface law, pressure-resolved saturated-liquid condensate energy, bumpless control biases and finite heat rejection for sustained low-load electrical export.");
 
     public IControlRoomRuntimeEngine CreateRuntimeEngine()
+        => CreateRuntimeEngine(includeEvidenceDerivedElectricalProtections: true);
+
+    internal static IControlRoomRuntimeEngine CreateElectricalProtectionEvidenceRuntimeEngine()
+        => CreateRuntimeEngine(includeEvidenceDerivedElectricalProtections: false);
+
+    private static IControlRoomRuntimeEngine CreateRuntimeEngine(bool includeEvidenceDerivedElectricalProtections)
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
             GenerationReadySeed,
             mainCirculationRunning: true,
@@ -91,5 +97,6 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             turbineRotorRatedSpeedMechanicalLossMegawatts: 0.5d,
             deterministicSeedStepCount: 2,
             generatorMaximumElectricalPowerMegawatts: 10d,
-            generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional);
+            generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
+            includeEvidenceDerivedElectricalProtections: includeEvidenceDerivedElectricalProtections);
 }

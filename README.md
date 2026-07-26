@@ -1,7 +1,7 @@
-> **Current development checkpoint:** M10.9.4.1-E.2 Hotfix 1 is VALIDATED. The working source is M10.9.4.1-E.3.1 Hotfix 1 CANDIDATE, an evidence-only signed electrical protection trajectory audit. It adds no relay threshold or trip action.
+> **Current development checkpoint:** M10.9.4.1-E.3.1 Hotfix 1 is VALIDATED. The working source is M10.9.4.1-E.3.2 Hotfix 3 CANDIDATE, correcting the typed breaker-command target in the final explicit E.3.2 coastdown audit while preserving the evidence-derived breaker-supervised delayed electrical protection runtime.
 
 # Nuclear Reactor Simulator
-> **E.3.1 Hotfix 1 candidate on validated E.2 Hotfix 1:** current-v2 remains a 10 MWe bidirectional generator/grid model. The new candidate records reverse-power, underfrequency-supervision and phase-slip trajectories before any E.3.2 protection threshold is selected.
+> **E.3.2 candidate on validated E.3.1 Hotfix 1:** both current-v2 sustained profiles retain the validated 10 MWe bidirectional generator/grid model and opt into measured, breaker-supervised reverse-power, underfrequency and loss-of-synchronism generator trips. Legacy/default protection remains immediate and unsupervised by default.
 
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
@@ -13,13 +13,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The current official continuation baseline is **M10.9.4.1-E.2 Hotfix 1 — 10 MWe Reference Scale & Bidirectional Grid Coupling — VALIDATED**. The working source is **M10.9.4.1-E.3.1 Hotfix 1 — Signed Electrical Protection Trajectory Audit compile fix — CANDIDATE**.
+The current official continuation baseline is **M10.9.4.1-E.3.1 Hotfix 1 — Signed Electrical Protection Trajectory Audit — VALIDATED**. The working source is **M10.9.4.1-E.3.2 Hotfix 3 — Typed Breaker-Command Target Regression Fix — CANDIDATE**.
 
-The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 remain validated. M10.9.4.1-A–D.4.1 are consolidated into the continuation, and the user confirmed all E.2 Hotfix 1 compilation, ordinary, focused and long-running gates passed on 2026-07-26. Current-v2 sustained profiles therefore validly use a 10 MWe nameplate, 1.5 rpm full-load governor rise and opt-in bidirectional coupling while preserving the 5 MWe operating point. E.3.1 adds only reproducible trajectory evidence; reverse-power, supervised-underfrequency and loss-of-synchronism relays remain unimplemented.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 remain validated. M10.9.4.1-A–D.4.1 and E.2 Hotfix 1 are consolidated into the continuation. On 2026-07-26 the user confirmed E.3.1 Hotfix 1 compiled, all ordinary and cumulative long-running gates passed, and supplied the complete signed trajectory bundle. E.3.2 derives its pickup/reset/delay/supervision values from that evidence, keeps the original trajectory recipe reproducible through dedicated evidence factories, adds no Application-owned relay path and emits concise implementation summaries plus detailed CSV evidence from its focused gate.
 
 Hotfix 19 validates opt-in non-return semantics on current-v2 condensate/feedwater pumps. Hotfix 20 Fix 2 validates measured turbine overspeed, condenser high-backpressure and generator overfrequency trips. Hotfix 21 validates finite actuator travel; Hotfix 22 validates breaker-aware speed/load droop; Hotfix 23 validates pressure/temperature/vapor-dependent turbine work. Remaining physical/numerical hardening is moved out of schematic scope into **M10.9.4.1 — Operational Envelope & Numerical Hardening** before M10.9.5.
 
-See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0113. M10 closes only after M10.9.8; release hardening remains M11.
+See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0114. M10 closes only after M10.9.8; release hardening remains M11.
 
 ## Architectural principles
 
@@ -452,7 +452,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 and M10.9.4.1-E.2 Hotfix 1 are validated. E.3.1 Hotfix 1 is the current evidence-only trajectory-audit candidate; E.3.2 protection follows only after its reports are reviewed.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 and M10.9.4.1-E.3.1 Hotfix 1 are validated. E.3.2 Hotfix 3 is the current evidence-derived electrical-protection candidate.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -579,4 +579,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and M10.9.4.1-E.2 Hotfix 1 are validated. The working source is the E.3.1 Hotfix 1 signed electrical protection trajectory audit candidate; it contains no new protection threshold or relay action.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and M10.9.4.1-E.3.1 Hotfix 1 are validated. The working source is E.3.2 Hotfix 3, adding evidence-derived supervised/delayed generator protection while preserving legacy defaults and deterministic replay and correcting the typed target used by the breaker-open explicit audit.

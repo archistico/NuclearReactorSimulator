@@ -10,7 +10,9 @@ public sealed record ProtectionFunctionDefinition
         double tripThreshold,
         double resetThreshold,
         ProtectionAction actions,
-        bool tripOnInvalidMeasurement = true)
+        bool tripOnInvalidMeasurement = true,
+        TimeSpan pickupDelay = default,
+        ProtectionFunctionSupervisionDefinition? supervision = null)
     {
         if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(measurementChannelId))
         {
@@ -36,6 +38,10 @@ public sealed record ProtectionFunctionDefinition
         {
             throw new ArgumentException("A low-trip reset threshold must be greater than or equal to the trip threshold.", nameof(resetThreshold));
         }
+        if (pickupDelay < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(pickupDelay), pickupDelay, "Protection pickup delay cannot be negative.");
+        }
 
         Id = id.Trim();
         MeasurementChannelId = measurementChannelId.Trim();
@@ -44,6 +50,8 @@ public sealed record ProtectionFunctionDefinition
         ResetThreshold = resetThreshold;
         Actions = actions;
         TripOnInvalidMeasurement = tripOnInvalidMeasurement;
+        PickupDelay = pickupDelay;
+        Supervision = supervision;
     }
 
     public string Id { get; }
@@ -53,4 +61,6 @@ public sealed record ProtectionFunctionDefinition
     public double ResetThreshold { get; }
     public ProtectionAction Actions { get; }
     public bool TripOnInvalidMeasurement { get; }
+    public TimeSpan PickupDelay { get; }
+    public ProtectionFunctionSupervisionDefinition? Supervision { get; }
 }

@@ -20,7 +20,8 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` — adjudication of the two external LLM reviews and accepted planning decisions.
 - `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` — revised A.1–I evidence/physics/numerical hardening sequence.
 - `REFERENCE_PLANT_SCALE_CONTRACT.md` — validated E.2 current-v2 10 MWe/bidirectional contract and legacy compatibility boundary.
-- `ELECTRICAL_PROTECTION_TRAJECTORY_AUDIT.md` — E.3.1 evidence-only reverse-power, underfrequency-supervision and phase-slip trajectory plan.
+- `ELECTRICAL_PROTECTION_TRAJECTORY_AUDIT.md` — validated E.3.1 evidence-only trajectory plan and artifact contract.
+- `M10_9_4_1_E3_2_PROTECTION_EVIDENCE.md` — reviewed normal, reverse-power, underfrequency and phase-slip envelopes plus the derived E.3.2 thresholds.
 - `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible E.2 rotor energy, inertia, droop, power-limit and synchronizing-authority calculations.
 - `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
 - `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
@@ -32,7 +33,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI and hardening decisions are ADR 0046–0112.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI and hardening decisions are ADR 0046–0114.
 
 ## Milestone records
 
@@ -50,8 +51,8 @@ When modifying a subsystem, update its domain document together with the milesto
 - M10.1–M10.9.4 and M10.9.4.1-D.4 are validated.
 - D.4 validation evidence is 944 ordinary tests plus all 17 unique explicit tests with zero failures.
 - M10.9.4.1-D.4.1 remains validated: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
-- M10.9.4.1-E.2 Hotfix 1 is the current validated continuation: current-v2 10 MWe scale, 1.5 rpm governor normalization, signed exchange and opt-in bidirectional grid coupling.
-- The working source is M10.9.4.1-E.3.1 Hotfix 1 CANDIDATE: four explicit signed electrical trajectory audits; E.3.2 protection remains deferred until the generated evidence is reviewed.
+- M10.9.4.1-E.3.1 Hotfix 1 is the current validated continuation: current-v2 10 MWe signed coupling plus the reviewed deterministic electrical-protection trajectory evidence.
+- The working source is M10.9.4.1-E.3.2 Hotfix 3 CANDIDATE: canonical M5.5 breaker-supervised delayed reverse-power, underfrequency and absolute-slip protection, with the final explicit breaker-open audit corrected to target the breaker rather than the generator.
 - M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.

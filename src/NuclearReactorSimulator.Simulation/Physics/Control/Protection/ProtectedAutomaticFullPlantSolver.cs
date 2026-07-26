@@ -102,7 +102,7 @@ public sealed class ProtectedAutomaticFullPlantSolver
             throw new ArgumentException("Plant inputs do not use the M5.5 canonical full-plant definition.", nameof(basePlantInputs));
         }
 
-        var protectionStep = _protectionSolver.Step(measuredSignals, committedProtectionState, protectionInputs);
+        var protectionStep = _protectionSolver.Step(measuredSignals, committedProtectionState, protectionInputs, deltaTime);
         var protection = protectionStep.Snapshot;
 
         var reactorStep = _reactorControlSolver.Step(

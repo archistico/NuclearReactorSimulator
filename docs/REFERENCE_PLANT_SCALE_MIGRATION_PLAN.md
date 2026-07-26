@@ -85,4 +85,4 @@ The explicit scripts execute 20 cases because the scale-evidence test is shared 
 
 ## E.3 continuation
 
-E.3.1 records reverse-power, supervised-underfrequency and phase-slip trajectories over the validated E.2 runtime. E.3.2 protection remains separate until those generated reports are reviewed.
+E.3.1 recorded and validated reverse-power, supervised-underfrequency and phase-slip trajectories over the validated E.2 runtime. E.3.2 is now the working candidate after review of those generated reports.

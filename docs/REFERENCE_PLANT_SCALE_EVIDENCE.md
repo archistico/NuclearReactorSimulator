@@ -82,4 +82,4 @@ Focused ordinary generator/grid evidence is available through:
 scripts\run-generator-grid-bidirectional-tests.cmd
 ```
 
-The user confirmed local compilation and all requested ordinary, focused and long-running gates passed on 2026-07-26. E.3.1 now records the dynamic signed trajectories needed for protection threshold selection.
+The user confirmed local compilation and all requested ordinary, focused and long-running gates passed on 2026-07-26. E.3.1 recorded and validated the dynamic signed trajectories; the complete bundle now governs E.3.2 threshold selection.

@@ -2694,6 +2694,16 @@ Aumenta il carico elettrico richiesto di **5 MWe per ogni pressione accettata** 
 
 Riduce il carico richiesto di **5 MWe per ogni pressione accettata**.
 
+### Protezioni elettriche current-v2
+
+Nei profili sustained current-v2, con interruttore di gruppo chiuso, il sistema M5.5 sorveglia tre condizioni misurate e temporizzate:
+
+- **reverse power**: scambio con la rete inferiore o uguale a **-0,30 MWe** per **2,0 s**;
+- **underfrequency**: frequenza inferiore o uguale a **48,8 Hz** per **1,0 s**;
+- **loss of synchronism**: slip assoluto di frequenza rispetto alla rete maggiore o uguale a **1,5 Hz** per **0,5 s**.
+
+Il breaker aperto rende queste funzioni non eleggibili, evitando scatti durante avviamento o coastdown disconnesso. Quando una funzione completa il pickup, il generator trip apre il breaker attraverso il percorso canonico. Il rientro della misura non cancella automaticamente il latch: serve `RESET PROTECTION` quando le condizioni di reset sono soddisfatte. Gli indicatori di potenza e frequenza mostrano i marker di protezione derivati dalla definizione, senza calcolare soglie nella GUI.
+
 I comandi SPEED e LOAD sono comandi incrementali e momentanei: osservare sempre `SPEED REFERENCE · MODEL` o `REQUESTED LOAD · MODEL`, quindi confrontare il riferimento impostato con la risposta effettiva dell'impianto.
 
 ### CLOSE BREAKER

@@ -132,7 +132,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         int deterministicSeedStepCount = 1,
         ActuatorTravelRate? turbineStopValveTravelRate = null,
         double generatorMaximumElectricalPowerMegawatts = 1_000d,
-        SynchronousGridPowerFlowMode generatorGridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly)
+        SynchronousGridPowerFlowMode generatorGridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly,
+        bool includeEvidenceDerivedElectricalProtections = false)
     {
         if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
         {
@@ -202,7 +203,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             turbineRotorRatedSpeedMechanicalLossMegawatts,
             turbineStopValveTravelRate,
             generatorMaximumElectricalPowerMegawatts,
-            generatorGridPowerFlowMode);
+            generatorGridPowerFlowMode,
+            includeEvidenceDerivedElectricalProtections);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -294,7 +296,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? turbineRotorRatedSpeedMechanicalLossMegawatts,
         ActuatorTravelRate? turbineStopValveTravelRate,
         double generatorMaximumElectricalPowerMegawatts,
-        SynchronousGridPowerFlowMode generatorGridPowerFlowMode)
+        SynchronousGridPowerFlowMode generatorGridPowerFlowMode,
+        bool includeEvidenceDerivedElectricalProtections)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -511,6 +514,15 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 initialPrimaryLiquidCompressionFraction,
                 "Operational seed primary-liquid compression fraction must be finite and between 0 and 0.005.");
         }
+        if (includeEvidenceDerivedElectricalProtections
+            && (!includeEnhancedSecondaryProtections
+                || generatorGridPowerFlowMode != SynchronousGridPowerFlowMode.Bidirectional))
+        {
+            throw new ArgumentException(
+                "Evidence-derived electrical protections require enhanced secondary protection instrumentation and bidirectional generator/grid coupling.",
+                nameof(includeEvidenceDerivedElectricalProtections));
+        }
+
         if (!double.IsFinite(generatorMaximumElectricalPowerMegawatts) || generatorMaximumElectricalPowerMegawatts <= 0d)
         {
             throw new ArgumentOutOfRangeException(
@@ -1041,6 +1053,11 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             instrumentationChannels.Add(Channel("condenser-pressure", "condenser/condenser/pressure", "Pa"));
             instrumentationChannels.Add(Channel("generator-frequency", "generator/generator/frequency", "Hz"));
         }
+        if (includeEvidenceDerivedElectricalProtections)
+        {
+            instrumentationChannels.Add(Channel("generator-breaker-closed", "generator/generator/breaker-closed", "fraction"));
+            instrumentationChannels.Add(Channel("generator-absolute-frequency-slip", "generator/generator/absolute-frequency-slip", "Hz"));
+        }
         var instrumentation = new InstrumentationSystemDefinition("instrumentation", instrumentationChannels);
 
         var reactorControl = new ControlSystemDefinition("reactor-control", instrumentation, new[]
@@ -1200,6 +1217,40 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 0.10d,
                 0.20d,
                 ProtectionAction.ReactorScram | ProtectionAction.TurbineTrip | ProtectionAction.GeneratorTrip));
+        }
+        if (includeEvidenceDerivedElectricalProtections)
+        {
+            var breakerClosedSupervision = new ProtectionFunctionSupervisionDefinition(
+                "generator-breaker-closed",
+                ProtectionComparison.High,
+                0.5d);
+            protectionFunctions.Add(new ProtectionFunctionDefinition(
+                "generator-reverse-power",
+                "generator-output",
+                ProtectionComparison.Low,
+                -300_000d,
+                -100_000d,
+                ProtectionAction.GeneratorTrip,
+                pickupDelay: TimeSpan.FromSeconds(2d),
+                supervision: breakerClosedSupervision));
+            protectionFunctions.Add(new ProtectionFunctionDefinition(
+                "generator-underfrequency",
+                "generator-frequency",
+                ProtectionComparison.Low,
+                48.8d,
+                49.5d,
+                ProtectionAction.GeneratorTrip,
+                pickupDelay: TimeSpan.FromSeconds(1d),
+                supervision: breakerClosedSupervision));
+            protectionFunctions.Add(new ProtectionFunctionDefinition(
+                "generator-loss-of-synchronism",
+                "generator-absolute-frequency-slip",
+                ProtectionComparison.High,
+                1.5d,
+                0.5d,
+                ProtectionAction.GeneratorTrip,
+                pickupDelay: TimeSpan.FromSeconds(0.5d),
+                supervision: breakerClosedSupervision));
         }
         var protectionDefinition = new ProtectionSystemDefinition(
             "protection",
@@ -1368,6 +1419,19 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 "Hz",
                 generator.ElectricalFrequencyAt(
                     AngularSpeed.FromRevolutionsPerMinute(initialRotorSpeedRpm)).Hertz));
+        }
+        if (includeEvidenceDerivedElectricalProtections)
+        {
+            var initialGeneratorFrequency = generator.ElectricalFrequencyAt(
+                AngularSpeed.FromRevolutionsPerMinute(initialRotorSpeedRpm));
+            initialMeasuredSignals.Add(Signal(
+                "generator-breaker-closed",
+                "fraction",
+                initialGeneratorBreakerClosed ? 1d : 0d));
+            initialMeasuredSignals.Add(Signal(
+                "generator-absolute-frequency-slip",
+                "Hz",
+                Math.Abs(initialGeneratorFrequency.Hertz - grid.NominalFrequency.Hertz)));
         }
         var measuredSignals = new MeasuredSignalFrame(instrumentation, initialMeasuredSignals);
         var state = new IntegratedAutomaticOperationState(

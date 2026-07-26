@@ -212,6 +212,109 @@ public sealed class ProtectionSystemSolverTests
     }
 
     [Fact]
+    public void SupervisedDelayedTrip_AccumulatesOnlyWhileEligibleAndResetsInterruptedPickup()
+    {
+        var fixture = TurbineSecondaryControlSolverTests.CreateFixture();
+        var definition = new ProtectionSystemDefinition(
+            "delayed-supervised",
+            fixture.FullPlantDefinition,
+            fixture.Instrumentation,
+            new[]
+            {
+                new ProtectionFunctionDefinition(
+                    "delayed-high-pressure",
+                    "pressure",
+                    ProtectionComparison.High,
+                    5_000_000d,
+                    4_500_000d,
+                    ProtectionAction.GeneratorTrip,
+                    pickupDelay: TimeSpan.FromSeconds(1d),
+                    supervision: new ProtectionFunctionSupervisionDefinition(
+                        "level",
+                        ProtectionComparison.High,
+                        0.5d)),
+            });
+        var solver = new ProtectionSystemSolver(definition);
+        var activeSignals = WithValues(fixture.Signals, pressure: 6_000_000d, level: 1d);
+        var blockedSignals = WithValues(fixture.Signals, pressure: 6_000_000d, level: 0d);
+
+        var first = solver.Step(
+            activeSignals,
+            ProtectionSystemState.CreateInitial(definition),
+            new ProtectionSystemInputs(definition),
+            TimeSpan.FromSeconds(0.4d));
+        var firstFunction = Assert.Single(first.Snapshot.Functions);
+        Assert.True(firstFunction.SupervisionActive);
+        Assert.True(firstFunction.TriggerActive);
+        Assert.Equal(TimeSpan.FromSeconds(0.4d), firstFunction.PickupElapsed);
+        Assert.False(firstFunction.PickupComplete);
+        Assert.False(first.Snapshot.GeneratorTripActive);
+
+        var interrupted = solver.Step(
+            blockedSignals,
+            first.CandidateState,
+            new ProtectionSystemInputs(definition),
+            TimeSpan.FromSeconds(0.4d));
+        var interruptedFunction = Assert.Single(interrupted.Snapshot.Functions);
+        Assert.False(interruptedFunction.SupervisionActive);
+        Assert.False(interruptedFunction.TriggerActive);
+        Assert.Equal(TimeSpan.Zero, interruptedFunction.PickupElapsed);
+        Assert.False(interrupted.Snapshot.GeneratorTripActive);
+
+        var restarted = solver.Step(
+            activeSignals,
+            interrupted.CandidateState,
+            new ProtectionSystemInputs(definition),
+            TimeSpan.FromSeconds(1d));
+        var restartedFunction = Assert.Single(restarted.Snapshot.Functions);
+        Assert.True(restartedFunction.PickupComplete);
+        Assert.True(restarted.Snapshot.GeneratorTripActive);
+        Assert.True(restarted.CandidateState.IsFunctionLatched("delayed-high-pressure"));
+    }
+
+    [Fact]
+    public void DelayedTrip_ResetCanBeAcceptedAfterSupervisionBecomesInactive()
+    {
+        var fixture = TurbineSecondaryControlSolverTests.CreateFixture();
+        var definition = new ProtectionSystemDefinition(
+            "supervised-reset",
+            fixture.FullPlantDefinition,
+            fixture.Instrumentation,
+            new[]
+            {
+                new ProtectionFunctionDefinition(
+                    "supervised-high-pressure",
+                    "pressure",
+                    ProtectionComparison.High,
+                    5_000_000d,
+                    4_500_000d,
+                    ProtectionAction.GeneratorTrip,
+                    pickupDelay: TimeSpan.FromSeconds(0.5d),
+                    supervision: new ProtectionFunctionSupervisionDefinition(
+                        "level",
+                        ProtectionComparison.High,
+                        0.5d)),
+            });
+        var solver = new ProtectionSystemSolver(definition);
+        var tripped = solver.Step(
+            WithValues(fixture.Signals, pressure: 6_000_000d, level: 1d),
+            ProtectionSystemState.CreateInitial(definition),
+            new ProtectionSystemInputs(definition),
+            TimeSpan.FromSeconds(0.5d));
+        Assert.True(tripped.Snapshot.GeneratorTripActive);
+
+        var reset = solver.Step(
+            WithValues(fixture.Signals, pressure: 6_000_000d, level: 0d),
+            tripped.CandidateState,
+            new ProtectionSystemInputs(definition, resetRequested: true),
+            TimeSpan.FromSeconds(0.1d));
+
+        Assert.True(reset.Snapshot.ResetAccepted);
+        Assert.False(reset.Snapshot.GeneratorTripActive);
+        Assert.False(reset.CandidateState.IsFunctionLatched("supervised-high-pressure"));
+    }
+
+    [Fact]
     public void Definition_RejectsUnknownMeasuredChannel()
     {
         var fixture = TurbineSecondaryControlSolverTests.CreateFixture();

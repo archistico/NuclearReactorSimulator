@@ -1,10 +1,44 @@
-## M10.9.4.1-E.3.1 Hotfix 1 — Invariant trajectory-report formatting compile fix — CANDIDATE
+## M10.9.4.1-E.3.2 Hotfix 3 — Typed breaker-command target regression fix — CANDIDATE
+
+- Builds on Hotfix 2 after compilation, all nine focused Simulation tests and all thirteen non-explicit focused Application tests passed locally.
+- Fixes the sole remaining explicit-gate failure: the E.3.2 audit helper incorrectly sent `GeneratorBreakerOpen` to the generator id with `ControlRoomCommandTargetKind.Generator`.
+- Resolves generator load commands to the generator target and breaker open/close commands to the canonical breaker id with `ControlRoomCommandTargetKind.Breaker`; unsupported command kinds now fail explicitly inside the test helper.
+- Changes test composition only. No runtime, protection definition, threshold, pickup delay, reset hysteresis, supervision, trip action, plant physics, HMI, report contract or test inventory changes.
+
+## M10.9.4.1-E.3.2 Hotfix 2 — Canonical grid nominal-frequency bootstrap compile fix — SUPERSEDED BY HOTFIX 3
+
+- Fixes the `CS1061` compilation error in `ColdShutdownInitialConditionFactory`: `ElectricalGridDefinition` owns `NominalFrequency`, not the runtime-snapshot-only `Frequency` member.
+- Seeds `generator-absolute-frequency-slip` from the generator electrical frequency minus `grid.NominalFrequency`, preserving the intended physical value and the complete initial measured-frame invariant introduced by Hotfix 1.
+- Changes no protection threshold, pickup delay, reset hysteresis, supervision, trip action, plant physics, test inventory or expected report artifact.
+
+## M10.9.4.1-E.3.2 Hotfix 1 — Initial measured-frame completeness — SUPERSEDED BY HOTFIX 2
+
+- Added the missing logical-step-zero signals for `generator-breaker-closed` and `generator-absolute-frequency-slip`.
+- The first correction used the wrong definition member name for grid frequency and therefore did not compile; Hotfix 2 replaces it with the canonical `NominalFrequency` member.
+
+## M10.9.4.1-E.3.2 — Evidence-Derived Electrical Protection — CANDIDATE
+
+- Builds on the user-validated E.3.1 Hotfix 1 trajectory baseline and the complete user-supplied CSV/summary evidence bundle.
+- Extends canonical M5.5 protection with optional measured supervision and deterministic committed pickup delay; zero delay and no supervision preserve every legacy definition.
+- Adds current-v2 breaker-supervised generator trips for reverse power (-0.30 MWe / reset -0.10 MWe / 2.0 s), underfrequency (48.8 Hz / reset 49.5 Hz / 1.0 s) and loss of synchronism via absolute frequency slip (1.5 Hz / reset 0.5 Hz / 0.5 s).
+- Enables the set in both current-v2 sustained desktop and synchronization profiles while keeping evidence-only factories available for exact E.3.1 trajectory reproduction.
+- Publishes generator breaker state and absolute frequency slip through canonical instrumentation and exposes reverse-power/underfrequency markers through Application HMI scale metadata.
+- Adds ordinary definition, timing, supervision, HMI, synchronization-profile and replay/checkpoint regressions plus three explicit implementation journeys.
+- Adds `scripts/run-electrical-protection-implementation-tests.cmd`, which writes and prints three implementation summaries plus detailed CSV evidence, ADR 0114, the reviewed evidence record and the E.3.2 validation checklist.
+
+## M10.9.4.1-E.3.1 Hotfix 1 — Signed Electrical Protection Trajectory Audit — VALIDATED
+
+- The user confirmed compilation, ordinary tests and all cumulative long-running gates passed on 2026-07-26.
+- The complete generated trajectory bundle was supplied and reviewed before any E.3.2 threshold was selected.
+- Observed normal/reverse-power/underfrequency/phase-slip envelopes now form the authoritative E.3.2 calibration evidence.
+
+## M10.9.4.1-E.3.1 Hotfix 1 — Invariant trajectory-report formatting compile fix — VALIDATED
 
 - Fixes five `CS1503` errors in `ElectricalProtectionTrajectoryAuditTests` where concatenating interpolated strings materialized a `string` before it reached `FormattableString.Invariant`.
 - Formats each invariant segment independently and concatenates the resulting strings, preserving identical report content and invariant-culture numeric formatting.
 - Changes no production source, trajectory scenario, assertion, threshold, relay behavior, test count or expected artifact.
 
-## M10.9.4.1-E.3.1 — Signed Electrical Protection Trajectory Audit — CANDIDATE
+## M10.9.4.1-E.3.1 — Signed Electrical Protection Trajectory Audit — VALIDATED VIA HOTFIX 1
 
 - Builds on the user-validated E.2 Hotfix 1 10 MWe/bidirectional baseline.
 - Adds four explicit evidence-only trajectories: normal 5→0→5 MWe load step, turbine trip plus zero electrical request with breaker closed, breaker-open coastdown and a breaker-closed ±15/45/90/135° phase-offset sweep.

@@ -17,14 +17,29 @@ public sealed class ProtectionSystemSolver
         _definition = definition ?? throw new ArgumentNullException(nameof(definition));
     }
 
+    /// <summary>
+    /// Compatibility overload for immediate legacy functions. Delayed pickup functions require the time-aware overload
+    /// so their committed timer can advance deterministically.
+    /// </summary>
     public ProtectionSystemStepResult Step(
         MeasuredSignalFrame measuredSignals,
         ProtectionSystemState committedState,
         ProtectionSystemInputs inputs)
+        => Step(measuredSignals, committedState, inputs, TimeSpan.Zero);
+
+    public ProtectionSystemStepResult Step(
+        MeasuredSignalFrame measuredSignals,
+        ProtectionSystemState committedState,
+        ProtectionSystemInputs inputs,
+        TimeSpan deltaTime)
     {
         ArgumentNullException.ThrowIfNull(measuredSignals);
         ArgumentNullException.ThrowIfNull(committedState);
         ArgumentNullException.ThrowIfNull(inputs);
+        if (deltaTime < TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "Protection step duration cannot be negative.");
+        }
         if (!ReferenceEquals(measuredSignals.Definition, _definition.Instrumentation))
         {
             throw new ArgumentException("Measured signals do not use the protection system's canonical instrumentation definition.", nameof(measuredSignals));
@@ -41,12 +56,29 @@ public sealed class ProtectionSystemSolver
         var functionWork = _definition.TripFunctions.Select(function =>
         {
             var signal = measuredSignals.GetSignal(function.MeasurementChannelId);
-            var trigger = IsInvalid(signal)
+            var supervisionActive = IsSupervisionActive(function, measuredSignals);
+            var rawTrigger = IsInvalid(signal)
                 ? function.TripOnInvalidMeasurement
                 : Compare(signal.EngineeringValue!.Value, function.Comparison, function.TripThreshold);
-            var resetSafe = !IsInvalid(signal) && IsResetSafe(signal.EngineeringValue!.Value, function);
-            var wasLatched = committedState.IsFunctionLatched(function.Id);
-            return new FunctionWork(function, signal, trigger, resetSafe, wasLatched, wasLatched || trigger);
+            var trigger = supervisionActive && rawTrigger;
+            var resetSafe = !supervisionActive
+                || (!IsInvalid(signal) && IsResetSafe(signal.EngineeringValue!.Value, function));
+            var committedLatch = committedState.GetFunctionLatch(function.Id);
+            var pickupElapsed = trigger
+                ? AddSaturating(committedLatch.PickupElapsed, deltaTime)
+                : TimeSpan.Zero;
+            var pickupComplete = trigger && pickupElapsed >= function.PickupDelay;
+            var candidateLatched = committedLatch.IsLatched || pickupComplete;
+            return new FunctionWork(
+                function,
+                signal,
+                supervisionActive,
+                trigger,
+                pickupElapsed,
+                pickupComplete,
+                resetSafe,
+                committedLatch.IsLatched,
+                candidateLatched);
         }).ToArray();
 
         var permissives = _definition.ResetPermissives.Select(definition =>
@@ -88,7 +120,8 @@ public sealed class ProtectionSystemSolver
 
         var candidateLatches = functionWork.Select(item => new ProtectionFunctionLatchState(
             item.Definition.Id,
-            resetAccepted ? false : item.CandidateLatched)).ToArray();
+            resetAccepted ? false : item.CandidateLatched,
+            resetAccepted ? TimeSpan.Zero : item.PickupElapsed)).ToArray();
         var candidateState = new ProtectionSystemState(_definition, candidateLatches, manualActions);
 
         var latchedActions = manualActions;
@@ -107,7 +140,11 @@ public sealed class ProtectionSystemSolver
             item.Signal.EngineeringValue,
             item.Signal.Validity,
             item.Signal.Quality,
+            item.SupervisionActive,
             item.TriggerActive,
+            item.PickupElapsed,
+            item.Definition.PickupDelay,
+            item.PickupComplete,
             item.ResetConditionSafe,
             item.WasLatched,
             candidateState.IsFunctionLatched(item.Definition.Id),
@@ -143,6 +180,33 @@ public sealed class ProtectionSystemSolver
         return new ProtectionSystemStepResult(candidateState, snapshot);
     }
 
+    private static bool IsSupervisionActive(
+        ProtectionFunctionDefinition function,
+        MeasuredSignalFrame measuredSignals)
+    {
+        if (function.Supervision is null)
+        {
+            return true;
+        }
+
+        var signal = measuredSignals.GetSignal(function.Supervision.MeasurementChannelId);
+        return !IsInvalid(signal)
+            && Compare(signal.EngineeringValue!.Value, function.Supervision.Comparison, function.Supervision.Threshold);
+    }
+
+    private static TimeSpan AddSaturating(TimeSpan left, TimeSpan right)
+    {
+        if (right == TimeSpan.Zero)
+        {
+            return left;
+        }
+
+        var remainingTicks = TimeSpan.MaxValue.Ticks - left.Ticks;
+        return right.Ticks >= remainingTicks
+            ? TimeSpan.MaxValue
+            : TimeSpan.FromTicks(left.Ticks + right.Ticks);
+    }
+
     private static bool IsInvalid(MeasuredSignal signal)
         => signal.Validity != SignalValidity.Valid || !signal.EngineeringValue.HasValue;
 
@@ -157,7 +221,10 @@ public sealed class ProtectionSystemSolver
     private sealed record FunctionWork(
         ProtectionFunctionDefinition Definition,
         MeasuredSignal Signal,
+        bool SupervisionActive,
         bool TriggerActive,
+        TimeSpan PickupElapsed,
+        bool PickupComplete,
         bool ResetConditionSafe,
         bool WasLatched,
         bool CandidateLatched);

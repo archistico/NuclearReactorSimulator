@@ -55,6 +55,23 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
         Assert.Equal(
             NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
             gridCoupling.PowerFlowMode);
+        var protection = currentEngine.CurrentState.ProtectionState.Definition;
+        Assert.Equal(8, protection.TripFunctions.Count);
+        foreach (var functionId in new[]
+                 {
+                     "generator-reverse-power",
+                     "generator-underfrequency",
+                     "generator-loss-of-synchronism",
+                 })
+        {
+            var function = protection.GetTripFunction(functionId);
+            Assert.NotNull(function.Supervision);
+            Assert.Equal("generator-breaker-closed", function.Supervision!.MeasurementChannelId);
+        }
+        Assert.Equal(
+            0d,
+            currentEngine.CurrentState.MeasuredSignals.GetSignal("generator-breaker-closed").EngineeringValue ?? double.NaN,
+            12);
         var condenserDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition
             .CondensateFeedwaterSystem.CondenserSystem.Condensers);
         Assert.Equal(20d, condenserDefinition.MaximumCondensationMassFlowRate.KilogramsPerSecond, 12);

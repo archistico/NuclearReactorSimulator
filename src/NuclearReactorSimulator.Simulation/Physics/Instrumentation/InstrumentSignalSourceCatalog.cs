@@ -178,6 +178,20 @@ public sealed class InstrumentSignalSourceCatalog
                 snapshot => snapshot.IntegratedCycle.GeneratorGrid.Generators
                     .First(item => string.Equals(item.GeneratorId, generatorId, StringComparison.Ordinal))
                     .ElectricalOutputPower.Watts));
+            sources.Add(new InstrumentSignalSource(
+                $"generator/{generatorId}/breaker-closed",
+                "fraction",
+                snapshot => snapshot.IntegratedCycle.GeneratorGrid.Generators
+                    .First(item => string.Equals(item.GeneratorId, generatorId, StringComparison.Ordinal))
+                    .BreakerFinallyClosed ? 1d : 0d));
+            sources.Add(new InstrumentSignalSource(
+                $"generator/{generatorId}/absolute-frequency-slip",
+                "Hz",
+                snapshot => Math.Abs(
+                    snapshot.IntegratedCycle.GeneratorGrid.Generators
+                        .First(item => string.Equals(item.GeneratorId, generatorId, StringComparison.Ordinal))
+                        .FinalElectricalFrequency.Hertz
+                    - snapshot.IntegratedCycle.GeneratorGrid.Grid.Frequency.Hertz)));
         }
 
         return new InstrumentSignalSourceCatalog(definition, sources);
