@@ -108,3 +108,7 @@ This is deterministic actuator motion, not a change to valve hydraulic character
 F.2 introduces a pressure-actuated relief boundary but deliberately does not model it as an operator valve or as a stateful M1 `ValveDefinition`. Its lift is derived statelessly from committed header pressure: closed through 6.5 MPa, linear to full lift at 6.7 MPa. The full-open effective throat is 1,600 mm² and capacity is evaluated by the validated F.1 ideal-vapor compressible-flow law.
 
 The relief has no manual command, actuator travel, hysteresis, fail-safe command path, alarm or protection owner in F.2. It exports mass and committed specific internal energy to a named atmospheric external boundary exactly once through the canonical main-steam source-term seam. Saturated-mixture capacity is limited by vapor quality and subcooled liquid is blocked. A later stateful safety-valve model would require its own explicit committed state and authority contract rather than silently extending this stateless boundary.
+
+## M10.9.4.1-F.3 turbine bypass boundary
+
+F.3 adds an automatic pressure-derived turbine bypass, but it is not a stateful operator valve. It remains closed through 6.4 MPa, reaches full opening at 6.5 MPa and uses the validated F.1 capacity law against committed condenser steam-space pressure. It has no manual command, actuator travel, hysteresis or fail-safe authority in F.3. Its source terms transfer mass and committed specific internal energy internally from `header` to `exhaust`; external exchange remains zero.

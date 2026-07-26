@@ -13,7 +13,8 @@ public sealed class CondenserSystemDefinition
         string id,
         TurbineExpansionSystemDefinition turbineExpansionSystem,
         IEnumerable<CondenserDefinition> condensers,
-        IEnumerable<CondenserCoolingBoundaryDefinition> coolingBoundaries)
+        IEnumerable<CondenserCoolingBoundaryDefinition> coolingBoundaries,
+        IEnumerable<TurbineBypassDefinition>? turbineBypasses = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -26,6 +27,10 @@ public sealed class CondenserSystemDefinition
 
         var canonicalCondensers = Canonicalize(condensers, static item => item.Id, nameof(condensers));
         var canonicalCoolingBoundaries = Canonicalize(coolingBoundaries, static item => item.Id, nameof(coolingBoundaries));
+        var canonicalTurbineBypasses = Canonicalize(
+            turbineBypasses ?? Array.Empty<TurbineBypassDefinition>(),
+            static item => item.Id,
+            nameof(turbineBypasses));
 
         if (canonicalCondensers.Length == 0)
         {
@@ -37,11 +42,12 @@ public sealed class CondenserSystemDefinition
             throw new ArgumentException("A condenser system must contain at least one cooling boundary.", nameof(coolingBoundaries));
         }
 
-        ValidateTopology(turbineExpansionSystem, canonicalCondensers, canonicalCoolingBoundaries);
+        ValidateTopology(turbineExpansionSystem, canonicalCondensers, canonicalCoolingBoundaries, canonicalTurbineBypasses);
 
         Id = id.Trim();
         Condensers = new ReadOnlyCollection<CondenserDefinition>(canonicalCondensers);
         CoolingBoundaries = new ReadOnlyCollection<CondenserCoolingBoundaryDefinition>(canonicalCoolingBoundaries);
+        TurbineBypasses = new ReadOnlyCollection<TurbineBypassDefinition>(canonicalTurbineBypasses);
     }
 
     public string Id { get; }
@@ -54,16 +60,22 @@ public sealed class CondenserSystemDefinition
 
     public IReadOnlyList<CondenserCoolingBoundaryDefinition> CoolingBoundaries { get; }
 
+    public IReadOnlyList<TurbineBypassDefinition> TurbineBypasses { get; }
+
     public CondenserDefinition GetCondenser(string id)
         => GetById(Condensers, id, static item => item.Id, "condenser");
 
     public CondenserCoolingBoundaryDefinition GetCoolingBoundary(string id)
         => GetById(CoolingBoundaries, id, static item => item.Id, "condenser cooling boundary");
 
+    public TurbineBypassDefinition GetTurbineBypass(string id)
+        => GetById(TurbineBypasses, id, static item => item.Id, "turbine bypass");
+
     private static void ValidateTopology(
         TurbineExpansionSystemDefinition turbineExpansionSystem,
         IReadOnlyList<CondenserDefinition> condensers,
-        IReadOnlyList<CondenserCoolingBoundaryDefinition> coolingBoundaries)
+        IReadOnlyList<CondenserCoolingBoundaryDefinition> coolingBoundaries,
+        IReadOnlyList<TurbineBypassDefinition> turbineBypasses)
     {
         var plant = turbineExpansionSystem.PlantDefinition;
         var assignedStageIds = new HashSet<string>(StringComparer.Ordinal);
@@ -140,6 +152,44 @@ public sealed class CondenserSystemDefinition
                 throw new ArgumentException(
                     $"Cooling boundary '{boundary.Id}' and condenser '{condenser.Id}' must reference each other canonically.",
                     nameof(coolingBoundaries));
+            }
+        }
+
+        var mainSteam = turbineExpansionSystem.MainSteamNetwork;
+        var suppliedHeaders = mainSteam.SteamLines
+            .Select(static item => item.HeaderNodeId)
+            .ToHashSet(StringComparer.Ordinal);
+        var assignedCondenserIds = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var bypass in turbineBypasses)
+        {
+            _ = plant.GetFluidNode(bypass.SourceHeaderNodeId);
+            if (!suppliedHeaders.Contains(bypass.SourceHeaderNodeId))
+            {
+                throw new ArgumentException(
+                    $"Turbine bypass '{bypass.Id}' source '{bypass.SourceHeaderNodeId}' is not a defined main-steam header.",
+                    nameof(turbineBypasses));
+            }
+
+            if (!condenserIds.Contains(bypass.CondenserId))
+            {
+                throw new ArgumentException(
+                    $"Turbine bypass '{bypass.Id}' references unknown condenser '{bypass.CondenserId}'.",
+                    nameof(turbineBypasses));
+            }
+
+            if (!assignedCondenserIds.Add(bypass.CondenserId))
+            {
+                throw new ArgumentException(
+                    $"Condenser '{bypass.CondenserId}' is assigned to more than one turbine bypass.",
+                    nameof(turbineBypasses));
+            }
+
+            var destination = condensers.First(item => string.Equals(item.Id, bypass.CondenserId, StringComparison.Ordinal));
+            if (string.Equals(bypass.SourceHeaderNodeId, destination.SteamSpaceNodeId, StringComparison.Ordinal))
+            {
+                throw new ArgumentException(
+                    $"Turbine bypass '{bypass.Id}' source and destination node must differ.",
+                    nameof(turbineBypasses));
             }
         }
     }

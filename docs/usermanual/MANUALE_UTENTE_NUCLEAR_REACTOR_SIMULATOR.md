@@ -1,10 +1,10 @@
 # Nuclear Reactor Simulator — Manuale utente educativo e operativo
 
-**Edizione di riferimento:** baseline validata M10.9.4 — *Subsystem Engineering Schematics*, con hardening di leggibilità UI e stampa  
-**Lingua:** Italiano  
-**Destinazione:** formazione, comprensione del ciclo d'impianto, uso del simulatore e addestramento operativo  
+**Edizione di riferimento:** baseline validata M10.9.4 — *Subsystem Engineering Schematics*, con hardening di leggibilità UI e stampa
+**Lingua:** Italiano
+**Destinazione:** formazione, comprensione del ciclo d'impianto, uso del simulatore e addestramento operativo
 
-> **Importante**  
+> **Importante**
 > Nuclear Reactor Simulator è un simulatore **educativo**. Riproduce in forma deterministica e semplificata molti fenomeni di un impianto nucleare ad acqua con circuito di ricircolo, separazione vapore, turbina, condensatore e generatore. Non è un simulatore di progetto, autorizzazione o sicurezza nucleare e non deve essere usato come riferimento per la conduzione di un impianto reale.
 
 ## Nota sulla lingua e sui nomi mostrati dal software
@@ -621,7 +621,7 @@ Ogni scheda usa queste voci:
 
 ## 5.1 Nocciolo e zone del core
 
-**Funzione**  
+**Funzione**
 Il nocciolo è la sorgente primaria di energia. La fissione produce potenza termica che viene depositata nel combustibile e trasferita al refrigerante.
 
 **Ingresso**
@@ -665,7 +665,7 @@ Più potenza termica significa maggiore riscaldamento del refrigerante, maggiore
 
 ## 5.2 Barre di controllo
 
-**Funzione**  
+**Funzione**
 Modificano la reattività assorbendo neutroni in misura dipendente dalla posizione.
 
 **Convenzione di posizione**
@@ -707,7 +707,7 @@ flowchart TD
 
 ## 5.3 Cinetica neutronica
 
-**Funzione**  
+**Funzione**
 Trasforma la reattività totale in evoluzione della popolazione neutronica e quindi della potenza.
 
 **Ingresso**
@@ -721,7 +721,7 @@ Trasforma la reattività totale in evoluzione della popolazione neutronica e qui
 - reactor period;
 - potenza di fissione derivata.
 
-**Controllo**  
+**Controllo**
 Non è controllata direttamente. Risponde ai contributi di reattività.
 
 **Effetti**
@@ -732,7 +732,7 @@ Una piccola variazione di reattività può produrre un cambiamento progressivo o
 
 ## 5.4 Iodio e xenon
 
-**Funzione**  
+**Funzione**
 Rappresentano la dinamica del veleno neutronico, in particolare lo xenon-135.
 
 **Ingresso**
@@ -746,7 +746,7 @@ Rappresentano la dinamica del veleno neutronico, in particolare lo xenon-135.
 - inventari di iodio/xenon;
 - contributo di reattività xenon, quando promosso nello scenario.
 
-**Controllo**  
+**Controllo**
 Nessun comando diretto. È una conseguenza della storia di funzionamento.
 
 **Cosa osservare**
@@ -754,14 +754,14 @@ Nessun comando diretto. È una conseguenza della storia di funzionamento.
 - XENON REACTIVITY se disponibile;
 - se compare **UNAVAILABLE**, il simulatore sta dichiarando onestamente che quel dato non è pubblicato in quella configurazione.
 
-**Effetto operativo**  
+**Effetto operativo**
 Dopo variazioni di potenza o arresto, lo xenon può rendere più difficile un successivo aumento di reattività. È un fenomeno lento rispetto ai comandi immediati delle barre.
 
 ---
 
 ## 5.5 Canali di combustibile
 
-**Funzione**  
+**Funzione**
 Trasportano refrigerante attraverso la regione riscaldata dal core e ricevono il calore nucleare.
 
 **Ingresso**
@@ -790,7 +790,7 @@ Una riduzione di portata a pari potenza tende ad aumentare il riscaldamento spec
 
 ## 5.6 Collettore di aspirazione
 
-**Funzione**  
+**Funzione**
 Raccoglie il liquido separato di ritorno dal corpo cilindrico di separazione acqua-vapore e alimenta le pompe principali di circolazione.
 
 **Ingresso**
@@ -815,7 +815,7 @@ Una condizione sfavorevole in aspirazione riduce la capacità del circuito di so
 
 ## 5.7 Pompe principali di circolazione — MCP
 
-**Funzione**  
+**Funzione**
 Mantengono la circolazione forzata del refrigerante nel percorso:
 
 ```text
@@ -856,7 +856,7 @@ Il pulsante pieno rappresenta lo stato effettivamente commesso dal modello.
 
 ## 5.8 Collettore di mandata
 
-**Funzione**  
+**Funzione**
 Distribuisce il refrigerante pressurizzato dalle MCP ai gruppi di canali.
 
 **Ingresso**
@@ -879,7 +879,7 @@ La differenza fra pressione di aspirazione e mandata aiuta a capire se la pompa 
 
 ## 5.9 Linee di ritorno
 
-**Funzione**  
+**Funzione**
 Trasportano il fluido riscaldato dai canali al corpo cilindrico di separazione acqua-vapore / collettore di ritorno.
 
 **Ingresso**
@@ -898,7 +898,7 @@ Sono il collegamento fra produzione di calore nel core e separazione del vapore.
 
 ## 5.10 Corpo cilindrico di separazione acqua-vapore / separatore
 
-**Funzione**  
+**Funzione**
 Riceve la miscela proveniente dai canali e separa:
 
 - vapore verso la linea principale;
@@ -954,7 +954,7 @@ Il livello è una rappresentazione aggregata, non una geometria dettagliata del 
 
 ## 5.11 Linea principale del vapore
 
-**Funzione**  
+**Funzione**
 Trasporta il vapore separato dal corpo cilindrico di separazione acqua-vapore all'header della turbina.
 
 **Ingresso**
@@ -987,12 +987,12 @@ main steam header → STOP → CONTROL → ADMISSION → turbine inlet
 
 ### STOP valve
 
-**Funzione:** isolamento rapido della turbina.  
+**Funzione:** isolamento rapido della turbina.
 **Protezione:** il turbine scatto forza la chiusura.
 
 ### CONTROL valve
 
-**Funzione:** regolazione principale dell'ammissione per la velocità/carico secondo il regolatore di velocità e i controller.  
+**Funzione:** regolazione principale dell'ammissione per la velocità/carico secondo il regolatore di velocità e i controller.
 **Riferimento current-v2:** apertura iniziale del seed di generazione circa **28%**, ma non deve essere trattata come valore universale di esercizio.
 
 ### ADMISSION valve
@@ -1028,7 +1028,7 @@ Muovere lo slider da solo non impartisce un comando. Durante la corsa, `TARGET` 
 
 ## 5.13 Turbina e gruppi di stadi
 
-**Funzione**  
+**Funzione**
 Convertono l'energia disponibile nel vapore in lavoro meccanico.
 
 **Ingresso**
@@ -1070,7 +1070,7 @@ Una contropressione del condensatore più alta riduce il salto utile di espansio
 
 ## 5.14 Rotore e albero
 
-**Funzione**  
+**Funzione**
 Accumula energia cinetica e collega turbina e generatore.
 
 **Ingresso**
@@ -1098,7 +1098,7 @@ La scala nominale generatore/inerzia è oggetto di revisione progettuale. Per l'
 
 ## 5.15 Condensatore
 
-**Funzione**  
+**Funzione**
 Condensa il vapore di scarico della turbina e rigetta calore verso il boundary di raffreddamento.
 
 **Ingresso**
@@ -1164,7 +1164,7 @@ La capacità termica effettivamente utilizzabile è la più piccola tra capacit�
 
 ## 5.16 Vasca di raccolta del condensato
 
-**Funzione**  
+**Funzione**
 Raccoglie il condensato prodotto dal condensatore.
 
 **Ingresso**
@@ -1193,7 +1193,7 @@ Se la pompa di estrazione del condensato rimuove più massa di quanta ne arrivi,
 
 ## 5.17 Pompa di estrazione del condensato
 
-**Funzione**  
+**Funzione**
 Trasferisce l'acqua dall'vasca di raccolta del condensato all'inventario acqua di alimentazione.
 
 **Ingresso**
@@ -1220,7 +1220,7 @@ Normalmente regolata dal loop di inventario vasca di raccolta del condensato; no
 
 ## 5.18 Inventario acqua di alimentazione
 
-**Funzione**  
+**Funzione**
 È il volume intermedio fra pompa di estrazione del condensato e pompa dell’acqua di alimentazione.
 
 **Ingresso**
@@ -1246,7 +1246,7 @@ Una deriva persistente indica che le due pompe non sono bilanciate rispetto al c
 
 ## 5.19 Pompa acqua di alimentazione
 
-**Funzione**  
+**Funzione**
 Porta l'acqua di alimentazione alla pressione necessaria per rientrare nel corpo cilindrico di separazione acqua-vapore.
 
 **Ingresso**
@@ -1274,7 +1274,7 @@ Porta l'acqua di alimentazione alla pressione necessaria per rientrare nel corpo
 
 ## 5.20 Generatore sincrono
 
-**Funzione**  
+**Funzione**
 Trasforma potenza meccanica dell'albero in potenza elettrica.
 
 **Ingresso**
@@ -1313,7 +1313,7 @@ I profili storici e predefiniti che non optano per current-v2 conservano la prec
 
 ## 5.21 Interruttore di generatore e rete
 
-**Funzione**  
+**Funzione**
 Collega o isola il generatore dalla rete.
 
 **Comandi**
@@ -1343,7 +1343,7 @@ Quando l'interruttore di gruppo è chiuso, il generatore diventa parte del siste
 
 ## 5.22 Strumentazione
 
-**Funzione**  
+**Funzione**
 Trasforma lo stato dell'impianto in segnali utilizzabili da operatore, controller e protezioni.
 
 L'HMI distingue:
@@ -1372,15 +1372,15 @@ Il simulatore dispone di loop locali che agiscono su componenti esistenti.
 | Corpo cilindrico level | livello corpo cilindrico | acqua di alimentazione pump |
 | Vasca di raccolta del condensato inventory | massa vasca di raccolta del condensato | condensate pump |
 
-**Manuale** significa che l'uscita locale può essere direttamente sotto controllo operativo.  
-**Automatico** significa che il controller regola l'attuatore verso il valore di riferimento.  
+**Manuale** significa che l'uscita locale può essere direttamente sotto controllo operativo.
+**Automatico** significa che il controller regola l'attuatore verso il valore di riferimento.
 Il passaggio di autorità è progettato per evitare salti artificiali quando possibile.
 
 ---
 
 ## 5.24 Protezioni e interblocco
 
-**Funzione**  
+**Funzione**
 Interrompere o impedire azioni quando si verificano condizioni definite di sicurezza del modello.
 
 Le protezioni hanno autorità superiore al controllo normale.
@@ -1403,7 +1403,7 @@ Un interblocco può bloccare un comando senza necessariamente creare uno scatto 
 
 ## 5.25 Sistema allarmi e annunciatori
 
-**Funzione**  
+**Funzione**
 Avvisare l'operatore e conservare memoria dell'evento.
 
 Un allarme non è necessariamente una protezione.
@@ -4245,3 +4245,7 @@ Questa appendice permette di collegare le etichette inglesi visibili nel softwar
 ### Nota tecnica educativa — ammissione di acqua/vapore alla turbina (M10.9.4.1-D.1 candidate)
 
 Nella configurazione corrente-v2 la turbina non tratta più una massa completamente liquida come se potesse attraversare liberamente lo stadio senza produrre lavoro. La portata effettivamente ammessa allo stadio è limitata dalla **frazione massica di vapore** presente all'ingresso: con solo liquido la portata attraverso lo stadio è nulla; con una miscela acqua-vapore viene ammessa soltanto la frazione di vapore. Questo è un modello educativo semplificato: non rappresenta in dettaglio gocce, erosione delle palette o separatori di umidità. Le configurazioni storiche v1 mantengono invece il comportamento precedente per compatibilità.
+
+## M10.9.4.1-F.3 — Bypass turbina automatico
+
+Nei profili current-v2 il bypass turbina è un percorso automatico interno dall’header vapore al volume vapore del condensatore. Rimane chiuso fino a 6,4 MPa e raggiunge l’apertura completa a 6,5 MPa. La portata dipende anche dalla contropressione reale del condensatore. In F.3 non esiste un comando manuale dedicato: il componente è una protezione termofluidodinamica automatica di modello, separata dalla relief atmosferica F.2. La sua attività è osservabile negli snapshot diagnostici e negli audit, ma non aggiunge ancora un controllo HMI.

@@ -9,7 +9,7 @@ if not exist "NuclearReactorSimulator.sln" (
     exit /b 1
 )
 
-echo Nuclear Reactor Simulator - applicazione progetto completo M10.9.4.1-F.2 CANDIDATE
+echo Nuclear Reactor Simulator - applicazione progetto completo M10.9.4.1-F.3 Hotfix 1 CANDIDATE
 
 echo.
 echo Pulizia compatibile per eventuale estrazione sopra checkpoint precedenti...
@@ -26,7 +26,7 @@ call :DeleteIfPresent "docs\adr\0104-bidirectional-grid-motoring-uses-an-interna
 if errorlevel 1 exit /b 1
 
 echo.
-echo Applicazione completata. F.2 non richiede nuove cancellazioni o rinominazioni; la pulizia sopra serve solo per vecchi checkpoint documentali.
+echo Applicazione completata. F.3 non richiede nuove cancellazioni o rinominazioni; la pulizia sopra serve solo per vecchi checkpoint documentali.
 exit /b 0
 
 :DeleteIfPresent

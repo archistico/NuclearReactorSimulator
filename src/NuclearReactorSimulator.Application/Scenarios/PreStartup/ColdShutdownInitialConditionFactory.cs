@@ -134,7 +134,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double generatorMaximumElectricalPowerMegawatts = 1_000d,
         SynchronousGridPowerFlowMode generatorGridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly,
         bool includeEvidenceDerivedElectricalProtections = false,
-        bool includeMainSteamHeaderRelief = false)
+        bool includeMainSteamHeaderRelief = false,
+        bool includeTurbineBypass = false)
     {
         if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
         {
@@ -206,7 +207,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             generatorMaximumElectricalPowerMegawatts,
             generatorGridPowerFlowMode,
             includeEvidenceDerivedElectricalProtections,
-            includeMainSteamHeaderRelief);
+            includeMainSteamHeaderRelief,
+            includeTurbineBypass);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -300,7 +302,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double generatorMaximumElectricalPowerMegawatts,
         SynchronousGridPowerFlowMode generatorGridPowerFlowMode,
         bool includeEvidenceDerivedElectricalProtections,
-        bool includeMainSteamHeaderRelief)
+        bool includeMainSteamHeaderRelief,
+        bool includeTurbineBypass)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -963,7 +966,23 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     condenserInstalledHeatRejectionCapacityMegawatts.HasValue
                         ? Power.FromMegawatts(condenserInstalledHeatRejectionCapacityMegawatts.Value)
                         : null),
-            });
+            },
+            includeTurbineBypass
+                ? new[]
+                {
+                    new TurbineBypassDefinition(
+                        "turbine-bypass",
+                        "header",
+                        "condenser",
+                        Pressure.FromMegapascals(6.4d),
+                        Pressure.FromMegapascals(6.5d),
+                        new CompressibleSteamFlowDefinition(
+                            Area.FromSquareMillimetres(1_600d),
+                            dischargeCoefficient: 0.95d,
+                            specificGasConstant: SpecificGasConstant.FromJoulesPerKilogramKelvin(461.526d),
+                            heatCapacityRatio: 1.3d)),
+                }
+                : Array.Empty<TurbineBypassDefinition>());
         var feedwater = new CondensateFeedwaterSystemDefinition(
             "feedwater-system",
             condensers,

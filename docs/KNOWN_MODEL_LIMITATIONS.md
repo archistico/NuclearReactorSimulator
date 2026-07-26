@@ -47,7 +47,7 @@ E.2 Hotfix 1 validates the current-v2 10 MWe nameplate, 1.5 rpm governor normali
 Versioned compatibility paths are isolated through optional definitions, but the supported combination matrix and retirement policy remain undocumented.
 
 
-### A7. Main-steam relief fidelity — F.2 CANDIDATE
+### A7. Main-steam relief fidelity — F.2 VALIDATED
 
 F.2 adds one conservative current-v2 header-relief path to an atmospheric external boundary. It uses the validated F.1 ideal-vapor capacity equation, stateless pressure lift and committed vapor-quality limiting. It does not model certified safety-valve sizing, wet-steam/two-phase critical flow, valve hysteresis, blowdown, lift dynamics, discharge piping, receiver thermodynamics, acoustic loads or turbine bypass. Energy export currently uses committed specific internal energy; the whole-network flow-work/enthalpy convention remains owned by Phase G.
 
@@ -82,3 +82,7 @@ Update this register whenever a limitation is corrected, superseded, accepted as
 The current-v2 sustained seed intentionally uses low primary hydraulic resistances to obtain the required circulation scale. With the current explicit 10 ms network integration and nearly incompressible liquid pressure response, raw algebraic pipe/pump flow diagnostics can alternate strongly from one solver step to the next even while long-horizon mass/energy balances and plant inventories remain bounded. This must not be interpreted as a real 100 Hz plant oscillation.
 
 C.2 Hotfix 1 adds a deterministic 0.5 s instrumentation lag for the operator-facing current-v2 primary flow readouts. This is a presentation/measurement treatment only: the raw solver chatter is still tracked as numerical-hardening debt and requires the later timestep/stiffness/semi-implicit decision gate before it can be considered physically resolved.
+
+### A8. Turbine-bypass fidelity — F.3 CANDIDATE
+
+F.3 is a stateless pressure-actuated ideal-vapor bypass with linear opening, committed backpressure and committed vapor-quality limiting. It does not model actuator dynamics, hysteresis, manual/automatic control modes, desuperheating spray, discharge-pipe pressure loss, wet-steam critical flow, acoustic loads or a tightly coupled condenser solution. Energy transport remains committed specific internal energy; Phase G owns enthalpy/flow-work migration, and Phase H owns the timestep-stiffness decision.

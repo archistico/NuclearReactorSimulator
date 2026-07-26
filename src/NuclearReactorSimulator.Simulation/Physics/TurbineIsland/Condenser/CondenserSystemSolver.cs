@@ -20,6 +20,7 @@ public sealed class CondenserSystemSolver
 
     private readonly CondenserSystemDefinition _definition;
     private readonly TurbineExpansionSolver _turbineExpansionSolver;
+    private readonly TurbineBypassSolver _turbineBypassSolver;
     private readonly IWaterSteamSaturationPropertyProvider? _saturationPropertyProvider;
 
     public CondenserSystemSolver(
@@ -40,6 +41,7 @@ public sealed class CondenserSystemSolver
         }
 
         _turbineExpansionSolver = new TurbineExpansionSolver(definition.TurbineExpansionSystem, thermodynamicModel);
+        _turbineBypassSolver = new TurbineBypassSolver(definition);
     }
 
     public CondenserSystemDefinition Definition => _definition;
@@ -101,8 +103,10 @@ public sealed class CondenserSystemSolver
                 _saturationPropertyProvider))
             .OrderBy(static item => item.Definition.Id, StringComparer.Ordinal)
             .ToArray();
+        var bypassStep = _turbineBypassSolver.Solve(committedPlantState);
         var sourceTerms = PlantNetworkSourceTerms.Combine(
             BuildSourceTerms(solutions),
+            bypassStep.SourceTerms,
             supplementalSourceTerms);
         var turbineStep = _turbineExpansionSolver.Step(
             committedPlantState,
@@ -131,7 +135,8 @@ public sealed class CondenserSystemSolver
             _definition,
             turbineStep.Snapshot,
             condenserSnapshots,
-            coolingSnapshots);
+            coolingSnapshots,
+            bypassStep.Snapshots);
 
         return new CondenserSystemStepResult(turbineStep, snapshot);
     }

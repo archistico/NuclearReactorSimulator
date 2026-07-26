@@ -1,6 +1,6 @@
 # M10.9.4.1-F.2 Validation Checklist
 
-Status: **CANDIDATE — user validation pending**
+Status: **VALIDATED — user confirmed compilation, focused gate, ordinary suite and audit on 2026-07-26**
 
 ## Build and focused gate
 
@@ -61,4 +61,4 @@ Confirm from the F.2 summary and CSV that:
 
 ## Promotion rule
 
-Promote F.2 only after the user confirms compilation, the focused gate, ordinary suite and cumulative gates passed. F.3 must not begin from an unvalidated F.2 candidate.
+F.2 was promoted after the user confirmed compilation and all requested tests passed. The supplied audit confirmed a 13.531762568 kg/s full-lift capacity at 6.80 MPa, 33.595745149 MW internal-energy export, monotonic flow and conservative external exchange.

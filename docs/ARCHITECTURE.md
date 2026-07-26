@@ -1348,3 +1348,7 @@ extracted shaft work / conservative exhaust energy
 ```
 
 The closure does not move steam-table physics into Application or the UI. `TurbineStageGroupSnapshot` publishes the committed pressure/temperature availability, inlet-energy bound, effective ideal work and limitation state. Application projects only immutable diagnostics. A future higher-fidelity enthalpy/entropy backend may replace the educational closure without changing ownership or integration seams. See ADR 0090.
+
+## M10.9.4.1-F.3 internal turbine-bypass composition
+
+`CondenserSystemDefinition` owns optional turbine-bypass definitions because it can resolve the canonical condenser steam-space destination while retaining the main-steam source identity. `CondenserSystemSolver` evaluates committed condenser condensation and committed-state bypass capacity, combines both source-term sets with downstream terms, and delegates to the inherited single turbine/main-steam network commit. The Application and App layers only project snapshots; they never calculate bypass flow or mutate inventory.

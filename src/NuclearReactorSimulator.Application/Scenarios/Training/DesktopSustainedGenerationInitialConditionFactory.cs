@@ -99,5 +99,6 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             generatorMaximumElectricalPowerMegawatts: 10d,
             generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
             includeEvidenceDerivedElectricalProtections: includeEvidenceDerivedElectricalProtections,
-            includeMainSteamHeaderRelief: true);
+            includeMainSteamHeaderRelief: true,
+            includeTurbineBypass: true);
 }

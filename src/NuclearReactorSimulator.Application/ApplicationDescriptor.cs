@@ -7,6 +7,6 @@ public sealed record ApplicationDescriptor(string ProductName, string Milestone,
 {
     public static ApplicationDescriptor Current { get; } = new(
         "Nuclear Reactor Simulator",
-        "M10.9.4.1-F.2 — Conservative Main-Steam Header Relief",
-        "Candidate on the validated F.1 choked steam-flow baseline — adds one pressure-actuated current-v2 main-steam header relief boundary to atmosphere, limits the validated ideal-vapor capacity by committed vapor availability and integrates signed mass/internal-energy export exactly once, while leaving turbine bypass, receiver inventory, operator authority and enthalpy migration deferred");
+        "M10.9.4.1-F.3 Hotfix 1 — Conservative Turbine Bypass to Condenser",
+        "Hotfix 1 candidate on the validated F.2 header-relief baseline — adds one pressure-actuated current-v2 turbine-bypass path from the canonical main-steam header to the committed condenser steam space, resolves capacity against actual condenser backpressure and transfers mass/internal energy exactly once with zero external exchange, while leaving operator authority and Phase G flow-work/enthalpy migration deferred");
 }

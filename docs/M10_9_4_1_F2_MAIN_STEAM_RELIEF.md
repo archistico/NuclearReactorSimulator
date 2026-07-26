@@ -1,4 +1,4 @@
-# M10.9.4.1-F.2 — Conservative Main-Steam Header Relief
+# M10.9.4.1-F.2 — Conservative Main-Steam Header Relief — VALIDATED
 
 ## Purpose
 
@@ -116,4 +116,4 @@ The pressure sweep covers 6.20–6.80 MPa and verifies:
 
 ## Deferred work
 
-F.3 may add a separate turbine bypass path only after F.2 conservation and baseline compatibility are validated. Phase G remains the dedicated owner for flow work and enthalpy transport.
+F.2 was validated on 2026-07-26. The supplied sweep confirmed first opening at 6.51 MPa, full lift at 6.70 MPa, 13.531762568 kg/s capacity at 6.80 MPa, 33.595745149 MW energy export, monotonicity and conservative exchange. F.3 now adds the separate internal turbine-bypass path. Phase G remains the dedicated owner for flow work and enthalpy transport.

@@ -1,5 +1,24 @@
-## M10.9.4.1-F.2 — Conservative Main-Steam Header Relief — CANDIDATE
+## M10.9.4.1-F.3 Hotfix 1 — Fluid-node balance namespace compile fix — CANDIDATE
 
+- Fixes the two `CS0246` build errors in `TurbineBypassSolver` by importing the canonical `NuclearReactorSimulator.Simulation.Physics.Fluids` namespace that owns `FluidNodeBalance`.
+- Changes namespace resolution only; the F.3 bypass topology, pressure schedule, F.1 capacity law, committed condenser backpressure, conservative source terms, snapshots, tests and expected audit artifacts are unchanged.
+- Keeps M10.9.4.1-F.2 as the validated continuation baseline until the local F.3 Hotfix 1 gate passes.
+
+## M10.9.4.1-F.3 — Conservative Turbine Bypass to Condenser — SUPERSEDED BY HOTFIX 1
+
+- Builds on the user-validated F.2 atmospheric header-relief baseline.
+- Adds an optional current-v2 `TurbineBypassDefinition` owned by the condenser system: `header` to condenser `condenser` / steam space `exhaust`.
+- Uses 6.4 MPa set pressure, 6.5 MPa full opening and the validated F.1 1,600 mm² capacity definition.
+- Resolves flow against committed condenser backpressure, blocks reverse flow and limits ideal-vapor capacity by committed vapor availability.
+- Transfers mass and committed specific internal energy internally with equal and opposite source terms and exactly zero external exchange.
+- Adds immutable bypass snapshots, aggregate condenser-system evidence, thirteen ordinary regressions and one explicit two-part audit under `artifacts/f3-turbine-bypass`.
+- Adds ADR 0117, the F.3 technical contract, validation checklist and `scripts/run-turbine-bypass-tests.cmd`.
+- Adds no manual authority, actuator state, HMI control, protection retuning or Phase G enthalpy/flow-work migration.
+
+## M10.9.4.1-F.2 — Conservative Main-Steam Header Relief — VALIDATED
+
+- The user confirmed compilation, focused tests and all requested tests passed on 2026-07-26.
+- The supplied audit confirmed first opening at 6.51 MPa, full lift at 6.70 MPa, 13.531762568 kg/s at 6.80 MPa, 33.595745149 MW energy export, monotonic flow and conservative external exchange.
 - Builds on the user-validated F.1 choked steam-flow capacity baseline.
 - Adds `MainSteamReliefBoundaryDefinition` with explicit source-header ownership, named external receiver boundary, fixed receiver pressure, set pressure, full-lift pressure and the validated F.1 compressible-flow definition.
 - Adds a pressure-actuated linear lift law: closed at or below 6.5 MPa, full lift at or above 6.7 MPa.

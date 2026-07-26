@@ -114,6 +114,83 @@ public sealed class CondenserSystemDefinitionTests
             new[] { new CondenserCoolingBoundaryDefinition("cooling", "condenser") }));
     }
 
+
+    [Fact]
+    public void Definition_BindsOptionalTurbineBypassToMainSteamHeaderAndCondenser()
+    {
+        var turbine = CreateTurbineExpansionSystem();
+        var condenser = new CondenserDefinition(
+            "condenser", "stage", "exhaust", "hotwell", "cooling",
+            MassFlowRate.FromKilogramsPerSecond(100d));
+        var bypass = CreateTurbineBypass("header", "condenser");
+        var definition = new CondenserSystemDefinition(
+            "condensers",
+            turbine,
+            new[] { condenser },
+            new[] { new CondenserCoolingBoundaryDefinition("cooling", "condenser") },
+            new[] { bypass });
+
+        Assert.Same(bypass, definition.GetTurbineBypass("turbine-bypass"));
+        Assert.Single(definition.TurbineBypasses);
+    }
+
+    [Fact]
+    public void Definition_DefaultsToEmptyTurbineBypassCollection()
+    {
+        var turbine = CreateTurbineExpansionSystem();
+        var definition = new CondenserSystemDefinition(
+            "condensers",
+            turbine,
+            new[]
+            {
+                new CondenserDefinition(
+                    "condenser", "stage", "exhaust", "hotwell", "cooling",
+                    MassFlowRate.FromKilogramsPerSecond(100d)),
+            },
+            new[] { new CondenserCoolingBoundaryDefinition("cooling", "condenser") });
+
+        Assert.Empty(definition.TurbineBypasses);
+    }
+
+    [Fact]
+    public void Definition_RejectsTurbineBypassWithUnknownHeaderOrCondenser()
+    {
+        var turbine = CreateTurbineExpansionSystem();
+        var condensers = new[]
+        {
+            new CondenserDefinition(
+                "condenser", "stage", "exhaust", "hotwell", "cooling",
+                MassFlowRate.FromKilogramsPerSecond(100d)),
+        };
+        var cooling = new[] { new CondenserCoolingBoundaryDefinition("cooling", "condenser") };
+
+        Assert.Throws<ArgumentException>(() => new CondenserSystemDefinition(
+            "condensers",
+            turbine,
+            condensers,
+            cooling,
+            new[] { CreateTurbineBypass("steam", "condenser") }));
+        Assert.Throws<ArgumentException>(() => new CondenserSystemDefinition(
+            "condensers",
+            turbine,
+            condensers,
+            cooling,
+            new[] { CreateTurbineBypass("header", "unknown") }));
+    }
+
+    private static TurbineBypassDefinition CreateTurbineBypass(string sourceHeaderNodeId, string condenserId)
+        => new(
+            "turbine-bypass",
+            sourceHeaderNodeId,
+            condenserId,
+            Pressure.FromMegapascals(6.4d),
+            Pressure.FromMegapascals(6.5d),
+            new CompressibleSteamFlowDefinition(
+                Area.FromSquareMillimetres(1_600d),
+                dischargeCoefficient: 0.95d,
+                specificGasConstant: SpecificGasConstant.FromJoulesPerKilogramKelvin(461.526d),
+                heatCapacityRatio: 1.3d));
+
     private static TurbineExpansionSystemDefinition CreateTurbineExpansionSystem()
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));

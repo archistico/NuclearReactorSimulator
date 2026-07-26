@@ -1,8 +1,10 @@
-> **Current validated continuation:** M10.9.4.1-F.1. **Current working source:** M10.9.4.1-F.2 CANDIDATE, adding one conservative pressure-actuated external main-steam header relief boundary over the validated choked-flow seam.
+> **Current validated continuation:** M10.9.4.1-F.2. **Current working source:** M10.9.4.1-F.3 Hotfix 1 CANDIDATE, adding one conservative pressure-actuated internal turbine bypass from the main-steam header to the committed condenser steam space.
 
 # Project Status
 
-M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.9.4 and the cumulative M10.9.4.1-F.1 continuation are VALIDATED.** E.3.2 Hotfix 3 remains the validated electrical-protection baseline, and the user confirmed F.1 compilation, ordinary tests, focused tests and explicit capacity audit on 2026-07-26. F.2 is the current candidate and adds one optional current-v2 atmospheric header-relief boundary while leaving turbine bypass and enthalpy migration deferred.
+F.3 Hotfix 1 corrects only the missing `NuclearReactorSimulator.Simulation.Physics.Fluids` import required by `TurbineBypassSolver`; the F.3 physical contract is unchanged.
+
+M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.9.4 and the cumulative M10.9.4.1-F.2 continuation are VALIDATED.** E.3.2 Hotfix 3 remains the validated electrical-protection baseline. The user confirmed F.1 and F.2 compilation, focused/ordinary tests and explicit audits on 2026-07-26. F.3 Hotfix 1 is the current candidate and adds one optional current-v2 internal turbine bypass while leaving enthalpy migration deferred.
 
 
 | Phase | Status | Validated capability |
@@ -17,7 +19,7 @@ M0 through M9 are validated, with M7, M8 and M9 gates complete. **M10.1–M10.9.
 | M7 | VALIDATED | M7.1–M7.7 validated; versioned sessions, normal operating path and deterministic training/evaluation gate complete |
 | M8 | VALIDATED | M8.1–M8.7 validated; deterministic fault/scenario/safety-response gate complete |
 | M9 | COMPLETE / VALIDATED | M9.1–M9.7 validated; 760/760 tests passed and final GUI layout integrated |
-| M10 | IN PROGRESS | M10.1–M10.9.4 and M10.9.4.1-F.1 validated; F.2 conservative main-steam header-relief candidate prepared; M10 closes at M10.9.8 |
+| M10 | IN PROGRESS | M10.1–M10.9.4 and M10.9.4.1-F.2 validated; F.3 Hotfix 1 conservative turbine-bypass candidate prepared; M10 closes at M10.9.8 |
 
 ## Validated M8 fault/scenario gate
 
@@ -48,7 +50,7 @@ M10.1 through M10.9.3 are **VALIDATED**. M10.2 provides GUIDANCE/INFO/DIAGNOSTIC
 
 The original A audit failure is now resolved at its actual source. The current-v2 sustained-generation seed had an energy/hydraulic mismatch: 80% of fission heat was deposited in explicit fuel/structure inventories without a conservative return path to the coolant, while primary circulation was far below the steam-export demand. Current-v2 now enables conservative solid-to-coolant links, matched primary hydraulic resistance and corrected steam-line/control-valve initial conditions. Historical v1 seeds and protection thresholds remain unchanged.
 
-The corrected-seed checkpoint and cumulative D.4 source passed the complete automated gate: 944 ordinary tests and all 17 unique explicit tests. D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1 and E.3.2 Hotfix 3 then passed all requested gates. F.1 subsequently passed compilation, the ordinary suite, focused tests and its explicit capacity audit. F.2 now adds one optional current-v2 atmospheric main-steam header relief path, with exact-once mass/internal-energy export and no turbine bypass or enthalpy migration.
+The corrected-seed checkpoint and cumulative D.4 source passed the complete automated gate: 944 ordinary tests and all 17 unique explicit tests. D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1 and E.3.2 Hotfix 3 then passed all requested gates. F.1 subsequently passed compilation, the ordinary suite, focused tests and its explicit capacity audit. F.2 then passed compilation and all requested tests; its supplied audit confirmed monotonic 13.531762568 kg/s relief capacity at 6.80 MPa and conservative external exchange. F.3 Hotfix 1 now adds one optional current-v2 internal turbine bypass with exact header-to-condenser mass/internal-energy transfer and no enthalpy migration.
 
 ## What the validated engine can already do
 
@@ -118,7 +120,7 @@ The validated core can run headlessly and deterministically with:
 
 **M9.3 — Advanced Xenon & Low-Power Transients** is validated. It composes canonical M2.8 poison state through an explicit opt-in seam into the integrated reactor/primary runtime, preserves legacy exact-version M7 v1 semantics, promotes committed xenon diagnostics through the presentation boundary, and adds two versioned xenon/low-power scenario seeds. **M9.4–M9.7 are also validated and the M9 phase gate is complete**; M9.7 hotfix 5 passed 760/760 automated tests and the final user-corrected GUI layout is integrated.
 
-**Continuation note:** M8.1–M8.7, M9.1–M9.7, M10.1–M10.9.4 and M10.9.4.1-F.1 are validated. The current working source is the F.2 conservative main-steam header-relief candidate. See `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `M10_9_4_1_F2_MAIN_STEAM_RELIEF.md`, `milestones/M10.9.4.1.md` and `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`.
+**Continuation note:** M8.1–M8.7, M9.1–M9.7, M10.1–M10.9.4 and M10.9.4.1-F.2 are validated. The current working source is the F.3 conservative turbine-bypass candidate. See `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `M10_9_4_1_F3_TURBINE_BYPASS.md`, `milestones/M10.9.4.1.md` and `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`.
 
 M8.2 hotfix 2 also established the first dedicated headless `NuclearReactorSimulator.App.Tests` coverage for `MainWindowViewModel` and XAML command-state wiring; that presentation regression boundary remains validated and unchanged by M8.3–M8.7.
 
@@ -140,7 +142,7 @@ The following are planned architecture boundaries, not missing bugs:
 
 ## Approved future M10 architecture
 
-M10 is **IN PROGRESS** as **Operator Computer, Supervisory Automation & Human-Machine Integration**. M10.1–M10.9.4 and M10.9.4.1-F.1 are validated. M10.9.4.1 carries the accumulated A/B/C/D hardening, 10 MWe bidirectional migration, evidence-derived electrical protection and the validated F.1 compressible-flow capacity seam. F.2 is the current conservative header-relief candidate; later F–I increments close turbine bypass topology, energy transport, numerical and compatibility hardening before M10.9.5. The operator computer remains an Application/App aggregation surface; real Manual / Assisted / Supervisory Automatic plant control remains canonical M5 ownership. Training assistance (`TrainingGuidanceMode`) remains a separate independent axis.
+M10 is **IN PROGRESS** as **Operator Computer, Supervisory Automation & Human-Machine Integration**. M10.1–M10.9.4 and M10.9.4.1-F.2 are validated. M10.9.4.1 carries the accumulated A/B/C/D hardening, 10 MWe bidirectional migration, evidence-derived electrical protection, the validated F.1 capacity seam and validated F.2 atmospheric relief. F.3 is the current conservative turbine-bypass candidate; later G–I increments close energy transport, numerical and compatibility hardening before M10.9.5. The operator computer remains an Application/App aggregation surface; real Manual / Assisted / Supervisory Automatic plant control remains canonical M5 ownership. Training assistance (`TrainingGuidanceMode`) remains a separate independent axis.
 
 Approved constraints include fixed menu/pages with no free-form prompt, measured-signal-only supervisory consumers, protection priority, fail-closed degraded operation, deterministic bumpless manual takeover, separation of plant/training/session intents, replay-backed session persistence, distinct instrument/operating/target/protection range semantics, and logical-time challenge scoring. See `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`, `OPERATOR_COMPUTER_SUPERVISORY_AUTOMATION.md`, `milestones/M10.md` and ADR 0070.
 
@@ -226,4 +228,4 @@ A milestone becomes validated only after:
 
 ## Validated M9 gate / M10.1–M10.9.4 validated / M10.9.4.1-D.4 validated
 
-M8.1–M8.7 are validated and the M8 gate is complete. M9.1–M9.7 are validated and the M9 gate is complete. **M10.1–M10.9.4 and M10.9.4.1-F.1 are VALIDATED**. The working F.2 candidate adds one conservative current-v2 main-steam header relief boundary over the validated capacity seam. M10 closes only after M10.9.8 integrated human-automation-HMI validation.
+M8.1–M8.7 are validated and the M8 gate is complete. M9.1–M9.7 are validated and the M9 gate is complete. **M10.1–M10.9.4 and M10.9.4.1-F.2 are VALIDATED**. The working F.3 Hotfix 1 candidate adds one conservative current-v2 internal header-to-condenser turbine bypass over the validated capacity seam. M10 closes only after M10.9.8 integrated human-automation-HMI validation.

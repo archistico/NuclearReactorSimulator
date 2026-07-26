@@ -2,7 +2,7 @@
 
 ## Status
 
-**IN PROGRESS — M10.9.4.1-F.1 VALIDATED; F.2 CONSERVATIVE MAIN-STEAM HEADER RELIEF CANDIDATE**
+**IN PROGRESS — M10.9.4.1-F.2 VALIDATED; F.3 CONSERVATIVE TURBINE BYPASS CANDIDATE**
 
 **Validated prerequisite and continuation:** M10.9.4 plus cumulative M10.9.4.1-E.2 Hotfix 1.
 
@@ -258,9 +258,9 @@ Canonical M5.5 supports optional measured supervision and committed pickup timin
 
 ### Gate 0 — Documentation and baseline identity — COMPLETE
 
-1. Treat M10.9.4.1-F.1 as the current validated continuation baseline.
+1. Treat M10.9.4.1-F.2 as the current validated continuation baseline.
 2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration, validated E.3 electrical protection and the validated F.1 capacity seam.
-3. Record F.2 as the conservative main-steam header-relief working candidate; no turbine-bypass topology or enthalpy migration is active.
+3. Record F.3 as the conservative internal turbine-bypass working candidate; F.2 atmospheric relief is validated and Phase G enthalpy migration is not active.
 4. Keep legacy/v1 and current-v2 behavior explicit in every test and document.
 
 **Exit:** complete. README, status, handoff, milestone, scale contract/evidence and limitations register describe the same source.
@@ -330,39 +330,36 @@ Canonical M5.5 supports optional measured supervision and committed pickup timin
 
 ### F.1 — Isolated choked steam-flow capacity law — VALIDATED
 
-F.1 introduced and validated only the typed ideal-vapor one-way pressure-ratio capacity equation, critical-ratio transition, choked plateau, effective-area scaling and deterministic sizing evidence. It added no plant topology, source terms or controls.
+F.1 validates the typed ideal-vapor one-way pressure-ratio capacity equation, critical-ratio transition, choked plateau, effective-area scaling and deterministic sizing evidence. The user-confirmed audit reports critical ratio `0.545728` and `0.788008677 kg/s` at `100 mm²`.
 
-The user-confirmed audit reports a critical ratio of `0.545728`, `0.788008677 kg/s` at `100 mm²`, linear area scaling and a monotonic choked plateau. F.1 is the current validated continuation baseline.
+### F.2 — Conservative main-steam header relief — VALIDATED
 
-### F.2 — Conservative main-steam header relief — CANDIDATE
+F.2 is the first topology consumer of F.1. It adds one optional current-v2 atmospheric external relief boundary, closed through `6.5 MPa`, fully open at `6.7 MPa`, with a `1,600 mm²` throat and exact source/external mass/internal-energy accounting. The user-supplied audit confirmed 13.531762568 kg/s at 6.80 MPa, monotonicity and conservative external exchange.
 
-F.2 adds the first topology consumer of F.1:
+### F.3 — Conservative turbine bypass to condenser — CANDIDATE
 
-- one optional pressure-actuated relief boundary from current-v2 `header` to a named atmospheric receiver boundary;
-- zero lift through `6.5 MPa`, linear lift to full opening at `6.7 MPa`;
-- `1,600 mm²` full-open throat with the validated F.1 coefficients;
-- ideal-vapor capacity limited by committed vapor availability;
-- one source-node mass/internal-energy removal plus equal signed external exchange;
-- integration before the existing single plant-network commit;
-- immutable per-boundary and aggregate snapshot diagnostics;
-- legacy/default definitions with no relief boundary.
+F.3 adds a separate internal current-v2 steam-dump path owned by the condenser system:
 
-F.2 deliberately excludes turbine bypass, condenser receiver inventory, manual authority, valve travel/hysteresis, alarms/protection, wet-steam safety-valve correlations and enthalpy migration.
+- `header` to condenser `condenser`, steam space `exhaust`;
+- closed through `6.4 MPa`, full opening at `6.5 MPa`;
+- `1,600 mm²` validated F.1 capacity definition;
+- capacity resolved against committed condenser backpressure;
+- vapor-availability limiting and one-way reverse-flow blocking;
+- equal/opposite internal mass and committed-specific-internal-energy terms;
+- external mass and power exactly zero;
+- F.2 atmospheric relief unchanged and independent.
 
-### F.2 required regressions
+F.3 deliberately excludes manual authority, actuator dynamics, hysteresis, wet-steam correlations and Phase G enthalpy migration. Its explicit committed-state condenser sequencing becomes an input to the Phase H stiffness audit.
 
-- relief remains closed through the set pressure and reaches full lift at the declared full-lift pressure;
-- active atmospheric discharge is choked over the sampled pressure range;
-- capacity is monotonic and full-lift authority exceeds the approximately `12 kg/s` current-v2 steam path;
-- subcooled liquid is not discharged by the ideal-vapor seam;
-- saturated-mixture effective area is limited by committed vapor quality;
-- relief mass and internal energy are removed exactly once and equal the signed external exchange;
-- both current-v2 sustained profiles own one relief path while legacy profiles remain unchanged;
-- no turbine-bypass topology is introduced.
+### F.3 required regressions
 
-### F.3 — Turbine bypass — DEFERRED
-
-Add a distinct turbine-bypass/steam-dump path only after F.2 is promoted. The bypass must own an explicit destination, respect condenser backpressure and remain separate from Phase G flow-work/enthalpy migration.
+- current-v2 opt-in and legacy empty default;
+- exact source/destination topology and snapshot set;
+- pressure-opening law and capacity above the current steam-path scale;
+- committed backpressure, choked plateau, subcritical decline and zero flow at equal pressure;
+- vapor-quality limiting;
+- exact internal mass/energy conservation and zero external exchange;
+- unchanged F.2 relief and all cumulative long-running gates.
 
 ## Phase G — Flow Work and Enthalpy Transport
 
@@ -456,3 +453,8 @@ Acceptance requires focused installed-vs-available-vs-UA regressions, unchanged 
 User observation on the locally validated C.2 baseline: operator-facing instantaneous primary flows can alternate strongly at the 10 ms step scale (liquid recirculation roughly 0–20 kg/s, MCP roughly -10–120 kg/s, drum inlet roughly 0–200 kg/s, channel groups roughly -20–120 kg/s, return collector roughly 0–200 kg/s). Long-horizon conservation gates remain green, so this is not presently classified as inventory divergence; it is evidence of explicit/algebraic hydraulic stiffness that must be quantified before any solver-level correction.
 
 C.2 Hotfix 1 therefore adds only deterministic 0.5 s operator-facing flow instrumentation. It does **not** claim to resolve the raw numerical chatter. The later numerical decision gate must measure sign-change frequency, peak-to-peak amplitude, timestep sensitivity and convergence under reduced step/substep trials before choosing among substepping, semi-implicit pressure-flow treatment or explicit hydraulic-inertia state.
+
+
+### F.3 — Conservative turbine bypass to condenser — CANDIDATE
+
+F.3 adds a distinct current-v2 internal steam-dump path owned by the condenser system. It opens from 6.4 to 6.5 MPa, uses a 1,600 mm² F.1 capacity definition, resolves against committed condenser backpressure and transfers mass/internal energy from `header` to `exhaust` with zero external exchange. F.2 atmospheric relief remains independent. The explicit committed-state sequencing is documented and will be included in the Phase H stiffness audit.

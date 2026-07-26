@@ -24,7 +24,9 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `M10_9_4_1_E3_2_PROTECTION_EVIDENCE.md` — reviewed normal, reverse-power, underfrequency and phase-slip envelopes plus the derived E.3.2 thresholds.
 - `M10_9_4_1_F1_CHOKED_STEAM_FLOW.md` — validated isolated ideal-vapor subcritical/choked capacity contract and pressure-ratio evidence.
 - `M10_9_4_1_F2_MAIN_STEAM_RELIEF.md` — conservative current-v2 atmospheric header-relief topology, conservation ownership and deferred scope.
-- `M10_9_4_1_F2_VALIDATION_CHECKLIST.md` — focused, ordinary and cumulative F.2 promotion gate.
+- `M10_9_4_1_F2_VALIDATION_CHECKLIST.md` — validated F.2 promotion evidence.
+- `M10_9_4_1_F3_TURBINE_BYPASS.md` — internal header-to-condenser bypass ownership, backpressure and conservation contract.
+- `M10_9_4_1_F3_VALIDATION_CHECKLIST.md` — focused, ordinary and cumulative F.3 promotion gate.
 - `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible E.2 rotor energy, inertia, droop, power-limit and synchronizing-authority calculations.
 - `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
 - `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
@@ -55,8 +57,8 @@ When modifying a subsystem, update its domain document together with the milesto
 - D.4 validation evidence is 944 ordinary tests plus all 17 unique explicit tests with zero failures.
 - M10.9.4.1-D.4.1 remains validated: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
 - M10.9.4.1-E.3.2 Hotfix 3 remains the validated electrical-protection checkpoint: current-v2 10 MWe signed coupling plus reviewed breaker-supervised delayed electrical protection.
-- M10.9.4.1-F.1 is validated: isolated ideal-vapor subcritical/choked capacity law and deterministic pressure-ratio evidence.
-- The working source is M10.9.4.1-F.2 CANDIDATE: one conservative pressure-actuated atmospheric header-relief boundary; turbine bypass and enthalpy migration remain deferred.
+- M10.9.4.1-F.1 and F.2 are validated: compressible capacity law plus conservative atmospheric header relief.
+- The working source is M10.9.4.1-F.3 Hotfix 1 CANDIDATE: one internal pressure-actuated header-to-condenser bypass using committed backpressure; enthalpy migration remains deferred.
 - M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.

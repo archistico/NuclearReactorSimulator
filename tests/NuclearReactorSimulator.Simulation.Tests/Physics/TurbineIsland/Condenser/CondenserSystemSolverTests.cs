@@ -339,6 +339,98 @@ public sealed class CondenserSystemSolverTests
             Array.Empty<CondenserCoolingBoundaryInput>()));
     }
 
+
+    [Fact]
+    public void Step_TurbineBypassTransfersMassAndInternalEnergyWithoutExternalExchange()
+    {
+        var fixture = CreateFixture(
+            Power.Zero,
+            new PreservingThermodynamicModel(),
+            includeTurbineBypass: true,
+            headerPressureMegapascals: 6.5d,
+            exhaustPressureMegapascals: 0.1d,
+            isolateMainSteamFlows: true);
+        var solver = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel);
+        var deltaTime = TimeSpan.FromMilliseconds(100d);
+        var initialHeader = fixture.PlantState.GetFluidNode("header");
+        var initialExhaust = fixture.PlantState.GetFluidNode("exhaust");
+
+        var result = solver.Step(fixture.PlantState, fixture.TurbineState, fixture.Inputs, deltaTime);
+        var bypass = Assert.Single(result.Snapshot.TurbineBypasses);
+        var transferredMass = bypass.MassFlowRate.KilogramsPerSecond * deltaTime.TotalSeconds;
+        var transferredEnergy = bypass.InternalEnergyTransferRate.Watts * deltaTime.TotalSeconds;
+
+        Assert.True(bypass.IsChoked);
+        Assert.True(bypass.MassFlowRate.KilogramsPerSecond > 12d);
+        Assert.Equal(initialHeader.Mass.Kilograms - transferredMass, result.CandidatePlantState.GetFluidNode("header").Mass.Kilograms, 9);
+        Assert.Equal(initialExhaust.Mass.Kilograms + transferredMass, result.CandidatePlantState.GetFluidNode("exhaust").Mass.Kilograms, 9);
+        Assert.Equal(initialHeader.InternalEnergy.Joules - transferredEnergy, result.CandidatePlantState.GetFluidNode("header").InternalEnergy.Joules, 3);
+        Assert.Equal(initialExhaust.InternalEnergy.Joules + transferredEnergy, result.CandidatePlantState.GetFluidNode("exhaust").InternalEnergy.Joules, 3);
+        Assert.Equal(MassFlowRate.Zero, result.Snapshot.ThermofluidAudit.ExpectedExternalMassFlowRate);
+        Assert.Equal(Power.Zero, result.Snapshot.ThermofluidAudit.SupplementalExternalPower);
+        Assert.Equal(bypass.MassFlowRate, result.Snapshot.TotalTurbineBypassMassFlowRate);
+        Assert.Equal(bypass.InternalEnergyTransferRate, result.Snapshot.TotalTurbineBypassInternalEnergyTransferRate);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalanceMassRateResidualKilogramsPerSecond), 0d, 1e-9d);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalancePowerResidualWatts), 0d, 1e-3d);
+    }
+
+    [Fact]
+    public void Step_TurbineBypassUsesCommittedCondenserBackpressureAndBlocksReverseFlow()
+    {
+        var fixture = CreateFixture(
+            Power.Zero,
+            new PreservingThermodynamicModel(),
+            includeTurbineBypass: true,
+            headerPressureMegapascals: 6.5d,
+            exhaustPressureMegapascals: 6.5d);
+        var result = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel)
+            .Step(fixture.PlantState, fixture.TurbineState, fixture.Inputs, TimeSpan.FromMilliseconds(100d));
+        var bypass = Assert.Single(result.Snapshot.TurbineBypasses);
+
+        Assert.Equal(Pressure.FromMegapascals(6.5d), bypass.DestinationPressure);
+        Assert.Equal(MassFlowRate.Zero, bypass.MassFlowRate);
+        Assert.False(bypass.IsChoked);
+        Assert.Equal(Power.Zero, bypass.InternalEnergyTransferRate);
+    }
+
+    [Fact]
+    public void Step_TurbineBypassLimitsIdealVaporCapacityByCommittedVaporFraction()
+    {
+        var dryFixture = CreateFixture(
+            Power.Zero,
+            new PreservingThermodynamicModel(),
+            includeTurbineBypass: true,
+            headerPressureMegapascals: 6.5d,
+            exhaustPressureMegapascals: 0.1d);
+        var wetFixture = CreateFixture(
+            Power.Zero,
+            new PreservingThermodynamicModel(),
+            includeTurbineBypass: true,
+            headerPressureMegapascals: 6.5d,
+            exhaustPressureMegapascals: 0.1d,
+            headerPhase: FluidPhase.SaturatedMixture,
+            headerVaporQuality: VaporQuality.FromFraction(0.25d));
+        var dry = Assert.Single(new TurbineBypassSolver(dryFixture.Definition).Solve(dryFixture.PlantState).Snapshots);
+        var wet = Assert.Single(new TurbineBypassSolver(wetFixture.Definition).Solve(wetFixture.PlantState).Snapshots);
+
+        Assert.Equal(1d, dry.VaporAvailabilityFraction, 12);
+        Assert.Equal(0.25d, wet.VaporAvailabilityFraction, 12);
+        Assert.Equal(dry.MassFlowRate.KilogramsPerSecond * 0.25d, wet.MassFlowRate.KilogramsPerSecond, 10);
+    }
+
+    [Fact]
+    public void Step_LegacyCondenserDefinitionPublishesNoTurbineBypass()
+    {
+        var fixture = CreateFixture(Power.Zero, new PreservingThermodynamicModel());
+        var result = new CondenserSystemSolver(fixture.Definition, fixture.ThermodynamicModel)
+            .Step(fixture.PlantState, fixture.TurbineState, fixture.Inputs, TimeSpan.FromMilliseconds(100d));
+
+        Assert.Empty(fixture.Definition.TurbineBypasses);
+        Assert.Empty(result.Snapshot.TurbineBypasses);
+        Assert.Equal(MassFlowRate.Zero, result.Snapshot.TotalTurbineBypassMassFlowRate);
+        Assert.Equal(Power.Zero, result.Snapshot.TotalTurbineBypassInternalEnergyTransferRate);
+    }
+
     private static Fixture CreateFixture(
         Power coolingPower,
         IFluidThermodynamicModel thermodynamicModel,
@@ -346,7 +438,13 @@ public sealed class CondenserSystemSolverTests
         Temperature? coolantTemperature = null,
         Power? installedHeatRejectionCapacity = null,
         double exhaustTemperatureCelsius = 280d,
-        CondenserCondensateEnergyMode condensateEnergyMode = CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy)
+        CondenserCondensateEnergyMode condensateEnergyMode = CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy,
+        bool includeTurbineBypass = false,
+        double headerPressureMegapascals = 6.5d,
+        double exhaustPressureMegapascals = 0.1d,
+        FluidPhase headerPhase = FluidPhase.SuperheatedVapor,
+        VaporQuality? headerVaporQuality = null,
+        bool isolateMainSteamFlows = false)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -415,14 +513,14 @@ public sealed class CondenserSystemSolverTests
                 Fluid("pressure", 6d, FluidPhase.SubcooledLiquid, 2_000d),
                 Fluid("outlet", 6d, FluidPhase.SubcooledLiquid, 2_000d),
                 Fluid("drum", 6d, FluidPhase.SubcooledLiquid, 2_000d),
-                Fluid("steam", 7d, FluidPhase.SuperheatedVapor, 2_000d),
-                Fluid("header", 6.5d, FluidPhase.SuperheatedVapor, 2_000d),
-                Fluid("stop-out", 6d, FluidPhase.SuperheatedVapor, 2_000d),
-                Fluid("control-out", 5.5d, FluidPhase.SuperheatedVapor, 2_000d),
-                Fluid("turbine-inlet", 5d, FluidPhase.SuperheatedVapor, 2_000d),
+                Fluid("steam", isolateMainSteamFlows ? headerPressureMegapascals : 7d, FluidPhase.SuperheatedVapor, 2_000d),
+                Fluid("header", headerPressureMegapascals, headerPhase, 2_000d, headerVaporQuality),
+                Fluid("stop-out", isolateMainSteamFlows ? headerPressureMegapascals : 6d, FluidPhase.SuperheatedVapor, 2_000d),
+                Fluid("control-out", isolateMainSteamFlows ? headerPressureMegapascals : 5.5d, FluidPhase.SuperheatedVapor, 2_000d),
+                Fluid("turbine-inlet", isolateMainSteamFlows ? headerPressureMegapascals : 5d, FluidPhase.SuperheatedVapor, 2_000d),
                 Fluid(
                     "exhaust",
-                    0.1d,
+                    exhaustPressureMegapascals,
                     FluidPhase.SaturatedMixture,
                     2_000d,
                     VaporQuality.FromPercent(90d),
@@ -431,9 +529,9 @@ public sealed class CondenserSystemSolverTests
             },
             new[]
             {
-                new ValveState("stop", ValvePosition.FullyOpen),
-                new ValveState("control", ValvePosition.FullyOpen),
-                new ValveState("admission", ValvePosition.FullyOpen),
+                new ValveState("stop", isolateMainSteamFlows ? ValvePosition.Closed : ValvePosition.FullyOpen),
+                new ValveState("control", isolateMainSteamFlows ? ValvePosition.Closed : ValvePosition.FullyOpen),
+                new ValveState("admission", isolateMainSteamFlows ? ValvePosition.Closed : ValvePosition.FullyOpen),
             },
             new[] { new PumpState("pump", PumpSpeed.Stopped, isRunning: false) },
             new[]
@@ -510,7 +608,23 @@ public sealed class CondenserSystemSolverTests
                     "cooling",
                     "condenser",
                     installedHeatRejectionCapacity),
-            });
+            },
+            includeTurbineBypass
+                ? new[]
+                {
+                    new TurbineBypassDefinition(
+                        "turbine-bypass",
+                        "header",
+                        "condenser",
+                        Pressure.FromMegapascals(6.4d),
+                        Pressure.FromMegapascals(6.5d),
+                        new CompressibleSteamFlowDefinition(
+                            Area.FromSquareMillimetres(1_600d),
+                            dischargeCoefficient: 0.95d,
+                            specificGasConstant: SpecificGasConstant.FromJoulesPerKilogramKelvin(461.526d),
+                            heatCapacityRatio: 1.3d)),
+                }
+                : Array.Empty<TurbineBypassDefinition>());
 
         var primaryBoundaryInputs = new PrimaryCircuitBoundaryInputs(
             boundaries,
