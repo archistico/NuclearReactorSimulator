@@ -1,4 +1,22 @@
-## M10.9.4.1-E.3.2 Hotfix 3 — Typed breaker-command target regression fix — CANDIDATE
+## M10.9.4.1-F.1 — Choked Steam-Flow Capacity Law & Audit — CANDIDATE
+
+- Builds on the user-validated E.3.2 Hotfix 3 evidence-derived electrical-protection baseline.
+- Adds a typed `SpecificGasConstant` quantity and an isolated `CompressibleSteamFlowDefinition` for full-open throat area, discharge coefficient, ideal-vapor specific gas constant and heat-capacity ratio.
+- Adds `CompressibleSteamFlowSolver`, a one-way ideal-vapor nozzle/orifice capacity law with continuous subcritical behavior and a sonic/choked plateau below the analytic critical pressure ratio.
+- Adds no relief valve, bypass line, plant node, valve authority, source term, inventory mutation or HMI control. Conservative topology is deferred to F.2 after this numerical seam is validated.
+- Adds ten ordinary domain/simulation regressions for validation, critical-ratio continuity, monotonicity, linear area/opening scaling, choked-capacity capping and one-way behavior.
+- Adds one explicit current-v2 representative pressure-ratio sweep, deterministic CSV/summary artifacts under `artifacts/f1-choked-steam-flow` and `scripts/run-choked-steam-flow-tests.cmd`.
+- Adds ADR 0115, the F.1 technical contract and a dedicated validation checklist.
+
+## M10.9.4.1-E.3.2 Hotfix 3 — Evidence-Derived Electrical Protection — VALIDATED
+
+- The user confirmed compilation, the complete focused gate, the ordinary suite and all requested cumulative tests passed on 2026-07-26.
+- Normal 5→0→5 MWe operation produced no trip; maximum reverse-power pickup was 0.080 s and maximum underfrequency pickup was 0.640 s.
+- Turbine trip accumulated exactly 2.000 s reverse-power pickup, latched only reverse power, issued generator trip at logical step 701 / 7.010 s and opened the breaker.
+- Breaker-open coastdown reached 43.154407 Hz and 6.845593 Hz absolute slip with zero pickup and no generator trip, confirming measured breaker supervision.
+- The complete generated `e3-protection-implementation` CSV/summary bundle was supplied and reviewed.
+
+## M10.9.4.1-E.3.2 Hotfix 3 — Typed breaker-command target regression fix — VALIDATED
 
 - Builds on Hotfix 2 after compilation, all nine focused Simulation tests and all thirteen non-explicit focused Application tests passed locally.
 - Fixes the sole remaining explicit-gate failure: the E.3.2 audit helper incorrectly sent `GeneratorBreakerOpen` to the generator id with `ControlRoomCommandTargetKind.Generator`.
@@ -16,7 +34,7 @@
 - Added the missing logical-step-zero signals for `generator-breaker-closed` and `generator-absolute-frequency-slip`.
 - The first correction used the wrong definition member name for grid frequency and therefore did not compile; Hotfix 2 replaces it with the canonical `NominalFrequency` member.
 
-## M10.9.4.1-E.3.2 — Evidence-Derived Electrical Protection — CANDIDATE
+## M10.9.4.1-E.3.2 — Evidence-Derived Electrical Protection — VALIDATED VIA HOTFIX 3
 
 - Builds on the user-validated E.3.1 Hotfix 1 trajectory baseline and the complete user-supplied CSV/summary evidence bundle.
 - Extends canonical M5.5 protection with optional measured supervision and deterministic committed pickup delay; zero delay and no supervision preserve every legacy definition.

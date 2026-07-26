@@ -154,3 +154,9 @@ Historical/null-source profiles remain explicit compatibility paths. See ADR 009
 ## D.1 turbine-boundary phase semantics
 
 The main-steam/admission train still establishes the hydraulic state at `turbine-inlet`. The current-v2 turbine stage then applies its own explicit `VaporMassFractionLimited` policy at the expansion boundary. This prevents a pressure difference from forcing liquid inventory through the stage merely because a hydraulic request exists. Legacy stages retain their historical unrestricted transfer semantics.
+## M10.9.4.1-F.1 — isolated compressible steam-flow capacity seam
+
+F.1 does not replace the existing main-steam pipe or turbine-admission valve laws. It adds a separate one-way ideal-vapor nozzle/orifice capacity solver for later relief and bypass composition. The solver resolves continuous subcritical flow from pressure ratio and caps mass flow at the analytic sonic/choked plateau. It mutates no plant inventory and owns no valve, source term or topology in F.1.
+
+See `M10_9_4_1_F1_CHOKED_STEAM_FLOW.md` and ADR 0115.
+

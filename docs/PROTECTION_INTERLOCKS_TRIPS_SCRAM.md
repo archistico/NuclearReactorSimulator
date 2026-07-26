@@ -114,7 +114,7 @@ The historical/default recipe remains intentionally minimal. The current-v2 sust
 
 The current-v2 instrumentation definition therefore adds canonical measured condenser absolute pressure and generator frequency channels. The turbine speed channel already exists. Protection still consumes only the committed `MeasuredSignalFrame`; no true-state shortcut is introduced.
 
-## M10.9.4.1-E.3.2 — evidence-derived current-v2 electrical protection
+## M10.9.4.1-E.3.2 — evidence-derived current-v2 electrical protection — VALIDATED
 
 E.3.2 adds generic optional supervision and committed pickup timing to the same M5.5 owner. Zero delay and no supervision preserve every historical definition. Both current-v2 sustained profiles opt into:
 

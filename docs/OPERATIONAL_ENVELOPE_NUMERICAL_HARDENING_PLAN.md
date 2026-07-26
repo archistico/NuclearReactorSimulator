@@ -2,11 +2,11 @@
 
 ## Status
 
-**IN PROGRESS — M10.9.4.1-E.3.1 HOTFIX 1 VALIDATED; E.3.2 EVIDENCE-DERIVED PROTECTION CANDIDATE**
+**IN PROGRESS — M10.9.4.1-E.3.2 HOTFIX 3 VALIDATED; F.1 CHOKED STEAM-FLOW CAPACITY CANDIDATE**
 
 **Validated prerequisite and continuation:** M10.9.4 plus cumulative M10.9.4.1-E.2 Hotfix 1.
 
-The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative D.4 source passed 944 ordinary tests and all 17 unique explicit tests, including both long-running journeys, the nine-test operational-envelope pack and the two-test reference-scale audit. D.4.1 adds STOP-owned travel, replay/checkpoint coverage and trip-reset resumption and was user-validated on 2026-07-26. E.1 accepts a 10 MWe target; E.2 Hotfix 1 implements the coordinated current-v2 scale and bidirectional coupling and was subsequently user-validated. E.3.1 Hotfix 1 recorded and validated deterministic protection-calibration trajectories. The reviewed evidence now drives the E.3.2 supervised/delayed protection candidate.
+The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative D.4 source passed 944 ordinary tests and all 17 unique explicit tests. D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1 and E.3.2 Hotfix 3 were subsequently user-validated on 2026-07-26. E.3.2 implementation evidence confirms normal-transient margin, exact reverse-power pickup timing and breaker-open supervision. F.1 now isolates the compressible steam-flow capacity equation before any relief/bypass topology is introduced.
 
 ## Purpose
 
@@ -217,7 +217,7 @@ Validated cumulative implementation includes:
 - rate-limited actuator response remains bounded without persistent integral windup;
 - load raise/lower is deterministic and returns to the accepted trajectory.
 
-## Phase E — Generator/Grid Scale, Signed Coupling and Protection Evidence — E.3.1 VALIDATED / E.3.2 HOTFIX 2 CANDIDATE
+## Phase E — Generator/Grid Scale, Signed Coupling and Protection Evidence — COMPLETE / VALIDATED THROUGH E.3.2 HOTFIX 3
 
 ### E.1 — Scale target — ACCEPTED DECISION ONLY
 
@@ -242,9 +242,9 @@ The validated runtime uses 10 MWe, 1.5 rpm, retained 0.5 MW synchronizing correc
 
 The user confirmed compilation and all ordinary/cumulative gates passed and supplied the complete generated bundle. Normal, reverse-power, breaker-open coastdown and phase-offset evidence has been reviewed.
 
-### E.3.2 — Protection over signed electrical states — CANDIDATE
+### E.3.2 Hotfix 3 — Protection over signed electrical states — VALIDATED
 
-Canonical M5.5 now supports optional measured supervision and committed pickup timing. Both current-v2 sustained profiles opt into evidence-derived reverse-power, underfrequency and absolute-slip loss-of-synchronism generator trips. Legacy definitions remain immediate and unsupervised by default.
+Canonical M5.5 supports optional measured supervision and committed pickup timing. Both current-v2 sustained profiles opt into validated evidence-derived reverse-power, underfrequency and absolute-slip loss-of-synchronism generator trips. Legacy definitions remain immediate and unsupervised by default. The reviewed implementation bundle confirms the normal 5→0→5 MWe transient does not trip, reverse-power trip occurs after exactly 2.0 s and breaker-open coastdown remains ineligible.
 
 ### Required E.2 regressions
 
@@ -258,9 +258,9 @@ Canonical M5.5 now supports optional measured supervision and committed pickup t
 
 ### Gate 0 — Documentation and baseline identity — COMPLETE
 
-1. Treat M10.9.4.1-E.3.1 Hotfix 1 as the current validated continuation baseline.
-2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration and validated E.3.1 trajectory evidence.
-3. Record E.3.2 Hotfix 3 as the evidence-derived protection working candidate: complete initial measured-frame seeding uses the canonical grid `NominalFrequency`, and the final explicit breaker-open audit now uses the canonical typed breaker target.
+1. Treat M10.9.4.1-E.3.2 Hotfix 3 as the current validated continuation baseline.
+2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration and validated E.3 electrical protection.
+3. Record F.1 as the isolated choked steam-flow capacity working candidate; no relief or bypass topology is active.
 4. Keep legacy/v1 and current-v2 behavior explicit in every test and document.
 
 **Exit:** complete. README, status, handoff, milestone, scale contract/evidence and limitations register describe the same source.
@@ -316,7 +316,7 @@ Canonical M5.5 now supports optional measured supervision and committed pickup t
 
 **Exit:** user-confirmed all-green E.3.1 Hotfix 1 with reviewed artifact bundle.
 
-### Gate 6 — E.3.2 protection implementation — CURRENT
+### Gate 6 — E.3.2 protection implementation — COMPLETE / VALIDATED
 
 1. Validate generic supervision and committed pickup timing.
 2. Validate both current-v2 sustained factories and legacy defaults.
@@ -324,9 +324,13 @@ Canonical M5.5 now supports optional measured supervision and committed pickup t
 4. Validate in-flight pickup replay/checkpoint restoration.
 5. Reproduce E.3.1 reports and rerun all cumulative gates.
 6. Manually review HMI markers and protection reset.
-7. After E.3.2 promotion, continue to Phase F, then G, H and I.
+7. E.3.2 is promoted. Continue to Phase F, then G, H and I.
 
 ## Phase F — Relief and Bypass with Choked Flow
+
+### F.1 — Isolated choked steam-flow capacity law — CANDIDATE
+
+Introduce and validate only the typed ideal-vapor pressure-ratio capacity equation, critical-ratio transition, choked plateau and deterministic sizing evidence. Do not add plant topology, source terms or controls in the same increment.
 
 ### Scope
 
