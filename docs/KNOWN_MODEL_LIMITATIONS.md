@@ -28,7 +28,7 @@ D.3 evidence showed a disconnected rotor fixed near 3301 rpm after the control v
 
 ### A5. Bidirectional coupling remains an infinite-bus educational model
 
-The validated E.2 Hotfix 1 runtime supports signed generation/motoring exchange and an internal signed rotor-torque seam, but it remains a simplified infinite-bus coupling rather than a detailed synchronous-machine/network transient model. It does not model stator/field transients, reactances, excitation/AVR dynamics, bus topology or multi-machine load flow. E.3.2 now implements reduced-order reverse-power, breaker-supervised underfrequency and absolute-frequency-slip loss-of-synchronism protection as a candidate. It remains educational relay logic over the infinite-bus model, not impedance-based or electromagnetic transient protection.
+The validated E.2 Hotfix 1 runtime supports signed generation/motoring exchange and an internal signed rotor-torque seam, but it remains a simplified infinite-bus coupling rather than a detailed synchronous-machine/network transient model. It does not model stator/field transients, reactances, excitation/AVR dynamics, bus topology or multi-machine load flow. E.3.2 now implements reduced-order reverse-power, breaker-supervised underfrequency and absolute-frequency-slip loss-of-synchronism protection as a validated current-v2 contract. It remains educational relay logic over the infinite-bus model, not impedance-based or electromagnetic transient protection.
 
 ### A6. Drum low-inventory behavior is only partially closed
 
@@ -45,6 +45,11 @@ E.2 Hotfix 1 validates the current-v2 10 MWe nameplate, 1.5 rpm governor normali
 ### A9. Legacy/current option combinations are not formally enumerated
 
 Versioned compatibility paths are isolated through optional definitions, but the supported combination matrix and retirement policy remain undocumented.
+
+
+### A7. Main-steam relief fidelity — F.2 CANDIDATE
+
+F.2 adds one conservative current-v2 header-relief path to an atmospheric external boundary. It uses the validated F.1 ideal-vapor capacity equation, stateless pressure lift and committed vapor-quality limiting. It does not model certified safety-valve sizing, wet-steam/two-phase critical flow, valve hysteresis, blowdown, lift dynamics, discharge piping, receiver thermodynamics, acoustic loads or turbine bypass. Energy export currently uses committed specific internal energy; the whole-network flow-work/enthalpy convention remains owned by Phase G.
 
 ## B. Deliberate current simplifications
 

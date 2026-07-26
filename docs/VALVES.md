@@ -102,3 +102,9 @@ The original M1.4 hydraulic valve definition remains unchanged. D.4.1 adds only 
 - protection may still force the effective STOP position closed after normal travel is evaluated, without rewriting the persistent operator target.
 
 This is deterministic actuator motion, not a change to valve hydraulic characteristic, fail-safe law or pressure-driven flow.
+
+## M10.9.4.1-F.2 main-steam header relief boundary
+
+F.2 introduces a pressure-actuated relief boundary but deliberately does not model it as an operator valve or as a stateful M1 `ValveDefinition`. Its lift is derived statelessly from committed header pressure: closed through 6.5 MPa, linear to full lift at 6.7 MPa. The full-open effective throat is 1,600 mm² and capacity is evaluated by the validated F.1 ideal-vapor compressible-flow law.
+
+The relief has no manual command, actuator travel, hysteresis, fail-safe command path, alarm or protection owner in F.2. It exports mass and committed specific internal energy to a named atmospheric external boundary exactly once through the canonical main-steam source-term seam. Saturated-mixture capacity is limited by vapor quality and subcooled liquid is blocked. A later stateful safety-valve model would require its own explicit committed state and authority contract rather than silently extending this stateless boundary.

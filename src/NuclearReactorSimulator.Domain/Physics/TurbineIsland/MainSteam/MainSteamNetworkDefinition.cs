@@ -5,8 +5,8 @@ using NuclearReactorSimulator.Domain.Plant;
 namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.MainSteam;
 
 /// <summary>
-/// Canonical M4.1 semantic composition of drum steam-export seams, main-steam lines/headers,
-/// stop/control/admission valve trains and replaceable turbine-admission boundaries.
+/// Canonical semantic composition of drum steam-export seams, main-steam lines/headers,
+/// stop/control/admission valve trains, replaceable turbine-admission boundaries and optional external relief paths.
 /// </summary>
 public sealed class MainSteamNetworkDefinition
 {
@@ -15,7 +15,8 @@ public sealed class MainSteamNetworkDefinition
         IntegratedPrimaryCircuitDefinition primaryCircuit,
         IEnumerable<MainSteamLineDefinition> steamLines,
         IEnumerable<TurbineAdmissionTrainDefinition> admissionTrains,
-        IEnumerable<TurbineAdmissionBoundaryDefinition> turbineAdmissionBoundaries)
+        IEnumerable<TurbineAdmissionBoundaryDefinition> turbineAdmissionBoundaries,
+        IEnumerable<MainSteamReliefBoundaryDefinition>? reliefBoundaries = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -30,6 +31,10 @@ public sealed class MainSteamNetworkDefinition
         var canonicalLines = Canonicalize(steamLines, static item => item.Id, nameof(steamLines));
         var canonicalTrains = Canonicalize(admissionTrains, static item => item.Id, nameof(admissionTrains));
         var canonicalBoundaries = Canonicalize(turbineAdmissionBoundaries, static item => item.Id, nameof(turbineAdmissionBoundaries));
+        var canonicalReliefBoundaries = Canonicalize(
+            reliefBoundaries ?? Array.Empty<MainSteamReliefBoundaryDefinition>(),
+            static item => item.Id,
+            nameof(reliefBoundaries));
 
         if (canonicalLines.Length == 0)
         {
@@ -46,15 +51,17 @@ public sealed class MainSteamNetworkDefinition
             throw new ArgumentException("A main-steam network must contain at least one turbine-admission boundary.", nameof(turbineAdmissionBoundaries));
         }
 
-        EnsureSemanticIdsAreGloballyUnique(canonicalLines, canonicalTrains, canonicalBoundaries);
+        EnsureSemanticIdsAreGloballyUnique(canonicalLines, canonicalTrains, canonicalBoundaries, canonicalReliefBoundaries);
         ValidateSteamLines(primaryCircuit, canonicalLines);
         ValidateAdmissionTrains(primaryCircuit.PlantDefinition, canonicalLines, canonicalTrains);
         ValidateAdmissionBoundaries(primaryCircuit.PlantDefinition, canonicalTrains, canonicalBoundaries);
+        ValidateReliefBoundaries(primaryCircuit.PlantDefinition, canonicalLines, canonicalReliefBoundaries);
 
         Id = id.Trim();
         SteamLines = new ReadOnlyCollection<MainSteamLineDefinition>(canonicalLines);
         AdmissionTrains = new ReadOnlyCollection<TurbineAdmissionTrainDefinition>(canonicalTrains);
         TurbineAdmissionBoundaries = new ReadOnlyCollection<TurbineAdmissionBoundaryDefinition>(canonicalBoundaries);
+        ReliefBoundaries = new ReadOnlyCollection<MainSteamReliefBoundaryDefinition>(canonicalReliefBoundaries);
     }
 
     public string Id { get; }
@@ -69,6 +76,8 @@ public sealed class MainSteamNetworkDefinition
 
     public IReadOnlyList<TurbineAdmissionBoundaryDefinition> TurbineAdmissionBoundaries { get; }
 
+    public IReadOnlyList<MainSteamReliefBoundaryDefinition> ReliefBoundaries { get; }
+
     public MainSteamLineDefinition GetSteamLine(string id)
         => GetById(SteamLines, id, static item => item.Id, "main-steam line");
 
@@ -77,6 +86,9 @@ public sealed class MainSteamNetworkDefinition
 
     public TurbineAdmissionBoundaryDefinition GetTurbineAdmissionBoundary(string id)
         => GetById(TurbineAdmissionBoundaries, id, static item => item.Id, "turbine-admission boundary");
+
+    public MainSteamReliefBoundaryDefinition GetReliefBoundary(string id)
+        => GetById(ReliefBoundaries, id, static item => item.Id, "main-steam relief boundary");
 
     private static void ValidateSteamLines(
         IntegratedPrimaryCircuitDefinition primaryCircuit,
@@ -240,6 +252,34 @@ public sealed class MainSteamNetworkDefinition
         }
     }
 
+
+    private static void ValidateReliefBoundaries(
+        PlantDefinition plant,
+        IReadOnlyList<MainSteamLineDefinition> steamLines,
+        IReadOnlyList<MainSteamReliefBoundaryDefinition> reliefBoundaries)
+    {
+        var suppliedHeaders = steamLines.Select(static line => line.HeaderNodeId).ToHashSet(StringComparer.Ordinal);
+        var receiverBoundaryIds = new HashSet<string>(StringComparer.Ordinal);
+
+        foreach (var boundary in reliefBoundaries)
+        {
+            _ = plant.GetFluidNode(boundary.SourceHeaderNodeId);
+            if (!suppliedHeaders.Contains(boundary.SourceHeaderNodeId))
+            {
+                throw new ArgumentException(
+                    $"Main-steam relief boundary '{boundary.Id}' source '{boundary.SourceHeaderNodeId}' is not a defined main-steam header.",
+                    nameof(reliefBoundaries));
+            }
+
+            if (!receiverBoundaryIds.Add(boundary.ReceiverBoundaryId))
+            {
+                throw new ArgumentException(
+                    $"External relief receiver boundary '{boundary.ReceiverBoundaryId}' is owned by more than one main-steam relief path.",
+                    nameof(reliefBoundaries));
+            }
+        }
+    }
+
     private static T[] Canonicalize<T>(IEnumerable<T> source, Func<T, string> idSelector, string parameterName)
         where T : class
     {
@@ -259,12 +299,14 @@ public sealed class MainSteamNetworkDefinition
     private static void EnsureSemanticIdsAreGloballyUnique(
         IEnumerable<MainSteamLineDefinition> lines,
         IEnumerable<TurbineAdmissionTrainDefinition> trains,
-        IEnumerable<TurbineAdmissionBoundaryDefinition> boundaries)
+        IEnumerable<TurbineAdmissionBoundaryDefinition> boundaries,
+        IEnumerable<MainSteamReliefBoundaryDefinition> reliefBoundaries)
     {
         var ids = new HashSet<string>(StringComparer.Ordinal);
         foreach (var id in lines.Select(static item => item.Id)
                      .Concat(trains.Select(static item => item.Id))
-                     .Concat(boundaries.Select(static item => item.Id)))
+                     .Concat(boundaries.Select(static item => item.Id))
+                     .Concat(reliefBoundaries.Select(static item => item.Id)))
         {
             if (!ids.Add(id))
             {

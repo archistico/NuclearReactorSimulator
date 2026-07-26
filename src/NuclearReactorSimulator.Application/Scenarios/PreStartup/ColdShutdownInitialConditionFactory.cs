@@ -133,7 +133,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         ActuatorTravelRate? turbineStopValveTravelRate = null,
         double generatorMaximumElectricalPowerMegawatts = 1_000d,
         SynchronousGridPowerFlowMode generatorGridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly,
-        bool includeEvidenceDerivedElectricalProtections = false)
+        bool includeEvidenceDerivedElectricalProtections = false,
+        bool includeMainSteamHeaderRelief = false)
     {
         if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
         {
@@ -204,7 +205,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             turbineStopValveTravelRate,
             generatorMaximumElectricalPowerMegawatts,
             generatorGridPowerFlowMode,
-            includeEvidenceDerivedElectricalProtections);
+            includeEvidenceDerivedElectricalProtections,
+            includeMainSteamHeaderRelief);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -297,7 +299,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         ActuatorTravelRate? turbineStopValveTravelRate,
         double generatorMaximumElectricalPowerMegawatts,
         SynchronousGridPowerFlowMode generatorGridPowerFlowMode,
-        bool includeEvidenceDerivedElectricalProtections)
+        bool includeEvidenceDerivedElectricalProtections,
+        bool includeMainSteamHeaderRelief)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -880,7 +883,24 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "turbine-inlet",
                     turbineStopValveTravelRate),
             },
-            new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") });
+            new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") },
+            includeMainSteamHeaderRelief
+                ? new[]
+                {
+                    new MainSteamReliefBoundaryDefinition(
+                        "header-relief",
+                        "header",
+                        "atmospheric-relief-receiver",
+                        Pressure.StandardAtmosphere,
+                        Pressure.FromMegapascals(6.5d),
+                        Pressure.FromMegapascals(6.7d),
+                        new CompressibleSteamFlowDefinition(
+                            Area.FromSquareMillimetres(1_600d),
+                            dischargeCoefficient: 0.95d,
+                            specificGasConstant: SpecificGasConstant.FromJoulesPerKilogramKelvin(461.526d),
+                            heatCapacityRatio: 1.3d)),
+                }
+                : Array.Empty<MainSteamReliefBoundaryDefinition>());
         var turbine = new TurbineExpansionSystemDefinition(
             "turbine",
             mainSteam,

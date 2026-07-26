@@ -1,7 +1,7 @@
-> **Current development checkpoint:** M10.9.4.1-E.3.2 Hotfix 3 is VALIDATED. The working source is M10.9.4.1-F.1 CANDIDATE, introducing the typed ideal-vapor subcritical/choked steam-flow capacity seam and deterministic sizing evidence before any relief or bypass topology is added.
+> **Current development checkpoint:** M10.9.4.1-F.1 is VALIDATED. The working source is M10.9.4.1-F.2 CANDIDATE, adding one conservative pressure-actuated main-steam header relief boundary over the validated choked-flow seam.
 
 # Nuclear Reactor Simulator
-> **F.1 candidate on validated E.3.2 Hotfix 3:** the runtime protection baseline remains unchanged. F.1 adds an isolated one-way ideal-vapor nozzle/orifice capacity law with continuous subcritical-to-choked behavior, plus a repeatable pressure-ratio audit; no relief valve, bypass path or plant inventory is modified yet.
+> **F.2 candidate on validated F.1:** current-v2 sustained profiles own one atmospheric header-relief boundary. It remains closed below 6.5 MPa, reaches full lift at 6.7 MPa, uses the validated F.1 capacity law and exports committed mass/internal energy exactly once; turbine bypass and enthalpy migration remain deferred.
 
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
@@ -13,13 +13,13 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The current official continuation baseline is **M10.9.4.1-E.3.2 Hotfix 3 — Evidence-Derived Electrical Protection — VALIDATED**. The working source is **M10.9.4.1-F.1 — Choked Steam-Flow Capacity Law & Audit — CANDIDATE**.
+The current official continuation baseline is **M10.9.4.1-F.1 — Choked Steam-Flow Capacity Law & Audit — VALIDATED**. The working source is **M10.9.4.1-F.2 — Conservative Main-Steam Header Relief — CANDIDATE**.
 
-The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 remain validated. M10.9.4.1-A–E.3.2 Hotfix 3 are consolidated into the continuation. On 2026-07-26 the user confirmed E.3.2 compilation, ordinary tests, focused relay tests and cumulative gates all passed. The reviewed implementation evidence shows normal 5→0→5 MWe operation without trip, exact 2.0 s reverse-power pickup after turbine trip and complete breaker-open supervision during deep coastdown. F.1 now isolates the compressible-flow capacity law and sizing audit before Phase F introduces any conservative relief/bypass topology.
+The underlying **M7, M8 and M9 phase gates remain COMPLETE / VALIDATED**, and M10.1–M10.9.4 remain validated. M10.9.4.1-A–F.1 are consolidated into the continuation. On 2026-07-26 the user confirmed F.1 compilation and all tests passed; the supplied audit confirmed critical ratio 0.545728, 0.788008677 kg/s choked capacity per 100 mm², monotonic flow and a stable choked plateau. F.2 now applies that validated seam to one current-v2 atmospheric header-relief boundary with exact conservative source-term integration.
 
 Hotfix 19 validates opt-in non-return semantics on current-v2 condensate/feedwater pumps. Hotfix 20 Fix 2 validates measured turbine overspeed, condenser high-backpressure and generator overfrequency trips. Hotfix 21 validates finite actuator travel; Hotfix 22 validates breaker-aware speed/load droop; Hotfix 23 validates pressure/temperature/vapor-dependent turbine work. Remaining physical/numerical hardening is moved out of schematic scope into **M10.9.4.1 — Operational Envelope & Numerical Hardening** before M10.9.5.
 
-See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/M10_9_4_1_F1_CHOKED_STEAM_FLOW.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0115. M10 closes only after M10.9.8; release hardening remains M11.
+See `docs/milestones/M10.9.4.md`, `docs/M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`, `docs/milestones/M10.9.4.1.md`, `docs/M10_9_4_1_A_EXTENDED_AUDIT.md`, `docs/M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md`, `docs/M10_9_4_1_F1_CHOKED_STEAM_FLOW.md`, `docs/M10_9_4_1_F2_MAIN_STEAM_RELIEF.md`, `docs/REFERENCE_PLANT_SCALE_CONTRACT.md`, `docs/REFERENCE_PLANT_SCALE_EVIDENCE.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`, and ADR 0075–ADR 0116. M10 closes only after M10.9.8; release hardening remains M11.
 
 ## Architectural principles
 
@@ -452,7 +452,7 @@ M2.8 is **validated**, closing M2 — Reactor Physics.
 
 M2.8.1 is a documentation/roadmap consolidation baseline: it changes no simulation physics and establishes the detailed M3–M9 execution plan.
 
-M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 and M10.9.4.1-E.3.2 Hotfix 3 are validated. F.1 is the current isolated choked steam-flow capacity candidate.
+M3.1–M3.8, M4.1–M4.7, M5.1–M5.7, M6.1–M6.7, M7.1–M7.7, M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; the M3–M9 gates are complete. M10.1–M10.9.4 and M10.9.4.1-F.1 are validated. F.2 is the current conservative main-steam header-relief candidate.
 
 
 ## Generator, grid and synchronization physics (M4.5)
@@ -579,4 +579,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and M10.9.4.1-E.3.2 Hotfix 3 are validated. The working source is F.1, adding only the typed ideal-vapor subcritical/choked capacity seam and deterministic pressure-ratio evidence; relief/bypass topology and source-term integration remain deferred to later Phase-F increments.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and M10.9.4.1-F.1 are validated. The working source is F.2, adding one pressure-actuated atmospheric header-relief path with exact mass/internal-energy boundary accounting; turbine bypass, receiver inventory and flow-work/enthalpy migration remain deferred.

@@ -1,6 +1,6 @@
 # M10.9.4.1-F.1 Validation Checklist
 
-**Candidate:** Choked Steam-Flow Capacity Law & Audit
+**Status:** VALIDATED — user-confirmed 2026-07-26
 
 **Validated parent:** M10.9.4.1-E.3.2 Hotfix 3
 
@@ -33,7 +33,7 @@ The focused script must pass:
 dotnet test
 ```
 
-Expected candidate inventory, assuming no unrelated test changes:
+Validated candidate inventory expectation used for the successful gate:
 
 - **970 passed**;
 - **0 failed**;
@@ -66,6 +66,6 @@ Review the printed F.1 summary and confirm:
 - projected capacity scales linearly with area;
 - the report states explicitly that no relief/bypass topology is active.
 
-## Promotion rule
+## Promotion result
 
-Promote F.1 only after build, focused tests, ordinary suite and cumulative gates pass with zero failures and the generated capacity evidence is reviewed. F.2 may then add one conservative relief path over the validated capacity seam.
+F.1 was promoted after the user confirmed compilation and all tests passed and supplied the generated audit bundle. The reviewed summary confirmed critical ratio `0.545728`, choked capacity `0.788008677 kg/s` at `100 mm²`, linear area projections, monotonicity and the choked plateau. F.2 may therefore consume the capacity seam while remaining a separate topology candidate.

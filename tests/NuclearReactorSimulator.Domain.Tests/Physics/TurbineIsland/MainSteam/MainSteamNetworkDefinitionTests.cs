@@ -62,6 +62,49 @@ public sealed class MainSteamNetworkDefinitionTests
     }
 
     [Fact]
+    public void Definition_BindsOptionalReliefOnlyToMainSteamHeaderAndExplicitReceiver()
+    {
+        var primary = CreatePrimaryCircuit();
+        var definition = new MainSteamNetworkDefinition(
+            "main-steam",
+            primary,
+            new[] { new MainSteamLineDefinition("line-a", "export", "main-steam-line", "header") },
+            new[] { new TurbineAdmissionTrainDefinition("train-a", "header", "stop", "control", "admission", "turbine-inlet") },
+            new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") },
+            new[] { CreateRelief("relief-a", "header", "receiver-a") });
+
+        var relief = Assert.Single(definition.ReliefBoundaries);
+        Assert.Same(relief, definition.GetReliefBoundary("relief-a"));
+        Assert.Equal("receiver-a", relief.ReceiverBoundaryId);
+    }
+
+    [Fact]
+    public void Definition_RejectsReliefFromNonHeaderOrDuplicateExternalReceiverOwnership()
+    {
+        var primary = CreatePrimaryCircuit();
+
+        Assert.Throws<ArgumentException>(() => new MainSteamNetworkDefinition(
+            "main-steam",
+            primary,
+            new[] { new MainSteamLineDefinition("line-a", "export", "main-steam-line", "header") },
+            new[] { new TurbineAdmissionTrainDefinition("train-a", "header", "stop", "control", "admission", "turbine-inlet") },
+            new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") },
+            new[] { CreateRelief("relief-a", "steam", "receiver-a") }));
+
+        Assert.Throws<ArgumentException>(() => new MainSteamNetworkDefinition(
+            "main-steam",
+            primary,
+            new[] { new MainSteamLineDefinition("line-a", "export", "main-steam-line", "header") },
+            new[] { new TurbineAdmissionTrainDefinition("train-a", "header", "stop", "control", "admission", "turbine-inlet") },
+            new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") },
+            new[]
+            {
+                CreateRelief("relief-a", "header", "receiver-a"),
+                CreateRelief("relief-b", "header", "receiver-a"),
+            }));
+    }
+
+    [Fact]
     public void Definition_RequiresEveryM3SteamExportSeamToFeedExactlyOneLine()
     {
         var primary = CreatePrimaryCircuit();
@@ -86,6 +129,21 @@ public sealed class MainSteamNetworkDefinitionTests
             new[] { new TurbineAdmissionTrainDefinition("train-a", "header", "control", "stop", "admission", "turbine-inlet") },
             new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") }));
     }
+
+
+    private static MainSteamReliefBoundaryDefinition CreateRelief(string id, string sourceNodeId, string receiverId)
+        => new(
+            id,
+            sourceNodeId,
+            receiverId,
+            Pressure.StandardAtmosphere,
+            Pressure.FromMegapascals(6.5d),
+            Pressure.FromMegapascals(6.7d),
+            new CompressibleSteamFlowDefinition(
+                Area.FromSquareMillimetres(1_600d),
+                dischargeCoefficient: 0.95d,
+                specificGasConstant: SpecificGasConstant.FromJoulesPerKilogramKelvin(461.526d),
+                heatCapacityRatio: 1.3d));
 
     private static IntegratedPrimaryCircuitDefinition CreatePrimaryCircuit()
     {

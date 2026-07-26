@@ -7,14 +7,15 @@ using NuclearReactorSimulator.Simulation.Plant;
 namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.MainSteam;
 
 /// <summary>
-/// Top-level M4.1 steam-supply solver. Main-steam pipes and valves are canonical plant-network components,
-/// evaluated from the same committed state and integrated exactly once together with M3 source terms and the turbine-admission boundary.
+/// Top-level main-steam supply solver. Canonical pipes, valves, admission boundaries and optional external relief paths
+/// are evaluated from the same committed state and integrated exactly once with primary-circuit and downstream source terms.
 /// </summary>
 public sealed class MainSteamNetworkSolver
 {
     private readonly MainSteamNetworkDefinition _definition;
     private readonly IntegratedPrimaryCircuitSolver _primaryCircuitSolver;
     private readonly TurbineAdmissionBoundarySolver _boundarySolver;
+    private readonly MainSteamReliefBoundarySolver _reliefBoundarySolver;
     private readonly PipeFlowSolver _pipeFlowSolver = new();
     private readonly ValveFlowSolver _valveFlowSolver = new();
 
@@ -27,6 +28,7 @@ public sealed class MainSteamNetworkSolver
 
         _primaryCircuitSolver = new IntegratedPrimaryCircuitSolver(definition.PrimaryCircuit, thermodynamicModel);
         _boundarySolver = new TurbineAdmissionBoundarySolver(definition);
+        _reliefBoundarySolver = new MainSteamReliefBoundarySolver(definition);
     }
 
     public MainSteamNetworkDefinition Definition => _definition;
@@ -66,8 +68,10 @@ public sealed class MainSteamNetworkSolver
         var lineSnapshots = _definition.SteamLines.Select(line => SolveLine(line, committedState)).ToArray();
         var trainSnapshots = _definition.AdmissionTrains.Select(train => SolveTrain(train, committedState)).ToArray();
         var turbineBoundaries = _boundarySolver.Solve(committedState, inputs);
+        var reliefBoundaries = _reliefBoundarySolver.Solve(committedState);
         var combinedDownstreamSourceTerms = PlantNetworkSourceTerms.Combine(
             turbineBoundaries.SourceTerms,
+            reliefBoundaries.SourceTerms,
             supplementalSourceTerms);
         var primaryStep = _primaryCircuitSolver.Step(
             committedState,
@@ -80,7 +84,8 @@ public sealed class MainSteamNetworkSolver
             primaryStep.Snapshot,
             lineSnapshots,
             trainSnapshots,
-            turbineBoundaries.Snapshots);
+            turbineBoundaries.Snapshots,
+            reliefBoundaries.Snapshots);
 
         return new MainSteamNetworkStepResult(primaryStep, snapshot);
     }

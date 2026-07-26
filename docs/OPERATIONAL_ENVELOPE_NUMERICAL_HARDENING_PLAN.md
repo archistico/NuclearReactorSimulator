@@ -2,11 +2,11 @@
 
 ## Status
 
-**IN PROGRESS — M10.9.4.1-E.3.2 HOTFIX 3 VALIDATED; F.1 CHOKED STEAM-FLOW CAPACITY CANDIDATE**
+**IN PROGRESS — M10.9.4.1-F.1 VALIDATED; F.2 CONSERVATIVE MAIN-STEAM HEADER RELIEF CANDIDATE**
 
 **Validated prerequisite and continuation:** M10.9.4 plus cumulative M10.9.4.1-E.2 Hotfix 1.
 
-The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative D.4 source passed 944 ordinary tests and all 17 unique explicit tests. D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1 and E.3.2 Hotfix 3 were subsequently user-validated on 2026-07-26. E.3.2 implementation evidence confirms normal-transient margin, exact reverse-power pickup timing and breaker-open supervision. F.1 now isolates the compressible steam-flow capacity equation before any relief/bypass topology is introduced.
+The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative D.4 source passed 944 ordinary tests and all 17 unique explicit tests. D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1 and E.3.2 Hotfix 3 were subsequently user-validated on 2026-07-26. E.3.2 implementation evidence confirms normal-transient margin, exact reverse-power pickup timing and breaker-open supervision. F.1 now validates the isolated compressible steam-flow capacity equation. F.2 is the first topology consumer and adds one conservative pressure-actuated atmospheric header-relief path without turbine bypass or enthalpy migration.
 
 ## Purpose
 
@@ -258,9 +258,9 @@ Canonical M5.5 supports optional measured supervision and committed pickup timin
 
 ### Gate 0 — Documentation and baseline identity — COMPLETE
 
-1. Treat M10.9.4.1-E.3.2 Hotfix 3 as the current validated continuation baseline.
-2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration and validated E.3 electrical protection.
-3. Record F.1 as the isolated choked steam-flow capacity working candidate; no relief or bypass topology is active.
+1. Treat M10.9.4.1-F.1 as the current validated continuation baseline.
+2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration, validated E.3 electrical protection and the validated F.1 capacity seam.
+3. Record F.2 as the conservative main-steam header-relief working candidate; no turbine-bypass topology or enthalpy migration is active.
 4. Keep legacy/v1 and current-v2 behavior explicit in every test and document.
 
 **Exit:** complete. README, status, handoff, milestone, scale contract/evidence and limitations register describe the same source.
@@ -328,23 +328,41 @@ Canonical M5.5 supports optional measured supervision and committed pickup timin
 
 ## Phase F — Relief and Bypass with Choked Flow
 
-### F.1 — Isolated choked steam-flow capacity law — CANDIDATE
+### F.1 — Isolated choked steam-flow capacity law — VALIDATED
 
-Introduce and validate only the typed ideal-vapor pressure-ratio capacity equation, critical-ratio transition, choked plateau and deterministic sizing evidence. Do not add plant topology, source terms or controls in the same increment.
+F.1 introduced and validated only the typed ideal-vapor one-way pressure-ratio capacity equation, critical-ratio transition, choked plateau, effective-area scaling and deterministic sizing evidence. It added no plant topology, source terms or controls.
 
-### Scope
+The user-confirmed audit reports a critical ratio of `0.545728`, `0.788008677 kg/s` at `100 mm²`, linear area scaling and a monotonic choked plateau. F.1 is the current validated continuation baseline.
 
-- add a canonical compressible-flow primitive with critical/choked-flow behavior;
-- add conservative turbine bypass/steam dump and pressure-actuated relief paths;
-- make condenser backpressure constrain bypass capacity physically;
-- preserve protection priority and explicit destination ownership.
+### F.2 — Conservative main-steam header relief — CANDIDATE
 
-### Required regressions
+F.2 adds the first topology consumer of F.1:
 
-- load rejection does not require scripted pressure repair;
-- relief/bypass mass and energy integrate exactly once;
-- choked capacity depends on upstream state in the critical regime;
-- downstream pressure regains influence only outside the critical regime.
+- one optional pressure-actuated relief boundary from current-v2 `header` to a named atmospheric receiver boundary;
+- zero lift through `6.5 MPa`, linear lift to full opening at `6.7 MPa`;
+- `1,600 mm²` full-open throat with the validated F.1 coefficients;
+- ideal-vapor capacity limited by committed vapor availability;
+- one source-node mass/internal-energy removal plus equal signed external exchange;
+- integration before the existing single plant-network commit;
+- immutable per-boundary and aggregate snapshot diagnostics;
+- legacy/default definitions with no relief boundary.
+
+F.2 deliberately excludes turbine bypass, condenser receiver inventory, manual authority, valve travel/hysteresis, alarms/protection, wet-steam safety-valve correlations and enthalpy migration.
+
+### F.2 required regressions
+
+- relief remains closed through the set pressure and reaches full lift at the declared full-lift pressure;
+- active atmospheric discharge is choked over the sampled pressure range;
+- capacity is monotonic and full-lift authority exceeds the approximately `12 kg/s` current-v2 steam path;
+- subcooled liquid is not discharged by the ideal-vapor seam;
+- saturated-mixture effective area is limited by committed vapor quality;
+- relief mass and internal energy are removed exactly once and equal the signed external exchange;
+- both current-v2 sustained profiles own one relief path while legacy profiles remain unchanged;
+- no turbine-bypass topology is introduced.
+
+### F.3 — Turbine bypass — DEFERRED
+
+Add a distinct turbine-bypass/steam-dump path only after F.2 is promoted. The bypass must own an explicit destination, respect condenser backpressure and remain separate from Phase G flow-work/enthalpy migration.
 
 ## Phase G — Flow Work and Enthalpy Transport
 

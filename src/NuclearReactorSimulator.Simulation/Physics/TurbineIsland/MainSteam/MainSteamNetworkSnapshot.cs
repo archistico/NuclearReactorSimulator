@@ -13,7 +13,8 @@ public sealed class MainSteamNetworkSnapshot
         IntegratedPrimaryCircuitSnapshot primaryCircuit,
         IEnumerable<MainSteamLineSnapshot> steamLines,
         IEnumerable<TurbineAdmissionTrainSnapshot> admissionTrains,
-        IEnumerable<TurbineAdmissionBoundarySnapshot> turbineAdmissionBoundaries)
+        IEnumerable<TurbineAdmissionBoundarySnapshot> turbineAdmissionBoundaries,
+        IEnumerable<MainSteamReliefBoundarySnapshot>? reliefBoundaries = null)
     {
         Definition = definition ?? throw new ArgumentNullException(nameof(definition));
         PrimaryCircuit = primaryCircuit ?? throw new ArgumentNullException(nameof(primaryCircuit));
@@ -31,6 +32,9 @@ public sealed class MainSteamNetworkSnapshot
         var canonicalLines = steamLines.OrderBy(static item => item.LineId, StringComparer.Ordinal).ToArray();
         var canonicalTrains = admissionTrains.OrderBy(static item => item.TrainId, StringComparer.Ordinal).ToArray();
         var canonicalBoundaries = turbineAdmissionBoundaries.OrderBy(static item => item.BoundaryId, StringComparer.Ordinal).ToArray();
+        var canonicalReliefBoundaries = (reliefBoundaries ?? Array.Empty<MainSteamReliefBoundarySnapshot>())
+            .OrderBy(static item => item.BoundaryId, StringComparer.Ordinal)
+            .ToArray();
 
         ValidateExactSet(
             definition.SteamLines.Select(static item => item.Id),
@@ -44,13 +48,20 @@ public sealed class MainSteamNetworkSnapshot
             definition.TurbineAdmissionBoundaries.Select(static item => item.Id),
             canonicalBoundaries.Select(static item => item.BoundaryId),
             "turbine-admission boundary");
+        ValidateExactSet(
+            definition.ReliefBoundaries.Select(static item => item.Id),
+            canonicalReliefBoundaries.Select(static item => item.BoundaryId),
+            "main-steam relief boundary");
 
         SteamLines = new ReadOnlyCollection<MainSteamLineSnapshot>(canonicalLines);
         AdmissionTrains = new ReadOnlyCollection<TurbineAdmissionTrainSnapshot>(canonicalTrains);
         TurbineAdmissionBoundaries = new ReadOnlyCollection<TurbineAdmissionBoundarySnapshot>(canonicalBoundaries);
+        ReliefBoundaries = new ReadOnlyCollection<MainSteamReliefBoundarySnapshot>(canonicalReliefBoundaries);
         TotalSteamLineMassFlowRate = SumMassFlow(canonicalLines.Select(static item => item.MassFlowRate));
         TotalTurbineAdmissionMassFlowRate = SumMassFlow(canonicalBoundaries.Select(static item => item.MassFlowRate));
         TotalTurbineAdmissionEnergyExportRate = SumPower(canonicalBoundaries.Select(static item => item.EnergyExportRate));
+        TotalReliefMassFlowRate = SumMassFlow(canonicalReliefBoundaries.Select(static item => item.MassFlowRate));
+        TotalReliefEnergyExportRate = SumPower(canonicalReliefBoundaries.Select(static item => item.EnergyExportRate));
     }
 
     public MainSteamNetworkDefinition Definition { get; }
@@ -63,11 +74,17 @@ public sealed class MainSteamNetworkSnapshot
 
     public IReadOnlyList<TurbineAdmissionBoundarySnapshot> TurbineAdmissionBoundaries { get; }
 
+    public IReadOnlyList<MainSteamReliefBoundarySnapshot> ReliefBoundaries { get; }
+
     public MassFlowRate TotalSteamLineMassFlowRate { get; }
 
     public MassFlowRate TotalTurbineAdmissionMassFlowRate { get; }
 
     public Power TotalTurbineAdmissionEnergyExportRate { get; }
+
+    public MassFlowRate TotalReliefMassFlowRate { get; }
+
+    public Power TotalReliefEnergyExportRate { get; }
 
     public PlantNetworkAudit Audit => PrimaryCircuit.Audit;
 
@@ -82,6 +99,10 @@ public sealed class MainSteamNetworkSnapshot
     public TurbineAdmissionBoundarySnapshot GetTurbineAdmissionBoundary(string id)
         => TurbineAdmissionBoundaries.FirstOrDefault(item => string.Equals(item.BoundaryId, id, StringComparison.Ordinal))
             ?? throw new KeyNotFoundException($"Unknown turbine-admission boundary '{id}'.");
+
+    public MainSteamReliefBoundarySnapshot GetReliefBoundary(string id)
+        => ReliefBoundaries.FirstOrDefault(item => string.Equals(item.BoundaryId, id, StringComparison.Ordinal))
+            ?? throw new KeyNotFoundException($"Unknown main-steam relief boundary '{id}'.");
 
 
     private static void ValidateExactSet(IEnumerable<string> expectedIds, IEnumerable<string> actualIds, string label)

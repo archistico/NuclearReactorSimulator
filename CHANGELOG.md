@@ -1,12 +1,25 @@
-## M10.9.4.1-F.1 — Choked Steam-Flow Capacity Law & Audit — CANDIDATE
+## M10.9.4.1-F.2 — Conservative Main-Steam Header Relief — CANDIDATE
 
-- Builds on the user-validated E.3.2 Hotfix 3 evidence-derived electrical-protection baseline.
+- Builds on the user-validated F.1 choked steam-flow capacity baseline.
+- Adds `MainSteamReliefBoundaryDefinition` with explicit source-header ownership, named external receiver boundary, fixed receiver pressure, set pressure, full-lift pressure and the validated F.1 compressible-flow definition.
+- Adds a pressure-actuated linear lift law: closed at or below 6.5 MPa, full lift at or above 6.7 MPa.
+- Configures one current-v2 atmospheric header-relief path with a 1,600 mm² full-open throat, 0.95 discharge coefficient, 461.526 J/(kg K) specific gas constant and 1.3 heat-capacity ratio.
+- Limits ideal-vapor relief capacity by committed vapor availability: superheated vapor uses 1.0, saturated mixture uses committed vapor quality and subcooled liquid remains ineligible.
+- Adds `MainSteamReliefBoundarySolver`, immutable snapshots and exact signed mass/internal-energy export through the existing single plant-network integration boundary.
+- Enables the relief path only in the two current-v2 sustained profiles; historical/legacy definitions retain an empty relief set.
+- Adds eleven ordinary regressions and one explicit current-v2 header-pressure sweep under `artifacts/f2-main-steam-relief`, plus `scripts/run-main-steam-relief-tests.cmd`.
+- Adds ADR 0116, the F.2 technical contract and a dedicated validation checklist.
+- Adds no turbine bypass, condenser receiver, downstream inventory, manual command, actuator travel, alarm/protection retuning, two-phase critical-flow law or enthalpy migration.
+
+## M10.9.4.1-F.1 — Choked Steam-Flow Capacity Law & Audit — VALIDATED
+
+- The user confirmed compilation, focused tests and the complete requested suite passed on 2026-07-26.
+- The representative audit confirmed analytic critical ratio 0.545728 and choked capacity 0.788008677 kg/s for 100 mm² at 6.2725 MPa and 278.5 °C.
+- Linear projections were 3.940043384 kg/s for 500 mm² and 7.880086767 kg/s for 1,000 mm²; monotonicity and the choked plateau were both confirmed.
 - Adds a typed `SpecificGasConstant` quantity and an isolated `CompressibleSteamFlowDefinition` for full-open throat area, discharge coefficient, ideal-vapor specific gas constant and heat-capacity ratio.
 - Adds `CompressibleSteamFlowSolver`, a one-way ideal-vapor nozzle/orifice capacity law with continuous subcritical behavior and a sonic/choked plateau below the analytic critical pressure ratio.
-- Adds no relief valve, bypass line, plant node, valve authority, source term, inventory mutation or HMI control. Conservative topology is deferred to F.2 after this numerical seam is validated.
-- Adds ten ordinary domain/simulation regressions for validation, critical-ratio continuity, monotonicity, linear area/opening scaling, choked-capacity capping and one-way behavior.
-- Adds one explicit current-v2 representative pressure-ratio sweep, deterministic CSV/summary artifacts under `artifacts/f1-choked-steam-flow` and `scripts/run-choked-steam-flow-tests.cmd`.
-- Adds ADR 0115, the F.1 technical contract and a dedicated validation checklist.
+- Adds ten ordinary domain/simulation regressions and one explicit pressure-ratio audit under `artifacts/f1-choked-steam-flow`.
+- F.1 remains a reusable capacity seam; plant topology and conservative integration begin only in F.2.
 
 ## M10.9.4.1-E.3.2 Hotfix 3 — Evidence-Derived Electrical Protection — VALIDATED
 

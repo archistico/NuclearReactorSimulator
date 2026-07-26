@@ -763,6 +763,8 @@ The valves remain ordinary validated M1 `ValveDefinition` components. `MainSteam
 
 M4.1 terminates at a replaceable `TurbineAdmissionBoundaryDefinition`. Its temporary sink removes explicitly declared signed mass/energy from the committed turbine-inlet node. M4.2 replaces this boundary with turbine expansion/shaft-power physics while preserving upstream main-steam topology and the M3.8 single-integration contract. See `docs/MAIN_STEAM_NETWORK.md` and ADR 0032.
 
+M10.9.4.1-F.2 extends that same semantic composition with optional `MainSteamReliefBoundaryDefinition` entries. A relief receiver is an explicitly named external boundary rather than a finite plant node. `MainSteamReliefBoundarySolver` reads committed source-header state, invokes the validated F.1 capacity seam and publishes signed source terms; `MainSteamNetworkSolver` combines them with turbine-admission and supplemental terms before the same single plant-network integration. The Application and App layers never compute relief flow or mutate conserved inventories.
+
 ## Turbine expansion and explicit mechanical rotor state (M4.2)
 
 M4.2 composes over the validated M4.1 `MainSteamNetworkDefinition` rather than creating another steam topology. Every M4.1 turbine-admission boundary feeds exactly one `TurbineStageGroupDefinition`, which targets an existing canonical exhaust fluid node and a defined `TurbineRotorDefinition`.

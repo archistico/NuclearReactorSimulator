@@ -90,5 +90,6 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             deterministicSeedStepCount: 2,
             generatorMaximumElectricalPowerMegawatts: 10d,
             generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
-            includeEvidenceDerivedElectricalProtections: includeEvidenceDerivedElectricalProtections);
+            includeEvidenceDerivedElectricalProtections: includeEvidenceDerivedElectricalProtections,
+            includeMainSteamHeaderRelief: true);
 }

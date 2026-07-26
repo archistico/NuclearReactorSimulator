@@ -92,7 +92,7 @@ public sealed class CompressibleSteamFlowCapacityAuditTests
             * definition.CriticalDownstreamToUpstreamPressureRatio;
         var summary = new StringBuilder();
         summary.AppendLine("=== 01-current-v2-representative-pressure-ratio-sweep ===");
-        summary.AppendLine("Ideal-vapor one-way nozzle/orifice capacity evidence only; no relief or bypass topology is active.");
+        summary.AppendLine("F.1 ideal-vapor one-way nozzle/orifice capacity evidence only; this audit does not exercise the F.2 relief path or any future turbine-bypass topology.");
         summary.AppendLine(FormattableString.Invariant(
             $"samples={rows.Count}; upstream-pressure={upstreamPressure.Megapascals:0.000000} MPa; upstream-temperature={upstreamTemperature.DegreesCelsius:0.000} C; full-open-area={definition.FullOpenThroatArea.SquareMillimetres:0.000} mm2; discharge-coefficient={definition.DischargeCoefficient:0.000};"));
         summary.AppendLine(FormattableString.Invariant(

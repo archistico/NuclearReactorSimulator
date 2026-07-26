@@ -1,8 +1,10 @@
 # M10.9.4.1-F.1 Choked Steam-Flow Capacity Law
 
-**Status:** CANDIDATE
+**Status:** VALIDATED
 
 **Validated parent:** M10.9.4.1-E.3.2 Hotfix 3
+
+**Validation evidence:** user-confirmed compilation, focused tests, ordinary suite and explicit audit passed on 2026-07-26.
 
 ## Purpose
 
@@ -52,7 +54,16 @@ artifacts/f1-choked-steam-flow/
     01-current-v2-representative-pressure-ratio-sweep.summary.txt
 ```
 
-The summary prints the analytic critical ratio and downstream pressure, sampled first-choked point, choked capacity and linear 500/1,000 mm² capacity projections. These projections are evidence for later topology sizing, not accepted valve sizes.
+The validated summary reports:
+
+- analytic critical ratio `0.545728`;
+- sampled first-choked ratio `0.540000`;
+- choked capacity `0.788008677 kg/s` at `100 mm²`;
+- projected capacity `3.940043384 kg/s` at `500 mm²`;
+- projected capacity `7.880086767 kg/s` at `1,000 mm²`;
+- monotonic flow and a stable choked plateau.
+
+These projections are evidence for later topology sizing, not certified valve sizes.
 
 ## Explicit model boundary
 

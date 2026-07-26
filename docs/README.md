@@ -22,7 +22,9 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `REFERENCE_PLANT_SCALE_CONTRACT.md` — validated E.2 current-v2 10 MWe/bidirectional contract and legacy compatibility boundary.
 - `ELECTRICAL_PROTECTION_TRAJECTORY_AUDIT.md` — validated E.3.1 evidence-only trajectory plan and artifact contract.
 - `M10_9_4_1_E3_2_PROTECTION_EVIDENCE.md` — reviewed normal, reverse-power, underfrequency and phase-slip envelopes plus the derived E.3.2 thresholds.
-- `M10_9_4_1_F1_CHOKED_STEAM_FLOW.md` — isolated ideal-vapor subcritical/choked capacity contract and pressure-ratio evidence before relief/bypass topology.
+- `M10_9_4_1_F1_CHOKED_STEAM_FLOW.md` — validated isolated ideal-vapor subcritical/choked capacity contract and pressure-ratio evidence.
+- `M10_9_4_1_F2_MAIN_STEAM_RELIEF.md` — conservative current-v2 atmospheric header-relief topology, conservation ownership and deferred scope.
+- `M10_9_4_1_F2_VALIDATION_CHECKLIST.md` — focused, ordinary and cumulative F.2 promotion gate.
 - `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible E.2 rotor energy, inertia, droop, power-limit and synchronizing-authority calculations.
 - `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
 - `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
@@ -42,7 +44,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Domain documents
 
-The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.3 interactive full-plant mimic baseline, validated M10.9.4, active non-green M10.9.4.1 extended audit/hardening, and the approved M10.9.1–M10.9.8 operator-experience architecture.
+The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.3 interactive full-plant mimic baseline, validated M10.9.4, active M10.9.4.1 operational-envelope/numerical hardening through validated F.1 and candidate F.2, and the approved M10.9.1–M10.9.8 operator-experience architecture.
 
 When modifying a subsystem, update its domain document together with the milestone/ADR/handoff documents rather than leaving architecture knowledge only in source comments or chat history.
 
@@ -52,8 +54,9 @@ When modifying a subsystem, update its domain document together with the milesto
 - M10.1–M10.9.4 and M10.9.4.1-D.4 are validated.
 - D.4 validation evidence is 944 ordinary tests plus all 17 unique explicit tests with zero failures.
 - M10.9.4.1-D.4.1 remains validated: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
-- M10.9.4.1-E.3.2 Hotfix 3 is the current validated continuation: current-v2 10 MWe signed coupling plus reviewed breaker-supervised delayed electrical protection.
-- The working source is M10.9.4.1-F.1 CANDIDATE: isolated ideal-vapor subcritical/choked steam-flow capacity law and deterministic pressure-ratio evidence; no relief/bypass topology is active.
+- M10.9.4.1-E.3.2 Hotfix 3 remains the validated electrical-protection checkpoint: current-v2 10 MWe signed coupling plus reviewed breaker-supervised delayed electrical protection.
+- M10.9.4.1-F.1 is validated: isolated ideal-vapor subcritical/choked capacity law and deterministic pressure-ratio evidence.
+- The working source is M10.9.4.1-F.2 CANDIDATE: one conservative pressure-actuated atmospheric header-relief boundary; turbine bypass and enthalpy migration remain deferred.
 - M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
