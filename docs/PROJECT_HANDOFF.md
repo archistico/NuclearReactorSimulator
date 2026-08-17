@@ -1,178 +1,182 @@
 # Nuclear Reactor Simulator — Project Handoff
 
-> **Authoritative validated baseline:** M10.9.4.1-H.18 Hotfix 1.
+> **Authoritative validated baseline:** M10.9.4.1-H.19 — Four-Node Long-Horizon & Cross-Profile Qualification.
 >
-> **Working source:** M10.9.4.1-H.19 CANDIDATE — Four-Node Long-Horizon & Cross-Profile Qualification.
+> **Working source:** M10.9.4.1-H.20 CANDIDATE — Four-Node Activation Contract, Rollback & Shadow Telemetry.
 >
-> **Production numerical policy:** current-v2 remains `ExplicitCommittedState` at 10 ms. No Phase H shadow corrector or branch-continuity policy is committed.
+> **Production numerical policy:** current-v2 remains `ExplicitCommittedState` at 10 ms. No Phase H corrected candidate or branch-continuity policy is committed.
 
 ## 1. Current engineering question
 
-H.18 validated the four-node shadow target extension on every frozen H.17 failure plus controls. H.19 must now determine whether the exact same four-node policy qualifies on the **complete H.17 long-horizon/cross-profile representative contract** before any activation design is considered.
-
-No solver, trigger, hysteresis limit, physical coefficient, branch order or production integration path is being changed.
-
-## 2. Validated Phase H chain
-
-- **H.4 VALIDATED:** P060/F040/R015 selected from bounded Picard evidence.
-- **H.5 Hotfix 2 VALIDATED:** production activation rolled back; extended shadow gate shows only 5/7 convergence.
-- **H.6 VALIDATED:** bounded Picard rescue reaches 6/7.
-- **H.7 Hotfix 1 VALIDATED:** true residual + deterministic backtracking reaches 5/7.
-- **H.8 VALIDATED:** safeguarded Anderson reaches 5/7.
-- **H.9 VALIDATED:** finite-difference Jacobian + damped Newton reaches 5/7; solver direction is not the root cause.
-- **H.10–H.12 VALIDATED:** failures localize to inverse thermodynamic branch selection, not hydraulic-law switching.
-- **H.13 Hotfix 2 VALIDATED:** bounded 2% / 5 K previous-phase continuity at `steam|stop-out` reaches 7/7.
-- **H.14 Hotfix 1 VALIDATED:** 2,000-interval gate reaches 14/15; interval 723 remains.
-- **H.15 Hotfix 1 VALIDATED:** interval 723 localizes to the same mechanism at `header`.
-- **H.16 VALIDATED:** `steam|stop-out|header` reaches 15/15 and recovers interval 723.
-- **H.17 Hotfix 6 VALIDATED:** 30,000-interval/four-profile diagnostic produces 3,046 triggers, 92 episodes and 473 representatives; three-node policy converges 228/473 and fails 245/473; `turbine-inlet` is discovered as a new disagreement node.
-- **H.18 Hotfix 1 VALIDATED:** four-node target set `steam|stop-out|header|turbine-inlet` converges 261/261 over all 245 H.17 failures plus 16 success controls.
-
-## 3. Authoritative H.18 result
-
-Local build, complete ordinary `dotnet test` and focused H.18 audit passed on 2026-08-17.
-
-```text
-frozen H.17 representatives                 473
-H.17 failures                               245
-  turbine-inlet mismatch failures           120
-  non-mismatch failures                     125
-H.18 success controls                        16
-H.18 evaluated samples                      261
-H.18 converged                              261/261
-remaining failures                            0
-recovered mismatch failures                 120/120
-recovered non-mismatch failures             125/125
-preserved success controls                   16/16
-turbine-inlet overrides                  14,746
-four-node-extension-qualifies              True
-```
-
-Additional safeguards:
-
-- committed `turbine-inlet` observations: 4,111;
-- committed `turbine-inlet` phase transitions: 1,240;
-- committed selection transparent: true;
-- deterministic sentinels: 24;
-- deterministic repeat: true;
-- new untargeted late-shadow nodes: none;
-- new untargeted phase-mismatch nodes: none;
-- `residual-floor-split-diagnostic-passes=True`;
-- `h18-audit-passes=True`;
-- production remained explicit and unchanged.
-
-The H.17 hypothesis of a separate residual-floor class was therefore not sustained on the H.18 selected set: the fourth target recovered both the mismatch and non-mismatch failure classes.
-
-## 4. H.19 design
-
-H.19 reuses the H.17 long-horizon qualification machinery but changes only the shadow target set to the H.18-validated four-node set.
-
-Reference horizon:
-
-```text
-steady-long             12,000 intervals
-load-pulse               6,000 intervals (validated 5→0→5 MWe)
-cooling-pulse            6,000 intervals (100%→75%→100%)
-combined-load-cooling    6,000 intervals
-TOTAL                    30,000 intervals
-```
-
-H.19 requires the regenerated evidence contract to remain exactly:
-
-```text
-P060/F040 census trigger intervals = 3,046
-trigger episodes                    = 92
-qualified representatives           = 473
-```
-
-The 473 regenerated `(profile, interval)` keys must exactly match:
-
-```text
-tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence/
-H17_Hotfix6_FrozenQualifiedRepresentativeEvidence.csv
-```
-
-Every representative is then evaluated with unchanged H.9 + unchanged 2% / 5 K bounded hysteresis at exactly:
+H.19 established that unchanged H.9 plus unchanged bounded 2% / 5 K previous-phase hysteresis targeted at exactly:
 
 ```text
 steam | stop-out | header | turbine-inlet
 ```
 
-H.19 reports:
+qualifies over the complete long-horizon/cross-profile representative contract.
 
-- total convergence / 473;
-- recovered frozen H.17 failures / 245;
-- preserved frozen H.17 successes / 228;
-- recovered mismatch failures / 120;
-- recovered non-mismatch failures / 125;
-- deterministic work and exact repeat;
-- closure/ownership residuals;
-- 120,000 committed target phase-state checks across the complete horizon;
-- committed-selection transparency;
-- all-node candidate-vs-explicit inverse-branch scan;
-- untargeted candidate-only late-shadow nodes;
-- untargeted candidate-vs-explicit phase-mismatch nodes;
-- inherited hold/release challenge result.
+H.20 must now define, **without production wiring**, the fail-closed authority, rollback and telemetry contract that any later opt-in activation candidate would have to obey.
 
-Positive qualification requires all of those safeguards to remain green and `four-node-long-horizon-cross-profile-shadow-qualification-passes=True`.
+## 2. Validated Phase H chain
 
-## 5. H.19 validation commands
+- **H.4 VALIDATED:** P060/F040/R015 selected from bounded Picard evidence.
+- **H.5 Hotfix 2 VALIDATED:** direct production activation rolled back; extended shadow gate was only 5/7.
+- **H.6–H.9 VALIDATED:** increasingly capable nonlinear correctors did not remove the original failure class.
+- **H.10–H.12 VALIDATED:** failures localized to inverse thermodynamic branch selection.
+- **H.13 Hotfix 2 VALIDATED:** bounded 2% / 5 K continuity at `steam|stop-out` reaches 7/7.
+- **H.14 Hotfix 1 VALIDATED:** broader 2,000-interval gate reaches 14/15.
+- **H.15 Hotfix 1 VALIDATED:** interval 723 localizes to the same mechanism at `header`.
+- **H.16 VALIDATED:** `steam|stop-out|header` reaches 15/15.
+- **H.17 Hotfix 6 VALIDATED:** 30,000 intervals, 3,046 P060/F040 triggers, 92 episodes, 473 representatives; three-node policy reaches 228/473 and exposes `turbine-inlet`.
+- **H.18 Hotfix 1 VALIDATED:** four-node target recovers all 245 H.17 failures plus 16/16 controls, 261/261 overall.
+- **H.19 VALIDATED:** full four-profile long-horizon qualification reaches 473/473 with all safeguards green.
 
-From repository root:
+## 3. Authoritative H.19 result
+
+User validation on 2026-08-17 passed local compilation, complete ordinary `dotnet test` and focused H.19 audit.
+
+```text
+profiles                                      4
+production-shadow intervals              30,000
+P060/F040 trigger intervals                3,046
+trigger episodes                               92
+qualified representatives                     473
+representative keys match frozen H.17        True
+H.19 converged                           473/473
+line-search exhausted                           0
+recovered H.17 failures                  245/245
+preserved H.17 successes                 228/228
+recovered turbine-inlet mismatch         120/120
+recovered non-mismatch                   125/125
+branch overrides                           32,829
+previous-phase holds                      127,600
+committed phase-state checks              120,000
+committed selection observations           24,346
+committed selection overrides                   0
+committed target phase transitions          3,992
+inverse qualified sample node scans          5,676
+untargeted late-shadow nodes                  none
+untargeted phase-mismatch nodes               none
+release challenges                           4/4
+max closure / ownership             0 / 0.000000239
+qualification passes                         True
+h19 audit passes                              True
+```
+
+Deterministic work ratio was 1.547433 and exact deterministic repeat passed. Production remained explicit, target set and hysteresis limits were unchanged and no shadow candidate was committed.
+
+## 4. H.20 design
+
+H.20 freezes the validated H.19 focused evidence in:
+
+```text
+tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence/
+H19_ValidatedQualifiedRepresentativeResults.csv
+H19_ValidatedQualificationMetrics.csv
+H19_ValidatedQualificationSummary.txt
+```
+
+The three frozen files are also guarded by canonical SHA-256 fingerprints (newline-normalized only), so H.20 cannot silently qualify against edited H.19 evidence.
+
+It introduces a shadow-only `FourNodeBranchContinuityShadowActivationSupervisor`.
+
+Default contract:
+
+```text
+activation arm                              disabled
+pressure trigger                            0.060
+flow trigger                                40 kg/s
+pressure residual guard                     1e-5
+flow residual guard                         1e-2 kg/s
+mass closure guard                          1e-8 kg/s
+energy ownership guard                      1e-3 W
+targets                                     steam|stop-out|header|turbine-inlet
+production commit authorization             always false
+```
+
+The supervisor is not wired into `PlantNetworkOrchestrator`.
+
+## 5. Fail-closed authority
+
+For a triggered observation with the shadow arm simulated as enabled, a corrected candidate is eligible only if all guards pass.
+
+Deterministic rollback priority is:
+
+1. qualification evidence unavailable;
+2. corrector non-convergence;
+3. line-search exhaustion;
+4. pressure residual breach;
+5. flow residual breach;
+6. mass-closure breach;
+7. energy-ownership breach;
+8. untargeted branch disagreement.
+
+Every failed guard proposes immediate `ExplicitCommittedState` and emits its typed reason. There is no persistent activation latch or cross-interval candidate authority in H.20.
+
+## 6. H.20 focused audit
+
+The gate evaluates:
+
+- all 473 frozen H.19 representatives with activation arm disabled: expected 473/473 explicit;
+- the same 473 with the arm simulated as enabled inside the shadow supervisor: expected 473/473 candidate-eligible but **0 production commits**;
+- eight rollback fault-injection challenges: expected 8/8 immediate explicit rollback with exact typed reasons;
+- an untriggered observation: expected explicit without rollback;
+- exact deterministic decision fingerprint repeat;
+- current desktop current-v2 factory still `ExplicitCommittedState`.
+
+Positive result requires:
+
+```text
+activation-contract-passes=True
+h20-audit-passes=True
+```
+
+## 7. Validation commands
 
 ```bat
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-four-node-long-horizon-cross-profile-qualification-audit.cmd
+scripts\run-four-node-activation-rollback-contract-audit.cmd
 ```
 
 Focused artifacts:
 
 ```text
-artifacts\h19-four-node-long-horizon-cross-profile-qualification\
+artifacts\h20-four-node-activation-rollback-contract\
 ```
 
-Heartbeat:
-
-```text
-00-progress.txt
-```
-
-A negative qualification flag is valid evidence if the structural focused audit itself completes. Production stays explicit either way.
-
-## 6. Files authoritative for restart
-
-Read these first:
+## 8. Files authoritative for restart
 
 1. `docs/NEW_CHAT_START.md`
 2. `docs/PROJECT_HANDOFF.md`
 3. `docs/PROJECT_STATUS.md`
 4. `docs/ROADMAP.md`
-5. `docs/M10_9_4_1_H19_FOUR_NODE_LONG_HORIZON_CROSS_PROFILE_QUALIFICATION.md`
-6. `docs/M10_9_4_1_H19_VALIDATION_CHECKLIST.md`
-7. `docs/adr/0145-qualify-four-node-continuity-before-any-activation-design.md`
-8. `docs/M10_9_4_1_H18_TURBINE_INLET_CONTINUITY_RESIDUAL_FLOOR_SPLIT_DIAGNOSIS.md`
+5. `docs/M10_9_4_1_H20_FOUR_NODE_ACTIVATION_ROLLBACK_SHADOW_TELEMETRY_CONTRACT.md`
+6. `docs/M10_9_4_1_H20_VALIDATION_CHECKLIST.md`
+7. `docs/adr/0146-define-fail-closed-four-node-activation-contract-before-production-wiring.md`
+8. `docs/M10_9_4_1_H19_FOUR_NODE_LONG_HORIZON_CROSS_PROFILE_QUALIFICATION.md`
 
-## 7. Hard constraints
+## 9. Hard constraints
 
 Do not:
 
-- activate H.9 in production;
-- activate bounded branch continuity/hysteresis in production;
-- change production inverse-map branch order;
+- activate the H.19 four-node policy in standard production during H.20;
+- wire H.20 authority into `PlantNetworkOrchestrator`;
+- introduce a silent fallback that hides failed correction attempts;
+- introduce a persistent activation latch, cooldown or dwell rule without evidence;
+- change production inverse-map order;
 - retune 2% / 5 K hysteresis limits;
 - retune P060/F040 or H.9 tolerances;
 - change physical coefficients;
-- change the production 10 ms timestep;
-- generalize the target set beyond `steam|stop-out|header|turbine-inlet`;
-- hide flow with filtering or thermodynamic clamping;
+- change production 10 ms timestep;
+- generalize beyond `steam|stop-out|header|turbine-inlet`;
+- hide flow with filtering/clamping;
 - commit shadow candidate states.
 
-H.19 is a qualification milestone, not an activation milestone.
+## 10. Package-time authority
 
-## 8. Package-time authority
+This H.20 package is authored **after** the user validated H.19. Therefore H.19 is the authoritative validated baseline encoded in the package.
 
-This H.19 package is authored **after** the user validated H.18 Hotfix 1. Therefore H.18 Hotfix 1 is the authoritative validated baseline encoded in this package.
-
-H.19 remains a candidate until the user reports local build, ordinary-suite and focused-audit results. A new chat must not infer H.19 validation from the existence of this ZIP.
+H.20 remains a candidate until the user reports local build, ordinary-suite and focused-audit results. A new chat must not infer H.20 validation from the existence of the ZIP.

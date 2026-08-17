@@ -2,7 +2,9 @@
 
 ## Status
 
-**CANDIDATE**, built directly on user-validated **M10.9.4.1-H.18 Hotfix 1**.
+**VALIDATED — 2026-08-17.** Local compilation, complete ordinary `dotnet test` suite and the focused H.19 audit passed. H.19 is the authoritative validated baseline for H.20.
+
+Built directly on user-validated **M10.9.4.1-H.18 Hotfix 1**.
 
 H.18 established that unchanged H.9 plus unchanged bounded 2% / 5 K previous-phase hysteresis targeted at:
 
@@ -97,6 +99,28 @@ H.19 does **not** modify or activate:
 - current-v2 10 ms `ExplicitCommittedState` production integration.
 
 No H.19 shadow candidate state is committed.
+
+## User validation result
+
+The validated focused result is:
+
+- 30,000 production-shadow intervals across four profiles;
+- P060/F040 census reproduced exactly: 3,046 triggers, 92 episodes and 473 representatives;
+- regenerated representative keys exactly match frozen H.17 evidence;
+- 473/473 representatives converged, with zero line-search exhaustion;
+- 245/245 frozen H.17 failures recovered and 228/228 H.17 successes preserved;
+- 120/120 turbine-inlet-mismatch failures and 125/125 non-mismatch failures recovered;
+- 32,829 branch overrides and 127,600 previous-phase holds;
+- deterministic work ratio 1.547433 and exact deterministic repeat;
+- 120,000 committed target phase-state checks, 24,346 committed selection observations and zero committed-selection overrides;
+- 3,992 committed target phase transitions;
+- 5,676 all-node inverse scans with no untargeted candidate-only late-shadow node and no untargeted candidate-vs-explicit phase-mismatch node;
+- release challenges 4/4;
+- maximum closure/ownership residuals 0 / 0.000000239;
+- `four-node-long-horizon-cross-profile-shadow-qualification-passes=True`;
+- `h19-audit-passes=True`.
+
+Production remained 10 ms `ExplicitCommittedState`; no shadow candidate was committed and no branch-continuity policy was activated.
 
 ## Decision after H.19
 

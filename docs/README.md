@@ -83,7 +83,7 @@ When modifying a subsystem, update its domain document together with the milesto
 - M10.9.4.1-D.4.1 remains validated: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
 - M10.9.4.1-E.3.2 Hotfix 3 remains the validated electrical-protection checkpoint: current-v2 10 MWe signed coupling plus reviewed breaker-supervised delayed electrical protection.
 - M10.9.4.1-F.1, F.2 and F.3 Hotfix 1 are validated: compressible capacity law, atmospheric header relief and conservative header-to-condenser bypass.
-- The validated continuation baseline is M10.9.4.1-H.18 Hotfix 1 and Phase G is complete. Production remains explicit at 10 ms. H.18 validated the four-node `steam|stop-out|header|turbine-inlet` shadow extension over all 245 H.17 failures plus 16 controls with 261/261 convergence and no residual failure class. H.19 is the working candidate: it returns that unchanged four-node policy to the complete 30,000-interval/four-profile H.17 long-horizon qualification contract before any activation design.
+- The validated continuation baseline is M10.9.4.1-H.19 and Phase G is complete. Production remains explicit at 10 ms. H.19 reproduced the complete 30,000-interval/four-profile P060/F040 contract at 3,046 triggers, 92 episodes and exact 473 frozen representatives, then converged 473/473 with committed transparency and no new untargeted branch disagreement. H.20 is the working candidate: it freezes the validated H.19 evidence and defines a default-disabled fail-closed shadow activation/rollback/telemetry contract before any production wiring.
 - M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
@@ -140,5 +140,7 @@ See `PROJECT_HANDOFF.md` for the full authoritative statement.
 - `M10_9_4_1_H17_VALIDATION_CHECKLIST.md` — H.17 local validation contract.
 - `M10_9_4_1_H18_TURBINE_INLET_CONTINUITY_RESIDUAL_FLOOR_SPLIT_DIAGNOSIS.md` — validated H.18 split-diagnosis design and result.
 - `M10_9_4_1_H18_VALIDATION_CHECKLIST.md` — validated H.18 local validation contract.
-- `M10_9_4_1_H19_FOUR_NODE_LONG_HORIZON_CROSS_PROFILE_QUALIFICATION.md` — active H.19 four-node long-horizon qualification design.
-- `M10_9_4_1_H19_VALIDATION_CHECKLIST.md` — H.19 local validation contract.
+- `M10_9_4_1_H19_FOUR_NODE_LONG_HORIZON_CROSS_PROFILE_QUALIFICATION.md` — validated H.19 four-node long-horizon qualification evidence.
+- `M10_9_4_1_H19_VALIDATION_CHECKLIST.md` — completed H.19 local validation contract.
+- `M10_9_4_1_H20_FOUR_NODE_ACTIVATION_ROLLBACK_SHADOW_TELEMETRY_CONTRACT.md` — active H.20 fail-closed authority/rollback/telemetry design.
+- `M10_9_4_1_H20_VALIDATION_CHECKLIST.md` — H.20 local validation contract.

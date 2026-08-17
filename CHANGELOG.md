@@ -1,5 +1,20 @@
-## M10.9.4.1-H.19 — Four-Node Long-Horizon & Cross-Profile Qualification — CANDIDATE
+## M10.9.4.1-H.20 — Four-Node Activation Contract, Rollback & Shadow Telemetry — CANDIDATE
 
+- Built directly on user-validated H.19; production remains `ExplicitCommittedState` at 10 ms.
+- Freezes the validated H.19 473-representative results, metrics and summary as ordinary regression evidence.
+- Adds a shadow-only `FourNodeBranchContinuityShadowActivationSupervisor` with activation arm disabled by default.
+- Freezes P060/F040, the exact `steam|stop-out|header|turbine-inlet` target set, H.9 residual guards and validated closure/ownership guards.
+- Corrected authority is only a shadow proposal; `ProductionCommitAuthorized` is always false and the supervisor is not wired into `PlantNetworkOrchestrator`.
+- Adds deterministic fail-closed rollback reasons for missing qualification evidence, non-convergence, line-search exhaustion, pressure/flow residual breach, closure/ownership breach and untargeted branch disagreement.
+- Focused gate evaluates default-disabled and shadow-armed decisions over all 473 validated H.19 representatives, plus eight typed rollback challenges and deterministic fingerprint repeat.
+- Adds H.20 design/checklist, ADR 0146 and `scripts/run-four-node-activation-rollback-contract-audit.cmd`.
+
+## M10.9.4.1-H.19 — Four-Node Long-Horizon & Cross-Profile Qualification — VALIDATED
+
+- User-confirmed local build, complete ordinary suite and focused H.19 audit passed.
+- Validated result: exact 30,000-interval/four-profile census with 3,046 P060/F040 triggers, 92 episodes and 473 frozen representative keys; 473/473 converged, zero line-search exhaustion, 245/245 H.17 failures recovered and 228/228 successes preserved.
+- Committed selection stayed transparent across 120,000 target phase-state checks; no new untargeted late-shadow or selected-phase mismatch node was found; release challenges, deterministic repeat and closure/ownership safeguards passed.
+- Production remained `ExplicitCommittedState` at 10 ms and no shadow state was committed.
 - Built directly on user-validated H.18 Hotfix 1; production remains `ExplicitCommittedState` at 10 ms.
 - Re-runs the complete H.17 30,000-interval/four-profile P060/F040 census and requires exact reproduction of 3,046 trigger intervals, 92 episodes and 473 representative profile/interval keys.
 - Evaluates all 473 representatives with unchanged H.9 and unchanged 2%/5 K bounded hysteresis targeted exactly at `steam|stop-out|header|turbine-inlet`.

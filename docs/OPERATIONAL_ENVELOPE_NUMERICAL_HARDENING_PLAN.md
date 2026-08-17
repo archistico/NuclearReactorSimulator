@@ -258,7 +258,7 @@ Canonical M5.5 supports optional measured supervision and committed pickup timin
 
 ### Gate 0 — Documentation and baseline identity — COMPLETE
 
-1. Treat M10.9.4.1-H.18 Hotfix 1 as the current validated continuation baseline and use M10.9.4.1-H.19 as the working four-node long-horizon/cross-profile shadow qualification candidate; current-v2 production remains explicit.
+1. Treat M10.9.4.1-H.19 as the current validated continuation baseline and use M10.9.4.1-H.20 as the working fail-closed activation/rollback/shadow-telemetry contract candidate; current-v2 production remains explicit and the H.20 supervisor is not wired into `PlantNetworkOrchestrator`.
 2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration, validated E.3 electrical protection, validated F.1–F.3 steam-capacity/relief/bypass work and validated G.1–G.3 energy migration.
 3. Record G.4 as the final current-v2 turbine-expansion enthalpy/shaft-work migration before Phase H.
 4. Keep legacy/current-v1 defaults and current-v2 opt-in behavior explicit in every test and document.

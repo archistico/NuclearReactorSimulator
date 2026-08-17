@@ -3,7 +3,7 @@ setlocal EnableExtensions
 cd /d "%~dp0"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.4.1-H.19 four-node long-horizon / cross-profile qualification candidate...
+echo Applying M10.9.4.1-H.20 four-node activation / rollback / shadow telemetry contract candidate...
 
 echo Removing stale local build outputs so stacked ZIP timestamps cannot reuse an older assembly...
 for /d /r %%D in (bin) do @if exist "%%D" rd /s /q "%%D"
@@ -17,5 +17,5 @@ for %%F in (
     if exist "%%~F" del /q "%%~F"
 )
 
-echo M10.9.4.1-H.19 applied. Stale bin/obj outputs were removed; rebuild before testing.
+echo M10.9.4.1-H.20 applied. Stale bin/obj outputs were removed; rebuild before testing.
 exit /b 0
