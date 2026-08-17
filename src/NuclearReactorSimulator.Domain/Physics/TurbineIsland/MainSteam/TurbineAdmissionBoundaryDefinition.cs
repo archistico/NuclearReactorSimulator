@@ -1,3 +1,5 @@
+using NuclearReactorSimulator.Domain.Physics.Fluids;
+
 namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.MainSteam;
 
 /// <summary>
@@ -6,11 +8,21 @@ namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.MainSteam;
 /// </summary>
 public sealed record TurbineAdmissionBoundaryDefinition
 {
-    public TurbineAdmissionBoundaryDefinition(string id, string admissionTrainId, string sourceNodeId)
+    public TurbineAdmissionBoundaryDefinition(
+        string id,
+        string admissionTrainId,
+        string sourceNodeId,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         Id = ValidateId(id, nameof(id), "Turbine-admission boundary");
         AdmissionTrainId = ValidateId(admissionTrainId, nameof(admissionTrainId), "Turbine-admission train");
         SourceNodeId = ValidateId(sourceNodeId, nameof(sourceNodeId), "Turbine-admission source node");
+        if (!Enum.IsDefined(energyTransportMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(energyTransportMode), energyTransportMode, "Unsupported turbine-admission energy-transport mode.");
+        }
+
+        EnergyTransportMode = energyTransportMode;
     }
 
     public string Id { get; }
@@ -18,6 +30,8 @@ public sealed record TurbineAdmissionBoundaryDefinition
     public string AdmissionTrainId { get; }
 
     public string SourceNodeId { get; }
+
+    public FluidEnergyTransportMode EnergyTransportMode { get; }
 
     private static string ValidateId(string value, string parameterName, string label)
     {

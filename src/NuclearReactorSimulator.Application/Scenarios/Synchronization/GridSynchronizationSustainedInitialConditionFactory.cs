@@ -92,5 +92,9 @@ public sealed class GridSynchronizationSustainedInitialConditionFactory : IVersi
             generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
             includeEvidenceDerivedElectricalProtections: includeEvidenceDerivedElectricalProtections,
             includeMainSteamHeaderRelief: true,
-            includeTurbineBypass: true);
+            includeTurbineBypass: true,
+            useEnthalpyTransportForPassivePipesAndValves: true,
+            useEnthalpyTransportForRemainingNonTurbinePaths: true,
+            useEnthalpyTransportForTurbineExpansion: true,
+            useHybridSemiImplicitHydraulics: false);
 }

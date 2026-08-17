@@ -1,3 +1,4 @@
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 
 namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.Condenser;
@@ -15,7 +16,8 @@ public sealed class CondenserDefinition
         string coolingBoundaryId,
         MassFlowRate maximumCondensationMassFlowRate,
         ThermalConductance? overallHeatTransferConductance = null,
-        CondenserCondensateEnergyMode condensateEnergyMode = CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy)
+        CondenserCondensateEnergyMode condensateEnergyMode = CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -68,6 +70,11 @@ public sealed class CondenserDefinition
             throw new ArgumentOutOfRangeException(nameof(condensateEnergyMode), condensateEnergyMode, "Unsupported condenser condensate-energy mode.");
         }
 
+        if (!Enum.IsDefined(energyTransportMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(energyTransportMode), energyTransportMode, "Unsupported condenser energy-transport mode.");
+        }
+
         Id = id.Trim();
         TurbineStageGroupId = turbineStageGroupId.Trim();
         SteamSpaceNodeId = steamSpaceNodeId.Trim();
@@ -76,6 +83,7 @@ public sealed class CondenserDefinition
         MaximumCondensationMassFlowRate = maximumCondensationMassFlowRate;
         OverallHeatTransferConductance = overallHeatTransferConductance;
         CondensateEnergyMode = condensateEnergyMode;
+        EnergyTransportMode = energyTransportMode;
     }
 
     public string Id { get; }
@@ -102,4 +110,6 @@ public sealed class CondenserDefinition
     /// pressure-resolved saturated-liquid condensate without changing the generic network transport law.
     /// </summary>
     public CondenserCondensateEnergyMode CondensateEnergyMode { get; }
+
+    public FluidEnergyTransportMode EnergyTransportMode { get; }
 }

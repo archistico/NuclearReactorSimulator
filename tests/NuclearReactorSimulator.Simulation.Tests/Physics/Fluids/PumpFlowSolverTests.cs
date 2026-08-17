@@ -173,6 +173,53 @@ public sealed class PumpFlowSolverTests
             solver.Solve(pump, state, from, to));
     }
 
+
+    [Fact]
+    public void HistoricalPumpPath_KeepsInternalEnergyAdvectionAndAddsHydraulicWorkExactlyOnce()
+    {
+        var result = Solve(PumpSpeed.Rated, true, 5d, 5d);
+        var combined = result.FromNodeBalance + result.ToNodeBalance;
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificInternalEnergy, result.EnergyTransportMode);
+        Assert.Equal(result.InternalEnergyFlowRate, result.AdvectedEnergyFlowRate);
+        Assert.Equal(result.HydraulicPowerExchange, combined.NetEnergyRate);
+        Assert.Equal(
+            result.HydraulicPowerExchange.Watts,
+            result.ToNodeBalance.NetEnergyRate.Watts - result.AdvectedEnergyFlowRate.Watts,
+            6);
+    }
+
+    [Fact]
+    public void EnthalpyPumpPath_StillAddsHydraulicWorkExactlyOnceWithoutUsingShaftDemandAsFluidPower()
+    {
+        var pump = new PumpDefinition(
+            "pump",
+            new PipeDefinition(
+                "path",
+                "from",
+                "to",
+                QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(50_000d),
+                FluidEnergyTransportMode.SpecificEnthalpy),
+            PressureDifference.FromMegapascals(0.4d),
+            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(50_000d),
+            PumpEfficiency.FromPercent(80d));
+        var result = new PumpFlowSolver().Solve(
+            pump,
+            new PumpState(pump.Id, PumpSpeed.Rated),
+            CreateNode("from", 5d, 1_000d, 100d),
+            CreateNode("to", 5d, 800d, 120d));
+        var combined = result.FromNodeBalance + result.ToNodeBalance;
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, result.EnergyTransportMode);
+        Assert.Equal(result.EnthalpyFlowRate, result.AdvectedEnergyFlowRate);
+        Assert.Equal(result.HydraulicPowerExchange, combined.NetEnergyRate);
+        Assert.NotEqual(result.ShaftPowerDemand, combined.NetEnergyRate);
+        Assert.Equal(
+            result.HydraulicPowerExchange.Watts,
+            result.ToNodeBalance.NetEnergyRate.Watts - result.AdvectedEnergyFlowRate.Watts,
+            6);
+    }
+
     private static PumpFlowResult Solve(
         PumpSpeed speed,
         bool isRunning,

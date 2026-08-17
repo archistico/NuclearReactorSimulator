@@ -12,7 +12,8 @@ public sealed record PipeDefinition
         string id,
         string fromNodeId,
         string toNodeId,
-        QuadraticHydraulicResistance resistance)
+        QuadraticHydraulicResistance resistance,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -42,10 +43,19 @@ public sealed record PipeDefinition
             throw new ArgumentOutOfRangeException(nameof(resistance), resistance, "A pipe hydraulic resistance must be greater than zero.");
         }
 
+        if (!Enum.IsDefined(energyTransportMode))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(energyTransportMode),
+                energyTransportMode,
+                "Unknown fluid energy-transport mode.");
+        }
+
         Id = id.Trim();
         FromNodeId = normalizedFromNodeId;
         ToNodeId = normalizedToNodeId;
         Resistance = resistance;
+        EnergyTransportMode = energyTransportMode;
     }
 
     public string Id { get; }
@@ -55,4 +65,10 @@ public sealed record PipeDefinition
     public string ToNodeId { get; }
 
     public QuadraticHydraulicResistance Resistance { get; }
+
+    /// <summary>
+    /// Specific-energy convention used by this connection when producing node balances.
+    /// The default preserves the historical internal-energy advection contract.
+    /// </summary>
+    public FluidEnergyTransportMode EnergyTransportMode { get; }
 }

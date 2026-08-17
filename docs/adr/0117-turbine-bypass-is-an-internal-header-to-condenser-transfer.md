@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4.1-F.3 candidate.
+Accepted and validated with M10.9.4.1-F.3 Hotfix 1.
 
 ## Context
 

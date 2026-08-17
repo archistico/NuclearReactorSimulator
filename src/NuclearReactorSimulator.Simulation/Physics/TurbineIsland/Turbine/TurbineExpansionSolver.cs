@@ -320,27 +320,68 @@ public sealed class TurbineExpansionSolver
             var rotor = rotorWorking[stage.RotorId];
             var boundary = _definition.MainSteamNetwork.GetTurbineAdmissionBoundary(stage.AdmissionBoundaryId);
             var inlet = committedPlantState.GetFluidNode(boundary.SourceNodeId);
-            var inletEnergyFlow = inlet.SpecificInternalEnergy * working.EffectiveMassFlowRate;
+            SpecificEnergy inletSpecificFlowWork;
+            SpecificEnergy inletSpecificEnthalpy;
+            SpecificEnergy inletAdvectedSpecificEnergy;
+            if (inlet.Density > Density.Zero)
+            {
+                inletSpecificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(inlet.Pressure, inlet.Density);
+                inletSpecificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+                    inlet.SpecificInternalEnergy,
+                    inlet.Pressure,
+                    inlet.Density);
+                inletAdvectedSpecificEnergy = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+                    stage.EnergyTransportMode,
+                    inlet);
+            }
+            else if (working.EffectiveMassFlowRate == MassFlowRate.Zero)
+            {
+                // Empty/zero-density inlet with zero turbine flow carries no advected energy. Preserve legacy/extreme
+                // no-flow resolvability instead of requiring an undefined p/rho diagnostic.
+                inletSpecificFlowWork = SpecificEnergy.Zero;
+                inletSpecificEnthalpy = inlet.SpecificInternalEnergy;
+                inletAdvectedSpecificEnergy = inlet.SpecificInternalEnergy;
+            }
+            else
+            {
+                throw new InvalidOperationException(
+                    $"Turbine stage group '{stage.Id}' cannot advect positive mass flow from a zero-density inlet.");
+            }
+            var inletEnergyFlow = inletAdvectedSpecificEnergy * working.EffectiveMassFlowRate;
             var shaftPower = working.ShaftTorque.At(rotor.AverageAngularSpeed);
             var extractedSpecificWork = working.EffectiveMassFlowRate == MassFlowRate.Zero
                 ? SpecificEnergy.Zero
                 : SpecificEnergy.FromJoulesPerKilogram(
                     shaftPower.Watts / working.EffectiveMassFlowRate.KilogramsPerSecond);
 
+            // The current thermodynamic-work law remains deliberately unchanged in G.4 and is still bounded by the
+            // historical inlet-internal-energy extraction fraction. This guard therefore remains valid for both modes.
             if (extractedSpecificWork > inlet.SpecificInternalEnergy)
             {
                 throw new InvalidOperationException(
                     $"Turbine stage group '{stage.Id}' would extract {extractedSpecificWork.KilojoulesPerKilogram:F3} kJ/kg from an inlet containing only {inlet.SpecificInternalEnergy.KilojoulesPerKilogram:F3} kJ/kg internal energy.");
             }
 
+            // Retain the historical diagnostic for backward-compatible snapshots. Under SpecificEnthalpy this value is
+            // not the advected exhaust term; the canonical G.4 transport term is exposed separately below.
             var exhaustSpecificInternalEnergy = SpecificEnergy.FromJoulesPerKilogram(
                 inlet.SpecificInternalEnergy.JoulesPerKilogram - extractedSpecificWork.JoulesPerKilogram);
-            var exhaustEnergyFlow = inletEnergyFlow - shaftPower;
+            var exhaustAdvectedSpecificEnergy = SpecificEnergy.FromJoulesPerKilogram(
+                inletAdvectedSpecificEnergy.JoulesPerKilogram - extractedSpecificWork.JoulesPerKilogram);
+            if (exhaustAdvectedSpecificEnergy < SpecificEnergy.Zero)
+            {
+                throw new InvalidOperationException(
+                    $"Turbine stage group '{stage.Id}' produced a negative advected exhaust specific energy.");
+            }
+
+            var exhaustEnergyFlow = exhaustAdvectedSpecificEnergy * working.EffectiveMassFlowRate;
             if (exhaustEnergyFlow < Power.Zero)
             {
                 throw new InvalidOperationException($"Turbine stage group '{stage.Id}' produced a negative exhaust energy flow.");
             }
 
+            var flowWorkRate = inletSpecificFlowWork * working.EffectiveMassFlowRate;
+            var ownershipResidual = inletEnergyFlow - exhaustEnergyFlow - shaftPower;
             var snapshot = new TurbineStageGroupSnapshot(
                 stage.Id,
                 stage.AdmissionBoundaryId,
@@ -368,7 +409,16 @@ public sealed class TurbineExpansionSolver
                 inletEnergyFlow,
                 exhaustEnergyFlow,
                 shaftPower,
-                working.ShaftTorque);
+                working.ShaftTorque)
+            {
+                EnergyTransportMode = stage.EnergyTransportMode,
+                InletSpecificFlowWork = inletSpecificFlowWork,
+                InletSpecificEnthalpy = inletSpecificEnthalpy,
+                InletAdvectedSpecificEnergy = inletAdvectedSpecificEnergy,
+                ExhaustAdvectedSpecificEnergy = exhaustAdvectedSpecificEnergy,
+                FlowWorkRate = flowWorkRate,
+                TurbineEnergyOwnershipResidual = ownershipResidual,
+            };
             result.Add(new StageSolution(snapshot));
         }
 

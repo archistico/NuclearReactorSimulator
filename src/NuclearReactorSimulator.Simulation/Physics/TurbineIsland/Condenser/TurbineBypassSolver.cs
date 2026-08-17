@@ -11,7 +11,7 @@ namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Condenser;
 
 /// <summary>
 /// F.3 committed-state turbine-bypass owner. It evaluates the validated F.1 compressible-flow capacity against the
-/// actual condenser steam-space backpressure and stages one internal header-to-condenser mass/internal-energy transfer
+/// actual condenser steam-space backpressure and stages one internal header-to-condenser mass/advected-energy transfer
 /// before the inherited single plant-network commit boundary.
 /// </summary>
 public sealed class TurbineBypassSolver
@@ -51,16 +51,28 @@ public sealed class TurbineBypassSolver
                 source.Temperature,
                 destination.Pressure,
                 effectiveAreaFraction);
-            var energyTransferRate = source.SpecificInternalEnergy * flow.MassFlowRate;
+            var specificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+                source.Pressure,
+                source.Density);
+            var specificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+                source.SpecificInternalEnergy,
+                source.Pressure,
+                source.Density);
+            var internalEnergyTransferRate = source.SpecificInternalEnergy * flow.MassFlowRate;
+            var flowWorkTransferRate = specificFlowWork * flow.MassFlowRate;
+            var advectedEnergyTransferRate = FluidEnergyTransport.ResolveSelectedEnergyRate(
+                bypass.EnergyTransportMode,
+                source,
+                flow.MassFlowRate);
 
             AddBalance(
                 balances,
                 source.Id,
-                new FluidNodeBalance(-flow.MassFlowRate, -energyTransferRate));
+                new FluidNodeBalance(-flow.MassFlowRate, -advectedEnergyTransferRate));
             AddBalance(
                 balances,
                 destination.Id,
-                new FluidNodeBalance(flow.MassFlowRate, energyTransferRate));
+                new FluidNodeBalance(flow.MassFlowRate, advectedEnergyTransferRate));
 
             snapshots.Add(new TurbineBypassSnapshot(
                 bypass.Id,
@@ -77,8 +89,13 @@ public sealed class TurbineBypassSolver
                 flow.EffectiveThroatArea,
                 flow.IsChoked,
                 flow.MassFlowRate,
+                bypass.EnergyTransportMode,
                 source.SpecificInternalEnergy,
-                energyTransferRate));
+                specificFlowWork,
+                specificEnthalpy,
+                internalEnergyTransferRate,
+                flowWorkTransferRate,
+                advectedEnergyTransferRate));
         }
 
         return new TurbineBypassStepResult(

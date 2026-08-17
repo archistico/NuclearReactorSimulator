@@ -77,3 +77,7 @@ produces the same fault lifecycle history/state without a separate wall-clock fa
 - M8.5 remains an unvalidated candidate for bounded educational leak/LOCA-class scenarios; M8.6 is a stacked candidate for explicit electrical-loss/SBO-class composition.
 
 All concrete effects must compose through existing canonical M1–M5 owners.
+
+## Approved future accident-progression extension
+
+Future Instructor/Fault and severe-event work must continue to compose through deterministic typed fault/state owners. Persistent damage, evolving rupture/fire mechanisms and incident severity are approved directions, but must be derived from modeled physical mechanisms and replayable state rather than arbitrary scenario outcome flags. See `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md` and ADR 0121.

@@ -55,7 +55,15 @@ public sealed record PumpFlowResult
 
     public VolumetricFlowRate VolumetricFlowRate { get; }
 
+    public FluidEnergyTransportMode EnergyTransportMode => HydraulicFlow.EnergyTransportMode;
+
     public Power InternalEnergyFlowRate => HydraulicFlow.InternalEnergyFlowRate;
+
+    public Power FlowWorkRate => HydraulicFlow.FlowWorkRate;
+
+    public Power EnthalpyFlowRate => HydraulicFlow.EnthalpyFlowRate;
+
+    public Power AdvectedEnergyFlowRate => HydraulicFlow.AdvectedEnergyFlowRate;
 
     /// <summary>
     /// Signed work rate exchanged by the active pump pressure source with the fluid.

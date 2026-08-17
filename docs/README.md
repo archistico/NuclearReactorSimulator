@@ -26,7 +26,15 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `M10_9_4_1_F2_MAIN_STEAM_RELIEF.md` — conservative current-v2 atmospheric header-relief topology, conservation ownership and deferred scope.
 - `M10_9_4_1_F2_VALIDATION_CHECKLIST.md` — validated F.2 promotion evidence.
 - `M10_9_4_1_F3_TURBINE_BYPASS.md` — internal header-to-condenser bypass ownership, backpressure and conservation contract.
-- `M10_9_4_1_F3_VALIDATION_CHECKLIST.md` — focused, ordinary and cumulative F.3 promotion gate.
+- `M10_9_4_1_F3_VALIDATION_CHECKLIST.md` — validated F.3 promotion gate.
+- `M10_9_4_1_G1_OPEN_CONTROL_VOLUME_ENERGY.md` — target enthalpy convention, audit-only solver and phased migration boundary.
+- `M10_9_4_1_G1_VALIDATION_CHECKLIST.md` — validated focused, ordinary and cumulative G.1 promotion gate.
+- `M10_9_4_1_G2_PASSIVE_HYDRAULIC_ENTHALPY.md` — validated passive pipe/valve enthalpy migration and pump-work ownership contract.
+- `M10_9_4_1_G2_VALIDATION_CHECKLIST.md` — validated G.2 Hotfix 2 gate and evidence.
+- `M10_9_4_1_G3_REMAINING_NON_TURBINE_ENTHALPY.md` — validated remaining non-turbine enthalpy-migration contract.
+- `M10_9_4_1_G3_VALIDATION_CHECKLIST.md` — validated G.3 promotion gate.
+- `M10_9_4_1_G4_TURBINE_EXPANSION_ENTHALPY.md` — current turbine-expansion enthalpy/shaft-work ownership contract.
+- `M10_9_4_1_G4_VALIDATION_CHECKLIST.md` — focused, ordinary and cumulative G.4 promotion gate.
 - `REFERENCE_PLANT_SCALE_EVIDENCE.md` — reproducible E.2 rotor energy, inertia, droop, power-limit and synchronizing-authority calculations.
 - `KNOWN_MODEL_LIMITATIONS.md` — current limitations, active hypotheses and deferred fidelity register.
 - `GAMEPLAY_LONG_RUNNING_SYSTEM_TESTS.md` — validated 60-second journeys and non-green M10.9.4.1 extended-envelope tier.
@@ -34,11 +42,28 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `milestones/M10.9.1.md` — validated HMI information-architecture/visual-language baseline.
 - `OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md` — approved M10.9.1–M10.9.8 operator-experience, schematics, consequence and challenge architecture.
 - `HMI_VISUAL_DESIGN_SYSTEM.md` — normative visual design system for shell, alarms, schematics, controls, typography, spacing and UI acceptance.
+- `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md` — approved post-hardening direction for extreme operation/accident progression, spatial 2D core, IndustrialControls-based control-room refresh, mimic layout, procedures/presets and Instructor mode.
+- `M10_9_4_1_H1_NUMERICAL_STIFFNESS_EVIDENCE.md` / `M10_9_4_1_H1_VALIDATION_CHECKLIST.md` — fixed-step refinement evidence and validation gate before the H.2 numerical-method decision.
+- `M10_9_4_1_H2_NUMERICAL_METHOD_DECISION.md` / `M10_9_4_1_H2_VALIDATION_CHECKLIST.md` — validated evidence-derived selection of deterministic semi-implicit pressure/flow coupling; H.2 keeps production explicit at 10 ms.
+- `M10_9_4_1_H3_SEMI_IMPLICIT_HYDRAULIC_PROTOTYPE.md` / `M10_9_4_1_H3_VALIDATION_CHECKLIST.md` — validated isolated frozen-forcing prototype: material chatter reduction, exact conservation/determinism, but ~15.895x full-time cost.
+- `M10_9_4_1_H4_HYBRID_SEMI_IMPLICIT_ACTIVATION_GATE.md` / `M10_9_4_1_H4_VALIDATION_CHECKLIST.md` — validated deterministic explicit-predictor/semi-implicit-corrector sweep and bounded-work activation decision gate.
+- `M10_9_4_1_H5_HYBRID_PRODUCTION_INTEGRATION.md` / `M10_9_4_1_H5_VALIDATION_CHECKLIST.md` — validated production rollback and 5 s extended shadow qualification; 7/500 corrections, 5/7 convergent, production explicit.
+- `M10_9_4_1_H6_CORRECTOR_RESCUE_ENVELOPE.md` / `M10_9_4_1_H6_VALIDATION_CHECKLIST.md` — validated bounded primary/rescue Picard envelope on the exact H.5 difficult intervals.
+- `M10_9_4_1_H7_CORRECTOR_ALGORITHM_REVISION.md` — validated true fixed-point residual and deterministic-backtracking corrector revision.
+- `M10_9_4_1_H8_ACCELERATED_NONLINEAR_HYDRAULIC_CORRECTOR.md` — validated safeguarded-Anderson acceleration study.
+- `M10_9_4_1_H9_JACOBIAN_INFORMED_NONLINEAR_HYDRAULIC_CORRECTOR.md` / `M10_9_4_1_H9_VALIDATION_CHECKLIST.md` — validated conservative-coordinate finite-difference Jacobian / damped-Newton study.
+- `M10_9_4_1_H10_HYDRAULIC_MAP_SWITCHING_NONSMOOTHNESS_DIAGNOSIS.md` / `M10_9_4_1_H10_VALIDATION_CHECKLIST.md` — validated diagnosis separating hydraulic smoothness from thermodynamic switching at the two persistent failures.
+- `M10_9_4_1_H11_THERMODYNAMIC_SWITCHING_LOCALIZATION_ACTIVE_SET_DIAGNOSIS.md` / `M10_9_4_1_H11_VALIDATION_CHECKLIST.md` — validated localization of the original interval-200/360 thermodynamic phase boundaries.
+- `M10_9_4_1_H12_THERMODYNAMIC_INVERSE_BRANCH_SELECTION_AUDIT.md` / `M10_9_4_1_H12_VALIDATION_CHECKLIST.md` — validated inverse-map overlapping-root/coarse-priority diagnosis.
+- `M10_9_4_1_H13_THERMODYNAMIC_BRANCH_CONTINUITY_HYSTERESIS_SHADOW_EXPERIMENT.md` / `M10_9_4_1_H13_VALIDATION_CHECKLIST.md` — validated targeted branch-continuity/hysteresis experiment.
+- `M10_9_4_1_H14_BROADER_THERMODYNAMIC_BRANCH_CONTINUITY_SHADOW_QUALIFICATION.md` / `M10_9_4_1_H14_VALIDATION_CHECKLIST.md` — validated broader 2,000-interval qualification evidence, 14/15 with interval 723 as the sole failure.
+- `M10_9_4_1_H15_EXTENDED_TRIGGER_723_ROOT_CAUSE_DIAGNOSIS.md` / `M10_9_4_1_H15_VALIDATION_CHECKLIST.md` — validated interval-723 all-path/all-node root-cause diagnosis.
+- `M10_9_4_1_H16_EXTENDED_THREE_NODE_BRANCH_CONTINUITY_QUALIFICATION.md` / `M10_9_4_1_H16_VALIDATION_CHECKLIST.md` — current candidate extending the unchanged bounded policy to the H.15-localized `header` target.
 - `milestones/M10.8.md` / `OPERATOR_COMPUTER_INTEGRATED_UI.md` — validated integrated operator-computer baseline retained beneath the refactor.
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI and hardening decisions are ADR 0046–0114.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI/hardening and approved future-product decisions are ADR 0046–0140.
 
 ## Milestone records
 
@@ -46,7 +71,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Domain documents
 
-The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.3 interactive full-plant mimic baseline, validated M10.9.4, active M10.9.4.1 operational-envelope/numerical hardening through validated F.1 and candidate F.2, and the approved M10.9.1–M10.9.8 operator-experience architecture.
+The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.3 interactive full-plant mimic baseline, validated M10.9.4, active M10.9.4.1 operational-envelope/numerical hardening through validated H.14 Hotfix 1 / completed Phase G and candidate H.15 interval-723 root-cause diagnosis, and the approved M10.9.1–M10.9.8 operator-experience architecture.
 
 When modifying a subsystem, update its domain document together with the milestone/ADR/handoff documents rather than leaving architecture knowledge only in source comments or chat history.
 
@@ -57,8 +82,8 @@ When modifying a subsystem, update its domain document together with the milesto
 - D.4 validation evidence is 944 ordinary tests plus all 17 unique explicit tests with zero failures.
 - M10.9.4.1-D.4.1 remains validated: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
 - M10.9.4.1-E.3.2 Hotfix 3 remains the validated electrical-protection checkpoint: current-v2 10 MWe signed coupling plus reviewed breaker-supervised delayed electrical protection.
-- M10.9.4.1-F.1 and F.2 are validated: compressible capacity law plus conservative atmospheric header relief.
-- The working source is M10.9.4.1-F.3 Hotfix 1 CANDIDATE: one internal pressure-actuated header-to-condenser bypass using committed backpressure; enthalpy migration remains deferred.
+- M10.9.4.1-F.1, F.2 and F.3 Hotfix 1 are validated: compressible capacity law, atmospheric header relief and conservative header-to-condenser bypass.
+- The validated continuation baseline is M10.9.4.1-H.17 Hotfix 6 and Phase G is complete. Production remains explicit at 10 ms. H.13–H.16 established bounded 2%/5 K branch continuity at `steam|stop-out|header`; H.17 validated the 30,000-interval/four-profile diagnostic infrastructure and found 245/473 representative failures plus a new `turbine-inlet` disagreement class. H.18 is the working candidate: it freezes the validated H.17 representative evidence, extends the unchanged shadow target set only to `turbine-inlet`, and splits branch-continuity recovery from residual-floor diagnosis.
 - M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.
@@ -107,6 +132,11 @@ See `PROJECT_HANDOFF.md` for the full authoritative statement.
 - `TURBINE_ROTOR_MECHANICAL_LOSS_CLOSURE.md` — D.3.1 passive-loss law, energy ownership and breaker-open recovery method.
 - `M10_9_4_1_D3_1_VALIDATION_CHECKLIST.md` — cumulative D.3.1 build, ordinary, protection-reset, D.2/D.3 and long-running gates.
 - `M10_9_4_1_D4_VALIDATION_CHECKLIST.md` — validated operator turbine-valve station and complete ordinary/explicit gate evidence.
-- `M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md` — current candidate gate for STOP travel ownership, replay/checkpoint and trip-reset resumption.
+- `M10_9_4_1_D4_1_VALIDATION_CHECKLIST.md` — validated STOP travel ownership, replay/checkpoint and trip-reset resumption gate.
 - `adr/0101-governor-effective-setpoint-and-actuator-tracking-are-audited-before-new-anti-windup.md` — evidence boundary before any tracking anti-windup law.
 - `adr/0102-current-v2-breaker-open-rotor-has-passive-mechanical-losses.md` — current-v2 passive rotor-loss and explicit recovery decision.
+
+- `M10_9_4_1_H17_LONG_HORIZON_CROSS_PROFILE_BRANCH_CONTINUITY_QUALIFICATION.md` — active H.17 long-horizon/cross-profile shadow qualification.
+- `M10_9_4_1_H17_VALIDATION_CHECKLIST.md` — H.17 local validation contract.
+- `M10_9_4_1_H18_TURBINE_INLET_CONTINUITY_RESIDUAL_FLOOR_SPLIT_DIAGNOSIS.md` — active H.18 split-diagnosis design.
+- `M10_9_4_1_H18_VALIDATION_CHECKLIST.md` — H.18 local validation contract.

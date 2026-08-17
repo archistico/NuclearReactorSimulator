@@ -18,7 +18,8 @@ public sealed class PlantDefinition
         IEnumerable<PumpDefinition> pumps,
         IEnumerable<ThermalBodyDefinition> thermalBodies,
         IEnumerable<HeatTransferDefinition> heatTransfers,
-        IEnumerable<HeatSourceDefinition> heatSources)
+        IEnumerable<HeatSourceDefinition> heatSources,
+        HydraulicNumericalCouplingDefinition? hydraulicNumericalCoupling = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -97,6 +98,7 @@ public sealed class PlantDefinition
         ThermalBodies = new ReadOnlyCollection<ThermalBodyDefinition>(canonicalThermalBodies);
         HeatTransfers = new ReadOnlyCollection<HeatTransferDefinition>(canonicalHeatTransfers);
         HeatSources = new ReadOnlyCollection<HeatSourceDefinition>(canonicalHeatSources);
+        HydraulicNumericalCoupling = hydraulicNumericalCoupling ?? HydraulicNumericalCouplingDefinition.ExplicitCommittedState;
     }
 
     public string Id { get; }
@@ -114,6 +116,8 @@ public sealed class PlantDefinition
     public IReadOnlyList<HeatTransferDefinition> HeatTransfers { get; }
 
     public IReadOnlyList<HeatSourceDefinition> HeatSources { get; }
+
+    public HydraulicNumericalCouplingDefinition HydraulicNumericalCoupling { get; }
 
     public FluidNodeDefinition GetFluidNode(string id) => GetById(FluidNodes, id, static item => item.Id, "fluid node");
 

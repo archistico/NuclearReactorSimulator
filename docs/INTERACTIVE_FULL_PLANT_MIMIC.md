@@ -70,3 +70,15 @@ Selection never dispatches a plant command.
 ## Design references
 
 The user-provided SVGs under `docs/reference/hmi/` remain visual/design references. They do not define authoritative plant topology or runtime values.
+
+## Approved future viewport and layout extension
+
+The validated M10.9.3 mimic contract remains unchanged, but the approved post-hardening direction adds a future presentation layer for:
+
+- zoom and pan;
+- fit/reset view;
+- explicit layout-edit mode;
+- drag, lock and reset-to-default operations;
+- versioned persistent user position overrides keyed by stable canonical equipment ID.
+
+The canonical topology, connection semantics and default layout remain Application-owned. User layout overrides are presentation preferences only: moving equipment on screen must never alter process/electrical connectivity or simulation definitions. See `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md` and ADR 0123.

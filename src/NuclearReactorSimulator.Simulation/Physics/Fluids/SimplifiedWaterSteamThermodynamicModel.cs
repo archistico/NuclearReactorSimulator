@@ -9,7 +9,7 @@ namespace NuclearReactorSimulator.Simulation.Physics.Fluids;
 /// combined with deliberately simplified correlations for density and internal energy.
 /// It is not a complete IAPWS-IF97 implementation and must not be used for engineering design.
 /// </summary>
-public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamicModel, IWaterSteamSaturationPropertyProvider
+public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamicModel, IWaterSteamSaturationPropertyProvider, IWaterSteamInverseBranchDiagnosticProvider
 {
     private const double TriplePointTemperatureKelvins = 273.16d;
     private const double CriticalTemperatureKelvins = 647.096d;
@@ -89,6 +89,80 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
         throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
     }
+
+    public WaterSteamInverseBranchSelectionDiagnostic DiagnoseInverseBranchSelection(
+        FluidNodeDefinition definition,
+        FluidNodeInventory inventory,
+        FluidThermodynamicState previousState)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(inventory);
+        ArgumentNullException.ThrowIfNull(previousState);
+
+        var specificVolume = definition.Volume.CubicMetres / inventory.Mass.Kilograms;
+        var specificInternalEnergy = inventory.SpecificInternalEnergy.JoulesPerKilogram;
+        if (!double.IsFinite(specificVolume) || specificVolume <= 0d || !double.IsFinite(specificInternalEnergy))
+        {
+            throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
+        }
+
+        var coarseSaturatedFound = TryResolveSaturatedMixture(specificVolume, specificInternalEnergy, out var coarseSaturated);
+        var liquidFound = TryResolveSubcooledLiquid(specificVolume, specificInternalEnergy, out var liquid);
+        var coarseSuperheatedFound = TryResolveSuperheatedVapor(specificVolume, specificInternalEnergy, out var coarseSuperheated);
+        var boundarySaturatedFound = TryResolveBoundaryAwareSaturatedMixture(specificVolume, specificInternalEnergy, out var boundarySaturated);
+        var boundarySuperheatedFound = TryResolveBoundaryAwareSuperheatedVapor(specificVolume, specificInternalEnergy, out var boundarySuperheated);
+
+        var candidates = new[]
+        {
+            CreateBranchCandidate("coarse-saturated", 1, coarseSaturatedFound, coarseSaturated),
+            CreateBranchCandidate("subcooled-liquid", 2, liquidFound, liquid),
+            CreateBranchCandidate("coarse-superheated", 3, coarseSuperheatedFound, coarseSuperheated),
+            CreateBranchCandidate("boundary-aware-saturated", 4, boundarySaturatedFound, boundarySaturated),
+            CreateBranchCandidate("boundary-aware-superheated", 5, boundarySuperheatedFound, boundarySuperheated),
+        };
+        var selected = candidates.FirstOrDefault(static candidate => candidate.RootFound);
+        var saturatedAvailable = coarseSaturatedFound || boundarySaturatedFound;
+        var superheatedAvailable = coarseSuperheatedFound || boundarySuperheatedFound;
+
+        return new WaterSteamInverseBranchSelectionDiagnostic(
+            definition.Id,
+            specificVolume,
+            specificInternalEnergy,
+            selected?.Branch ?? "none",
+            selected?.Phase ?? FluidPhase.Unspecified.ToString(),
+            saturatedAvailable,
+            superheatedAvailable,
+            saturatedAvailable && superheatedAvailable,
+            coarseSaturatedFound,
+            boundarySaturatedFound,
+            coarseSuperheatedFound,
+            boundarySuperheatedFound,
+            !coarseSaturatedFound && coarseSuperheatedFound && boundarySaturatedFound,
+            candidates);
+    }
+
+    private static WaterSteamInverseBranchCandidate CreateBranchCandidate(
+        string branch,
+        int attemptOrder,
+        bool rootFound,
+        FluidThermodynamicState state)
+        => rootFound
+            ? new WaterSteamInverseBranchCandidate(
+                branch,
+                attemptOrder,
+                true,
+                state.Phase.ToString(),
+                state.Pressure.Pascals,
+                state.Temperature.Kelvins,
+                state.VaporQuality?.Fraction)
+            : new WaterSteamInverseBranchCandidate(
+                branch,
+                attemptOrder,
+                false,
+                FluidPhase.Unspecified.ToString(),
+                double.NaN,
+                double.NaN,
+                null);
 
     public WaterSteamSaturationProperties GetSaturationProperties(Temperature temperature)
     {

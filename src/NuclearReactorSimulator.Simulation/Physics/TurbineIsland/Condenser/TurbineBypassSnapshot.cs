@@ -18,5 +18,10 @@ public sealed record TurbineBypassSnapshot(
     Area EffectiveThroatArea,
     bool IsChoked,
     MassFlowRate MassFlowRate,
+    FluidEnergyTransportMode EnergyTransportMode,
     SpecificEnergy TransferredSpecificInternalEnergy,
-    Power InternalEnergyTransferRate);
+    SpecificEnergy TransferredSpecificFlowWork,
+    SpecificEnergy TransferredSpecificEnthalpy,
+    Power InternalEnergyTransferRate,
+    Power FlowWorkTransferRate,
+    Power AdvectedEnergyTransferRate);

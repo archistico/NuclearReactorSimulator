@@ -158,6 +158,40 @@ public sealed class TurbineExpansionSolverTests
     }
 
     [Fact]
+    public void Step_SpecificEnthalpyModeAddsFlowWorkWithoutRetuningShaftWork()
+    {
+        var ratedSpeed = AngularSpeed.FromRevolutionsPerMinute(3_000d);
+        var expectedTorque = Torque.FromNewtonMetres(400_000d / ratedSpeed.RadiansPerSecond);
+        var legacy = CreateFixture(3_000d, expectedTorque, tripCommand: false);
+        var current = CreateFixture(
+            3_000d,
+            expectedTorque,
+            tripCommand: false,
+            energyTransportMode: FluidEnergyTransportMode.SpecificEnthalpy);
+        var legacyResult = new TurbineExpansionSolver(legacy.Definition, new PreservingThermodynamicModel())
+            .Step(legacy.PlantState, legacy.TurbineState, legacy.Inputs, TimeSpan.FromMilliseconds(1d));
+        var currentResult = new TurbineExpansionSolver(current.Definition, new PreservingThermodynamicModel())
+            .Step(current.PlantState, current.TurbineState, current.Inputs, TimeSpan.FromMilliseconds(1d));
+        var legacyStage = Assert.Single(legacyResult.Snapshot.StageGroups);
+        var currentStage = Assert.Single(currentResult.Snapshot.StageGroups);
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificInternalEnergy, legacyStage.EnergyTransportMode);
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, currentStage.EnergyTransportMode);
+        Assert.Equal(legacyStage.ShaftPower, currentStage.ShaftPower);
+        Assert.Equal(legacyStage.ExtractedSpecificWork, currentStage.ExtractedSpecificWork);
+        Assert.Equal(5d, currentStage.InletSpecificFlowWork.KilojoulesPerKilogram, 9);
+        Assert.Equal(2_005d, currentStage.InletSpecificEnthalpy.KilojoulesPerKilogram, 9);
+        Assert.Equal(currentStage.InletSpecificEnthalpy, currentStage.InletAdvectedSpecificEnergy);
+        Assert.Equal(1_605d, currentStage.ExhaustAdvectedSpecificEnergy.KilojoulesPerKilogram, 9);
+        Assert.Equal(2_005d, currentStage.InletEnergyFlowRate.Kilowatts, 9);
+        Assert.Equal(1_605d, currentStage.ExhaustEnergyFlowRate.Kilowatts, 9);
+        Assert.Equal(5d, currentStage.FlowWorkRate.Kilowatts, 9);
+        Assert.InRange(Math.Abs(currentStage.TurbineEnergyOwnershipResidual.Watts), 0d, 1e-6d);
+        Assert.Equal(-400d, currentResult.Snapshot.ThermofluidAudit.SupplementalExternalPower.Kilowatts, 9);
+        Assert.InRange(Math.Abs(currentResult.Snapshot.ThermofluidAudit.BalancePowerResidualWatts), 0d, 1e-6d);
+    }
+
+    [Fact]
     public void Step_IsDeterministicForIdenticalCommittedPlantAndRotorState()
     {
         var fixture = CreateFixture(2_500d, Torque.FromNewtonMetres(500d), tripCommand: false);
@@ -383,7 +417,8 @@ public sealed class TurbineExpansionSolverTests
         double inletSpecificInternalEnergyKilojoulesPerKilogram = 2_000d,
         TurbineRotorMechanicalLossDefinition? mechanicalLoss = null,
         QuadraticHydraulicResistance? expansionResistance = null,
-        ValvePosition? controlValvePosition = null)
+        ValvePosition? controlValvePosition = null,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -529,7 +564,8 @@ public sealed class TurbineExpansionSolverTests
                     TurbineEfficiency.FromPercent(80d),
                     expansionResistance: expansionResistance,
                     thermodynamicWork: thermodynamicWork,
-                    admissionPhasePolicy: admissionPhasePolicy),
+                    admissionPhasePolicy: admissionPhasePolicy,
+                    energyTransportMode: energyTransportMode),
             });
 
         var primaryBoundaryInputs = new PrimaryCircuitBoundaryInputs(

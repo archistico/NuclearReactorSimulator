@@ -9,4 +9,7 @@ public sealed record MainSteamValveSnapshot(
     ValveFlowCoefficient FlowCoefficient,
     PressureDifference PressureDifference,
     MassFlowRate MassFlowRate,
-    Power InternalEnergyFlowRate);
+    Power InternalEnergyFlowRate,
+    Power FlowWorkRate,
+    Power AdvectedEnergyFlowRate,
+    FluidEnergyTransportMode EnergyTransportMode);

@@ -5,6 +5,7 @@ using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Condenser;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
+using NuclearReactorSimulator.Domain.Plant;
 using Xunit;
 
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Synchronization;
@@ -22,6 +23,11 @@ public sealed class GridSynchronizationSustainedInitialConditionFactoryTests
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
         var currentPlant = currentEngine.CurrentState.PlantDefinition.PlantDefinition;
+        var currentHydraulicCoupling = currentPlant.HydraulicNumericalCoupling;
+        Assert.Equal(
+            HydraulicNumericalCouplingMode.ExplicitCommittedState,
+            currentHydraulicCoupling.Mode);
+        Assert.Equal(1, currentHydraulicCoupling.MaximumCorrectorIterations);
         Assert.All(
             new[] { "steam", "header", "stop-out", "control-out", "turbine-inlet" },
             nodeId => Assert.Equal(100d, currentPlant.GetFluidNode(nodeId).Volume.CubicMetres, 12));

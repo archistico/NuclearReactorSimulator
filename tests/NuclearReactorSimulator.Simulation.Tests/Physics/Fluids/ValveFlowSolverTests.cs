@@ -144,6 +144,32 @@ public sealed class ValveFlowSolverTests
             solver.Solve(valve, state, from, to));
     }
 
+
+    [Fact]
+    public void ValvePath_PreservesConfiguredSpecificEnthalpyTransportMode()
+    {
+        var valve = new ValveDefinition(
+            "valve",
+            new PipeDefinition(
+                "path",
+                "from",
+                "to",
+                QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(100_000d),
+                FluidEnergyTransportMode.SpecificEnthalpy),
+            ValveCharacteristic.Linear,
+            ValveFailSafeAction.FailClosed);
+
+        var result = new ValveFlowSolver().Solve(
+            valve,
+            new ValveState(valve.Id, ValvePosition.FullyOpen),
+            CreateNode("from", 5.4d, 1_000d, 100d),
+            CreateNode("to", 5.0d, 800d, 120d));
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, result.EnergyTransportMode);
+        Assert.Equal(result.EnthalpyFlowRate, result.AdvectedEnergyFlowRate);
+        Assert.True(result.FlowWorkRate > Power.Zero);
+    }
+
     private static ValveFlowResult Solve(ValvePosition position)
     {
         var valve = CreateValve(ValveCharacteristic.Linear, ValveFailSafeAction.FailClosed);

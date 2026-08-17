@@ -1,3 +1,376 @@
+## M10.9.4.1-H.18 Hotfix 1 — IReadOnlyList Count Compile Fix — CANDIDATE
+
+- Fixes the H.18 focused audit compile error by using `IReadOnlyList<string>.Count` instead of the nonexistent `.Length` property for the two untargeted-node diagnostic lists.
+- No solver, thermodynamic model, branch-continuity policy, trigger, production routing, frozen H.17 evidence or H.18 diagnostic criterion changes.
+- H.17 Hotfix 6 remains the validated baseline until H.18 Hotfix 1 passes build, ordinary tests and the focused audit.
+
+## M10.9.4.1-H.18 — Turbine-Inlet Continuity Extension & Residual-Floor Split Diagnosis — CANDIDATE
+
+- Built only on user-validated H.17 Hotfix 6; production remains explicit at 10 ms and no H.9/H.13 shadow state is committed.
+- Freezes the validated H.17 473-representative evidence contract (228 converged / 245 failed) and its failure split: 120 failures with `turbine-inlet` candidate-vs-explicit phase mismatch, 125 without.
+- Reconstructs the same four H.17 reference profiles but skips the already-validated expensive 3,046-trigger H.4 census; H.9 is run on all 245 H.17 failures plus 16 deterministic success controls.
+- Extends the unchanged bounded 2% pressure / 5 K temperature shadow target set only from `steam|stop-out|header` to `steam|stop-out|header|turbine-inlet`.
+- Diagnoses every remaining failure for mapped-minus-applied node residual ranking, accepted-iterate merit floor, minimum accepted relaxation and all-node candidate-vs-explicit inverse-branch disagreement.
+- Adds committed `turbine-inlet` transparency observation, deterministic sentinel repeat, focused artifacts, ADR 0144, H.18 design/checklist and authoritative new-chat handoff documentation.
+- Does not change `SimplifiedWaterSteamThermodynamicModel.Resolve()`, `ThermodynamicBranchContinuityModel`, H.9, P060/F040, hysteresis limits, physical coefficients or `PlantNetworkOrchestrator`.
+
+## M10.9.4.1-H.17 Hotfix 6 — Canonical Determinism Fingerprints — VALIDATED
+
+- User-confirmed build, complete ordinary suite and focused H.17 audit passed.
+- Long-horizon diagnostic result: 30,000 explicit intervals, 3,046 P060/F040 trigger intervals, 92 episodes, 473 representatives, 228/473 converged and 245/473 line-search exhausted.
+- H.16 control remained 15/15; committed selection, deterministic repeat, hold/release challenges and closure/ownership remained green.
+- All-node inverse scan discovered untargeted `turbine-inlet`; 120 failures have turbine-inlet candidate-vs-explicit phase mismatch and 125 failures do not.
+- The three-node policy therefore does not qualify on the extended domain; production remains explicit.
+
+> **M10.9.4.1-H.17 Hotfix 6 candidate:** fixes an audit-only false determinism failure by canonicalizing policy/committed-observation/inverse-scan fingerprints before comparison. The 30,000-interval census, 3,046-trigger evidence, 92 trigger episodes, 473 H.9 qualification representatives, 21 policy determinism sentinels, H.9 solver, branch-continuity policy, thresholds and production path are unchanged.
+
+
+> **M10.9.4.1-H.17 Hotfix 5 candidate:** descriptor-only contract alignment: the runtime status now uses the exact phrase `deterministic cross-profile sentinel set` required by `ApplicationDescriptorTests`. The H.17 Hotfix 4 trigger-episode stratified audit, H.9 solver, branch-continuity policy, thresholds and production path are unchanged.
+## M10.9.4.1-H.17 Hotfix 4 — Trigger-Episode Stratified Long-Horizon Qualification — CANDIDATE
+
+- Built only on the user-validated H.16 baseline and H.17 Hotfix 3 evidence; no production/numerical component changes.
+- Hotfix 3 proved the validator was not stalled: it completed all 30,000 reference intervals and found 3,046 P060/F040 trigger intervals (`837/1014/175/1020` by profile).
+- Keeps the exhaustive trigger census and unchanged P060/F040, but replaces unbounded all-trigger H.9 work with deterministic trigger-episode stratification.
+- Episodes use a 25-interval maximum quiet gap and retain first/last/hardest representatives; all H.16 control triggers, profile action-boundary representatives and temporal profile samples are also retained.
+- Bounds expensive H.9 + all-node candidate inverse-map qualification to at most 512 representative events; mandatory episode/control representatives are never silently dropped.
+- All census triggers still force committed target branch-selection observation; deterministic sentinel repeats, hold/release challenges, closure/ownership checks and heartbeat reporting remain.
+- Adds `03a-trigger-episode-stratification.csv` and ADR 0143.
+- Production remains explicit at 10 ms; H.16 remains the validated baseline until H.17 Hotfix 4 passes build, ordinary tests and focused audit.
+
+## M10.9.4.1-H.17 Hotfix 3 — Long-run audit performance and heartbeat
+
+- Preserves the full 30,000-interval, four-profile reference trajectory and qualifies **every discovered P060/F040 trigger once** with the unchanged H.9 + three-node bounded hysteresis policy.
+- Removes the redundant second full H.9 pass and second full inverse-map scan used only for determinism; exact deterministic repeat is now rechecked on a deterministic sentinel set spanning every profile and interval 723.
+- Keeps the full committed-state transparency observation pass; its repeat is reduced to deterministic trigger/edge/1,000-interval sentinels.
+- Adds a fail-fast budget of 512 discovered triggers. Exceeding it is an explicit gate failure requiring trigger-run stratification, rather than allowing an unbounded Newton audit.
+- Adds `artifacts/h17-long-horizon-cross-profile-branch-continuity/00-progress.txt` heartbeat updates through reference generation, trigger census, policy, committed observation and inverse scan stages.
+- No production solver, thermodynamic policy, H.9 tolerance, trigger threshold, physical coefficient or target node is changed.
+
+# Changelog
+
+## M10.9.4.1-H.17 Hotfix 3 — Validated Load-Pulse Reference Profile — CANDIDATE
+
+- Builds directly on H.17 Hotfix 1 and preserves the user-validated H.16 numerical baseline.
+- Ordinary build and tests passed on Hotfix 1, but the focused H.17 reference trajectory correctly exposed an active plant trip at `load-pulse` interval 634 after the audit-only 5→10 MWe request.
+- Does not suppress, reset or weaken that trip. Instead, changes only the audit load excursion to the already validated normal breaker-closed 5→0→5 MWe trajectory: `GeneratorLoadLower` at interval 501 and `GeneratorLoadRaise` at interval 3501.
+- Applies the same validated load direction to the load leg of `combined-load-cooling`; the cooling excursion remains 100%→75%→100%.
+- Leaves H.9, P060/F040, `steam|stop-out|header`, 2%/5 K bounded hysteresis, all production physics, `Resolve()`, `PlantNetworkOrchestrator`, cross-profile trigger requirements and fourth-node scan unchanged.
+- Production remains 10 ms `ExplicitCommittedState`; no shadow state is committed.
+
+## M10.9.4.1-H.17 Hotfix 1 — Cross-Profile Audit String-Interpolation Compile Fix — CANDIDATE
+
+- Built only on the H.17 candidate over the user-validated H.16 baseline.
+- Fixes two CSV-emission expressions in `LongHorizonCrossProfileBranchContinuityQualificationAuditTests.cs` that incorrectly escaped a nested C# string literal inside interpolated-expression code and caused the observed CS1039/CS1073/CS1525/CS1056 parser cascade.
+- Precomputes the `production-hysteresis-release` counts before interpolation, preserving the exact H.17 audit semantics while removing parser ambiguity.
+- No production, simulation, thermodynamic, hydraulic, H.9, branch-continuity, P060/F040, target-set, hysteresis-limit or profile behavior changes.
+- H.16 remains the validated baseline until build, ordinary tests and the H.17 focused audit pass locally.
+
+## M10.9.4.1-H.17 — Long-Horizon & Cross-Profile Branch-Continuity Shadow Qualification — CANDIDATE
+
+- Baseline promoted to user-validated M10.9.4.1-H.16.
+- Keeps production `ExplicitCommittedState` at 10 ms and leaves `SimplifiedWaterSteamThermodynamicModel.Resolve()`, `ThermodynamicBranchContinuityModel`, H.9, P060/F040, the `steam|stop-out|header` target set and 2%/5 K hysteresis limits unchanged.
+- Adds a 30,000-interval shadow evidence set across `steady-long`, `load-pulse`, `cooling-pulse` and `combined-load-cooling`.
+- Reproduces the validated H.16 2,000-interval / 15-trigger control before evaluating the extended set.
+- Requires every cross-profile trigger to converge with unchanged H.9 tolerances, deterministic repeat and closure/ownership safeguards.
+- Tracks all committed target phases on every interval and samples/forces branch-selection transparency checks at 100 ms, trigger intervals and real phase transitions.
+- Scans every thermodynamic node at every triggered candidate against the matching explicit endpoint for a new untargeted candidate-only late boundary-aware saturated-root shadow mechanism.
+- Retains the inherited two-hold/two-release hysteresis challenges.
+- Adds `scripts/run-long-horizon-cross-profile-branch-continuity-audit.cmd`, H.17 documentation/checklist and ADR 0142.
+- No production activation is performed; a green H.17 gate only authorizes design of a later reversible activation candidate.
+
+## M10.9.4.1-H.16 — Extended Three-Node Branch-Continuity Shadow Qualification — VALIDATED
+
+- User validation passed build, ordinary tests and focused audit.
+- H.14 two-node control reproduced 14/15 and interval 723 failure.
+- Unchanged H.13 bounded 2%/5 K policy extended to `steam|stop-out|header` converged 15/15 with zero line-search exhaustion.
+- Interval 723 recovered with 68 `header` overrides.
+- Deterministic work ratio 1.411000; exact repeat and closure/ownership safeguards passed.
+- 6,000 committed target observations remained transparent and six real committed phase transitions were not blocked.
+- Four inherited hold/release challenges passed.
+
+## M10.9.4.1-H.16 — Extended Three-Node Branch-Continuity Shadow Qualification — CANDIDATE
+
+- Built only on the user-validated H.15 Hotfix 1 baseline.
+- H.15 localized the H.14 interval-723 failure to `header` and confirmed the same inverse-map overlapping-root / coarse-saturated-detection / fixed-priority mechanism previously proven at `steam` and `stop-out`.
+- Adds an explicit H.16 audit that first reproduces the validated H.14 two-node 14/15 control and then extends the unchanged H.13 bounded 2%/5 K policy only to `steam|stop-out|header`.
+- Positive qualification requires 15/15 convergence, zero line-search exhaustion, concrete `header` override evidence at interval 723, transparent 6,000 committed target observations, inherited hold/release challenge success, exact repeat and preserved closure/ownership.
+- Production `Resolve()`, H.9, `ThermodynamicBranchContinuityModel`, hysteresis limits, P060/F040, physical coefficients, `PlantNetworkOrchestrator` and the 10 ms explicit production path remain unchanged.
+- Adds `scripts/run-three-node-branch-continuity-audit.cmd`, ADR 0141, H.16 design/checklist and updated handoff/status documentation.
+
+## M10.9.4.1-H.15 Hotfix 1 — Stale Build Output Hygiene — CANDIDATE
+
+- Built only on the H.15 candidate over the user-validated H.14 Hotfix 1 baseline; no simulation, thermodynamic, hydraulic or diagnostic source behavior changes.
+- Fixes the stacked-ZIP validation workflow: local `bin`/`obj` outputs from an older milestone can be newer than extracted source timestamps and may therefore be reused by incremental MSBuild, as observed when the H.15 test assembly loaded an H.14 `NuclearReactorSimulator.Application.dll` even though the H.15 `ApplicationDescriptor.cs` source was already correct.
+- `APPLY_UPDATE.cmd` now removes all local `bin` and `obj` directories before validation, forcing the subsequent build to compile the extracted H.15 sources.
+- Also realigns the stale `APPLY_UPDATE.cmd` banner from H.12 to H.15 Hotfix 1.
+- H.15 root-cause diagnostics, H.9, H.13 bounded hysteresis, production `Resolve()` and `PlantNetworkOrchestrator` remain unchanged.
+
+## M10.9.4.1-H.15 — Extended Trigger 723 Root-Cause Diagnosis — CANDIDATE
+
+- Built only on the user-validated H.14 Hotfix 1 baseline. H.14 broadened the selected bounded branch-continuity policy to 2,000 intervals, found 15 P060/F040 triggers and converged 14/15; interval 723 was the sole line-search exhaustion while all four hold/release challenges passed.
+- Keeps production `SimplifiedWaterSteamThermodynamicModel.Resolve()`, validated H.13 `ThermodynamicBranchContinuityModel`, H.3-H.9 correctors and `PlantNetworkOrchestrator` routing unchanged.
+- Reconstructs the first 724 committed intervals and reproduces the H.14 prefix: nine triggers through interval 724, H.4 primary 6/9 and interval 723 non-convergent.
+- Re-runs unchanged H.9 + bounded hysteresis at intervals 721-724 and requires interval 723 to reproduce with zero branch overrides, zero hysteresis releases and line-search exhaustion.
+- Generalizes validated H.10/H.12 diagnostics across every hydraulic path and fluid node, ranks mapped-minus-applied node mass/energy residuals and records all inverse-map branch candidates without assuming a culprit.
+- Adds `scripts/run-extended-trigger-723-root-cause-audit.cmd`, ADR 0140, H.15 design/validation documentation and updated handoff/application descriptor.
+- A clean local switching/inverse-map result explicitly redirects the next step to fixed-point existence/residual-floor and basin analysis rather than solver/hysteresis retuning.
+- No production hybrid activation, hysteresis change, branch reorder, active set, physical retuning, trigger retuning, hidden filtering or timestep change.
+
+## M10.9.4.1-H.14 Hotfix 1 — Broader Thermodynamic Branch-Continuity Shadow Qualification — VALIDATED
+
+- User validation passed compilation, complete ordinary tests and the focused H.14 audit. Over 2,000 committed intervals P060/F040 produced 15 events; unchanged H.9 plus targeted bounded hysteresis converged 14/15 and exhausted the line search only at interval 723. Deterministic work ratio was 1.586500 and conservation/ownership remained green.
+- All four explicit branch-policy challenges passed: two required holds and two required releases. The 4,000 committed target observations included four real phase transitions with zero policy overrides.
+- The interval-723 failure recorded zero branch overrides and zero hysteresis releases, establishing it as a distinct extended-horizon problem rather than a failure of the already validated `steam`/`stop-out` continuity mechanism.
+- Hotfix 1 changed only the H.14 Jacobian iteration test contract. Production remained explicit at 10 ms and no shadow state was committed.
+
+## M10.9.4.1-H.14 — Broader Thermodynamic Branch-Continuity Shadow Qualification — CANDIDATE
+
+- Built only on the user-validated H.13 Hotfix 2 baseline.
+- Keeps production `SimplifiedWaterSteamThermodynamicModel.Resolve()`, `ThermodynamicBranchContinuityModel`, H.3-H.9 correctors and `PlantNetworkOrchestrator` routing unchanged.
+- Extends the current-v2 committed shadow horizon from 500 to 2,000 intervals while preserving the first 500 as the exact H.13 control window.
+- Re-evaluates every P060/F040 event found across the extended horizon using the unchanged H.9 Jacobian corrector plus the selected targeted bounded previous-phase hysteresis policy.
+- Adds deterministic committed-state branch observation for `steam` and `stop-out` across all 2,000 intervals.
+- Adds four explicit branch-policy qualification challenges: two required holds and two required releases, covering both saturated-to-superheated and superheated-to-saturated directions.
+- Adds `scripts/run-broader-thermodynamic-branch-continuity-audit.cmd`, ADR 0139, H.14 design/validation documentation and updated handoff/application descriptor.
+- No production hybrid activation, hysteresis, branch reorder, active set, physical retuning, trigger retuning, hidden filtering or timestep change.
+
+## M10.9.4.1-H.13 Hotfix 2 — Thermodynamic Branch Continuity / Hysteresis Shadow Experiment — VALIDATED
+
+- User validation passed compilation, complete ordinary tests and the focused H.13 audit. Production H.9 remained 5/7 with two line-search exhaustions; targeted previous-phase continuity and targeted bounded 2%/5 K hysteresis both reached 7/7 with zero exhaustions, deterministic work ratio 1.886000, exact repeat and preserved closure/ownership. The bounded policy recorded zero hysteresis releases on the frozen seven-event set.
+- Built only on the user-validated H.12 thermodynamic inverse branch-selection baseline.
+- Adds shadow-only `ThermodynamicBranchContinuityModel`; production `SimplifiedWaterSteamThermodynamicModel.Resolve()` remains unchanged.
+- Restricts alternative branch selection to H.12 nodes `steam` and `stop-out`.
+- Compares previous-phase continuity with bounded previous-phase hysteresis using 2% relative pressure and 5 K temperature release limits.
+- Runs both policies under the unchanged H.9 Jacobian corrector over the exact frozen 7 P060/F040 events and records convergence, branch overrides, chatter, avoided branch jumps, work and conservation/ownership.
+- Adds ordinary Simulation regressions, explicit Application audit, `scripts/run-thermodynamic-branch-continuity-audit.cmd`, ADR 0138, H.13 design/validation documentation and updated handoff/application descriptor.
+- No production hybrid activation, branch reorder, active set, physical retuning, trigger retuning, hidden filtering or timestep change.
+
+## M10.9.4.1-H.12 — Thermodynamic Inverse Branch Selection Audit — VALIDATED
+
+- Promotes user-validated H.11 as the continuation baseline. H.11 localized the two persistent H.9 thermodynamic phase boundaries to `steam` at interval 200 and `stop-out` at interval 360, both on energy+mass probes.
+- Adds diagnostic-only `IWaterSteamInverseBranchDiagnosticProvider` evidence to `SimplifiedWaterSteamThermodynamicModel` without changing the existing `Resolve()` branch order or result semantics.
+- Adds `ThermodynamicInverseBranchSelectionAnalyzer` to inspect all five existing inverse-map branch attempts, simultaneous saturated/superheated roots, coarse saturated detection toggles, late boundary-aware saturated roots shadowed by earlier coarse-superheated selection, and previous-state tie-break sensitivity.
+- Adds ordinary Simulation regressions, explicit Application audit, `scripts/run-thermodynamic-inverse-branch-selection-audit.cmd`, ADR 0137, H.12 design/validation documentation and updated handoff/application descriptor.
+- Production current-v2 remains explicit at 10 ms. No active set, hysteresis, branch reorder, thermodynamic clamp, physical retune or shadow commit is introduced.
+
+## M10.9.4.1-H.11 — Thermodynamic Switching Localization & Active-Set Diagnosis — VALIDATED
+
+- Promotes user-validated H.10 Hotfix 1 as the continuation baseline. H.10 reproduced the frozen 500-step / seven-event evidence set, found zero hydraulic branch switches and zero hydraulic non-smooth paths, but exactly two thermodynamic phase/envelope switches and two thermodynamic non-smooth nodes around the two persistent H.9 candidate states; the corresponding explicit endpoints showed zero thermodynamic switches.
+- Adds separate shadow-only `ThermodynamicSwitchingLocalizationAnalyzer`, options and structured localization records. It consumes H.10 evidence and analyzes only nodes already marked as phase/envelope-switching.
+- Adds conserved energy-minus/plus and mass-minus/plus localization probes that record resolved/out-of-range status, phase, pressure, temperature, vapor quality, specific volume/internal energy, saturation-reference distance and saturated-liquid/vapor internal-energy distances.
+- Classifies each localized node by crossing axis (`energy`, `mass`, or both) and boundary type (`phase-boundary`, `envelope-edge`, or both). A `hold-<nominal phase>` active-set label is emitted as diagnostic evidence only; no active set is enforced.
+- Adds node-local mapped-minus-applied hydraulic mass/energy balance residual evidence for the localized H.9 candidate nodes without modifying H.9 internals.
+- Adds ordinary Simulation regressions, explicit Application audit, `scripts/run-thermodynamic-switching-localization-audit.cmd`, ADR 0136, H.11 design/validation documentation and updated handoff/application descriptor.
+- Production current-v2 remains `ExplicitCommittedState` at 10 ms; H.3-H.10 algorithms and `PlantNetworkOrchestrator` routing remain unchanged.
+
+## M10.9.4.1-H.10 Hotfix 1 — Hydraulic Map Switching & Non-Smoothness Diagnosis — VALIDATED
+
+- User validation passed compilation, ordinary tests and the focused H.10 audit. H.10 found `hydraulic-branch-switches=0`, `hydraulic-nonsmooth-paths=0`, two thermodynamic phase/envelope switches, two thermodynamic non-smooth nodes, maximum thermodynamic derivative-scale growth 3.999974411, zero corresponding explicit-end thermodynamic switches, exact deterministic repeat and `switching-nonsmoothness-diagnostic-passes=True`.
+- Promotes user-validated H.9 as the continuation baseline. H.9 reproduced the frozen seven P060/F040 events and remained 5/7 with two line-search exhaustions; it built/accepted 23/21 Jacobian directions, rejected no Jacobian for conditioning, reached maximum pivot-condition estimate 1.613327388, maximum normalized Newton step 1.276749799, deterministic work ratio 2.702000, exact repeat and `jacobian-informed-corrector-qualification-passes=False`.
+- Stops nonlinear-solver escalation and adds separate shadow-only `HydraulicMapSmoothnessAnalyzer`, probe options and structured evidence records. No H.10 candidate state is solved or committed.
+- Adds deterministic two-scale law-local pressure probes for every pipe/valve/pump path, including forward/reverse/zero, closed-valve and discharge-check-valve blocked branches, one-sided slope asymmetry and derivative scale-growth evidence.
+- Adds deterministic two-scale conserved mass/internal-energy probes through the existing thermodynamic closure, recording phase and supported-envelope transitions plus pressure derivative scale growth.
+- The explicit Application audit reconstructs the same 500 current-v2 intervals and seven frozen triggers, reproduces H.4 5/7, H.6 6/7, H.7 5/7, H.8 5/7 and H.9 5/7, then diagnoses exactly the two persistent H.9 failures and compares them with each committed explicit endpoint.
+- Adds `scripts/run-hydraulic-map-switching-nonsmoothness-audit.cmd`, ADR 0135, H.10 design/validation documentation and updated handoff/application descriptor.
+- Production current-v2 remains `ExplicitCommittedState` at 10 ms; Picard, H.7, H.8, H.9 and `PlantNetworkOrchestrator` routing remain unchanged.
+
+## M10.9.4.1-H.9 — Jacobian-Informed Nonlinear Hydraulic Corrector — VALIDATED
+
+- User validation passed compilation, ordinary tests and the focused H.9 audit. H.9 converged 5/7 with two line-search exhaustions; Jacobian builds/acceptances were 23/21, Jacobian rejected 0, maximum pivot-condition estimate 1.613327388, maximum normalized Newton step 1.276749799, maximum pressure/flow residuals 0.303946548 / 28.426478113 kg/s, deterministic work ratio 2.702000, strict accepted-merit decrease and exact repeat. `jacobian-informed-corrector-qualification-passes=False`.
+- Promotes user-validated H.8 as the continuation baseline: safeguarded Anderson remained 5/7 over the seven frozen P060/F040 events, exhausted two line searches, used deterministic work ratio 1.212000, preserved strict merit decrease/determinism/conservation, and returned `accelerated-corrector-qualification-passes=False`.
+- Adds separate shadow-only `JacobianHydraulicCorrectorSolver`, options/result/iteration evidence, conservative hydraulic coordinates, scaled finite-difference Jacobian construction, deterministic backward-probe fallback, scaled-pivot linear solve, pivot-conditioning rejection, bounded normalized Newton step, H.7 merit backtracking and residual-direction fallback.
+- Adds ordinary Simulation regressions and an explicit Application audit that reproduces H.4 5/7, H.6 6/7, H.7 5/7 and H.8 5/7 before evaluating H.9.
+- Adds `scripts/run-jacobian-informed-corrector-audit.cmd`, ADR 0134, H.9 design/validation documentation and updated handoff/application descriptor.
+- Production current-v2 remains explicit at 10 ms; Picard, H.7, H.8 and `PlantNetworkOrchestrator` production routing remain unchanged.
+
+## M10.9.4.1-H.8 — Accelerated Nonlinear Hydraulic Corrector — VALIDATED
+
+- User validation passed compilation, ordinary tests and the focused H.8 audit. H.8 reproduced H.4 5/7, H.6 6/7 and H.7 5/7, then safeguarded Anderson also converged 5/7 with two line-search exhaustions.
+- H.8 recorded Anderson attempts/acceptances 30/24, residual fallback 13/11, six rejected least-squares systems, maximum coefficient L1 norm 7.188310311, maximum pressure/flow residuals 0.303946566 / 28.444475059 kg/s, deterministic work ratio 1.212000, strict accepted-merit decrease and exact deterministic repeat. `accelerated-corrector-qualification-passes=False`.
+- Promotes user-validated H.7 Hotfix 1 as the continuation baseline: true fixed-point residual plus deterministic backtracking converged 5/7 frozen P060/F040 events, exhausted two line searches, retained exact determinism/conservation, and returned `corrector-algorithm-revision-qualification-passes=False`.
+- Adds separate shadow-only `AndersonHydraulicCorrectorSolver`, options/result/iteration evidence types, bounded memory depth 3, regularized affine residual minimization, coefficient L1 safeguard, deterministic merit-decreasing backtracking and H.7 residual fallback.
+- Adds ordinary Simulation regressions and an explicit Application audit that reproduces H.4 5/7, H.6 6/7 and H.7 5/7 before evaluating H.8.
+- Adds `scripts/run-accelerated-nonlinear-corrector-audit.cmd`, ADR 0133, H.8 design/validation documentation and updated handoff/application descriptor.
+- Production current-v2 remains explicit at 10 ms; Picard, H.7 and `PlantNetworkOrchestrator` production routing remain unchanged.
+
+## M10.9.4.1-H.7 — Corrector Algorithm Revision — CANDIDATE
+
+- Promotes user-validated H.6 as the new continuation baseline. H.6 kept the exact 500 committed explicit intervals and P060/F040 trigger set, selected `R0125-I096`, but converged only 6/7; maximum selected-profile pressure/flow residuals were 0.291876228 and 61.700761261 kg/s, the two-tier work ratio was 1.700000, and `refined-envelope-qualification-passes=False`.
+- Preserves the historical `SemiImplicitHydraulicPrototypeSolver` unchanged and adds a separate shadow-only `ResidualBacktrackingHydraulicCorrectorSolver`. H.7 does not wire the revised solver into `PlantNetworkOrchestrator` or `HybridSemiImplicitHydraulicGateSolver`.
+- Replaces relaxed-iterate-motion convergence evidence with a true unrelaxed fixed-point residual: relative pressure residual plus absolute pipe/valve/pump flow residual. Convergence requires both raw residuals to satisfy the existing `1e-5` / `1e-2 kg/s` tolerances.
+- Defines deterministic normalized merit as the maximum of the two tolerance-normalized residuals. Each nonlinear iteration starts at relaxation 1.0 and backtracks by 0.5 down to 1/1024; a trial is accepted only when merit strictly decreases. Invalid trial states are rejected and never become authoritative.
+- Keeps conservation ownership unchanged: every accepted candidate is rebuilt exactly once from the original committed inventory using accepted hydraulic balances plus frozen non-hydraulic balances. Rejected trials are not cumulative commits.
+- Adds six ordinary Simulation regressions, one explicit Application audit, ADR 0132, `scripts/run-corrector-algorithm-revision-audit.cmd`, H.7 design documentation and validation checklist. Expected discovery becomes 1,053 passed + 39 explicit skipped = 1,092 total.
+- The H.7 audit must first reproduce the frozen H.4 5/7 and H.6 `R0125-I096` 6/7 evidence, then records convergence, line-search exhaustion, accepted relaxation trace, true residuals, deterministic hydraulic-evaluation work, conservation, candidate gaps and exact repeat.
+- Production current-v2 remains `ExplicitCommittedState` at 10 ms. A positive H.7 result permits only broader free-running/scenario shadow qualification; a negative result requires further nonlinear-corrector development.
+
+## M10.9.4.1-H.6 — Shadow Corrector Rescue Envelope & Two-Tier Qualification — VALIDATED
+
+- Promoted user-validated H.5 Hotfix 2 as the safe production-rollback / extended-shadow baseline. User evidence: 500 committed intervals, 7 P060/F040 shadow corrections, 5/7 converged, deterministic work ratio 1.492000, observational shadow cost ratio 1.480162, exact determinism/conservation and `extended-shadow-qualification-passes=False`; production remained explicit.
+- Froze the H.5 trigger evidence instead of raising thresholds: the same 7 triggered intervals were retained with H.4 primary `R015-I072` convergence 5/7.
+- Evaluated six bounded Picard rescue profiles changing only relaxation and maximum iteration count: R015-I096, R0125-I096, R010-I096, R010-I128, R0075-I128 and R0075-I160. Pressure/flow residual tolerances and all physical coefficients remained unchanged.
+- User validation passed compilation, ordinary tests and the focused audit. `R0125-I096` was selected with 6/7 convergence, deterministic always-use work ratio 1.438000, maximum pressure residual 0.291876228, maximum flow residual 61.700761261 kg/s and maximum mass/energy/pressure gaps 0.000175566/0.000194823/0.291958117. `rescue-profile-qualifies=False`.
+- The deterministic two-tier H.4-primary/rescue ladder also converged only 6/7, with deterministic work ratio 1.700000 and exact repeat. `refined-envelope-qualification-passes=False`.
+- Production current-v2 remained `ExplicitCommittedState` at 10 ms; `production-hybrid-active=False`, `shadow-candidates-committed=False`, and no trigger retuning, physical coefficient retuning or hidden flow filtering occurred.
+
+## M10.9.4.1-H.5 Hotfix 2 — Production Activation Rollback & Extended Shadow Qualification — VALIDATED
+
+- Rolls ordinary current-v2 production back to the user-validated 10 ms `ExplicitCommittedState` path after H.5 Hotfix 1 exposed non-convergent free-running hybrid corrections in ordinary desktop/runtime tests. This is an evidence-scope correction, not a physical retune.
+- Preserves the H.4-selected `P060-F040-R015` corrector as an explicit experimental/shadow path only. The extended H.5 audit evaluates it independently against 500 committed 10 ms production intervals (5 s), records trigger/convergence/residual/work evidence, and never commits a shadow candidate.
+- Keeps the no-hidden-fallback rule intact: production is explicitly configured as explicit from the outset; a failed shadow correction is diagnostic evidence, not a silently discarded authoritative step.
+- Corrects the synthetic opt-in integration regression to use the H.3-proven conservative corrector controls (96 iterations, relaxation 0.10) instead of the unqualified 64/0.20 pair. No physical law or production coefficient changes.
+- Expected ordinary inventory is corrected from prior documentation to 1,047 passed + 37 explicit skipped = 1,084 total, matching actual test discovery once the six H.5 Hotfix 1 failures are removed.
+- User validation confirmed compilation and complete ordinary tests green. The 5 s shadow gate recorded 7/500 corrections, 5/7 converged, deterministic work ratio 1.492000, observational cost ratio 1.480162, exact determinism/conservation and `extended-shadow-qualification-passes=False`; production remained explicit and stable.
+
+## M10.9.4.1-H.5 Hotfix 1 — Invariant Comparison Report Compile Fix — CANDIDATE
+
+- Fixes the sole H.5 build failure `CS1503` in `HybridProductionIntegrationAuditTests.FormatComparison`: concatenated interpolated strings were materialized as `string` before `FormattableString.Invariant(...)`. The report is now one interpolated `FormattableString`, preserving invariant-culture formatting and identical output semantics.
+- No production runtime, `PlantNetworkOrchestrator`, H.4-selected `P060-F040-R015` numerical profile, physical coefficient, controller, protection, test inventory, audit threshold or artifact set changes.
+- Descriptor, apply script and authoritative status/handoff documentation are aligned to H.5 Hotfix 1. H.4 remains the validated baseline until this hotfix passes build, focused, ordinary and cumulative H.5 gates.
+
+## M10.9.4.1-H.5 — Current-v2 Hybrid Hydraulic Production Integration — CANDIDATE
+
+- Promotes user-validated H.4. Compilation, ordinary tests and the focused hybrid activation/cost gate passed. The selected deterministic profile is `P060-F040-R015`: 0.060 predicted subcooled-pressure trigger, 40 kg/s predicted hydraulic-flow trigger, 0.15 Picard relaxation and 72 maximum corrector iterations.
+- H.4 evidence corrected only 2/50 intervals, converged 2/2 corrections, used deterministic work ratio 2.14 and observational wall-cost ratio 1.662880 while retaining chatter ratios pump/channel/return/pressure 0.432616/0.135885/0.086691/0.921832, tiny final-state gaps, zero conservation/ownership residuals and exact deterministic repeat.
+- Adds versioned `HydraulicNumericalCouplingDefinition` to `PlantDefinition`; historical definitions default to `ExplicitCommittedState`, while the two sustained current-v2 profiles opt into `DeterministicHybridSemiImplicit` with the exact H.4-selected profile. The H.1/H.4 numerical-evidence factory explicitly remains on the historical explicit path.
+- Routes only opted-in definitions through the canonical `PlantNetworkOrchestrator` hybrid branch. Non-hydraulic balances remain frozen over a correction, each provisional iterate is rebuilt from the original committed logical-step state, conserved fluid/thermal inventories are integrated once, and a triggered non-convergent corrector fails explicitly rather than silently falling back.
+- Adds immutable per-step hydraulic numerical diagnostics through `PlantNetworkStepResult` and `IntegratedPrimaryCircuitSnapshot`, plus production integration regressions and a 5 s explicit-vs-hybrid deterministic audit. No physical coefficient, controller, turbine/generator/protection setting, external 10 ms logical timestep, wall-clock adaptation or hidden flow filtering changes.
+- Adds ADR 0129, `scripts/run-hybrid-production-integration-tests.cmd` and H.5 documentation/checklist. Expected ordinary inventory becomes 1,046 passed + 37 explicit skipped = 1,083 total. Phase H closes only after focused, ordinary and cumulative production gates are green; Phase I follows validation.
+
+## M10.9.4.1-H.4 — Deterministic Hybrid Semi-Implicit Activation & Cost Gate — VALIDATED
+
+- Promotes user-validated H.3 Hotfix 1. Compilation, ordinary tests and the focused prototype gate passed; H.3 converged 50/50 intervals with exact conservation/determinism and strong pump/channel/return chatter reductions, but full-time isolated cost was approximately 15.894951x explicit.
+- Adds audit-only `HybridSemiImplicitHydraulicGateSolver`: every interval computes the existing explicit predictor and invokes the H.3 corrector only when deterministic predicted subcooled-pressure or hydraulic-flow changes cross configured thresholds. Production `PlantNetworkOrchestrator` remains unchanged and explicit at 10 ms.
+- Adds a deterministic eight-configuration sweep over pressure/flow triggers and Picard relaxation/iteration controls. Candidate selection uses convergence, chatter/pressure reduction, final-state gap, conservation/ownership and an iteration-derived deterministic work ratio; wall-clock cost is observational only and never drives simulation branching or selection.
+- User validation selected `P060-F040-R015`: 2/50 corrections, 2/2 converged, deterministic work ratio 2.140000, observational wall-cost ratio 1.662880, chatter ratios pump/channel/return/pressure 0.432616/0.135885/0.086691/0.921832, tiny final-state gaps, zero conservation/ownership residuals and exact deterministic repeat. `activation-criteria-met=True`; H.4 itself correctly remained `production-hybrid-active=False` and authorized the separate H.5 production-integration candidate.
+- Adds four ordinary Simulation regressions, one explicit Application audit, `scripts/run-hybrid-semi-implicit-activation-gate.cmd`, ADR 0128 and H.4 documentation/checklist. Expected inventory becomes 1,041 passed + 36 explicit skipped = 1,077 total.
+- Normalizes H.3/H.4 audit text output to UTF-8 without BOM so Windows `type` no longer emits the leading BOM marker observed in the validated H.3 summary. No H.3 numerical behavior changes.
+
+## M10.9.4.1-H.3 Hotfix 1 — Isolated Semi-Implicit Hydraulic Prototype & Audit — VALIDATED
+
+- User-confirmed compilation and complete ordinary `dotnet test` passed after the xUnit2013 analyzer hotfix.
+- Focused H.3 audit converged 50/50 intervals with 16.760 average / 40 maximum iterations; prototype/explicit chatter ratios were pump 0.432808, channel 0.135868, return 0.031681 and pressure 0.922127.
+- Inventory integration, hydraulic mass closure and energy ownership residuals were zero at reported precision; final relative gaps were mass 0.000036406, energy 0.000033775 and pressure 0.002898964; deterministic repeat was exact.
+- Full-time prototype cost was 16.743903 versus 1.053410 wall-s per simulated second, ratio 15.894951, so production semi-implicit activation remained correctly deferred.
+
+## M10.9.4.1-H.3 Hotfix 1 — xUnit2013 Collection-Cardinality Analyzer Fix — CANDIDATE
+
+- Fixes the warnings-as-errors build failure `xUnit2013` in `SemiImplicitHydraulicPrototypeSolverTests.Evaluate_PreservesHydraulicMassAndEnergyOwnershipClosure` by replacing `Assert.Equal(1, result.PipeMassFlowRates.Count)` with the analyzer-canonical `Assert.Single(result.PipeMassFlowRates)`.
+- Test intent is unchanged: the result must still contain exactly one pipe-flow entry before the positive-flow and ownership assertions run.
+- No Simulation solver, H.3 Picard parameter, physical coefficient, production route, test inventory or audit artifact changes. Production current-v2 remains explicit at 10 ms and H.4 still owns any activation.
+
+## M10.9.4.1-H.3 — Isolated Semi-Implicit Hydraulic Prototype & Audit — CANDIDATE
+
+- Promotes user-validated H.2 as the numerical-method decision baseline. H.2 compilation and ordinary tests passed, and the H.1 evidence audit reproduced the same non-improving 10/5/2.5 ms refinement pattern with unchanged hydraulic metrics; observed wall costs were 0.826572/1.624096/3.208644 s per simulated second.
+- Adds an isolated `SemiImplicitHydraulicPrototypeSolver` beside the production `PlantNetworkOrchestrator`; production current-v2 remains explicit at 10 ms and does not route through the prototype.
+- Reuses the existing pipe, valve, pump and fluid-inventory laws unchanged. The prototype applies bounded deterministic under-relaxed Picard iteration and reconstructs every provisional candidate from the original committed inventory, so provisional iterations are never cumulative commits.
+- Adds a frozen-forcing current-v2 audit: per-step non-hydraulic balances are reconstructed from the validated explicit trajectory, an isolated one-pass replay must reproduce reference inventories, and the semi-implicit replay changes only pressure/flow coupling.
+- Records primary pump/channel/return chatter, subcooled-liquid pressure changes, convergence/iteration residuals, hydraulic ownership residuals, deterministic repeat, final-state gap and isolated solver cost. H.4 alone owns production activation after evidence review.
+- Adds six ordinary Simulation regressions, one explicit Application audit, `scripts/run-semi-implicit-hydraulic-prototype-audit.cmd`, ADR 0127 and the H.3 validation checklist. Expected inventory becomes 1,037 passed + 35 explicit skipped = 1,072 total.
+
+## M10.9.4.1-H.2 — Deterministic Semi-Implicit Pressure/Flow Method Decision — VALIDATED
+
+- User-confirmed compilation and complete ordinary tests passed.
+- Re-running the H.1 evidence from H.2 reproduced unchanged hydraulic stiffness metrics and `refinement-improves=False`; observational wall cost was 0.826572/1.624096/3.208644 s per simulated second with 1.964857 and 1.975649 cost ratios.
+- Confirms the H.2 decision itself did not alter production runtime physics. Deterministic semi-implicit pressure/flow coupling remains selected for isolated H.3 evidence before any H.4 activation.
+
+## M10.9.4.1-H.2 — Deterministic Semi-Implicit Pressure/Flow Method Decision — CANDIDATE
+
+- Promotes the user-validated H.1 evidence checkpoint. H.1 reports 10/5/2.5 ms wall cost 0.824089/1.592215/3.188456 s per simulated second, maximum raw channel one-step change 114.314039863 kg/s and non-improving final-state refinement: 0.005401937 coarse/medium versus 0.006028534 medium/fine.
+- Rejects unchanged explicit 10 ms as the final numerical-hardening answer and rejects bounded explicit substeps as the preferred cure because refinement approximately doubles cost without monotonic convergence improvement.
+- Selects deterministic semi-implicit pressure/flow coupling as the method direction, while keeping production current-v2 on the validated explicit 10 ms path in H.2.
+- Adds no Simulation physics and no semi-implicit runtime path. H.3 owns an isolated prototype/audit; H.4 owns any current-v2 activation only after conservation, determinism, convergence and bounded-cost evidence pass.
+- Prohibits wall-clock adaptation, hidden damping, coefficient retuning and solver-protection interlocks as numerical cures.
+- Adds ADR 0126, the H.2 decision document and H.2 validation checklist. Ordinary test inventory remains 1,031 passed + 34 explicit skipped = 1,065 total.
+
+## M10.9.4.1-H.1 — Fixed-Step Timestep Sensitivity & Stiffness Evidence — VALIDATED
+
+- User-confirmed compilation, ordinary tests and focused H.1 evidence gate passed.
+- Supplied summary reports 10/5/2.5 ms wall cost 0.824089/1.592215/3.188456 s per simulated second, maximum pump/channel/return one-step changes 23.483512764/114.314039863/86.409873575 kg/s, maximum fractional mass/energy/liquid-pressure step changes 0.001965068/0.002079844/0.088657847, and `refinement-improves=False`.
+- Maximum final relative difference is 0.005401937 for coarse/medium and 0.006028534 for medium/fine. H.1 therefore closes as evidence and advances to H.2 method selection.
+
+## M10.9.4.1-H.1 — Fixed-Step Timestep Sensitivity & Stiffness Evidence — CANDIDATE
+
+- Promotes the user-validated G.4 turbine-expansion enthalpy/shaft-work migration and closes Phase G. Supplied G.4 evidence reports 2 current-v2 enthalpy-mode stages, 2.506379668 MW maximum flow-work rate, 5.457103652 MW maximum shaft power and 0 W maximum ownership residual, with no thermodynamic-work retuning.
+- Keeps the production current-v2 runtime on the deterministic 10 ms fixed timestep.
+- Adds an internal audit-only current-v2 desktop factory seam for 10, 5 and 2.5 ms fixed-step refinement while preserving the same 20 ms deterministic seed-preconditioning duration.
+- Adds raw per-step evidence for primary pump/channel/return flow changes, dominant fractional fluid-node mass/internal-energy/subcooled-liquid pressure changes and existing conservation residuals.
+- Adds final-state 10→5→2.5 ms convergence evidence plus observed order where defined and observational wall-clock cost per simulated second.
+- Does not activate adaptive substepping, semi-implicit coupling, wall-clock adaptation, hidden nonlinear repair, physical retuning or new damping/filtering. H.2 owns the numerical-method decision.
+- Adds two ordinary factory/runtime regressions, one explicit audit, `scripts/run-numerical-stiffness-decision-audit.cmd`, ADR 0125 and the H.1 validation checklist.
+
+## M10.9.4.1-G.4 — Turbine Expansion Enthalpy & Shaft-Work Ownership — VALIDATED
+
+- User-confirmed focused G.4 gate passed. Supplied audit: 2 current-v2 enthalpy-mode stages, maximum absolute flow-work rate 2.506379668 MW, maximum absolute shaft power 5.457103652 MW and 0 W maximum ownership residual.
+- Confirms node inventories remain internal energy, shaft work is single-counted, thermodynamic turbine work is not retuned and legacy profiles remain preserved.
+- G.4 closes the staged Phase G open-control-volume enthalpy migration.
+
+## M10.9.4.1-G.4 — Turbine Expansion Enthalpy & Shaft-Work Ownership — CANDIDATE
+
+- Promotes the user-validated G.3 remaining non-turbine enthalpy migration as the continuation baseline. The supplied G.3 audit reports 12 samples, 2.817289248 MW maximum flow work, 8.972520763 MW total absolute flow work and zero maximum ownership residual.
+- Adds backward-compatible `FluidEnergyTransportMode` ownership to `TurbineStageGroupDefinition`; historical definitions retain `SpecificInternalEnergy`.
+- Enables `SpecificEnthalpy` for turbine expansion only in the two current-v2 sustained profiles.
+- Current-v2 turbine inlet transport is `h*m_dot`; exhaust transport is inlet enthalpy transport minus shaft work. Shaft work remains one explicit thermofluid-to-rotor transfer and node inventories remain internal energy.
+- Extends turbine stage snapshots with transport mode, inlet flow work, inlet enthalpy, selected inlet/exhaust advected energy, flow-work rate and an explicit ownership residual while preserving historical fields.
+- Does not retune thermodynamic turbine work, stage efficiency, governor, generator/grid coupling or protections.
+- Adds focused domain/simulation/application regressions, `TurbineExpansionEnthalpyMigrationAuditTests`, explicit CSV/summary evidence, `scripts/run-turbine-expansion-enthalpy-tests.cmd`, ADR 0124 and the G.4 validation checklist.
+- Successful G.4 validation closes the staged Phase G runtime migration and advances the hardening sequence to Phase H numerical-stiffness evidence.
+
+## M10.9.4.1-G.3 — Remaining Non-Turbine Enthalpy Migration — VALIDATED
+
+- User-confirmed compilation and all requested tests passed.
+- Supplied audit: 12 samples, 3 pump paths, 2 drum paths, 2 condenser paths, 2 external-boundary owners, 2.817289248 MW maximum absolute flow-work rate, 8.972520763 MW total absolute flow-work rate and 0 W maximum ownership residual.
+- Confirms node inventories remain internal energy, pump hydraulic work and condenser heat rejection are single-counted, relief remains external, bypass remains internal and turbine expansion remained isolated for G.4.
+
+## M10.9.4.1-G.3 — Remaining Non-Turbine Enthalpy Migration — CANDIDATE
+
+- Documentation checkpoint: records the approved post-hardening gameplay/control-room direction without changing G.3 runtime code, tests, expected inventory or validation gate.
+- Adds `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md` and ADR 0121–0123 covering causal/persistent accident progression, reduced spatial 2D core evolution, IndustrialControls integration, persistent operator-handle semantics, mimic zoom/pan/editable saved layout, workspace presets, plant-like mnemonics/procedures and Instructor/Fault mode.
+- Explicitly keeps the immediate sequence G.3 → G.4 → H → I unchanged and excludes multi-monitor from the current approved backlog.
+- Builds on the user-validated G.2 Hotfix 2 baseline. The supplied G.2 audit confirms exact passive/pump ownership closure, six migrated passive components, three migrated pump paths, 2.762103670 MW maximum component flow work and 11.563679870 MW total absolute passive flow work.
+- Migrates every remaining current-v2 non-turbine advective owner from `u*m_dot` to `h*m_dot`: pump paths, steam-drum separation, feedwater and steam-export boundaries, turbine-admission boundaries, condenser phase change, atmospheric relief and turbine bypass.
+- Keeps canonical fluid-node inventories as mass plus internal energy. Every migrated snapshot separately reports specific internal energy, `p/rho` flow work, specific enthalpy, internal-energy rate, flow-work rate and the advected rate actually applied.
+- Preserves exact work ownership: pump hydraulic work and shaft demand remain explicit single-count contributions; condenser heat rejection remains the enthalpy drop between removed steam and added condensate; relief remains an external exchange; bypass and drum separation remain conservative internal transfers.
+- Keeps legacy/current-v1 definitions on `SpecificInternalEnergy` by default. Only the two current-v2 sustained profiles opt into `SpecificEnthalpy` for the new component groups.
+- Leaves turbine expansion and shaft-work migration untouched for G.4; no turbine work, governor, electrical coupling, protection, HMI, replay or checkpoint retuning is introduced.
+- Adds focused definition and runtime regressions, `RemainingNonTurbineEnthalpyMigrationAuditTests`, the explicit CSV/summary audit, `scripts/run-remaining-non-turbine-enthalpy-tests.cmd`, ADR 0120 and the G.3 validation checklist.
+- Expected ordinary inventory: 1,025 passed, 0 failed, 32 explicit skipped, 1,057 total.
+
+## M10.9.4.1-G.2 Hotfix 2 — Signed Grid-Exchange Stability Contract — VALIDATED
+
+- The user confirmed compilation, focused G.2 tests, ordinary suite and requested gates all passed on 2026-07-26. The supplied audit confirms six passive enthalpy-mode components, exact passive closure, three pump paths with exact work ownership, 2.762103670 MW maximum component flow work and 11.563679870 MW total absolute passive flow work.
+- Builds on Hotfix 1 after the user confirmed compilation progressed and reported two ordinary regressions: the application descriptor omitted required G.2 contract wording, and the ten-second desktop stability test still required instantaneous gross grid exchange above 4 MWe.
+- Restores the complete descriptor contract: current-v2 passive pipes and valve paths use `h*m_dot`, nodes retain internal energy, legacy profiles remain unchanged, pump hydraulic fluid work and shaft demand retain separate ownership, and G.3-G.4 own the remaining migration.
+- Replaces the obsolete point-sample `gross output > 4 MWe` assertion with the validated bidirectional contract: generator breaker closed, requested load above 4.5 MWe, finite signed generator/grid exchange inside the symmetric ±10 MWe nameplate and no generator trip.
+- Retains Hotfix 1's 2940-3050 rpm rotor envelope plus explicit no-trip/no-overspeed checks.
+- Changes tests and descriptor/documentation only; runtime transport, governor, turbine, generator-grid coupling, protections, HMI, replay/checkpoint behavior, test inventory and G.2 artifacts remain unchanged.
+
+## M10.9.4.1-G.2 Hotfix 1 — Post-Migration Rotor Stability Envelope — CANDIDATE
+
+- Builds on the compiling G.2 candidate after the user reported one ordinary regression failure at 2949.3997837402485 rpm versus the historical 2950 rpm lower bound.
+- Treats the failure as an obsolete stability-envelope edge, not a runtime-physics defect: shaft power remained 5.549828464853323 MW, net torque remained finite, generation remained above the existing floor and no turbine trip or overspeed condition was active.
+- Changes only `DesktopProfile_ContinuousRunRemainsStableForTenSimulatedSeconds`: the lower rotor-speed bound becomes 2940 rpm, equivalent to 49.0 Hz and still above the 48.8 Hz underfrequency pickup.
+- Adds explicit no-trip and no-overspeed assertions to retain protection intent while avoiding a compensating governor/turbine retune for a 0.600216 rpm boundary miss.
+- Changes no runtime source, passive enthalpy transport, pump-work ownership, controller tuning, protection threshold, HMI, replay/checkpoint contract, test count or expected G.2 artifact.
+
+## M10.9.4.1-G.2 — Passive Hydraulic Enthalpy Migration & Pump Work Ownership — CANDIDATE
+
+- Builds on the user-validated G.1 open-control-volume convention and supplied four-path gap audit.
+- Adds definition-owned `FluidEnergyTransportMode`; historical `SpecificInternalEnergy` remains the default and `SpecificEnthalpy` is opt-in.
+- Migrates all passive pipes and valve hydraulic paths in both current-v2 sustained profiles to `h*m_dot` endpoint balances while fluid nodes continue to store internal energy.
+- Keeps all current-v2 pump paths on historical `u*m_dot` for this increment and proves hydraulic fluid work plus shaft demand are each counted exactly once.
+- Extends pipe/valve/pump results and main-steam snapshots with flow-work, enthalpy, selected advected-energy and mode evidence.
+- Adds twelve ordinary regressions and one explicit audit with three artifacts under `artifacts/g2-passive-hydraulic-enthalpy`.
+- Adds ADR 0119, the G.2 technical contract, validation checklist and `scripts/run-passive-hydraulic-enthalpy-tests.cmd`.
+- Does not migrate boundaries, steam-drum separation, condenser, relief, bypass or turbine expansion; those remain G.3-G.4.
+
+## M10.9.4.1-G.1 — Open-Control-Volume Energy Convention & Gap Audit — VALIDATED
+
+- The user confirmed compilation, focused tests and all requested tests passed on 2026-07-26.
+- The supplied audit covered two steam and two liquid paths and confirmed `h = u + p/rho`, exact internal closure and no G.1 runtime migration.
+- Maximum observed specific flow work was 192.048450950 kJ/kg and maximum flow-work rate gap was 2.484103126 MW.
+- G.1 is the validated baseline for the incremental G.2 runtime migration.
+
 ## M10.9.4.1-F.3 Hotfix 1 — Fluid-node balance namespace compile fix — CANDIDATE
 
 - Fixes the two `CS0246` build errors in `TurbineBypassSolver` by importing the canonical `NuclearReactorSimulator.Simulation.Physics.Fluids` namespace that owns `FluidNodeBalance`.

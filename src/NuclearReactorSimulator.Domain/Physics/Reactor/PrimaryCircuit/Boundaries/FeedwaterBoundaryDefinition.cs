@@ -1,3 +1,5 @@
+using NuclearReactorSimulator.Domain.Physics.Fluids;
+
 namespace NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.Boundaries;
 
 /// <summary>
@@ -6,11 +8,21 @@ namespace NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.Boundari
 /// </summary>
 public sealed record FeedwaterBoundaryDefinition
 {
-    public FeedwaterBoundaryDefinition(string id, string steamDrumId, string targetNodeId)
+    public FeedwaterBoundaryDefinition(
+        string id,
+        string steamDrumId,
+        string targetNodeId,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         Id = ValidateId(id, nameof(id), "Feedwater boundary");
         SteamDrumId = ValidateId(steamDrumId, nameof(steamDrumId), "Steam drum");
         TargetNodeId = ValidateId(targetNodeId, nameof(targetNodeId), "Feedwater target node");
+        if (!Enum.IsDefined(energyTransportMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(energyTransportMode), energyTransportMode, "Unsupported feedwater energy-transport mode.");
+        }
+
+        EnergyTransportMode = energyTransportMode;
     }
 
     public string Id { get; }
@@ -18,6 +30,8 @@ public sealed record FeedwaterBoundaryDefinition
     public string SteamDrumId { get; }
 
     public string TargetNodeId { get; }
+
+    public FluidEnergyTransportMode EnergyTransportMode { get; }
 
     private static string ValidateId(string value, string parameterName, string label)
     {

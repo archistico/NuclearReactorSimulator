@@ -4249,3 +4249,8 @@ Nella configurazione corrente-v2 la turbina non tratta più una massa completame
 ## M10.9.4.1-F.3 — Bypass turbina automatico
 
 Nei profili current-v2 il bypass turbina è un percorso automatico interno dall’header vapore al volume vapore del condensatore. Rimane chiuso fino a 6,4 MPa e raggiunge l’apertura completa a 6,5 MPa. La portata dipende anche dalla contropressione reale del condensatore. In F.3 non esiste un comando manuale dedicato: il componente è una protezione termofluidodinamica automatica di modello, separata dalla relief atmosferica F.2. La sua attività è osservabile negli snapshot diagnostici e negli audit, ma non aggiunge ancora un controllo HMI.
+
+
+## M10.9.4.1-G.1 — Convenzione energetica dei volumi di controllo aperti
+
+G.1 è una fase di audit e non modifica ancora il comportamento del simulatore. Formalizza la relazione `h = u + p/rho`: l’energia specifica trasportata da una portata attraverso un volume di controllo aperto comprende l’energia interna `u` e il lavoro di flusso `p/rho`. I nodi continuano a conservare massa ed energia interna; pompa, turbina, scambi termici e potenze di confine restano contributi separati. L’audit confronta la convenzione attuale con quella entalpica sui percorsi vapore e acqua di alimentazione current-v2, così la migrazione successiva potrà essere eseguita senza doppi conteggi.

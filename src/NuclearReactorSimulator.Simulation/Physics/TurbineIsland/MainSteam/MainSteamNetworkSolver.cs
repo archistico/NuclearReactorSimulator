@@ -107,7 +107,10 @@ public sealed class MainSteamNetworkSolver
             pipe.ToNodeId,
             flow.PressureDifference,
             flow.MassFlowRate,
-            flow.InternalEnergyFlowRate);
+            flow.InternalEnergyFlowRate,
+            flow.FlowWorkRate,
+            flow.AdvectedEnergyFlowRate,
+            flow.EnergyTransportMode);
     }
 
     private TurbineAdmissionTrainSnapshot SolveTrain(TurbineAdmissionTrainDefinition train, PlantState state)
@@ -147,7 +150,10 @@ public sealed class MainSteamNetworkSolver
             flow.FlowCoefficient,
             flow.PressureDifference,
             flow.MassFlowRate,
-            flow.InternalEnergyFlowRate);
+            flow.InternalEnergyFlowRate,
+            flow.FlowWorkRate,
+            flow.AdvectedEnergyFlowRate,
+            flow.EnergyTransportMode);
     }
 
 }

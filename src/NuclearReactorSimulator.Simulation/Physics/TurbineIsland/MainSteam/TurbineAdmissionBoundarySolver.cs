@@ -9,7 +9,7 @@ namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.MainSteam;
 
 /// <summary>
 /// Temporary M4.1 external sink at the turbine-admission seam.
-/// Energy removal uses committed-state specific internal energy and remains explicitly declared in plant-network audits.
+/// Energy removal uses the boundary-owned versioned advective-energy convention and remains explicitly declared in plant-network audits.
 /// </summary>
 internal sealed class TurbineAdmissionBoundarySolver
 {
@@ -46,7 +46,19 @@ internal sealed class TurbineAdmissionBoundarySolver
         {
             var input = inputs.GetTurbineAdmissionBoundaryInput(boundary.Id);
             var sourceState = committedState.GetFluidNode(boundary.SourceNodeId);
-            var energyExportRate = sourceState.SpecificInternalEnergy * input.MassFlowRate;
+            var specificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+                sourceState.Pressure,
+                sourceState.Density);
+            var specificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+                sourceState.SpecificInternalEnergy,
+                sourceState.Pressure,
+                sourceState.Density);
+            var internalEnergyExportRate = sourceState.SpecificInternalEnergy * input.MassFlowRate;
+            var flowWorkExportRate = specificFlowWork * input.MassFlowRate;
+            var energyExportRate = FluidEnergyTransport.ResolveSelectedEnergyRate(
+                boundary.EnergyTransportMode,
+                sourceState,
+                input.MassFlowRate);
             var balance = new FluidNodeBalance(-input.MassFlowRate, -energyExportRate);
             balances[boundary.SourceNodeId] = balances.TryGetValue(boundary.SourceNodeId, out var existing)
                 ? existing + balance
@@ -59,7 +71,12 @@ internal sealed class TurbineAdmissionBoundarySolver
                 boundary.AdmissionTrainId,
                 boundary.SourceNodeId,
                 input.MassFlowRate,
+                boundary.EnergyTransportMode,
                 sourceState.SpecificInternalEnergy,
+                specificFlowWork,
+                specificEnthalpy,
+                internalEnergyExportRate,
+                flowWorkExportRate,
                 energyExportRate));
         }
 

@@ -668,7 +668,9 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.9.4 and the cumulative M10.9.4.1-F.2 continuation are VALIDATED. D.4 passed 944 ordinary tests and all 17 unique explicit tests on 2026-07-25; D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1, E.3.2 Hotfix 3 and F.1 then passed all user-run gates on 2026-07-26. F.2 is validated; F.3 is the current conservative turbine-bypass candidate. Presentation remains in Application/App; real plant automation remains in canonical M5 ownership.
+M10 is **IN PROGRESS**. M10.1–M10.9.4 and the cumulative M10.9.4.1-H.17 Hotfix 6 continuation are VALIDATED; Phase G is complete and production remains explicit at 10 ms. H.13–H.16 established and qualified bounded 2%/5 K previous-phase continuity at `steam|stop-out|header` on the 2,000-interval control. H.17 Hotfix 6 then validated the 30,000-interval/four-profile diagnostic gate: 3,046 P060/F040 trigger intervals, 92 trigger episodes, 473 deterministic representatives, 228/473 convergence and 245 line-search failures. The all-node scan discovered `turbine-inlet`, with 120 failures strongly correlated to candidate-vs-explicit turbine-inlet phase mismatch and 125 failures without that mismatch. H.18 is the current split-diagnosis candidate: extend the unchanged policy only to `turbine-inlet`, re-evaluate all 245 H.17 failures plus success controls, then diagnose every remaining failure for residual-floor / solution-existence versus new untargeted branch disagreement. Phase I remains deferred.
+
+H.17 Hotfix 6 is validated diagnostic evidence, not a production policy qualification: the three-node policy converged 228/473 stratified representatives. H.18 freezes that validated representative set and avoids repeating the expensive 3,046-trigger census; it runs H.9 only on all 245 H.17 failures plus 16 success controls, while reconstructing the same four reference profiles exactly.
 
 Two independent axes are mandatory:
 
@@ -773,9 +775,9 @@ Two independent axes are mandatory:
 - post-validation HMI readability hardening keeps alarm flashing geometry stable, separates runtime/progress/step content, removes duplicate current-step readouts and limits subsystem schematic rows to at most four nodes;
 - the visual design system and printable user manual apply the same maximum-four-elements-per-row rule, using vertical flow or consecutive diagram segments instead of shrinking labels;
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
-- final manual schematic/HMI checklist passed; M10.9.4 is validated. The current validated F.2 baseline contains the corrected seed, D.3.2 Hotfix 3, operator valve station, D.4.1 replay/reset/travel hardening, 10 MWe bidirectional current-v2 migration, signed trajectory evidence, breaker-supervised delayed electrical protection, the isolated choked-flow seam and conservative atmospheric header relief. F.3 is the current turbine-bypass candidate.
+- final manual schematic/HMI checklist passed; M10.9.4 is validated. The validated continuation now includes H.1, H.2, H.3 Hotfix 1, H.4, H.5 Hotfix 2, H.6, H.7 Hotfix 1 and H.8. H.5 Hotfix 2 validated the production rollback to explicit 10 ms and recorded 7/500 P060/F040 shadow corrections with 5/7 convergence and `extended-shadow-qualification-passes=False`. H.6 validated the bounded Picard rescue-envelope audit at only 6/7. H.7 validated true-residual deterministic backtracking at 5/7 with two line-search exhaustions and `corrector-algorithm-revision-qualification-passes=False`. H.8 validated safeguarded Anderson at 5/7 with two line-search exhaustions, work ratio 1.212000 and `accelerated-corrector-qualification-passes=False`. H.9 is the current shadow-only Jacobian-informed algorithm revision; current-v2 production remains explicit.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (F.2 validated; F.3 Hotfix 1 candidate)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (H.14 Hotfix 1 validated; H.15 interval-723 root-cause diagnosis candidate)
 
 - Phase A audit exposed a repeatable ~70 s protection trip; root cause was later traced to current-v2 seed energy/hydraulic starvation rather than the thermodynamic resolver; the corrected seed now passes the exact 300-second sustained journey;
 - Phase A.1 direct evidence is included in A.2: one-second protection-function, condenser-limiter, stage-flow and exhaust-mass diagnostics;
@@ -786,8 +788,8 @@ Two independent axes are mandatory:
 - Phase D aligns turbine admission phase policy and governor authority: D.1/D.2 are locally validated; D.3.1 adds passive rotor loss; D.3.2 Hotfix 3 closes admission capacity; D.4 exposes operator valve authority; D.4.1 validates STOP-owned travel rate, replay/in-flight checkpoint coverage and trip-reset travel resumption;
 - Phase E.1 accepts the 10 MWe current-v2 target; E.2 Hotfix 1 validates the coordinated nameplate/governor/bidirectional coupling; E.3.1 Hotfix 1 validates signed protection trajectories; E.3.2 Hotfix 3 validates evidence-derived supervised/delayed reverse-power, underfrequency and absolute-slip loss-of-synchronism protection;
 - Phase F.1 validates the isolated ideal-vapor subcritical/choked capacity law; F.2 adds the validated atmospheric header relief; F.3 adds the separate internal header-to-condenser turbine bypass with committed backpressure and exact conservative transfer;
-- Phase G performs a dedicated flow-work/enthalpy transport migration;
-- Phase H measures numerical stiffness before choosing adaptive substepping or semi-implicit coupling;
+- Phase G.1 freezes and audits the open-control-volume convention; G.2 validates passive paths; G.3 validates the remaining non-turbine owners; G.4 validates turbine expansion and shaft-work ownership, completing Phase G;
+- Phase H.1 validated 10/5/2.5 ms fixed-step sensitivity; H.2 selected deterministic semi-implicit pressure/flow coupling; H.3 Hotfix 1 validated the isolated Picard corrector; H.4 validated selective bounded use and selected P060-F040-R015; H.5 Hotfix 1 direct activation failed ordinary validation; H.5 Hotfix 2 is validated as the explicit-production rollback and extended shadow evidence checkpoint, with 7/500 trigger events and only 5/7 convergence; H.6 validated bounded Picard rescue at 6/7; H.7-H.9 showed residual/backtracking, Anderson and Jacobian/Newton all stall at the same two events; H.10-H.12 localized the cause to inverse thermodynamic branch selection; H.13 Hotfix 2 validated targeted continuity/bounded hysteresis at 7/7; H.14 Hotfix 1 broadened the policy to 2,000 intervals, passed all hold/release challenges and reached 14/15 with interval 723 as the sole failure; H.15 now diagnoses interval 723 across all paths/nodes before any policy or solver change;
 - Phase I completes profile compatibility, legacy retirement, audit consolidation, CI, reference trajectories, known limitations and optional offline seed-trim research;
 - require ordinary suite, 60-second journeys, a healthy 300-second reference journey, per-step protection evidence, replay determinism, conservation/inventory slopes, scale contract and performance gates before M10.9.5.
 
@@ -827,6 +829,39 @@ Two independent axes are mandatory:
 - packaging/publish pipeline and deployment verification;
 - final user/developer documentation, accessibility review and known-model-limitations register;
 - final deterministic regression/reference-validation gate for release candidates.
+
+## Approved Post-Hardening Product Backlog
+
+The following direction is approved but deliberately **does not interrupt** M10.9.4.1-H.5 Hotfix 1 → Phase I or the M10/M11 release-hardening work. The normative details are in `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md` and ADR 0121–0123.
+
+### Epic A — Extreme Operations & Accident Progression
+
+- audit every flow-owning component for bidirectional/one-way/extreme-state semantics;
+- validate near-empty inventories and extreme pressure/temperature states before expanding fault authority;
+- integrate credible post-trip decay heat into the full-plant runtime before severe core-damage claims;
+- separate functional state from persistent component integrity/damage;
+- derive leaks, ruptures, mechanical/electrical failure, fire and later severe consequences from explicit modeled mechanisms rather than scripted flags;
+- introduce physical `IncidentSeverity` separately from alarm priority;
+- keep damage deterministic, replayable, checkpoint-compatible and visible in post-incident analysis.
+
+### Epic B — Spatial Reactor
+
+- evolve the reference plant from a single aggregated visual core to multiple 2D zones/equivalent channel groups;
+- introduce multiple rods/rod groups with explicit zone mapping;
+- expose selectable educational layers for power, flow, void, temperature, xenon and rod influence;
+- support local drill-down/trends without implying unsupported full-channel neutron transport.
+
+### Epic C — Control-Room Experience
+
+- keep area/subsystem tabs; do not create one giant all-controls screen;
+- integrate appropriate `archistico/IndustrialControls` controls at the Avalonia presentation boundary;
+- strengthen retro-industrial visual identity and plant-like mnemonic displays;
+- model maintained operator-handle/selector position separately from effective equipment state where appropriate;
+- add workspace presets that change presentation only;
+- make mimic diagrams first-class zoom/pan surfaces with editable, lockable, resettable and versioned persistent element positions;
+- add real operating procedures over canonical commands;
+- add a visually distinct Instructor/Fault mode;
+- keep multi-monitor/multi-computer operation deferred.
 
 ## Cross-phase acceptance gates
 

@@ -21,6 +21,7 @@ public sealed class PlantNetworkOrchestrator
     private readonly HeatSourceSolver _heatSourceSolver;
     private readonly FluidNodeIntegrator _fluidNodeIntegrator;
     private readonly ThermalBodyIntegrator _thermalBodyIntegrator;
+    private readonly HybridSemiImplicitHydraulicGateSolver? _hybridHydraulicSolver;
 
     public PlantNetworkOrchestrator(IFluidThermodynamicModel thermodynamicModel)
         : this(
@@ -30,7 +31,8 @@ public sealed class PlantNetworkOrchestrator
             new HeatTransferSolver(),
             new HeatSourceSolver(),
             new FluidNodeIntegrator(thermodynamicModel),
-            new ThermalBodyIntegrator())
+            new ThermalBodyIntegrator(),
+            new HybridSemiImplicitHydraulicGateSolver(thermodynamicModel))
     {
     }
 
@@ -41,7 +43,8 @@ public sealed class PlantNetworkOrchestrator
         HeatTransferSolver heatTransferSolver,
         HeatSourceSolver heatSourceSolver,
         FluidNodeIntegrator fluidNodeIntegrator,
-        ThermalBodyIntegrator thermalBodyIntegrator)
+        ThermalBodyIntegrator thermalBodyIntegrator,
+        HybridSemiImplicitHydraulicGateSolver? hybridHydraulicSolver = null)
     {
         _pipeFlowSolver = pipeFlowSolver ?? throw new ArgumentNullException(nameof(pipeFlowSolver));
         _valveFlowSolver = valveFlowSolver ?? throw new ArgumentNullException(nameof(valveFlowSolver));
@@ -50,6 +53,7 @@ public sealed class PlantNetworkOrchestrator
         _heatSourceSolver = heatSourceSolver ?? throw new ArgumentNullException(nameof(heatSourceSolver));
         _fluidNodeIntegrator = fluidNodeIntegrator ?? throw new ArgumentNullException(nameof(fluidNodeIntegrator));
         _thermalBodyIntegrator = thermalBodyIntegrator ?? throw new ArgumentNullException(nameof(thermalBodyIntegrator));
+        _hybridHydraulicSolver = hybridHydraulicSolver;
     }
 
     public PlantNetworkStepResult Step(PlantState committedState, TimeSpan deltaTime)
@@ -66,6 +70,12 @@ public sealed class PlantNetworkOrchestrator
         if (deltaTime <= TimeSpan.Zero)
         {
             throw new ArgumentOutOfRangeException(nameof(deltaTime), deltaTime, "Plant-network step time must be greater than zero.");
+        }
+
+        if (committedState.Definition.HydraulicNumericalCoupling.Mode
+            == HydraulicNumericalCouplingMode.DeterministicHybridSemiImplicit)
+        {
+            return StepDeterministicHybrid(committedState, deltaTime, sourceTerms);
         }
 
         var definition = committedState.Definition;
@@ -176,6 +186,131 @@ public sealed class PlantNetworkOrchestrator
     }
 
 
+    private PlantNetworkStepResult StepDeterministicHybrid(
+        PlantState committedState,
+        TimeSpan deltaTime,
+        PlantNetworkSourceTerms sourceTerms)
+    {
+        var hybridSolver = _hybridHydraulicSolver
+            ?? throw new InvalidOperationException(
+                "Hybrid hydraulic coupling requires an orchestrator constructed with a thermodynamic model.");
+        var definition = committedState.Definition;
+        var coupling = definition.HydraulicNumericalCoupling;
+        var committedFluidNodes = committedState.FluidNodes.ToDictionary(static item => item.Id, StringComparer.Ordinal);
+        var committedThermalBodies = committedState.ThermalBodies.ToDictionary(static item => item.Id, StringComparer.Ordinal);
+        var heatSourceStates = committedState.HeatSources.ToDictionary(static item => item.HeatSourceId, StringComparer.Ordinal);
+
+        var nonHydraulicFluidBalances = definition.FluidNodes.ToDictionary(
+            static item => item.Id,
+            static _ => FluidNodeBalance.Zero,
+            StringComparer.Ordinal);
+        var thermalBalances = definition.ThermalBodies.ToDictionary(
+            static item => item.Id,
+            static _ => ThermalEnergyBalance.Zero,
+            StringComparer.Ordinal);
+
+        ValidateSourceTermTargets(sourceTerms, nonHydraulicFluidBalances, thermalBalances);
+        AccumulateSourceTerms(sourceTerms, nonHydraulicFluidBalances, thermalBalances);
+
+        foreach (var heatTransfer in definition.HeatTransfers)
+        {
+            var result = _heatTransferSolver.Solve(
+                heatTransfer,
+                ResolveCommittedTemperature(heatTransfer.FromDomainId, committedFluidNodes, committedThermalBodies),
+                ResolveCommittedTemperature(heatTransfer.ToDomainId, committedFluidNodes, committedThermalBodies));
+
+            AccumulateThermalDomainBalance(
+                heatTransfer.FromDomainId,
+                result.FromDomainBalance,
+                nonHydraulicFluidBalances,
+                thermalBalances);
+            AccumulateThermalDomainBalance(
+                heatTransfer.ToDomainId,
+                result.ToDomainBalance,
+                nonHydraulicFluidBalances,
+                thermalBalances);
+        }
+
+        var heatSourcePower = Power.Zero;
+        foreach (var heatSource in definition.HeatSources)
+        {
+            var balance = _heatSourceSolver.Solve(heatSource, heatSourceStates[heatSource.Id]);
+            AccumulateThermalDomainBalance(
+                heatSource.TargetDomainId,
+                balance,
+                nonHydraulicFluidBalances,
+                thermalBalances);
+            heatSourcePower += balance.NetHeatRate;
+        }
+
+        var options = new HybridSemiImplicitHydraulicGateOptions(
+            coupling.PredictedSubcooledPressureChangeTriggerFraction,
+            coupling.PredictedHydraulicFlowChangeTriggerKilogramsPerSecond,
+            new SemiImplicitHydraulicPrototypeOptions(
+                coupling.MaximumCorrectorIterations,
+                coupling.CorrectorRelaxationFactor,
+                coupling.CorrectorRelativePressureTolerance,
+                coupling.CorrectorAbsoluteFlowToleranceKilogramsPerSecond));
+        var hybrid = hybridSolver.Step(committedState, deltaTime, nonHydraulicFluidBalances, options);
+
+        if (hybrid.UsedSemiImplicitCorrection && !hybrid.Converged)
+        {
+            throw new InvalidOperationException(
+                $"Deterministic hybrid hydraulic corrector did not converge within {hybrid.IterationCount} iterations.");
+        }
+
+        var fluidBalances = definition.FluidNodes.ToDictionary(
+            static item => item.Id,
+            item => hybrid.AppliedHydraulicBalances[item.Id] + nonHydraulicFluidBalances[item.Id],
+            StringComparer.Ordinal);
+        var candidateThermalBodies = committedState.ThermalBodies
+            .Select(state => _thermalBodyIntegrator.Step(state, thermalBalances[state.Id], deltaTime))
+            .ToArray();
+        var candidateState = new PlantState(
+            definition,
+            hybrid.CandidateState.FluidNodes,
+            committedState.Valves,
+            committedState.Pumps,
+            candidateThermalBodies,
+            committedState.HeatSources);
+
+        // The hydraulic balance set actually integrated owns the pump fluid-work contribution. Pipes and valves
+        // are internally conservative, so the signed sum of applied hydraulic node-energy balances is precisely
+        // the pump hydraulic power exchange required by the plant-network energy audit, including relaxed corrector steps.
+        var appliedPumpHydraulicPowerExchange = Power.FromWatts(
+            CompensatedSum(
+                hybrid.AppliedHydraulicBalances
+                    .OrderBy(static item => item.Key, StringComparer.Ordinal)
+                    .Select(static item => item.Value.NetEnergyRate.Watts)));
+        var audit = BuildAudit(
+            committedState,
+            candidateState,
+            fluidBalances,
+            thermalBalances,
+            appliedPumpHydraulicPowerExchange,
+            heatSourcePower,
+            sourceTerms.ExternalMassFlowRate,
+            sourceTerms.ExternalPower,
+            deltaTime);
+        var numericalSnapshot = new PlantNetworkHydraulicNumericalSnapshot(
+            coupling.Mode,
+            hybrid.UsedSemiImplicitCorrection,
+            hybrid.IterationCount,
+            hybrid.Converged,
+            hybrid.PredictorMaximumFractionalSubcooledPressureChange,
+            hybrid.PredictorMaximumAbsoluteHydraulicFlowChangeKilogramsPerSecond,
+            hybrid.MaximumRelativePressureResidual,
+            hybrid.MaximumAbsoluteFlowResidualKilogramsPerSecond);
+
+        return new PlantNetworkStepResult(
+            candidateState,
+            audit,
+            fluidBalances,
+            thermalBalances,
+            numericalSnapshot);
+    }
+
+
     private static void ValidateSourceTermTargets(
         PlantNetworkSourceTerms sourceTerms,
         IReadOnlyDictionary<string, FluidNodeBalance> fluidBalances,
@@ -262,6 +397,22 @@ public sealed class PlantNetworkOrchestrator
         }
 
         throw new InvalidOperationException($"Unknown thermal domain '{domainId}' reached plant-network orchestration.");
+    }
+
+
+    private static double CompensatedSum(IEnumerable<double> values)
+    {
+        var sum = 0d;
+        var compensation = 0d;
+        foreach (var value in values)
+        {
+            var adjusted = value - compensation;
+            var next = sum + adjusted;
+            compensation = (next - sum) - adjusted;
+            sum = next;
+        }
+
+        return sum;
     }
 
     private static PlantNetworkAudit BuildAudit(

@@ -49,7 +49,8 @@ public sealed class PumpFlowSolver
             pump.Pipe.Id,
             pump.Pipe.FromNodeId,
             pump.Pipe.ToNodeId,
-            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(effectiveResistanceValue));
+            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(effectiveResistanceValue),
+            pump.Pipe.EnergyTransportMode);
         var hydraulicFlow = _pipeFlowSolver.Solve(
             effectivePipe,
             fromNode,
@@ -61,6 +62,10 @@ public sealed class PumpFlowSolver
             var blockedFlow = new PipeFlowResult(
                 hydraulicFlow.PressureDifference,
                 MassFlowRate.Zero,
+                pump.Pipe.EnergyTransportMode,
+                Power.Zero,
+                Power.Zero,
+                Power.Zero,
                 Power.Zero);
 
             return new PumpFlowResult(

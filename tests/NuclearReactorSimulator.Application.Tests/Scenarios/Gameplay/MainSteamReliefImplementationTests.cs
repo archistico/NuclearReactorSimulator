@@ -105,6 +105,7 @@ public sealed class MainSteamReliefImplementationTests
         Assert.Equal(6.5d, relief.SetPressure.Megapascals, 12);
         Assert.Equal(6.7d, relief.FullLiftPressure.Megapascals, 12);
         Assert.Equal(1_600d, relief.FlowDefinition.FullOpenThroatArea.SquareMillimetres, 12);
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, relief.EnergyTransportMode);
     }
 
     private static PlantState WithHeaderPressure(PlantState source, double pressureMegapascals)
@@ -154,7 +155,7 @@ public sealed class MainSteamReliefImplementationTests
         var maximum = rows[^1];
         var summary = string.Join(Environment.NewLine,
             $"=== {stem} ===",
-            "Pressure-actuated atmospheric header relief over the validated F.1 ideal-vapor capacity seam; no turbine bypass or receiver inventory is active.",
+            "Pressure-actuated atmospheric header relief over the validated F.1 ideal-vapor capacity seam; current-v2 exports h*m_dot while no turbine bypass or receiver inventory is active.",
             FormattableString.Invariant(
                 $"samples={rows.Count}; pressure={rows[0].HeaderPressureMegapascals:0.000000}..{maximum.HeaderPressureMegapascals:0.000000} MPa; set-pressure=6.500000 MPa; full-lift-pressure=6.700000 MPa; receiver-pressure={Pressure.StandardAtmosphere.Megapascals:0.000000} MPa;"),
             FormattableString.Invariant(

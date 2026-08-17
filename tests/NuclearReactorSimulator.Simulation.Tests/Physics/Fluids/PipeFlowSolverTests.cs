@@ -130,6 +130,90 @@ public sealed class PipeFlowSolverTests
         Assert.Equal(left, right);
     }
 
+
+    [Fact]
+    public void SpecificEnthalpyMode_AddsFlowWorkToTheAppliedEndpointEnergyRate()
+    {
+        var from = CreateNode("from", 5.4d, 1_000d, 100d);
+        var to = CreateNode("to", 5.0d, 800d, 120d);
+        var pipe = new PipeDefinition(
+            "pipe",
+            "from",
+            "to",
+            Resistance,
+            FluidEnergyTransportMode.SpecificEnthalpy);
+
+        var result = new PipeFlowSolver().Solve(pipe, from, to);
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, result.EnergyTransportMode);
+        Assert.True(result.FlowWorkRate > Power.Zero);
+        Assert.Equal(
+            result.EnthalpyFlowRate.Watts,
+            result.InternalEnergyFlowRate.Watts + result.FlowWorkRate.Watts,
+            6);
+        Assert.Equal(result.EnthalpyFlowRate, result.AdvectedEnergyFlowRate);
+        Assert.Equal(-result.AdvectedEnergyFlowRate, result.FromNodeBalance.NetEnergyRate);
+        Assert.Equal(result.AdvectedEnergyFlowRate, result.ToNodeBalance.NetEnergyRate);
+    }
+
+    [Fact]
+    public void SpecificEnthalpyMode_UsesTheActualUpstreamStateDuringReverseFlow()
+    {
+        var pipe = new PipeDefinition(
+            "pipe",
+            "from",
+            "to",
+            Resistance,
+            FluidEnergyTransportMode.SpecificEnthalpy);
+
+        var result = new PipeFlowSolver().Solve(
+            pipe,
+            CreateNode("from", 5.0d, 1_000d, 100d),
+            CreateNode("to", 5.4d, 800d, 120d));
+
+        Assert.True(result.MassFlowRate < MassFlowRate.Zero);
+        Assert.True(result.FlowWorkRate < Power.Zero);
+        Assert.Equal(result.EnthalpyFlowRate, result.AdvectedEnergyFlowRate);
+        Assert.Equal(
+            result.FlowWorkRate.Watts,
+            result.AdvectedEnergyFlowRate.Watts - result.InternalEnergyFlowRate.Watts,
+            6);
+    }
+
+    [Fact]
+    public void HistoricalMode_KeepsAppliedEnergyEqualToInternalEnergyAdvection()
+    {
+        var result = Solve(
+            CreateNode("from", 5.4d, 1_000d, 100d),
+            CreateNode("to", 5.0d, 800d, 120d));
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificInternalEnergy, result.EnergyTransportMode);
+        Assert.Equal(result.InternalEnergyFlowRate, result.AdvectedEnergyFlowRate);
+        Assert.True(result.EnthalpyFlowRate > result.InternalEnergyFlowRate);
+    }
+
+    [Fact]
+    public void EqualPressure_PreservesConfiguredModeWithZeroTransportRates()
+    {
+        var pipe = new PipeDefinition(
+            "pipe",
+            "from",
+            "to",
+            Resistance,
+            FluidEnergyTransportMode.SpecificEnthalpy);
+
+        var result = new PipeFlowSolver().Solve(
+            pipe,
+            CreateNode("from", 5.0d, 1_000d, 100d),
+            CreateNode("to", 5.0d, 800d, 120d));
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, result.EnergyTransportMode);
+        Assert.Equal(Power.Zero, result.InternalEnergyFlowRate);
+        Assert.Equal(Power.Zero, result.FlowWorkRate);
+        Assert.Equal(Power.Zero, result.EnthalpyFlowRate);
+        Assert.Equal(Power.Zero, result.AdvectedEnergyFlowRate);
+    }
+
     private static PipeFlowResult Solve(FluidNodeState from, FluidNodeState to)
     {
         return new PipeFlowSolver().Solve(

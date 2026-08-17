@@ -45,6 +45,10 @@ public sealed class CondenserSystemSnapshot
             CompensatedSum(canonicalTurbineBypasses.Select(static item => item.MassFlowRate.KilogramsPerSecond)));
         TotalTurbineBypassInternalEnergyTransferRate = Power.FromWatts(
             CompensatedSum(canonicalTurbineBypasses.Select(static item => item.InternalEnergyTransferRate.Watts)));
+        TotalTurbineBypassFlowWorkTransferRate = Power.FromWatts(
+            CompensatedSum(canonicalTurbineBypasses.Select(static item => item.FlowWorkTransferRate.Watts)));
+        TotalTurbineBypassAdvectedEnergyTransferRate = Power.FromWatts(
+            CompensatedSum(canonicalTurbineBypasses.Select(static item => item.AdvectedEnergyTransferRate.Watts)));
     }
 
     public CondenserSystemDefinition Definition { get; }
@@ -64,6 +68,10 @@ public sealed class CondenserSystemSnapshot
     public MassFlowRate TotalTurbineBypassMassFlowRate { get; }
 
     public Power TotalTurbineBypassInternalEnergyTransferRate { get; }
+
+    public Power TotalTurbineBypassFlowWorkTransferRate { get; }
+
+    public Power TotalTurbineBypassAdvectedEnergyTransferRate { get; }
 
     public PlantNetworkAudit ThermofluidAudit => TurbineExpansion.ThermofluidAudit;
 

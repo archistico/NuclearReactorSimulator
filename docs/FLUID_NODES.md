@@ -104,3 +104,15 @@ M1.2 does not include:
 - enthalpy transport rules;
 - viscosity/friction correlations;
 - vacuum/boundary reservoirs.
+
+## M10.9.4.1-G.1 open-control-volume energy convention
+
+G.1 retains the validated node inventory contract: every populated fluid control volume stores mass and internal energy. It adds an audit-only diagnostic seam for the energy carried by mass crossing an open control-volume boundary:
+
+```text
+specific flow work = p / rho
+specific enthalpy  = h = u + p / rho
+advective rate     = h * m_dot
+```
+
+`OpenControlVolumeEnergyTransportSolver` reports both the current `u*m_dot` convention and the target enthalpy convention with equal-and-opposite balances. It does not participate in runtime integration in G.1. Later G increments will migrate component groups only after the representative gap and work-accounting boundaries are validated.

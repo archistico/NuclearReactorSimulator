@@ -135,8 +135,19 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         SynchronousGridPowerFlowMode generatorGridPowerFlowMode = SynchronousGridPowerFlowMode.GenerationOnly,
         bool includeEvidenceDerivedElectricalProtections = false,
         bool includeMainSteamHeaderRelief = false,
-        bool includeTurbineBypass = false)
+        bool includeTurbineBypass = false,
+        bool useEnthalpyTransportForPassivePipesAndValves = false,
+        bool useEnthalpyTransportForRemainingNonTurbinePaths = false,
+        bool useEnthalpyTransportForTurbineExpansion = false,
+        bool useHybridSemiImplicitHydraulics = false,
+        TimeSpan? runtimeStep = null)
     {
+        var effectiveRuntimeStep = runtimeStep ?? RuntimeStep;
+        if (effectiveRuntimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep), effectiveRuntimeStep, "Operational runtime timestep must be positive.");
+        }
+
         if (deterministicSeedStepCount < 1 || deterministicSeedStepCount > 256)
         {
             throw new ArgumentOutOfRangeException(
@@ -208,7 +219,11 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             generatorGridPowerFlowMode,
             includeEvidenceDerivedElectricalProtections,
             includeMainSteamHeaderRelief,
-            includeTurbineBypass);
+            includeTurbineBypass,
+            useEnthalpyTransportForPassivePipesAndValves,
+            useEnthalpyTransportForRemainingNonTurbinePaths,
+            useEnthalpyTransportForTurbineExpansion,
+            useHybridSemiImplicitHydraulics);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -226,7 +241,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         IntegratedAutomaticOperationStepResult? seed = null;
         for (var step = 0; step < deterministicSeedStepCount; step++)
         {
-            seed = solver.Step(seedState, recipe.Inputs, RuntimeStep);
+            seed = solver.Step(seedState, recipe.Inputs, effectiveRuntimeStep);
             seedState = seed.CandidateState;
         }
 
@@ -236,7 +251,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             committedSeed.CandidateState,
             recipe.Inputs,
             committedSeed.Snapshot,
-            RuntimeStep,
+            effectiveRuntimeStep,
             initialLogicalStep: 0);
     }
 
@@ -303,7 +318,11 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         SynchronousGridPowerFlowMode generatorGridPowerFlowMode,
         bool includeEvidenceDerivedElectricalProtections,
         bool includeMainSteamHeaderRelief,
-        bool includeTurbineBypass)
+        bool includeTurbineBypass,
+        bool useEnthalpyTransportForPassivePipesAndValves,
+        bool useEnthalpyTransportForRemainingNonTurbinePaths,
+        bool useEnthalpyTransportForTurbineExpansion,
+        bool useHybridSemiImplicitHydraulics)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -652,10 +671,37 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         }
 
         var thermodynamicModel = new SimplifiedWaterSteamThermodynamicModel();
+        var passiveEnergyTransportMode = useEnthalpyTransportForPassivePipesAndValves
+            ? FluidEnergyTransportMode.SpecificEnthalpy
+            : FluidEnergyTransportMode.SpecificInternalEnergy;
+        var remainingNonTurbineEnergyTransportMode = useEnthalpyTransportForRemainingNonTurbinePaths
+            ? FluidEnergyTransportMode.SpecificEnthalpy
+            : FluidEnergyTransportMode.SpecificInternalEnergy;
+        var turbineEnergyTransportMode = useEnthalpyTransportForTurbineExpansion
+            ? FluidEnergyTransportMode.SpecificEnthalpy
+            : FluidEnergyTransportMode.SpecificInternalEnergy;
+        var hydraulicNumericalCoupling = useHybridSemiImplicitHydraulics
+            ? HydraulicNumericalCouplingDefinition.CreateDeterministicHybridSemiImplicit(
+                predictedSubcooledPressureChangeTriggerFraction: 0.060d,
+                predictedHydraulicFlowChangeTriggerKilogramsPerSecond: 40d,
+                maximumCorrectorIterations: 72,
+                correctorRelaxationFactor: 0.15d,
+                correctorRelativePressureTolerance: 1e-5d,
+                correctorAbsoluteFlowToleranceKilogramsPerSecond: 1e-2d)
+            : HydraulicNumericalCouplingDefinition.ExplicitCommittedState;
         FluidNodeDefinition Node(string id, double volumeCubicMetres = 10d)
             => new(id, Volume.FromCubicMetres(volumeCubicMetres));
-        PipeDefinition Pipe(string id, string from, string to, double resistance = 100_000d) => new(
-            id, from, to, QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(resistance));
+        PipeDefinition Pipe(
+            string id,
+            string from,
+            string to,
+            double resistance = 100_000d,
+            FluidEnergyTransportMode? energyTransportMode = null) => new(
+            id,
+            from,
+            to,
+            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(resistance),
+            energyTransportMode ?? passiveEnergyTransportMode);
         ValveDefinition Valve(string id, string from, string to, double resistance = 100_000d) => new(
             id, Pipe($"{id}-path", from, to, resistance), ValveCharacteristic.Linear, ValveFailSafeAction.FailClosed);
         PumpDefinition Pump(
@@ -666,7 +712,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             double resistancePascalSecondsSquaredPerKilogramSquared = 100_000_000d,
             bool hasDischargeCheckValve = false) => new(
             id,
-            Pipe($"{id}-path", from, to, resistancePascalSecondsSquaredPerKilogramSquared),
+            Pipe(
+                $"{id}-path",
+                from,
+                to,
+                resistancePascalSecondsSquaredPerKilogramSquared,
+                remainingNonTurbineEnergyTransportMode),
             PressureDifference.FromMegapascals(boostMegapascals),
             QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(resistancePascalSecondsSquaredPerKilogramSquared),
             PumpEfficiency.FromPercent(80d),
@@ -731,7 +782,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                         ThermalConductance.FromMegawattsPerKelvin(0.5d)),
                 }
                 : Array.Empty<HeatTransferDefinition>(),
-            Array.Empty<HeatSourceDefinition>());
+            Array.Empty<HeatSourceDefinition>(),
+            hydraulicNumericalCoupling);
 
         var primaryLiquid = CreateSubcooledLiquid(
             plant,
@@ -863,13 +915,14 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                         ? new SteamDrumSteamSourceDefinition(
                             QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(
                                 steamDrumSteamSourceResistancePascalSecondsSquaredPerKilogramSquared.Value))
-                        : null),
+                        : null,
+                    remainingNonTurbineEnergyTransportMode),
             });
         var boundaries = new PrimaryCircuitBoundarySystemDefinition(
             "boundaries",
             drums,
-            new[] { new FeedwaterBoundaryDefinition("feed", "drum-a", "drum") },
-            new[] { new SteamExportBoundaryDefinition("export", "drum-a", "steam") });
+            new[] { new FeedwaterBoundaryDefinition("feed", "drum-a", "drum", remainingNonTurbineEnergyTransportMode) },
+            new[] { new SteamExportBoundaryDefinition("export", "drum-a", "steam", remainingNonTurbineEnergyTransportMode) });
         var primary = new IntegratedPrimaryCircuitDefinition("primary", boundaries);
         var mainSteam = new MainSteamNetworkDefinition(
             "main-steam",
@@ -886,7 +939,14 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     "turbine-inlet",
                     turbineStopValveTravelRate),
             },
-            new[] { new TurbineAdmissionBoundaryDefinition("turbine-boundary", "train-a", "turbine-inlet") },
+            new[]
+            {
+                new TurbineAdmissionBoundaryDefinition(
+                    "turbine-boundary",
+                    "train-a",
+                    "turbine-inlet",
+                    remainingNonTurbineEnergyTransportMode),
+            },
             includeMainSteamHeaderRelief
                 ? new[]
                 {
@@ -901,7 +961,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                             Area.FromSquareMillimetres(1_600d),
                             dischargeCoefficient: 0.95d,
                             specificGasConstant: SpecificGasConstant.FromJoulesPerKilogramKelvin(461.526d),
-                            heatCapacityRatio: 1.3d)),
+                            heatCapacityRatio: 1.3d),
+                        remainingNonTurbineEnergyTransportMode),
                 }
                 : Array.Empty<MainSteamReliefBoundaryDefinition>());
         var turbine = new TurbineExpansionSystemDefinition(
@@ -937,7 +998,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                         : null,
                     useVaporFractionLimitedTurbineAdmission
                         ? TurbineAdmissionPhasePolicy.VaporMassFractionLimited
-                        : TurbineAdmissionPhasePolicy.LegacyUnrestricted),
+                        : TurbineAdmissionPhasePolicy.LegacyUnrestricted,
+                    turbineEnergyTransportMode),
             });
         var condensers = new CondenserSystemDefinition(
             "condensers",
@@ -956,7 +1018,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                         : null,
                     usePressureResolvedCondenserCondensateEnergy
                         ? CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure
-                        : CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy),
+                        : CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy,
+                    remainingNonTurbineEnergyTransportMode),
             },
             new[]
             {
@@ -980,7 +1043,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                             Area.FromSquareMillimetres(1_600d),
                             dischargeCoefficient: 0.95d,
                             specificGasConstant: SpecificGasConstant.FromJoulesPerKilogramKelvin(461.526d),
-                            heatCapacityRatio: 1.3d)),
+                            heatCapacityRatio: 1.3d),
+                        remainingNonTurbineEnergyTransportMode),
                 }
                 : Array.Empty<TurbineBypassDefinition>());
         var feedwater = new CondensateFeedwaterSystemDefinition(

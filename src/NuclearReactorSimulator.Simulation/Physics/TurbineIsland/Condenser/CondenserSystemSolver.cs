@@ -11,7 +11,7 @@ namespace NuclearReactorSimulator.Simulation.Physics.TurbineIsland.Condenser;
 
 /// <summary>
 /// Deterministic M4.3 committed-state condenser solver.
-/// Condensation is an internal steam-space-to-hotwell mass/energy transfer while rejected heat is an explicit external power sink.
+/// Condensation is an internal steam-space-to-hotwell mass/advected-energy transfer while rejected heat is an explicit external power sink.
 /// Plant fluid/thermal inventories remain integrated exactly once through the inherited M3/M4 network orchestration boundary.
 /// </summary>
 public sealed class CondenserSystemSolver
@@ -173,13 +173,35 @@ public sealed class CondenserSystemSolver
                 coolingBoundaryInput.AvailableHeatRejectionPower.Watts,
                 surfaceHeatTransferLimitedPower.Watts)));
 
-        var condensateSpecificInternalEnergy = ResolveCondensateSpecificInternalEnergy(
+        var condensateState = ResolveCondensateTransportState(
             definition,
             steamSpace,
             hotwell,
             saturationPropertyProvider);
-        var specificEnergyDropJoulesPerKilogram = steamSpace.SpecificInternalEnergy.JoulesPerKilogram
-            - condensateSpecificInternalEnergy.JoulesPerKilogram;
+        var steamSpecificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+            steamSpace.Pressure,
+            steamSpace.Density);
+        var steamSpecificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+            steamSpace.SpecificInternalEnergy,
+            steamSpace.Pressure,
+            steamSpace.Density);
+        var steamAdvectedSpecificEnergy = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+            definition.EnergyTransportMode,
+            steamSpace);
+        var condensateSpecificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+            condensateState.Pressure,
+            condensateState.Density);
+        var condensateSpecificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+            condensateState.SpecificInternalEnergy,
+            condensateState.Pressure,
+            condensateState.Density);
+        var condensateAdvectedSpecificEnergy = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+            definition.EnergyTransportMode,
+            condensateState.SpecificInternalEnergy,
+            condensateState.Pressure,
+            condensateState.Density);
+        var specificEnergyDropJoulesPerKilogram = steamAdvectedSpecificEnergy.JoulesPerKilogram
+            - condensateAdvectedSpecificEnergy.JoulesPerKilogram;
         var thermalLimitedFlow = specificEnergyDropJoulesPerKilogram <= 0d
             ? MassFlowRate.Zero
             : MassFlowRate.FromKilogramsPerSecond(
@@ -190,8 +212,12 @@ public sealed class CondenserSystemSolver
                 definition.MaximumCondensationMassFlowRate.KilogramsPerSecond,
                 Math.Min(inventoryLimitedFlow.KilogramsPerSecond, thermalLimitedFlow.KilogramsPerSecond))));
 
-        var steamEnergyRemovalRate = steamSpace.SpecificInternalEnergy * actualFlow;
-        var hotwellEnergyAdditionRate = condensateSpecificInternalEnergy * actualFlow;
+        var steamInternalEnergyRemovalRate = steamSpace.SpecificInternalEnergy * actualFlow;
+        var steamFlowWorkRemovalRate = steamSpecificFlowWork * actualFlow;
+        var steamEnergyRemovalRate = steamAdvectedSpecificEnergy * actualFlow;
+        var hotwellInternalEnergyAdditionRate = condensateState.SpecificInternalEnergy * actualFlow;
+        var hotwellFlowWorkAdditionRate = condensateSpecificFlowWork * actualFlow;
+        var hotwellEnergyAdditionRate = condensateAdvectedSpecificEnergy * actualFlow;
         var heatRejectionPower = steamEnergyRemovalRate - hotwellEnergyAdditionRate;
         if (heatRejectionPower < Power.Zero)
         {
@@ -213,8 +239,18 @@ public sealed class CondenserSystemSolver
             effectiveHeatRejectionCapacity,
             thermalLimitedFlow,
             actualFlow,
-            condensateSpecificInternalEnergy,
+            condensateState,
+            steamSpecificFlowWork,
+            steamSpecificEnthalpy,
+            steamAdvectedSpecificEnergy,
+            condensateSpecificFlowWork,
+            condensateSpecificEnthalpy,
+            condensateAdvectedSpecificEnergy,
+            steamInternalEnergyRemovalRate,
+            steamFlowWorkRemovalRate,
             steamEnergyRemovalRate,
+            hotwellInternalEnergyAdditionRate,
+            hotwellFlowWorkAdditionRate,
             hotwellEnergyAdditionRate,
             heatRejectionPower);
     }
@@ -278,9 +314,20 @@ public sealed class CondenserSystemSolver
             solution.InventoryLimitedCondensationMassFlowRate,
             solution.ThermalLimitedCondensationMassFlowRate,
             solution.ActualCondensationMassFlowRate,
+            solution.Definition.EnergyTransportMode,
             solution.InitialSteamSpace.SpecificInternalEnergy,
-            solution.CondensateSpecificInternalEnergy,
+            solution.SteamSpecificFlowWork,
+            solution.SteamSpecificEnthalpy,
+            solution.SteamAdvectedSpecificEnergy,
+            solution.CondensateState.SpecificInternalEnergy,
+            solution.CondensateSpecificFlowWork,
+            solution.CondensateSpecificEnthalpy,
+            solution.CondensateAdvectedSpecificEnergy,
+            solution.SteamInternalEnergyRemovalRate,
+            solution.SteamFlowWorkRemovalRate,
             solution.SteamEnergyRemovalRate,
+            solution.HotwellInternalEnergyAdditionRate,
+            solution.HotwellFlowWorkAdditionRate,
             solution.HotwellEnergyAdditionRate,
             solution.HeatRejectionPower,
             solution.InitialHotwell.Mass,
@@ -292,23 +339,41 @@ public sealed class CondenserSystemSolver
     }
 
 
-    private static SpecificEnergy ResolveCondensateSpecificInternalEnergy(
+    private static CondensateTransportState ResolveCondensateTransportState(
         CondenserDefinition definition,
         FluidNodeState steamSpace,
         FluidNodeState hotwell,
         IWaterSteamSaturationPropertyProvider? saturationPropertyProvider)
-        => definition.CondensateEnergyMode switch
+    {
+        return definition.CondensateEnergyMode switch
         {
-            CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy => hotwell.SpecificInternalEnergy,
-            CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure =>
-                (saturationPropertyProvider
-                    ?? throw new InvalidOperationException(
-                        $"Condenser '{definition.Id}' requires saturation properties for pressure-resolved condensate energy."))
-                .GetSaturationProperties(steamSpace.Pressure)
-                .SaturatedLiquidInternalEnergy,
+            CondenserCondensateEnergyMode.LegacyHotwellSpecificInternalEnergy => new CondensateTransportState(
+                hotwell.SpecificInternalEnergy,
+                hotwell.Pressure,
+                hotwell.Density),
+            CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure => ResolveSaturatedLiquidTransportState(
+                definition,
+                steamSpace,
+                saturationPropertyProvider),
             _ => throw new InvalidOperationException(
                 $"Condenser '{definition.Id}' uses unsupported condensate-energy mode '{definition.CondensateEnergyMode}'."),
         };
+    }
+
+    private static CondensateTransportState ResolveSaturatedLiquidTransportState(
+        CondenserDefinition definition,
+        FluidNodeState steamSpace,
+        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider)
+    {
+        var saturation = (saturationPropertyProvider
+                ?? throw new InvalidOperationException(
+                    $"Condenser '{definition.Id}' requires saturation properties for pressure-resolved condensate energy."))
+            .GetSaturationProperties(steamSpace.Pressure);
+        return new CondensateTransportState(
+            saturation.SaturatedLiquidInternalEnergy,
+            steamSpace.Pressure,
+            saturation.SaturatedLiquidDensity);
+    }
 
     private static double ResolveCondensableVaporMassFraction(FluidNodeState steamSpace)
         => steamSpace.Phase switch
@@ -348,8 +413,23 @@ public sealed class CondenserSystemSolver
         Power EffectiveHeatRejectionCapacity,
         MassFlowRate ThermalLimitedCondensationMassFlowRate,
         MassFlowRate ActualCondensationMassFlowRate,
-        SpecificEnergy CondensateSpecificInternalEnergy,
+        CondensateTransportState CondensateState,
+        SpecificEnergy SteamSpecificFlowWork,
+        SpecificEnergy SteamSpecificEnthalpy,
+        SpecificEnergy SteamAdvectedSpecificEnergy,
+        SpecificEnergy CondensateSpecificFlowWork,
+        SpecificEnergy CondensateSpecificEnthalpy,
+        SpecificEnergy CondensateAdvectedSpecificEnergy,
+        Power SteamInternalEnergyRemovalRate,
+        Power SteamFlowWorkRemovalRate,
         Power SteamEnergyRemovalRate,
+        Power HotwellInternalEnergyAdditionRate,
+        Power HotwellFlowWorkAdditionRate,
         Power HotwellEnergyAdditionRate,
         Power HeatRejectionPower);
+
+    private sealed record CondensateTransportState(
+        SpecificEnergy SpecificInternalEnergy,
+        Pressure Pressure,
+        Density Density);
 }

@@ -163,3 +163,16 @@ The M4.4 semantic solver only adds bounded feedwater-conditioning energy as supp
 ## M4.5 electrical coupling
 
 M4.5 adds no new thermofluid inventory integrator. Generator/grid state is separate electrical state, while electromagnetic torque feeds the existing M4.2 rotor integrator. The `GeneratorGridSolver` preserves the higher-phase supplemental `PlantNetworkSourceTerms` seam when it delegates to M4.2, so later M4 composition still reaches one `PlantNetworkOrchestrator` call for all conserved fluid/thermal inventories.
+
+## M10.9.4.1-G.1 energy-transport audit boundary
+
+The validated runtime still accumulates the existing component source terms. G.1 introduces no new contribution to `PlantNetworkSourceTerms` and therefore does not change the single-integration rule or reference trajectories.
+
+The new audit seam formalizes the target open-control-volume invariant:
+
+```text
+h = u + p / rho
+advective energy = h * m_dot
+```
+
+Internal transfers must remain equal and opposite. Pump shaft work, turbine shaft work, heat transfer and external boundary power remain distinct terms and must be counted exactly once during later G migrations. G.1 measures this gap only; it is not a hidden correction layer.

@@ -134,3 +134,7 @@ No fallback to fabricated local values is allowed.
 - historical RBMK calibration claims;
 - automatic scenario outcome shaping;
 - geometry inferred from UI coordinates.
+
+## Approved future 2D core extension
+
+The future reference plant is approved to evolve toward a reduced educational 2D multi-zone/equivalent-channel representation with multiple rods/rod groups, selectable local layers and drill-down/trends. This extends the existing aggregated/quasi-spatial seams; it does not authorize a claim of full-channel neutron transport or UI-derived geometry. See `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md` and ADR 0122.

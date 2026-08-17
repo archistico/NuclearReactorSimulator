@@ -1,3 +1,4 @@
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.MainSteam;
 
@@ -6,7 +7,7 @@ namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.Condenser;
 /// <summary>
 /// Automatic pressure-actuated steam-dump path from one canonical main-steam header to one condenser steam space.
 /// The destination pressure is resolved from committed condenser state at runtime; F.3 intentionally adds no manual
-/// authority, actuator travel, hysteresis, downstream receiver inventory or flow-work/enthalpy migration.
+/// authority, actuator travel, hysteresis or downstream receiver inventory. Its advective-energy convention is versioned by Phase G.
 /// </summary>
 public sealed class TurbineBypassDefinition
 {
@@ -16,7 +17,8 @@ public sealed class TurbineBypassDefinition
         string condenserId,
         Pressure setPressure,
         Pressure fullOpenPressure,
-        CompressibleSteamFlowDefinition flowDefinition)
+        CompressibleSteamFlowDefinition flowDefinition,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         Id = ValidateId(id, nameof(id), "Turbine-bypass");
         SourceHeaderNodeId = ValidateId(sourceHeaderNodeId, nameof(sourceHeaderNodeId), "Turbine-bypass source-header node");
@@ -32,6 +34,12 @@ public sealed class TurbineBypassDefinition
 
         SetPressure = setPressure;
         FullOpenPressure = fullOpenPressure;
+        if (!Enum.IsDefined(energyTransportMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(energyTransportMode), energyTransportMode, "Unsupported turbine-bypass energy-transport mode.");
+        }
+
+        EnergyTransportMode = energyTransportMode;
     }
 
     public string Id { get; }
@@ -45,6 +53,8 @@ public sealed class TurbineBypassDefinition
     public Pressure FullOpenPressure { get; }
 
     public CompressibleSteamFlowDefinition FlowDefinition { get; }
+
+    public FluidEnergyTransportMode EnergyTransportMode { get; }
 
     public double CalculateOpenFraction(Pressure sourcePressure)
     {

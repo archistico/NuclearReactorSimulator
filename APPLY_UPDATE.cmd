@@ -1,43 +1,21 @@
 @echo off
 setlocal EnableExtensions
-
 cd /d "%~dp0"
+if errorlevel 1 exit /b 1
 
-if not exist "NuclearReactorSimulator.sln" (
-    echo ERRORE: eseguire APPLY_UPDATE.cmd dalla radice del progetto.
-    echo Il file NuclearReactorSimulator.sln non e' stato trovato.
-    exit /b 1
+echo Applying M10.9.4.1-H.18 Hotfix 1 turbine-inlet continuity / residual-floor split candidate...
+
+echo Removing stale local build outputs so stacked ZIP timestamps cannot reuse an older assembly...
+for /d /r %%D in (bin) do @if exist "%%D" rd /s /q "%%D"
+for /d /r %%D in (obj) do @if exist "%%D" rd /s /q "%%D"
+
+rem Compatibility cleanup retained from prior stacked packages.
+for %%F in (
+    "docs\adr\0110-electrical-protection-thresholds-are-derived-from-signed-current-v2-trajectories.md"
+    "docs\adr\0111-evidence-derived-electrical-protection-uses-supervised-delayed-m5-functions.md"
+) do (
+    if exist "%%~F" del /q "%%~F"
 )
 
-echo Nuclear Reactor Simulator - applicazione progetto completo M10.9.4.1-F.3 Hotfix 1 CANDIDATE
-
-echo.
-echo Pulizia compatibile per eventuale estrazione sopra checkpoint precedenti...
-
-call :DeleteIfPresent "docs\adr\0080-generation-ready-condenser-cooling-is-capacity-not-forced-inventory-depletion.md"
-if errorlevel 1 exit /b 1
-call :DeleteIfPresent "docs\adr\0101-governor-actuator-tracking-is-measured-before-anti-windup-retuning.md"
-if errorlevel 1 exit /b 1
-call :DeleteIfPresent "docs\adr\0102-reference-plant-scale-target-is-a-10-mwe-educational-unit.md"
-if errorlevel 1 exit /b 1
-call :DeleteIfPresent "docs\adr\0103-current-v2-reference-plant-is-10-mwe-with-bidirectional-grid-coupling.md"
-if errorlevel 1 exit /b 1
-call :DeleteIfPresent "docs\adr\0104-bidirectional-grid-motoring-uses-an-internal-signed-rotor-torque-seam.md"
-if errorlevel 1 exit /b 1
-
-echo.
-echo Applicazione completata. F.3 non richiede nuove cancellazioni o rinominazioni; la pulizia sopra serve solo per vecchi checkpoint documentali.
-exit /b 0
-
-:DeleteIfPresent
-if exist "%~1" (
-    del /f /q "%~1"
-    if errorlevel 1 (
-        echo ERRORE durante l'eliminazione: %~1
-        exit /b 1
-    )
-    echo Eliminato: %~1
-) else (
-    echo Gia' assente: %~1
-)
+echo M10.9.4.1-H.18 Hotfix 1 applied. Stale bin/obj outputs were removed; rebuild before testing.
 exit /b 0

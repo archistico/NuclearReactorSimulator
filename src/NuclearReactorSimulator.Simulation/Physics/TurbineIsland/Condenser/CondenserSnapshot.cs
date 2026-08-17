@@ -31,9 +31,20 @@ public sealed record CondenserSnapshot(
     MassFlowRate InventoryLimitedCondensationMassFlowRate,
     MassFlowRate ThermalLimitedCondensationMassFlowRate,
     MassFlowRate ActualCondensationMassFlowRate,
+    FluidEnergyTransportMode EnergyTransportMode,
     SpecificEnergy SteamSpecificInternalEnergy,
+    SpecificEnergy SteamSpecificFlowWork,
+    SpecificEnergy SteamSpecificEnthalpy,
+    SpecificEnergy SteamAdvectedSpecificEnergy,
     SpecificEnergy CondensateSpecificInternalEnergy,
+    SpecificEnergy CondensateSpecificFlowWork,
+    SpecificEnergy CondensateSpecificEnthalpy,
+    SpecificEnergy CondensateAdvectedSpecificEnergy,
+    Power SteamInternalEnergyRemovalRate,
+    Power SteamFlowWorkRemovalRate,
     Power SteamEnergyRemovalRate,
+    Power HotwellInternalEnergyAdditionRate,
+    Power HotwellFlowWorkAdditionRate,
     Power HotwellEnergyAdditionRate,
     Power HeatRejectionPower,
     Mass InitialHotwellMass,
@@ -48,7 +59,7 @@ public sealed record CondenserSnapshot(
     [JsonIgnore]
     public SpecificEnergy SpecificCondensationEnergyDrop => SpecificEnergy.FromJoulesPerKilogram(Math.Max(
         0d,
-        SteamSpecificInternalEnergy.JoulesPerKilogram - CondensateSpecificInternalEnergy.JoulesPerKilogram));
+        SteamAdvectedSpecificEnergy.JoulesPerKilogram - CondensateAdvectedSpecificEnergy.JoulesPerKilogram));
 
     [JsonIgnore]
     public bool MaximumFlowLimitActive => IsActiveLimit(MaximumCondensationMassFlowRate);

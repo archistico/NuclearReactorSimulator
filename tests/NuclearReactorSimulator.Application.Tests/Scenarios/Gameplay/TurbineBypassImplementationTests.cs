@@ -42,7 +42,7 @@ public sealed class TurbineBypassImplementationTests
             Assert.True(bypass.SourcePressure < Pressure.FromMegapascals(6.4d));
             Assert.Equal(0d, bypass.OpenFraction, 12);
             Assert.Equal(MassFlowRate.Zero, bypass.MassFlowRate);
-            Assert.Equal(Power.Zero, bypass.InternalEnergyTransferRate);
+            Assert.Equal(Power.Zero, bypass.AdvectedEnergyTransferRate);
             Assert.True(bypass.DestinationPressure < bypass.SourcePressure);
         }
     }
@@ -89,7 +89,7 @@ public sealed class TurbineBypassImplementationTests
                 snapshot.EffectiveThroatArea.SquareMillimetres,
                 snapshot.IsChoked,
                 snapshot.MassFlowRate.KilogramsPerSecond,
-                snapshot.InternalEnergyTransferRate.Megawatts));
+                snapshot.AdvectedEnergyTransferRate.Megawatts));
         }
 
         Assert.All(pressureRows.Where(static row => row.HeaderPressureMegapascals <= 6.4d),
@@ -117,7 +117,7 @@ public sealed class TurbineBypassImplementationTests
                 destinationPressureMegapascals,
                 snapshot.IsChoked,
                 snapshot.MassFlowRate.KilogramsPerSecond,
-                snapshot.InternalEnergyTransferRate.Megawatts));
+                snapshot.AdvectedEnergyTransferRate.Megawatts));
         }
 
         var heatCapacityRatio = Assert.Single(definition.TurbineBypasses).FlowDefinition.HeatCapacityRatio;
@@ -148,6 +148,7 @@ public sealed class TurbineBypassImplementationTests
         Assert.Equal(6.4d, bypass.SetPressure.Megapascals, 12);
         Assert.Equal(6.5d, bypass.FullOpenPressure.Megapascals, 12);
         Assert.Equal(1_600d, bypass.FlowDefinition.FullOpenThroatArea.SquareMillimetres, 12);
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, bypass.EnergyTransportMode);
     }
 
     private static void AssertInternalTransfer(TurbineBypassStepResult result, TurbineBypassSnapshot snapshot)
@@ -157,8 +158,8 @@ public sealed class TurbineBypassImplementationTests
         var destination = result.SourceTerms.FluidNodeBalances[snapshot.DestinationSteamSpaceNodeId];
         Assert.Equal(-snapshot.MassFlowRate.KilogramsPerSecond, source.NetMassFlowRate.KilogramsPerSecond, 10);
         Assert.Equal(snapshot.MassFlowRate.KilogramsPerSecond, destination.NetMassFlowRate.KilogramsPerSecond, 10);
-        Assert.Equal(-snapshot.InternalEnergyTransferRate.Watts, source.NetEnergyRate.Watts, 3);
-        Assert.Equal(snapshot.InternalEnergyTransferRate.Watts, destination.NetEnergyRate.Watts, 3);
+        Assert.Equal(-snapshot.AdvectedEnergyTransferRate.Watts, source.NetEnergyRate.Watts, 3);
+        Assert.Equal(snapshot.AdvectedEnergyTransferRate.Watts, destination.NetEnergyRate.Watts, 3);
         Assert.Equal(0d, source.NetMassFlowRate.KilogramsPerSecond + destination.NetMassFlowRate.KilogramsPerSecond, 10);
         Assert.Equal(0d, source.NetEnergyRate.Watts + destination.NetEnergyRate.Watts, 3);
         Assert.Equal(MassFlowRate.Zero, result.SourceTerms.ExternalMassFlowRate);
@@ -214,11 +215,11 @@ public sealed class TurbineBypassImplementationTests
 
         var pressureStem = "01-current-v2-turbine-bypass-source-pressure-sweep";
         var pressureCsv = new StringBuilder();
-        pressureCsv.AppendLine("header_pressure_mpa,condenser_backpressure_mpa,open_fraction,vapor_availability_fraction,effective_throat_area_mm2,is_choked,mass_flow_kg_per_s,internal_energy_transfer_mw");
+        pressureCsv.AppendLine("header_pressure_mpa,condenser_backpressure_mpa,open_fraction,vapor_availability_fraction,effective_throat_area_mm2,is_choked,mass_flow_kg_per_s,advected_energy_transfer_mw");
         foreach (var row in pressureRows)
         {
             pressureCsv.AppendLine(FormattableString.Invariant(
-                $"{row.HeaderPressureMegapascals:0.000000},{row.CondenserBackpressureMegapascals:0.000000},{row.OpenFraction:0.000000},{row.VaporAvailabilityFraction:0.000000},{row.EffectiveThroatAreaSquareMillimetres:0.000000},{row.IsChoked},{row.MassFlowKilogramsPerSecond:0.000000000},{row.InternalEnergyTransferMegawatts:0.000000000}"));
+                $"{row.HeaderPressureMegapascals:0.000000},{row.CondenserBackpressureMegapascals:0.000000},{row.OpenFraction:0.000000},{row.VaporAvailabilityFraction:0.000000},{row.EffectiveThroatAreaSquareMillimetres:0.000000},{row.IsChoked},{row.MassFlowKilogramsPerSecond:0.000000000},{row.AdvectedEnergyTransferMegawatts:0.000000000}"));
         }
         File.WriteAllText(Path.Combine(directory, $"{pressureStem}.csv"), pressureCsv.ToString(), new UTF8Encoding(false));
 
@@ -227,22 +228,22 @@ public sealed class TurbineBypassImplementationTests
         var maximum = pressureRows[^1];
         var pressureSummary = string.Join(Environment.NewLine,
             $"=== {pressureStem} ===",
-            "Automatic header-to-condenser steam dump over the validated F.1 capacity seam; internal-energy transport remains the pre-Phase-G convention.",
+            "Automatic header-to-condenser steam dump over the validated F.1 capacity seam; enthalpy transport is active under the validated Phase-G convention.",
             FormattableString.Invariant(
                 $"samples={pressureRows.Count}; header-pressure={pressureRows[0].HeaderPressureMegapascals:0.000000}..{maximum.HeaderPressureMegapascals:0.000000} MPa; set-pressure=6.400000 MPa; full-open-pressure=6.500000 MPa; committed-condenser-backpressure={initialExhaustPressure.Megapascals:0.000000} MPa;"),
             FormattableString.Invariant(
-                $"first-open-pressure={firstOpen.HeaderPressureMegapascals:0.000000} MPa; first-full-open-pressure={firstFullOpen.HeaderPressureMegapascals:0.000000} MPa; vapor-availability={maximum.VaporAvailabilityFraction:0.000000}; capacity-at-{maximum.HeaderPressureMegapascals:0.00}MPa={maximum.MassFlowKilogramsPerSecond:0.000000000} kg/s; internal-energy-transfer={maximum.InternalEnergyTransferMegawatts:0.000000000} MW;"),
+                $"first-open-pressure={firstOpen.HeaderPressureMegapascals:0.000000} MPa; first-full-open-pressure={firstFullOpen.HeaderPressureMegapascals:0.000000} MPa; vapor-availability={maximum.VaporAvailabilityFraction:0.000000}; capacity-at-{maximum.HeaderPressureMegapascals:0.00}MPa={maximum.MassFlowKilogramsPerSecond:0.000000000} kg/s; advected-energy-transfer={maximum.AdvectedEnergyTransferMegawatts:0.000000000} MW;"),
             "mass-flow-monotonic=True; internal-transfer-conservative=True; external-boundary-exchange=False; atmospheric-relief-separate=True",
             string.Empty);
         File.WriteAllText(Path.Combine(directory, $"{pressureStem}.summary.txt"), pressureSummary, new UTF8Encoding(false));
 
         var backpressureStem = "02-current-v2-turbine-bypass-condenser-backpressure-sweep";
         var backpressureCsv = new StringBuilder();
-        backpressureCsv.AppendLine("pressure_ratio,condenser_backpressure_mpa,is_choked,mass_flow_kg_per_s,internal_energy_transfer_mw");
+        backpressureCsv.AppendLine("pressure_ratio,condenser_backpressure_mpa,is_choked,mass_flow_kg_per_s,advected_energy_transfer_mw");
         foreach (var row in backpressureRows)
         {
             backpressureCsv.AppendLine(FormattableString.Invariant(
-                $"{row.PressureRatio:0.000000},{row.CondenserBackpressureMegapascals:0.000000},{row.IsChoked},{row.MassFlowKilogramsPerSecond:0.000000000},{row.InternalEnergyTransferMegawatts:0.000000000}"));
+                $"{row.PressureRatio:0.000000},{row.CondenserBackpressureMegapascals:0.000000},{row.IsChoked},{row.MassFlowKilogramsPerSecond:0.000000000},{row.AdvectedEnergyTransferMegawatts:0.000000000}"));
         }
         File.WriteAllText(Path.Combine(directory, $"{backpressureStem}.csv"), backpressureCsv.ToString(), new UTF8Encoding(false));
 
@@ -283,12 +284,12 @@ public sealed class TurbineBypassImplementationTests
         double EffectiveThroatAreaSquareMillimetres,
         bool IsChoked,
         double MassFlowKilogramsPerSecond,
-        double InternalEnergyTransferMegawatts);
+        double AdvectedEnergyTransferMegawatts);
 
     private sealed record BackpressureSweepRow(
         double PressureRatio,
         double CondenserBackpressureMegapascals,
         bool IsChoked,
         double MassFlowKilogramsPerSecond,
-        double InternalEnergyTransferMegawatts);
+        double AdvectedEnergyTransferMegawatts);
 }

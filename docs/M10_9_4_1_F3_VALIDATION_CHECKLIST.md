@@ -1,6 +1,6 @@
 # M10.9.4.1-F.3 Hotfix 1 Validation Checklist
 
-Status: **CANDIDATE — user validation pending**
+Status: **VALIDATED — user-confirmed 2026-07-26**
 
 ## Build and focused gate
 
@@ -61,6 +61,15 @@ Confirm that:
 - source removal exactly equals destination addition for both mass and internal energy;
 - F.2 atmospheric relief remains separate and unchanged.
 
-## Promotion rule
+## Validation result
 
-Promote F.3 only after compilation, the focused gate, ordinary suite, cumulative gates and generated summaries/CSVs are confirmed by the user.
+The user confirmed compilation and all requested tests passed. The supplied summaries/CSVs confirm:
+
+- first opening at 6.41 MPa and full opening at 6.50 MPa;
+- 13.133769551 kg/s at 6.60 MPa;
+- 12.934773043 kg/s choked plateau at 6.50 MPa;
+- first sampled unchoked ratio 0.55;
+- zero flow at equal pressure;
+- exact internal transfer conservation and zero external exchange.
+
+F.3 Hotfix 1 is promoted to the validated continuation baseline.

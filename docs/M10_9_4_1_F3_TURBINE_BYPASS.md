@@ -1,4 +1,4 @@
-# M10.9.4.1-F.3 — Conservative Turbine Bypass to Condenser
+# M10.9.4.1-F.3 — Conservative Turbine Bypass to Condenser — VALIDATED
 
 ## Purpose
 
@@ -97,3 +97,8 @@ The source-pressure sweep covers 6.20–6.60 MPa. The backpressure sweep covers 
 ## Non-scope
 
 F.3 adds no manual command, actuator travel, hysteresis, bypass controller, HMI control, alarm/protection retuning, wet-steam critical-flow correlation, flow-work term or enthalpy migration. Phase G remains the owner of the whole-network energy-transport convention.
+
+
+## Validation result
+
+User validation on 2026-07-26 confirmed compilation and all requested tests. The supplied audit reported first opening at 6.41 MPa, full opening at 6.50 MPa, 13.133769551 kg/s at 6.60 MPa, 12.934773043 kg/s choked plateau at 6.50 MPa, first sampled unchoked ratio 0.55, zero flow at equal pressure, exact internal mass/energy closure and zero external exchange. F.3 Hotfix 1 is the validated baseline for Phase G.

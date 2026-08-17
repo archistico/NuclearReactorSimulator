@@ -17,5 +17,10 @@ public sealed record MainSteamReliefBoundarySnapshot(
     Area EffectiveThroatArea,
     bool IsChoked,
     MassFlowRate MassFlowRate,
+    FluidEnergyTransportMode EnergyTransportMode,
     SpecificEnergy ExportedSpecificInternalEnergy,
+    SpecificEnergy ExportedSpecificFlowWork,
+    SpecificEnergy ExportedSpecificEnthalpy,
+    Power InternalEnergyExportRate,
+    Power FlowWorkExportRate,
     Power EnergyExportRate);

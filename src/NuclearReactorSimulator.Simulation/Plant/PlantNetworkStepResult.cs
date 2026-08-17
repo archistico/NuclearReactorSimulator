@@ -15,7 +15,8 @@ public sealed class PlantNetworkStepResult
         PlantState candidateState,
         PlantNetworkAudit audit,
         IReadOnlyDictionary<string, FluidNodeBalance> fluidNodeBalances,
-        IReadOnlyDictionary<string, ThermalEnergyBalance> thermalBodyBalances)
+        IReadOnlyDictionary<string, ThermalEnergyBalance> thermalBodyBalances,
+        PlantNetworkHydraulicNumericalSnapshot? hydraulicNumerics = null)
     {
         ArgumentNullException.ThrowIfNull(candidateState);
         ArgumentNullException.ThrowIfNull(audit);
@@ -26,6 +27,7 @@ public sealed class PlantNetworkStepResult
         Audit = audit;
         FluidNodeBalances = CanonicalCopy(fluidNodeBalances);
         ThermalBodyBalances = CanonicalCopy(thermalBodyBalances);
+        HydraulicNumerics = hydraulicNumerics ?? PlantNetworkHydraulicNumericalSnapshot.Explicit;
     }
 
     public PlantState CandidateState { get; }
@@ -35,6 +37,8 @@ public sealed class PlantNetworkStepResult
     public IReadOnlyDictionary<string, FluidNodeBalance> FluidNodeBalances { get; }
 
     public IReadOnlyDictionary<string, ThermalEnergyBalance> ThermalBodyBalances { get; }
+
+    public PlantNetworkHydraulicNumericalSnapshot HydraulicNumerics { get; }
 
     private static IReadOnlyDictionary<string, TValue> CanonicalCopy<TValue>(
         IReadOnlyDictionary<string, TValue> source)

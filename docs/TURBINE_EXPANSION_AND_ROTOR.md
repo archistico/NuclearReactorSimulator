@@ -229,3 +229,19 @@ This is deliberately not a detailed wet-steam blade model. Valve/stage authority
 ## Current-v2 passive rotor losses
 
 M10.9.4.1-D.3.1 adds optional `TurbineRotorMechanicalLossDefinition`. The loss torque is proportional to angular speed and its dissipated power is proportional to speed squared. Sustained current-v2 profiles use 0.5 MW at 3000 rpm; legacy/default definitions omit the model. Passive loss is separate from generator electromagnetic load and appears in mechanical/full-cycle energy closure diagnostics without changing historical replay JSON.
+
+## M10.9.4.1-G.4 current-v2 open-control-volume energy transport — CANDIDATE
+
+G.1–G.3 establish `h = u + p/rho` and migrate every non-turbine current-v2 transport owner. G.4 applies the same convention to the turbine stage without changing the turbine-work law.
+
+Historical stage definitions retain `SpecificInternalEnergy`. The two current-v2 sustained profiles select `SpecificEnthalpy`, giving:
+
+```text
+inlet transport   = h_in * m_dot
+shaft transfer    = P_shaft
+exhaust transport = h_in * m_dot - P_shaft
+```
+
+The fluid-node conserved quantity remains internal energy. Shaft power remains the sole explicit thermofluid-to-rotor transfer and is not embedded a second time in rotor or generator bookkeeping. `TurbineStageGroupSnapshot` exposes the selected transport mode, inlet `p/rho`, inlet enthalpy, inlet/exhaust advected specific energy, flow-work rate and ownership residual while retaining historical diagnostics for compatibility.
+
+G.4 does not retune the 500 kJ/kg design cap, 86% current-v2 efficiency, pressure/temperature work closure, governor, grid coupling or protections. Successful validation closes the staged Phase G runtime migration; numerical-coupling changes remain Phase H work.

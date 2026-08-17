@@ -23,7 +23,8 @@ public sealed class IntegratedPrimaryCircuitSnapshot
         SteamDrumSystemSnapshot steamDrums,
         PrimaryCircuitBoundarySystemSnapshot boundaries,
         PlantSnapshot candidatePlant,
-        PlantNetworkAudit audit)
+        PlantNetworkAudit audit,
+        PlantNetworkHydraulicNumericalSnapshot? hydraulicNumerics = null)
     {
         Definition = definition ?? throw new ArgumentNullException(nameof(definition));
         Core = core ?? throw new ArgumentNullException(nameof(core));
@@ -33,6 +34,7 @@ public sealed class IntegratedPrimaryCircuitSnapshot
         Boundaries = boundaries ?? throw new ArgumentNullException(nameof(boundaries));
         CandidatePlant = candidatePlant ?? throw new ArgumentNullException(nameof(candidatePlant));
         Audit = audit ?? throw new ArgumentNullException(nameof(audit));
+        HydraulicNumerics = hydraulicNumerics ?? PlantNetworkHydraulicNumericalSnapshot.Explicit;
 
         if (!ReferenceEquals(core.Definition, definition.CoreDefinition)
             || !string.Equals(channelGroups.DefinitionId, definition.ChannelGroups.Id, StringComparison.Ordinal)
@@ -67,6 +69,8 @@ public sealed class IntegratedPrimaryCircuitSnapshot
     public PlantSnapshot CandidatePlant { get; }
 
     public PlantNetworkAudit Audit { get; }
+
+    public PlantNetworkHydraulicNumericalSnapshot HydraulicNumerics { get; }
 
     public Power TotalFissionThermalPower => Core.TotalFissionThermalPower;
 

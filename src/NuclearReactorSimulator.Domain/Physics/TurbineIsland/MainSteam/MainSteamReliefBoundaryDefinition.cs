@@ -1,3 +1,4 @@
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 
 namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.MainSteam;
@@ -16,7 +17,8 @@ public sealed class MainSteamReliefBoundaryDefinition
         Pressure receiverPressure,
         Pressure setPressure,
         Pressure fullLiftPressure,
-        CompressibleSteamFlowDefinition flowDefinition)
+        CompressibleSteamFlowDefinition flowDefinition,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         Id = ValidateId(id, nameof(id), "Main-steam relief boundary");
         SourceHeaderNodeId = ValidateId(sourceHeaderNodeId, nameof(sourceHeaderNodeId), "Relief source-header node");
@@ -40,6 +42,12 @@ public sealed class MainSteamReliefBoundaryDefinition
         ReceiverPressure = receiverPressure;
         SetPressure = setPressure;
         FullLiftPressure = fullLiftPressure;
+        if (!Enum.IsDefined(energyTransportMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(energyTransportMode), energyTransportMode, "Unsupported relief energy-transport mode.");
+        }
+
+        EnergyTransportMode = energyTransportMode;
     }
 
     public string Id { get; }
@@ -55,6 +63,8 @@ public sealed class MainSteamReliefBoundaryDefinition
     public Pressure FullLiftPressure { get; }
 
     public CompressibleSteamFlowDefinition FlowDefinition { get; }
+
+    public FluidEnergyTransportMode EnergyTransportMode { get; }
 
     public double CalculateLiftFraction(Pressure sourcePressure)
     {

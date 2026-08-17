@@ -29,6 +29,40 @@ public sealed record SteamDrumSnapshot(
     double SeparationMassResidualKilogramsPerSecond,
     double SeparationEnergyResidualWatts)
 {
+
+    [JsonIgnore]
+    public FluidEnergyTransportMode EnergyTransportMode { get; init; } = FluidEnergyTransportMode.SpecificInternalEnergy;
+
+    [JsonIgnore]
+    public SpecificEnergy SteamSpecificFlowWork { get; init; } = SpecificEnergy.Zero;
+
+    [JsonIgnore]
+    public SpecificEnergy LiquidSpecificFlowWork { get; init; } = SpecificEnergy.Zero;
+
+    [JsonIgnore]
+    public SpecificEnergy SteamSpecificEnthalpy { get; init; } = SteamSpecificInternalEnergy;
+
+    [JsonIgnore]
+    public SpecificEnergy LiquidSpecificEnthalpy { get; init; } = LiquidSpecificInternalEnergy;
+
+    [JsonIgnore]
+    public SpecificEnergy SteamAdvectedSpecificEnergy { get; init; } = SteamSpecificInternalEnergy;
+
+    [JsonIgnore]
+    public SpecificEnergy LiquidAdvectedSpecificEnergy { get; init; } = LiquidSpecificInternalEnergy;
+
+    [JsonIgnore]
+    public Power SteamInternalEnergyRate { get; init; } = SteamEnergyRate;
+
+    [JsonIgnore]
+    public Power LiquidInternalEnergyRate { get; init; } = LiquidEnergyRate;
+
+    [JsonIgnore]
+    public Power SteamFlowWorkRate { get; init; } = Power.Zero;
+
+    [JsonIgnore]
+    public Power LiquidFlowWorkRate { get; init; } = Power.Zero;
+
     /// <summary>Current-v2 diagnostic: liquid mass that can physically participate in liquid recirculation.</summary>
     [JsonIgnore]
     public Mass SeparableLiquidInventoryMass { get; init; } = Mass.Zero;

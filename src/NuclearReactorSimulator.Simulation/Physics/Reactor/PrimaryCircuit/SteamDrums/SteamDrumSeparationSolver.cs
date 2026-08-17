@@ -108,8 +108,12 @@ public sealed class SteamDrumSeparationSolver
                 integrationInterval);
             var liquidFlow = liquidRecirculation.ActualFlow;
             var totalSeparatedOutflow = steamFlow + liquidFlow;
-            var steamEnergyRate = steamSource.SteamSpecificEnergy * steamFlow;
-            var liquidEnergyRate = steamSource.LiquidSpecificEnergy * liquidFlow;
+            var steamInternalEnergyRate = steamSource.SteamSpecificInternalEnergy * steamFlow;
+            var liquidInternalEnergyRate = steamSource.LiquidSpecificInternalEnergy * liquidFlow;
+            var steamFlowWorkRate = steamSource.SteamSpecificFlowWork * steamFlow;
+            var liquidFlowWorkRate = steamSource.LiquidSpecificFlowWork * liquidFlow;
+            var steamEnergyRate = steamSource.SteamAdvectedSpecificEnergy * steamFlow;
+            var liquidEnergyRate = steamSource.LiquidAdvectedSpecificEnergy * liquidFlow;
             var totalEnergyRate = steamEnergyRate + liquidEnergyRate;
 
             AddBalance(
@@ -142,8 +146,8 @@ public sealed class SteamDrumSeparationSolver
                 incoming,
                 steamFlow,
                 liquidFlow,
-                steamSource.SteamSpecificEnergy,
-                steamSource.LiquidSpecificEnergy,
+                steamSource.SteamSpecificInternalEnergy,
+                steamSource.LiquidSpecificInternalEnergy,
                 steamEnergyRate,
                 liquidEnergyRate,
                 (-totalSeparatedOutflow + steamFlow + liquidFlow).KilogramsPerSecond,
@@ -160,6 +164,17 @@ public sealed class SteamDrumSeparationSolver
                 SteamSourceStoredVaporInventoryMass = steamSource.StoredVaporInventoryMass,
                 SteamSourcePressureLimited = steamSource.IsPressureLimited,
                 SteamSourceAvailabilityLimited = steamSource.IsAvailabilityLimited,
+                EnergyTransportMode = drum.EnergyTransportMode,
+                SteamSpecificFlowWork = steamSource.SteamSpecificFlowWork,
+                LiquidSpecificFlowWork = steamSource.LiquidSpecificFlowWork,
+                SteamSpecificEnthalpy = steamSource.SteamSpecificEnthalpy,
+                LiquidSpecificEnthalpy = steamSource.LiquidSpecificEnthalpy,
+                SteamAdvectedSpecificEnergy = steamSource.SteamAdvectedSpecificEnergy,
+                LiquidAdvectedSpecificEnergy = steamSource.LiquidAdvectedSpecificEnergy,
+                SteamInternalEnergyRate = steamInternalEnergyRate,
+                LiquidInternalEnergyRate = liquidInternalEnergyRate,
+                SteamFlowWorkRate = steamFlowWorkRate,
+                LiquidFlowWorkRate = liquidFlowWorkRate,
             });
         }
 
@@ -181,12 +196,16 @@ public sealed class SteamDrumSeparationSolver
                 0d,
                 state.SpecificInternalEnergy,
                 state.SpecificInternalEnergy,
+                state.Density,
+                state.Density,
                 VoidFraction.NoVoid,
                 SteamDrumLevelFraction.Full),
             FluidPhase.SuperheatedVapor => new PhaseSplit(
                 1d,
                 state.SpecificInternalEnergy,
                 state.SpecificInternalEnergy,
+                state.Density,
+                state.Density,
                 VoidFraction.AllVapor,
                 SteamDrumLevelFraction.Empty),
             FluidPhase.SaturatedMixture => ResolveSaturatedMixture(state),
@@ -208,6 +227,8 @@ public sealed class SteamDrumSeparationSolver
             quality.Fraction,
             saturation.SaturatedLiquidInternalEnergy,
             saturation.SaturatedVaporInternalEnergy,
+            saturation.SaturatedLiquidDensity,
+            saturation.SaturatedVaporDensity,
             _voidFractionSolver.Resolve(state.Thermodynamics),
             SteamDrumLevelFraction.FromFraction(levelFraction));
     }
@@ -225,17 +246,21 @@ public sealed class SteamDrumSeparationSolver
         if (drum.SteamSource is null)
         {
             var legacyFlow = incomingReturnFlow * split.VaporMassFraction;
-            return new SteamSourceResolution(
+            return CreateSteamSourceResolution(
+                drum,
+                drumState,
+                split.VaporSpecificInternalEnergy,
+                split.VaporDensity,
+                split.LiquidSpecificInternalEnergy,
+                split.LiquidDensity,
                 legacyFlow,
                 legacyFlow,
                 legacyFlow,
                 legacyFlow,
                 Mass.Zero,
-                split.VaporSpecificEnergy,
-                split.LiquidSpecificEnergy,
-                false,
-                false,
-                false);
+                usesCurrentSourceClosure: false,
+                isPressureLimited: false,
+                isAvailabilityLimited: false);
         }
 
         if (!integrationInterval.HasValue)
@@ -245,13 +270,30 @@ public sealed class SteamDrumSeparationSolver
         }
 
         var saturation = _thermodynamicModel.GetSaturationProperties(drumState.Temperature);
-        var liquidSpecificEnergy = drumState.Phase == FluidPhase.SubcooledLiquid
+        var liquidSpecificInternalEnergy = drumState.Phase == FluidPhase.SubcooledLiquid
             ? drumState.SpecificInternalEnergy
             : saturation.SaturatedLiquidInternalEnergy;
-        var steamSpecificEnergy = drumState.Phase == FluidPhase.SuperheatedVapor
+        var liquidDensity = drumState.Phase == FluidPhase.SubcooledLiquid
+            ? drumState.Density
+            : saturation.SaturatedLiquidDensity;
+        var steamSpecificInternalEnergy = drumState.Phase == FluidPhase.SuperheatedVapor
             ? drumState.SpecificInternalEnergy
             : saturation.SaturatedVaporInternalEnergy;
-        var vaporizationEnergy = steamSpecificEnergy.JoulesPerKilogram - liquidSpecificEnergy.JoulesPerKilogram;
+        var steamDensity = drumState.Phase == FluidPhase.SuperheatedVapor
+            ? drumState.Density
+            : saturation.SaturatedVaporDensity;
+        var liquidAdvectedSpecificEnergy = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+            drum.EnergyTransportMode,
+            liquidSpecificInternalEnergy,
+            drumState.Pressure,
+            liquidDensity);
+        var steamAdvectedSpecificEnergy = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+            drum.EnergyTransportMode,
+            steamSpecificInternalEnergy,
+            drumState.Pressure,
+            steamDensity);
+        var vaporizationEnergy = steamAdvectedSpecificEnergy.JoulesPerKilogram
+            - liquidAdvectedSpecificEnergy.JoulesPerKilogram;
         if (!double.IsFinite(vaporizationEnergy) || vaporizationEnergy <= 0d)
         {
             throw new InvalidOperationException(
@@ -259,7 +301,8 @@ public sealed class SteamDrumSeparationSolver
         }
 
         var incomingEnergyRateWatts = SumPositiveReturnEnergyRateWatts(loopSnapshot, committedPlantState);
-        var incomingLiquidReferencePowerWatts = liquidSpecificEnergy.JoulesPerKilogram * incomingReturnFlow.KilogramsPerSecond;
+        var incomingLiquidReferencePowerWatts = liquidAdvectedSpecificEnergy.JoulesPerKilogram
+            * incomingReturnFlow.KilogramsPerSecond;
         var incomingExcessPowerWatts = Math.Max(0d, incomingEnergyRateWatts - incomingLiquidReferencePowerWatts);
         var incomingEnergySupportedFlow = MassFlowRate.FromKilogramsPerSecond(Math.Min(
             incomingReturnFlow.KilogramsPerSecond,
@@ -277,17 +320,77 @@ public sealed class SteamDrumSeparationSolver
             pressureDrivenCapacity.KilogramsPerSecond,
             availableFlow.KilogramsPerSecond));
 
+        return CreateSteamSourceResolution(
+            drum,
+            drumState,
+            steamSpecificInternalEnergy,
+            steamDensity,
+            liquidSpecificInternalEnergy,
+            liquidDensity,
+            actualFlow,
+            pressureDrivenCapacity,
+            availableFlow,
+            incomingEnergySupportedFlow,
+            storedVaporInventoryMass,
+            usesCurrentSourceClosure: true,
+            isPressureLimited: pressureDrivenCapacity < availableFlow,
+            isAvailabilityLimited: availableFlow <= pressureDrivenCapacity);
+    }
+
+    private static SteamSourceResolution CreateSteamSourceResolution(
+        SteamDrumDefinition drum,
+        FluidNodeState drumState,
+        SpecificEnergy steamSpecificInternalEnergy,
+        Density steamDensity,
+        SpecificEnergy liquidSpecificInternalEnergy,
+        Density liquidDensity,
+        MassFlowRate actualFlow,
+        MassFlowRate pressureDrivenCapacity,
+        MassFlowRate availableFlow,
+        MassFlowRate incomingEnergySupportedFlow,
+        Mass storedVaporInventoryMass,
+        bool usesCurrentSourceClosure,
+        bool isPressureLimited,
+        bool isAvailabilityLimited)
+    {
+        var steamSpecificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+            drumState.Pressure,
+            steamDensity);
+        var liquidSpecificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+            drumState.Pressure,
+            liquidDensity);
+        var steamSpecificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+            steamSpecificInternalEnergy,
+            drumState.Pressure,
+            steamDensity);
+        var liquidSpecificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+            liquidSpecificInternalEnergy,
+            drumState.Pressure,
+            liquidDensity);
+        var steamAdvectedSpecificEnergy = drum.EnergyTransportMode == FluidEnergyTransportMode.SpecificEnthalpy
+            ? steamSpecificEnthalpy
+            : steamSpecificInternalEnergy;
+        var liquidAdvectedSpecificEnergy = drum.EnergyTransportMode == FluidEnergyTransportMode.SpecificEnthalpy
+            ? liquidSpecificEnthalpy
+            : liquidSpecificInternalEnergy;
+
         return new SteamSourceResolution(
             actualFlow,
             pressureDrivenCapacity,
             availableFlow,
             incomingEnergySupportedFlow,
             storedVaporInventoryMass,
-            steamSpecificEnergy,
-            liquidSpecificEnergy,
-            true,
-            pressureDrivenCapacity < availableFlow,
-            availableFlow <= pressureDrivenCapacity);
+            steamSpecificInternalEnergy,
+            liquidSpecificInternalEnergy,
+            steamSpecificFlowWork,
+            liquidSpecificFlowWork,
+            steamSpecificEnthalpy,
+            liquidSpecificEnthalpy,
+            steamAdvectedSpecificEnergy,
+            liquidAdvectedSpecificEnergy,
+            usesCurrentSourceClosure,
+            isPressureLimited,
+            isAvailabilityLimited);
     }
 
     private static double SumPositiveReturnEnergyRateWatts(
@@ -307,7 +410,10 @@ public sealed class SteamDrumSeparationSolver
 
             var returnPipe = committedPlantState.Definition.GetPipe(branchSnapshot.ReturnPipeId);
             var upstream = committedPlantState.GetFluidNode(returnPipe.FromNodeId);
-            var value = upstream.SpecificInternalEnergy.JoulesPerKilogram * positiveFlow;
+            var selectedSpecificEnergy = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+                returnPipe.EnergyTransportMode,
+                upstream);
+            var value = selectedSpecificEnergy.JoulesPerKilogram * positiveFlow;
             var adjusted = value - compensation;
             var next = totalWatts + adjusted;
             compensation = (next - totalWatts) - adjusted;
@@ -454,16 +560,24 @@ public sealed class SteamDrumSeparationSolver
         MassFlowRate AvailableFlow,
         MassFlowRate IncomingEnergySupportedFlow,
         Mass StoredVaporInventoryMass,
-        SpecificEnergy SteamSpecificEnergy,
-        SpecificEnergy LiquidSpecificEnergy,
+        SpecificEnergy SteamSpecificInternalEnergy,
+        SpecificEnergy LiquidSpecificInternalEnergy,
+        SpecificEnergy SteamSpecificFlowWork,
+        SpecificEnergy LiquidSpecificFlowWork,
+        SpecificEnergy SteamSpecificEnthalpy,
+        SpecificEnergy LiquidSpecificEnthalpy,
+        SpecificEnergy SteamAdvectedSpecificEnergy,
+        SpecificEnergy LiquidAdvectedSpecificEnergy,
         bool UsesCurrentSourceClosure,
         bool IsPressureLimited,
         bool IsAvailabilityLimited);
 
     private sealed record PhaseSplit(
         double VaporMassFraction,
-        SpecificEnergy LiquidSpecificEnergy,
-        SpecificEnergy VaporSpecificEnergy,
+        SpecificEnergy LiquidSpecificInternalEnergy,
+        SpecificEnergy VaporSpecificInternalEnergy,
+        Density LiquidDensity,
+        Density VaporDensity,
         VoidFraction VoidFraction,
         SteamDrumLevelFraction LiquidLevelFraction);
 }

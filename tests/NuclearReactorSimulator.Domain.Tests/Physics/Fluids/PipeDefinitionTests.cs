@@ -47,4 +47,36 @@ public sealed class PipeDefinitionTests
         Assert.Throws<ArgumentException>(() =>
             new PipeDefinition(id, fromNodeId, toNodeId, Resistance));
     }
+
+    [Fact]
+    public void Constructor_DefaultsToHistoricalSpecificInternalEnergyTransport()
+    {
+        var pipe = new PipeDefinition("pipe", "from", "to", Resistance);
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificInternalEnergy, pipe.EnergyTransportMode);
+    }
+
+    [Fact]
+    public void Constructor_PreservesExplicitSpecificEnthalpyTransport()
+    {
+        var pipe = new PipeDefinition(
+            "pipe",
+            "from",
+            "to",
+            Resistance,
+            FluidEnergyTransportMode.SpecificEnthalpy);
+
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, pipe.EnergyTransportMode);
+    }
+
+    [Fact]
+    public void Constructor_RejectsUnknownEnergyTransportMode()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new PipeDefinition(
+            "pipe",
+            "from",
+            "to",
+            Resistance,
+            (FluidEnergyTransportMode)99));
+    }
 }

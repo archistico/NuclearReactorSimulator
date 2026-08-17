@@ -40,7 +40,38 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
     internal static IControlRoomRuntimeEngine CreateElectricalProtectionEvidenceRuntimeEngine()
         => CreateRuntimeEngine(includeEvidenceDerivedElectricalProtections: false);
 
-    private static IControlRoomRuntimeEngine CreateRuntimeEngine(bool includeEvidenceDerivedElectricalProtections)
+    /// <summary>
+    /// Phase H audit-only factory seam. It preserves the production 10 ms default and the same 20 ms deterministic seed
+    /// preconditioning duration while allowing explicitly requested divisor timesteps for convergence evidence.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateNumericalStiffnessEvidenceRuntimeEngine(TimeSpan runtimeStep)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Numerical-stiffness evidence timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false);
+    }
+
+    private static IControlRoomRuntimeEngine CreateRuntimeEngine(
+        bool includeEvidenceDerivedElectricalProtections,
+        TimeSpan? runtimeStep = null,
+        int deterministicSeedStepCount = 2,
+        bool useHybridSemiImplicitHydraulics = false)
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
             GenerationReadySeed,
             mainCirculationRunning: true,
@@ -95,10 +126,15 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialSteamDrumLiquidLevelFraction: 0.5d,
             useVaporFractionLimitedTurbineAdmission: true,
             turbineRotorRatedSpeedMechanicalLossMegawatts: 0.5d,
-            deterministicSeedStepCount: 2,
             generatorMaximumElectricalPowerMegawatts: 10d,
             generatorGridPowerFlowMode: NuclearReactorSimulator.Domain.Physics.Electrical.SynchronousGridPowerFlowMode.Bidirectional,
             includeEvidenceDerivedElectricalProtections: includeEvidenceDerivedElectricalProtections,
             includeMainSteamHeaderRelief: true,
-            includeTurbineBypass: true);
+            includeTurbineBypass: true,
+            useEnthalpyTransportForPassivePipesAndValves: true,
+            useEnthalpyTransportForRemainingNonTurbinePaths: true,
+            useEnthalpyTransportForTurbineExpansion: true,
+            useHybridSemiImplicitHydraulics: useHybridSemiImplicitHydraulics,
+            deterministicSeedStepCount: deterministicSeedStepCount,
+            runtimeStep: runtimeStep);
 }

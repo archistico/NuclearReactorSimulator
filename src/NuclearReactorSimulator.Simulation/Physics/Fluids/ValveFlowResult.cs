@@ -28,7 +28,15 @@ public sealed record ValveFlowResult
 
     public MassFlowRate MassFlowRate => HydraulicFlow.MassFlowRate;
 
+    public FluidEnergyTransportMode EnergyTransportMode => HydraulicFlow.EnergyTransportMode;
+
     public Power InternalEnergyFlowRate => HydraulicFlow.InternalEnergyFlowRate;
+
+    public Power FlowWorkRate => HydraulicFlow.FlowWorkRate;
+
+    public Power EnthalpyFlowRate => HydraulicFlow.EnthalpyFlowRate;
+
+    public Power AdvectedEnergyFlowRate => HydraulicFlow.AdvectedEnergyFlowRate;
 
     public FluidNodeBalance FromNodeBalance => HydraulicFlow.FromNodeBalance;
 

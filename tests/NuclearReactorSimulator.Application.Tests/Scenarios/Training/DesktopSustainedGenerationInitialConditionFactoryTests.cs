@@ -8,6 +8,7 @@ using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Condenser;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
+using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Control.Protection;
 using NuclearReactorSimulator.Simulation.Physics.Instrumentation;
 using Xunit;
@@ -33,6 +34,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.False(legacyStage.ExpansionResistance.HasValue);
         Assert.Null(legacyStage.ThermodynamicWork);
         Assert.Equal(TurbineAdmissionPhasePolicy.LegacyUnrestricted, legacyStage.AdmissionPhasePolicy);
+        Assert.Equal(FluidEnergyTransportMode.SpecificInternalEnergy, legacyStage.EnergyTransportMode);
         var legacyRotorDefinition = Assert.Single(legacyEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.Rotors);
         Assert.Null(legacyRotorDefinition.MechanicalLoss);
         var legacyDrum = Assert.Single(legacyEngine.CurrentState.PlantDefinition
@@ -40,6 +42,9 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Equal(SteamDrumLiquidRecirculationMode.LegacyReturnSplit, legacyDrum.LiquidRecirculationMode);
         Assert.Null(legacyDrum.SteamSource);
         Assert.Empty(legacyEngine.CurrentState.PlantDefinition.PlantDefinition.HeatTransfers);
+        Assert.Equal(
+            HydraulicNumericalCouplingMode.ExplicitCommittedState,
+            legacyEngine.CurrentState.PlantDefinition.PlantDefinition.HydraulicNumericalCoupling.Mode);
         var legacyCondenser = Assert.Single(legacyEngine.CurrentState.PlantDefinition
             .CondensateFeedwaterSystem.CondenserSystem.Condensers);
         Assert.False(legacyCondenser.OverallHeatTransferConductance.HasValue);
@@ -69,6 +74,9 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
 
         var currentEngine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(current.CreateRuntimeEngine());
         var currentPlant = currentEngine.CurrentState.PlantDefinition.PlantDefinition;
+        var currentHydraulicCoupling = currentPlant.HydraulicNumericalCoupling;
+        Assert.Equal(HydraulicNumericalCouplingMode.ExplicitCommittedState, currentHydraulicCoupling.Mode);
+        Assert.Equal(1, currentHydraulicCoupling.MaximumCorrectorIterations);
         Assert.All(
             new[] { "steam", "header", "stop-out", "control-out", "turbine-inlet" },
             nodeId => Assert.Equal(100d, currentPlant.GetFluidNode(nodeId).Volume.CubicMetres, 12));
@@ -91,6 +99,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
         Assert.Equal(1.3d, thermodynamicWork.HeatCapacityRatio, 12);
         Assert.Equal(0.8d, thermodynamicWork.MaximumInletInternalEnergyExtractionFraction, 12);
         Assert.Equal(TurbineAdmissionPhasePolicy.VaporMassFractionLimited, stageDefinition.AdmissionPhasePolicy);
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, stageDefinition.EnergyTransportMode);
         var currentRotorDefinition = Assert.Single(currentEngine.CurrentState.PlantDefinition.TurbineExpansionSystem.Rotors);
         var currentMechanicalLoss = Assert.IsType<TurbineRotorMechanicalLossDefinition>(currentRotorDefinition.MechanicalLoss);
         Assert.Equal(0.5d, currentMechanicalLoss.RatedSpeedLossPower.Megawatts, 12);
@@ -469,6 +478,30 @@ public sealed class DesktopSustainedGenerationInitialConditionFactoryTests
                 testCase.ExpectedActions,
                 result.Snapshot.LatchedActions & testCase.ExpectedActions);
         }
+    }
+
+    [Fact]
+    public void Version2_ProductionRuntimeRetainsTenMillisecondFixedStep()
+    {
+        var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+
+        Assert.Equal(TimeSpan.FromMilliseconds(10d), engine.FixedDeltaTime);
+    }
+
+    [Fact]
+    public void Version2_NumericalStiffnessEvidenceRuntimeCanUseDeterministicFiveMillisecondSubstep()
+    {
+        var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            DesktopSustainedGenerationInitialConditionFactory.CreateNumericalStiffnessEvidenceRuntimeEngine(
+                TimeSpan.FromMilliseconds(5d)));
+
+        Assert.Equal(TimeSpan.FromMilliseconds(5d), engine.FixedDeltaTime);
+        Assert.Equal(0, engine.LogicalStep);
+
+        var snapshot = engine.Step(ControlRoomRunState.Running);
+        Assert.Equal(1, snapshot.LogicalStep);
+        Assert.False(snapshot.AnyTripActive);
     }
 
     private static void AssertProtection(

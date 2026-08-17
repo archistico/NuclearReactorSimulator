@@ -118,6 +118,12 @@ public sealed class IntegratedAutomaticOperationRuntimeEngine :
 
     public long LogicalStep => _logicalStep;
 
+    /// <summary>
+    /// Internal deterministic-integration evidence seam used by Phase H tests. Production callers still obtain the
+    /// version-owned fixed step through the initial-condition factory; presentation/UI code cannot consume this value.
+    /// </summary>
+    internal TimeSpan FixedDeltaTime => _deltaTime;
+
     public IntegratedAutomaticOperationState CurrentState => _state;
 
     public IntegratedAutomaticOperationInputs PersistentInputs => _persistentInputs;

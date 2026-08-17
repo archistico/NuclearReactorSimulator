@@ -53,7 +53,26 @@ public sealed class PrimaryCircuitBoundarySolver
         foreach (var boundary in _definition.FeedwaterBoundaries)
         {
             var input = inputs.GetFeedwaterInput(boundary.Id);
-            var energyInputRate = input.SpecificInternalEnergy * input.MassFlowRate;
+            if (boundary.EnergyTransportMode == NuclearReactorSimulator.Domain.Physics.Fluids.FluidEnergyTransportMode.SpecificEnthalpy
+                && input.MassFlowRate > MassFlowRate.Zero
+                && !input.SpecificEnthalpy.HasValue)
+            {
+                throw new InvalidOperationException(
+                    $"Feedwater boundary '{boundary.Id}' requires explicit incoming specific enthalpy for positive current-v2 flow.");
+            }
+
+            var specificEnthalpy = input.SpecificEnthalpy ?? input.SpecificInternalEnergy;
+            var specificFlowWork = SpecificEnergy.FromJoulesPerKilogram(
+                specificEnthalpy.JoulesPerKilogram - input.SpecificInternalEnergy.JoulesPerKilogram);
+            var internalEnergyInputRate = input.SpecificInternalEnergy * input.MassFlowRate;
+            var flowWorkInputRate = specificFlowWork * input.MassFlowRate;
+            var energyInputRate = boundary.EnergyTransportMode switch
+            {
+                NuclearReactorSimulator.Domain.Physics.Fluids.FluidEnergyTransportMode.SpecificInternalEnergy => internalEnergyInputRate,
+                NuclearReactorSimulator.Domain.Physics.Fluids.FluidEnergyTransportMode.SpecificEnthalpy => specificEnthalpy * input.MassFlowRate,
+                _ => throw new InvalidOperationException(
+                    $"Feedwater boundary '{boundary.Id}' uses unsupported energy-transport mode '{boundary.EnergyTransportMode}'."),
+            };
             AddBalance(
                 fluidBalances,
                 boundary.TargetNodeId,
@@ -66,7 +85,12 @@ public sealed class PrimaryCircuitBoundarySolver
                 boundary.SteamDrumId,
                 boundary.TargetNodeId,
                 input.MassFlowRate,
+                boundary.EnergyTransportMode,
                 input.SpecificInternalEnergy,
+                specificFlowWork,
+                specificEnthalpy,
+                internalEnergyInputRate,
+                flowWorkInputRate,
                 energyInputRate));
         }
 
@@ -74,7 +98,19 @@ public sealed class PrimaryCircuitBoundarySolver
         {
             var input = inputs.GetSteamExportInput(boundary.Id);
             var sourceState = committedPlantState.GetFluidNode(boundary.SourceNodeId);
-            var energyExportRate = sourceState.SpecificInternalEnergy * input.MassFlowRate;
+            var specificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+                sourceState.Pressure,
+                sourceState.Density);
+            var specificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+                sourceState.SpecificInternalEnergy,
+                sourceState.Pressure,
+                sourceState.Density);
+            var internalEnergyExportRate = sourceState.SpecificInternalEnergy * input.MassFlowRate;
+            var flowWorkExportRate = specificFlowWork * input.MassFlowRate;
+            var energyExportRate = FluidEnergyTransport.ResolveSelectedEnergyRate(
+                boundary.EnergyTransportMode,
+                sourceState,
+                input.MassFlowRate);
             AddBalance(
                 fluidBalances,
                 boundary.SourceNodeId,
@@ -87,7 +123,12 @@ public sealed class PrimaryCircuitBoundarySolver
                 boundary.SteamDrumId,
                 boundary.SourceNodeId,
                 input.MassFlowRate,
+                boundary.EnergyTransportMode,
                 sourceState.SpecificInternalEnergy,
+                specificFlowWork,
+                specificEnthalpy,
+                internalEnergyExportRate,
+                flowWorkExportRate,
                 energyExportRate));
         }
 

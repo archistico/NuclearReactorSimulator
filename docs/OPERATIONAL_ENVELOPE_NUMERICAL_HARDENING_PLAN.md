@@ -2,11 +2,11 @@
 
 ## Status
 
-**IN PROGRESS — M10.9.4.1-F.2 VALIDATED; F.3 CONSERVATIVE TURBINE BYPASS CANDIDATE**
+**IN PROGRESS — PHASE G COMPLETE; M10.9.4.1-H.13 HOTFIX 2 VALIDATED; H.14 BROADER THERMODYNAMIC BRANCH-CONTINUITY SHADOW QUALIFICATION CANDIDATE**
 
-**Validated prerequisite and continuation:** M10.9.4 plus cumulative M10.9.4.1-E.2 Hotfix 1.
+**Validated prerequisite and continuation:** M10.9.4 plus cumulative M10.9.4.1-H.16; Phase G complete, fixed-step stiffness evidence, method decision, isolated prototype, bounded-work gate, production rollback/extended-shadow evidence, bounded Picard rescue, true-residual/backtracking, safeguarded Anderson, Jacobian-informed damped-Newton, switching diagnosis, thermodynamic-boundary localization, inverse-branch diagnosis, targeted branch continuity, broader 2,000-interval qualification and three-node requalification validated. H.17 is the active long-horizon/cross-profile bounded-hysteresis shadow qualification candidate.
 
-The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative D.4 source passed 944 ordinary tests and all 17 unique explicit tests. D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1 and E.3.2 Hotfix 3 were subsequently user-validated on 2026-07-26. E.3.2 implementation evidence confirms normal-transient margin, exact reverse-power pickup timing and breaker-open supervision. F.1 now validates the isolated compressible steam-flow capacity equation. F.2 is the first topology consumer and adds one conservative pressure-actuated atmospheric header-relief path without turbine bypass or enthalpy migration.
+The original extended audit exposed a repeatable long-horizon trip, but follow-up investigation identified and corrected the current-v2 seed energy/hydraulic mismatch. Phases B and C then closed drum/source and condenser ownership, while D.1–D.3.2 closed turbine admission, governor evidence and passive rotor loss. D.4 added typed operator valve authority. On 2026-07-25 the cumulative D.4 source passed 944 ordinary tests and all 17 unique explicit tests. D.4.1, E.2 Hotfix 1, E.3.1 Hotfix 1 and E.3.2 Hotfix 3 were subsequently user-validated on 2026-07-26. F.1–F.3 Hotfix 1 then validated steam-flow capacity, atmospheric relief and internal turbine bypass. G.1 validated the open-control-volume target convention; G.2 Hotfix 2 validated passive current-v2 enthalpy advection and exact pump-work ownership; G.3 validated the remaining non-turbine owners with zero measured ownership residual. G.4 then validated turbine expansion and shaft-work ownership, closing Phase G. H.1 validated fixed-step stiffness evidence; H.2 validated deterministic semi-implicit pressure/flow coupling as the method direction. H.3 Hotfix 1 then validated the isolated frozen-forcing prototype with material chatter reduction, exact conservation/determinism and approximately 15.895x full-time cost. H.4 subsequently validated deterministic selective correction, selecting P060-F040-R015 with only 2/50 corrections, deterministic work ratio 2.14 and `activation-criteria-met=True`. H.5 Hotfix 1 attempted direct free-running activation and failed ordinary validation; H.5 Hotfix 2 restored explicit production and performed extended shadow qualification. User validation recorded 7/500 triggered corrections, 5/7 convergent, deterministic work ratio 1.492000 and `extended-shadow-qualification-passes=False`. H.6 then kept P060/F040 frozen and tested six bounded Picard rescue profiles. User validation selected `R0125-I096`, but it converged only 6/7; the two-tier ladder also remained 6/7 with deterministic work ratio 1.700000 and `refined-envelope-qualification-passes=False`. H.7 then validated a true fixed-point residual plus deterministic backtracking but remained 5/7. H.8 validated safeguarded Anderson and also remained 5/7 with two line-search exhaustions, work ratio 1.212000 and `accelerated-corrector-qualification-passes=False`. H.9 therefore owns the next algorithmic step: a conservative-coordinate finite-difference Jacobian plus damped Newton direction, still shadow-only.
 
 ## Purpose
 
@@ -258,10 +258,10 @@ Canonical M5.5 supports optional measured supervision and committed pickup timin
 
 ### Gate 0 — Documentation and baseline identity — COMPLETE
 
-1. Treat M10.9.4.1-F.2 as the current validated continuation baseline.
-2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration, validated E.3 electrical protection and the validated F.1 capacity seam.
-3. Record F.3 as the conservative internal turbine-bypass working candidate; F.2 atmospheric relief is validated and Phase G enthalpy migration is not active.
-4. Keep legacy/v1 and current-v2 behavior explicit in every test and document.
+1. Treat M10.9.4.1-H.16 as the current validated continuation baseline and use M10.9.4.1-H.17 as the working long-horizon/cross-profile branch-continuity shadow qualification candidate; current-v2 production remains explicit.
+2. Identify the active source as cumulative D.3.2 Hotfix 3 plus D.4/D.4.1 valve authority hardening, validated E.2 scale/coupling migration, validated E.3 electrical protection, validated F.1–F.3 steam-capacity/relief/bypass work and validated G.1–G.3 energy migration.
+3. Record G.4 as the final current-v2 turbine-expansion enthalpy/shaft-work migration before Phase H.
+4. Keep legacy/current-v1 defaults and current-v2 opt-in behavior explicit in every test and document.
 
 **Exit:** complete. README, status, handoff, milestone, scale contract/evidence and limitations register describe the same source.
 
@@ -336,7 +336,7 @@ F.1 validates the typed ideal-vapor one-way pressure-ratio capacity equation, cr
 
 F.2 is the first topology consumer of F.1. It adds one optional current-v2 atmospheric external relief boundary, closed through `6.5 MPa`, fully open at `6.7 MPa`, with a `1,600 mm²` throat and exact source/external mass/internal-energy accounting. The user-supplied audit confirmed 13.531762568 kg/s at 6.80 MPa, monotonicity and conservative external exchange.
 
-### F.3 — Conservative turbine bypass to condenser — CANDIDATE
+### F.3 — Conservative turbine bypass to condenser — VALIDATED
 
 F.3 adds a separate internal current-v2 steam-dump path owned by the condenser system:
 
@@ -363,37 +363,65 @@ F.3 deliberately excludes manual authority, actuator dynamics, hysteresis, wet-s
 
 ## Phase G — Flow Work and Enthalpy Transport
 
-This is a dedicated whole-network migration, not a condenser or turbine hotfix.
+### G.1 — Open-control-volume energy convention and gap audit — VALIDATED
 
-### Scope
+G.1 established and validated the target relation `h = u + p/rho` without changing runtime source terms. The user-supplied audit measured up to 192.048450950 kJ/kg and 2.484103126 MW of missing steam-path flow work, with exact identity and internal-transfer closure.
 
-- define the accepted open-control-volume energy convention;
-- introduce enthalpy transport or explicit flow-work terms;
-- prevent double counting with pump work, turbine work and boundary powers;
-- migrate components incrementally with local and global audit equivalence.
+### G.2 — Passive hydraulic enthalpy migration — VALIDATED VIA HOTFIX 2
 
-### Required regressions
+G.2 migrated current-v2 passive pipes and valve paths to `h*m_dot`, preserved historical defaults and audited pump hydraulic/shaft work. Hotfix 2 aligned the desktop stability contract with signed bidirectional grid exchange without retuning runtime physics. The user-supplied audit confirmed six passive enthalpy-mode components, exact endpoint closure, three pump paths with exact ownership, 2.762103670 MW maximum component flow work and 11.563679870 MW total absolute passive flow work.
 
-- throttling and advection follow the accepted energy invariant;
-- internal transfers preserve global energy to the configured tolerance;
-- pump/turbine work appears exactly once;
-- new reference trajectories quantify the physical change.
+### G.3 — Remaining non-turbine enthalpy migration — VALIDATED
+
+G.3 validated the remaining current-v2 non-turbine transport owners in `SpecificEnthalpy`:
+
+- pump paths, with hydraulic work and shaft demand retained as separate single owners;
+- steam-drum separation and liquid recirculation;
+- feedwater, steam-export and turbine-admission boundaries;
+- condenser steam removal and condensate addition, with heat rejection declared once;
+- atmospheric relief as an external boundary;
+- turbine bypass as an internal equal-and-opposite transfer.
+
+Fluid-node inventories remain mass plus internal energy. Legacy/current-v1 definitions remain on `SpecificInternalEnergy`. Every migrated snapshot publishes `u`, `p/rho`, `h` and the applied selected rate. The user-supplied G.3 audit confirmed 2.817289248 MW maximum flow work, 8.972520763 MW total absolute flow work and zero maximum ownership residual. Turbine expansion remained unchanged for G.4.
+
+Required G.3 evidence:
+
+- definition default/opt-in compatibility;
+- exact internal transfer closure;
+- explicit feedwater enthalpy for positive external inflow;
+- exact pump hydraulic and shaft-work ownership;
+- condenser heat-rejection single counting;
+- relief external and bypass internal ownership;
+- unchanged turbine-expansion mode;
+- complete ordinary and cumulative long-running gates.
+
+### G.4 — Turbine expansion and shaft-work ownership — VALIDATED
+
+G.4 is validated and closes Phase G. Current-v2 stage groups apply `h*m_dot` at inlet and `h*m_dot - P_shaft` at exhaust, while shaft work remains one explicit thermofluid-to-rotor transfer. The supplied audit reports 2.506379668 MW maximum flow work, 5.457103652 MW maximum shaft power and zero ownership residual. Legacy stages retain `SpecificInternalEnergy`; turbine work, efficiency, governor, generator/grid coupling and protections were not retuned.
 
 ## Phase H — Numerical Stiffness Decision Gate
 
-Before adaptive substepping is implemented, measure:
+### H.1 — Fixed-step timestep sensitivity & stiffness evidence — VALIDATED
 
-- timestep sensitivity and observed convergence order;
-- dominant fractional mass/energy changes;
-- compressed-liquid pressure/flow stiffness;
-- runtime cost per simulated second;
-- whether explicit substeps converge at an acceptable bounded cost.
+The 10/5/2.5 ms audit showed approximately doubled cost per halving without monotonic final-state convergence improvement. Raw primary hydraulic chatter and subcooled-liquid pressure excursions remained material while conservation stayed green.
 
-Decision:
+### H.2 — Numerical-method decision — VALIDATED
 
-- use bounded deterministic adaptive substeps if sufficient;
-- otherwise use an explicitly designed semi-implicit pressure/flow treatment;
-- never use wall-clock adaptation or hidden nonlinear repair.
+H.2 selected deterministic semi-implicit pressure/flow coupling and rejected simple bounded explicit substeps as the preferred cure. Production remained explicit at 10 ms.
+
+### H.3 — Isolated semi-implicit hydraulic prototype & audit — HOTFIX 1 VALIDATED
+
+The frozen-forcing prototype converged on all 50 intervals with 16.760 average / 40 maximum iterations. Chatter ratios prototype/explicit were pump 0.432808, channel 0.135868, return 0.031681 and pressure 0.922127. Inventory/conservation/ownership residuals remained zero and deterministic repeat was exact. Full-time cost was approximately 15.894951x, so production activation was correctly deferred.
+
+### H.4 — Deterministic hybrid semi-implicit activation & cost gate — VALIDATED
+
+The validated sweep selected `P060-F040-R015`: pressure trigger 0.060, flow trigger 40 kg/s, relaxation 0.15 and 72 maximum corrector iterations. It corrected 2/50 intervals, converged 2/2, achieved deterministic work ratio 2.14, observational wall-cost ratio 1.662880, retained strong chatter reduction, zero conservation/ownership residuals and exact deterministic repeat. `activation-criteria-met=True`; H.4 itself correctly kept production explicit.
+
+### H.5 — Current-v2 hybrid hydraulic production integration — CANDIDATE
+
+Integrate the exact H.4-selected profile into the canonical `PlantNetworkOrchestrator` only for versioned sustained current-v2 definitions. Legacy/current-v1 and numerical-evidence profiles remain explicitly historical. Freeze non-hydraulic forcing over a triggered correction, rebuild provisional states from the original committed state, integrate conserved inventories once, expose immutable numerical diagnostics and fail explicitly on non-convergence. Keep the external logical timestep at 10 ms and prohibit wall-clock adaptation, filtering and physical retuning.
+
+H.5 closes Phase H only after focused production evidence, ordinary tests, replay/checkpoint determinism, protection/electrical gates, long-running gameplay, operational-envelope and reference-scale audits are all green.
 
 ## Phase I — Compatibility and Engineering Hardening
 
@@ -455,6 +483,50 @@ User observation on the locally validated C.2 baseline: operator-facing instanta
 C.2 Hotfix 1 therefore adds only deterministic 0.5 s operator-facing flow instrumentation. It does **not** claim to resolve the raw numerical chatter. The later numerical decision gate must measure sign-change frequency, peak-to-peak amplitude, timestep sensitivity and convergence under reduced step/substep trials before choosing among substepping, semi-implicit pressure-flow treatment or explicit hydraulic-inertia state.
 
 
-### F.3 — Conservative turbine bypass to condenser — CANDIDATE
+### F.3 — Conservative turbine bypass to condenser — VALIDATED
 
 F.3 adds a distinct current-v2 internal steam-dump path owned by the condenser system. It opens from 6.4 to 6.5 MPa, uses a 1,600 mm² F.1 capacity definition, resolves against committed condenser backpressure and transfers mass/internal energy from `header` to `exhaust` with zero external exchange. F.2 atmospheric relief remains independent. The explicit committed-state sequencing is documented and will be included in the Phase H stiffness audit.
+
+
+### H.5 Hotfix 2 — production activation rollback and extended shadow qualification — VALIDATED
+
+Ordinary H.5 Hotfix 1 validation exposed deterministic non-convergence in free-running current-v2. Hotfix 2 restores explicit 10 ms production and evaluates P060-F040-R015 only as interval-local shadow evidence over 5 s. User validation passed build/tests and recorded 7 triggered corrections with 5/7 convergence, deterministic work ratio 1.492000 and `extended-shadow-qualification-passes=False`. Phase H remains open.
+
+
+### H.6 — shadow corrector rescue envelope and two-tier qualification — VALIDATED
+
+H.6 froze P060/F040 and the seven H.5 trigger intervals, then swept six bounded Picard profiles. User validation selected `R0125-I096`, but the selected profile converged only 6/7. Maximum selected-profile residuals were 0.291876228 relative pressure and 61.700761261 kg/s flow; maximum explicit-end mass/energy/pressure gaps were 0.000175566/0.000194823/0.291958117. The two-tier H.4-primary/rescue ladder also converged 6/7, deterministic work ratio was 1.700000, exact repeat held and `refined-envelope-qualification-passes=False`. Production stayed explicit and no shadow candidate was committed.
+
+
+### H.7 Hotfix 1 — residual fixed-point corrector with deterministic backtracking — VALIDATED
+
+The user validated build, ordinary tests and the focused gate. H.7 reproduced H.4 5/7 and H.6 6/7, then converged 5/7 with two line-search exhaustions. Maximum fixed-point pressure/flow residuals were 0.303946536 / 28.424177648 kg/s, deterministic work ratio was 1.308000, accepted merit strictly decreased and exact repeat/conservation passed. `corrector-algorithm-revision-qualification-passes=False`; production remained explicit.
+
+### H.8 — safeguarded Anderson accelerated nonlinear corrector — VALIDATED
+
+The user validated compilation, ordinary tests and the focused audit. H.8 kept the exact H.5-H.7 500-step explicit trajectory and P060/F040 trigger set frozen, reproduced H.4 5/7, H.6 6/7 and H.7 5/7, then safeguarded Anderson also converged 5/7 with two line-search exhaustions. Anderson attempts/acceptances were 30/24, residual fallback 13/11, six least-squares systems were rejected, maximum coefficient L1 norm was 7.188310311, deterministic work ratio was 1.212000, accepted merit strictly decreased and exact repeat/conservation passed. `accelerated-corrector-qualification-passes=False`. Production remained explicit.
+
+### H.9 — conservative-coordinate finite-difference Jacobian + damped Newton — VALIDATED
+
+User validation passed build, ordinary tests and the focused audit. H.9 remained 5/7 with two line-search exhaustions despite 23/21 Jacobian builds/accepted directions, zero Jacobian conditioning rejections, maximum pivot-condition estimate 1.613327388, bounded normalized Newton step 1.276749799, strict merit decrease, exact repeat and deterministic work ratio 2.702000. `jacobian-informed-corrector-qualification-passes=False`; production remained explicit.
+
+### H.10 Hotfix 1 — hydraulic-map switching and non-smoothness diagnosis — VALIDATED
+
+Keep the exact frozen evidence set and diagnose only the two persistent H.9 failures. Use two-scale law-local pressure probes to identify path branch changes, check-valve blocking, square-root derivative scale growth and one-sided slope asymmetry; use conserved mass/internal-energy probes through the existing thermodynamic closure to identify phase/envelope transitions. Compare each stalled H.9 candidate with the committed explicit endpoint. Do not add another nonlinear corrector until this evidence is understood.
+
+### H.11 — thermodynamic switching localization and active-set diagnosis — VALIDATED
+
+Validated H.10 found no hydraulic branch switching/non-smooth paths around the two persistent H.9 failures, but found exactly two thermodynamic phase/envelope switching nodes around the H.9 candidate states and zero at the matching explicit endpoints. H.11 therefore introduces no new corrector. It localizes only the H.10-flagged nodes with conserved energy/mass probes, phase/envelope classification, saturation-relative properties and node-local mapped-minus-applied hydraulic balance residuals. The suggested active-set label is diagnostic evidence only. Production remains explicit at 10 ms.
+
+
+### H.12 — thermodynamic inverse branch selection audit — VALIDATED
+
+Validated H.11 localized the two persistent phase boundaries to `steam` at interval 200 and `stop-out` at interval 360, both on energy+mass perturbations. Validated H.12 confirmed overlapping saturated/superheated roots at both nodes, coarse saturated detection toggles, five late boundary-aware saturated roots shadowed by earlier coarse-superheated selection, and zero previous-state tie-breaks. Production `Resolve()` ordering remains unchanged and current-v2 remains explicit at 10 ms.
+
+### H.13 Hotfix 2 — thermodynamic branch continuity / hysteresis shadow experiment — VALIDATED
+
+User validation passed build, ordinary tests and the focused H.13 audit. Production H.9 remained 5/7 with two line-search exhaustions; targeted previous-phase continuity and bounded previous-phase hysteresis both reached 7/7 with zero exhaustions, exact repeat, deterministic work ratio 1.886000 and preserved conservation/ownership. The bounded policy used 2% relative pressure / 5 K release limits but exercised zero releases on the frozen seven-event set.
+
+### H.14 — broader thermodynamic branch-continuity shadow qualification — CANDIDATE
+
+H.14 keeps the selected H.13 bounded policy and all production behavior unchanged. It extends the committed shadow horizon to 2,000 intervals, preserves the first 500 as the exact H.13 control window, evaluates every extended P060/F040 event under unchanged H.9, observes `steam`/`stop-out` branch decisions throughout the horizon and adds four deterministic hold/release challenges covering both phase directions. A positive broader qualification requires all extended triggers to satisfy unchanged H.9 gates plus successful deterministic hold and release behavior. H.14 never activates the policy.

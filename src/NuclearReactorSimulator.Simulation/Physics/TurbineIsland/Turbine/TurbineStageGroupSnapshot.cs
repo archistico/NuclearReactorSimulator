@@ -30,4 +30,19 @@ public sealed record TurbineStageGroupSnapshot(
     Power InletEnergyFlowRate,
     Power ExhaustEnergyFlowRate,
     Power ShaftPower,
-    Torque ShaftTorque);
+    Torque ShaftTorque)
+{
+    public FluidEnergyTransportMode EnergyTransportMode { get; init; } = FluidEnergyTransportMode.SpecificInternalEnergy;
+
+    public SpecificEnergy InletSpecificFlowWork { get; init; } = SpecificEnergy.Zero;
+
+    public SpecificEnergy InletSpecificEnthalpy { get; init; } = SpecificEnergy.Zero;
+
+    public SpecificEnergy InletAdvectedSpecificEnergy { get; init; } = SpecificEnergy.Zero;
+
+    public SpecificEnergy ExhaustAdvectedSpecificEnergy { get; init; } = SpecificEnergy.Zero;
+
+    public Power FlowWorkRate { get; init; } = Power.Zero;
+
+    public Power TurbineEnergyOwnershipResidual { get; init; } = Power.Zero;
+}

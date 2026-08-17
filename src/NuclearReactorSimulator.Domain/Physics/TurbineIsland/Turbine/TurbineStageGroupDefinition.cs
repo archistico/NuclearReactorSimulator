@@ -1,3 +1,4 @@
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 
 namespace NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
@@ -17,7 +18,8 @@ public sealed class TurbineStageGroupDefinition
         TurbineEfficiency efficiency,
         QuadraticHydraulicResistance? expansionResistance = null,
         TurbineThermodynamicWorkDefinition? thermodynamicWork = null,
-        TurbineAdmissionPhasePolicy admissionPhasePolicy = TurbineAdmissionPhasePolicy.LegacyUnrestricted)
+        TurbineAdmissionPhasePolicy admissionPhasePolicy = TurbineAdmissionPhasePolicy.LegacyUnrestricted,
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -54,6 +56,11 @@ public sealed class TurbineStageGroupDefinition
             throw new ArgumentOutOfRangeException(nameof(admissionPhasePolicy), admissionPhasePolicy, "Unknown turbine admission phase policy.");
         }
 
+        if (!Enum.IsDefined(energyTransportMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(energyTransportMode), energyTransportMode, "Unknown turbine energy-transport mode.");
+        }
+
         Id = id.Trim();
         AdmissionBoundaryId = admissionBoundaryId.Trim();
         ExhaustNodeId = exhaustNodeId.Trim();
@@ -63,6 +70,7 @@ public sealed class TurbineStageGroupDefinition
         ExpansionResistance = expansionResistance;
         ThermodynamicWork = thermodynamicWork;
         AdmissionPhasePolicy = admissionPhasePolicy;
+        EnergyTransportMode = energyTransportMode;
     }
 
     public string Id { get; }
@@ -93,4 +101,10 @@ public sealed class TurbineStageGroupDefinition
     /// vapor-mass-fraction-limited admission so liquid inventory cannot pass through the stage as a zero-work bypass.
     /// </summary>
     public TurbineAdmissionPhasePolicy AdmissionPhasePolicy { get; }
+
+    /// <summary>
+    /// Versioned open-control-volume energy-advection convention. Historical definitions transfer specific internal
+    /// energy; current-v2 may opt into specific enthalpy while shaft work remains a separate cross-domain transfer.
+    /// </summary>
+    public FluidEnergyTransportMode EnergyTransportMode { get; }
 }

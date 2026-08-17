@@ -48,7 +48,14 @@ public sealed class ValveFlowSolver
             return new ValveFlowResult(
                 effectivePosition,
                 flowCoefficient,
-                new PipeFlowResult(pressureDifference, MassFlowRate.Zero, Power.Zero));
+                new PipeFlowResult(
+                    pressureDifference,
+                    MassFlowRate.Zero,
+                    valve.Pipe.EnergyTransportMode,
+                    Power.Zero,
+                    Power.Zero,
+                    Power.Zero,
+                    Power.Zero));
         }
 
         var coefficientSquared = flowCoefficient.Fraction * flowCoefficient.Fraction;
@@ -64,7 +71,8 @@ public sealed class ValveFlowSolver
             valve.Pipe.Id,
             valve.Pipe.FromNodeId,
             valve.Pipe.ToNodeId,
-            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(effectiveResistanceValue));
+            QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(effectiveResistanceValue),
+            valve.Pipe.EnergyTransportMode);
         var hydraulicFlow = _pipeFlowSolver.Solve(effectivePipe, fromNode, toNode);
 
         return new ValveFlowResult(effectivePosition, flowCoefficient, hydraulicFlow);

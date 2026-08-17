@@ -132,3 +132,7 @@ Expected influence and observed response must remain explicitly separate. The HM
 8. **M10.9.8 — Integrated Human-Automation-HMI Validation Gate**
 
 M10 closes only after M10.9.8 is validated.
+
+## 9. Approved post-hardening control-room extension
+
+After the active hardening/release sequence, the approved control-room direction is to retain subsystem/area workspaces while improving industrial identity and operating realism. Planned capabilities include presentation-layer integration of `archistico/IndustrialControls`, maintained operator-handle state distinct from effective equipment state where appropriate, presentation-only workspace presets, more plant-like mnemonics/procedures, first-class mimic zoom/pan/editable persistent layout and a visually distinct Instructor/Fault mode. Multi-monitor is deferred. See `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md` and ADR 0123.

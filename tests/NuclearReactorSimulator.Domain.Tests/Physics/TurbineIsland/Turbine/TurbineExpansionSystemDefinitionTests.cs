@@ -45,6 +45,9 @@ public sealed class TurbineExpansionSystemDefinitionTests
         Assert.Equal(
             TurbineAdmissionPhasePolicy.LegacyUnrestricted,
             definition.GetStageGroup("stage").AdmissionPhasePolicy);
+        Assert.Equal(
+            FluidEnergyTransportMode.SpecificInternalEnergy,
+            definition.GetStageGroup("stage").EnergyTransportMode);
     }
 
     [Fact]
@@ -57,9 +60,11 @@ public sealed class TurbineExpansionSystemDefinitionTests
             "rotor",
             SpecificEnergy.FromKilojoulesPerKilogram(500d),
             TurbineEfficiency.FromPercent(80d),
-            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimited);
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimited,
+            energyTransportMode: FluidEnergyTransportMode.SpecificEnthalpy);
 
         Assert.Equal(TurbineAdmissionPhasePolicy.VaporMassFractionLimited, stage.AdmissionPhasePolicy);
+        Assert.Equal(FluidEnergyTransportMode.SpecificEnthalpy, stage.EnergyTransportMode);
         Assert.Throws<ArgumentOutOfRangeException>(() => new TurbineStageGroupDefinition(
             "invalid",
             "boundary",

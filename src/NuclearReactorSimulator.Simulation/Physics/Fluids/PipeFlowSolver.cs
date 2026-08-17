@@ -5,9 +5,24 @@ namespace NuclearReactorSimulator.Simulation.Physics.Fluids;
 
 /// <summary>
 /// Solves a memoryless bidirectional passive pipe using a lumped quadratic pressure-loss relation.
+/// The pipe definition selects either the historical internal-energy advection convention or
+/// the Phase G open-control-volume enthalpy convention for endpoint energy balances.
 /// </summary>
 public sealed class PipeFlowSolver
 {
+    private readonly OpenControlVolumeEnergyTransportSolver _energyTransportSolver;
+
+    public PipeFlowSolver()
+        : this(new OpenControlVolumeEnergyTransportSolver())
+    {
+    }
+
+    internal PipeFlowSolver(OpenControlVolumeEnergyTransportSolver energyTransportSolver)
+    {
+        _energyTransportSolver = energyTransportSolver
+            ?? throw new ArgumentNullException(nameof(energyTransportSolver));
+    }
+
     public PipeFlowResult Solve(
         PipeDefinition pipe,
         FluidNodeState fromNode,
@@ -32,10 +47,7 @@ public sealed class PipeFlowSolver
         var drivingPressure = nodePressureDifference + additionalDrivingPressure;
         if (drivingPressure == PressureDifference.Zero)
         {
-            return new PipeFlowResult(
-                nodePressureDifference,
-                MassFlowRate.Zero,
-                Power.Zero);
+            return ZeroFlow(nodePressureDifference, pipe.EnergyTransportMode);
         }
 
         var squaredMassFlow = Math.Abs(drivingPressure.Pascals)
@@ -52,16 +64,36 @@ public sealed class PipeFlowSolver
             : -massFlowMagnitude;
 
         var massFlowRate = MassFlowRate.FromKilogramsPerSecond(signedMassFlow);
-        var upstreamSpecificInternalEnergy = signedMassFlow > 0d
-            ? fromNode.SpecificInternalEnergy
-            : toNode.SpecificInternalEnergy;
-        var internalEnergyFlowRate = upstreamSpecificInternalEnergy * massFlowRate;
+        var transport = _energyTransportSolver.Solve(fromNode, toNode, massFlowRate);
+        var advectedEnergyFlowRate = pipe.EnergyTransportMode switch
+        {
+            FluidEnergyTransportMode.SpecificInternalEnergy => transport.SignedInternalEnergyAdvectionRate,
+            FluidEnergyTransportMode.SpecificEnthalpy => transport.SignedEnthalpyTransportRate,
+            _ => throw new InvalidOperationException(
+                $"Pipe '{pipe.Id}' uses unsupported energy-transport mode '{pipe.EnergyTransportMode}'."),
+        };
 
         return new PipeFlowResult(
             nodePressureDifference,
             massFlowRate,
-            internalEnergyFlowRate);
+            pipe.EnergyTransportMode,
+            transport.SignedInternalEnergyAdvectionRate,
+            transport.SignedFlowWorkRate,
+            transport.SignedEnthalpyTransportRate,
+            advectedEnergyFlowRate);
     }
+
+    private static PipeFlowResult ZeroFlow(
+        PressureDifference pressureDifference,
+        FluidEnergyTransportMode energyTransportMode)
+        => new(
+            pressureDifference,
+            MassFlowRate.Zero,
+            energyTransportMode,
+            Power.Zero,
+            Power.Zero,
+            Power.Zero,
+            Power.Zero);
 
     private static void ValidateEndpoints(
         PipeDefinition pipe,

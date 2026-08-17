@@ -97,7 +97,8 @@ public sealed class IntegratedPrimaryCircuitSolver
             steamDrums.Snapshot,
             boundaries.Snapshot,
             new PlantSnapshot(networkStep.CandidateState),
-            networkStep.Audit);
+            networkStep.Audit,
+            networkStep.HydraulicNumerics);
 
         return new IntegratedPrimaryCircuitStepResult(networkStep, snapshot);
     }

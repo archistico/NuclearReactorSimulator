@@ -50,7 +50,19 @@ public sealed class MainSteamReliefBoundarySolver
                 source.Temperature,
                 boundary.ReceiverPressure,
                 effectiveAreaFraction);
-            var energyExportRate = source.SpecificInternalEnergy * flow.MassFlowRate;
+            var specificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
+                source.Pressure,
+                source.Density);
+            var specificEnthalpy = FluidEnergyTransport.ResolveSpecificEnthalpy(
+                source.SpecificInternalEnergy,
+                source.Pressure,
+                source.Density);
+            var internalEnergyExportRate = source.SpecificInternalEnergy * flow.MassFlowRate;
+            var flowWorkExportRate = specificFlowWork * flow.MassFlowRate;
+            var energyExportRate = FluidEnergyTransport.ResolveSelectedEnergyRate(
+                boundary.EnergyTransportMode,
+                source,
+                flow.MassFlowRate);
             var balance = new FluidNodeBalance(-flow.MassFlowRate, -energyExportRate);
             balances[boundary.SourceHeaderNodeId] = balances.TryGetValue(boundary.SourceHeaderNodeId, out var existing)
                 ? existing + balance
@@ -72,7 +84,12 @@ public sealed class MainSteamReliefBoundarySolver
                 flow.EffectiveThroatArea,
                 flow.IsChoked,
                 flow.MassFlowRate,
+                boundary.EnergyTransportMode,
                 source.SpecificInternalEnergy,
+                specificFlowWork,
+                specificEnthalpy,
+                internalEnergyExportRate,
+                flowWorkExportRate,
                 energyExportRate));
         }
 
