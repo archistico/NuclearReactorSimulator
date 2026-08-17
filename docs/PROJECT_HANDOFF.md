@@ -1,41 +1,73 @@
 # Nuclear Reactor Simulator — Project Handoff
 
-> **Authoritative validated baseline:** M10.9.4.1-H.17 Hotfix 6.
+> **Authoritative validated baseline:** M10.9.4.1-H.18 Hotfix 1.
 >
-> **Working source:** M10.9.4.1-H.18 Hotfix 1 CANDIDATE — IReadOnlyList Count Compile Fix over Turbine-Inlet Continuity Extension & Residual-Floor Split Diagnosis.
+> **Working source:** M10.9.4.1-H.19 CANDIDATE — Four-Node Long-Horizon & Cross-Profile Qualification.
 >
 > **Production numerical policy:** current-v2 remains `ExplicitCommittedState` at 10 ms. No Phase H shadow corrector or branch-continuity policy is committed.
 
-## 1. Immediate goal
+## 1. Current engineering question
 
-H.18 must separate two failure classes discovered by validated H.17 instead of assuming one global cure:
+H.18 validated the four-node shadow target extension on every frozen H.17 failure plus controls. H.19 must now determine whether the exact same four-node policy qualifies on the **complete H.17 long-horizon/cross-profile representative contract** before any activation design is considered.
 
-- branch-continuity failures correlated with `turbine-inlet`;
-- residual failures not correlated with `turbine-inlet` phase mismatch.
+No solver, trigger, hysteresis limit, physical coefficient, branch order or production integration path is being changed.
 
-The next engineering decision must be based on the H.18 split, not on another solver escalation or plant-wide hysteresis expansion.
+## 2. Validated Phase H chain
 
-## 2. Validated numerical-hardening chain
-
-The important Phase H chain is:
-
-- **H.4 VALIDATED:** P060/F040/R015 selective Picard evidence; original frozen set 5/7 primary convergence.
-- **H.6 VALIDATED:** bounded Picard rescue reaches only 6/7.
+- **H.4 VALIDATED:** P060/F040/R015 selected from bounded Picard evidence.
+- **H.5 Hotfix 2 VALIDATED:** production activation rolled back; extended shadow gate shows only 5/7 convergence.
+- **H.6 VALIDATED:** bounded Picard rescue reaches 6/7.
 - **H.7 Hotfix 1 VALIDATED:** true residual + deterministic backtracking reaches 5/7.
 - **H.8 VALIDATED:** safeguarded Anderson reaches 5/7.
-- **H.9 VALIDATED:** finite-difference Jacobian + damped Newton reaches 5/7; Jacobians are well-conditioned, so solver direction alone is not the original root cause.
-- **H.10 VALIDATED:** no hydraulic-law non-smoothness at the two persistent original failures; thermodynamic switching exists.
-- **H.11 VALIDATED:** original switches localize to `steam` interval 200 and `stop-out` interval 360.
-- **H.12 VALIDATED:** overlapping saturated/superheated inverse roots + coarse saturated detector toggle + fixed branch priority + no previous-state tie-break.
-- **H.13 Hotfix 2 VALIDATED:** bounded previous-phase hysteresis at `steam|stop-out` moves unchanged H.9 from 5/7 to 7/7.
-- **H.14 Hotfix 1 VALIDATED:** 2,000-interval broader gate reaches 14/15; interval 723 remains.
-- **H.15 Hotfix 1 VALIDATED:** interval 723 is the same inverse-map mechanism at `header`; no hydraulic switching cause.
-- **H.16 VALIDATED:** unchanged bounded 2%/5 K policy at `steam|stop-out|header` reaches 15/15, recovers 723 with 68 header overrides, committed state remains transparent.
-- **H.17 Hotfix 6 VALIDATED:** 30,000-interval/four-profile long-horizon diagnostic; infrastructure and audit pass, but the three-node policy does not qualify across the extended representative set.
+- **H.9 VALIDATED:** finite-difference Jacobian + damped Newton reaches 5/7; solver direction is not the root cause.
+- **H.10–H.12 VALIDATED:** failures localize to inverse thermodynamic branch selection, not hydraulic-law switching.
+- **H.13 Hotfix 2 VALIDATED:** bounded 2% / 5 K previous-phase continuity at `steam|stop-out` reaches 7/7.
+- **H.14 Hotfix 1 VALIDATED:** 2,000-interval gate reaches 14/15; interval 723 remains.
+- **H.15 Hotfix 1 VALIDATED:** interval 723 localizes to the same mechanism at `header`.
+- **H.16 VALIDATED:** `steam|stop-out|header` reaches 15/15 and recovers interval 723.
+- **H.17 Hotfix 6 VALIDATED:** 30,000-interval/four-profile diagnostic produces 3,046 triggers, 92 episodes and 473 representatives; three-node policy converges 228/473 and fails 245/473; `turbine-inlet` is discovered as a new disagreement node.
+- **H.18 Hotfix 1 VALIDATED:** four-node target set `steam|stop-out|header|turbine-inlet` converges 261/261 over all 245 H.17 failures plus 16 success controls.
 
-## 3. Authoritative H.17 result
+## 3. Authoritative H.18 result
 
-Profiles and reference horizon:
+Local build, complete ordinary `dotnet test` and focused H.18 audit passed on 2026-08-17.
+
+```text
+frozen H.17 representatives                 473
+H.17 failures                               245
+  turbine-inlet mismatch failures           120
+  non-mismatch failures                     125
+H.18 success controls                        16
+H.18 evaluated samples                      261
+H.18 converged                              261/261
+remaining failures                            0
+recovered mismatch failures                 120/120
+recovered non-mismatch failures             125/125
+preserved success controls                   16/16
+turbine-inlet overrides                  14,746
+four-node-extension-qualifies              True
+```
+
+Additional safeguards:
+
+- committed `turbine-inlet` observations: 4,111;
+- committed `turbine-inlet` phase transitions: 1,240;
+- committed selection transparent: true;
+- deterministic sentinels: 24;
+- deterministic repeat: true;
+- new untargeted late-shadow nodes: none;
+- new untargeted phase-mismatch nodes: none;
+- `residual-floor-split-diagnostic-passes=True`;
+- `h18-audit-passes=True`;
+- production remained explicit and unchanged.
+
+The H.17 hypothesis of a separate residual-floor class was therefore not sustained on the H.18 selected set: the fourth target recovered both the mismatch and non-mismatch failure classes.
+
+## 4. H.19 design
+
+H.19 reuses the H.17 long-horizon qualification machinery but changes only the shadow target set to the H.18-validated four-node set.
+
+Reference horizon:
 
 ```text
 steady-long             12,000 intervals
@@ -45,165 +77,102 @@ combined-load-cooling    6,000 intervals
 TOTAL                    30,000 intervals
 ```
 
-Trigger/qualification evidence:
+H.19 requires the regenerated evidence contract to remain exactly:
 
 ```text
 P060/F040 census trigger intervals = 3,046
 trigger episodes                    = 92
 qualified representatives           = 473
-H.16 control                        = 15/15
-H.17 converged                      = 228/473
-H.17 line-search exhausted          = 245/473
 ```
 
-Profile breakdown:
-
-```text
-steady-long             25/170 converged
-load-pulse              93/108 converged
-cooling-pulse           20/84 converged
-combined-load-cooling   90/111 converged
-```
-
-Other validated safeguards:
-
-- deterministic H.9 sentinel repeat: true;
-- committed selection transparency: true;
-- 90,000 committed target phase checks;
-- 17,990 committed branch observations;
-- 2,752 real target phase transitions;
-- hold/release challenges: 4/4;
-- closure/ownership preserved;
-- production unchanged.
-
-## 4. H.17 failure split
-
-The H.17 all-node inverse scan discovered `turbine-inlet` as a new untargeted branch-disagreement node.
-
-Across all 473 representatives:
-
-- candidate-vs-explicit `turbine-inlet` phase mismatch occurs in 121 representatives;
-- **120/121 are H.17 failures**;
-- only one mismatch representative converges;
-- 120 of the 245 failures therefore belong to the `turbine-inlet` mismatch class;
-- 125 of the 245 failures have no `turbine-inlet` phase mismatch.
-
-Typical mismatch:
-
-```text
-candidate turbine-inlet = SuperheatedVapor
-explicit turbine-inlet  = SaturatedMixture
-```
-
-Candidate-only late saturated-root shadowing is explicitly observed at least at `steady-long` interval 7191, but the broader candidate-vs-explicit phase disagreement is much more common than the strict late-shadow marker.
-
-Residual separation in H.17 evidence:
-
-- mismatch failures: pressure residual around 0.20, mean flow residual about 1.0 kg/s;
-- non-mismatch failures: pressure residual around 0.20, mean flow residual about 14.4 kg/s.
-
-Therefore **adding only `turbine-inlet` cannot be assumed to solve all H.17 failures**.
-
-## 5. H.18 design
-
-H.18 freezes the validated H.17 representative evidence in:
+The 473 regenerated `(profile, interval)` keys must exactly match:
 
 ```text
 tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence/
 H17_Hotfix6_FrozenQualifiedRepresentativeEvidence.csv
 ```
 
-The file is a compact projection of the validated H.17 focused artifacts and is guarded by an ordinary regression requiring:
-
-```text
-representatives = 473
-failures        = 245
-successes       = 228
-mismatch fails  = 120
-non-mismatch    = 125
-```
-
-H.18 reconstructs the same four reference trajectories but skips the already-validated expensive H.4 trigger census. It evaluates unchanged H.9 + unchanged H.13 bounded hysteresis with target set:
+Every representative is then evaluated with unchanged H.9 + unchanged 2% / 5 K bounded hysteresis at exactly:
 
 ```text
 steam | stop-out | header | turbine-inlet
 ```
 
-on all 245 H.17 failures plus 16 distributed success controls.
+H.19 reports:
 
-Total H.18 nonlinear evaluations: **261**.
-
-### Experiment A — four-node extension
-
-Measure:
-
-- recovered `turbine-inlet` mismatch failures / 120;
+- total convergence / 473;
+- recovered frozen H.17 failures / 245;
+- preserved frozen H.17 successes / 228;
+- recovered mismatch failures / 120;
 - recovered non-mismatch failures / 125;
-- preserved success controls / 16;
-- concrete turbine-inlet overrides;
-- committed turbine-inlet transparency.
+- deterministic work and exact repeat;
+- closure/ownership residuals;
+- 120,000 committed target phase-state checks across the complete horizon;
+- committed-selection transparency;
+- all-node candidate-vs-explicit inverse-branch scan;
+- untargeted candidate-only late-shadow nodes;
+- untargeted candidate-vs-explicit phase-mismatch nodes;
+- inherited hold/release challenge result.
 
-Positive four-node qualification is deliberately separate from audit validity.
+Positive qualification requires all of those safeguards to remain green and `four-node-long-horizon-cross-profile-shadow-qualification-passes=True`.
 
-### Experiment B — residual-floor split
+## 5. H.19 validation commands
 
-For every failure remaining after Experiment A record:
-
-- node-local mapped-minus-applied mass/energy residuals and ranks;
-- final pressure/flow/merit residual;
-- first/penultimate/final accepted-iterate merit;
-- minimum accepted relaxation;
-- all-node candidate-vs-explicit inverse-map phase/branch disagreement;
-- new untargeted late-shadow nodes.
-
-If no new branch-disagreement node remains, the next step should be fixed-point residual-floor / solution-existence analysis rather than further branch-target expansion.
-
-## 6. H.18 validation commands
+From repository root:
 
 ```bat
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-turbine-inlet-continuity-residual-floor-split-audit.cmd
+scripts\run-four-node-long-horizon-cross-profile-qualification-audit.cmd
 ```
 
 Focused artifacts:
 
 ```text
-artifacts\h18-turbine-inlet-continuity-residual-floor-split\
+artifacts\h19-four-node-long-horizon-cross-profile-qualification\
 ```
 
-The heartbeat is `00-progress.txt`.
+Heartbeat:
 
-## 7. Files authoritative for restart
+```text
+00-progress.txt
+```
 
-Read these first in a new chat:
+A negative qualification flag is valid evidence if the structural focused audit itself completes. Production stays explicit either way.
+
+## 6. Files authoritative for restart
+
+Read these first:
 
 1. `docs/NEW_CHAT_START.md`
 2. `docs/PROJECT_HANDOFF.md`
 3. `docs/PROJECT_STATUS.md`
 4. `docs/ROADMAP.md`
-5. `docs/M10_9_4_1_H18_TURBINE_INLET_CONTINUITY_RESIDUAL_FLOOR_SPLIT_DIAGNOSIS.md`
-6. `docs/M10_9_4_1_H18_VALIDATION_CHECKLIST.md`
-7. `docs/adr/0144-split-turbine-inlet-branch-continuity-from-residual-floor-diagnosis.md`
+5. `docs/M10_9_4_1_H19_FOUR_NODE_LONG_HORIZON_CROSS_PROFILE_QUALIFICATION.md`
+6. `docs/M10_9_4_1_H19_VALIDATION_CHECKLIST.md`
+7. `docs/adr/0145-qualify-four-node-continuity-before-any-activation-design.md`
+8. `docs/M10_9_4_1_H18_TURBINE_INLET_CONTINUITY_RESIDUAL_FLOOR_SPLIT_DIAGNOSIS.md`
 
-## 8. Hard constraints
+## 7. Hard constraints
 
 Do not:
 
 - activate H.9 in production;
-- activate branch continuity/hysteresis in production;
+- activate bounded branch continuity/hysteresis in production;
 - change production inverse-map branch order;
-- retune 2%/5 K hysteresis limits;
+- retune 2% / 5 K hysteresis limits;
 - retune P060/F040 or H.9 tolerances;
 - change physical coefficients;
-- change production 10 ms timestep;
-- generalize the target set beyond evidence;
+- change the production 10 ms timestep;
+- generalize the target set beyond `steam|stop-out|header|turbine-inlet`;
 - hide flow with filtering or thermodynamic clamping;
 - commit shadow candidate states.
 
-H.18 is a split diagnostic. It must not become an activation milestone accidentally.
+H.19 is a qualification milestone, not an activation milestone.
 
-## 9. Package-time versus post-validation authority
+## 8. Package-time authority
 
-This handoff is authored while H.18 Hotfix 1 is still a candidate. Hotfix 1 changes only the focused-audit use of `IReadOnlyList<string>.Length` to `.Count`; the H.18 experiment and frozen H.17 evidence are unchanged. H.17 Hotfix 6 is therefore the last validated baseline encoded in the package. If the user locally validates H.18 after receiving this ZIP, the H.18 build/test/focused summary supplied by the user supersedes the package-time validation status. A new chat must not guess that promotion; it must use the reported local H.18 gate result.
+This H.19 package is authored **after** the user validated H.18 Hotfix 1. Therefore H.18 Hotfix 1 is the authoritative validated baseline encoded in this package.
+
+H.19 remains a candidate until the user reports local build, ordinary-suite and focused-audit results. A new chat must not infer H.19 validation from the existence of this ZIP.

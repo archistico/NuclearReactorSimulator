@@ -1,5 +1,9 @@
 # M10.9.4.1-H.18 — Turbine-Inlet Continuity Extension & Residual-Floor Split Diagnosis
 
+## Validation status
+
+**VALIDATED — Hotfix 1, 2026-08-17.** Local compilation, complete ordinary `dotnet test` suite and the focused H.18 audit passed. The focused result is authoritative: 261/261 converged, 0 remaining failures, 120/120 turbine-inlet-mismatch failures recovered, 125/125 non-mismatch failures recovered, 16/16 success controls preserved, 14,746 turbine-inlet overrides, committed selection transparent, deterministic repeat true, no new untargeted late-shadow node and no new untargeted phase-mismatch node. `four-node-extension-qualifies=True`, `residual-floor-split-diagnostic-passes=True`, `h18-audit-passes=True`. Production remained explicit and unchanged.
+
 ## Baseline
 
 H.18 is built only on the user-validated **M10.9.4.1-H.17 Hotfix 6** baseline. Production remains `ExplicitCommittedState` at 10 ms.

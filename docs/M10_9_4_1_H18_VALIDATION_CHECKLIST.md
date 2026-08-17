@@ -2,21 +2,21 @@
 
 ## Authoritative baseline
 
-- [ ] Candidate is built only on user-validated **H.17 Hotfix 6**.
-- [ ] `APPLY_UPDATE.cmd` removes stale local `bin`/`obj` outputs.
-- [ ] Production remains `ExplicitCommittedState` at 10 ms.
-- [ ] `SimplifiedWaterSteamThermodynamicModel.Resolve()` is unchanged.
-- [ ] `ThermodynamicBranchContinuityModel` implementation and 2%/5 K limits are unchanged.
-- [ ] H.9, P060/F040, physical coefficients and `PlantNetworkOrchestrator` are unchanged.
+- [x] Candidate is built only on user-validated **H.17 Hotfix 6**.
+- [x] `APPLY_UPDATE.cmd` removes stale local `bin`/`obj` outputs.
+- [x] Production remains `ExplicitCommittedState` at 10 ms.
+- [x] `SimplifiedWaterSteamThermodynamicModel.Resolve()` is unchanged.
+- [x] `ThermodynamicBranchContinuityModel` implementation and 2%/5 K limits are unchanged.
+- [x] H.9, P060/F040, physical coefficients and `PlantNetworkOrchestrator` are unchanged.
 
 ## Frozen evidence contract
 
-- [ ] `H17_Hotfix6_FrozenQualifiedRepresentativeEvidence.csv` is present.
-- [ ] 473 frozen representatives.
-- [ ] 245 H.17 failures / 228 H.17 successes.
-- [ ] 120 failed representatives with `turbine-inlet` phase mismatch.
-- [ ] 125 failed representatives without `turbine-inlet` phase mismatch.
-- [ ] ordinary frozen-evidence regression passes.
+- [x] `H17_Hotfix6_FrozenQualifiedRepresentativeEvidence.csv` is present.
+- [x] 473 frozen representatives.
+- [x] 245 H.17 failures / 228 H.17 successes.
+- [x] 120 failed representatives with `turbine-inlet` phase mismatch.
+- [x] 125 failed representatives without `turbine-inlet` phase mismatch.
+- [x] ordinary frozen-evidence regression passes.
 
 ## Ordinary gates
 
@@ -26,8 +26,8 @@ dotnet build
 dotnet test
 ```
 
-- [ ] build passes.
-- [ ] ordinary suite passes.
+- [x] build passes.
+- [x] ordinary suite passes.
 
 ## Focused gate
 
@@ -37,23 +37,23 @@ scripts\run-turbine-inlet-continuity-residual-floor-split-audit.cmd
 
 Required structural evidence:
 
-- [ ] same four H.17 profiles are reconstructed.
-- [ ] load profiles use validated 5→0→5 MWe requests.
-- [ ] 261 H.18 nonlinear samples = all 245 H.17 failures + 16 success controls.
-- [ ] target set is exactly `steam|stop-out|header|turbine-inlet`.
-- [ ] every selected sample uses unchanged H.9 and H.13 2%/5 K bounded hysteresis.
-- [ ] deterministic sentinel repeat passes.
-- [ ] every remaining failure receives all-node residual ranking and inverse-branch comparison.
-- [ ] committed `turbine-inlet` transparency is reported.
-- [ ] no shadow candidate is committed.
-- [ ] `residual-floor-split-diagnostic-passes=True`.
+- [x] same four H.17 profiles are reconstructed.
+- [x] load profiles use validated 5→0→5 MWe requests.
+- [x] 261 H.18 nonlinear samples = all 245 H.17 failures + 16 success controls.
+- [x] target set is exactly `steam|stop-out|header|turbine-inlet`.
+- [x] every selected sample uses unchanged H.9 and H.13 2%/5 K bounded hysteresis.
+- [x] deterministic sentinel repeat passes.
+- [x] every remaining failure receives all-node residual ranking and inverse-branch comparison.
+- [x] committed `turbine-inlet` transparency is reported.
+- [x] no shadow candidate is committed.
+- [x] `residual-floor-split-diagnostic-passes=True`.
 
 Positive four-node qualification additionally requires:
 
-- [ ] `recovered-turbine-inlet-mismatch=120/120`;
-- [ ] all H.17 success controls remain convergent;
-- [ ] committed `turbine-inlet` selection remains transparent;
-- [ ] `four-node-extension-qualifies=True`.
+- [x] `recovered-turbine-inlet-mismatch=120/120`;
+- [x] all H.17 success controls remain convergent;
+- [x] committed `turbine-inlet` selection remains transparent;
+- [x] `four-node-extension-qualifies=True`.
 
 A negative `four-node-extension-qualifies` is valid diagnostic evidence and does not by itself fail H.18.
 

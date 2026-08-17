@@ -1,10 +1,23 @@
-## M10.9.4.1-H.18 Hotfix 1 — IReadOnlyList Count Compile Fix — CANDIDATE
+## M10.9.4.1-H.19 — Four-Node Long-Horizon & Cross-Profile Qualification — CANDIDATE
+
+- Built directly on user-validated H.18 Hotfix 1; production remains `ExplicitCommittedState` at 10 ms.
+- Re-runs the complete H.17 30,000-interval/four-profile P060/F040 census and requires exact reproduction of 3,046 trigger intervals, 92 episodes and 473 representative profile/interval keys.
+- Evaluates all 473 representatives with unchanged H.9 and unchanged 2%/5 K bounded hysteresis targeted exactly at `steam|stop-out|header|turbine-inlet`.
+- Reports recovery of the frozen H.17 245 failures, preservation of the 228 H.17 successes, and the 120 mismatch / 125 non-mismatch subclasses.
+- Extends the all-node inverse scan to reject both new untargeted candidate-only late-shadow nodes and new untargeted candidate-vs-explicit selected-phase mismatch nodes.
+- Counts all 120,000 committed target phase-state checks across the four profiles while retaining the established observation sampling/fingerprint contract.
+- Adds `scripts/run-four-node-long-horizon-cross-profile-qualification-audit.cmd`, H.19 design/checklist and ADR 0145.
+- Does not change production `Resolve()`, H.9, P060/F040, 2%/5 K limits, physical coefficients, routing or production state commitment.
+
+## M10.9.4.1-H.18 Hotfix 1 — Turbine-Inlet Continuity Extension & Residual-Floor Split Diagnosis — VALIDATED
 
 - Fixes the H.18 focused audit compile error by using `IReadOnlyList<string>.Count` instead of the nonexistent `.Length` property for the two untargeted-node diagnostic lists.
 - No solver, thermodynamic model, branch-continuity policy, trigger, production routing, frozen H.17 evidence or H.18 diagnostic criterion changes.
-- H.17 Hotfix 6 remains the validated baseline until H.18 Hotfix 1 passes build, ordinary tests and the focused audit.
+- User-confirmed local build, complete ordinary suite and focused H.18 audit passed.
+- Authoritative focused result: 261/261 converged; 120/120 mismatch failures and 125/125 non-mismatch failures recovered; 16/16 controls preserved; 14,746 turbine-inlet overrides; committed selection transparent; deterministic repeat true; no residual failure or new untargeted branch-disagreement node.
+- H.18 Hotfix 1 is the validated baseline for H.19.
 
-## M10.9.4.1-H.18 — Turbine-Inlet Continuity Extension & Residual-Floor Split Diagnosis — CANDIDATE
+## M10.9.4.1-H.18 — Turbine-Inlet Continuity Extension & Residual-Floor Split Diagnosis — SUPERSEDED BY VALIDATED HOTFIX 1
 
 - Built only on user-validated H.17 Hotfix 6; production remains explicit at 10 ms and no H.9/H.13 shadow state is committed.
 - Freezes the validated H.17 473-representative evidence contract (228 converged / 245 failed) and its failure split: 120 failures with `turbine-inlet` candidate-vs-explicit phase mismatch, 125 without.
