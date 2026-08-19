@@ -1,14 +1,30 @@
+## M10.9.4.1-I.1 Hotfix 1 — xUnit2031 Audit Assertion Repair — CANDIDATE
+
+- Fixes the only reported build failure in `ProfileCompatibilityLegacyRetirementInventoryAuditTests.cs`.
+- Replaces `Assert.Single(collection.Where(predicate))` with the analyzer-approved `Assert.Single(collection, predicate)` overload.
+- Test semantics are unchanged: the same exact-version profile must still be uniquely present.
+- No numerical, physical, selector, persistence, compatibility-matrix or H.30 evidence behavior changes.
+
 # Changelog
 
-## M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision — CANDIDATE
+## M10.9.4.1-I.1 — Profile Compatibility & Legacy Retirement Inventory — CANDIDATE
 
-- Built directly on user-validated H.29.
-- Promotes the user-supplied H.29 summary/metrics into immutable test evidence and records the canonical SHA-256 of the complete 1,026-row H.29 telemetry artifact.
-- Adds a cheap cumulative H.19–H.29 fingerprinted closure audit; H.24 and H.28 are not rerun.
-- Derives the candidate decision `OPT-IN ONLY`: all technical qualification gates are green, but H.28 remains `bounded-but-costly`.
-- Preserves exact v2 `ExplicitCommittedState` as authoritative default/rollback/reference and exact v3 corrected ownership as the qualified opt-in path.
-- Leaves the H.29 production policy selector, H.9, H.20, H.22, P060/F040, hysteresis, physical coefficients and 10 ms fixed step unchanged.
-- A green H.30 gate closes Phase H and unblocks Phase I.
+- Built directly on user-validated H.30; Phase H is closed as `OPT-IN ONLY` and Phase I is unblocked.
+- Promotes the validated H.30 closure summary/metrics as immutable fingerprinted prerequisite evidence.
+- Adds an executable inventory of 12 exact-version initial-condition factories across 9 profile IDs.
+- Classifies desktop v2 as authoritative default, desktop v3 as qualified opt-in, and older same-ID v1 identities as compatibility-retained without reinterpretation.
+- Requires zero exact-version profiles to be deleted in I.1; save/replay/scenario identities remain exact-version compatible.
+- Classifies `DeterministicHybridSemiImplicit` and `FourNodeBranchContinuityShadowIntegrated` as historical audit-only retirement candidates, but defers deletion until audit consolidation.
+- Leaves the H.30 production selector, H.9/H.20/H.22, P060/F040, hysteresis, physical coefficients, persistence schemas and 10 ms fixed step unchanged.
+- Adds focused artifacts for the exact profile matrix and numerical-mode retirement inventory.
+
+## M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision — VALIDATED
+
+- User-reported compilation, complete ordinary tests and focused H.30 gate passed on 2026-08-19.
+- Frozen H.19–H.29 evidence chain passed; Phase H closed and Phase I was unblocked.
+- Final evidence-derived production decision: `OPT-IN ONLY`.
+- Exact v2 `ExplicitCommittedState` remains authoritative default/rollback/reference; exact v3 corrected ownership remains qualified opt-in.
+- H.28 remains `bounded-but-costly`; no numerical/runtime selector retuning occurred.
 
 ## M10.9.4.1-H.29 — Production Activation Candidate — VALIDATED
 

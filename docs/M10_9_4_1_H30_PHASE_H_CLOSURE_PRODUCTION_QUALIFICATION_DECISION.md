@@ -2,7 +2,7 @@
 
 ## Status
 
-**CANDIDATE.** Built directly on user-validated H.29. H.30 does not add numerical behavior; it closes Phase H by reviewing the frozen H.19-H.29 evidence chain and deriving the authoritative end-of-phase production policy.
+**VALIDATED.** User-reported compilation, complete ordinary tests and the focused H.30 gate passed on 2026-08-19. H.30 closed Phase H as evidence-derived `OPT-IN ONLY`: exact v2 explicit remains authoritative default/rollback/reference, exact v3 corrected remains qualified opt-in, and Phase I is unblocked.
 
 ## Closure question
 

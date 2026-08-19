@@ -320,11 +320,11 @@ Phase H has three acceptable evidence-derived closure decisions:
 
 The roadmap must not assume outcome 1 in advance.
 
-### H.30 candidate decision
+### H.30 validated decision
 
 The validated evidence supports **`OPT-IN ONLY`**. All mandatory technical gates are green, so `REMAIN EXPLICIT` would be unnecessarily restrictive; however H.28 explicitly classifies the corrected runtime as `bounded-but-costly`, so the evidence does not justify replacing the cheaper validated explicit default.
 
-A green H.30 therefore records:
+Validated H.30 records:
 
 ```text
 authoritative default / rollback / reference = exact v2 ExplicitCommittedState
@@ -340,4 +340,4 @@ Phase H is ready to close only when the project can state, with executable evide
 
 > the chosen numerical policy works for long duration, preserves transient/protection behavior, fails closed safely, has a documented operating envelope, has acceptable runtime cost, and remains deterministic across replay/checkpoint/save authority.
 
-Only after that closure should Phase I resume.
+H.30 is validated, so this closure criterion is satisfied and Phase I has resumed at I.1 Profile Compatibility & Legacy Retirement Inventory.

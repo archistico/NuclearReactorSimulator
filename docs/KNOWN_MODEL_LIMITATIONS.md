@@ -46,9 +46,9 @@ Phase G completed the staged current-v2 migration from historical `u*m_dot` adve
 
 E.2 Hotfix 1 validates the current-v2 10 MWe nameplate, 1.5 rpm governor normalization, signed coupling and HMI range while preserving historical/default definitions. The retained 0.5 MW synchronizing correction and 2 MW/Hz damping remain reduced-order calibrated values. E.3.1 recorded their normal, motoring and phase-offset trajectories; E.3.2 derives supervised delayed thresholds from that evidence.
 
-### A9. Legacy/current option combinations are not formally enumerated
+### A9. Legacy/current profile retirement requires exact-version compatibility discipline
 
-Versioned compatibility paths are isolated through optional definitions, but the supported combination matrix and retirement policy remain undocumented.
+H.30 closes the Phase-H production-policy question, but historical scenario/save/replay identities and audit-only numerical modes must not be conflated. I.1 now provides the candidate executable compatibility/retirement inventory: exact-version profile identities remain loadable, while the old H.5 hybrid and H.21 shadow-integrated numerical modes are retirement candidates only after audit consolidation. No compatibility-retained exact version is safe to delete in I.1.
 
 
 ### A7. Main-steam relief fidelity — F.2 VALIDATED

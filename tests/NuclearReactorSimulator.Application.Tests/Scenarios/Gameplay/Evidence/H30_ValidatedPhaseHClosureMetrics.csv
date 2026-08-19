@@ -1,0 +1,15 @@
+metric,value
+mandatory_technical_evidence_green,True
+h28_performance_gate_green,True
+h28_bounded_but_costly,True
+h29_activation_candidate_green,True
+closure_decision,OPT-IN ONLY
+authoritative_default_policy,ExplicitCommittedState
+authoritative_default_initial_condition_version,2
+qualified_opt_in_policy,H29FourNodeCorrectedCommitCandidate
+qualified_opt_in_initial_condition_version,3
+explicit_kill_policy,ExplicitCommittedState
+explicit_kill_initial_condition_version,2
+phase_h_closed,True
+phase_i_unblocked,True
+h30_audit_passes,True

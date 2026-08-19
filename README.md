@@ -1,10 +1,10 @@
 # Nuclear Reactor Simulator
 
-## M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision — CANDIDATE
+## M10.9.4.1-I.1 Hotfix 1 — Profile Compatibility & Legacy Retirement Inventory — CANDIDATE
 
-H.29 is now user-validated: exact v3 corrected ownership completed **400/400 qualified commits** with zero rollback/fallback/unsafe/untargeted disagreement, deterministic repeat, exact replay/checkpoint compatibility and explicit kill back to exact v2. H.28 remains **bounded-but-costly**.
+H.30 is now user-validated and **Phase H is CLOSED as `OPT-IN ONLY`**. Exact v2 `ExplicitCommittedState` remains the authoritative default/rollback/reference; exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` remains the qualified opt-in path. H.28 remains `bounded-but-costly`.
 
-H.30 adds no solver or runtime retuning. It freezes the validated H.19–H.29 chain and proposes the evidence-derived closure decision **OPT-IN ONLY**: exact v2 `ExplicitCommittedState` remains the authoritative default/rollback/reference, while exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` remains the qualified production opt-in. A green H.30 gate closes Phase H and unblocks Phase I.
+I.1 begins Phase I without changing plant or numerical runtime. It freezes H.30 closure evidence, inventories all exact-version initial-condition profiles, distinguishes current/default/opt-in identities from compatibility-retained historical identities, and marks old audit-only numerical modes as retirement candidates only after audit consolidation.
 
 Local gate:
 
@@ -12,16 +12,16 @@ Local gate:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-phase-h-closure-production-qualification-decision-audit.cmd
+scripts\run-profile-compatibility-legacy-retirement-inventory-audit.cmd
 ```
 
-> **Authoritative validated baseline:** M10.9.4.1-H.29 — Production Activation Candidate — VALIDATED.
+> **Authoritative validated baseline:** M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision — VALIDATED.
 >
-> **Current candidate:** M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision.
+> **Phase H production decision:** `OPT-IN ONLY`.
 >
-> **Proposed closure:** `OPT-IN ONLY`; v2 explicit remains default, v3 corrected remains qualified opt-in.
+> **Current candidate:** M10.9.4.1-I.1 Hotfix 1 — Profile Compatibility & Legacy Retirement Inventory.
 >
-> **After green H.30:** Phase H closes and Phase I may resume.
+> **I.1 rule:** preserve every exact-version profile identity; historical H.5/H.21 numerical modes may be retired only after Phase-I audit consolidation.
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
 
@@ -31,9 +31,9 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The authoritative numerical baseline is **M10.9.4.1-H.29 — VALIDATED**. H.29 qualified exact v3 corrected ownership as a production activation candidate with 400/400 commits, zero rollback/fallback/unsafe/untargeted disagreement, deterministic repeat and exact replay/checkpoint compatibility. The corrected path remains **bounded-but-costly** from H.28 and standard production remains exact v2 `ExplicitCommittedState`. The current candidate is **H.30 — Phase H Closure & Production Qualification Decision**.
+The authoritative baseline is **M10.9.4.1-H.30 — VALIDATED**. Phase H is closed as `OPT-IN ONLY`: exact v2 remains the cheaper validated `ExplicitCommittedState` default/rollback/reference, while exact v3 corrected ownership remains a qualified opt-in. H.30 froze the complete H.19–H.29 evidence chain and left numerical/runtime behavior unchanged.
 
-The validated activation-hardening provenance remains H.19→H.29, including the post-H.28 H.24 requalification. H.30 is evidence/metadata only: it preserves P060/F040, H.9 mathematics, H.20/H.22 semantics, branch-continuity limits, physical coefficients, the 10 ms fixed step and the H.29 selector while deriving the proposed `OPT-IN ONLY` closure decision.
+The current candidate is **I.1 Hotfix 1 — Profile Compatibility & Legacy Retirement Inventory**. It is metadata/test/documentation-only under production source and establishes the exact-version compatibility matrix required before audit consolidation, CI/reference-trajectory work or any legacy code retirement.
 
 ## Architectural principles
 
