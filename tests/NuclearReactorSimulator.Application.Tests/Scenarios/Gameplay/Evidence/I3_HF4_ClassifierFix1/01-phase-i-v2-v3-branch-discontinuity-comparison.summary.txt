@@ -1,0 +1,6 @@
+=== 01-current-v2-v3-phase-i-branch-discontinuity-comparison ===
+I.3 Hotfix 4 compares exact v2 ExplicitCommittedState and exact v3 FourNodeBranchContinuityCorrectedCommitOptIn over the same first 100 simulated seconds at 10 ms resolution. This is diagnostic-only and does not change H.30 policy or runtime mathematics.
+diagnostic-seconds=100; steps-per-mode=10000; fixed-step=10.000 ms; explicit-drops=338; explicit-drop-episodes=331; explicit-reverse-admission-steps=330; corrected-drops=0; corrected-drop-episodes=0; corrected-reverse-admission-steps=0;
+corrected-triggered=1791; corrected-eligible=1791; corrected-authorized=1791; corrected-committed=1791; corrected-rollbacks=0; corrected-fallbacks=0; corrected-unsafe=0; corrected-untargeted-disagreements=0;
+explicit-only-branch-discontinuity-classified=False; i3-hotfix4-comparison-audit-passes=False;
+I.3 Hotfix 4 recommendation: the comparison did not isolate an explicit-only failure class. Keep I.3 red and continue root-cause localization before any H.30 policy change or runtime correction.

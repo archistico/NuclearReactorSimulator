@@ -1,0 +1,10 @@
+=== 01-current-v2-phase-i-audit-consolidation-ci-baseline ===
+I.2 freezes the validated I.1 compatibility evidence and establishes a tiered audit/CI execution contract without changing plant physics, numerical mathematics, H.30 OPT-IN ONLY policy, exact-version persistence semantics or the 10 ms fixed step.
+audit-contract-entries=11; ordinary-required-entries=4; current-evidence-entries=3; scheduled-long-entries=3; historical-frozen-entries=4;
+ordinary-ci=clean restore|Release build warnings-as-errors|complete ordinary suite|H30 frozen closure|I1 frozen compatibility|I2 consolidation contract;
+scheduled-long-ci=gameplay-long|operational-envelope|reference-plant-scale; H24-post-H28-rerun=False; H28-rerun=False;
+historical-frozen-not-ci-required=H24-post-H28|H28-performance|H21-shadow-integration|H5-hybrid-shadow; historical-evidence-preserved=True;
+legacy-h5-h21-current-ci-dependency=False; legacy-h5-h21-source-dependencies-remaining=2; legacy-mode-retirement-authorized=False;
+authoritative-default=integrated-operations-desktop-stable@2|ExplicitCommittedState; qualified-opt-in=integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn; phase-h-production-policy-decision=OPT-IN ONLY; production-fixed-step=10.000 ms; runtime-behavior-changed=False;
+phase-i-audit-consolidation-passes=True; i2-audit-passes=True; phase-i-ci-baseline-established=True;
+I.2 recommendation: use ordinary CI on every push/PR and scheduled/manual current long gates separately. Preserve historical H.5/H.21 executable seams for now; a later retirement milestone may remove them only after their source-level dependencies are explicitly archived or replaced by frozen-evidence contracts.

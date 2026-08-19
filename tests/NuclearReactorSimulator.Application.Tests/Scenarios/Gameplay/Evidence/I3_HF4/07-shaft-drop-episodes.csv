@@ -1,0 +1,6 @@
+start_step,end_step,start_seconds,end_seconds,sampled_seconds,min_rotor_shaft_mwe,min_canonical_total_turbine_shaft_mwe,min_gross_mwe,min_total_turbine_steam_flow_kg_s,min_admission_flow_kg_s,turbine_inlet_phases
+5500,5500,55,55,1,0,0,4.4350226779416584,0,-27.477271591012993,SuperheatedVapor
+6600,6600,66,66,1,0,0,4.6969851284730852,0,-26.552265225831448,SuperheatedVapor
+7200,7200,72,72,1,0,0,4.7137526209438887,0,-25.946968348683889,SuperheatedVapor
+7900,7900,79,79,1,0,0,4.7112118895230326,0,-26.936880576594437,SuperheatedVapor
+8800,8800,88,88,1,0,0,4.6097385327796072,0,-27.205916604235139,SuperheatedVapor

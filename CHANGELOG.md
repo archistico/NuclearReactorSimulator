@@ -1,3 +1,41 @@
+# Changelog
+
+## M10.9.4.1-I.3 Hotfix 3 — Descriptor Contract Alignment — CANDIDATE
+
+- Fixes the I.3 Hotfix 2 descriptor-preflight mismatch that prevented the focused script from reaching the 300-second collector.
+- Restores `Reference Trajectories`, `Conservation/Inventory`, `Tolerance Budgets` and `final-window slopes` to the descriptor contract while retaining explicit Hotfix 3 identity.
+- Does not change runtime, numerical policy, physics, health thresholds, scheduled-long opt-in or diagnostic collection.
+
+
+## M10.9.4.1-I.3 Hotfix 2 — Scheduled-Long Isolation & Shaft-Drop Diagnostic — CANDIDATE
+
+- Keeps I.2 as the latest validated baseline and keeps I.3 unvalidated.
+- Preserves the unchanged generation-health floor and all Hotfix 1 shaft/steam/admission/phase diagnostics.
+- Adds `NRS_I3_LONG_AUDIT=1` as a fail-closed execution opt-in for the 300-second collector.
+- Updates the focused I.3 script to set that opt-in; ordinary `dotnet test` returns immediately from the long collector even if runner explicit-test policy changes.
+- No plant physics, numerical mathematics, H.30 policy, selector, persistence semantics or 10 ms fixed-step behavior changes.
+
+## M10.9.4.1-I.3 Hotfix 1 — Full-Horizon Shaft-Drop Diagnostic — CANDIDATE
+
+- Built over the failed initial I.3 candidate; I.2 remains the authoritative validated baseline.
+- Records the user-observed initial I.3 failure at logical step 5,500 / 55 s: no trip, breaker closed, 5 MWe request, about 4.435 MWe gross output, rotor about 2,996.119 rpm, but sampled rotor shaft power exactly 0 MW.
+- Does **not** weaken the existing `shaft power > 4.5 MW` one-second healthy-parallel criterion, which is also present in the historical 300 s operational-envelope audit.
+- Removes the early per-sample assertion so the same 300 s exact-v2 run can complete and write evidence before the unchanged final health assertion.
+- Adds canonical total turbine shaft power, total turbine steam flow, admission flow, control/admission valve positions, turbine-inlet pressure/temperature/phase to trajectory diagnostics.
+- Adds `06-generation-health-violations.csv` and `07-shaft-drop-episodes.csv`; the focused script prints the summary/paths even when the final health gate remains red.
+- No production runtime, physics, numerical mathematics, H.30 policy, selector, persistence behavior or 10 ms fixed step changes.
+
+## M10.9.4.1-I.3 — Reference Trajectories, Conservation/Inventory Baseline & Tolerance Budgets — FAILED DIAGNOSTIC EVIDENCE
+
+- User-reported build and ordinary tests passed on 2026-08-19.
+- Focused 300 s gate stopped at 55 s because the new I.3 test asserted rotor shaft power `> 4.5 MW`; observed sample was trip=False, breaker=True, request/gross/shaft=5/4.435/0 MW, rotor=2996.119 rpm, condenser=7.602 kPa, drum level=57.588%.
+- Only `00-progress.txt` was produced because the assertion occurred before full-horizon artifact writing. I.3 was not validated and no tolerance budgets are frozen.
+
+## M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening — VALIDATED
+
+- User-reported compilation, ordinary tests and focused I.2 audit passed on 2026-08-19.
+- Tiered ordinary/current-evidence/scheduled-long/historical-frozen CI baseline established with runtime unchanged.
+
 ## M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening — CANDIDATE
 
 - Built directly on user-validated I.1 Hotfix 1.
@@ -2435,3 +2473,28 @@
 - Added architectural documentation, ADRs and approved M0–M9 roadmap.
 - No nuclear physics or plant simulation logic was introduced.
 - The local validation suite was reported as passing on 2026-07-20.
+## M10.9.4.1-I.3 Hotfix 4 — Explicit-vs-Corrected Branch Discontinuity Comparison — CANDIDATE
+
+- Preserves I.2 as the last validated baseline and keeps I.3 unvalidated.
+- Freezes the completed red I.3 300 s summary plus generation-health and shaft-drop episode CSV evidence.
+- Adds a 100 s exact-v2 versus exact-v3 comparison at 10 ms per-step resolution.
+- Records the H.18 steam/header/stop-out/control-out/turbine-inlet pressure chain, admission-train flows, stage flow, shaft power and corrected-commit telemetry.
+- Does not weaken the `shaft > 4.5 MW` health floor and does not change plant physics, numerical mathematics, H.30 policy, production selector, persistence identity or the 10 ms fixed step.
+- Adds `scripts/run-phase-i-explicit-vs-corrected-branch-discontinuity-comparison-audit.cmd`.
+## M10.9.4.1-I.3 Hotfix 4 — Script Fix 1 — MTP CLI Compatibility — CANDIDATE
+
+- Fixes only `scripts/run-phase-i-explicit-vs-corrected-branch-discontinuity-comparison-audit.cmd`.
+- Uses .NET 10 Microsoft.Testing.Platform project selection via `dotnet test --project ...`.
+- Uses native xUnit v3 MTP selection via `--explicit only` and fully-qualified `--filter-method`.
+- Keeps `NRS_I3_BRANCH_COMPARISON_AUDIT=1` as the fail-closed scheduled/manual opt-in.
+- Adds explicit post-run checks for the four expected Hotfix 4 comparison artifacts.
+- No C# source, runtime physics, numerical mathematics, H.30 policy, selector, persistence semantics, diagnostic acceptance criteria or 10 ms fixed step changed.
+
+## M10.9.4.1-I.3 Hotfix 4 — Classifier Fix 1 — Targeted-Train Reverse-Flow Classification — CANDIDATE
+
+- Corrects only the Hotfix 4 diagnostic acceptance model plus candidate metadata/documentation; plant runtime and numerical contracts remain unchanged.
+- The completed 10 ms comparison showed `338` exact-v2 generation-drop steps and `338` targeted-train reverse-flow steps: `8` reverse stop-valve, `0` reverse control-valve and `330` reverse admission-valve steps.
+- Every explicit generation drop coincides one-for-one with reverse flow on stop/control/admission, and every targeted reverse-flow step is a generation drop.
+- Exact v3 remains clean in the same 100 s domain: `0` generation drops and `0` targeted-train reverse-flow steps, with `1791/1791` corrected commits and `0` rollback/fallback/unsafe/untargeted disagreement in the observed failed-classification run.
+- Replaces the overly narrow Hotfix 4 requirement `every drop has reverse admission flow` with the physically correct targeted-train requirement `every drop has reverse flow on stop, control or admission`.
+- Does not change H.30 `OPT-IN ONLY`, does not freeze I.3 tolerance budgets and leaves I.2 as the authoritative validated baseline until this corrected focused classifier passes locally.

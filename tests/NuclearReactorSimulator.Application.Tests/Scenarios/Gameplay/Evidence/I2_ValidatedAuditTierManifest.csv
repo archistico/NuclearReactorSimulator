@@ -1,0 +1,12 @@
+audit_id,tier,command,ordinary_required,scheduled_default,execution_role,retirement_dependency
+ordinary-suite,ORDINARY,eng\ci-ordinary.cmd,True,False,current-baseline,none
+H30-closure,CURRENT-EVIDENCE,scripts\run-phase-h-closure-production-qualification-decision-audit.cmd,True,False,frozen-current-policy,none
+I1-compatibility,CURRENT-EVIDENCE,scripts\run-profile-compatibility-legacy-retirement-inventory-audit.cmd,True,False,frozen-current-compatibility,none
+I2-consolidation,CURRENT-EVIDENCE,scripts\run-phase-i-audit-consolidation-ci-baseline-audit.cmd,True,False,current-phase-i-contract,none
+gameplay-long,SCHEDULED-LONG,scripts\run-gameplay-long-tests.cmd,False,True,current-long-gate,none
+operational-envelope,SCHEDULED-LONG,scripts\run-operational-envelope-audit.cmd,False,True,current-long-gate,none
+reference-plant-scale,SCHEDULED-LONG,scripts\run-reference-plant-scale-audit.cmd,False,True,current-long-gate,none
+H24-post-H28,HISTORICAL-FROZEN,scripts\run-four-node-post-h28-committed-long-horizon-requalification-audit.cmd,False,False,validated-frozen-provenance,do-not-rerun-in-ci
+H28-performance,HISTORICAL-FROZEN,scripts\run-untargeted-disagreement-scan-fast-path-audit.cmd,False,False,validated-frozen-provenance,do-not-rerun-in-ci
+H21-shadow-integration,HISTORICAL-FROZEN,scripts\run-four-node-orchestrator-shadow-integration-audit.cmd,False,False,validated-frozen-provenance,legacy-mode-still-source-referenced
+H5-hybrid-shadow,HISTORICAL-FROZEN,scripts\run-hybrid-production-integration-tests.cmd,False,False,validated-documentary-provenance,legacy-mode-still-source-referenced

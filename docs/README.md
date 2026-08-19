@@ -1,6 +1,6 @@
 # Documentation
 
-Current continuation: `M10_9_4_1_I2_AUDIT_CONSOLIDATION_CI_BASELINE.md`, `M10_9_4_1_I2_VALIDATION_CHECKLIST.md` and ADR 0161. I.1 Hotfix 1 is validated; H.30 remains closed as `OPT-IN ONLY`. Map
+Current continuation: `M10_9_4_1_I3_REFERENCE_TRAJECTORY_CONSERVATION_INVENTORY_BASELINE.md`, `M10_9_4_1_I3_VALIDATION_CHECKLIST.md` and ADR 0162. I.1 Hotfix 1 and I.2 are validated; H.30 remains closed as `OPT-IN ONLY`. Map
 
 This directory is the architectural and continuity record for Nuclear Reactor Simulator.
 
@@ -19,8 +19,10 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md` — completed user-facing M10.9.4 sign-off.
 - `milestones/M10.9.4.1.md` — active operational-envelope and numerical-hardening milestone before M10.9.5.
 - `M10_9_4_1_I1_PROFILE_COMPATIBILITY_LEGACY_RETIREMENT_INVENTORY.md` — validated Phase-I exact-version compatibility and retirement inventory.
-- `M10_9_4_1_I2_AUDIT_CONSOLIDATION_CI_BASELINE.md` — current candidate tiered audit/CI baseline and frozen historical-evidence policy.
+- `M10_9_4_1_I2_AUDIT_CONSOLIDATION_CI_BASELINE.md` — validated tiered audit/CI baseline and frozen historical-evidence policy.
 - `M10_9_4_1_I2_VALIDATION_CHECKLIST.md` / `M10_9_4_1_I2_STATIC_REVIEW.md` — I.2 promotion and isolation contracts.
+- `M10_9_4_1_I3_REFERENCE_TRAJECTORY_CONSERVATION_INVENTORY_BASELINE.md` — current exact-v2 300-second reference trajectory, conservation/inventory and regression-budget candidate.
+- `M10_9_4_1_I3_VALIDATION_CHECKLIST.md` / `M10_9_4_1_I3_STATIC_REVIEW.md` — I.3 promotion and isolation contracts.
 - `M10_9_4_1_A_EXTENDED_AUDIT.md` — executed non-green extended audit and exact ~70-second trip evidence.
 - `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` — adjudication of the two external LLM reviews and accepted planning decisions.
 - `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` — revised A.1–I evidence/physics/numerical hardening sequence.
@@ -88,7 +90,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Decision records
 
-`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI/hardening and approved future-product decisions are ADR 0046–0159.
+`adr/` contains Architecture Decision Records. Later work must preserve accepted decisions unless an explicit superseding ADR is created. The newest control-room/runtime/scenario/fault/replay/fidelity/operator-automation/HMI/hardening and approved future-product decisions extend through ADR 0162.
 
 ## Milestone records
 
@@ -96,7 +98,7 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 
 ## Domain documents
 
-The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.3 interactive full-plant mimic baseline, validated M10.9.4, active M10.9.4.1 operational-envelope/numerical hardening through validated H.29 production activation candidate and current H.30 closure (`OPT-IN ONLY` proposed), with H.28 performance/soak still `bounded-but-costly`, completed Phase G, and the approved M10.9.1–M10.9.8 operator-experience architecture.
+The remaining top-level Markdown files document subsystem contracts and their ownership boundaries: reactor physics, primary circuit, turbine island, electrical system, control/protection, instrumentation, alarms, control-room presentation, the M7 operating/training framework, M8.1 deterministic fault injection, M8.2 hydraulic component faults, M8.3 instrumentation/control faults, M8.4 secondary-system transients, M8.5 educational leak/LOCA-class scenarios, M8.6 electrical-loss/station-blackout-class scenarios, M8.7 safety-response evaluation/debrief composition, M9.1 recorder/checkpoint/full-replay reconstruction, M9.2 post-incident analysis, validated M9.3 advanced xenon/low-power integration, validated M9.4 spatial/quasi-spatial refinement, validated M9.5 historical-inspired scenario framework, validated M9.6 calibration/reference-validation + GUI hardening, validated M9.7 advanced-fidelity integration gate, validated M10.1–M10.9.2 Hotfix 2 operator-computer/supervisory/session/integrated-UI/HMI/gauge capabilities, validated M10.9.3 interactive full-plant mimic baseline, validated M10.9.4, active M10.9.4.1 operational-envelope/numerical hardening with Phase H closed through validated H.30 as `OPT-IN ONLY`, validated I.1 compatibility and I.2 audit/CI baseline, current I.3 reference-trajectory/conservation-inventory baseline, H.28 performance/soak retained as `bounded-but-costly`, completed Phase G, and the approved M10.9.1–M10.9.8 operator-experience architecture.
 
 When modifying a subsystem, update its domain document together with the milestone/ADR/handoff documents rather than leaving architecture knowledge only in source comments or chat history.
 
@@ -108,7 +110,7 @@ When modifying a subsystem, update its domain document together with the milesto
 - M10.9.4.1-D.4.1 remains validated: STOP-owned optional travel rate, differential travel regression, deterministic valve replay/in-flight checkpoint restoration and post-trip reset travel resumption.
 - M10.9.4.1-E.3.2 Hotfix 3 remains the validated electrical-protection checkpoint: current-v2 10 MWe signed coupling plus reviewed breaker-supervised delayed electrical protection.
 - M10.9.4.1-F.1, F.2 and F.3 Hotfix 1 are validated: compressible capacity law, atmospheric header relief and conservative header-to-condenser bypass.
-- The authoritative numerical continuation is M10.9.4.1-H.29 VALIDATED and Phase G is complete. H.28 remains `bounded-but-costly`. Standard production remains exact v2 explicit at 10 ms; exact v3 corrected is a validated activation candidate. The current candidate is H.30 Phase H closure with proposed `OPT-IN ONLY`, preserving v2 default/rollback/reference and v3 as qualified opt-in.
+- Phase H is closed through M10.9.4.1-H.30 as `OPT-IN ONLY`; H.28 remains `bounded-but-costly`. Standard production remains exact v2 explicit at 10 ms and exact v3 corrected remains qualified opt-in. I.1 Hotfix 1 and I.2 are validated; current Phase-I candidate I.3 establishes the exact-v2 300-second reference trajectory, conservation/inventory slopes and versioned regression tolerance budgets.
 - M10 closes only after M10.9.8 Integrated Human-Automation-HMI Validation Gate.
 
 See `PROJECT_HANDOFF.md` for the full authoritative statement.

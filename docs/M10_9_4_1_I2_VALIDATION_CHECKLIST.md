@@ -1,5 +1,6 @@
 # M10.9.4.1-I.2 Validation Checklist
 
+> **VALIDATED NOTE — 2026-08-19:** user-reported compilation, complete ordinary tests and focused I.2 audit passed. This checklist is retained as the promotion record; I.3 is the current continuation.
 ## Baseline and isolation
 
 - [ ] candidate is built directly on user-validated I.1 Hotfix 1;

@@ -1,0 +1,2 @@
+trajectory_id,schema_version,exact_initial_condition,production_policy,simulated_seconds,logical_steps,sample_stride_steps,final_window_seconds,reference_role,budget_derivation,baseline_status
+phase-i-desktop-v2-healthy-300s-v1,1,integrated-operations-desktop-stable@2,ExplicitCommittedState,300,30000,100,60,AUTHORITATIVE-DEFAULT-REFERENCE,final-window-mean-plus-2x-observed-deviation-with-absolute-floor,CANDIDATE-TO-FREEZE-AFTER-I3

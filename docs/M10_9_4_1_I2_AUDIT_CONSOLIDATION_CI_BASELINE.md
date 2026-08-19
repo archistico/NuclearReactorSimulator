@@ -2,7 +2,7 @@
 
 ## Status
 
-**CANDIDATE.** Built directly on user-validated I.1 Hotfix 1. H.30 remains closed as `OPT-IN ONLY`; exact v2 explicit remains authoritative default/rollback/reference and exact v3 corrected remains qualified opt-in.
+**VALIDATED.** User-reported compilation, complete ordinary tests and the focused I.2 audit passed on 2026-08-19. H.30 remains closed as `OPT-IN ONLY`; exact v2 explicit remains authoritative default/rollback/reference and exact v3 corrected remains qualified opt-in.
 
 I.2 changes no plant physics, numerical mathematics, production selection, exact-version persistence semantics or the 10 ms fixed step.
 
@@ -88,6 +88,6 @@ i2-audit-passes=True
 phase-i-ci-baseline-established=True
 ```
 
-## Next step after validation
+## Validated continuation
 
-A green I.2 establishes the Phase-I validation topology. The next milestone should consolidate current conservation/inventory observations and versioned trajectory/tolerance budgets before any actual legacy-mode deletion or M10.9.5 work.
+I.2 now establishes the Phase-I validation topology. I.3 is the current continuation: consolidate current conservation/inventory observations and establish an exact-version 300-second reference trajectory plus versioned tolerance budgets before any actual legacy-mode deletion or M10.9.5 work.

@@ -1,27 +1,25 @@
 # Nuclear Reactor Simulator
 
-## M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening — CANDIDATE
+> **Current candidate:** M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 — Targeted-Train Reverse-Flow Classification. I.2 remains the authoritative validated baseline.
 
-I.1 Hotfix 1 is user-validated and is now the authoritative Phase-I compatibility baseline. H.30 remains closed as **`OPT-IN ONLY`**: exact v2 `ExplicitCommittedState` remains authoritative default/rollback/reference and exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` remains qualified opt-in.
+## M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 — CANDIDATE
 
-I.2 changes no plant or numerical runtime. It freezes validated I.1 evidence, separates ordinary/current-evidence/scheduled-long/historical-frozen audit tiers, and adds provider-neutral CI entry points plus GitHub Actions wrappers. H.24/H.28 stay frozen rather than rerun on every change; H.5/H.21 are no longer current-CI dependencies but remain source-retained retirement candidates.
+> **Classifier Fix 1:** the completed 10 ms comparison showed that the original Hotfix 4 predicate was too narrow: 330/338 explicit drops coincide with reverse admission flow, while the remaining 8/338 coincide with reverse stop-valve flow. All 338/338 explicit drops therefore coincide one-for-one with reverse flow somewhere in the targeted stop/control/admission train; exact v3 has 0 targeted-train reverse-flow steps and 0 drops. The acceptance criterion is corrected accordingly. Runtime physics and H.30 policy remain unchanged.
 
-Local gate:
+The full I.3 300-second exact-v2 diagnostic completed and found five isolated shaft-power drops at 55, 66, 72, 79 and 88 s. Each sampled drop has canonical shaft power 0 MW, turbine stage flow 0 kg/s, reverse admission flow near -26 to -27 kg/s and a turbine-inlet pressure spike while the generator remains connected, no trip occurs and conservation remains green.
+
+Hotfix 4 does not retune or repair the runtime. Its completed 100-second exact-v2 versus exact-v3 comparison at the real 10 ms fixed step exposed two manifestations of the same targeted-train discontinuity: an 8-step reverse stop-valve episode at 3.53–3.60 s and 330 later reverse-admission drop steps. The classifier now requires every explicit generation drop to coincide with reverse flow on stop, control or admission, and requires exact v3 to have zero generation drops and zero targeted-train reverse flow without rollback/fallback/unsafe commit.
+
+Local validation:
 
 ```bat
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-phase-i-audit-consolidation-ci-baseline-audit.cmd
+scripts\run-phase-i-explicit-vs-corrected-branch-discontinuity-comparison-audit.cmd
 ```
 
-> **Authoritative validated baseline:** M10.9.4.1-I.1 Hotfix 1 — Profile Compatibility & Legacy Retirement Inventory — VALIDATED.
->
-> **Phase H production decision:** `OPT-IN ONLY`.
->
-> **Current candidate:** M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening.
->
-> **I.2 rule:** frozen historical evidence may leave current CI, but legacy numerical source is not deletable until executable source/test dependencies are removed separately.
+Do not rerun/freeze the normal I.3 300-second tolerance baseline until this comparison is classified. H.30 remains `OPT-IN ONLY` unless a later explicitly reviewed decision changes it.
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
 
@@ -31,9 +29,9 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The authoritative baseline is **M10.9.4.1-I.1 Hotfix 1 — VALIDATED**. It establishes the exact-version compatibility matrix on top of the H.30 `OPT-IN ONLY` closure without changing runtime behavior.
+The authoritative baseline is **M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening — VALIDATED**. It establishes tiered ordinary/current/scheduled/historical validation and CI entry points on top of the H.30 `OPT-IN ONLY` closure.
 
-The current candidate is **I.2 — Audit Consolidation & CI Baseline Hardening**. It freezes I.1 evidence and establishes tiered ordinary/current/scheduled/historical validation plus CI entry points; it does not authorize legacy numerical-mode deletion.
+The current candidate is **M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 — Targeted-Train Reverse-Flow Classification**. I.3 remains unvalidated and no tolerance budgets are frozen.
 
 ## Architectural principles
 
