@@ -91,7 +91,7 @@ public sealed class FourNodeProductionActivationCandidateAuditTests
         ResetReportDirectory();
 
         var defaultDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicy.ExplicitCommittedState);
         var candidateDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(

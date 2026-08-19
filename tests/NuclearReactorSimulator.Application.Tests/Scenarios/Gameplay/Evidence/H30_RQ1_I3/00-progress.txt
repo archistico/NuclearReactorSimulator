@@ -1,0 +1,11 @@
+2026-08-19T22:31:17.0190236+00:00 I.3 Hotfix 5 corrected 300 s requalification started
+2026-08-19T22:32:11.4177951+00:00 simulated-seconds=30; logical-step=3000
+2026-08-19T22:32:54.7524991+00:00 simulated-seconds=60; logical-step=6000
+2026-08-19T22:32:58.4235940+00:00 simulated-seconds=90; logical-step=9000
+2026-08-19T22:33:02.0895471+00:00 simulated-seconds=120; logical-step=12000
+2026-08-19T22:33:05.7514897+00:00 simulated-seconds=150; logical-step=15000
+2026-08-19T22:33:09.4156088+00:00 simulated-seconds=180; logical-step=18000
+2026-08-19T22:33:13.0754049+00:00 simulated-seconds=210; logical-step=21000
+2026-08-19T22:33:16.7510693+00:00 simulated-seconds=240; logical-step=24000
+2026-08-19T22:33:33.5456219+00:00 simulated-seconds=270; logical-step=27000
+2026-08-19T22:33:56.2037630+00:00 simulated-seconds=300; logical-step=30000

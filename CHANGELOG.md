@@ -1,5 +1,24 @@
 # Changelog
 
+## M10.9.4.1-H.30 Requalification 1 Hotfix 1 — Operations Namespace Compile Fix — CANDIDATE
+
+- Fixes the only reported H.30 RQ1 build failure: CS0246 for `PowerManoeuvringGuidancePlan` in `DesktopIntegratedOperationsProductionProgram.cs`.
+- Adds only `using NuclearReactorSimulator.Application.Scenarios.Operations;` to the new production wrapper, matching the existing `DesktopIntegratedOperationsProgram` contract.
+- Does not change the H.30 RQ1 `ACTIVATE` decision logic, exact-v3 production selector, exact-v2 rollback/reference path, scenario identities, replay/persistence semantics, numerical runtime, physics, CI tiers or documentation consolidation.
+- I.2 remains authoritative until H.30 RQ1 Hotfix 1 passes build, ordinary tests and the focused re-review audit.
+
+## M10.9.4.1-H.30 Requalification 1 — Production Policy Re-review after I.3 Continuity Evidence — CANDIDATE
+
+- Built after validated I.3 Hotfix 4 Classifier Fix 1 and validated I.3 Hotfix 5 corrected 300 s evidence; I.2 remains the last fully validated Phase-I baseline until this candidate passes local validation.
+- Re-opens only the H.30 deployment decision. Evidence-derived candidate outcome is `ACTIVATE` because exact v2 reproduces 338/338 generation-drop / targeted-train reverse-flow steps while exact v3 produces 0/0 and remains healthy across 300 s / 30,000 steps.
+- Promotes the already-qualified exact-v3 `FourNodeBranchContinuityCorrectedCommitOptIn` policy to the candidate authoritative desktop default; exact v2 `ExplicitCommittedState` remains fail-closed rollback/reference and historical exact-version identities are not reinterpreted.
+- Wires fresh desktop startup through `DesktopIntegratedOperationsProductionProgram` and adds the distinct `integrated-normal-operations-training-h30-rq1-production` scenario over exact v3; historical v2 and H.29 candidate scenario identities remain separate and replay-compatible.
+- Keeps H.28 `bounded-but-costly`; no H.9/H.20/H.22/P060-F040/hysteresis/physical-coefficient/10 ms timestep retuning is introduced.
+- Freezes validated I.3 Hotfix 4/5 artifacts under test evidence with canonical SHA-256 checks; H.24/H.28 and the long I.3 diagnostics are not rerun by H.30 RQ1.
+- Updates current-evidence CI so original H.30, I.1 and I.3 re-review prerequisites become frozen historical evidence while H.30 RQ1 becomes the current production-policy gate; current gameplay/operational-envelope long regressions now follow the authoritative production selector.
+- Performs documentation consolidation: root `README.md` reduced from 589 to about 110 lines; `ROADMAP.md` reduced from 893 to about 120 lines; 161 M10.9.4.1 chronology files moved from the `docs/` root to `docs/history/m10.9.4.1/`; current status/handoff/limitations are rewritten around the actual checkpoint.
+- I.3 tolerance budgets remain unfrozen. A green H.30 RQ1 only activates the production policy and unblocks an authoritative-policy I.3 reference rerun.
+
 ## M10.9.4.1-I.3 Hotfix 5 Compile Fix 1 — Recording Fingerprint Namespace Import — CANDIDATE
 
 - Fixes the only reported Hotfix 5 build failure: two CS0103 references to `ControlRoomSnapshotFingerprint` in `PhaseICorrectedHealthyReferenceRequalificationAuditTests.cs`.
@@ -78,7 +97,6 @@
 - Test semantics are unchanged: the same exact-version profile must still be uniquely present.
 - No numerical, physical, selector, persistence, compatibility-matrix or H.30 evidence behavior changes.
 
-# Changelog
 
 ## M10.9.4.1-I.1 — Profile Compatibility & Legacy Retirement Inventory — CANDIDATE
 
@@ -471,7 +489,6 @@
 - Adds `artifacts/h17-long-horizon-cross-profile-branch-continuity/00-progress.txt` heartbeat updates through reference generation, trigger census, policy, committed observation and inverse scan stages.
 - No production solver, thermodynamic policy, H.9 tolerance, trigger threshold, physical coefficient or target node is changed.
 
-# Changelog
 
 ## M10.9.4.1-H.17 Hotfix 3 — Validated Load-Pulse Reference Profile — CANDIDATE
 
@@ -1389,7 +1406,6 @@
 - Fixed both long-gameplay helper scripts to use Microsoft Testing Platform syntax `dotnet test --project <csproj> --no-build -- --explicit only`.
 - No production physics/control/protection code changed in this hotfix; the potential desktop seed/integrated-balance defect remains intentionally exposed for the explicit gameplay gate.
 
-# Changelog
 
 ## M10.9.4 Hotfix 1 — xUnit2009 Assertion Contract Fix — IMPLEMENTATION CANDIDATE
 
@@ -1535,7 +1551,6 @@
 - Kept training/presentation intents and session lifecycle intents outside `ControlRoomCommandKind`, preserving ADR 0070 ownership boundaries.
 - Added Application/App/XAML regression coverage and `docs/OPERATOR_COMPUTER_CONTEXTUAL_COMMAND_CONSOLE.md` / `docs/milestones/M10.4.md`.
 
-# Changelog
 
 ## M10.3 — Alarm, Log & Incident Workstation — IMPLEMENTATION CANDIDATE
 

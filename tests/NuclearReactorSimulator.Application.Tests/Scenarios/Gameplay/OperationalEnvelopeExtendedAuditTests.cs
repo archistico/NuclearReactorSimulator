@@ -10,8 +10,9 @@ using Xunit;
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 
 /// <summary>
-/// M10.9.4.1-A audit-only operating-envelope journeys. These tests intentionally inspect canonical read-only evidence but
-/// never alter solver definitions, physical coefficients, seed inventories, protection thresholds or integration behavior.
+/// M10.9.4.1-A-origin operating-envelope journeys retained as the current scheduled production regression. The current
+/// desktop cases follow the authoritative production selector while never altering solver definitions, coefficients, seed
+/// inventories, protection thresholds or integration behavior.
 /// </summary>
 public sealed class OperationalEnvelopeExtendedAuditTests
 {
@@ -118,7 +119,7 @@ public sealed class OperationalEnvelopeExtendedAuditTests
 
     [Fact(Explicit = true)]
     [Trait("Category", "OperationalEnvelopeAudit")]
-    public void CurrentV2SecondaryPumpCheckValves_BlockReverseFlowAtEverySampledLoadRejectionStep()
+    public void CurrentProductionSecondaryPumpCheckValves_BlockReverseFlowAtEverySampledLoadRejectionStep()
     {
         var engine = CreateEngine();
         var coordinator = new ControlRoomRuntimeCoordinator(engine);
@@ -148,7 +149,7 @@ public sealed class OperationalEnvelopeExtendedAuditTests
     {
         var registry = CreateRegistry();
         var factory = new ScenarioSessionFactory(registry);
-        var session = factory.Load(DesktopIntegratedOperationsProgram.Scenario);
+        var session = factory.Load(DesktopIntegratedOperationsProductionProgram.Scenario);
         using var recorder = new ScenarioRecorder(session);
         var generator = Assert.Single(session.Coordinator.Current.Electrical.Generators);
 
@@ -268,14 +269,22 @@ public sealed class OperationalEnvelopeExtendedAuditTests
     }
 
     private static IntegratedAutomaticOperationRuntimeEngine CreateEngine()
-        => Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+    {
+        var decision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        return Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            DesktopHydraulicProductionPolicySelector.CreateFactory(decision).CreateRuntimeEngine());
+    }
 
     private static VersionedInitialConditionRegistry CreateRegistry()
-        => new(new IVersionedInitialConditionFactory[]
+    {
+        var decision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        return new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopSustainedGenerationInitialConditionFactory(),
+            DesktopHydraulicProductionPolicySelector.CreateFactory(decision),
         });
+    }
 
     private static void AdvanceCheckpoint(ControlRoomRuntimeCoordinator coordinator, int stepCount)
     {

@@ -74,7 +74,7 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
         AssertProfile(profiles, "pre-synchronization-grid-loading", 2, "SUPPORTED-CURRENT", "RETAIN");
 
         Assert.Equal(
-            DesktopSustainedGenerationInitialConditionFactory.Reference,
+            DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
             DesktopHydraulicProductionPolicySelector.Resolve(
                 DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy).InitialCondition);
         Assert.Equal(
@@ -117,7 +117,7 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
         }
 
         var defaultDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicy.ExplicitCommittedState);
         var optInDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(

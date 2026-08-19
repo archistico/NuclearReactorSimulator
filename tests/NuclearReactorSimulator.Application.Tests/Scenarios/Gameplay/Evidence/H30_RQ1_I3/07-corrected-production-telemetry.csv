@@ -1,0 +1,12 @@
+metric,value
+observed_steps,30000
+four_node_steps,30000
+triggered,3757
+eligible,3757
+authorized,3757
+committed,3757
+fallbacks,0
+rollbacks,0
+fallback_commit_violations,0
+unsafe_commits,0
+untargeted_disagreements,0

@@ -1,0 +1,2 @@
+trajectory_id,schema_version,exact_initial_condition,production_policy,simulated_seconds,logical_steps,step_health_resolution_ms,reference_sample_stride_steps,final_window_seconds,reference_role,policy_effect
+phase-i-desktop-v3-corrected-healthy-300s-rq1,1,integrated-operations-desktop-stable@3,FourNodeBranchContinuityCorrectedCommitOptIn,300,30000,10,100,60,H30-POLICY-REREVIEW-PREREQUISITE,NONE-DIAGNOSTIC-ONLY

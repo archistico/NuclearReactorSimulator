@@ -37,7 +37,7 @@ Implemented evidence includes:
 - mass/energy audit, drum pressure/level, condenser pressure, turbine speed, generator frequency and protection state;
 - replay/checkpoint equivalence.
 
-The historical failure and its corrected root-cause analysis are recorded in `M10_9_4_1_A_EXTENDED_AUDIT.md`. The corrected current-v2 seed has passed the exact 300-second sustained journey locally without weakening protection thresholds.
+The historical failure and its corrected root-cause analysis are recorded in `history/m10.9.4.1/M10_9_4_1_A_EXTENDED_AUDIT.md`. The corrected current-v2 seed has passed the exact 300-second sustained journey locally without weakening protection thresholds.
 
 ## Phase A.1 — Audit Evidence Completion — IMPLEMENTED / CONTINUING AS CROSS-PHASE EVIDENCE
 

@@ -158,5 +158,5 @@ The main-steam/admission train still establishes the hydraulic state at `turbine
 
 F.1 does not replace the existing main-steam pipe or turbine-admission valve laws. It adds a separate one-way ideal-vapor nozzle/orifice capacity solver for later relief and bypass composition. The solver resolves continuous subcritical flow from pressure ratio and caps mass flow at the analytic sonic/choked plateau. It mutates no plant inventory and owns no valve, source term or topology in F.1.
 
-See `M10_9_4_1_F1_CHOKED_STEAM_FLOW.md` and ADR 0115.
+See `history/m10.9.4.1/M10_9_4_1_F1_CHOKED_STEAM_FLOW.md` and ADR 0115.
 

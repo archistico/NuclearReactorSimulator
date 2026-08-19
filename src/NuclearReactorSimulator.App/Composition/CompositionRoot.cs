@@ -23,7 +23,7 @@ internal static class CompositionRoot
     {
         var descriptor = ApplicationDescriptor.Current;
         var sessionFactory = CreateSessionFactory();
-        var session = sessionFactory.Load(DesktopIntegratedOperationsProgram.Scenario);
+        var session = sessionFactory.Load(DesktopIntegratedOperationsProductionProgram.Scenario);
         var recorder = enableSessionRecording ? new ScenarioRecorder(session) : null;
         var trainingTracker = CreateDesktopTrainingTracker(session);
         var archiveSerializer = new JsonScenarioSessionArchiveSerializer();
@@ -55,7 +55,7 @@ internal static class CompositionRoot
 
         void AttachTraining(ScenarioSession replaySession)
         {
-            if (string.Equals(replaySession.Scenario.ScenarioId, DesktopIntegratedOperationsProgram.Scenario.ScenarioId, StringComparison.Ordinal))
+            if (DesktopIntegratedOperationsProductionProgram.IsDesktopTrainingScenario(replaySession.Scenario.ScenarioId))
             {
                 trainingTracker = CreateDesktopTrainingTracker(replaySession);
             }
@@ -100,8 +100,8 @@ internal static class CompositionRoot
     private static ScenarioTrainingTracker CreateDesktopTrainingTracker(ScenarioSession session)
         => new(
             session,
-            DesktopIntegratedOperationsProgram.TrainingPlan,
-            DesktopIntegratedOperationsProgram.CreateCheckpointEvaluator(),
+            DesktopIntegratedOperationsProductionProgram.ResolveTrainingPlan(session.Scenario.ScenarioId),
+            DesktopIntegratedOperationsProductionProgram.CreateCheckpointEvaluator(),
             TrainingGuidanceMode.Guided);
 
     private static MainWindowViewModel CreateMainWindowViewModel(
@@ -111,15 +111,13 @@ internal static class CompositionRoot
         ScenarioRecorder? recorder,
         OperatorComputerSessionWorkspaceController sessionWorkspace)
     {
-        var isDesktopTraining = string.Equals(
-            session.Scenario.ScenarioId,
-            DesktopIntegratedOperationsProgram.Scenario.ScenarioId,
-            StringComparison.Ordinal);
+        var isDesktopTraining = DesktopIntegratedOperationsProductionProgram.IsDesktopTrainingScenario(
+            session.Scenario.ScenarioId);
         return new MainWindowViewModel(
             descriptor,
             session.SnapshotSource,
             session.CommandDispatcher,
-            powerManoeuvringGuidance: isDesktopTraining ? DesktopIntegratedOperationsProgram.ProcedureGuidance : null,
+            powerManoeuvringGuidance: isDesktopTraining ? DesktopIntegratedOperationsProductionProgram.ProcedureGuidance : null,
             trainingTracker: trainingTracker,
             scenarioRecorder: recorder,
             plantControlAuthorityDispatcher: session.PlantControlAuthority,

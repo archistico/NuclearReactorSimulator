@@ -1,9 +1,9 @@
 namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
-/// H.29 candidate scenario identity. The existing desktop program remains pinned to the v2 explicit seed; this separate
-/// scenario permits exact-version save/replay qualification of the v3 corrected-commit production candidate without
-/// reinterpreting historical recordings or changing the current production default.
+/// Historical H.29 candidate scenario identity. Its metadata remains unchanged after H.30 Requalification 1 so archives,
+/// replay evidence and the original activation-candidate provenance are not reinterpreted. Production activation uses a
+/// separate H.30 RQ1 scenario identity over the same exact-v3 initial condition.
 /// </summary>
 public static class DesktopIntegratedOperationsH29ActivationCandidateProgram
 {
@@ -16,4 +16,11 @@ public static class DesktopIntegratedOperationsH29ActivationCandidateProgram
         DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
         DesktopIntegratedOperationsProgram.Scenario.Objectives,
         DesktopIntegratedOperationsProgram.Scenario.AllowedOperatorActions);
+
+    public static ScenarioTrainingPlan TrainingPlan { get; } = new(
+        ScenarioId,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Checkpoints,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Criteria,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Objectives,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Penalties);
 }

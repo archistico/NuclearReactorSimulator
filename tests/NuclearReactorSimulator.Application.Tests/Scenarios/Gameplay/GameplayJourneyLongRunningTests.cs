@@ -21,11 +21,13 @@ public sealed class GameplayJourneyLongRunningTests
     [Trait("Category", "GameplayLong")]
     public void DesktopIntegratedSession_SustainsParallelElectricalExportForSixtySimulatedSeconds()
     {
+        var productionDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
         var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new DesktopSustainedGenerationInitialConditionFactory(),
+            DesktopHydraulicProductionPolicySelector.CreateFactory(productionDecision),
         });
-        var session = new ScenarioSessionFactory(registry).Load(DesktopIntegratedOperationsProgram.Scenario);
+        var session = new ScenarioSessionFactory(registry).Load(DesktopIntegratedOperationsProductionProgram.Scenario);
         var initial = session.Coordinator.Current;
         var initialGenerator = Assert.Single(initial.Electrical.Generators);
         var initialRotor = Assert.Single(initial.TurbineSecondary.Rotors);

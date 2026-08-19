@@ -1,124 +1,70 @@
-# Nuclear Reactor Simulator — Project Handoff
+# Project handoff
 
-> **Authoritative validated baseline:** M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening — VALIDATED on 2026-08-19.
->
-> **Phase H:** CLOSED as `OPT-IN ONLY`.
->
-> **Current candidate:** M10.9.4.1-I.3 Hotfix 5 — Corrected 300 s Healthy Reference Requalification. I.3 remains unvalidated. Hotfix 4 classifier evidence is validated diagnostically: 338/338 exact-v2 drops coincide with targeted reverse flow, while exact v3 has 0 drops/reverse flow over 100 s. Hotfix 5 extends exact v3 to 300 s before H.30 policy re-review.
+## Authoritative state
 
-## 1. Authoritative production policy
+Last fully validated baseline: **M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening**.
 
-```text
-exact v2 integrated-operations-desktop-stable
-  ExplicitCommittedState
-  authoritative default / rollback / reference
+The following later results are validated **evidence**, but have not yet produced a promoted Phase-I baseline:
 
-exact v3 integrated-operations-desktop-stable
-  FourNodeBranchContinuityCorrectedCommitOptIn
-  qualified opt-in
+1. I.3 Hotfix 4 Classifier Fix 1: exact v2 has 338/338 generation-drop steps coincident with targeted stop/control/admission reverse flow; exact v3 has 0/0 over the same 100 s / 10 ms comparison.
+2. I.3 Hotfix 5: exact v3 completes 300 s / 30,000 steps with 0 generation-health violations, 0 targeted reverse-flow violations, 3,757 corrected commits, 0 rollback/fallback/unsafe/untargeted disagreement and deterministic repeat.
 
-explicit deployment kill
-  exact v2 ExplicitCommittedState
-```
+Current candidate: **M10.9.4.1-H.30 Requalification 1 — Production Policy Re-review after I.3 Continuity Evidence**.
 
-H.28 remains `bounded-but-costly`; Phase I does not silently reopen the Phase-H activation decision; only a separate H.30 re-review may change it.
+## Candidate intent
 
-## 2. Validated Phase-I baselines
+Re-open only the H.30 production-policy decision. The candidate derives `ACTIVATE` if frozen evidence is intact:
 
-### I.1 Hotfix 1 — compatibility
+- exact v3 becomes the desktop authoritative default;
+- exact v2 remains exact-version rollback/reference;
+- historical save/replay identities are not reinterpreted;
+- numerical mathematics and 10 ms fixed step are unchanged.
 
-- 12 registered exact versions across 9 IDs;
-- two older exact identities compatibility-retained;
-- zero delete-now profile versions;
-- H.5 `DeterministicHybridSemiImplicit` and H.21 `FourNodeBranchContinuityShadowIntegrated` classified historical audit-only retirement candidates.
+The candidate also cleans project documentation by moving detailed M10.9.4.1 chronology under `docs/history/m10.9.4.1/` and rewriting the high-level README/status/roadmap as current-state documents.
 
-### I.2 — audit/CI topology
-
-I.2 passed build, ordinary tests and focused audit. It established four validation tiers:
-
-```text
-ORDINARY
-CURRENT-EVIDENCE
-SCHEDULED-LONG
-HISTORICAL-FROZEN
-```
-
-Provider-neutral commands remain:
-
-```text
-eng\ci-ordinary.cmd
-eng\ci-current-evidence.cmd
-eng\ci-long.cmd
-```
-
-H.24 post-H.28, H.28 and H.5/H.21 historical research are not ordinary/current-CI reruns. Historical evidence is preserved. H.5/H.21 still have source-level executable dependencies, so `legacy-mode-retirement-authorized=False` remains authoritative.
-
-
-## 3. I.3 red diagnostic now established
-
-The exact-v2 300 s run completed with 295/300 healthy one-second operating samples and five isolated shaft-floor violations at 55, 66, 72, 79 and 88 s. Each violation showed canonical turbine shaft power = 0 MW, turbine stage flow = 0 kg/s, admission flow approximately -26 to -27 kg/s and a turbine-inlet pressure spike, while the phase remained `SuperheatedVapor`, no trip occurred and conservation remained green.
-
-Hotfix 4 does not repair or retune this behavior. It freezes the red evidence and performs a 100 s v2/v3 comparison at 10 ms resolution. If the issue is explicit-only and the corrected candidate remains free of drops/rollback/fallback, H.30 must be explicitly reviewed before I.3 budgets are frozen.
-
-## 4. I.3 purpose
-
-I.3 creates the quantitative Phase-I reference baseline without changing runtime behavior.
-
-Exact contract:
-
-```text
-trajectory:          phase-i-desktop-v2-healthy-300s-v1
-initial condition:   integrated-operations-desktop-stable@2
-policy:              ExplicitCommittedState
-fixed step:          10 ms
-runtime:             30,000 logical steps = 300 simulated seconds
-sampling:            every 100 steps = 1 second
-final slope window:  60 seconds
-```
-
-Every sample records generation health, presentation fingerprint, conservation closure, total fluid mass/internal energy and key conserved inventories (`exhaust`, `hotwell`, `feedwater-inventory`, drum and main-steam header). I.3 derives final-window slopes and first-generation regression tolerance budgets only after independent no-trip/generation/conservation gates pass.
-
-Generated budgets are **internal regression evidence**, not historical plant calibration and not targets that authorize tuning physics or seed values.
-
-## 5. I.3 gate
+## Required local validation
 
 ```bat
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-phase-i-reference-trajectory-conservation-inventory-baseline-audit.cmd
+scripts\run-h30-rq1-production-policy-rereview-audit.cmd
 ```
 
-Required final flags:
+Expected focused flags:
 
 ```text
-phase-i-reference-trajectory-baseline-passes=True
-phase-i-conservation-inventory-baseline-passes=True
-i3-audit-passes=True
-phase-i-reference-tolerance-baseline-established=True
+h30-rq1-production-policy-decision=ACTIVATE
+h30-rq1-evidence-chain-passes=True
+h30-rq1-audit-passes=True
+production-corrected-default-activated=True
+i3-reference-rerun-unblocked=True
 ```
 
-Expected focused artifacts:
+Do not mark H.30 RQ1 validated before the user explicitly reports build, complete ordinary suite and focused audit green.
 
-```text
-01-phase-i-reference-trajectory-conservation-inventory-baseline.summary.txt
-02-reference-trajectory-contract.csv
-03-reference-trajectory-samples.csv
-04-conservation-inventory-final-window-slopes.csv
-05-versioned-tolerance-budgets.csv
-```
+## Frozen evidence used by H.30 RQ1
 
-## 5. After a green I.3
+- original H.30 closure and H.28 performance evidence already stored under test evidence;
+- I.3 Hotfix 4 validated 100 s explicit-vs-corrected comparison;
+- I.3 Hotfix 5 validated corrected 300 s requalification.
 
-Freeze the exact I.3 trajectory/slope/tolerance artifacts as Phase-I v1 regression evidence. Then close the known-limitations/compatibility documentation and remaining legacy/cumulative M10.9.4.1 acceptance work. Do not begin M10.9.5 until the acceptance gate includes ordinary suite, 60-second journeys, healthy 300-second reference, per-step protection evidence, replay determinism, conservation/inventory slopes, scale contract, versioned trajectory evidence and performance budget.
+H.30 RQ1 does not rerun H.24, H.28 or the I.3 long diagnostics.
 
-Do not delete H.5/H.21 source solely because current CI no longer executes those historical gates.
+## After a green H.30 RQ1
 
-Read also:
+1. Promote H.30 RQ1 as the authoritative production policy (`ACTIVATE`).
+2. Resume I.3 on exact v3 and freeze the versioned reference trajectory/tolerance budgets only after a green authoritative-policy run.
+3. Continue Phase-I known-limitations/legacy-retirement/cumulative closure work.
+4. Do not begin M10.9.5 until the Phase-I cumulative gate is green.
 
-- `M10_9_4_1_I3_REFERENCE_TRAJECTORY_CONSERVATION_INVENTORY_BASELINE.md`;
-- `M10_9_4_1_I3_VALIDATION_CHECKLIST.md`;
-- `M10_9_4_1_I3_STATIC_REVIEW.md`;
-- `adr/0162-establish-phase-i-reference-baseline-before-freezing-regression-budgets.md`;
-- `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md`;
-- `ROADMAP.md`.
+## Non-negotiable project rules
+
+- milestone-by-milestone validation;
+- stack only on a validated baseline or explicitly identified diagnostic lineage;
+- warnings-as-errors and xUnit analyzer compliance;
+- deterministic fixed-step runtime;
+- exact-version save/replay compatibility;
+- fail-closed corrected ownership/rollback;
+- no UI-side reactor physics;
+- no hidden physics retuning to satisfy a regression budget.

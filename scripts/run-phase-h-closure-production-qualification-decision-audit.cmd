@@ -26,7 +26,7 @@ dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearRe
 if errorlevel 1 exit /b 1
 
 dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj" -- ^
-    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodePhaseHClosureDecisionAuditTests.ClosurePolicyContract_PreservesExplicitV2DefaultAndQualifiedCorrectedV3OptIn" ^
+    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodePhaseHClosureDecisionAuditTests.ClosurePolicyContract_PreservesExactV2RollbackAndExactV3IdentityAfterPolicyRequalification" ^
     --parallel none
 if errorlevel 1 exit /b 1
 

@@ -99,33 +99,33 @@ public sealed class FourNodePhaseHClosureDecisionAuditTests
     }
 
     [Fact]
-    public void ClosurePolicyContract_PreservesExplicitV2DefaultAndQualifiedCorrectedV3OptIn()
+    public void ClosurePolicyContract_PreservesExactV2RollbackAndExactV3IdentityAfterPolicyRequalification()
     {
-        var defaultDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+        var currentDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
-        var optInDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
+        var historicalExplicitDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicy.ExplicitCommittedState);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy,
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
             explicitKillRequested: true);
 
-        Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, defaultDecision.EffectivePolicy);
-        Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, defaultDecision.InitialCondition);
-        Assert.Equal(2, defaultDecision.InitialCondition.Version);
+        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, currentDecision.EffectivePolicy);
+        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, currentDecision.InitialCondition);
+        Assert.Equal(3, currentDecision.InitialCondition.Version);
 
-        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, optInDecision.EffectivePolicy);
-        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, optInDecision.InitialCondition);
-        Assert.Equal(3, optInDecision.InitialCondition.Version);
+        Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, historicalExplicitDecision.EffectivePolicy);
+        Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, historicalExplicitDecision.InitialCondition);
+        Assert.Equal(2, historicalExplicitDecision.InitialCondition.Version);
 
         Assert.True(killDecision.ExplicitKillApplied);
         Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, killDecision.EffectivePolicy);
         Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, killDecision.InitialCondition);
         Assert.Equal(2, killDecision.InitialCondition.Version);
 
-        Assert.IsType<DesktopSustainedGenerationInitialConditionFactory>(
-            DesktopHydraulicProductionPolicySelector.CreateFactory(defaultDecision));
         Assert.IsType<DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory>(
-            DesktopHydraulicProductionPolicySelector.CreateFactory(optInDecision));
+            DesktopHydraulicProductionPolicySelector.CreateFactory(currentDecision));
+        Assert.IsType<DesktopSustainedGenerationInitialConditionFactory>(
+            DesktopHydraulicProductionPolicySelector.CreateFactory(historicalExplicitDecision));
         Assert.IsType<DesktopSustainedGenerationInitialConditionFactory>(
             DesktopHydraulicProductionPolicySelector.CreateFactory(killDecision));
     }
@@ -163,7 +163,7 @@ public sealed class FourNodePhaseHClosureDecisionAuditTests
         Assert.Equal(PhaseHClosureDecision.OptInOnly, decision);
 
         var defaultDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicy.ExplicitCommittedState);
         var optInDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(

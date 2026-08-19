@@ -40,15 +40,18 @@ public sealed class PhaseIAuditConsolidationCiBaselineAuditTests
     public void AuditTierManifest_SeparatesCurrentCiFromHistoricalFrozenProvenance()
     {
         var rows = ReadAuditTierRows();
-        Assert.Equal(11, rows.Count);
+        Assert.Equal(14, rows.Count);
 
         AssertTier(rows, "ordinary-suite", "ORDINARY", ordinaryRequired: true, scheduledDefault: false);
-        AssertTier(rows, "H30-closure", "CURRENT-EVIDENCE", ordinaryRequired: true, scheduledDefault: false);
-        AssertTier(rows, "I1-compatibility", "CURRENT-EVIDENCE", ordinaryRequired: true, scheduledDefault: false);
+        AssertTier(rows, "H30-rq1-policy-rereview", "CURRENT-EVIDENCE", ordinaryRequired: true, scheduledDefault: false);
         AssertTier(rows, "I2-consolidation", "CURRENT-EVIDENCE", ordinaryRequired: true, scheduledDefault: false);
         AssertTier(rows, "gameplay-long", "SCHEDULED-LONG", ordinaryRequired: false, scheduledDefault: true);
         AssertTier(rows, "operational-envelope", "SCHEDULED-LONG", ordinaryRequired: false, scheduledDefault: true);
         AssertTier(rows, "reference-plant-scale", "SCHEDULED-LONG", ordinaryRequired: false, scheduledDefault: true);
+        AssertTier(rows, "H30-original", "HISTORICAL-FROZEN", ordinaryRequired: false, scheduledDefault: false);
+        AssertTier(rows, "I1-compatibility", "HISTORICAL-FROZEN", ordinaryRequired: false, scheduledDefault: false);
+        AssertTier(rows, "I3-HF4-continuity", "HISTORICAL-FROZEN", ordinaryRequired: false, scheduledDefault: false);
+        AssertTier(rows, "I3-HF5-corrected-300s", "HISTORICAL-FROZEN", ordinaryRequired: false, scheduledDefault: false);
         AssertTier(rows, "H24-post-H28", "HISTORICAL-FROZEN", ordinaryRequired: false, scheduledDefault: false);
         AssertTier(rows, "H28-performance", "HISTORICAL-FROZEN", ordinaryRequired: false, scheduledDefault: false);
         AssertTier(rows, "H21-shadow-integration", "HISTORICAL-FROZEN", ordinaryRequired: false, scheduledDefault: false);
@@ -84,17 +87,40 @@ public sealed class PhaseIAuditConsolidationCiBaselineAuditTests
         Assert.Contains("dotnet test --configuration Release --no-build", ordinaryScript, StringComparison.Ordinal);
         Assert.Contains("ci-current-evidence.cmd", ordinaryScript, StringComparison.Ordinal);
 
-        Assert.Contains("run-phase-h-closure-production-qualification-decision-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
-        Assert.Contains("run-profile-compatibility-legacy-retirement-inventory-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
+        Assert.Contains("run-h30-rq1-production-policy-rereview-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
         Assert.Contains("run-phase-i-audit-consolidation-ci-baseline-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
+        Assert.DoesNotContain("run-phase-h-closure-production-qualification-decision-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
+        Assert.DoesNotContain("run-profile-compatibility-legacy-retirement-inventory-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
         Assert.DoesNotContain("run-hybrid-production-integration-tests.cmd", currentEvidenceScript, StringComparison.Ordinal);
         Assert.DoesNotContain("run-four-node-orchestrator-shadow-integration-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
 
+        Assert.Contains("dotnet build --no-restore", longScript, StringComparison.Ordinal);
+        Assert.DoesNotContain("dotnet build --configuration Release --no-restore", longScript, StringComparison.Ordinal);
         Assert.Contains("run-gameplay-long-tests.cmd", longScript, StringComparison.Ordinal);
         Assert.Contains("run-operational-envelope-audit.cmd", longScript, StringComparison.Ordinal);
         Assert.Contains("run-reference-plant-scale-audit.cmd", longScript, StringComparison.Ordinal);
+        Assert.DoesNotContain("run-phase-i-corrected-300s-healthy-reference-requalification-audit.cmd", longScript, StringComparison.Ordinal);
         Assert.DoesNotContain("run-hybrid-production-integration-tests.cmd", longScript, StringComparison.Ordinal);
         Assert.DoesNotContain("run-four-node-orchestrator-shadow-integration-audit.cmd", longScript, StringComparison.Ordinal);
+
+        var gameplayLongSource = File.ReadAllText(Path.Combine(
+            root,
+            "tests",
+            "NuclearReactorSimulator.Application.Tests",
+            "Scenarios",
+            "Gameplay",
+            "GameplayJourneyLongRunningTests.cs"));
+        var operationalEnvelopeSource = File.ReadAllText(Path.Combine(
+            root,
+            "tests",
+            "NuclearReactorSimulator.Application.Tests",
+            "Scenarios",
+            "Gameplay",
+            "OperationalEnvelopeExtendedAuditTests.cs"));
+        Assert.Contains("DesktopIntegratedOperationsProductionProgram.Scenario", gameplayLongSource, StringComparison.Ordinal);
+        Assert.Contains("DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy", gameplayLongSource, StringComparison.Ordinal);
+        Assert.Contains("DesktopIntegratedOperationsProductionProgram.Scenario", operationalEnvelopeSource, StringComparison.Ordinal);
+        Assert.Contains("DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy", operationalEnvelopeSource, StringComparison.Ordinal);
     }
 
     [Fact(Explicit = true)]
@@ -112,11 +138,11 @@ public sealed class PhaseIAuditConsolidationCiBaselineAuditTests
             (row.AuditId is "H21-shadow-integration" or "H5-hybrid-shadow")
             && row.RetirementDependency == "legacy-mode-still-source-referenced");
 
-        var passes = rows.Count == 11
-            && ordinaryRequired == 4
+        var passes = rows.Count == 14
+            && ordinaryRequired == 3
             && scheduledLong == 3
-            && historicalFrozen == 4
-            && currentEvidence == 3
+            && historicalFrozen == 8
+            && currentEvidence == 2
             && legacyModeExecutableDependenciesRemain == 2;
         Assert.True(passes);
 
@@ -126,23 +152,23 @@ public sealed class PhaseIAuditConsolidationCiBaselineAuditTests
         var retirementRows = new[]
         {
             "numerical_mode,i2_status,production_selectable,current_ci_dependency,source_dependency_remaining,i2_retirement_authorized",
-            "ExplicitCommittedState,RETAIN-AUTHORITATIVE,True,True,True,False",
+            "ExplicitCommittedState,RETAIN-ROLLBACK-REFERENCE,True,True,True,False",
             "DeterministicHybridSemiImplicit,HISTORICAL-FROZEN-CANDIDATE,False,False,True,False",
             "FourNodeBranchContinuityShadowIntegrated,HISTORICAL-FROZEN-CANDIDATE,False,False,True,False",
-            "FourNodeBranchContinuityCorrectedCommitOptIn,RETAIN-QUALIFIED-OPT-IN,True,True,True,False",
+            "FourNodeBranchContinuityCorrectedCommitOptIn,RETAIN-AUTHORITATIVE,True,True,True,False",
         };
         File.WriteAllLines(Path.Combine(directory, "03-legacy-mode-retirement-readiness.csv"), retirementRows, Utf8WithoutBom);
 
         var summary = new[]
         {
-            "=== 01-current-v2-phase-i-audit-consolidation-ci-baseline ===",
-            "I.2 freezes the validated I.1 compatibility evidence and establishes a tiered audit/CI execution contract without changing plant physics, numerical mathematics, H.30 OPT-IN ONLY policy, exact-version persistence semantics or the 10 ms fixed step.",
+            "=== 01-current-v3-phase-i-audit-consolidation-ci-baseline ===",
+            "I.2 audit/CI contract reaffirmed after H.30 Requalification 1: current CI follows the ACTIVATE exact-v3 production policy while the original H.30/I.1 and I.3 re-review prerequisites remain frozen historical evidence. Plant physics, numerical mathematics, exact-version persistence semantics and the 10 ms fixed step remain unchanged.",
             $"audit-contract-entries={rows.Count}; ordinary-required-entries={ordinaryRequired}; current-evidence-entries={currentEvidence}; scheduled-long-entries={scheduledLong}; historical-frozen-entries={historicalFrozen};",
-            "ordinary-ci=clean restore|Release build warnings-as-errors|complete ordinary suite|H30 frozen closure|I1 frozen compatibility|I2 consolidation contract;",
+            "ordinary-ci=clean restore|Release build warnings-as-errors|complete ordinary suite|H30-RQ1 current production policy|I2 consolidation contract;",
             "scheduled-long-ci=gameplay-long|operational-envelope|reference-plant-scale; H24-post-H28-rerun=False; H28-rerun=False;",
-            "historical-frozen-not-ci-required=H24-post-H28|H28-performance|H21-shadow-integration|H5-hybrid-shadow; historical-evidence-preserved=True;",
+            "historical-frozen-not-ci-required=H30-original|I1-compatibility|I3-HF4-continuity|I3-HF5-corrected-300s|H24-post-H28|H28-performance|H21-shadow-integration|H5-hybrid-shadow; historical-evidence-preserved=True;",
             $"legacy-h5-h21-current-ci-dependency=False; legacy-h5-h21-source-dependencies-remaining={legacyModeExecutableDependenciesRemain}; legacy-mode-retirement-authorized=False;",
-            "authoritative-default=integrated-operations-desktop-stable@2|ExplicitCommittedState; qualified-opt-in=integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn; phase-h-production-policy-decision=OPT-IN ONLY; production-fixed-step=10.000 ms; runtime-behavior-changed=False;",
+            "authoritative-default=integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn; rollback-reference=integrated-operations-desktop-stable@2|ExplicitCommittedState; h30-rq1-production-policy-decision=ACTIVATE; production-fixed-step=10.000 ms; numerical-mathematics-changed=False;",
             $"phase-i-audit-consolidation-passes={passes}; i2-audit-passes={passes}; phase-i-ci-baseline-established={passes};",
             "I.2 recommendation: use ordinary CI on every push/PR and scheduled/manual current long gates separately. Preserve historical H.5/H.21 executable seams for now; a later retirement milestone may remove them only after their source-level dependencies are explicitly archived or replaced by frozen-evidence contracts.",
         };

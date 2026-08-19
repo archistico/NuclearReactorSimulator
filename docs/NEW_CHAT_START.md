@@ -1,34 +1,18 @@
-# Nuclear Reactor Simulator — authoritative new-chat start
+# New chat start
 
-- **Authoritative validated baseline:** `M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening` VALIDATED on 2026-08-19.
-- **Phase H:** CLOSED as `OPT-IN ONLY`.
-- **Authoritative default / rollback / reference:** exact v2 `integrated-operations-desktop-stable` using `ExplicitCommittedState` at 10 ms.
-- **Qualified opt-in:** exact v3 using `FourNodeBranchContinuityCorrectedCommitOptIn`.
-- **I.1 validated compatibility:** 12 exact versions across 9 IDs; 2 compatibility-retained; 0 delete-now.
-- **I.2 validated CI baseline:** ordinary/current-evidence/scheduled-long/historical-frozen tiers established; H.5/H.21 no longer current-CI dependencies but remain source-retained.
-- **Current candidate:** `M10.9.4.1-I.3 Hotfix 5 — Corrected 300 s Healthy Reference Requalification`; I.3 is not validated. Hotfix 4 diagnostic evidence is green: 338/338 explicit drops coincide with targeted reverse flow, exact v3 has 0 drops/reverse flow over 100 s. Hotfix 5 extends v3 to 300 s before any H.30 re-review.
-- **I.3 scope:** exact-v2 300-second healthy reference trajectory, one-second samples, consolidated conservation/inventory observations, final-60-second slopes and first-generation versioned regression tolerance budgets. No numerical/runtime retuning.
+We are continuing the **Nuclear Reactor Simulator** C#/.NET 10/Avalonia project.
 
-## Current gate
+Authoritative fully validated baseline: **M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening**.
 
-```bat
-APPLY_UPDATE.cmd
-dotnet build
-dotnet test
-scriptsun-phase-i-corrected-300s-healthy-reference-requalification-audit.cmd
-```
+Validated later evidence:
 
-Required flags:
+- I.3 Hotfix 4 Classifier Fix 1: exact v2 has 338/338 generation drops coincident with targeted stop/control/admission reverse flow; exact v3 has 0 drops / 0 targeted reverse flow over 100 s at 10 ms resolution.
+- I.3 Hotfix 5: exact v3 completed 300 s / 30,000 steps with 0 health violations, 0 targeted reverse flow, 3,757 corrected commits, 0 rollback/fallback/unsafe/untargeted disagreement and deterministic repeat.
 
-```text
-corrected-300s-generation-health-passes=True
-corrected-300s-targeted-train-continuity-passes=True
-corrected-300s-conservation-inventory-passes=True
-corrected-300s-deterministic-repeat=True
-i3-hotfix5-corrected-reference-requalification-passes=True
-h30-policy-rereview-unblocked=True
-```
+Current candidate: **M10.9.4.1-H.30 Requalification 1 — Production Policy Re-review after I.3 Continuity Evidence**.
 
-After a green I.3, freeze its exact trajectory/slope/tolerance artifacts and continue with known-limitations/compatibility closure plus the remaining cumulative M10.9.4.1 gate. Do not begin M10.9.5 yet and do not retire H.5/H.21 until their remaining source-level historical dependencies are explicitly removed or archived.
+Candidate decision: `ACTIVATE` exact v3 corrected-commit as authoritative desktop default while preserving exact v2 explicit as fail-closed rollback/reference. H.28 remains `bounded-but-costly`; no numerical mathematics, coefficients or 10 ms timestep are changed.
 
-Read `docs/PROJECT_HANDOFF.md`, the I.3 document/checklist/static review, ADR 0162 and `docs/OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` before changing code.
+I.3 tolerance budgets are still unfrozen. If H.30 RQ1 validates, return to I.3 using the authoritative v3 policy before final Phase-I closure.
+
+Read `PROJECT_HANDOFF.md` and `PROJECT_STATUS.md` first. Detailed M10.9.4.1 history is archived under `history/m10.9.4.1/` and must not be mistaken for current policy.

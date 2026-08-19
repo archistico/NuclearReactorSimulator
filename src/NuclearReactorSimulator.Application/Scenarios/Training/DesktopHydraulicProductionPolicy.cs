@@ -1,8 +1,9 @@
 namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
-/// H.29 deployment-level hydraulic policy selection for the desktop current-v2 operating profile.
-/// The authoritative default remains explicit until H.30 makes the final Phase H decision.
+/// Deployment-level hydraulic policy selection for the desktop current-v2/current-v3 operating profile.
+/// H.30 Requalification 1 promotes the already-qualified exact-v3 corrected-commit path to the authoritative default,
+/// while exact v2 remains the explicit rollback/reference policy.
 /// </summary>
 public enum DesktopHydraulicProductionPolicy
 {
@@ -12,7 +13,8 @@ public enum DesktopHydraulicProductionPolicy
 
 /// <summary>
 /// Immutable result of one deployment policy resolution. The explicit kill request is fail-closed and always wins over
-/// a corrected-candidate request. Exact initial-condition versions are used so save/replay identity is never reinterpreted.
+/// the authoritative/default corrected policy. Exact initial-condition versions are used so save/replay identity is never
+/// reinterpreted.
 /// </summary>
 public sealed record DesktopHydraulicProductionPolicyDecision(
     DesktopHydraulicProductionPolicy RequestedPolicy,
@@ -21,12 +23,15 @@ public sealed record DesktopHydraulicProductionPolicyDecision(
     bool ExplicitKillApplied);
 
 /// <summary>
-/// H.29 production activation seam. It selects an immutable versioned factory before runtime construction; it never mutates
-/// an already-running simulation and never changes the meaning of an existing initial-condition version.
+/// Versioned desktop hydraulic production selector. H.29 introduced the exact-v3 candidate and fail-closed v2 kill seam;
+/// H.30 Requalification 1 changes only which already-qualified exact version is authoritative by default.
 /// </summary>
 public static class DesktopHydraulicProductionPolicySelector
 {
     public static DesktopHydraulicProductionPolicy AuthoritativeDefaultPolicy
+        => DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate;
+
+    public static DesktopHydraulicProductionPolicy ExplicitRollbackPolicy
         => DesktopHydraulicProductionPolicy.ExplicitCommittedState;
 
     public static DesktopHydraulicProductionPolicy H29ActivationCandidatePolicy
