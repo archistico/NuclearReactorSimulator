@@ -1,10 +1,14 @@
 # M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression
 
+## Status
+
+**VALIDATED on 2026-08-19.** Compilation, complete ordinary tests and the focused post-H.28 long-horizon/cross-profile gate passed.
+
 ## Purpose
 
 H.28 is now validated after the H.28.1 optimization branch. Because that branch changed committed-runtime implementation code, the Phase H roadmap requires one and only one rerun of the rare H.24 long-horizon/cross-profile committed-path qualification after performance optimization has stabilized and before H.29 can begin.
 
-This candidate does not introduce another numerical algorithm and does not retune the plant. It reruns the original H.24 operational domain against the exact H.28-validated optimized runtime.
+This requalification did not introduce another numerical algorithm and did not retune the plant. It reruns the original H.24 operational domain against the exact H.28-validated optimized runtime.
 
 ## Frozen prerequisite
 
@@ -82,3 +86,27 @@ A safe H.20 rollback is permitted if it remains fully explicit in that interval.
 ## Boundary after a green result
 
 A green result closes the single post-optimization H.24 regression required by the roadmap. H.29 may then begin from the validated H.24–H.28 evidence chain, but default activation is still not authorized. H.29 must explicitly evaluate whether the `bounded-but-costly` corrected path is suitable as a production-default candidate; H.30 owns the final Phase H decision.
+
+
+## Validated result
+
+```text
+qualification-intervals=30000
+action-transition-steps=8
+committed-runtime-steps=30008
+P060-F040-triggered=9626
+H20-candidate-eligible=9626
+H22-commit-authorized=9626
+corrected-candidates-committed=9626
+H20-rollbacks=0
+safe-fallback-intervals=0
+fallback-commit-violations=0
+unsafe-corrected-commits=0
+untargeted-branch-disagreements=0
+deterministic-control-repeat=True
+committed-telemetry-fingerprint=7AF233CE51A866B3E00C2C032AA58EEFBD7290DE0940725E5F4B7860EA6287BE
+post-h28-four-node-committed-long-horizon-cross-profile-requalification-passes=True
+h24-post-h28-requalification-audit-passes=True
+```
+
+All four profiles completed without trip. The single post-optimization H.24 regression is closed and H.29 is unblocked.

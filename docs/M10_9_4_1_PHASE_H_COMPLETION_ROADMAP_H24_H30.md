@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-This roadmap is the authoritative Phase H continuation plan. **M10.9.4.1-H.28** is user-validated on 2026-08-19 after the H.28.1 optimization branch. Its corrected-path cost classification is **`bounded-but-costly`**. Because the optimization branch changed committed-runtime implementation code, the current candidate is the single roadmap-required **H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression**. H.29 remains blocked until this regression is green.
+This roadmap is the authoritative Phase H continuation plan. **M10.9.4.1-H.28** is user-validated on 2026-08-19 after the H.28.1 optimization branch and remains classified **`bounded-but-costly`**. The single required **H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression** is also user-validated: 30,008 runtime steps, 9,626 corrected commits, zero rollback/fallback/unsafe/untargeted disagreement and deterministic repeat. **H.29 — Production Activation Candidate** is therefore the current candidate; exact v2 explicit remains authoritative until H.30.
 
 The standard production numerical path remains:
 
@@ -243,11 +243,15 @@ No H.28 ceiling, timestep or numerical contract was weakened. The result permits
 
 The branch is now historical provenance: attribution, allocation reduction, historical predictor reuse, hydraulic/probe CPU work reduction, coordinate-residual specialization and the untargeted-disagreement scan fast path collectively brought the original unchanged H.28 gate to green while preserving the deterministic contract.
 
-Per the original roadmap, **one H.24 rerun is now mandatory** because the branch changed committed-runtime implementation code. It is run once after stabilization, not after each intermediate optimization. H.29 remains blocked until this post-H.28 H.24 regression is green.
+Per the original roadmap, the **single post-H.28 H.24 rerun is complete and VALIDATED**. It ran once after stabilization: 30,008 runtime steps, 9,626 corrected commits, zero rollback/fallback/unsafe/untargeted disagreement, all four profiles trip-free and deterministic repeat. H.29 is now unblocked.
 
 A numerically correct path may still remain opt-in because H.28 explicitly classifies it `bounded-but-costly`.
 
 ## H.29 — Production Activation Candidate
+
+### Current status
+
+**CANDIDATE.** H.24 Requalification 1 post-H.28 is validated, so H.29 is now active. The candidate uses exact v3 for corrected ownership while preserving exact v2 explicit as authoritative default/kill/rollback. A green H.29 still does not activate v3; H.30 owns the final closure decision.
 
 ### Question
 
@@ -296,10 +300,10 @@ H.24 committed long horizon / cross profile
 H.25 protection / transient matrix
 H.26 integrated rollback stress
 H.27 off-design envelope
-H.28 failed performance / soak evidence
-H.28.1-A/B/C/D attribution and conservative optimization
-H.28 green rerun required
-H.29 activation candidate
+H.28 validated performance / soak evidence (`bounded-but-costly`)
+H.28.1 attribution and conservative optimization provenance
+H.24 Requalification 1 post-H.28 validated long-horizon regression
+H.29 production activation candidate
 ```
 
 ### Legitimate closure outcomes

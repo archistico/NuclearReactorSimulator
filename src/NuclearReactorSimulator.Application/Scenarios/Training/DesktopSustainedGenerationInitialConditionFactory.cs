@@ -96,10 +96,11 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
     }
 
     /// <summary>
-    /// H.22 audit-only opt-in seam. It runs the current-v2 desktop configuration with corrected-candidate
-    /// ownership enabled from deterministic seed preconditioning onward. Standard factories remain explicit.
+    /// H.29 production-activation-candidate composition. It runs the unchanged current-v2 desktop plant with the
+    /// H.22 corrected-candidate commit seam enabled from deterministic seed preconditioning onward. The numerical
+    /// controls remain those already qualified through H.28/H.24 Requalification 1. Standard v2 factories remain explicit.
     /// </summary>
-    internal static IControlRoomRuntimeEngine CreateFourNodeCorrectedCommitEvidenceRuntimeEngine(TimeSpan runtimeStep)
+    internal static IControlRoomRuntimeEngine CreateFourNodeCorrectedCommitProductionCandidateRuntimeEngine(TimeSpan runtimeStep)
     {
         if (runtimeStep <= TimeSpan.Zero)
         {
@@ -110,7 +111,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
         if (seedDuration.Ticks % runtimeStep.Ticks != 0)
         {
             throw new ArgumentException(
-                "Four-node corrected-commit evidence timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                "Four-node corrected-commit production-candidate timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
                 nameof(runtimeStep));
         }
 
@@ -123,6 +124,13 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             useFourNodeBranchContinuityShadowIntegration: false,
             useFourNodeBranchContinuityCorrectedCommitOptIn: true);
     }
+
+    /// <summary>
+    /// Historical H.22-H.28 evidence seam retained so previous audit code and fingerprints remain source-compatible.
+    /// It delegates to the H.29 production-candidate composition without changing the numerical runtime definition.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateFourNodeCorrectedCommitEvidenceRuntimeEngine(TimeSpan runtimeStep)
+        => CreateFourNodeCorrectedCommitProductionCandidateRuntimeEngine(runtimeStep);
 
     private static IControlRoomRuntimeEngine CreateRuntimeEngine(
         bool includeEvidenceDerivedElectricalProtections,

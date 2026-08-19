@@ -1,0 +1,16 @@
+M10.9.4.1-H.24 Requalification 1 post-H.28 validated focused evidence manifest
+validated-date=2026-08-19
+full-telemetry-file=02-post-h28-committed-long-horizon-step-telemetry.csv
+full-telemetry-data-rows=30008
+full-telemetry-canonical-sha256=1A56CEE2E1FF976448B3EAB5CB7CF90E4EA8D9940607900B05516B4F5DA7E98A
+qualification-intervals=30000
+action-transition-steps=8
+corrected-candidates-committed=9626
+h20-rollbacks=0
+fallback-commit-violations=0
+unsafe-corrected-commits=0
+untargeted-branch-disagreements=0
+deterministic-control-repeat=True
+committed-telemetry-fingerprint=7AF233CE51A866B3E00C2C032AA58EEFBD7290DE0940725E5F4B7860EA6287BE
+post-h28-four-node-committed-long-horizon-cross-profile-requalification-passes=True
+h24-post-h28-requalification-audit-passes=True

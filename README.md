@@ -1,10 +1,10 @@
 # Nuclear Reactor Simulator
 
-## M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression — CANDIDATE
+## M10.9.4.1-H.29 — Production Activation Candidate — CANDIDATE
 
-H.28 is now user-validated. The optimized corrected path passed the unchanged performance/soak gate with median wall-cost ratio **4.6215 <= 8**, p95 ratio **10.6844 <= 12**, allocation ratio **1.1164 <= 16**, **379/379** soak trigger/commit, zero rollback/fallback/unsafe/untargeted disagreements and deterministic fingerprint `518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38`. Its classification remains **bounded-but-costly**.
+H.24 Requalification 1 is now user-validated after H.28: **30,000 qualification intervals + 8 transition steps**, **9,626/9,626 corrected commits**, zero rollback/fallback/unsafe/untargeted disagreement, all four profiles trip-free, and deterministic fingerprint `7AF233CE51A866B3E00C2C032AA58EEFBD7290DE0940725E5F4B7860EA6287BE`. The H.28 classification remains **bounded-but-costly**.
 
-The Phase H roadmap requires one rare H.24 rerun because H.28.1 changed committed-runtime implementation code. This candidate introduces no numerical retuning: it reruns the original 30,000-interval/four-profile committed H.24 domain against the stabilized H.28 runtime and preserves `ExplicitCommittedState` as the standard mode at 10 ms. H.29 remains blocked until this gate is green.
+H.29 does not retune the solver and does not activate corrected ownership by default. It introduces an exact-version **v3 corrected production candidate**, preserves the existing **v2 explicit** version as authoritative default/kill/rollback reference, adds internal observational production telemetry, and qualifies exact save/replay/checkpoint compatibility. H.30 remains the sole final activation authority.
 
 Local gate:
 
@@ -12,16 +12,16 @@ Local gate:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-four-node-post-h28-committed-long-horizon-requalification-audit.cmd
+scripts\run-four-node-production-activation-candidate-audit.cmd
 ```
 
-> **Authoritative validated baseline:** M10.9.4.1-H.28 — Performance, Cost & Long-Running Operational Soak — VALIDATED.
+> **Authoritative validated baseline:** M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression — VALIDATED.
 >
-> **Current candidate:** M10.9.4.1-H.24 Requalification 1 — Post-H.28 committed long-horizon/cross-profile regression.
+> **Current candidate:** M10.9.4.1-H.29 — Production Activation Candidate.
 >
-> **Production/default:** `ExplicitCommittedState` at 10 ms. Corrected commit remains separately opt-in and `bounded-but-costly`.
+> **Production/default:** exact v2 `ExplicitCommittedState` at 10 ms. H.29 exact v3 corrected remains candidate-only.
 >
-> **Next only after green requalification:** H.29 — Production Activation Candidate.
+> **Next only after green H.29:** H.30 — Phase H Closure & Production Qualification Decision.
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
 
@@ -31,9 +31,9 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The authoritative numerical baseline is **M10.9.4.1-H.28 — VALIDATED**. The corrected opt-in path is now performance-qualified as **bounded-but-costly**, with unchanged numerical safety/determinism and default production still explicit. The current candidate is the single roadmap-required **H.24 Requalification 1** over the stabilized H.28 runtime. H.29 remains blocked until that long-horizon regression is green.
+The authoritative numerical baseline is **M10.9.4.1-H.24 Requalification 1 — VALIDATED** on top of validated H.28. The post-optimization long-horizon gate completed 30,008 runtime steps with 9,626 corrected commits, zero rollback/fallback/unsafe/untargeted disagreement and exact deterministic repeat. The corrected path remains **bounded-but-costly** from H.28 and standard production remains exact v2 `ExplicitCommittedState`. The current candidate is **H.29 — Production Activation Candidate**.
 
-The validated activation-hardening provenance remains H.19→H.28; historical details are retained under `docs/`. The performance optimization branch preserved the deterministic fingerprint `518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38`, P060/F040, H.9 mathematics, H.20/H.22 semantics, branch-continuity limits, physical coefficients and the 10 ms fixed step.
+The validated activation-hardening provenance remains H.19→H.28 plus the post-H.28 H.24 requalification; historical details are retained under `docs/`. H.29 preserves P060/F040, H.9 mathematics, H.20/H.22 semantics, branch-continuity limits, physical coefficients and the 10 ms fixed step while adding only the production-selection/versioning/telemetry/replay qualification seam.
 
 ## Architectural principles
 
@@ -593,4 +593,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and the cumulative M10.9.4.1-H.23 Hotfix 2 continuation are validated; Phase G is complete and standard current-v2 production remains `ExplicitCommittedState` at 10 ms. H.19 qualified the exact four-node `steam|stop-out|header|turbine-inlet` policy at 473/473, H.20 validated fail-closed authority/rollback, H.21 Hotfix 1 validated trajectory-transparent real-orchestrator sidecar wiring, and H.22 validated 443 actual corrected commits with zero unsafe/fallback-commit violations. The working source is H.24 Hotfix 1 CANDIDATE: the unchanged committed long-horizon/cross-profile qualification plus the audit-only `Application.Scenarios.Recording` namespace import required to compile `ControlRoomSnapshotFingerprint`. Numerical/runtime behavior is unchanged and default activation remains deferred through the H.24–H.30 completion roadmap.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and the cumulative M10.9.4.1 continuation through H.28 plus H.24 Requalification 1 post-H.28 are validated; Phase G is complete and standard production remains exact v2 `ExplicitCommittedState` at 10 ms. The current working source is **H.29 — Production Activation Candidate**: exact v3 provides the separately reviewed corrected candidate while v2 remains the explicit authoritative default/kill/rollback reference. H.29 changes no numerical mathematics and cannot activate v3 by itself; H.30 retains the final Phase H policy decision.

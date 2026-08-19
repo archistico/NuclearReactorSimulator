@@ -1,0 +1,5 @@
+profile_id,intervals,action_transition_steps,runtime_steps,triggers,commits,rollbacks,safe_fallbacks,completed_without_trip
+steady-long,12000,0,12000,1791,1791,0,0,True
+load-pulse,6000,2,6002,3043,3043,0,0,True
+cooling-pulse,6000,2,6002,1791,1791,0,0,True
+combined-load-cooling,6000,4,6004,3001,3001,0,0,True

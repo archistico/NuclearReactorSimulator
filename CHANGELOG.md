@@ -1,13 +1,25 @@
 # Changelog
 
-## M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression — CANDIDATE
+## M10.9.4.1-H.29 — Production Activation Candidate — CANDIDATE
 
-- Built directly on the user-validated H.28 optimized runtime.
-- Freezes the supplied green H.28 summary/benchmark/soak/metrics artifacts with canonical SHA-256 fingerprints in ordinary-test Evidence.
-- Records H.28 as `bounded-but-costly`: median wall ratio 4.6215 <= 8, p95 ratio 10.6844 <= 12, allocation ratio 1.1164 <= 16, 379/379 soak commits and zero rollback/fallback/unsafe/untargeted-disagreement violations.
-- Adds a separate post-H.28 H.24 audit that reruns the original 30,000 interval + 8 transition-step, four-profile committed domain without overwriting the historical H.24 artifacts.
-- Changes no production numerical algorithm, H.9 tolerance, P060/F040 trigger, H.20/H.22 contract, branch-continuity limit, target node, physical coefficient or 10 ms fixed step.
-- Standard current-v2 remains `ExplicitCommittedState`; H.29 remains blocked until this requalification passes.
+- Built directly on user-validated H.24 Requalification 1 post-H.28.
+- Preserves exact v2 `integrated-operations-desktop-stable` as the authoritative `ExplicitCommittedState` default and operational kill/rollback reference.
+- Adds exact v3 as a separately reviewed `FourNodeBranchContinuityCorrectedCommitOptIn` production-default candidate without reinterpreting v2 saves/replays.
+- Adds a pre-runtime deployment policy selector where explicit kill always wins and resolves to v2.
+- Adds internal observational H.20/H.22 production telemetry counters for trigger, eligibility, authorization, commit, fallback, rollback reasons, unsafe commits and untargeted disagreements; no HMI/control authority is added.
+- Adds a distinct v3 candidate scenario and focused exact-version save/replay/checkpoint qualification.
+- Freezes validated H.23/H.24-post-H.28/H.25/H.26/H.27/H.28 prerequisite evidence by canonical fingerprint; H.24/H.28 are not rerun.
+- Does not change H.9 mathematics, P060/F040, H.20/H.22 semantics, hysteresis limits, physical coefficients or the 10 ms fixed step.
+- Carries H.28 `bounded-but-costly` classification forward. H.30 remains the sole authority for `ACTIVATE`, `OPT-IN ONLY` or `REMAIN EXPLICIT`.
+
+## M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression — VALIDATED
+
+- User-reported compilation, complete ordinary tests and focused requalification gate passed on 2026-08-19.
+- 30,000 qualification intervals + 8 transition steps = 30,008 runtime steps across `steady-long|load-pulse|cooling-pulse|combined-load-cooling`.
+- 9,626 P060/F040 triggers, 9,626 H.20 eligible, 9,626 H.22 authorized and 9,626 corrected commits.
+- Zero rollback, safe fallback, fallback-commit violation, unsafe commit and untargeted branch disagreement; every profile completed without trip.
+- 256-interval determinism repeat passed with committed telemetry fingerprint `7AF233CE51A866B3E00C2C032AA58EEFBD7290DE0940725E5F4B7860EA6287BE`.
+- No numerical contract/timestep/physics retuning occurred. This closes the single roadmap-required post-H.28 long-horizon regression and unblocks H.29.
 
 ## M10.9.4.1-H.28.1-G — Untargeted Branch-Disagreement Scan Fast Path — CANDIDATE
 

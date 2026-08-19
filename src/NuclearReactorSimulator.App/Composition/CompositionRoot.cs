@@ -90,6 +90,7 @@ internal static class CompositionRoot
             new PowerManoeuvringInitialConditionFactory(),
             new DesktopIntegratedOperationsInitialConditionFactory(),
             new DesktopSustainedGenerationInitialConditionFactory(),
+            new DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory(),
             new GridSynchronizationSustainedInitialConditionFactory(),
             new SecondaryTransientInitialConditionFactory(),
             new XenonRestartInitialConditionFactory(),
