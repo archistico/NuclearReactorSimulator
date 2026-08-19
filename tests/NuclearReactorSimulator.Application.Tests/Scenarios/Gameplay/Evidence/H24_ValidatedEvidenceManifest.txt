@@ -1,0 +1,15 @@
+M10.9.4.1-H.24 Hotfix 1 validated focused evidence manifest
+validated-date=2026-08-19
+focused-gate-duration=4h31m55s
+full-telemetry-file=02-committed-long-horizon-step-telemetry.csv
+full-telemetry-data-rows=30008
+full-telemetry-canonical-sha256=8D077BC89D0DBD539476BC33483C0B734F74E84D5BC20D4FE4D55D6A1B4344FA
+qualification-intervals=30000
+action-transition-steps=8
+corrected-candidates-committed=9626
+h20-rollbacks=0
+fallback-commit-violations=0
+unsafe-corrected-commits=0
+untargeted-branch-disagreements=0
+four-node-committed-long-horizon-cross-profile-qualification-passes=True
+h24-audit-passes=True

@@ -28,6 +28,15 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
     private const int BisectionIterations = 80;
     private const double RootRelativeTolerance = 1e-10d;
 
+    // H.28.1-D CPU-only optimization: the coarse saturated-mixture scan always visits the exact same
+    // 513 temperatures. Cache those immutable saturation properties once so every inverse-map Resolve()
+    // preserves the identical scan grid and branch order without repeating the expensive IF97/density
+    // correlations for every sample. Dynamic/boundary-aware/bisection temperatures still use the unchanged
+    // EvaluateSaturationValue path.
+    private static readonly SaturationPropertyValue[] CoarseSaturationScan = BuildCoarseSaturationScan();
+    private static readonly double MinimumSaturationPressurePascals = SaturationPressurePascals(TriplePointTemperatureKelvins);
+    private static readonly double MaximumSupportedSaturationPressurePascals = SaturationPressurePascals(MaximumSaturationTemperatureKelvins);
+
     public static Temperature MinimumTemperature { get; } = Temperature.FromKelvins(TriplePointTemperatureKelvins);
 
     public static Temperature MaximumSaturationTemperature { get; } = Temperature.FromKelvins(MaximumSaturationTemperatureKelvins);
@@ -88,6 +97,171 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         }
 
         throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
+    }
+
+    internal WaterSteamBranchContinuityEvaluation EvaluateBranchContinuity(
+        FluidNodeDefinition definition,
+        FluidNodeInventory inventory,
+        FluidThermodynamicState previousState)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(inventory);
+        ArgumentNullException.ThrowIfNull(previousState);
+
+        var specificVolume = definition.Volume.CubicMetres / inventory.Mass.Kilograms;
+        var specificInternalEnergy = inventory.SpecificInternalEnergy.JoulesPerKilogram;
+        if (!double.IsFinite(specificVolume) || specificVolume <= 0d || !double.IsFinite(specificInternalEnergy))
+        {
+            throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
+        }
+
+        var coarseSaturatedFound = TryResolveSaturatedMixture(specificVolume, specificInternalEnergy, out var coarseSaturated);
+        FluidThermodynamicState liquid = null!;
+        var coarseSuperheatedAttempted = false;
+        var coarseSuperheatedFound = false;
+        FluidThermodynamicState coarseSuperheated = null!;
+        var boundarySaturatedAttempted = false;
+        var boundarySaturatedFound = false;
+        FluidThermodynamicState boundarySaturated = null!;
+        var boundarySuperheatedAttempted = false;
+        var boundarySuperheatedFound = false;
+        FluidThermodynamicState boundarySuperheated = null!;
+
+        FluidThermodynamicState production;
+        if (coarseSaturatedFound)
+        {
+            production = coarseSaturated;
+        }
+        else
+        {
+            if (TryResolveSubcooledLiquid(specificVolume, specificInternalEnergy, out liquid))
+            {
+                production = liquid;
+            }
+            else
+            {
+                coarseSuperheatedAttempted = true;
+                coarseSuperheatedFound = TryResolveSuperheatedVaporForContinuity(specificVolume, specificInternalEnergy, out coarseSuperheated);
+                if (coarseSuperheatedFound)
+                {
+                    production = coarseSuperheated;
+                }
+                else
+                {
+                    boundarySaturatedAttempted = true;
+                    boundarySaturatedFound = TryResolveBoundaryAwareSaturatedMixture(specificVolume, specificInternalEnergy, out boundarySaturated);
+                    if (boundarySaturatedFound)
+                    {
+                        production = boundarySaturated;
+                    }
+                    else
+                    {
+                        boundarySuperheatedAttempted = true;
+                        boundarySuperheatedFound = TryResolveBoundaryAwareSuperheatedVapor(specificVolume, specificInternalEnergy, out boundarySuperheated);
+                        if (!boundarySuperheatedFound)
+                        {
+                            throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
+                        }
+
+                        production = boundarySuperheated;
+                    }
+                }
+            }
+        }
+
+        // Preserve the diagnostic traversal order for branches still needed after production selection.
+        if (!coarseSuperheatedAttempted)
+        {
+            coarseSuperheatedFound = TryResolveSuperheatedVaporForContinuity(specificVolume, specificInternalEnergy, out coarseSuperheated);
+        }
+
+        if (!boundarySaturatedAttempted && !coarseSaturatedFound)
+        {
+            boundarySaturatedFound = TryResolveBoundaryAwareSaturatedMixture(specificVolume, specificInternalEnergy, out boundarySaturated);
+        }
+
+        if (!boundarySuperheatedAttempted && !coarseSuperheatedFound)
+        {
+            boundarySuperheatedFound = TryResolveBoundaryAwareSuperheatedVapor(specificVolume, specificInternalEnergy, out boundarySuperheated);
+        }
+
+        var saturatedAvailable = coarseSaturatedFound || boundarySaturatedFound;
+        var superheatedAvailable = coarseSuperheatedFound || boundarySuperheatedFound;
+        WaterSteamInverseBranchCandidate? previousPhaseCandidate = previousState.Phase switch
+        {
+            FluidPhase.SaturatedMixture when coarseSaturatedFound => CreateBranchCandidate("coarse-saturated", 1, true, coarseSaturated),
+            FluidPhase.SaturatedMixture when boundarySaturatedFound => CreateBranchCandidate("boundary-aware-saturated", 4, true, boundarySaturated),
+            FluidPhase.SuperheatedVapor when coarseSuperheatedFound => CreateBranchCandidate("coarse-superheated", 3, true, coarseSuperheated),
+            FluidPhase.SuperheatedVapor when boundarySuperheatedFound => CreateBranchCandidate("boundary-aware-superheated", 5, true, boundarySuperheated),
+            _ => null,
+        };
+
+        return new WaterSteamBranchContinuityEvaluation(
+            production,
+            saturatedAvailable && superheatedAvailable,
+            previousPhaseCandidate);
+    }
+
+    /// <summary>
+    /// H.28.1-G internal fast path for the four-node untargeted disagreement scan. It returns only the
+    /// production-selected phase and the late-boundary-saturated-shadow flag consumed by that scan.
+    /// The branch equations and priority remain identical to <see cref="DiagnoseInverseBranchSelection"/>,
+    /// but branches that cannot affect those two outputs are not evaluated.
+    /// </summary>
+    internal WaterSteamBranchDisagreementEvaluation EvaluateBranchDisagreement(
+        FluidNodeDefinition definition,
+        FluidNodeInventory inventory)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(inventory);
+
+        var specificVolume = definition.Volume.CubicMetres / inventory.Mass.Kilograms;
+        var specificInternalEnergy = inventory.SpecificInternalEnergy.JoulesPerKilogram;
+        if (!double.IsFinite(specificVolume) || specificVolume <= 0d || !double.IsFinite(specificInternalEnergy))
+        {
+            throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
+        }
+
+        if (TryResolveSaturatedMixture(specificVolume, specificInternalEnergy, out var coarseSaturated))
+        {
+            return new WaterSteamBranchDisagreementEvaluation(
+                coarseSaturated.Phase,
+                LateBoundarySaturatedShadowedByEarlierSuperheated: false);
+        }
+
+        var liquidFound = TryResolveSubcooledLiquid(specificVolume, specificInternalEnergy, out var liquid);
+        var coarseSuperheatedFound = TryResolveSuperheatedVapor(
+            specificVolume,
+            specificInternalEnergy,
+            out var coarseSuperheated);
+        var boundarySaturatedFound = TryResolveBoundaryAwareSaturatedMixture(
+            specificVolume,
+            specificInternalEnergy,
+            out var boundarySaturated);
+        var lateBoundarySaturatedShadow = coarseSuperheatedFound && boundarySaturatedFound;
+
+        if (liquidFound)
+        {
+            return new WaterSteamBranchDisagreementEvaluation(liquid.Phase, lateBoundarySaturatedShadow);
+        }
+
+        if (coarseSuperheatedFound)
+        {
+            return new WaterSteamBranchDisagreementEvaluation(coarseSuperheated.Phase, lateBoundarySaturatedShadow);
+        }
+
+        if (boundarySaturatedFound)
+        {
+            return new WaterSteamBranchDisagreementEvaluation(boundarySaturated.Phase, lateBoundarySaturatedShadow);
+        }
+
+        var boundarySuperheatedFound = TryResolveBoundaryAwareSuperheatedVapor(
+            specificVolume,
+            specificInternalEnergy,
+            out var boundarySuperheated);
+        return new WaterSteamBranchDisagreementEvaluation(
+            boundarySuperheatedFound ? boundarySuperheated.Phase : FluidPhase.Unspecified,
+            lateBoundarySaturatedShadow);
     }
 
     public WaterSteamInverseBranchSelectionDiagnostic DiagnoseInverseBranchSelection(
@@ -201,14 +375,12 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         double specificInternalEnergy,
         out FluidThermodynamicState state)
     {
-        var minimum = TriplePointTemperatureKelvins;
-        var maximum = MaximumSaturationTemperatureKelvins;
         SaturatedEvaluation? previous = null;
 
         for (var index = 0; index <= SearchSegments; index++)
         {
-            var temperature = minimum + ((maximum - minimum) * index / SearchSegments);
-            var evaluation = EvaluateSaturatedCandidate(temperature, specificVolume, specificInternalEnergy);
+            var saturation = CoarseSaturationScan[index];
+            var evaluation = EvaluateSaturatedCandidate(saturation, specificVolume, specificInternalEnergy);
 
             if (evaluation is null)
             {
@@ -323,7 +495,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
     private static bool IsInsideSaturationSpecificVolumeEnvelope(double temperatureKelvins, double specificVolume)
     {
-        var saturation = EvaluateSaturation(temperatureKelvins);
+        var saturation = EvaluateSaturationValue(temperatureKelvins);
         return specificVolume >= saturation.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram
             && specificVolume <= saturation.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
     }
@@ -379,8 +551,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         out double minimumKelvins,
         out double maximumKelvins)
     {
-        var maximumSaturationPressure = SaturationPressurePascals(MaximumSaturationTemperatureKelvins);
-        var pressureLimitedMaximum = maximumSaturationPressure * specificVolume
+        var pressureLimitedMaximum = MaximumSupportedSaturationPressurePascals * specificVolume
             / WaterVaporGasConstantJoulesPerKilogramKelvin;
         maximumKelvins = Math.Min(MaximumSuperheatedTemperatureKelvins, pressureLimitedMaximum);
 
@@ -455,7 +626,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
             return false;
         }
 
-        var saturation = EvaluateSaturation(temperatureKelvins);
+        var saturation = EvaluateSaturationValue(temperatureKelvins);
         var actualDensity = 1d / specificVolume;
         var saturatedLiquidDensity = saturation.SaturatedLiquidDensity.KilogramsPerCubicMetre;
 
@@ -524,12 +695,79 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return false;
     }
 
+    /// <summary>
+    /// H.28.1-E corrected-path-only coarse superheated scan. It preserves the exact historical grid and
+    /// root equations, but avoids the expensive inverse saturation-temperature bisection when p > psat(T)
+    /// by a guarded margin proves the sampled temperature cannot be superheated. Standard production Resolve
+    /// and the public diagnostic continue to use TryResolveSuperheatedVapor unchanged.
+    /// </summary>
+    private static bool TryResolveSuperheatedVaporForContinuity(
+        double specificVolume,
+        double specificInternalEnergy,
+        out FluidThermodynamicState state)
+    {
+        SuperheatedEvaluation? previous = null;
+
+        for (var index = 0; index <= SearchSegments; index++)
+        {
+            var temperature = TriplePointTemperatureKelvins
+                + ((MaximumSuperheatedTemperatureKelvins - TriplePointTemperatureKelvins) * index / SearchSegments);
+            var evaluation = EvaluateSuperheatedCandidateForContinuity(temperature, specificVolume, specificInternalEnergy);
+
+            if (evaluation is null)
+            {
+                previous = null;
+                continue;
+            }
+
+            if (IsRoot(evaluation.Value.ResidualJoulesPerKilogram, specificInternalEnergy))
+            {
+                state = CreateSuperheatedState(evaluation.Value);
+                return true;
+            }
+
+            if (previous is not null && HasSignChange(previous.Value.ResidualJoulesPerKilogram, evaluation.Value.ResidualJoulesPerKilogram))
+            {
+                var root = BisectSuperheated(previous.Value.TemperatureKelvins, evaluation.Value.TemperatureKelvins, specificVolume, specificInternalEnergy);
+                state = CreateSuperheatedState(root);
+                return true;
+            }
+
+            previous = evaluation;
+        }
+
+        state = null!;
+        return false;
+    }
+
+    private static SaturationPropertyValue[] BuildCoarseSaturationScan()
+    {
+        var values = new SaturationPropertyValue[SearchSegments + 1];
+        for (var index = 0; index <= SearchSegments; index++)
+        {
+            var temperature = TriplePointTemperatureKelvins
+                + ((MaximumSaturationTemperatureKelvins - TriplePointTemperatureKelvins) * index / SearchSegments);
+            values[index] = EvaluateSaturationValue(temperature);
+        }
+
+        return values;
+    }
+
     private static SaturatedEvaluation? EvaluateSaturatedCandidate(
         double temperatureKelvins,
         double specificVolume,
         double targetSpecificInternalEnergy)
+        => EvaluateSaturatedCandidate(
+            EvaluateSaturationValue(temperatureKelvins),
+            specificVolume,
+            targetSpecificInternalEnergy);
+
+    private static SaturatedEvaluation? EvaluateSaturatedCandidate(
+        SaturationPropertyValue saturation,
+        double specificVolume,
+        double targetSpecificInternalEnergy)
     {
-        var saturation = EvaluateSaturation(temperatureKelvins);
+        var temperatureKelvins = saturation.Temperature.Kelvins;
         var liquidSpecificVolume = saturation.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram;
         var vaporSpecificVolume = saturation.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
 
@@ -591,6 +829,31 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
             ?? throw new InvalidOperationException("Could not finalize saturated-state root.");
     }
 
+    private static SuperheatedEvaluation? EvaluateSuperheatedCandidateForContinuity(
+        double temperatureKelvins,
+        double specificVolume,
+        double targetSpecificInternalEnergy)
+    {
+        var pressurePascals = WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / specificVolume;
+        if (!double.IsFinite(pressurePascals) || pressurePascals <= 0d || pressurePascals >= CriticalPressurePascals)
+        {
+            return null;
+        }
+
+        if (temperatureKelvins <= MaximumSaturationTemperatureKelvins
+            && pressurePascals >= MinimumSaturationPressurePascals
+            && pressurePascals <= MaximumSupportedSaturationPressurePascals)
+        {
+            var saturationPressureAtCandidateTemperature = SaturationPressurePascals(temperatureKelvins);
+            if (pressurePascals > saturationPressureAtCandidateTemperature * (1d + 1e-12d))
+            {
+                return null;
+            }
+        }
+
+        return EvaluateSuperheatedCandidate(temperatureKelvins, specificVolume, targetSpecificInternalEnergy);
+    }
+
     private static SuperheatedEvaluation? EvaluateSuperheatedCandidate(
         double temperatureKelvins,
         double specificVolume,
@@ -610,7 +873,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
             return null;
         }
 
-        var saturation = EvaluateSaturation(saturationTemperature.Value);
+        var saturation = EvaluateSaturationValue(saturationTemperature.Value);
         var modeledSpecificInternalEnergy = saturation.SaturatedVaporInternalEnergy.JoulesPerKilogram
             + (VaporSpecificHeatAtConstantVolumeJoulesPerKilogramKelvin * (temperatureKelvins - saturationTemperature.Value));
 
@@ -679,6 +942,18 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
     private static WaterSteamSaturationProperties EvaluateSaturation(double temperatureKelvins)
     {
+        var value = EvaluateSaturationValue(temperatureKelvins);
+        return new WaterSteamSaturationProperties(
+            value.Temperature,
+            value.Pressure,
+            value.SaturatedLiquidDensity,
+            value.SaturatedVaporDensity,
+            value.SaturatedLiquidInternalEnergy,
+            value.SaturatedVaporInternalEnergy);
+    }
+
+    private static SaturationPropertyValue EvaluateSaturationValue(double temperatureKelvins)
+    {
         var pressurePascals = SaturationPressurePascals(temperatureKelvins);
         var liquidDensity = SaturatedLiquidDensityKilogramsPerCubicMetre(temperatureKelvins);
         var vaporDensity = SaturatedVaporDensityKilogramsPerCubicMetre(temperatureKelvins);
@@ -689,7 +964,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         var latentInternalEnergy = latentEnthalpy - (pressurePascals * (vaporSpecificVolume - liquidSpecificVolume));
         var vaporInternalEnergy = liquidInternalEnergy + latentInternalEnergy;
 
-        return new WaterSteamSaturationProperties(
+        return new SaturationPropertyValue(
             Temperature.FromKelvins(temperatureKelvins),
             Pressure.FromPascals(pressurePascals),
             Density.FromKilogramsPerCubicMetre(liquidDensity),
@@ -756,15 +1031,12 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
     private static double? SaturationTemperatureFromPressure(double pressurePascals)
     {
-        var minimumPressure = SaturationPressurePascals(TriplePointTemperatureKelvins);
-        var maximumPressure = SaturationPressurePascals(MaximumSaturationTemperatureKelvins);
-
-        if (pressurePascals < minimumPressure)
+        if (pressurePascals < MinimumSaturationPressurePascals)
         {
             return TriplePointTemperatureKelvins;
         }
 
-        if (pressurePascals > maximumPressure)
+        if (pressurePascals > MaximumSupportedSaturationPressurePascals)
         {
             return null;
         }
@@ -804,10 +1076,32 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         double TemperatureKelvins,
         double Quality,
         double ResidualJoulesPerKilogram,
-        WaterSteamSaturationProperties Saturation);
+        SaturationPropertyValue Saturation);
+
+    private readonly record struct SaturationPropertyValue(
+        Temperature Temperature,
+        Pressure Pressure,
+        Density SaturatedLiquidDensity,
+        Density SaturatedVaporDensity,
+        SpecificEnergy SaturatedLiquidInternalEnergy,
+        SpecificEnergy SaturatedVaporInternalEnergy)
+    {
+        public double SaturatedLiquidSpecificVolumeCubicMetresPerKilogram => 1d / SaturatedLiquidDensity.KilogramsPerCubicMetre;
+
+        public double SaturatedVaporSpecificVolumeCubicMetresPerKilogram => 1d / SaturatedVaporDensity.KilogramsPerCubicMetre;
+    }
 
     private readonly record struct SuperheatedEvaluation(
         double TemperatureKelvins,
         double PressurePascals,
         double ResidualJoulesPerKilogram);
 }
+
+internal readonly record struct WaterSteamBranchDisagreementEvaluation(
+    FluidPhase ProductionSelectedPhase,
+    bool LateBoundarySaturatedShadowedByEarlierSuperheated);
+
+internal sealed record WaterSteamBranchContinuityEvaluation(
+    FluidThermodynamicState ProductionState,
+    bool MultiplePhaseRootsAvailable,
+    WaterSteamInverseBranchCandidate? PreviousPhaseCandidate);

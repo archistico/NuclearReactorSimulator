@@ -1,11 +1,13 @@
+using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
 
 namespace NuclearReactorSimulator.Simulation.Plant;
 
 /// <summary>
-/// Result of one isolated H.9 Jacobian-informed hydraulic correction.
-/// This result is shadow evidence only; no production orchestrator consumes this type.
+/// Result of one H.9 Jacobian-informed hydraulic correction.
+/// H.9-H.21 consume it as shadow evidence; H.22 may consume it only through the separately opt-in,
+/// fail-closed corrected-candidate commit seam.
 /// </summary>
 public sealed record JacobianHydraulicCorrectorStepResult(
     PlantState CandidateState,
@@ -32,4 +34,11 @@ public sealed record JacobianHydraulicCorrectorStepResult(
     int HydraulicEvaluationCount,
     int BacktrackingTrialCount,
     double MinimumAcceptedRelaxationFactor,
-    IReadOnlyList<JacobianHydraulicIteration> Iterations);
+    IReadOnlyList<JacobianHydraulicIteration> Iterations)
+{
+    /// <summary>
+    /// Pump hydraulic power associated with the actually applied H.9 iterate, used by H.22 when the corrected
+    /// hydraulic balances become the opt-in committed candidate.
+    /// </summary>
+    public Power AppliedPumpHydraulicPowerExchange { get; init; } = Power.Zero;
+}

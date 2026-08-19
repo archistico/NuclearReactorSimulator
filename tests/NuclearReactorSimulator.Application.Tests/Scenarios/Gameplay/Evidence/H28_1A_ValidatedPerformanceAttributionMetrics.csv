@@ -1,0 +1,15 @@
+metric,value
+attribution_steps,256
+triggered,20
+nontrigger_average_predictor_us,9528.008474576267
+trigger_average_engine_us,1698849.8050000002
+trigger_average_h9_us,1653541.7850000001
+h9_jacobian_wall_share,0.94117427761282713
+h9_line_search_wall_share,0.029552906036783337
+h9_average_hydraulic_evaluations,35
+h9_average_probe_evaluations,32
+h9_max_jacobian_dimension,32
+primary_trigger_wall_cost_center,h9-jacobian-build-probes
+primary_trigger_allocation_center,h9-jacobian-build-probes
+deterministic_fingerprint,518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38
+h28_1a_attribution_passes,True

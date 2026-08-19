@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4.1-H.17 Hotfix 4 candidate.
+Accepted; the stratified trigger-episode contract was subsequently validated as part of M10.9.4.1-H.17 Hotfix 6.
 
 ## Context
 

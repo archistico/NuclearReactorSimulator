@@ -1,5 +1,7 @@
 using System.Collections.ObjectModel;
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
+using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
 
 namespace NuclearReactorSimulator.Simulation.Plant;
@@ -10,21 +12,23 @@ namespace NuclearReactorSimulator.Simulation.Plant;
 public sealed class SemiImplicitHydraulicEvaluation
 {
     internal SemiImplicitHydraulicEvaluation(
-        IReadOnlyDictionary<string, FluidNodeBalance> fluidNodeBalances,
-        IReadOnlyDictionary<string, MassFlowRate> pipeMassFlowRates,
-        IReadOnlyDictionary<string, MassFlowRate> valveMassFlowRates,
-        IReadOnlyDictionary<string, MassFlowRate> pumpMassFlowRates,
+        SortedDictionary<string, FluidNodeBalance> fluidNodeBalances,
+        SortedDictionary<string, MassFlowRate> pipeMassFlowRates,
+        SortedDictionary<string, MassFlowRate> valveMassFlowRates,
+        SortedDictionary<string, MassFlowRate> pumpMassFlowRates,
         Power pumpHydraulicPowerExchange,
         double massRateClosureResidualKilogramsPerSecond,
-        double hydraulicEnergyOwnershipResidualWatts)
+        double hydraulicEnergyOwnershipResidualWatts,
+        HydraulicComponentEvaluationSnapshot? componentSnapshot = null)
     {
-        FluidNodeBalances = CanonicalCopy(fluidNodeBalances);
-        PipeMassFlowRates = CanonicalCopy(pipeMassFlowRates);
-        ValveMassFlowRates = CanonicalCopy(valveMassFlowRates);
-        PumpMassFlowRates = CanonicalCopy(pumpMassFlowRates);
+        FluidNodeBalances = new ReadOnlyDictionary<string, FluidNodeBalance>(fluidNodeBalances);
+        PipeMassFlowRates = new ReadOnlyDictionary<string, MassFlowRate>(pipeMassFlowRates);
+        ValveMassFlowRates = new ReadOnlyDictionary<string, MassFlowRate>(valveMassFlowRates);
+        PumpMassFlowRates = new ReadOnlyDictionary<string, MassFlowRate>(pumpMassFlowRates);
         PumpHydraulicPowerExchange = pumpHydraulicPowerExchange;
         MassRateClosureResidualKilogramsPerSecond = massRateClosureResidualKilogramsPerSecond;
         HydraulicEnergyOwnershipResidualWatts = hydraulicEnergyOwnershipResidualWatts;
+        ComponentSnapshot = componentSnapshot;
     }
 
     public IReadOnlyDictionary<string, FluidNodeBalance> FluidNodeBalances { get; }
@@ -40,6 +44,8 @@ public sealed class SemiImplicitHydraulicEvaluation
     public double MassRateClosureResidualKilogramsPerSecond { get; }
 
     public double HydraulicEnergyOwnershipResidualWatts { get; }
+
+    internal HydraulicComponentEvaluationSnapshot? ComponentSnapshot { get; }
 
     public MassFlowRate GetPipeMassFlowRate(string id) => GetFlow(PipeMassFlowRates, id, "pipe");
 
@@ -59,14 +65,13 @@ public sealed class SemiImplicitHydraulicEvaluation
             : throw new KeyNotFoundException($"Unknown hydraulic {label} '{id}'.");
     }
 
-    private static IReadOnlyDictionary<string, TValue> CanonicalCopy<TValue>(IReadOnlyDictionary<string, TValue> source)
-    {
-        var sorted = new SortedDictionary<string, TValue>(StringComparer.Ordinal);
-        foreach (var entry in source)
-        {
-            sorted.Add(entry.Key, entry.Value);
-        }
-
-        return new ReadOnlyDictionary<string, TValue>(sorted);
-    }
 }
+
+internal sealed record HydraulicComponentEvaluationSnapshot(
+    PlantDefinition Definition,
+    IReadOnlyList<FluidNodeState> FluidNodeStates,
+    IReadOnlyList<ValveState> ValveStates,
+    IReadOnlyList<PumpState> PumpStates,
+    PipeFlowResult[] PipeResults,
+    ValveFlowResult[] ValveResults,
+    PumpFlowResult[] PumpResults);

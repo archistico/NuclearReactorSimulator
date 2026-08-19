@@ -232,6 +232,60 @@ public sealed class SimplifiedWaterSteamThermodynamicModelTests
         Assert.Equal(left, right);
     }
 
+    [Fact]
+    public void BranchDisagreementFastPath_MatchesFullDiagnosticAcrossRepresentativeBranches()
+    {
+        var cases = new List<(FluidNodeDefinition Definition, FluidNodeInventory Inventory)>();
+
+        var saturation = _model.GetSaturationProperties(Temperature.FromDegreesCelsius(285d));
+        const double quality = 0.25d;
+        var saturatedSpecificVolume =
+            ((1d - quality) * saturation.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram)
+            + (quality * saturation.SaturatedVaporSpecificVolumeCubicMetresPerKilogram);
+        var saturatedSpecificEnergy =
+            ((1d - quality) * saturation.SaturatedLiquidInternalEnergy.JoulesPerKilogram)
+            + (quality * saturation.SaturatedVaporInternalEnergy.JoulesPerKilogram);
+        cases.Add((
+            new FluidNodeDefinition("fast-diagnostic-saturated", Volume.FromCubicMetres(saturatedSpecificVolume)),
+            new FluidNodeInventory(Mass.FromKilograms(1d), Energy.FromJoules(saturatedSpecificEnergy))));
+
+        var liquidSaturation = _model.GetSaturationProperties(Temperature.FromDegreesCelsius(250d));
+        cases.Add((
+            new FluidNodeDefinition(
+                "fast-diagnostic-liquid",
+                Volume.FromCubicMetres(1d / (liquidSaturation.SaturatedLiquidDensity.KilogramsPerCubicMetre * 1.002d))),
+            new FluidNodeInventory(
+                Mass.FromKilograms(1d),
+                Energy.FromJoules(liquidSaturation.SaturatedLiquidInternalEnergy.JoulesPerKilogram))));
+
+        cases.Add((
+            new FluidNodeDefinition("fast-diagnostic-vapor", Volume.FromCubicMetres(1d)),
+            new FluidNodeInventory(Mass.FromKilograms(1d), Energy.FromMegajoules(3d))));
+        cases.Add((
+            new FluidNodeDefinition("fast-diagnostic-boundary-saturated", Volume.FromCubicMetres(0.0010603244562929237d)),
+            new FluidNodeInventory(Mass.FromKilograms(1d), Energy.FromJoules(503_958.0002916595d))));
+        cases.Add((
+            new FluidNodeDefinition("fast-diagnostic-boundary-superheated", Volume.FromCubicMetres(65.477888248812704d)),
+            new FluidNodeInventory(Mass.FromKilograms(1d), Energy.FromJoules(2_434_381.9782870663d))));
+        cases.Add((
+            new FluidNodeDefinition("fast-diagnostic-no-root", Volume.FromCubicMetres(65.477888248812704d)),
+            new FluidNodeInventory(Mass.FromKilograms(1d), Energy.FromJoules(2_434_355d))));
+
+        foreach (var candidate in cases)
+        {
+            var full = _model.DiagnoseInverseBranchSelection(
+                candidate.Definition,
+                candidate.Inventory,
+                PreviousState());
+            var fast = _model.EvaluateBranchDisagreement(candidate.Definition, candidate.Inventory);
+
+            Assert.Equal(full.ProductionSelectedPhase, fast.ProductionSelectedPhase.ToString());
+            Assert.Equal(
+                full.LateBoundarySaturatedShadowedByEarlierSuperheated,
+                fast.LateBoundarySaturatedShadowedByEarlierSuperheated);
+        }
+    }
+
     [Theory]
     [InlineData(0d)]
     [InlineData(700d)]

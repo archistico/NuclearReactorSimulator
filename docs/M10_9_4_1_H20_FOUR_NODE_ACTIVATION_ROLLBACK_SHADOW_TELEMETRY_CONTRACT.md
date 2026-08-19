@@ -2,7 +2,9 @@
 
 ## Status
 
-**CANDIDATE**, built directly on user-validated **M10.9.4.1-H.19**.
+**VALIDATED — 2026-08-17.** Built directly on user-validated **M10.9.4.1-H.19**.
+
+Local compilation, complete ordinary `dotnet test` and the focused H.20 audit passed. H.20 is the authoritative validated baseline for H.21.
 
 H.19 closed the long-horizon/cross-profile qualification gap for the exact four-node shadow policy:
 
@@ -13,6 +15,29 @@ steam | stop-out | header | turbine-inlet
 The validated H.19 result reproduced the complete 30,000-interval/four-profile P060/F040 census at 3,046 trigger intervals, 92 episodes and the same 473 representative keys, then converged 473/473 with zero line-search exhaustion. All 245 H.17 failures recovered, all 228 H.17 successes remained convergent, committed selection stayed transparent and no new untargeted branch disagreement was found.
 
 H.20 does **not** activate that policy. It defines the authority boundary that a later activation candidate would have to obey.
+
+## Validated H.20 result
+
+```text
+frozen H.19 representatives                 473
+H.19 qualification evidence accepted        True
+default activation arm                      False
+default explicit decisions                473/473
+default candidate eligible                  0/473
+default production commit authorized            0
+armed shadow candidate eligible           473/473
+armed shadow rollbacks                           0
+production commit authorized                    0
+rollback challenges                           8/8
+untriggered authority      ExplicitCommittedState
+untriggered reason                  NotTriggered
+deterministic repeat                         True
+decision fingerprint  25DCF1C83F60DBBF57C4FA05AFD73A55B6138E5D8D4E3F3E0CA5B34B8CA1AD5E
+activation-contract-passes                   True
+h20-audit-passes                              True
+```
+
+Maximum qualified residuals remained within the frozen H.20 guards: pressure `9.478436051324854E-06`, flow `0.008150803572990029 kg/s`, closure/ownership `0 / 2.39E-07`. Production remained `ExplicitCommittedState` at 10 ms, no corrected candidate was committed and `PlantNetworkOrchestrator` remained unwired in H.20.
 
 ## Purpose
 

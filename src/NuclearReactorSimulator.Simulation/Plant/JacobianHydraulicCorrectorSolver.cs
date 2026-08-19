@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Fluids;
@@ -16,12 +17,21 @@ public sealed class JacobianHydraulicCorrectorSolver
 {
     private readonly SemiImplicitHydraulicPrototypeSolver _hydraulicEvaluator;
     private readonly FluidNodeIntegrator _fluidNodeIntegrator;
+    private readonly JacobianProbeResidualEvaluationMode _probeResidualEvaluationMode;
 
     public JacobianHydraulicCorrectorSolver(IFluidThermodynamicModel thermodynamicModel)
+        : this(thermodynamicModel, JacobianProbeResidualEvaluationMode.CoordinateOnly)
+    {
+    }
+
+    internal JacobianHydraulicCorrectorSolver(
+        IFluidThermodynamicModel thermodynamicModel,
+        JacobianProbeResidualEvaluationMode probeResidualEvaluationMode)
     {
         ArgumentNullException.ThrowIfNull(thermodynamicModel);
         _hydraulicEvaluator = new SemiImplicitHydraulicPrototypeSolver(thermodynamicModel);
         _fluidNodeIntegrator = new FluidNodeIntegrator(thermodynamicModel);
+        _probeResidualEvaluationMode = probeResidualEvaluationMode;
     }
 
     public JacobianHydraulicCorrectorStepResult Step(
@@ -33,7 +43,20 @@ public sealed class JacobianHydraulicCorrectorSolver
         ValidateStepArguments(committedState, deltaTime, frozenNonHydraulicBalances);
         options ??= JacobianHydraulicCorrectorOptions.H9AuditDefault;
 
+        var totalStartedTicks = PerformanceAttributionMeasurement.ReadTimestamp();
+        var totalAllocatedBefore = PerformanceAttributionMeasurement.ReadAllocatedBytes();
+        long jacobianBuildElapsedTicks = 0;
+        long jacobianBuildAllocatedBytes = 0;
+        long newtonLineSearchElapsedTicks = 0;
+        long newtonLineSearchAllocatedBytes = 0;
+        long residualFallbackElapsedTicks = 0;
+        long residualFallbackAllocatedBytes = 0;
+
+        var layoutStartedTicks = PerformanceAttributionMeasurement.ReadTimestamp();
+        var layoutAllocatedBefore = PerformanceAttributionMeasurement.ReadAllocatedBytes();
         var layout = CoordinateLayout.Create(committedState);
+        var coordinateLayoutElapsedTicks = PerformanceAttributionMeasurement.ReadTimestamp() - layoutStartedTicks;
+        var coordinateLayoutAllocatedBytes = Math.Max(0L, PerformanceAttributionMeasurement.ReadAllocatedBytes() - layoutAllocatedBefore);
         var hydraulicEvaluationCount = 0;
         var backtrackingTrialCount = 0;
         var jacobianBuildAttempts = 0;
@@ -46,16 +69,21 @@ public sealed class JacobianHydraulicCorrectorSolver
         var maximumPivotConditionEstimate = 0d;
         var maximumNormalizedNewtonStepInfinityNorm = 0d;
         var maximumCoordinateResidualInfinityNorm = 0d;
+        var probeFluidNodeReuse = new ProbeFluidNodeReuseCounter();
+        var probeHydraulicComponentReuse = new ProbeHydraulicComponentReuseCounter();
 
+        var initialResidualStartedTicks = PerformanceAttributionMeasurement.ReadTimestamp();
+        var initialResidualAllocatedBefore = PerformanceAttributionMeasurement.ReadAllocatedBytes();
         var committedEvaluation = Evaluate(committedState, ref hydraulicEvaluationCount);
         var appliedIterate = ProjectConservative(layout, FromEvaluation(committedEvaluation));
-        var iterateState = IntegrateFromCommitted(
+        IReadOnlyList<FluidNodeState> iterateFluidNodes = IntegrateFluidNodesFromCommitted(
             committedState,
-            CombineBalances(committedState, appliedIterate.FluidNodeBalances, frozenNonHydraulicBalances),
+            appliedIterate.FluidNodeBalances,
+            frozenNonHydraulicBalances,
             deltaTime);
         var residual = EvaluateFixedPointResidual(
             committedState,
-            iterateState,
+            iterateFluidNodes,
             appliedIterate,
             layout,
             deltaTime,
@@ -63,6 +91,43 @@ public sealed class JacobianHydraulicCorrectorSolver
             options,
             ref hydraulicEvaluationCount);
         maximumCoordinateResidualInfinityNorm = Math.Max(maximumCoordinateResidualInfinityNorm, residual.CoordinateResidualInfinityNorm);
+        var initialResidualElapsedTicks = PerformanceAttributionMeasurement.ReadTimestamp() - initialResidualStartedTicks;
+        var initialResidualAllocatedBytes = Math.Max(0L, PerformanceAttributionMeasurement.ReadAllocatedBytes() - initialResidualAllocatedBefore);
+
+        JacobianHydraulicCorrectorStepResult Finish(JacobianHydraulicCorrectorStepResult result)
+        {
+            var totalElapsedTicks = PerformanceAttributionMeasurement.ReadTimestamp() - totalStartedTicks;
+            var totalAllocatedBytes = Math.Max(0L, PerformanceAttributionMeasurement.ReadAllocatedBytes() - totalAllocatedBefore);
+            var knownElapsedTicks = coordinateLayoutElapsedTicks + initialResidualElapsedTicks + jacobianBuildElapsedTicks
+                + newtonLineSearchElapsedTicks + residualFallbackElapsedTicks;
+            var knownAllocatedBytes = coordinateLayoutAllocatedBytes + initialResidualAllocatedBytes + jacobianBuildAllocatedBytes
+                + newtonLineSearchAllocatedBytes + residualFallbackAllocatedBytes;
+            var attribution = new JacobianHydraulicCorrectorPerformanceAttribution(
+                totalElapsedTicks,
+                totalAllocatedBytes,
+                coordinateLayoutElapsedTicks,
+                coordinateLayoutAllocatedBytes,
+                initialResidualElapsedTicks,
+                initialResidualAllocatedBytes,
+                jacobianBuildElapsedTicks,
+                jacobianBuildAllocatedBytes,
+                newtonLineSearchElapsedTicks,
+                newtonLineSearchAllocatedBytes,
+                residualFallbackElapsedTicks,
+                residualFallbackAllocatedBytes,
+                Math.Max(0L, totalElapsedTicks - knownElapsedTicks),
+                Math.Max(0L, totalAllocatedBytes - knownAllocatedBytes))
+            {
+                ProbeAppliedFluidNodeReuseCount = probeFluidNodeReuse.AppliedReused,
+                ProbeAppliedFluidNodeCount = probeFluidNodeReuse.AppliedTotal,
+                ProbeMappedFluidNodeReuseCount = probeFluidNodeReuse.MappedReused,
+                ProbeMappedFluidNodeCount = probeFluidNodeReuse.MappedTotal,
+                ProbeHydraulicComponentReuseCount = probeHydraulicComponentReuse.Reused,
+                ProbeHydraulicComponentCount = probeHydraulicComponentReuse.Total,
+            };
+            JacobianHydraulicCorrectorPerformanceAttributionRegistry.Set(result, attribution);
+            return result;
+        }
 
         var iterations = new List<JacobianHydraulicIteration>(options.MaximumIterations)
         {
@@ -80,8 +145,8 @@ public sealed class JacobianHydraulicCorrectorSolver
 
         if (residual.Converged)
         {
-            return BuildResult(
-                iterateState,
+            return Finish(BuildResult(
+                MaterializePlantState(committedState, iterateFluidNodes),
                 residual,
                 appliedIterate,
                 iterations,
@@ -99,7 +164,7 @@ public sealed class JacobianHydraulicCorrectorSolver
                 maximumCoordinateResidualInfinityNorm,
                 hydraulicEvaluationCount,
                 backtrackingTrialCount,
-                minimumAcceptedRelaxationFactor: 0d);
+                minimumAcceptedRelaxationFactor: 0d));
         }
 
         var minimumAcceptedRelaxationFactor = double.PositiveInfinity;
@@ -113,6 +178,8 @@ public sealed class JacobianHydraulicCorrectorSolver
             var acceptedNewtonStepInfinityNorm = 0d;
 
             jacobianBuildAttempts++;
+            var jacobianBuildStartedTicks = PerformanceAttributionMeasurement.ReadTimestamp();
+            var jacobianBuildAllocatedBefore = PerformanceAttributionMeasurement.ReadAllocatedBytes();
             var jacobianBuild = TryBuildNewtonTarget(
                 committedState,
                 deltaTime,
@@ -120,9 +187,14 @@ public sealed class JacobianHydraulicCorrectorSolver
                 options,
                 layout,
                 appliedIterate,
+                iterateFluidNodes,
                 residual,
+                probeFluidNodeReuse,
+                probeHydraulicComponentReuse,
                 ref hydraulicEvaluationCount,
                 ref probeEvaluationCount);
+            jacobianBuildElapsedTicks += PerformanceAttributionMeasurement.ReadTimestamp() - jacobianBuildStartedTicks;
+            jacobianBuildAllocatedBytes += Math.Max(0L, PerformanceAttributionMeasurement.ReadAllocatedBytes() - jacobianBuildAllocatedBefore);
 
             maximumJacobianDimension = Math.Max(maximumJacobianDimension, jacobianBuild.Dimension);
             maximumPivotConditionEstimate = Math.Max(maximumPivotConditionEstimate, jacobianBuild.PivotConditionEstimate);
@@ -130,6 +202,8 @@ public sealed class JacobianHydraulicCorrectorSolver
 
             if (jacobianBuild.Success && jacobianBuild.TargetIterate is not null)
             {
+                var newtonLineSearchStartedTicks = PerformanceAttributionMeasurement.ReadTimestamp();
+                var newtonLineSearchAllocatedBefore = PerformanceAttributionMeasurement.ReadAllocatedBytes();
                 acceptance = TryLineSearch(
                     committedState,
                     deltaTime,
@@ -141,6 +215,8 @@ public sealed class JacobianHydraulicCorrectorSolver
                     residual,
                     ref hydraulicEvaluationCount,
                     ref backtrackingTrialCount);
+                newtonLineSearchElapsedTicks += PerformanceAttributionMeasurement.ReadTimestamp() - newtonLineSearchStartedTicks;
+                newtonLineSearchAllocatedBytes += Math.Max(0L, PerformanceAttributionMeasurement.ReadAllocatedBytes() - newtonLineSearchAllocatedBefore);
                 if (acceptance is not null)
                 {
                     jacobianDirectionAcceptances++;
@@ -162,6 +238,8 @@ public sealed class JacobianHydraulicCorrectorSolver
                 var residualTarget = ProjectConservative(
                     layout,
                     FromEvaluation(residual.CurrentEvaluation));
+                var residualFallbackStartedTicks = PerformanceAttributionMeasurement.ReadTimestamp();
+                var residualFallbackAllocatedBefore = PerformanceAttributionMeasurement.ReadAllocatedBytes();
                 acceptance = TryLineSearch(
                     committedState,
                     deltaTime,
@@ -173,6 +251,8 @@ public sealed class JacobianHydraulicCorrectorSolver
                     residual,
                     ref hydraulicEvaluationCount,
                     ref backtrackingTrialCount);
+                residualFallbackElapsedTicks += PerformanceAttributionMeasurement.ReadTimestamp() - residualFallbackStartedTicks;
+                residualFallbackAllocatedBytes += Math.Max(0L, PerformanceAttributionMeasurement.ReadAllocatedBytes() - residualFallbackAllocatedBefore);
                 if (acceptance is not null)
                 {
                     residualFallbackAcceptances++;
@@ -186,8 +266,8 @@ public sealed class JacobianHydraulicCorrectorSolver
 
             if (acceptance is null)
             {
-                return BuildResult(
-                    iterateState,
+                return Finish(BuildResult(
+                    MaterializePlantState(committedState, iterateFluidNodes),
                     residual,
                     appliedIterate,
                     iterations,
@@ -207,10 +287,10 @@ public sealed class JacobianHydraulicCorrectorSolver
                     backtrackingTrialCount,
                     minimumAcceptedRelaxationFactor: double.IsPositiveInfinity(minimumAcceptedRelaxationFactor)
                         ? 0d
-                        : minimumAcceptedRelaxationFactor);
+                        : minimumAcceptedRelaxationFactor));
             }
 
-            iterateState = acceptance.State;
+            iterateFluidNodes = acceptance.FluidNodes;
             residual = acceptance.Residual;
             appliedIterate = acceptance.Iterate;
             maximumCoordinateResidualInfinityNorm = Math.Max(maximumCoordinateResidualInfinityNorm, residual.CoordinateResidualInfinityNorm);
@@ -228,8 +308,8 @@ public sealed class JacobianHydraulicCorrectorSolver
 
             if (residual.Converged)
             {
-                return BuildResult(
-                    iterateState,
+                return Finish(BuildResult(
+                    MaterializePlantState(committedState, iterateFluidNodes),
                     residual,
                     appliedIterate,
                     iterations,
@@ -247,12 +327,12 @@ public sealed class JacobianHydraulicCorrectorSolver
                     maximumCoordinateResidualInfinityNorm,
                     hydraulicEvaluationCount,
                     backtrackingTrialCount,
-                    minimumAcceptedRelaxationFactor);
+                    minimumAcceptedRelaxationFactor));
             }
         }
 
-        return BuildResult(
-            iterateState,
+        return Finish(BuildResult(
+            MaterializePlantState(committedState, iterateFluidNodes),
             residual,
             appliedIterate,
             iterations,
@@ -272,7 +352,7 @@ public sealed class JacobianHydraulicCorrectorSolver
             backtrackingTrialCount,
             minimumAcceptedRelaxationFactor: double.IsPositiveInfinity(minimumAcceptedRelaxationFactor)
                 ? 0d
-                : minimumAcceptedRelaxationFactor);
+                : minimumAcceptedRelaxationFactor));
     }
 
     private NewtonBuildResult TryBuildNewtonTarget(
@@ -282,7 +362,10 @@ public sealed class JacobianHydraulicCorrectorSolver
         JacobianHydraulicCorrectorOptions options,
         CoordinateLayout layout,
         HydraulicIterate currentIterate,
+        IReadOnlyList<FluidNodeState> currentFluidNodes,
         ResidualSample currentResidual,
+        ProbeFluidNodeReuseCounter probeFluidNodeReuse,
+        ProbeHydraulicComponentReuseCounter probeHydraulicComponentReuse,
         ref int hydraulicEvaluationCount,
         ref int probeEvaluationCount)
     {
@@ -312,6 +395,11 @@ public sealed class JacobianHydraulicCorrectorSolver
                 frozenNonHydraulicBalances,
                 options,
                 layout,
+                currentIterate,
+                currentFluidNodes,
+                currentResidual,
+                probeFluidNodeReuse,
+                probeHydraulicComponentReuse,
                 currentCoordinates,
                 scales,
                 column,
@@ -383,6 +471,11 @@ public sealed class JacobianHydraulicCorrectorSolver
         IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
         JacobianHydraulicCorrectorOptions options,
         CoordinateLayout layout,
+        HydraulicIterate currentIterate,
+        IReadOnlyList<FluidNodeState> currentFluidNodes,
+        ResidualSample currentResidual,
+        ProbeFluidNodeReuseCounter probeFluidNodeReuse,
+        ProbeHydraulicComponentReuseCounter probeHydraulicComponentReuse,
         IReadOnlyList<double> currentCoordinates,
         IReadOnlyList<double> scales,
         int coordinateIndex,
@@ -398,6 +491,11 @@ public sealed class JacobianHydraulicCorrectorSolver
             frozenNonHydraulicBalances,
             options,
             layout,
+            currentIterate,
+            currentFluidNodes,
+            currentResidual,
+            probeFluidNodeReuse,
+            probeHydraulicComponentReuse,
             currentCoordinates,
             scales,
             coordinateIndex,
@@ -416,6 +514,11 @@ public sealed class JacobianHydraulicCorrectorSolver
             frozenNonHydraulicBalances,
             options,
             layout,
+            currentIterate,
+            currentFluidNodes,
+            currentResidual,
+            probeFluidNodeReuse,
+            probeHydraulicComponentReuse,
             currentCoordinates,
             scales,
             coordinateIndex,
@@ -439,6 +542,11 @@ public sealed class JacobianHydraulicCorrectorSolver
         IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
         JacobianHydraulicCorrectorOptions options,
         CoordinateLayout layout,
+        HydraulicIterate currentIterate,
+        IReadOnlyList<FluidNodeState> currentFluidNodes,
+        ResidualSample currentResidual,
+        ProbeFluidNodeReuseCounter probeFluidNodeReuse,
+        ProbeHydraulicComponentReuseCounter probeHydraulicComponentReuse,
         IReadOnlyList<double> currentCoordinates,
         IReadOnlyList<double> scales,
         int coordinateIndex,
@@ -452,26 +560,103 @@ public sealed class JacobianHydraulicCorrectorSolver
         var probeIterate = Decode(layout, probeCoordinates);
         probeEvaluationCount++;
 
-        if (!TryEvaluateTrial(
+        if (!TryEvaluateProbeCurrentEvaluation(
             committedState,
             deltaTime,
             frozenNonHydraulicBalances,
             options,
             layout,
             probeIterate,
+            currentIterate,
+            currentFluidNodes,
+            currentResidual,
+            probeFluidNodeReuse,
+            probeHydraulicComponentReuse,
             ref hydraulicEvaluationCount,
-            out _,
-            out var probeResidual)
-            || probeResidual is null
-            || !double.IsFinite(probeResidual.NormalizedMeritResidual))
+            out var probeEvaluation)
+            || probeEvaluation is null)
         {
             normalizedResidual = Array.Empty<double>();
             return false;
         }
 
-        var mappedCoordinates = Encode(layout, FromEvaluation(probeResidual.CurrentEvaluation));
+        var mappedCoordinates = Encode(layout, FromEvaluation(probeEvaluation));
         normalizedResidual = BuildNormalizedCoordinateResidual(probeCoordinates, mappedCoordinates, scales);
         return normalizedResidual.All(static value => double.IsFinite(value));
+    }
+
+    private bool TryEvaluateProbeCurrentEvaluation(
+        PlantState committedState,
+        TimeSpan deltaTime,
+        IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
+        JacobianHydraulicCorrectorOptions options,
+        CoordinateLayout layout,
+        HydraulicIterate probeIterate,
+        HydraulicIterate currentIterate,
+        IReadOnlyList<FluidNodeState> currentFluidNodes,
+        ResidualSample currentResidual,
+        ProbeFluidNodeReuseCounter probeFluidNodeReuse,
+        ProbeHydraulicComponentReuseCounter probeHydraulicComponentReuse,
+        ref int hydraulicEvaluationCount,
+        out SemiImplicitHydraulicEvaluation? probeEvaluation)
+    {
+        try
+        {
+            var probeFluidNodes = IntegrateFluidNodesFromCommittedWithExactReuse(
+                committedState,
+                probeIterate.FluidNodeBalances,
+                frozenNonHydraulicBalances,
+                deltaTime,
+                currentIterate.FluidNodeBalances,
+                currentFluidNodes,
+                out var appliedReused);
+            probeFluidNodeReuse.AppliedReused += appliedReused;
+            probeFluidNodeReuse.AppliedTotal += committedState.FluidNodes.Count;
+
+            if (_probeResidualEvaluationMode == JacobianProbeResidualEvaluationMode.FullFixedPoint)
+            {
+                var probeResidual = EvaluateFixedPointResidual(
+                    committedState,
+                    probeFluidNodes,
+                    probeIterate,
+                    layout,
+                    deltaTime,
+                    frozenNonHydraulicBalances,
+                    options,
+                    ref hydraulicEvaluationCount,
+                    currentResidual,
+                    probeFluidNodeReuse,
+                    probeHydraulicComponentReuse);
+                if (!double.IsFinite(probeResidual.NormalizedMeritResidual))
+                {
+                    probeEvaluation = null;
+                    return false;
+                }
+
+                probeEvaluation = probeResidual.CurrentEvaluation;
+                return true;
+            }
+
+            // H.28.1-F: a finite-difference Jacobian column depends only on the normalized coordinate
+            // residual (hydraulic map minus applied coordinates). Pressure fixed-point merit, mapped
+            // thermodynamic integration and convergence evidence are not consumed by the Jacobian build;
+            // they remain fully evaluated for the initial residual and every line-search trial.
+            probeEvaluation = EvaluateWithExactReferenceReuse(
+                committedState,
+                probeFluidNodes,
+                currentResidual.CurrentEvaluation,
+                probeHydraulicComponentReuse,
+                ref hydraulicEvaluationCount);
+            return true;
+        }
+        catch (Exception exception) when (
+            exception is FluidNodeDepletionException
+            or WaterSteamStateOutOfRangeException
+            or ArithmeticException)
+        {
+            probeEvaluation = null;
+            return false;
+        }
     }
 
     private LineSearchAcceptance? TryLineSearch(
@@ -501,13 +686,13 @@ public sealed class JacobianHydraulicCorrectorSolver
                 layout,
                 trialIterate,
                 ref hydraulicEvaluationCount,
-                out var trialState,
+                out var trialFluidNodes,
                 out var trialResidual)
-                && trialState is not null
+                && trialFluidNodes is not null
                 && trialResidual is not null
                 && StrictlyReducesMerit(currentResidual.NormalizedMeritResidual, trialResidual.NormalizedMeritResidual))
             {
-                return new LineSearchAcceptance(trialState, trialIterate, trialResidual, relaxationFactor, trials);
+                return new LineSearchAcceptance(trialFluidNodes, trialIterate, trialResidual, relaxationFactor, trials);
             }
 
             relaxationFactor *= options.BacktrackingFactor;
@@ -524,18 +709,19 @@ public sealed class JacobianHydraulicCorrectorSolver
         CoordinateLayout layout,
         HydraulicIterate trialIterate,
         ref int hydraulicEvaluationCount,
-        out PlantState? trialState,
+        out FluidNodeState[]? trialFluidNodes,
         out ResidualSample? trialResidual)
     {
         try
         {
-            trialState = IntegrateFromCommitted(
+            trialFluidNodes = IntegrateFluidNodesFromCommitted(
                 committedState,
-                CombineBalances(committedState, trialIterate.FluidNodeBalances, frozenNonHydraulicBalances),
+                trialIterate.FluidNodeBalances,
+                frozenNonHydraulicBalances,
                 deltaTime);
             trialResidual = EvaluateFixedPointResidual(
                 committedState,
-                trialState,
+                trialFluidNodes,
                 trialIterate,
                 layout,
                 deltaTime,
@@ -549,7 +735,7 @@ public sealed class JacobianHydraulicCorrectorSolver
             or WaterSteamStateOutOfRangeException
             or ArithmeticException)
         {
-            trialState = null;
+            trialFluidNodes = null;
             trialResidual = null;
             return false;
         }
@@ -557,23 +743,61 @@ public sealed class JacobianHydraulicCorrectorSolver
 
     private ResidualSample EvaluateFixedPointResidual(
         PlantState committedState,
-        PlantState iterateState,
+        IReadOnlyList<FluidNodeState> iterateFluidNodes,
         HydraulicIterate appliedIterate,
         CoordinateLayout layout,
         TimeSpan deltaTime,
         IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
         JacobianHydraulicCorrectorOptions options,
-        ref int hydraulicEvaluationCount)
+        ref int hydraulicEvaluationCount,
+        ResidualSample? mappedReuseReference = null,
+        ProbeFluidNodeReuseCounter? probeFluidNodeReuse = null,
+        ProbeHydraulicComponentReuseCounter? probeHydraulicComponentReuse = null)
     {
-        var currentEvaluation = Evaluate(iterateState, ref hydraulicEvaluationCount);
+        SemiImplicitHydraulicEvaluation currentEvaluation;
+        if (mappedReuseReference is not null && probeHydraulicComponentReuse is not null)
+        {
+            currentEvaluation = EvaluateWithExactReferenceReuse(
+                committedState,
+                iterateFluidNodes,
+                mappedReuseReference.CurrentEvaluation,
+                probeHydraulicComponentReuse,
+                ref hydraulicEvaluationCount);
+        }
+        else
+        {
+            currentEvaluation = Evaluate(committedState, iterateFluidNodes, ref hydraulicEvaluationCount);
+        }
         try
         {
             var mappedIterate = ProjectConservative(layout, FromEvaluation(currentEvaluation));
-            var mappedState = IntegrateFromCommitted(
-                committedState,
-                CombineBalances(committedState, mappedIterate.FluidNodeBalances, frozenNonHydraulicBalances),
-                deltaTime);
-            var pressureResidual = MaximumRelativePressureDifference(iterateState, mappedState);
+            FluidNodeState[] mappedFluidNodes;
+            var referenceMappedIterate = mappedReuseReference?.MappedIterate;
+            var referenceMappedFluidNodes = mappedReuseReference?.MappedFluidNodes;
+            if (referenceMappedIterate is not null
+                && referenceMappedFluidNodes is not null
+                && probeFluidNodeReuse is not null)
+            {
+                mappedFluidNodes = IntegrateFluidNodesFromCommittedWithExactReuse(
+                    committedState,
+                    mappedIterate.FluidNodeBalances,
+                    frozenNonHydraulicBalances,
+                    deltaTime,
+                    referenceMappedIterate.FluidNodeBalances,
+                    referenceMappedFluidNodes,
+                    out var mappedReused);
+                probeFluidNodeReuse.MappedReused += mappedReused;
+                probeFluidNodeReuse.MappedTotal += committedState.FluidNodes.Count;
+            }
+            else
+            {
+                mappedFluidNodes = IntegrateFluidNodesFromCommitted(
+                    committedState,
+                    mappedIterate.FluidNodeBalances,
+                    frozenNonHydraulicBalances,
+                    deltaTime);
+            }
+            var pressureResidual = MaximumRelativePressureDifference(iterateFluidNodes, mappedFluidNodes);
             var flowResidual = MaximumAbsoluteFlowDifference(appliedIterate, currentEvaluation);
             var normalizedMerit = Math.Max(
                 pressureResidual / options.RelativePressureTolerance,
@@ -596,7 +820,9 @@ public sealed class JacobianHydraulicCorrectorSolver
                 normalizedMerit,
                 coordinateResidualInfinityNorm,
                 pressureResidual <= options.RelativePressureTolerance
-                    && flowResidual <= options.AbsoluteFlowToleranceKilogramsPerSecond);
+                    && flowResidual <= options.AbsoluteFlowToleranceKilogramsPerSecond,
+                mappedIterate,
+                mappedFluidNodes);
         }
         catch (Exception exception) when (
             exception is FluidNodeDepletionException
@@ -609,7 +835,9 @@ public sealed class JacobianHydraulicCorrectorSolver
                 double.PositiveInfinity,
                 double.PositiveInfinity,
                 double.PositiveInfinity,
-                Converged: false);
+                Converged: false,
+                MappedIterate: null,
+                MappedFluidNodes: null);
         }
     }
 
@@ -779,23 +1007,110 @@ public sealed class JacobianHydraulicCorrectorSolver
         return _hydraulicEvaluator.Evaluate(state);
     }
 
-    private PlantState IntegrateFromCommitted(
+    private SemiImplicitHydraulicEvaluation Evaluate(
         PlantState committedState,
-        IReadOnlyDictionary<string, FluidNodeBalance> totalBalances,
+        IReadOnlyList<FluidNodeState> fluidNodes,
+        ref int evaluationCount)
+    {
+        evaluationCount++;
+        return _hydraulicEvaluator.Evaluate(
+            committedState.Definition,
+            fluidNodes,
+            committedState.Valves,
+            committedState.Pumps);
+    }
+
+    private SemiImplicitHydraulicEvaluation EvaluateWithExactReferenceReuse(
+        PlantState committedState,
+        IReadOnlyList<FluidNodeState> fluidNodes,
+        SemiImplicitHydraulicEvaluation referenceEvaluation,
+        ProbeHydraulicComponentReuseCounter reuseCounter,
+        ref int evaluationCount)
+    {
+        evaluationCount++;
+        var evaluation = _hydraulicEvaluator.EvaluateWithExactReferenceReuse(
+            committedState.Definition,
+            fluidNodes,
+            committedState.Valves,
+            committedState.Pumps,
+            referenceEvaluation,
+            out var reusedComponents,
+            out var componentCount);
+        reuseCounter.Reused += reusedComponents;
+        reuseCounter.Total += componentCount;
+        return evaluation;
+    }
+
+    private FluidNodeState[] IntegrateFluidNodesFromCommitted(
+        PlantState committedState,
+        IReadOnlyDictionary<string, FluidNodeBalance> hydraulicBalances,
+        IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
         TimeSpan deltaTime)
     {
-        var candidateFluidNodes = committedState.FluidNodes
-            .Select(node => _fluidNodeIntegrator.Step(node, totalBalances[node.Id], deltaTime))
-            .ToArray();
+        var candidateFluidNodes = new FluidNodeState[committedState.FluidNodes.Count];
+        for (var index = 0; index < candidateFluidNodes.Length; index++)
+        {
+            var node = committedState.FluidNodes[index];
+            var totalBalance = hydraulicBalances[node.Id]
+                + (frozenNonHydraulicBalances.TryGetValue(node.Id, out var frozen) ? frozen : FluidNodeBalance.Zero);
+            candidateFluidNodes[index] = _fluidNodeIntegrator.Step(node, totalBalance, deltaTime);
+        }
 
-        return new PlantState(
+        return candidateFluidNodes;
+    }
+
+    private FluidNodeState[] IntegrateFluidNodesFromCommittedWithExactReuse(
+        PlantState committedState,
+        IReadOnlyDictionary<string, FluidNodeBalance> hydraulicBalances,
+        IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
+        TimeSpan deltaTime,
+        IReadOnlyDictionary<string, FluidNodeBalance> referenceHydraulicBalances,
+        IReadOnlyList<FluidNodeState> referenceFluidNodes,
+        out int reusedFluidNodeCount)
+    {
+        if (referenceFluidNodes.Count != committedState.FluidNodes.Count)
+        {
+            throw new ArgumentException("H.28.1-D reference fluid-node set must match committed-state cardinality.", nameof(referenceFluidNodes));
+        }
+
+        var candidateFluidNodes = new FluidNodeState[committedState.FluidNodes.Count];
+        reusedFluidNodeCount = 0;
+        for (var index = 0; index < candidateFluidNodes.Length; index++)
+        {
+            var node = committedState.FluidNodes[index];
+            var referenceNode = referenceFluidNodes[index];
+            if (!string.Equals(node.Id, referenceNode.Id, StringComparison.Ordinal))
+            {
+                throw new ArgumentException("H.28.1-D reference fluid-node order must remain canonical.", nameof(referenceFluidNodes));
+            }
+
+            var hydraulicBalance = hydraulicBalances[node.Id];
+            var referenceHydraulicBalance = referenceHydraulicBalances[node.Id];
+            if (hydraulicBalance.Equals(referenceHydraulicBalance))
+            {
+                candidateFluidNodes[index] = referenceNode;
+                reusedFluidNodeCount++;
+                continue;
+            }
+
+            var totalBalance = hydraulicBalance
+                + (frozenNonHydraulicBalances.TryGetValue(node.Id, out var frozen) ? frozen : FluidNodeBalance.Zero);
+            candidateFluidNodes[index] = _fluidNodeIntegrator.Step(node, totalBalance, deltaTime);
+        }
+
+        return candidateFluidNodes;
+    }
+
+    private static PlantState MaterializePlantState(
+        PlantState committedState,
+        IReadOnlyList<FluidNodeState> fluidNodes)
+        => new(
             committedState.Definition,
-            candidateFluidNodes,
+            fluidNodes,
             committedState.Valves,
             committedState.Pumps,
             committedState.ThermalBodies,
             committedState.HeatSources);
-    }
 
     private static JacobianHydraulicCorrectorStepResult BuildResult(
         PlantState candidateState,
@@ -817,7 +1132,7 @@ public sealed class JacobianHydraulicCorrectorSolver
         int hydraulicEvaluationCount,
         int backtrackingTrialCount,
         double minimumAcceptedRelaxationFactor)
-        => new(
+        => new JacobianHydraulicCorrectorStepResult(
             candidateState,
             residual.CurrentEvaluation,
             CanonicalCopy(appliedIterate.FluidNodeBalances),
@@ -842,7 +1157,10 @@ public sealed class JacobianHydraulicCorrectorSolver
             hydraulicEvaluationCount,
             backtrackingTrialCount,
             minimumAcceptedRelaxationFactor,
-            iterations.ToArray());
+            iterations.ToArray())
+        {
+            AppliedPumpHydraulicPowerExchange = appliedIterate.PumpHydraulicPowerExchange,
+        };
 
     private static JacobianHydraulicIteration ToIterationEvidence(
         int iterationIndex,
@@ -935,50 +1253,52 @@ public sealed class JacobianHydraulicCorrectorSolver
             throw new ArgumentException("H.9 coordinate vector does not match the conservative layout dimension.", nameof(coordinates));
         }
 
-        var massRates = new Dictionary<string, double>(StringComparer.Ordinal);
-        var energyRates = new Dictionary<string, double>(StringComparer.Ordinal);
+        var massRates = new double[layout.AllNodeIds.Count];
+        var energyRates = new double[layout.AllNodeIds.Count];
         var index = 0;
         var massSum = 0d;
-        foreach (var nodeId in layout.NonAnchorNodeIds)
+        for (var nodeIndex = 0; nodeIndex < layout.NonAnchorNodeIds.Count; nodeIndex++)
         {
             var value = coordinates[index++];
-            massRates.Add(nodeId, value);
+            massRates[nodeIndex] = value;
             massSum += value;
         }
-
-        massRates.Add(layout.AnchorNodeId, -massSum);
+        massRates[^1] = -massSum;
 
         var energySum = 0d;
-        foreach (var nodeId in layout.NonAnchorNodeIds)
+        for (var nodeIndex = 0; nodeIndex < layout.NonAnchorNodeIds.Count; nodeIndex++)
         {
             var value = coordinates[index++];
-            energyRates.Add(nodeId, value);
+            energyRates[nodeIndex] = value;
             energySum += value;
         }
 
         var pumpPowerWatts = coordinates[index++];
-        energyRates.Add(layout.AnchorNodeId, pumpPowerWatts - energySum);
+        energyRates[^1] = pumpPowerWatts - energySum;
 
-        var balances = layout.AllNodeIds.ToDictionary(
-            static id => id,
-            id => new FluidNodeBalance(
-                MassFlowRate.FromKilogramsPerSecond(massRates[id]),
-                Power.FromWatts(energyRates[id])),
-            StringComparer.Ordinal);
+        var balances = new SortedDictionary<string, FluidNodeBalance>(StringComparer.Ordinal);
+        for (var nodeIndex = 0; nodeIndex < layout.AllNodeIds.Count; nodeIndex++)
+        {
+            balances.Add(
+                layout.AllNodeIds[nodeIndex],
+                new FluidNodeBalance(
+                    MassFlowRate.FromKilogramsPerSecond(massRates[nodeIndex]),
+                    Power.FromWatts(energyRates[nodeIndex])));
+        }
 
-        var pipeFlows = new Dictionary<string, MassFlowRate>(StringComparer.Ordinal);
+        var pipeFlows = new SortedDictionary<string, MassFlowRate>(StringComparer.Ordinal);
         foreach (var id in layout.PipeIds)
         {
             pipeFlows.Add(id, MassFlowRate.FromKilogramsPerSecond(coordinates[index++]));
         }
 
-        var valveFlows = new Dictionary<string, MassFlowRate>(StringComparer.Ordinal);
+        var valveFlows = new SortedDictionary<string, MassFlowRate>(StringComparer.Ordinal);
         foreach (var id in layout.ValveIds)
         {
             valveFlows.Add(id, MassFlowRate.FromKilogramsPerSecond(coordinates[index++]));
         }
 
-        var pumpFlows = new Dictionary<string, MassFlowRate>(StringComparer.Ordinal);
+        var pumpFlows = new SortedDictionary<string, MassFlowRate>(StringComparer.Ordinal);
         foreach (var id in layout.PumpIds)
         {
             pumpFlows.Add(id, MassFlowRate.FromKilogramsPerSecond(coordinates[index++]));
@@ -1010,13 +1330,25 @@ public sealed class JacobianHydraulicCorrectorSolver
         return Decode(layout, blended);
     }
 
-    private static double MaximumRelativePressureDifference(PlantState left, PlantState right)
+    private static double MaximumRelativePressureDifference(
+        IReadOnlyList<FluidNodeState> left,
+        IReadOnlyList<FluidNodeState> right)
     {
-        var rightNodes = right.FluidNodes.ToDictionary(static node => node.Id, StringComparer.Ordinal);
-        var maximum = 0d;
-        foreach (var leftNode in left.FluidNodes)
+        if (left.Count != right.Count)
         {
-            var rightNode = rightNodes[leftNode.Id];
+            throw new ArgumentException("H.9 pressure-residual node sets must have the same cardinality.", nameof(right));
+        }
+
+        var maximum = 0d;
+        for (var index = 0; index < left.Count; index++)
+        {
+            var leftNode = left[index];
+            var rightNode = right[index];
+            if (!string.Equals(leftNode.Id, rightNode.Id, StringComparison.Ordinal))
+            {
+                throw new ArgumentException("H.9 pressure-residual node ordering must remain canonical.", nameof(right));
+            }
+
             var leftPressure = leftNode.Pressure.Pascals;
             var rightPressure = rightNode.Pressure.Pascals;
             var scale = Math.Max(Math.Max(Math.Abs(leftPressure), Math.Abs(rightPressure)), 1_000d);
@@ -1081,16 +1413,6 @@ public sealed class JacobianHydraulicCorrectorSolver
         return sum;
     }
 
-    private static IReadOnlyDictionary<string, FluidNodeBalance> CombineBalances(
-        PlantState state,
-        IReadOnlyDictionary<string, FluidNodeBalance> hydraulicBalances,
-        IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances)
-        => state.FluidNodes.ToDictionary(
-            static node => node.Id,
-            node => hydraulicBalances[node.Id]
-                + (frozenNonHydraulicBalances.TryGetValue(node.Id, out var frozen) ? frozen : FluidNodeBalance.Zero),
-            StringComparer.Ordinal);
-
     private static IReadOnlyDictionary<string, FluidNodeBalance> CanonicalCopy(IReadOnlyDictionary<string, FluidNodeBalance> source)
     {
         var sorted = new SortedDictionary<string, FluidNodeBalance>(StringComparer.Ordinal);
@@ -1149,10 +1471,30 @@ public sealed class JacobianHydraulicCorrectorSolver
         double MaximumAbsoluteFlowFixedPointResidualKilogramsPerSecond,
         double NormalizedMeritResidual,
         double CoordinateResidualInfinityNorm,
-        bool Converged);
+        bool Converged,
+        HydraulicIterate? MappedIterate,
+        IReadOnlyList<FluidNodeState>? MappedFluidNodes);
+
+    private sealed class ProbeFluidNodeReuseCounter
+    {
+        public int AppliedReused { get; set; }
+
+        public int AppliedTotal { get; set; }
+
+        public int MappedReused { get; set; }
+
+        public int MappedTotal { get; set; }
+    }
+
+    private sealed class ProbeHydraulicComponentReuseCounter
+    {
+        public int Reused { get; set; }
+
+        public int Total { get; set; }
+    }
 
     private sealed record LineSearchAcceptance(
-        PlantState State,
+        IReadOnlyList<FluidNodeState> FluidNodes,
         HydraulicIterate Iterate,
         ResidualSample Residual,
         double RelaxationFactor,
@@ -1221,4 +1563,11 @@ public sealed class JacobianHydraulicCorrectorSolver
             return new CoordinateLayout(nodeIds, nonAnchor, nodeIds[^1], pipeIds, valveIds, pumpIds, kinds.ToArray());
         }
     }
+}
+
+
+internal enum JacobianProbeResidualEvaluationMode
+{
+    CoordinateOnly = 0,
+    FullFixedPoint = 1,
 }

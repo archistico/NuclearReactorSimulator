@@ -8,4 +8,6 @@ public enum HydraulicNumericalCouplingMode
 {
     ExplicitCommittedState = 0,
     DeterministicHybridSemiImplicit = 1,
+    FourNodeBranchContinuityShadowIntegrated = 2,
+    FourNodeBranchContinuityCorrectedCommitOptIn = 3,
 }

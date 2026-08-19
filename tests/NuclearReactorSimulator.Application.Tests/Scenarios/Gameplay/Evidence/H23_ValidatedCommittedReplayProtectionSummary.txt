@@ -1,0 +1,9 @@
+=== 01-current-v2-four-node-committed-replay-checkpoint-protection-qualification ===
+H.23 keeps the validated H.22 runtime unchanged and qualifies its separately opt-in corrected-commit trajectory through the existing exact-version scenario recorder/full-replay/checkpoint authority and evidence-derived reverse-power generator protection. Default current-v2 remains ExplicitCommittedState.
+recorded-steps=701; production-fixed-step=10.000 ms; in-flight-checkpoint-logical-step=502; steps-checkpoint-to-generator-trip=199; generator-trip-final=True; generator-breaker-finally-closed=False; reverse-power-latched=True;
+corrected-candidates-committed=242; H20-rollbacks=0; fallback-commit-violations=0; unsafe-corrected-commits=0; untargeted-branch-disagreements=0;
+max-network-mass-closure-kg=2.1827872842550278E-11; max-network-energy-closure-j=4.4293613427726086E-05; max-network-balance-mass-rate-kg-s=1.2256862191861728E-13; max-network-balance-power-w=1.3923272490501404E-07;
+full-replay-trace-equivalent=True; checkpoint-prefix-and-continuation-equivalent=True; deterministic-trace-repeat=True; telemetry-protection-trace-fingerprint=7C8FBA8ECB197F65AB263A79268653E3C2988F700A5A863BB0304D377C82FB54;
+default-current-v2-mode=ExplicitCommittedState; opt-in-corrected-commit-mode=FourNodeBranchContinuityCorrectedCommitOptIn; H22-runtime-changed=False; H20-contract-replaced=False; H19-target-set-changed=False; H9-tolerances-retuned=False; P060-F040-retuned=False; bounded-hysteresis-limits-changed=False; physical-coefficient-retuning=False;
+four-node-committed-replay-checkpoint-protection-qualification-passes=True; h23-audit-passes=True;
+H.23 recommendation: if this gate is green, retain default production explicit and move next to committed long-horizon/cross-profile qualification. Replay/checkpoint and reverse-power protection interaction are then qualified for the opt-in H.22 ownership path, but off-design robustness remains unqualified.

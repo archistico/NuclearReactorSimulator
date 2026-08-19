@@ -67,11 +67,70 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             useHybridSemiImplicitHydraulics: false);
     }
 
+    /// <summary>
+    /// H.21 audit-only opt-in seam. It runs the exact current-v2 desktop configuration with the four-node
+    /// branch-continuity sidecar wired through PlantNetworkOrchestrator while production candidate ownership remains explicit.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateFourNodeShadowIntegrationEvidenceRuntimeEngine(TimeSpan runtimeStep)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Four-node shadow-integration evidence timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false,
+            useFourNodeBranchContinuityShadowIntegration: true);
+    }
+
+    /// <summary>
+    /// H.22 audit-only opt-in seam. It runs the current-v2 desktop configuration with corrected-candidate
+    /// ownership enabled from deterministic seed preconditioning onward. Standard factories remain explicit.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateFourNodeCorrectedCommitEvidenceRuntimeEngine(TimeSpan runtimeStep)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Four-node corrected-commit evidence timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false,
+            useFourNodeBranchContinuityShadowIntegration: false,
+            useFourNodeBranchContinuityCorrectedCommitOptIn: true);
+    }
+
     private static IControlRoomRuntimeEngine CreateRuntimeEngine(
         bool includeEvidenceDerivedElectricalProtections,
         TimeSpan? runtimeStep = null,
         int deterministicSeedStepCount = 2,
-        bool useHybridSemiImplicitHydraulics = false)
+        bool useHybridSemiImplicitHydraulics = false,
+        bool useFourNodeBranchContinuityShadowIntegration = false,
+        bool useFourNodeBranchContinuityCorrectedCommitOptIn = false)
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
             GenerationReadySeed,
             mainCirculationRunning: true,
@@ -136,5 +195,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             useEnthalpyTransportForTurbineExpansion: true,
             useHybridSemiImplicitHydraulics: useHybridSemiImplicitHydraulics,
             deterministicSeedStepCount: deterministicSeedStepCount,
-            runtimeStep: runtimeStep);
+            runtimeStep: runtimeStep,
+            useFourNodeBranchContinuityShadowIntegration: useFourNodeBranchContinuityShadowIntegration,
+            useFourNodeBranchContinuityCorrectedCommitOptIn: useFourNodeBranchContinuityCorrectedCommitOptIn);
 }

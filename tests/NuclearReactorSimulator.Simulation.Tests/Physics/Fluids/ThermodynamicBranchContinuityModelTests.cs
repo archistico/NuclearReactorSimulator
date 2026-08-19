@@ -125,6 +125,46 @@ public sealed class ThermodynamicBranchContinuityModelTests
         Assert.True(decision.PreviousPhaseTemperatureDriftKelvins > 5d);
     }
 
+    [Theory]
+    [InlineData("steam", SteamMassKilograms, SteamEnergyJoules + SteamEnergyProbeJoules, 6362325.9673817037d, 552.58890484070866d, FluidPhase.SaturatedMixture, 0.98827242641541357d)]
+    [InlineData("stop-out", StopOutMassKilograms, StopOutEnergyJoules - StopOutEnergyProbeJoules, 8601730.4979163781d, 588.83285718179309d, FluidPhase.SuperheatedVapor, null)]
+    public void OptimizedContinuityEvaluation_IsExactlyEquivalentToLegacyResolvePlusDiagnostic(
+        string nodeId,
+        double massKilograms,
+        double energyJoules,
+        double previousPressurePascals,
+        double previousTemperatureKelvins,
+        FluidPhase previousPhase,
+        double? previousQuality)
+    {
+        var optimizedProduction = new SimplifiedWaterSteamThermodynamicModel();
+        var legacyProduction = new SimplifiedWaterSteamThermodynamicModel();
+        var legacyProxy = new LegacyCombinedProviderProxy(legacyProduction);
+        var optimized = new ThermodynamicBranchContinuityModel(
+            optimizedProduction,
+            optimizedProduction,
+            ThermodynamicBranchContinuityOptions.H13BoundedHysteresis);
+        var legacy = new ThermodynamicBranchContinuityModel(
+            legacyProxy,
+            legacyProxy,
+            ThermodynamicBranchContinuityOptions.H13BoundedHysteresis);
+        var definition = new FluidNodeDefinition(nodeId, Volume.FromCubicMetres(100d));
+        var previous = new FluidThermodynamicState(
+            Pressure.FromPascals(previousPressurePascals),
+            Temperature.FromKelvins(previousTemperatureKelvins),
+            previousPhase,
+            previousQuality.HasValue ? VaporQuality.FromFraction(previousQuality.Value) : null);
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(massKilograms),
+            Energy.FromJoules(energyJoules));
+
+        var optimizedState = optimized.Resolve(definition, inventory, previous);
+        var legacyState = legacy.Resolve(definition, inventory, previous);
+
+        Assert.Equal(legacyState, optimizedState);
+        Assert.Equal(legacy.Decisions.ToArray(), optimized.Decisions.ToArray());
+    }
+
     [Fact]
     public void TargetRestriction_LeavesUntargetedNodeOnProductionSelection()
     {
@@ -148,6 +188,28 @@ public sealed class ThermodynamicBranchContinuityModelTests
 
         Assert.Equal(FluidPhase.SuperheatedVapor, result.Phase);
         Assert.Empty(shadow.Decisions);
+    }
+
+    private sealed class LegacyCombinedProviderProxy : IFluidThermodynamicModel, IWaterSteamInverseBranchDiagnosticProvider
+    {
+        private readonly SimplifiedWaterSteamThermodynamicModel _inner;
+
+        public LegacyCombinedProviderProxy(SimplifiedWaterSteamThermodynamicModel inner)
+        {
+            _inner = inner;
+        }
+
+        public FluidThermodynamicState Resolve(
+            FluidNodeDefinition definition,
+            FluidNodeInventory inventory,
+            FluidThermodynamicState previousState)
+            => _inner.Resolve(definition, inventory, previousState);
+
+        public WaterSteamInverseBranchSelectionDiagnostic DiagnoseInverseBranchSelection(
+            FluidNodeDefinition definition,
+            FluidNodeInventory inventory,
+            FluidThermodynamicState previousState)
+            => _inner.DiagnoseInverseBranchSelection(definition, inventory, previousState);
     }
 
 }

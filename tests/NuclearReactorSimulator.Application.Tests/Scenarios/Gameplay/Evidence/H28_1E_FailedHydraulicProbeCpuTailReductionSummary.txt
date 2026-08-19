@@ -1,0 +1,13 @@
+=== 01-current-v2-hydraulic-probe-cpu-tail-reduction ===
+H.28.1-E starts from validated H.28.1-D and preserves the unchanged 32-probe finite-difference Newton contract while fusing duplicate branch-continuity inverse-map work and reusing pipe/valve/pump component results only when every dependency is the exact reference from the unperturbed evaluation.
+warmup-steps=64; attribution-steps=256; triggered=20; committed=20; rollbacks=0; unsafe-commits=0; fallback-commit-violations=0;
+nontrigger-average-engine-us=4520.9169491525427; nontrigger-average-predictor-us=116.38389830508474; nontrigger-average-predictor-alloc-bytes=19367.254237288136;
+trigger-average-engine-us=156670.12; trigger-p95-engine-us=157754; trigger-average-corrector-us=135147.05000000002;
+h9-average-total-us=135138.55500000002; h9-average-jacobian-build-us=119404.49999999997; h9-average-line-search-us=7819.954999999999; h9-average-hydraulic-evaluations=35; h9-average-probe-evaluations=32; h9-max-jacobian-dimension=32;
+probe-hydraulic-components-reused=4660; probe-hydraulic-components-total=5760; probe-hydraulic-component-reuse-fraction=0.80902777777777779; probe-applied-fluid-node-reuse-fraction=0.8828125; probe-mapped-fluid-node-reuse-fraction=0.76341145833333335;
+h28.1d-baseline-jacobian-us=228904.07500000001; jacobian-wall-fraction-of-h28.1d=0.52163553663253903; h28.1d-baseline-h9-us=277483.07500000001; h9-wall-fraction-of-h28.1d=0.48701548734098471; h28.1d-baseline-trigger-engine-us=299634.61499999993; trigger-engine-wall-fraction-of-h28.1d=0.52287056353619232;
+h28-requalification1-explicit-p95-us=7365.1000000000004; unchanged-h28-p95-ratio-limit=12; unchanged-h28-trigger-tail-threshold-us=88381.200000000012; h28.1e-triggered-p95-estimated-ratio=21.419125334347122; tail-ready-for-h28=False;
+h9-average-total-alloc-bytes=483713.59999999998; h9-average-jacobian-build-alloc-bytes=419032;
+determinism-control-steps=128; deterministic-fingerprint=518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38; matches-failed-H28-fingerprint=True; default-current-v2-mode=ExplicitCommittedState;
+h28.1e-hydraulic-probe-cpu-tail-reduction-passes=False; h28-remains-failed=True; H29-default-activation-blocked=True;
+H.28.1-E recommendation: rerun the unchanged H.28 only if the exact CPU-tail gate is green. Do not raise H.28 ceilings, reduce the 32 probes, retune H.9, or alter P060/F040 from this optimization evidence.

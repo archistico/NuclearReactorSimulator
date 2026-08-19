@@ -1,8 +1,8 @@
 namespace NuclearReactorSimulator.Simulation.Plant;
 
 /// <summary>
-/// Deterministic, fail-closed H.20 shadow supervisor for the H.19-qualified four-node branch-continuity policy.
-/// It proposes authority only; H.20 does not wire this supervisor into PlantNetworkOrchestrator.
+/// Deterministic, fail-closed H.20 authority supervisor for the H.19-qualified four-node branch-continuity policy.
+/// H.20 introduced it as shadow-only; H.21/H.22 consume the unchanged decision contract from the orchestrator.
 /// </summary>
 public sealed class FourNodeBranchContinuityShadowActivationSupervisor
 {

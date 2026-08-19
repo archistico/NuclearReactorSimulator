@@ -112,6 +112,55 @@ public sealed class JacobianHydraulicCorrectorSolverTests
     }
 
     [Fact]
+    public void CoordinateOnlyProbeResidual_IsExactlyEquivalentToFullFixedPointProbeResidualForAcceptedNewtonPath()
+    {
+        var state = CreateTwoNodeState(1_001d, 999d);
+        var optimized = new JacobianHydraulicCorrectorSolver(
+            new LinearCompressibilityModel(),
+            JacobianProbeResidualEvaluationMode.CoordinateOnly);
+        var legacy = new JacobianHydraulicCorrectorSolver(
+            new LinearCompressibilityModel(),
+            JacobianProbeResidualEvaluationMode.FullFixedPoint);
+
+        var optimizedResult = optimized.Step(state, StiffStep, EmptyBalances());
+        var legacyResult = legacy.Step(state, StiffStep, EmptyBalances());
+
+        Assert.Equal(legacyResult.Converged, optimizedResult.Converged);
+        Assert.Equal(legacyResult.LineSearchExhausted, optimizedResult.LineSearchExhausted);
+        Assert.Equal(legacyResult.IterationCount, optimizedResult.IterationCount);
+        Assert.Equal(legacyResult.JacobianBuildAttempts, optimizedResult.JacobianBuildAttempts);
+        Assert.Equal(legacyResult.JacobianDirectionAcceptances, optimizedResult.JacobianDirectionAcceptances);
+        Assert.Equal(legacyResult.JacobianRejectedCount, optimizedResult.JacobianRejectedCount);
+        Assert.Equal(legacyResult.ResidualFallbackAttempts, optimizedResult.ResidualFallbackAttempts);
+        Assert.Equal(legacyResult.ResidualFallbackAcceptances, optimizedResult.ResidualFallbackAcceptances);
+        Assert.Equal(legacyResult.ProbeEvaluationCount, optimizedResult.ProbeEvaluationCount);
+        Assert.Equal(legacyResult.HydraulicEvaluationCount, optimizedResult.HydraulicEvaluationCount);
+        Assert.Equal(legacyResult.BacktrackingTrialCount, optimizedResult.BacktrackingTrialCount);
+        Assert.Equal(legacyResult.MaximumPivotConditionEstimate, optimizedResult.MaximumPivotConditionEstimate);
+        Assert.Equal(legacyResult.MaximumNormalizedNewtonStepInfinityNorm, optimizedResult.MaximumNormalizedNewtonStepInfinityNorm);
+        Assert.Equal(legacyResult.MaximumRelativePressureFixedPointResidual, optimizedResult.MaximumRelativePressureFixedPointResidual);
+        Assert.Equal(legacyResult.MaximumAbsoluteFlowFixedPointResidualKilogramsPerSecond, optimizedResult.MaximumAbsoluteFlowFixedPointResidualKilogramsPerSecond);
+        Assert.Equal(legacyResult.NormalizedMeritResidual, optimizedResult.NormalizedMeritResidual);
+        Assert.Equal(legacyResult.MinimumAcceptedRelaxationFactor, optimizedResult.MinimumAcceptedRelaxationFactor);
+        Assert.True(legacyResult.Iterations.SequenceEqual(optimizedResult.Iterations));
+        Assert.True(legacyResult.AppliedHydraulicBalances.SequenceEqual(optimizedResult.AppliedHydraulicBalances));
+
+        Assert.Equal(legacyResult.CandidateState.FluidNodes.Count, optimizedResult.CandidateState.FluidNodes.Count);
+        for (var index = 0; index < legacyResult.CandidateState.FluidNodes.Count; index++)
+        {
+            var left = legacyResult.CandidateState.FluidNodes[index];
+            var right = optimizedResult.CandidateState.FluidNodes[index];
+            Assert.Equal(left.Id, right.Id);
+            Assert.Equal(left.Mass, right.Mass);
+            Assert.Equal(left.InternalEnergy, right.InternalEnergy);
+            Assert.Equal(left.Pressure, right.Pressure);
+            Assert.Equal(left.Temperature, right.Temperature);
+            Assert.Equal(left.Phase, right.Phase);
+            Assert.Equal(left.VaporQuality, right.VaporQuality);
+        }
+    }
+
+    [Fact]
     public void Step_IsExactlyDeterministicForTheSameInputs()
     {
         var state = CreateTwoNodeState(1_001d, 999d);

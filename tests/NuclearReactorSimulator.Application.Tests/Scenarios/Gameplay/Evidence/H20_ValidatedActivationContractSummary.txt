@@ -1,0 +1,11 @@
+================================================================================
+M10.9.4.1-H.20 FOUR-NODE ACTIVATION / ROLLBACK / SHADOW TELEMETRY CONTRACT SUMMARY
+================================================================================
+=== 01-h19-evidence-backed-fail-closed-shadow-activation-contract ===
+H.20 freezes the user-validated H.19 473-representative results and defines a deterministic fail-closed shadow authority contract. The new supervisor is not wired into PlantNetworkOrchestrator; production remains ExplicitCommittedState at 10 ms and no corrected candidate can be committed.
+frozen-H19-qualified-representatives=473; H19-qualification-evidence-accepted=True; max-qualified-pressure-residual=9.478436051324854E-06; max-qualified-flow-residual-kg-s=0.008150803572990029; max-H19-closure/ownership=0/2.39E-07;
+activation-default-armed=False; default-explicit-decisions=473/473; default-candidate-eligible=0/473; default-production-commit-authorized=0;
+shadow-arm-simulation=True; qualified-triggered-candidate-eligible=473/473; shadow-arm-rollbacks=0; production-commit-authorized=0; deterministic-repeat=True; decision-fingerprint=25DCF1C83F60DBBF57C4FA05AFD73A55B6138E5D8D4E3F3E0CA5B34B8CA1AD5E;
+rollback-challenges=8; rollback-challenges-pass=8/8; untriggered-authority=ExplicitCommittedState; untriggered-reason=NotTriggered;
+activation-contract-passes=True; h20-audit-passes=True; production-hybrid-active=False; production-fixed-step=10.000 ms; shadow-candidates-committed=False; PlantNetworkOrchestrator-wiring-changed=False; target-node-set-changed-from-H19=False; P060-F040-retuned=False; H9-tolerances-retuned=False; bounded-hysteresis-limits-changed=False; physical-coefficient-retuning=False; hidden-flow-filtering=False;
+H.20 recommendation: the evidence-backed activation authority contract is deterministic and fail-closed in shadow. Keep default production explicit. A later, separately reviewed opt-in integration candidate may wire this exact contract only if it preserves immediate explicit fallback, typed rollback telemetry, the frozen H.19 qualification prerequisite and the full H.19 long-horizon regression gate.

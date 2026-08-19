@@ -1,21 +1,22 @@
 @echo off
 setlocal EnableExtensions
-cd /d "%~dp0"
+
+set "ROOT=%~dp0"
+cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.4.1-H.20 four-node activation / rollback / shadow telemetry contract candidate...
-
-echo Removing stale local build outputs so stacked ZIP timestamps cannot reuse an older assembly...
-for /d /r %%D in (bin) do @if exist "%%D" rd /s /q "%%D"
-for /d /r %%D in (obj) do @if exist "%%D" rd /s /q "%%D"
-
-rem Compatibility cleanup retained from prior stacked packages.
-for %%F in (
-    "docs\adr\0110-electrical-protection-thresholds-are-derived-from-signed-current-v2-trajectories.md"
-    "docs\adr\0111-evidence-derived-electrical-protection-uses-supervised-delayed-m5-functions.md"
-) do (
-    if exist "%%~F" del /q "%%~F"
+echo Applying M10.9.4.1-H.28 Requalification 2 over user-validated H.28.1-G...
+echo Restoring the original H.28 cost ceilings over the optimized runtime; no numerical runtime code is changed by this package.
+echo Removing stale build and H.28 audit outputs...
+for /d /r %%D in (bin obj) do (
+    if exist "%%D" rmdir /s /q "%%D"
 )
+if exist "artifacts\h28-four-node-performance-cost-operational-soak" rmdir /s /q "artifacts\h28-four-node-performance-cost-operational-soak"
 
-echo M10.9.4.1-H.20 applied. Stale bin/obj outputs were removed; rebuild before testing.
+echo.
+echo H.28 Requalification 2 candidate applied. H.29 remains blocked; standard current-v2 remains ExplicitCommittedState at 10 ms.
+echo Run:
+echo   dotnet build
+echo   dotnet test
+echo   scripts\run-four-node-performance-cost-operational-soak-audit.cmd
 exit /b 0

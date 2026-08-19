@@ -16,6 +16,11 @@ public sealed record PlantNetworkHydraulicNumericalSnapshot(
     double MaximumRelativePressureResidual,
     double MaximumAbsoluteFlowResidualKilogramsPerSecond)
 {
+    /// <summary>
+    /// H.21 optional four-node sidecar telemetry. Null for the historical explicit and H.5 hybrid paths.
+    /// </summary>
+    public FourNodeBranchContinuityIntegrationTelemetry? FourNodeBranchContinuity { get; init; }
+
     public static PlantNetworkHydraulicNumericalSnapshot Explicit { get; } = new(
         HydraulicNumericalCouplingMode.ExplicitCommittedState,
         false,

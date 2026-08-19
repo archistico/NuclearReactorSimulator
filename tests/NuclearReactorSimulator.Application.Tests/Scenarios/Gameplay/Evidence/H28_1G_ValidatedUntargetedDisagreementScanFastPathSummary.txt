@@ -1,0 +1,15 @@
+=== 01-current-v2-untargeted-disagreement-scan-fast-path ===
+H.28.1-G starts from validated H.28.1-D, incorporates the measured exact H.28.1-E/F CPU optimizations, and shortens only the untargeted branch-disagreement safety scan for the standard simplified water/steam diagnostic. The optimized diagnostic returns exactly the two values consumed by the fail-closed scan; custom providers remain on the complete public diagnostic path. H.9 mathematics, probe count and full initial/line-search residuals remain unchanged.
+warmup-steps=64; attribution-steps=256; triggered=20; committed=20; rollbacks=0; unsafe-commits=0; fallback-commit-violations=0;
+nontrigger-average-engine-us=4445.1686440677959; nontrigger-average-predictor-us=116.78855932203388; nontrigger-average-predictor-alloc-bytes=19366.237288135595;
+trigger-average-engine-us=78952.145000000004; trigger-p95-engine-us=79702.300000000003; trigger-average-corrector-us=73879.400000000009;
+h28.1f-baseline-trigger-average-us=96029.089999999997; h28.1f-baseline-trigger-p95-us=96573.5; h28.1f-baseline-h9-us=74579.555000000008; h28.1f-baseline-jacobian-us=58854.574999999997;
+h9-average-total-us=73873.654999999999; h9-average-jacobian-build-us=58329.44999999999; h9-average-line-search-us=7733.6949999999997; h9-average-hydraulic-evaluations=35; h9-average-probe-evaluations=32; h9-max-jacobian-dimension=32;
+probe-hydraulic-components-reused=4660; probe-hydraulic-components-total=5760; probe-hydraulic-component-reuse-fraction=0.80902777777777779; probe-applied-fluid-node-reuse-fraction=0.8828125; probe-mapped-fluid-node-reuse-fraction=1;
+h28.1e-baseline-jacobian-us=119404.49999999997; jacobian-wall-fraction-of-h28.1e=0.48850294586887433; h28.1e-baseline-h9-us=135138.55500000002; h9-wall-fraction-of-h28.1e=0.54665121289775509; h28.1e-baseline-trigger-engine-us=156670.12; trigger-engine-wall-fraction-of-h28.1e=0.50393875360534612;
+h28.1e-baseline-triggered-p95-us=157754; probe-mapped-fluid-node-integrations=0; mapped-probe-fixed-point-elided=True;
+h28-requalification1-explicit-p95-us=7365.1000000000004; unchanged-h28-p95-ratio-limit=12; unchanged-h28-trigger-tail-threshold-us=88381.200000000012; h28.1g-triggered-p95-estimated-ratio=10.821618172190465; tail-ready-for-h28=True;
+h9-average-total-alloc-bytes=308733.20000000001; h9-average-jacobian-build-alloc-bytes=243984;
+determinism-control-steps=128; deterministic-fingerprint=518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38; matches-failed-H28-fingerprint=True; default-current-v2-mode=ExplicitCommittedState;
+h28.1g-untargeted-disagreement-scan-fast-path-passes=True; h28-remains-failed=True; H29-default-activation-blocked=True;
+H.28.1-G recommendation: rerun unchanged H.28 only if triggered p95 is at or below the frozen 88.3812 ms threshold with identical deterministic trajectory. Do not raise H.28 ceilings, weaken the untargeted disagreement safety contract, reduce the 32 probes, retune H.9, or alter P060/F040.

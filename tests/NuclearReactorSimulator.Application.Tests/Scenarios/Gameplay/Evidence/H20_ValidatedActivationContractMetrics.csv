@@ -1,0 +1,12 @@
+metric,value
+frozen_h19_qualified_representatives,473
+h19_qualification_evidence_accepted,True
+default_explicit_decisions,473
+shadow_armed_candidate_eligible,473
+shadow_armed_rollbacks,0
+rollback_challenges,8
+rollback_challenges_pass,8
+production_commit_authorized,0
+deterministic_repeat,True
+activation_contract_passes,True
+h20_audit_passes,True

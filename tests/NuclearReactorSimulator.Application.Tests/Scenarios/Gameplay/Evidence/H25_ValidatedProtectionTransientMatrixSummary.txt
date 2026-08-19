@@ -1,0 +1,12 @@
+=== 01-current-v2-four-node-committed-protection-operational-transient-matrix ===
+H.25 keeps the H.22/H.23/H.24 corrected-commit runtime unchanged and applies a targeted short matrix across normal load manoeuvring, manual reactor/generator protection actions, automatic reverse-power generator trip and breaker-open electrical supervision. H.24 remains the rare long-horizon qualification gate and is not rerun.
+matrix-scenarios=5; runtime-steps=837; production-fixed-step=10.000 ms; corrected-candidates-committed=178; H20-rollbacks=0; safe-fallbacks=0; fallback-commit-violations=0; unsafe-corrected-commits=0;
+max-network-mass-closure-kg=2.1827872842550278E-11; max-network-energy-closure-j=3.7271362089086324E-05; max-network-balance-mass-rate-kg-s=9.5923269327613525E-14; max-network-balance-power-w=1.3969838619232178E-07; telemetry-protection-matrix-fingerprint=ED60939F1E3EE279F018315904EC0BCD88A7D1F446AC199E129BF18EAF82A19E;
+default-current-v2-mode=ExplicitCommittedState; opt-in-corrected-commit-mode=FourNodeBranchContinuityCorrectedCommitOptIn; H24-prerequisite-frozen=True; H22-runtime-changed=False; H20-contract-replaced=False; H19-target-set-changed=False; H9-tolerances-retuned=False; P060-F040-retuned=False; bounded-hysteresis-limits-changed=False; physical-coefficient-retuning=False;
+scenario=normal-load-maneuver; runtime-steps=192; triggers=2; commits=2; rollbacks=0; expected-outcome=no-trip load maneuver; expected-outcome-satisfied=True;
+scenario=manual-reactor-scram; runtime-steps=72; triggers=2; commits=2; rollbacks=0; expected-outcome=reactor scram latched; expected-outcome-satisfied=True;
+scenario=manual-generator-trip; runtime-steps=72; triggers=2; commits=2; rollbacks=0; expected-outcome=generator trip latched and breaker open; expected-outcome-satisfied=True;
+scenario=turbine-trip-reverse-power; runtime-steps=305; triggers=134; commits=134; rollbacks=0; expected-outcome=reverse-power automatic generator trip in 241 steps; expected-outcome-satisfied=True;
+scenario=breaker-open-turbine-coastdown; runtime-steps=196; triggers=38; commits=38; rollbacks=0; expected-outcome=breaker-open electrical supervision blocks generator trip eligibility; expected-outcome-satisfied=True;
+four-node-committed-protection-operational-transient-matrix-passes=True; h25-audit-passes=True;
+H.25 recommendation: if green, keep default current-v2 explicit and move next to H.26 integrated rollback/fail-closed stress. Do not rerun the 4.5-hour H.24 gate unless the committed numerical runtime changes or a later closure gate explicitly requires it.

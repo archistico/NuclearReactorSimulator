@@ -1,0 +1,9 @@
+=== 01-current-v2-four-node-corrected-candidate-commit-seam ===
+H.22 adds the first separately opt-in corrected-candidate ownership seam. The H.20 authority decision is unchanged and remains the eligibility gate; any non-qualified or rollback decision falls through immediately to the historical explicit candidate. Standard current-v2 factories remain ExplicitCommittedState.
+intervals=2000; production-fixed-step=10.000 ms; seed-preconditioning-commit-observed=False; P060-F040-triggered=443; H20-candidate-eligible=443; H22-commit-authorized=443; corrected-candidates-committed=443;
+H20-rollbacks=0; fallback-intervals=0; fallback-commit-violations=0; unsafe-corrected-commits=0; untargeted-branch-disagreements=0;
+repeat-presentation-equivalent=2000/2000; deterministic-repeat=True; telemetry-fingerprint=3366BCFFF62EBCC8C097EDC36DAF543D80BFBF05936AF6DAFE08EA34A7DBB178;
+max-network-mass-closure-kg=2.9103830456733704E-11; max-network-energy-closure-j=4.4293613427726086E-05; max-network-balance-mass-rate-kg-s=1.4743761767022079E-13; max-network-balance-power-w=1.441221684217453E-07;
+default-current-v2-mode=ExplicitCommittedState; opt-in-corrected-commit-mode=FourNodeBranchContinuityCorrectedCommitOptIn; H20-contract-replaced=False; H20-production-commit-authorized-property-changed=False; H19-target-set-changed=False; H9-tolerances-retuned=False; P060-F040-retuned=False; bounded-hysteresis-limits-changed=False; physical-coefficient-retuning=False;
+four-node-corrected-candidate-commit-seam-passes=True; h22-audit-passes=True;
+H.22 recommendation: treat this as commit-seam evidence only. Keep default current-v2 explicit. Before any production-default activation, qualify the opt-in committed trajectory through deterministic replay, protection interactions, long-horizon/cross-profile operation and off-design robustness while preserving immediate H.20 fallback telemetry.

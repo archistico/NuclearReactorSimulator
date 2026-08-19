@@ -18,6 +18,7 @@ public sealed class SemiImplicitHydraulicPrototypeSolver
     private readonly ValveFlowSolver _valveFlowSolver;
     private readonly PumpFlowSolver _pumpFlowSolver;
     private readonly FluidNodeIntegrator _fluidNodeIntegrator;
+    private HydraulicEvaluationLayout? _evaluationLayout;
 
     public SemiImplicitHydraulicPrototypeSolver(IFluidThermodynamicModel thermodynamicModel)
     {
@@ -31,65 +32,225 @@ public sealed class SemiImplicitHydraulicPrototypeSolver
     public SemiImplicitHydraulicEvaluation Evaluate(PlantState state)
     {
         ArgumentNullException.ThrowIfNull(state);
+        return Evaluate(state.Definition, state.FluidNodes, state.Valves, state.Pumps);
+    }
 
-        var definition = state.Definition;
-        var fluidNodes = state.FluidNodes.ToDictionary(static item => item.Id, StringComparer.Ordinal);
-        var valveStates = state.Valves.ToDictionary(static item => item.ValveId, StringComparer.Ordinal);
-        var pumpStates = state.Pumps.ToDictionary(static item => item.PumpId, StringComparer.Ordinal);
-        var balances = definition.FluidNodes.ToDictionary(
-            static item => item.Id,
-            static _ => FluidNodeBalance.Zero,
-            StringComparer.Ordinal);
-        var pipeFlows = new Dictionary<string, MassFlowRate>(StringComparer.Ordinal);
-        var valveFlows = new Dictionary<string, MassFlowRate>(StringComparer.Ordinal);
-        var pumpFlows = new Dictionary<string, MassFlowRate>(StringComparer.Ordinal);
+    internal SemiImplicitHydraulicEvaluation Evaluate(
+        PlantDefinition definition,
+        IReadOnlyList<FluidNodeState> fluidNodeStates,
+        IReadOnlyList<ValveState> valveStateSource,
+        IReadOnlyList<PumpState> pumpStateSource)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(fluidNodeStates);
+        ArgumentNullException.ThrowIfNull(valveStateSource);
+        ArgumentNullException.ThrowIfNull(pumpStateSource);
+
+        var layout = GetEvaluationLayout(definition, fluidNodeStates, valveStateSource, pumpStateSource);
+        return EvaluateCore(
+            layout,
+            fluidNodeStates,
+            valveStateSource,
+            pumpStateSource,
+            referenceSnapshot: null,
+            out _,
+            out _);
+    }
+
+    /// <summary>
+    /// H.28.1-E exact incremental hydraulic-map seam. Component results are reused only when both endpoint
+    /// fluid-node objects and the corresponding valve/pump state object are the exact references used by the
+    /// reference evaluation. Any changed dependency is solved by the unchanged component solver.
+    /// </summary>
+    internal SemiImplicitHydraulicEvaluation EvaluateWithExactReferenceReuse(
+        PlantDefinition definition,
+        IReadOnlyList<FluidNodeState> fluidNodeStates,
+        IReadOnlyList<ValveState> valveStateSource,
+        IReadOnlyList<PumpState> pumpStateSource,
+        SemiImplicitHydraulicEvaluation referenceEvaluation,
+        out int reusedComponentCount,
+        out int componentCount)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(fluidNodeStates);
+        ArgumentNullException.ThrowIfNull(valveStateSource);
+        ArgumentNullException.ThrowIfNull(pumpStateSource);
+        ArgumentNullException.ThrowIfNull(referenceEvaluation);
+
+        var layout = GetEvaluationLayout(definition, fluidNodeStates, valveStateSource, pumpStateSource);
+        var snapshot = referenceEvaluation.ComponentSnapshot;
+        if (snapshot is null
+            || !ReferenceEquals(snapshot.Definition, definition)
+            || snapshot.FluidNodeStates.Count != fluidNodeStates.Count
+            || snapshot.ValveStates.Count != valveStateSource.Count
+            || snapshot.PumpStates.Count != pumpStateSource.Count
+            || snapshot.PipeResults.Length != layout.Pipes.Length
+            || snapshot.ValveResults.Length != layout.Valves.Length
+            || snapshot.PumpResults.Length != layout.Pumps.Length)
+        {
+            return EvaluateCore(
+                layout,
+                fluidNodeStates,
+                valveStateSource,
+                pumpStateSource,
+                referenceSnapshot: null,
+                out reusedComponentCount,
+                out componentCount);
+        }
+
+        return EvaluateCore(
+            layout,
+            fluidNodeStates,
+            valveStateSource,
+            pumpStateSource,
+            snapshot,
+            out reusedComponentCount,
+            out componentCount);
+    }
+
+    private SemiImplicitHydraulicEvaluation EvaluateCore(
+        HydraulicEvaluationLayout layout,
+        IReadOnlyList<FluidNodeState> fluidNodeStates,
+        IReadOnlyList<ValveState> valveStateSource,
+        IReadOnlyList<PumpState> pumpStateSource,
+        HydraulicComponentEvaluationSnapshot? referenceSnapshot,
+        out int reusedComponentCount,
+        out int componentCount)
+    {
+        var balances = new FluidNodeBalance[layout.FluidNodeIds.Length];
+        Array.Fill(balances, FluidNodeBalance.Zero);
+        var pipeFlows = new SortedDictionary<string, MassFlowRate>(StringComparer.Ordinal);
+        var valveFlows = new SortedDictionary<string, MassFlowRate>(StringComparer.Ordinal);
+        var pumpFlows = new SortedDictionary<string, MassFlowRate>(StringComparer.Ordinal);
+        var pipeResults = new PipeFlowResult[layout.Pipes.Length];
+        var valveResults = new ValveFlowResult[layout.Valves.Length];
+        var pumpResults = new PumpFlowResult[layout.Pumps.Length];
         var pumpHydraulicPower = Power.Zero;
+        reusedComponentCount = 0;
+        componentCount = layout.Pipes.Length + layout.Valves.Length + layout.Pumps.Length;
 
-        foreach (var pipe in definition.Pipes)
+        for (var index = 0; index < layout.Pipes.Length; index++)
         {
-            var result = _pipeFlowSolver.Solve(pipe, fluidNodes[pipe.FromNodeId], fluidNodes[pipe.ToNodeId]);
-            balances[pipe.FromNodeId] += result.FromNodeBalance;
-            balances[pipe.ToNodeId] += result.ToNodeBalance;
-            pipeFlows.Add(pipe.Id, result.MassFlowRate);
+            var binding = layout.Pipes[index];
+            PipeFlowResult result;
+            if (referenceSnapshot is not null
+                && ReferenceEquals(fluidNodeStates[binding.FromNodeIndex], referenceSnapshot.FluidNodeStates[binding.FromNodeIndex])
+                && ReferenceEquals(fluidNodeStates[binding.ToNodeIndex], referenceSnapshot.FluidNodeStates[binding.ToNodeIndex]))
+            {
+                result = referenceSnapshot.PipeResults[index];
+                reusedComponentCount++;
+            }
+            else
+            {
+                result = _pipeFlowSolver.Solve(
+                    binding.Definition,
+                    fluidNodeStates[binding.FromNodeIndex],
+                    fluidNodeStates[binding.ToNodeIndex]);
+            }
+
+            pipeResults[index] = result;
+            balances[binding.FromNodeIndex] += result.FromNodeBalance;
+            balances[binding.ToNodeIndex] += result.ToNodeBalance;
+            pipeFlows.Add(binding.Definition.Id, result.MassFlowRate);
         }
 
-        foreach (var valve in definition.Valves)
+        for (var index = 0; index < layout.Valves.Length; index++)
         {
-            var result = _valveFlowSolver.Solve(
-                valve,
-                valveStates[valve.Id],
-                fluidNodes[valve.Pipe.FromNodeId],
-                fluidNodes[valve.Pipe.ToNodeId]);
-            balances[valve.Pipe.FromNodeId] += result.FromNodeBalance;
-            balances[valve.Pipe.ToNodeId] += result.ToNodeBalance;
-            valveFlows.Add(valve.Id, result.MassFlowRate);
+            var binding = layout.Valves[index];
+            ValveFlowResult result;
+            if (referenceSnapshot is not null
+                && ReferenceEquals(valveStateSource[binding.StateIndex], referenceSnapshot.ValveStates[binding.StateIndex])
+                && ReferenceEquals(fluidNodeStates[binding.FromNodeIndex], referenceSnapshot.FluidNodeStates[binding.FromNodeIndex])
+                && ReferenceEquals(fluidNodeStates[binding.ToNodeIndex], referenceSnapshot.FluidNodeStates[binding.ToNodeIndex]))
+            {
+                result = referenceSnapshot.ValveResults[index];
+                reusedComponentCount++;
+            }
+            else
+            {
+                result = _valveFlowSolver.Solve(
+                    binding.Definition,
+                    valveStateSource[binding.StateIndex],
+                    fluidNodeStates[binding.FromNodeIndex],
+                    fluidNodeStates[binding.ToNodeIndex]);
+            }
+
+            valveResults[index] = result;
+            balances[binding.FromNodeIndex] += result.FromNodeBalance;
+            balances[binding.ToNodeIndex] += result.ToNodeBalance;
+            valveFlows.Add(binding.Definition.Id, result.MassFlowRate);
         }
 
-        foreach (var pump in definition.Pumps)
+        for (var index = 0; index < layout.Pumps.Length; index++)
         {
-            var result = _pumpFlowSolver.Solve(
-                pump,
-                pumpStates[pump.Id],
-                fluidNodes[pump.Pipe.FromNodeId],
-                fluidNodes[pump.Pipe.ToNodeId]);
-            balances[pump.Pipe.FromNodeId] += result.FromNodeBalance;
-            balances[pump.Pipe.ToNodeId] += result.ToNodeBalance;
-            pumpFlows.Add(pump.Id, result.MassFlowRate);
+            var binding = layout.Pumps[index];
+            PumpFlowResult result;
+            if (referenceSnapshot is not null
+                && ReferenceEquals(pumpStateSource[binding.StateIndex], referenceSnapshot.PumpStates[binding.StateIndex])
+                && ReferenceEquals(fluidNodeStates[binding.FromNodeIndex], referenceSnapshot.FluidNodeStates[binding.FromNodeIndex])
+                && ReferenceEquals(fluidNodeStates[binding.ToNodeIndex], referenceSnapshot.FluidNodeStates[binding.ToNodeIndex]))
+            {
+                result = referenceSnapshot.PumpResults[index];
+                reusedComponentCount++;
+            }
+            else
+            {
+                result = _pumpFlowSolver.Solve(
+                    binding.Definition,
+                    pumpStateSource[binding.StateIndex],
+                    fluidNodeStates[binding.FromNodeIndex],
+                    fluidNodeStates[binding.ToNodeIndex]);
+            }
+
+            pumpResults[index] = result;
+            balances[binding.FromNodeIndex] += result.FromNodeBalance;
+            balances[binding.ToNodeIndex] += result.ToNodeBalance;
+            pumpFlows.Add(binding.Definition.Id, result.MassFlowRate);
             pumpHydraulicPower += result.HydraulicPowerExchange;
         }
 
-        var massRateClosure = Math.Abs(CompensatedSum(balances.Values.Select(static balance => balance.NetMassFlowRate.KilogramsPerSecond)));
-        var hydraulicEnergyRate = CompensatedSum(balances.Values.Select(static balance => balance.NetEnergyRate.Watts));
+        var balanceMap = new SortedDictionary<string, FluidNodeBalance>(StringComparer.Ordinal);
+        for (var index = 0; index < layout.FluidNodeIds.Length; index++)
+        {
+            balanceMap.Add(layout.FluidNodeIds[index], balances[index]);
+        }
+
+        var massRateClosure = Math.Abs(CompensatedSum(balances.Select(static balance => balance.NetMassFlowRate.KilogramsPerSecond)));
+        var hydraulicEnergyRate = CompensatedSum(balances.Select(static balance => balance.NetEnergyRate.Watts));
         var energyOwnershipResidual = Math.Abs(hydraulicEnergyRate - pumpHydraulicPower.Watts);
+        var snapshot = new HydraulicComponentEvaluationSnapshot(
+            layout.Definition,
+            fluidNodeStates,
+            valveStateSource,
+            pumpStateSource,
+            pipeResults,
+            valveResults,
+            pumpResults);
 
         return new SemiImplicitHydraulicEvaluation(
-            balances,
+            balanceMap,
             pipeFlows,
             valveFlows,
             pumpFlows,
             pumpHydraulicPower,
             massRateClosure,
-            energyOwnershipResidual);
+            energyOwnershipResidual,
+            snapshot);
+    }
+
+    private HydraulicEvaluationLayout GetEvaluationLayout(
+        PlantDefinition definition,
+        IReadOnlyList<FluidNodeState> fluidNodeStates,
+        IReadOnlyList<ValveState> valveStates,
+        IReadOnlyList<PumpState> pumpStates)
+    {
+        if (_evaluationLayout is not null && ReferenceEquals(_evaluationLayout.Definition, definition))
+        {
+            return _evaluationLayout;
+        }
+
+        _evaluationLayout = HydraulicEvaluationLayout.Create(definition, fluidNodeStates, valveStates, pumpStates);
+        return _evaluationLayout;
     }
 
     public SemiImplicitHydraulicPrototypeStepResult StepExplicit(
@@ -98,14 +259,124 @@ public sealed class SemiImplicitHydraulicPrototypeSolver
         IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances)
     {
         ValidateStepArguments(committedState, deltaTime, frozenNonHydraulicBalances);
-        var hydraulic = Evaluate(committedState);
-        var totalBalances = CombineBalances(committedState, hydraulic.FluidNodeBalances, frozenNonHydraulicBalances);
+        return StepExplicitFromHydraulicEvaluation(
+            committedState,
+            deltaTime,
+            frozenNonHydraulicBalances,
+            Evaluate(committedState));
+    }
+
+    /// <summary>
+    /// H.28.1-B internal reuse seam. It preserves the exact historical explicit-balance combination and
+    /// integration order while accepting an already-computed committed-state hydraulic evaluation.
+    /// </summary>
+    internal SemiImplicitHydraulicPrototypeStepResult StepExplicitFromHydraulicEvaluation(
+        PlantState committedState,
+        TimeSpan deltaTime,
+        IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
+        SemiImplicitHydraulicEvaluation hydraulicEvaluation)
+    {
+        ValidateStepArguments(committedState, deltaTime, frozenNonHydraulicBalances);
+        ArgumentNullException.ThrowIfNull(hydraulicEvaluation);
+        var totalBalances = CombineBalances(
+            committedState,
+            hydraulicEvaluation.FluidNodeBalances,
+            frozenNonHydraulicBalances);
         var candidate = IntegrateFromCommitted(committedState, totalBalances, deltaTime);
 
         return new SemiImplicitHydraulicPrototypeStepResult(
             candidate,
-            hydraulic,
-            hydraulic.FluidNodeBalances,
+            hydraulicEvaluation,
+            hydraulicEvaluation.FluidNodeBalances,
+            1,
+            true,
+            0d,
+            0d);
+    }
+
+    /// <summary>
+    /// H.28.1-B exact reuse seam. A historical explicit fluid-node result is reused only when the
+    /// already-applied historical total balance is exactly equal to the canonical H.4
+    /// hydraulic-plus-frozen-non-hydraulic balance. Nodes whose arithmetic history differs are
+    /// reintegrated through the unchanged H.4 path, preserving bit-exact predictor semantics.
+    /// </summary>
+    internal SemiImplicitHydraulicPrototypeStepResult StepExplicitFromHistoricalCandidate(
+        PlantState committedState,
+        TimeSpan deltaTime,
+        IReadOnlyDictionary<string, FluidNodeBalance> frozenNonHydraulicBalances,
+        SemiImplicitHydraulicEvaluation hydraulicEvaluation,
+        PlantState historicalExplicitCandidateState,
+        IReadOnlyDictionary<string, FluidNodeBalance> historicalAppliedTotalBalances,
+        out int reusedFluidNodeCount)
+    {
+        ValidateStepArguments(committedState, deltaTime, frozenNonHydraulicBalances);
+        ArgumentNullException.ThrowIfNull(hydraulicEvaluation);
+        ArgumentNullException.ThrowIfNull(historicalExplicitCandidateState);
+        ArgumentNullException.ThrowIfNull(historicalAppliedTotalBalances);
+
+        if (!ReferenceEquals(committedState.Definition, historicalExplicitCandidateState.Definition))
+        {
+            throw new ArgumentException(
+                "Historical explicit candidate must use the same plant definition as the committed state.",
+                nameof(historicalExplicitCandidateState));
+        }
+
+        if (historicalExplicitCandidateState.FluidNodes.Count != committedState.FluidNodes.Count)
+        {
+            throw new ArgumentException(
+                "Historical explicit candidate must contain the same number of fluid nodes as the committed state.",
+                nameof(historicalExplicitCandidateState));
+        }
+
+        var canonicalTotalBalances = CombineBalances(
+            committedState,
+            hydraulicEvaluation.FluidNodeBalances,
+            frozenNonHydraulicBalances);
+        var candidateFluidNodes = new FluidNodeState[committedState.FluidNodes.Count];
+        reusedFluidNodeCount = 0;
+
+        for (var index = 0; index < committedState.FluidNodes.Count; index++)
+        {
+            var committedNode = committedState.FluidNodes[index];
+            var historicalNode = historicalExplicitCandidateState.FluidNodes[index];
+            if (!string.Equals(committedNode.Id, historicalNode.Id, StringComparison.Ordinal))
+            {
+                throw new ArgumentException(
+                    $"Historical explicit candidate fluid-node order differs at index {index}: expected '{committedNode.Id}', found '{historicalNode.Id}'.",
+                    nameof(historicalExplicitCandidateState));
+            }
+
+            if (!historicalAppliedTotalBalances.TryGetValue(committedNode.Id, out var historicalBalance))
+            {
+                throw new ArgumentException(
+                    $"Historical applied total balances do not contain fluid node '{committedNode.Id}'.",
+                    nameof(historicalAppliedTotalBalances));
+            }
+
+            var canonicalBalance = canonicalTotalBalances[committedNode.Id];
+            if (historicalBalance.Equals(canonicalBalance))
+            {
+                candidateFluidNodes[index] = historicalNode;
+                reusedFluidNodeCount++;
+            }
+            else
+            {
+                candidateFluidNodes[index] = _fluidNodeIntegrator.Step(committedNode, canonicalBalance, deltaTime);
+            }
+        }
+
+        var candidate = new PlantState(
+            committedState.Definition,
+            candidateFluidNodes,
+            committedState.Valves,
+            committedState.Pumps,
+            committedState.ThermalBodies,
+            committedState.HeatSources);
+
+        return new SemiImplicitHydraulicPrototypeStepResult(
+            candidate,
+            hydraulicEvaluation,
+            hydraulicEvaluation.FluidNodeBalances,
             1,
             true,
             0d,
@@ -301,4 +572,66 @@ public sealed class SemiImplicitHydraulicPrototypeSolver
 
         return sum;
     }
+    private sealed record HydraulicEvaluationLayout(
+        PlantDefinition Definition,
+        string[] FluidNodeIds,
+        PipeBinding[] Pipes,
+        ValveBinding[] Valves,
+        PumpBinding[] Pumps)
+    {
+        public static HydraulicEvaluationLayout Create(
+            PlantDefinition definition,
+            IReadOnlyList<FluidNodeState> fluidNodeStates,
+            IReadOnlyList<ValveState> valveStates,
+            IReadOnlyList<PumpState> pumpStates)
+        {
+            var fluidNodeIndexes = fluidNodeStates
+                .Select(static (state, index) => (state.Id, Index: index))
+                .ToDictionary(static item => item.Id, static item => item.Index, StringComparer.Ordinal);
+            var valveIndexes = valveStates
+                .Select(static (state, index) => (state.ValveId, Index: index))
+                .ToDictionary(static item => item.ValveId, static item => item.Index, StringComparer.Ordinal);
+            var pumpIndexes = pumpStates
+                .Select(static (state, index) => (state.PumpId, Index: index))
+                .ToDictionary(static item => item.PumpId, static item => item.Index, StringComparer.Ordinal);
+
+            var fluidNodeIds = definition.FluidNodes.Select(static item => item.Id).ToArray();
+            if (fluidNodeIds.Length != fluidNodeStates.Count)
+            {
+                throw new ArgumentException("Hydraulic evaluation fluid-node state count does not match the plant definition.", nameof(fluidNodeStates));
+            }
+
+            for (var index = 0; index < fluidNodeIds.Length; index++)
+            {
+                if (!string.Equals(fluidNodeIds[index], fluidNodeStates[index].Id, StringComparison.Ordinal))
+                {
+                    throw new ArgumentException("Hydraulic evaluation fluid-node states must remain in canonical plant order.", nameof(fluidNodeStates));
+                }
+            }
+
+            var pipes = definition.Pipes.Select(pipe => new PipeBinding(
+                pipe,
+                fluidNodeIndexes[pipe.FromNodeId],
+                fluidNodeIndexes[pipe.ToNodeId])).ToArray();
+            var valves = definition.Valves.Select(valve => new ValveBinding(
+                valve,
+                valveIndexes[valve.Id],
+                fluidNodeIndexes[valve.Pipe.FromNodeId],
+                fluidNodeIndexes[valve.Pipe.ToNodeId])).ToArray();
+            var pumps = definition.Pumps.Select(pump => new PumpBinding(
+                pump,
+                pumpIndexes[pump.Id],
+                fluidNodeIndexes[pump.Pipe.FromNodeId],
+                fluidNodeIndexes[pump.Pipe.ToNodeId])).ToArray();
+
+            return new HydraulicEvaluationLayout(definition, fluidNodeIds, pipes, valves, pumps);
+        }
+    }
+
+    private readonly record struct PipeBinding(PipeDefinition Definition, int FromNodeIndex, int ToNodeIndex);
+
+    private readonly record struct ValveBinding(ValveDefinition Definition, int StateIndex, int FromNodeIndex, int ToNodeIndex);
+
+    private readonly record struct PumpBinding(PumpDefinition Definition, int StateIndex, int FromNodeIndex, int ToNodeIndex);
+
 }

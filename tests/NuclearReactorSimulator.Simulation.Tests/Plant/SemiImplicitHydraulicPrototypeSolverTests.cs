@@ -35,6 +35,53 @@ public sealed class SemiImplicitHydraulicPrototypeSolverTests
     }
 
     [Fact]
+    public void IncrementalEvaluate_ReusesOnlyExactUnchangedComponentsAndMatchesFullEvaluation()
+    {
+        var state = CreateThreeNodeState();
+        var solver = new SemiImplicitHydraulicPrototypeSolver(new LinearCompressibilityModel());
+        var reference = solver.Evaluate(state);
+        var originalA = state.GetFluidNode("a");
+        var changedInventory = new FluidNodeInventory(
+            originalA.Mass + Mass.FromKilograms(0.25d),
+            originalA.InternalEnergy + Energy.FromKilojoules(125d));
+        var thermodynamics = new LinearCompressibilityModel();
+        var changedA = new FluidNodeState(
+            originalA.Definition,
+            changedInventory,
+            thermodynamics.Resolve(originalA.Definition, changedInventory, originalA.Thermodynamics));
+        var candidateNodes = new[]
+        {
+            changedA,
+            state.GetFluidNode("b"),
+            state.GetFluidNode("c"),
+        };
+
+        var incremental = solver.EvaluateWithExactReferenceReuse(
+            state.Definition,
+            candidateNodes,
+            state.Valves,
+            state.Pumps,
+            reference,
+            out var reusedComponents,
+            out var componentCount);
+        var full = solver.Evaluate(
+            state.Definition,
+            candidateNodes,
+            state.Valves,
+            state.Pumps);
+
+        Assert.Equal(2, componentCount);
+        Assert.Equal(1, reusedComponents);
+        Assert.Equal(full.FluidNodeBalances.ToArray(), incremental.FluidNodeBalances.ToArray());
+        Assert.Equal(full.PipeMassFlowRates.ToArray(), incremental.PipeMassFlowRates.ToArray());
+        Assert.Equal(full.ValveMassFlowRates.ToArray(), incremental.ValveMassFlowRates.ToArray());
+        Assert.Equal(full.PumpMassFlowRates.ToArray(), incremental.PumpMassFlowRates.ToArray());
+        Assert.Equal(full.PumpHydraulicPowerExchange, incremental.PumpHydraulicPowerExchange);
+        Assert.Equal(full.MassRateClosureResidualKilogramsPerSecond, incremental.MassRateClosureResidualKilogramsPerSecond);
+        Assert.Equal(full.HydraulicEnergyOwnershipResidualWatts, incremental.HydraulicEnergyOwnershipResidualWatts);
+    }
+
+    [Fact]
     public void SemiImplicitStep_ConvergesAndSuppressesExplicitPressureOvershootOnStiffPair()
     {
         var state = CreateTwoNodeState(1_001d, 999d);
@@ -148,6 +195,51 @@ public sealed class SemiImplicitHydraulicPrototypeSolverTests
         return new PlantState(
             definition,
             new[] { State(nodeA, massAKilograms), State(nodeB, massBKilograms) },
+            Array.Empty<ValveState>(),
+            Array.Empty<PumpState>(),
+            Array.Empty<ThermalBodyState>(),
+            Array.Empty<HeatSourceState>());
+    }
+
+    private static PlantState CreateThreeNodeState()
+    {
+        var nodeA = new FluidNodeDefinition("a", Volume.FromCubicMetres(1d));
+        var nodeB = new FluidNodeDefinition("b", Volume.FromCubicMetres(1d));
+        var nodeC = new FluidNodeDefinition("c", Volume.FromCubicMetres(1d));
+        var definition = new PlantDefinition(
+            "three-node-incremental",
+            new[] { nodeA, nodeB, nodeC },
+            new[]
+            {
+                new PipeDefinition("ab", "a", "b", QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(100d)),
+                new PipeDefinition("bc", "b", "c", QuadraticHydraulicResistance.FromPascalSecondsSquaredPerKilogramSquared(100d)),
+            },
+            Array.Empty<ValveDefinition>(),
+            Array.Empty<PumpDefinition>(),
+            Array.Empty<ThermalBodyDefinition>(),
+            Array.Empty<HeatTransferDefinition>(),
+            Array.Empty<HeatSourceDefinition>());
+        var thermodynamics = new LinearCompressibilityModel();
+
+        FluidNodeState State(FluidNodeDefinition node, double mass)
+        {
+            var inventory = new FluidNodeInventory(
+                Mass.FromKilograms(mass),
+                Energy.FromMegajoules(mass * 0.5d));
+            return new FluidNodeState(
+                node,
+                inventory,
+                thermodynamics.Resolve(
+                    node,
+                    inventory,
+                    new FluidThermodynamicState(
+                        Pressure.FromMegapascals(5d),
+                        Temperature.FromDegreesCelsius(250d))));
+        }
+
+        return new PlantState(
+            definition,
+            new[] { State(nodeA, 1_001d), State(nodeB, 1_000d), State(nodeC, 999d) },
             Array.Empty<ValveState>(),
             Array.Empty<PumpState>(),
             Array.Empty<ThermalBodyState>(),

@@ -41,29 +41,55 @@ public sealed class ThermodynamicBranchContinuityModel : IFluidThermodynamicMode
         ArgumentNullException.ThrowIfNull(inventory);
         ArgumentNullException.ThrowIfNull(previousState);
 
-        var production = _productionModel.Resolve(definition, inventory, previousState);
-        if (_targetNodeIds is not null && !_targetNodeIds.Contains(definition.Id))
+        var targeted = _targetNodeIds is null || _targetNodeIds.Contains(definition.Id);
+        if (!targeted)
         {
-            return production;
+            return _productionModel.Resolve(definition, inventory, previousState);
         }
 
         if (Options.Policy == ThermodynamicBranchContinuityPolicy.ProductionControl)
         {
+            var productionControl = _productionModel.Resolve(definition, inventory, previousState);
             RecordDecision(
                 definition.Id,
                 previousState,
-                production,
-                production,
+                productionControl,
+                productionControl,
                 "production-control",
                 multipleRoots: false,
                 previousPhaseRootFound: false,
                 previousPhasePressureDrift: double.NaN,
                 previousPhaseTemperatureDriftKelvins: double.NaN);
-            return production;
+            return productionControl;
         }
 
-        var diagnostic = _diagnosticProvider.DiagnoseInverseBranchSelection(definition, inventory, previousState);
-        if (!diagnostic.MultiplePhaseRootsAvailable
+        FluidThermodynamicState production;
+        bool multiplePhaseRootsAvailable;
+        WaterSteamInverseBranchCandidate? previousPhaseCandidate;
+        if (ReferenceEquals(_productionModel, _diagnosticProvider)
+            && _productionModel is SimplifiedWaterSteamThermodynamicModel optimizedProvider)
+        {
+            // H.28.1-E: the production resolver and inverse-branch diagnostic are the same simplified
+            // water/steam model in the H.13-H.28 corrected path. Fuse those two pure traversals while
+            // preserving the exact production selection, overlap boolean and first previous-phase candidate.
+            var optimized = optimizedProvider.EvaluateBranchContinuity(definition, inventory, previousState);
+            production = optimized.ProductionState;
+            multiplePhaseRootsAvailable = optimized.MultiplePhaseRootsAvailable;
+            previousPhaseCandidate = optimized.PreviousPhaseCandidate;
+        }
+        else
+        {
+            production = _productionModel.Resolve(definition, inventory, previousState);
+            var diagnostic = _diagnosticProvider.DiagnoseInverseBranchSelection(definition, inventory, previousState);
+            multiplePhaseRootsAvailable = diagnostic.MultiplePhaseRootsAvailable;
+            previousPhaseCandidate = diagnostic.Candidates
+                .Where(static candidate => candidate.RootFound)
+                .Where(candidate => string.Equals(candidate.Phase, previousState.Phase.ToString(), StringComparison.Ordinal))
+                .OrderBy(static candidate => candidate.AttemptOrder)
+                .FirstOrDefault();
+        }
+
+        if (!multiplePhaseRootsAvailable
             || previousState.Phase is not (FluidPhase.SaturatedMixture or FluidPhase.SuperheatedVapor))
         {
             RecordDecision(
@@ -72,18 +98,13 @@ public sealed class ThermodynamicBranchContinuityModel : IFluidThermodynamicMode
                 production,
                 production,
                 "production-no-overlap",
-                diagnostic.MultiplePhaseRootsAvailable,
+                multiplePhaseRootsAvailable,
                 previousPhaseRootFound: false,
                 previousPhasePressureDrift: double.NaN,
                 previousPhaseTemperatureDriftKelvins: double.NaN);
             return production;
         }
 
-        var previousPhaseCandidate = diagnostic.Candidates
-            .Where(static candidate => candidate.RootFound)
-            .Where(candidate => string.Equals(candidate.Phase, previousState.Phase.ToString(), StringComparison.Ordinal))
-            .OrderBy(static candidate => candidate.AttemptOrder)
-            .FirstOrDefault();
         if (previousPhaseCandidate is null)
         {
             RecordDecision(

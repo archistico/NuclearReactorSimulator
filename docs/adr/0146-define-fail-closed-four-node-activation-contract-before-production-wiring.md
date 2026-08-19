@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4.1-H.20 candidate design.
+Accepted and validated in M10.9.4.1-H.20 on 2026-08-17.
 
 ## Context
 

@@ -1,3 +1,284 @@
+# Changelog
+
+## M10.9.4.1-H.28 Requalification 2 — Performance, Cost & Long-Running Operational Soak — CANDIDATE
+
+- Built directly on user-validated H.28.1-G.
+- H.28.1-G passed build, complete ordinary tests and focused gate with 20/20 trigger/commit, zero safety violations, 35 hydraulic evaluations, 32 probes, Jacobian dimension 32 and deterministic fingerprint unchanged.
+- Triggered p95 fell to 79.7023 ms, below the unchanged H.28 readiness threshold 88.3812 ms; estimated p95 ratio is 10.821618172190465.
+- Restores the original H.28 benchmark/soak gate with unchanged hard ceilings: median wall <=8, p95 wall <=12, median allocations <=16.
+- Adds frozen H.28.1-G user evidence fingerprints; no numerical runtime source changes.
+- H.29 remains blocked. A green H.28 removes the performance block but still requires one H.24 long-horizon rerun before activation review.
+
+
+## M10.9.4.1-H.28.1-G — Untargeted Branch-Disagreement Scan Fast Path — CANDIDATE
+
+- Rebased on validated H.28.1-D; H.28.1-E/F remain frozen failed performance evidence, not baselines.
+- Freezes the real H.28.1-F evidence: trigger p95 96.5735 ms, H.9 74.5796 ms, Jacobian 58.8546 ms, fingerprint unchanged.
+- Adds an internal reduced disagreement diagnostic to `SimplifiedWaterSteamThermodynamicModel` returning only production-selected phase and the late-boundary-saturated-shadow predicate consumed by the fail-closed untargeted scan.
+- Preserves branch equations and priority; coarse-saturated can return immediately because it is first-priority and makes the late-shadow predicate false. Boundary-superheated is evaluated only when every earlier production branch failed.
+- `FourNodeBranchContinuityShadowIntegrationSolver` uses the reduced diagnostic only for the standard simplified provider; any non-standard provider keeps the complete public `DiagnoseInverseBranchSelection` path.
+- Adds exact-equivalence coverage across coarse saturated, subcooled liquid, coarse superheated, boundary-aware saturated, boundary-aware superheated and no-root representative states.
+- H.9 mathematics, 32 probes, 35 logical hydraulic evaluations, Jacobian dimension 32, P060/F040, hysteresis, H.20/H.22, physical coefficients and 10 ms fixed step remain unchanged.
+- H.28 remains failed until the original unchanged performance gate passes; H.29 remains blocked.
+
+## M10.9.4.1-H.28.1-F — Jacobian Probe Coordinate-Residual Specialization — CANDIDATE
+
+- Rebased on validated H.28.1-D; H.28.1-E remains failed evidence, not a baseline.
+- Carries forward the measured E exact continuity and hydraulic-component reuse optimizations.
+- Specializes finite-difference probes so Newton builds each Jacobian column from the normalized coordinate residual actually consumed by H.9, without mapped thermodynamic fixed-point integration that is discarded by the Jacobian builder.
+- Keeps full fixed-point pressure/flow merit for initial residuals, accepted line-search trials and fallback trials.
+- Adds an internal `FullFixedPoint` legacy probe mode solely for exact-equivalence tests; public construction uses `CoordinateOnly`.
+- Freezes the real H.28.1-E failed evidence: trigger p95 157.754 ms versus unchanged H.28 readiness threshold 88.3812 ms.
+- Does not change 32 probe evaluations, 35 logical hydraulic evaluations, Jacobian dimension 32, H.9 tolerances, P060/F040, H.20/H.22, hysteresis, target set, physical coefficients or the 10 ms fixed step.
+
+## M10.9.4.1-H.28.1-D Preflight Hotfix 1 — Unused mapped-reuse local cleanup (candidate)
+
+- Static pre-build review found `mappedProbeReuseFraction` calculated but never consumed in the new H.28.1-D focused audit.
+- Removed that redundant local calculation; mapped reuse remains reported directly from row counters in the summary/metrics.
+- No production/runtime source file changed. H.9 mathematics, probe count, hydraulic-evaluation count, thermodynamic cache, exact probe-state reuse, H.20/H.22 ownership and the deterministic fingerprint contract are unchanged.
+- This preflight hotfix supersedes the first H.28.1-D candidate before any user build/test run.
+
+
+## M10.9.4.1-H.28.1-D — Hydraulic Probe CPU Hot-Path Analysis & Optimization — CANDIDATE
+
+- Built directly on user-validated H.28.1-B; H.28 remains FAILED and H.29 remains blocked.
+- Reuses finite-difference probe fluid-node states only when the probe hydraulic balance is exactly equal to the reference balance; changed nodes retain the existing integration/thermodynamic path.
+- Reuses the immutable 513-point saturation-property grid of the unchanged coarse saturated-mixture scan; dynamic boundary-aware scans and bisection remain unchanged.
+- Preserves 35 hydraulic evaluations, 32 probes, Jacobian dimension 32, H.9/H.20/H.22 semantics and exact deterministic fingerprint.
+- Focused gate requires material Jacobian/H.9/trigger wall reduction versus validated H.28.1-B while preserving H.28.1-C/B allocation and predictor gains.
+
+## M10.9.4.1-H.28.1-B — Historical Explicit Predictor Reuse — VALIDATED
+
+- User-reported build, complete `dotnet test` and focused H.28.1-B gate passed on 2026-08-19.
+- 20/20 trigger/commit behavior, 35/32 H.9 work counts and fingerprint `518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38` remained unchanged.
+- Non-trigger predictor wall cost fell from ~9309 us to ~392 us; non-trigger engine cost fell from ~19.2 ms to ~10.36 ms. Trigger H.9/Jacobian CPU remained ~1.659/~1.561 s.
+
+## M10.9.4.1-H.28.1-B — Historical Explicit Predictor Reuse — CANDIDATE
+
+- Built directly on user-validated H.28.1-C Hotfix 2.
+- Reuses the historical explicit fluid-node predictor state only where the applied total balance exactly matches the canonical H.4 balance, and reuses the already-computed committed hydraulic evaluation.
+- Reuses the historical explicit fluid-node integration node-by-node only when the historical total balance exactly equals the canonical H.4 balance; mismatched nodes are reintegrated through the unchanged H.4 path.
+- Retains the unchanged predictor-end hydraulic evaluation required by P060/F040 and records exact reuse counts in diagnostic attribution.
+- Preserves P060/F040, H.9 finite-difference Newton, 35 hydraulic evaluations / 32 probes, H.20 authority, H.22 ownership, target set, physical coefficients and 10 ms fixed step.
+- Focused gate requires exact H.28 deterministic fingerprint, preservation of H.28.1-C allocation gains and material non-trigger predictor wall/allocation reduction.
+- H.28 remains FAILED performance evidence and H.29 remains blocked.
+
+## M10.9.4.1-H.28.1-C Hotfix 2 — H.9 Jacobian/Probe Allocation & Hot-Path Optimization — VALIDATED
+
+- User-reported build, complete `dotnet test` and focused H.28.1-C gate passed on 2026-08-19.
+- 20/20 trigger/commit behavior, 35 hydraulic evaluations, 32 probes, Jacobian dimension 32 and deterministic fingerprint `518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38` were preserved.
+- Jacobian/probe allocation fell from 39,071,378 B to 925,328 B per trigger (~97.63% reduction); total H.9 allocation fell from 41,523,908 B to about 1,004,460 B (~97.58% reduction).
+- Triggered Jacobian wall time remained ~1.558 s, confirming CPU work rather than heap churn as the dominant trigger cost.
+
+
+## M10.9.4.1-H.28.1-C Hotfix 2 — IReadOnlyList Probe-State Compile Fix (CANDIDATE)
+
+- Fixes the single CS0266 exposed after Hotfix 1: `iterateFluidNodes` is explicitly typed as `IReadOnlyList<FluidNodeState>` so line-search accepted state can be assigned without copying.
+- No cast or `.ToArray()` is introduced; H.28.1-C optimization and H.9 mathematics remain unchanged.
+- H.27 Hotfix 1 remains the validated numerical baseline; H.28 remains failed and H.29 remains blocked.
+
+## M10.9.4.1-H.28.1-C Hotfix 1 — FluidNodeState Namespace Compile Fix — CANDIDATE
+
+- Records the first H.28.1-C local build failure: eight CS0246 errors in `JacobianHydraulicCorrectorSolver.cs`.
+- Adds the missing `using NuclearReactorSimulator.Domain.Physics.Fluids;` required by the optimized probe-path `FluidNodeState` signatures.
+- No numerical, performance-optimization, authority, ownership, physics or timestep contract changes.
+
+
+## M10.9.4.1-H.28.1-C — H.9 Jacobian/Probe Allocation & Hot-Path Optimization — CANDIDATE
+
+- Built after user validation of H.28.1-A Hotfix 2 attribution.
+- Preserves H.9 finite-difference Newton mathematics, 35 hydraulic evaluations, 32 probes, Jacobian dimension 32, H.20/H.22 authority/ownership, P060/F040, 2%/5 K hysteresis and the four-node target set.
+- Removes full `PlantState` materialization from transient H.9 trial/probe evaluation; only canonical fluid-node states are integrated and evaluated until the final candidate boundary.
+- Caches immutable hydraulic topology index bindings in `SemiImplicitHydraulicPrototypeSolver`, removes per-evaluation input lookup dictionaries, intermediate H.9 combined-balance dictionaries and duplicate hydraulic-evaluation canonical copies.
+- Replaces per-scan heap allocation of internal water/steam saturation-property records with a private value-type carrier while preserving the public saturation API and exact thermodynamic equations/search order.
+- Focused qualification requires the exact H.28 deterministic fingerprint plus material allocation reduction versus frozen H.28.1-A evidence.
+- H.28 remains failed and H.29 remains blocked until the original H.28 gate is rerun successfully.
+
+## M10.9.4.1-H.28.1-A Hotfix 2 — Performance Attribution — VALIDATED
+
+- User validation: build, complete ordinary suite and focused attribution gate passed.
+- 20/256 triggered corrected steps, 20 commits, zero rollback/unsafe/fallback-commit violations.
+- H.9 averaged 35 hydraulic evaluations, 32 probes and Jacobian dimension 32.
+- H.9 average ~1.654 s / ~41.52 MB per trigger; Jacobian build/probes ~1.556 s / ~39.07 MB.
+- Deterministic fingerprint `518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38` matches failed H.28 evidence.
+
+## M10.9.4.1-H.28.1-A Hotfix 2 — Architecture-Safe Measurement Provider — CANDIDATE
+
+- Records that Hotfix 1 compiled, but the ordinary suite correctly rejected direct `Stopwatch` use inside `NuclearReactorSimulator.Simulation`.
+- Removes every direct wall-clock/allocation-counter read from the Simulation project.
+- Adds internal `PerformanceAttributionMeasurement`: zero-valued by default, with temporary readers injected only by the focused Application test.
+- Keeps weak-reference attribution registries and deterministic H.9/H.21/H.22 records unchanged.
+- Changes no numerical equation, trigger, tolerance, authority, commit, protection or physical coefficient.
+- H.27 Hotfix 1 remains the validated baseline; H.28 remains failed evidence; H.29 remains blocked.
+
+## M10.9.4.1-H.28.1-A Hotfix 1 — Attribution Local-Variable Shadowing Compile Fix — CANDIDATE
+
+- Records the first local H.28.1-A build failure: eight CS0136 errors in `FourNodeBranchContinuityShadowIntegrationSolver.Step()` caused only by local names reused between the early non-trigger block and the containing method scope.
+- Renames the non-trigger attribution locals to `noTriggerAuthority*`, `noTriggerSidecar*`, `noTriggerResult` and `noTriggerAttribution`.
+- Changes no timing formula, allocation formula, registry behavior, numerical result, H.9/H.20/H.22 decision, threshold, target set, physical coefficient or production default.
+- H.27 Hotfix 1 remains the validated baseline; H.28 remains failed performance evidence; H.29 remains blocked.
+
+## M10.9.4.1-H.28.1-A — Corrected-Path Performance Attribution — CANDIDATE
+
+- Built directly on user-validated H.27 Hotfix 1 rather than on the failed H.28 candidate.
+- Freezes the user-produced failed H.28 summary, 256+256 benchmark, sampled soak and metrics artifacts with canonical SHA-256 fingerprints.
+- Records the H.28 failure as performance evidence: median wall ratio 9.1252571494799053, p95 ratio 100.01553278882017, ~1.70 s average triggered step and ~43.46 MB average triggered allocation; numerical safety/determinism remained green.
+- Adds diagnostic-only timing/allocation attribution around historical explicit preparation, sidecar predictor, H.9 layout/residual/Jacobian/line-search, disagreement scan, H.20 authority and H.22 commit/accounting.
+- Stores nondeterministic attribution outside deterministic result/telemetry record equality using weak-reference registries; no numerical decision consumes timing/allocation values.
+- Adds a short 64-warmup + 256-step attribution run and 128-step deterministic fingerprint control; no performance pass ceiling is applied in H.28.1-A.
+- H.28 remains failed and H.29 remains blocked.
+
+## M10.9.4.1-H.27 Hotfix 1 — High-Load Envelope Contract Fix — CANDIDATE
+
+- Records the first H.27 gate: build and ordinary tests passed; the focused six-scenario matrix failed only `high-load-10mwe` because its evidence condition incorrectly required the 10 MWe request to remain trip-free.
+- Aligns the audit with H.27 envelope semantics: reaching/observing the 10 MWe requested-load point is required; a canonical protection action is classified as `protected-boundary` rather than an automatic H.27 failure.
+- Changes only the focused audit contract and documentation; H.20/H.22 runtime, protection logic, P060/F040, H.9, bounded hysteresis, physical coefficients and standard production factories remain unchanged.
+
+
+## M10.9.4.1-H.27 — Off-Design Robustness & Qualification Envelope — CANDIDATE
+
+- Promotes user-validated H.26 Hotfix 1 as the authoritative baseline: 12/12 same-step explicit fallbacks, all eight typed H.20 rollback reasons plus four denial controls, zero corrected/partial commits and deterministic repeat.
+- Adds a targeted six-scenario off-design matrix over the unchanged H.22 corrected-commit runtime: 10 MWe, 50%/25% cooling capacity, combined load/cooling and bounded total cooling loss.
+- Records per-scenario envelope classification (`corrected-qualified`, `safe-fallback-envelope`, `protected-boundary`, `observed-no-trigger`).
+- Safe rollback/protection is permitted; fallback commits, unsafe corrected commits, conservation violations and nondeterminism fail the gate.
+- H.24 is not rerun; standard current-v2 remains `ExplicitCommittedState` at 10 ms.
+- Adds H.27 design/checklist/static review, ADR 0153 and focused script.
+
+## M10.9.4.1-H.26 Hotfix 1 — Focused Audit Proposed-Authority Contract Fix — CANDIDATE
+
+- Local `dotnet build` and complete `dotnet test` passed on 2026-08-19.
+- The focused H.26 gate reached the integrated stress test and failed only on `shadow-correction-not-evaluated`: telemetry correctly retained H.20 `ProposedAuthority=CorrectedCandidate`, while H.22 correctly denied the commit with `ShadowCorrectionNotEvaluated` and fell back physically to explicit.
+- Fixes only the audit expectation: `RunChallenge` now accepts the expected proposed authority; all challenges default to `ExplicitCommittedState`, while `shadow-correction-not-evaluated` explicitly expects `CorrectedCandidate`.
+- No `src/` runtime code, H.20/H.22 semantics, numerical thresholds, physical coefficients, standard factories or production defaults change.
+
+## M10.9.4.1-H.26 — Integrated Rollback & Fail-Closed Stress Qualification — CANDIDATE
+
+- Promotes user-validated H.25 as the authoritative baseline: five scenarios, 837 runtime steps, 178 corrected commits, zero rollback/fallback-commit/unsafe-commit violations, all expected outcomes green, 5m29s focused duration.
+- Freezes and fingerprints the complete validated H.25 summary, 837-row telemetry and metrics.
+- Adds one `internal` test-only authority-decision transform to `PlantNetworkOrchestrator`; the public constructor and all standard factories remain hook-free.
+- Re-runs unchanged H.20 typed-reason and H.22 commit-seam contracts, then forces all eight H.20 rollback reasons plus non-rollback denial controls through the real corrected-commit orchestrator.
+- Requires same-step physical equivalence to historical explicit fallback, zero corrected/partial commits and exact deterministic repeat.
+- Does not rerun H.24 and does not retune P060/F040, H.9, hysteresis, target nodes, physical coefficients or the 10 ms step.
+
+## M10.9.4.1-H.25 — Committed Protection & Operational-Transient Matrix — VALIDATED
+
+- User validation on 2026-08-19 passed build, complete ordinary tests and the focused H.25 gate.
+- Five scenarios completed 837 runtime steps in 5m29s with 178 corrected commits, zero H.20 rollback, fallback-commit violations or unsafe commits, and all expected outcomes satisfied.
+- Telemetry fingerprint `ED60939F1E3EE279F018315904EC0BCD88A7D1F446AC199E129BF18EAF82A19E`.
+- H.24 remains a rare 4h31m55s qualification gate and was not rerun.
+
+## M10.9.4.1-H.25 — Committed Protection & Operational-Transient Matrix — CANDIDATE
+
+- Promotes user-validated H.24 Hotfix 1 as the authoritative baseline: 30,008 committed runtime steps, 9,626 corrected commits, zero rollback/fallback-commit/unsafe-commit/untargeted-disagreement violations, all four nominal profiles trip-free.
+- Records H.24 focused duration 4h31m55s and classifies it as a rare qualification gate rather than a routine regression.
+- Adds compact frozen H.24 evidence and the canonical fingerprint of the full 30,008-row telemetry without embedding the 9.95 MB CSV.
+- Adds a short five-scenario committed protection/operational-transient matrix plus an ordinary eight-function protection-catalogue contract.
+- Does not modify numerical runtime or standard current-v2 activation.
+
+
+## M10.9.4.1-H.24 Hotfix 1 — Focused Audit Recording-Namespace Compile Fix — CANDIDATE
+
+- The first local H.24 build on 2026-08-18 failed only in `FourNodeCommittedLongHorizonCrossProfileQualificationAuditTests.cs` with CS0103 because `ControlRoomSnapshotFingerprint` was unresolved.
+- Root cause: the H.24 audit omitted `using NuclearReactorSimulator.Application.Scenarios.Recording;`; H.22/H.23 audit tests already import that namespace.
+- Hotfix 1 adds only that `using` directive to the focused H.24 audit. No calculation, assertion, runtime source, H.20/H.22 authority, target set, tolerance, physical coefficient or standard factory changes.
+- H.23 Hotfix 2 remains the authoritative validated baseline; H.24 Hotfix 1 remains candidate pending build, ordinary suite and focused H.24 gate.
+
+## M10.9.4.1-H.24 — Committed Long-Horizon & Cross-Profile Qualification — CANDIDATE
+
+- Built directly on user-validated H.23 Hotfix 2; standard current-v2 remains `ExplicitCommittedState` at 10 ms.
+- Adds no numerical runtime change: H.20 authority, H.22 commit seam, H.9, P060/F040, 2%/5 K four-node hysteresis, protection/replay runtime and physical coefficients remain unchanged.
+- Freezes and fingerprints the three user-validated H.23 replay/checkpoint/protection artifacts.
+- Exercises `FourNodeBranchContinuityCorrectedCommitOptIn` over the H.19 nominal four-profile domain: 12,000 steady + 6,000 load pulse + 6,000 cooling pulse + 6,000 combined intervals, plus 8 action-transition steps.
+- Safe H.20 rollback/fallback is allowed; fallback commits, unsafe corrected commits, new untargeted disagreements, network-accounting violations or profile trips fail the focused gate.
+- Does not freeze H.19's `3046/92/473` trigger census because actual corrected ownership legitimately changes the committed trajectory.
+- Adds the authoritative H.24–H.30 Phase H completion roadmap, H.24 design/checklist/static review, ADR 0150 and `run-four-node-committed-long-horizon-cross-profile-qualification-audit.cmd`.
+- H.24 remains candidate pending local build, complete ordinary suite and focused gate.
+
+## M10.9.4.1-H.23 Hotfix 2 — Deterministic Replay, Checkpoint & Protection Interaction Qualification — VALIDATED
+
+- User validation on 2026-08-18 passed build, complete ordinary tests and the focused H.23 gate after the two audit-only hotfixes.
+- 701 recorded steps at 10 ms; checkpoint at logical step 502 during in-flight reverse-power pickup; 199 continuation steps to final generator trip.
+- 242 corrected candidates committed with zero H.20 rollback, fallback-commit violations, unsafe commits or untargeted disagreements.
+- Full replay trace, checkpoint prefix/continuation and deterministic repeat all matched exactly.
+- Final reverse-power function latched, generator trip active and breaker open.
+- Trace fingerprint `7C8FBA8ECB197F65AB263A79268653E3C2988F700A5A863BB0304D377C82FB54`.
+- Standard current-v2 remained explicit; H.22 numerical runtime was unchanged.
+
+## M10.9.4.1-H.23 Hotfix 2 — ApplicationDescriptor Case-Sensitive Contract Fix — CANDIDATE
+
+- Records that H.23 Hotfix 1 compiled, but the subsequent ordinary/focused run failed on the same single case-sensitive `ApplicationDescriptorTests` assertion.
+- `ApplicationDescriptor.Current.Status` contains `standard factories remain ExplicitCommittedState at 10 ms.`; the test incorrectly expected capitalized `Standard factories remain ExplicitCommittedState`.
+- Changes only that test expectation to lowercase `standard`; descriptor text, numerical runtime, H.20/H.22 authority/commit behavior, replay/checkpoint/protection logic and frozen evidence are unchanged.
+- H.22 remains the authoritative validated baseline. H.23 Hotfix 2 remains candidate pending `dotnet build`, `dotnet test` and `scripts\run-four-node-committed-replay-protection-qualification-audit.cmd`.
+
+## M10.9.4.1-H.23 Hotfix 1 — Focused Audit Domain.Plant Namespace Compile Fix — CANDIDATE
+
+- Records the first local H.23 build on 2026-08-18: all projects compiled except `NuclearReactorSimulator.Application.Tests`, which failed with CS0246 at `FourNodeCommittedReplayProtectionQualificationAuditTests.cs(342,9)`.
+- Root cause: the focused H.23 test referenced `HydraulicNumericalCouplingMode` without importing its `NuclearReactorSimulator.Domain.Plant` namespace.
+- Adds only `using NuclearReactorSimulator.Domain.Plant;` to that focused audit source. No calculation, assertion, replay/checkpoint/protection contract, H.22 runtime, numerical policy, evidence fingerprint or production factory changes.
+- H.22 remains the authoritative validated baseline. H.23 Hotfix 1 remains candidate pending `dotnet build`, `dotnet test` and `scripts\run-four-node-committed-replay-protection-qualification-audit.cmd`.
+
+## M10.9.4.1-H.23 — Deterministic Replay, Checkpoint & Protection Interaction Qualification — CANDIDATE
+
+- Built directly on user-validated H.22; H.22 is promoted in documentation with 443/443 H.20-eligible/H.22-authorized corrected commits, zero fallback/unsafe commits and exact repeat.
+- Changes no numerical runtime algorithm or production selection path. Standard current-v2 remains `ExplicitCommittedState` at 10 ms.
+- Freezes the three user-validated H.22 focused artifacts with canonical SHA-256 provenance checks.
+- Adds a test-only exact-version initial-condition factory delegating to the unchanged H.22 committed audit runtime.
+- Qualifies the H.22 path through scenario recording/full replay, replay-backed in-flight checkpoint seek/continuation and evidence-derived reverse-power generator protection.
+- Captures an internal deterministic H.20/H.22/protection trace and requires exact recording/replay/restored-continuation equality, zero unsafe/fallback-commit violations and standard-factory explicit isolation.
+- Adds H.23 design/checklist/static review, ADR 0149 and `run-four-node-committed-replay-protection-qualification-audit.cmd`.
+- Committed long-horizon/cross-profile and off-design robustness remain required before default activation.
+
+## M10.9.4.1-H.22 — Four-Node Corrected-Candidate Commit Seam — VALIDATED
+
+- Built directly on user-validated H.21 Hotfix 1; standard current-v2 remains `ExplicitCommittedState` at 10 ms.
+- Adds separately opt-in `FourNodeBranchContinuityCorrectedCommitOptIn` mode and a second typed, fail-closed commit seam behind the unchanged H.20 eligibility/rollback decision.
+- Evaluates the complete historical explicit candidate first on every interval so any denied/unsafe H.22 decision falls back immediately without partial corrected ownership.
+- Exposes the H.9 corrected candidate and applied-iterate pump hydraulic power so committed-state audit uses the balances/work actually applied.
+- Corrected ownership is permitted only for triggered, H.20-qualified, non-rollback, evaluated and available candidates; every other reason remains explicit.
+- Freezes and fingerprints the user-validated H.21 summary, 2,000-step telemetry and metrics artifacts.
+- Adds a deterministic 2,000-interval H.22/H.22-repeat focused gate with positive authorized commits, zero fallback/unsafe commits, per-step conservation, no control-window trip and standard-factory explicit isolation.
+- H.22 does not require the post-commit trigger count to remain 15 because committed corrected state can legitimately alter subsequent trigger timing.
+- Adds H.22 design/checklist and ADR 0148. Replay, protection, committed long-horizon/cross-profile and off-design gates remain required before any default activation.
+- User validation on 2026-08-18 passed build, complete ordinary tests and focused H.22 gate: 443/443 eligible/authorized/committed corrections, zero rollback/fallback/unsafe/untargeted violations, 2000/2000 deterministic repeat and tight network conservation.
+
+## M10.9.4.1-H.21 Hotfix 1 — Four-Node Orchestrator Shadow Wiring & Telemetry Integration — VALIDATED
+
+- User local build, complete ordinary suite and cumulative H.19 -> H.20 -> H.21 focused gate passed on 2026-08-18 after the audit-only CS0136 rename.
+- 2,000/2,000 explicit-vs-H.21 presentation equivalence and 2,000/2,000 deterministic repeat equivalence.
+- 15 P060/F040 triggers; 15/15 corrected candidates eligible; zero rollback, zero corrected commits and zero untargeted branch disagreements.
+- 408 branch overrides, 6,456 previous-phase holds, zero hysteresis releases and deterministic telemetry fingerprint `0454270F4AA63E89915FE231328807D4A6B7AD0C733441F78DC06C86A159CDC8`.
+- Standard current-v2 remained `ExplicitCommittedState`; H.19/H.20 numerical and authority contracts remained unchanged.
+
+## M10.9.4.1-H.21 Hotfix 1 — Focused Audit Local-Variable Shadowing Compile Fix — CANDIDATE
+
+- Built directly on the H.21 Documentation Static Review 1 candidate over the user-validated H.20 baseline.
+- Records the user's 2026-08-18 local build result: all projects compiled except `NuclearReactorSimulator.Application.Tests`, which failed with CS0136 in `FourNodeOrchestratorShadowIntegrationAuditTests.cs` because `repeatFingerprint` was declared both inside the interval loop and later in the containing method scope.
+- Renames only the per-interval local to `repeatPresentationFingerprint`; calculations, assertions, H.21 telemetry, production code, H.19/H.20 prerequisites and expected focused evidence are unchanged.
+- The previous documentation/static review remains useful for structural consistency but did not and could not establish C# compilation success.
+- H.20 remains the authoritative validated baseline. H.21 Hotfix 1 remains CANDIDATE pending `dotnet build`, `dotnet test` and the complete H.21 focused gate.
+
+## M10.9.4.1-H.21 — Four-Node Orchestrator Shadow Wiring & Telemetry Integration — CANDIDATE
+
+- Builds directly on user-validated H.20.
+- Promotes H.20 documentation to VALIDATED: 473/473 default explicit decisions, 473/473 armed shadow candidate eligibility, zero commits, 8/8 typed rollback challenges and deterministic repeat.
+- Adds a frozen opt-in `FourNodeBranchContinuityShadowIntegrated` coupling mode that executes the exact P060/F040 + H.9 + 2%/5 K four-node policy and H.20 supervisor from the real `PlantNetworkOrchestrator`.
+- Refactors the existing H.4/H.19 gate solver to expose its exact explicit predictor/trigger metrics rather than duplicating trigger logic.
+- Adds typed per-step H.21 telemetry, but the orchestrator always returns the explicit predictor; corrected-state commit is impossible.
+- Freezes and fingerprints the user-validated H.20 focused artifacts.
+- Adds a 2,000-interval explicit/H.21/repeat lockstep audit and makes full H.19 and H.20 focused regressions prerequisites.
+- Documentation/static review 2026-08-18 reconciles stale H.17/H.18 checkpoint text and ADR 0142–0145 statuses, and clarifies that H.21 preserves the historical explicit orchestration path for the returned state while the sidecar predictor remains observational. H.21 remains CANDIDATE pending runtime validation.
+- Standard current-v2 factories remain `ExplicitCommittedState` at 10 ms; no P060/F040, H.9, hysteresis, target, physical coefficient or production inverse-map retuning.
+
+## M10.9.4.1-H.20 — Four-Node Activation Contract, Rollback & Shadow Telemetry — VALIDATED
+
+- User local compilation, complete ordinary suite and focused H.20 audit passed on 2026-08-17.
+- Frozen H.19 evidence accepted for 473 representatives.
+- Default arm: 473/473 explicit, 0/473 candidate eligible, 0 production commits.
+- Armed shadow simulation: 473/473 candidate eligible, zero rollback, zero production commits.
+- All 8/8 typed rollback challenges passed; deterministic fingerprint repeat passed.
+- Production remained `ExplicitCommittedState` at 10 ms and the H.20 supervisor remained unwired.
+
 ## M10.9.4.1-H.20 — Four-Node Activation Contract, Rollback & Shadow Telemetry — CANDIDATE
 
 - Built directly on user-validated H.19; production remains `ExplicitCommittedState` at 10 ms.

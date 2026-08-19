@@ -1,0 +1,11 @@
+=== 01-current-v2-four-node-performance-attribution ===
+H.28.1-A is diagnostic only. It starts from the H.27 Hotfix 1 validated baseline, freezes the failed H.28 performance evidence, and instruments the unchanged corrected path without changing trigger, H.9 mathematics, H.20 authority, H.22 commit ownership, physical coefficients or the 10 ms simulated fixed step.
+warmup-steps=64; attribution-steps=256; triggered=20; committed=20; rollbacks=0; unsafe-commits=0; fallback-commit-violations=0;
+nontrigger-average-engine-us=19681.899576271189; nontrigger-average-orchestrator-us=19066.597033898306; nontrigger-average-predictor-us=9528.008474576267; nontrigger-average-predictor-alloc-bytes=374592.88135593222;
+trigger-average-engine-us=1698849.8050000002; trigger-average-orchestrator-us=1698183.3250000004; trigger-average-predictor-us=5203.3450000000003; trigger-average-corrector-us=1653550.3450000002; trigger-average-disagreement-scan-us=34179.014999999999; trigger-average-commit-accounting-us=5209.7900000000009;
+h9-average-total-us=1653541.7850000001; h9-average-jacobian-build-us=1556270.9949999999; h9-jacobian-wall-share=0.94117427761282713; h9-average-line-search-us=48866.964999999997; h9-line-search-wall-share=0.029552906036783337; h9-average-hydraulic-evaluations=35; h9-average-probe-evaluations=32; h9-max-jacobian-dimension=32;
+trigger-average-engine-alloc-bytes=43461098; trigger-average-corrector-alloc-bytes=41525678.399999999; h9-average-total-alloc-bytes=41523908; h9-average-jacobian-build-alloc-bytes=39071378;
+primary-trigger-wall-cost-center=h9-jacobian-build-probes; primary-trigger-wall-average-us=1556270.9949999999; primary-trigger-allocation-center=h9-jacobian-build-probes; primary-trigger-allocation-average-bytes=39071378;
+determinism-control-steps=128; deterministic-fingerprint=518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38; matches-failed-H28-fingerprint=True; default-current-v2-mode=ExplicitCommittedState;
+h28.1a-performance-attribution-passes=True; h28-remains-failed=True; H29-default-activation-blocked=True;
+H.28.1-A recommendation: use the measured cost centers to choose conservative implementation optimizations. Do not raise H.28 ceilings, retune numerical thresholds or change H.9 mathematics from attribution evidence alone.

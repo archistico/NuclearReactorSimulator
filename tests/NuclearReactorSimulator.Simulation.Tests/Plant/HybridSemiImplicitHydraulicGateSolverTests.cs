@@ -62,6 +62,87 @@ public sealed class HybridSemiImplicitHydraulicGateSolverTests
     }
 
     [Fact]
+    public void HistoricalExplicitPredictorReuse_IsExactlyEquivalentToLegacyPredictorEvaluation()
+    {
+        var state = CreateTwoNodeState(1_001d, 999d);
+        var thermodynamics = new LinearCompressibilityModel();
+        var prototype = new SemiImplicitHydraulicPrototypeSolver(thermodynamics);
+        var solver = new HybridSemiImplicitHydraulicGateSolver(thermodynamics);
+        var explicitStep = prototype.StepExplicit(state, StiffStep, EmptyBalances());
+
+        var legacy = solver.EvaluatePredictor(state, StiffStep, EmptyBalances());
+        var reused = solver.EvaluatePredictorFromHistoricalExplicitCandidate(
+            state,
+            StiffStep,
+            EmptyBalances(),
+            explicitStep.HydraulicEvaluation,
+            explicitStep.CandidateState,
+            explicitStep.AppliedHydraulicBalances,
+            out var reusedFluidNodeCount);
+
+        Assert.Equal(state.FluidNodes.Count, reusedFluidNodeCount);
+
+        Assert.Equal(legacy.UsedSemiImplicitCorrection, reused.UsedSemiImplicitCorrection);
+        Assert.Equal(legacy.IterationCount, reused.IterationCount);
+        Assert.Equal(legacy.Converged, reused.Converged);
+        Assert.Equal(legacy.PredictorMaximumFractionalSubcooledPressureChange, reused.PredictorMaximumFractionalSubcooledPressureChange);
+        Assert.Equal(legacy.PredictorMaximumAbsoluteHydraulicFlowChangeKilogramsPerSecond, reused.PredictorMaximumAbsoluteHydraulicFlowChangeKilogramsPerSecond);
+        Assert.Equal(legacy.MaximumRelativePressureResidual, reused.MaximumRelativePressureResidual);
+        Assert.Equal(legacy.MaximumAbsoluteFlowResidualKilogramsPerSecond, reused.MaximumAbsoluteFlowResidualKilogramsPerSecond);
+        Assert.Equal(legacy.HydraulicEvaluation.MassRateClosureResidualKilogramsPerSecond, reused.HydraulicEvaluation.MassRateClosureResidualKilogramsPerSecond);
+        Assert.Equal(legacy.HydraulicEvaluation.HydraulicEnergyOwnershipResidualWatts, reused.HydraulicEvaluation.HydraulicEnergyOwnershipResidualWatts);
+        Assert.Equal(
+            legacy.AppliedHydraulicBalances.OrderBy(static item => item.Key, StringComparer.Ordinal),
+            reused.AppliedHydraulicBalances.OrderBy(static item => item.Key, StringComparer.Ordinal));
+        Assert.Equal(
+            legacy.HydraulicEvaluation.PipeMassFlowRates.OrderBy(static item => item.Key, StringComparer.Ordinal),
+            reused.HydraulicEvaluation.PipeMassFlowRates.OrderBy(static item => item.Key, StringComparer.Ordinal));
+        Assert.Equal(
+            legacy.HydraulicEvaluation.ValveMassFlowRates.OrderBy(static item => item.Key, StringComparer.Ordinal),
+            reused.HydraulicEvaluation.ValveMassFlowRates.OrderBy(static item => item.Key, StringComparer.Ordinal));
+        Assert.Equal(
+            legacy.HydraulicEvaluation.PumpMassFlowRates.OrderBy(static item => item.Key, StringComparer.Ordinal),
+            reused.HydraulicEvaluation.PumpMassFlowRates.OrderBy(static item => item.Key, StringComparer.Ordinal));
+        Assert.Equal(
+            legacy.CandidateState.FluidNodes.Select(static node => (node.Id, node.Mass.Kilograms, node.InternalEnergy.Joules, node.Pressure.Pascals)),
+            reused.CandidateState.FluidNodes.Select(static node => (node.Id, node.Mass.Kilograms, node.InternalEnergy.Joules, node.Pressure.Pascals)));
+    }
+
+    [Fact]
+    public void HistoricalExplicitPredictorReuse_ReintegratesBalanceMismatchWithoutChangingPredictor()
+    {
+        var state = CreateTwoNodeState(1_001d, 999d);
+        var thermodynamics = new LinearCompressibilityModel();
+        var prototype = new SemiImplicitHydraulicPrototypeSolver(thermodynamics);
+        var solver = new HybridSemiImplicitHydraulicGateSolver(thermodynamics);
+        var explicitStep = prototype.StepExplicit(state, StiffStep, EmptyBalances());
+        var mismatchedHistoricalBalances = explicitStep.AppliedHydraulicBalances.ToDictionary(
+            static item => item.Key,
+            static item => item.Value,
+            StringComparer.Ordinal);
+        var firstNodeId = state.FluidNodes[0].Id;
+        mismatchedHistoricalBalances[firstNodeId] = mismatchedHistoricalBalances[firstNodeId]
+            + new FluidNodeBalance(MassFlowRate.FromKilogramsPerSecond(1e-9d), Power.Zero);
+
+        var legacy = solver.EvaluatePredictor(state, StiffStep, EmptyBalances());
+        var reused = solver.EvaluatePredictorFromHistoricalExplicitCandidate(
+            state,
+            StiffStep,
+            EmptyBalances(),
+            explicitStep.HydraulicEvaluation,
+            explicitStep.CandidateState,
+            mismatchedHistoricalBalances,
+            out var reusedFluidNodeCount);
+
+        Assert.Equal(state.FluidNodes.Count - 1, reusedFluidNodeCount);
+        Assert.Equal(legacy.PredictorMaximumFractionalSubcooledPressureChange, reused.PredictorMaximumFractionalSubcooledPressureChange);
+        Assert.Equal(legacy.PredictorMaximumAbsoluteHydraulicFlowChangeKilogramsPerSecond, reused.PredictorMaximumAbsoluteHydraulicFlowChangeKilogramsPerSecond);
+        Assert.Equal(
+            legacy.CandidateState.FluidNodes.Select(static node => (node.Id, node.Mass.Kilograms, node.InternalEnergy.Joules, node.Pressure.Pascals)),
+            reused.CandidateState.FluidNodes.Select(static node => (node.Id, node.Mass.Kilograms, node.InternalEnergy.Joules, node.Pressure.Pascals)));
+    }
+
+    [Fact]
     public void HybridGate_IsExactlyDeterministicForSameInputs()
     {
         var state = CreateTwoNodeState(1_001d, 999d);

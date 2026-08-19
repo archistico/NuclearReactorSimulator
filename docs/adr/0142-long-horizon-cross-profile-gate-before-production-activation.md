@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4.1-H.17 candidate.
+Accepted; the long-horizon/cross-profile gate was subsequently validated in M10.9.4.1-H.17 Hotfix 6.
 
 ## Context
 

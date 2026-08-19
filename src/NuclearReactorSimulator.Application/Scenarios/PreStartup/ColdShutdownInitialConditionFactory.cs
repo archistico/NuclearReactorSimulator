@@ -140,7 +140,9 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool useEnthalpyTransportForRemainingNonTurbinePaths = false,
         bool useEnthalpyTransportForTurbineExpansion = false,
         bool useHybridSemiImplicitHydraulics = false,
-        TimeSpan? runtimeStep = null)
+        TimeSpan? runtimeStep = null,
+        bool useFourNodeBranchContinuityShadowIntegration = false,
+        bool useFourNodeBranchContinuityCorrectedCommitOptIn = false)
     {
         var effectiveRuntimeStep = runtimeStep ?? RuntimeStep;
         if (effectiveRuntimeStep <= TimeSpan.Zero)
@@ -223,7 +225,9 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             useEnthalpyTransportForPassivePipesAndValves,
             useEnthalpyTransportForRemainingNonTurbinePaths,
             useEnthalpyTransportForTurbineExpansion,
-            useHybridSemiImplicitHydraulics);
+            useHybridSemiImplicitHydraulics,
+            useFourNodeBranchContinuityShadowIntegration,
+            useFourNodeBranchContinuityCorrectedCommitOptIn);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -322,13 +326,24 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool useEnthalpyTransportForPassivePipesAndValves,
         bool useEnthalpyTransportForRemainingNonTurbinePaths,
         bool useEnthalpyTransportForTurbineExpansion,
-        bool useHybridSemiImplicitHydraulics)
+        bool useHybridSemiImplicitHydraulics,
+        bool useFourNodeBranchContinuityShadowIntegration,
+        bool useFourNodeBranchContinuityCorrectedCommitOptIn)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
             throw new ArgumentException(
                 "Iodine/xenon definition and initial state must either both be provided or both be omitted.",
                 nameof(initialIodineXenonState));
+        }
+
+        var selectedPhaseHModeCount = (useHybridSemiImplicitHydraulics ? 1 : 0)
+            + (useFourNodeBranchContinuityShadowIntegration ? 1 : 0)
+            + (useFourNodeBranchContinuityCorrectedCommitOptIn ? 1 : 0);
+        if (selectedPhaseHModeCount > 1)
+        {
+            throw new ArgumentException(
+                "Legacy H.5 hybrid hydraulics, H.21 four-node shadow integration and H.22 corrected-commit integration are mutually exclusive numerical modes.");
         }
 
         if (!double.IsFinite(initialCondenserCoolingPowerMegawatts) || initialCondenserCoolingPowerMegawatts < 0d)
@@ -680,15 +695,19 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         var turbineEnergyTransportMode = useEnthalpyTransportForTurbineExpansion
             ? FluidEnergyTransportMode.SpecificEnthalpy
             : FluidEnergyTransportMode.SpecificInternalEnergy;
-        var hydraulicNumericalCoupling = useHybridSemiImplicitHydraulics
-            ? HydraulicNumericalCouplingDefinition.CreateDeterministicHybridSemiImplicit(
-                predictedSubcooledPressureChangeTriggerFraction: 0.060d,
-                predictedHydraulicFlowChangeTriggerKilogramsPerSecond: 40d,
-                maximumCorrectorIterations: 72,
-                correctorRelaxationFactor: 0.15d,
-                correctorRelativePressureTolerance: 1e-5d,
-                correctorAbsoluteFlowToleranceKilogramsPerSecond: 1e-2d)
-            : HydraulicNumericalCouplingDefinition.ExplicitCommittedState;
+        var hydraulicNumericalCoupling = useFourNodeBranchContinuityCorrectedCommitOptIn
+            ? HydraulicNumericalCouplingDefinition.H22FourNodeBranchContinuityCorrectedCommitOptIn
+            : useFourNodeBranchContinuityShadowIntegration
+                ? HydraulicNumericalCouplingDefinition.H19QualifiedFourNodeBranchContinuityShadowIntegrated
+                : useHybridSemiImplicitHydraulics
+                    ? HydraulicNumericalCouplingDefinition.CreateDeterministicHybridSemiImplicit(
+                        predictedSubcooledPressureChangeTriggerFraction: 0.060d,
+                        predictedHydraulicFlowChangeTriggerKilogramsPerSecond: 40d,
+                        maximumCorrectorIterations: 72,
+                        correctorRelaxationFactor: 0.15d,
+                        correctorRelativePressureTolerance: 1e-5d,
+                        correctorAbsoluteFlowToleranceKilogramsPerSecond: 1e-2d)
+                    : HydraulicNumericalCouplingDefinition.ExplicitCommittedState;
         FluidNodeDefinition Node(string id, double volumeCubicMetres = 10d)
             => new(id, Volume.FromCubicMetres(volumeCubicMetres));
         PipeDefinition Pipe(

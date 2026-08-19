@@ -33,6 +33,34 @@ public sealed class HydraulicNumericalCouplingDefinition
         0d,
         0d);
 
+    /// <summary>
+    /// H.21 opt-in shadow-integrated definition. The production candidate remains the explicit predictor;
+    /// the H.19-qualified four-node H.9 correction is evaluated only as an orchestrator sidecar and can never be committed.
+    /// The numerical controls are intentionally frozen to the user-validated H.19/H.20 contract.
+    /// </summary>
+    public static HydraulicNumericalCouplingDefinition H19QualifiedFourNodeBranchContinuityShadowIntegrated { get; } = new(
+        HydraulicNumericalCouplingMode.FourNodeBranchContinuityShadowIntegrated,
+        0.060d,
+        40d,
+        24,
+        1d,
+        1e-5d,
+        1e-2d);
+
+    /// <summary>
+    /// H.22 separately opt-in corrected-candidate commit definition. It freezes the same H.19/H.20 numerical
+    /// controls as H.21; the only new authority is the H.22 commit seam after the unchanged H.20 decision.
+    /// Standard current-v2 factories never select this definition.
+    /// </summary>
+    public static HydraulicNumericalCouplingDefinition H22FourNodeBranchContinuityCorrectedCommitOptIn { get; } = new(
+        HydraulicNumericalCouplingMode.FourNodeBranchContinuityCorrectedCommitOptIn,
+        0.060d,
+        40d,
+        24,
+        1d,
+        1e-5d,
+        1e-2d);
+
     public HydraulicNumericalCouplingMode Mode { get; }
 
     public double PredictedSubcooledPressureChangeTriggerFraction { get; }
