@@ -4,17 +4,16 @@ set "ROOT=%~dp0"
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 - Targeted-Train Reverse-Flow Classification...
-echo Removing stale build and Hotfix 4 comparison outputs...
+echo Applying M10.9.4.1-I.3 Hotfix 5 Compile Fix 1 - Recording Fingerprint Namespace Import...
+echo Removing stale build and Hotfix 5 audit outputs...
 for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
-if exist "artifacts\i3-hotfix4-explicit-vs-corrected-branch-discontinuity-comparison" rd /s /q "artifacts\i3-hotfix4-explicit-vs-corrected-branch-discontinuity-comparison"
+if exist "artifacts\i3-hotfix5-corrected-300s-healthy-reference-requalification" rd /s /q "artifacts\i3-hotfix5-corrected-300s-healthy-reference-requalification"
 
 echo.
-echo Script Fix 1 applied. I.2 remains the authoritative validated baseline and I.3 remains unvalidated.
-echo The Hotfix 4 diagnostic C# code and acceptance criteria are unchanged.
-echo The focused launcher now uses the .NET 10 Microsoft.Testing.Platform --project contract and native xUnit v3 MTP filters.
+echo I.2 remains authoritative. I.3 remains unvalidated and H.30 remains OPT-IN ONLY.
+echo Hotfix 5 Compile Fix 1 adds only the missing Recording namespace import; the exact-v3 300 s gate is otherwise unchanged.
 echo Run:
 echo   dotnet build
 echo   dotnet test
-echo   scripts\run-phase-i-explicit-vs-corrected-branch-discontinuity-comparison-audit.cmd
+echo   scripts\run-phase-i-corrected-300s-healthy-reference-requalification-audit.cmd
 exit /b 0

@@ -1,5 +1,21 @@
 # Changelog
 
+## M10.9.4.1-I.3 Hotfix 5 Compile Fix 1 — Recording Fingerprint Namespace Import — CANDIDATE
+
+- Fixes the only reported Hotfix 5 build failure: two CS0103 references to `ControlRoomSnapshotFingerprint` in `PhaseICorrectedHealthyReferenceRequalificationAuditTests.cs`.
+- Adds only `using NuclearReactorSimulator.Application.Scenarios.Recording;`, matching the established H.24 compile-fix pattern and existing working audit tests.
+- Does not change the 300-second corrected collector, health/continuity criteria, determinism contract, runtime physics/numerics, H.30 `OPT-IN ONLY` policy, selector, persistence semantics or 10 ms step.
+- I.2 remains authoritative and I.3 remains unvalidated until Hotfix 5 passes build, ordinary tests and the focused corrected-300-second gate.
+
+## M10.9.4.1-I.3 Hotfix 5 — Corrected 300 s Healthy Reference Requalification — CANDIDATE
+
+- Built after user validation of I.3 Hotfix 4 Classifier Fix 1 diagnostic evidence; I.2 remains the authoritative validated baseline and I.3 remains unvalidated.
+- Freezes the validated 100 s / 10 ms classifier evidence showing 338/338 explicit drops = targeted-train reverse-flow steps and exact-v3 0/0.
+- Runs exact v3 corrected-commit for 300 s / 30,000 steps and checks generation health plus stop/control/admission direction on every 10 ms step.
+- Samples conservation/inventory each second, records seven final-window slopes and performs a 256-step deterministic repeat control.
+- Requires corrected trigger/eligible/authorized/commit equality with zero rollback/fallback/unsafe/untargeted disagreement.
+- Does not change H.30 `OPT-IN ONLY`, production selector, physics, numerical mathematics, persistence semantics or 10 ms step; I.3 budgets remain unfrozen.
+
 ## M10.9.4.1-I.3 Hotfix 3 — Descriptor Contract Alignment — CANDIDATE
 
 - Fixes the I.3 Hotfix 2 descriptor-preflight mismatch that prevented the focused script from reaching the 300-second collector.

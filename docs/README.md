@@ -183,3 +183,8 @@ See `PROJECT_HANDOFF.md` for the full authoritative statement.
 - `M10_9_4_1_H23_STATIC_REVIEW.md` — package-time H.23 static/runtime-isolation review.
 - `M10_9_4_1_H23_HOTFIX1_COMPILE_FIX.md` — first-build CS0246 diagnosis and single-import Hotfix 1 contract.
 - `adr/0148-introduce-opt-in-corrected-commit-seam-behind-h20-authority.md` — H.22 two-stage authority and explicit-first fallback decision.
+
+### Phase I — I.3 corrected-reference pre-H.30 requalification
+- `M10_9_4_1_I3_HOTFIX5_CORRECTED_300S_REFERENCE_REQUALIFICATION.md`
+- `M10_9_4_1_I3_HOTFIX5_VALIDATION_CHECKLIST.md`
+- `M10_9_4_1_I3_HOTFIX5_STATIC_REVIEW.md`

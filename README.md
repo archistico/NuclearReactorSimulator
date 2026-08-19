@@ -1,14 +1,12 @@
 # Nuclear Reactor Simulator
 
-> **Current candidate:** M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 — Targeted-Train Reverse-Flow Classification. I.2 remains the authoritative validated baseline.
+> **Current candidate:** M10.9.4.1-I.3 Hotfix 5 Compile Fix 1 — Recording Fingerprint Namespace Import. I.2 remains the authoritative validated baseline.
 
-## M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 — CANDIDATE
+## M10.9.4.1-I.3 Hotfix 5 Compile Fix 1 — CANDIDATE
 
-> **Classifier Fix 1:** the completed 10 ms comparison showed that the original Hotfix 4 predicate was too narrow: 330/338 explicit drops coincide with reverse admission flow, while the remaining 8/338 coincide with reverse stop-valve flow. All 338/338 explicit drops therefore coincide one-for-one with reverse flow somewhere in the targeted stop/control/admission train; exact v3 has 0 targeted-train reverse-flow steps and 0 drops. The acceptance criterion is corrected accordingly. Runtime physics and H.30 policy remain unchanged.
+The validated Hotfix 4 classifier established 338/338 exact-v2 generation-drop steps coincident one-for-one with targeted stop/control/admission reverse flow, versus 0 drops and 0 targeted reverse-flow steps in exact v3 corrected-commit. Hotfix 5 extends exact v3 to the full 300-second healthy reference horizon before any H.30 policy re-review.
 
-The full I.3 300-second exact-v2 diagnostic completed and found five isolated shaft-power drops at 55, 66, 72, 79 and 88 s. Each sampled drop has canonical shaft power 0 MW, turbine stage flow 0 kg/s, reverse admission flow near -26 to -27 kg/s and a turbine-inlet pressure spike while the generator remains connected, no trip occurs and conservation remains green.
-
-Hotfix 4 does not retune or repair the runtime. Its completed 100-second exact-v2 versus exact-v3 comparison at the real 10 ms fixed step exposed two manifestations of the same targeted-train discontinuity: an 8-step reverse stop-valve episode at 3.53–3.60 s and 330 later reverse-admission drop steps. The classifier now requires every explicit generation drop to coincide with reverse flow on stop, control or admission, and requires exact v3 to have zero generation drops and zero targeted-train reverse flow without rollback/fallback/unsafe commit.
+The gate checks every 10 ms step for generation health and targeted reverse flow, samples conservation/inventory every second, computes final-60-second inventory slopes and performs a separate deterministic repeat control. H.30 remains `OPT-IN ONLY`; I.3 tolerance budgets remain unfrozen. A green result only unblocks a separate H.30 production-policy re-review.
 
 Local validation:
 
@@ -16,10 +14,8 @@ Local validation:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-phase-i-explicit-vs-corrected-branch-discontinuity-comparison-audit.cmd
+scripts\run-phase-i-corrected-300s-healthy-reference-requalification-audit.cmd
 ```
-
-Do not rerun/freeze the normal I.3 300-second tolerance baseline until this comparison is classified. H.30 remains `OPT-IN ONLY` unless a later explicitly reviewed decision changes it.
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
 
@@ -31,7 +27,7 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 The authoritative baseline is **M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening — VALIDATED**. It establishes tiered ordinary/current/scheduled/historical validation and CI entry points on top of the H.30 `OPT-IN ONLY` closure.
 
-The current candidate is **M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 — Targeted-Train Reverse-Flow Classification**. I.3 remains unvalidated and no tolerance budgets are frozen.
+The current candidate is **M10.9.4.1-I.3 Hotfix 5 Compile Fix 1 — Recording Fingerprint Namespace Import**; it is the compile-repaired form of the unchanged Hotfix 5 corrected 300-second requalification. I.3 remains unvalidated, H.30 remains `OPT-IN ONLY`, and no tolerance budgets are frozen.
 
 ## Architectural principles
 

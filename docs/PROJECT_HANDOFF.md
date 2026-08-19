@@ -4,7 +4,7 @@
 >
 > **Phase H:** CLOSED as `OPT-IN ONLY`.
 >
-> **Current candidate:** M10.9.4.1-I.3 Hotfix 4 Classifier Fix 1 — Targeted-Train Reverse-Flow Classification. I.3 remains unvalidated. The completed 10 ms comparison found 338/338 exact-v2 generation drops coincident with reverse flow on the targeted stop/control/admission train (8 stop, 0 control, 330 admission), versus 0 drops and 0 targeted reverse-flow steps in exact v3.
+> **Current candidate:** M10.9.4.1-I.3 Hotfix 5 — Corrected 300 s Healthy Reference Requalification. I.3 remains unvalidated. Hotfix 4 classifier evidence is validated diagnostically: 338/338 exact-v2 drops coincide with targeted reverse flow, while exact v3 has 0 drops/reverse flow over 100 s. Hotfix 5 extends exact v3 to 300 s before H.30 policy re-review.
 
 ## 1. Authoritative production policy
 
@@ -21,7 +21,7 @@ explicit deployment kill
   exact v2 ExplicitCommittedState
 ```
 
-H.28 remains `bounded-but-costly`; Phase I does not reopen the Phase-H activation decision.
+H.28 remains `bounded-but-costly`; Phase I does not silently reopen the Phase-H activation decision; only a separate H.30 re-review may change it.
 
 ## 2. Validated Phase-I baselines
 
