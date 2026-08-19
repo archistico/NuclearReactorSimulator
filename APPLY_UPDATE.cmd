@@ -4,18 +4,18 @@ set "ROOT=%~dp0"
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.4.1-I.1 Hotfix 1 Profile Compatibility / Legacy Retirement Inventory over validated H.30...
-echo Removing stale build and I.1 audit outputs...
+echo Applying M10.9.4.1-I.2 Audit Consolidation / CI Baseline Hardening over validated I.1 Hotfix 1...
+echo Removing stale build and I.2 audit outputs...
 for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
-if exist "artifacts\i1-profile-compatibility-legacy-retirement-inventory" rd /s /q "artifacts\i1-profile-compatibility-legacy-retirement-inventory"
+if exist "artifacts\i2-phase-i-audit-consolidation-ci-baseline" rd /s /q "artifacts\i2-phase-i-audit-consolidation-ci-baseline"
 
 echo.
-echo I.1 Hotfix 1 candidate applied. H.30 remains authoritative and Phase H stays closed as OPT-IN ONLY.
+echo I.2 candidate applied. I.1 Hotfix 1 remains authoritative and Phase H stays closed as OPT-IN ONLY.
 echo Exact v2 remains ExplicitCommittedState default/rollback/reference.
 echo Exact v3 remains the qualified corrected opt-in path.
-echo No exact-version profile is deleted by I.1; historical audit-only modes are inventory-only retirement candidates.
+echo H.5/H.21 historical modes are not current-CI dependencies, but I.2 does not delete them.
 echo Run:
 echo   dotnet build
 echo   dotnet test
-echo   scripts\run-profile-compatibility-legacy-retirement-inventory-audit.cmd
+echo   scripts\run-phase-i-audit-consolidation-ci-baseline-audit.cmd
 exit /b 0

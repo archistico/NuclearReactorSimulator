@@ -668,7 +668,7 @@ Validated with `PlantNetworkOrchestrator`, canonical balance accumulation, exact
 
 ## M10 — Operator Computer, Supervisory Automation & Human-Machine Integration
 
-M10 is **IN PROGRESS**. M10.1–M10.9.4 and M10.9.4.1 through H.30 are VALIDATED. Phase H is closed as evidence-derived `OPT-IN ONLY`: standard production remains exact v2 explicit at 10 ms and exact v3 corrected ownership remains a qualified opt-in. H.28 remains `bounded-but-costly`. Phase I is now active; the current candidate is I.1 Hotfix 1 Profile Compatibility & Legacy Retirement Inventory.
+M10 is **IN PROGRESS**. M10.1–M10.9.4, M10.9.4.1 through H.30 and I.1 Hotfix 1 are VALIDATED. Phase H is closed as evidence-derived `OPT-IN ONLY`: standard production remains exact v2 explicit at 10 ms and exact v3 corrected ownership remains a qualified opt-in. H.28 remains `bounded-but-costly`. Phase I is active; the current candidate is I.2 Audit Consolidation & CI Baseline Hardening.
 
 H.18 Hotfix 1 validated the four-node split at 261/261. H.19 restored and passed the complete long-horizon/cross-profile 3,046/92/473 qualification at 473/473. H.20 validated fail-closed authority/rollback. H.21 Hotfix 1 validated the real orchestrator sidecar seam without corrected-state commitment. H.22 validated the first separately opt-in corrected-state ownership seam. H.23 Hotfix 2 validated replay/checkpoint and reverse-power protection interaction. H.24–H.27 qualified long-horizon, protection, rollback and off-design operation. H.28 qualifies performance/soak as `bounded-but-costly`, and H.24 Requalification 1 post-H.28 is green. H.29 is validated. The current task is H.30 closure; the candidate decision is `OPT-IN ONLY`, preserving exact v2 explicit as authoritative default and exact v3 corrected as qualified opt-in.
 
@@ -777,7 +777,7 @@ Two independent axes are mandatory:
 - Hotfix 23 compilation, complete ordinary suite and both explicit 60-second journeys passed;
 - final manual schematic/HMI checklist passed; M10.9.4 is validated. The validated continuation now includes H.1, H.2, H.3 Hotfix 1, H.4, H.5 Hotfix 2, H.6, H.7 Hotfix 1 and H.8. H.5 Hotfix 2 validated the production rollback to explicit 10 ms and recorded 7/500 P060/F040 shadow corrections with 5/7 convergence and `extended-shadow-qualification-passes=False`. H.6 validated the bounded Picard rescue-envelope audit at only 6/7. H.7 validated true-residual deterministic backtracking at 5/7 with two line-search exhaustions and `corrector-algorithm-revision-qualification-passes=False`. H.8 validated safeguarded Anderson at 5/7 with two line-search exhaustions, work ratio 1.212000 and `accelerated-corrector-qualification-passes=False`. H.9 is the current shadow-only Jacobian-informed algorithm revision; current-v2 production remains explicit.
 
-### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (Phase H closed through H.30 as `OPT-IN ONLY`; current candidate I.1 Hotfix 1 Profile Compatibility & Legacy Retirement Inventory)
+### M10.9.4.1 Operational Envelope & Numerical Hardening — IN PROGRESS (Phase H closed through H.30 as `OPT-IN ONLY`; I.1 Hotfix 1 validated; current candidate I.2 Audit Consolidation & CI Baseline Hardening)
 
 Authoritative Phase H continuation plan: `M10_9_4_1_PHASE_H_COMPLETION_ROADMAP_H24_H30.md`. H.24–H.30 are separate qualification/decision gates; a green H.24 does not authorize default activation.
 

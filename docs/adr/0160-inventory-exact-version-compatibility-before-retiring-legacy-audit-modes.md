@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4.1-I.1 candidate.
+Accepted / I.1 Hotfix 1 user-validated on 2026-08-19.
 
 ## Context
 

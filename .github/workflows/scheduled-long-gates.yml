@@ -1,0 +1,26 @@
+name: scheduled-long-gates
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 2 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  long-gates:
+    runs-on: windows-latest
+    timeout-minutes: 360
+    env:
+      CI: 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Setup .NET from global.json
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+      - name: Scheduled current long gates
+        shell: cmd
+        run: eng\ci-long.cmd

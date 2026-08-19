@@ -1,3 +1,22 @@
+## M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening — CANDIDATE
+
+- Built directly on user-validated I.1 Hotfix 1.
+- Freezes the validated I.1 summary, compatibility matrix and numerical-mode retirement inventory with canonical fingerprint checks.
+- Adds an explicit four-tier validation contract: `ORDINARY`, `CURRENT-EVIDENCE`, `SCHEDULED-LONG`, `HISTORICAL-FROZEN`.
+- Adds provider-neutral `eng\ci-ordinary.cmd`, `eng\ci-current-evidence.cmd` and `eng\ci-long.cmd` entry points.
+- Adds GitHub Actions ordinary push/PR/manual CI and separate weekly/manual long-gate workflow using repository `global.json`.
+- Keeps H.24 post-H.28, H.28 performance and H.5/H.21 historical research out of ordinary/current CI.
+- Does not authorize deletion of H.5/H.21 numerical modes because executable source/test dependencies still remain.
+- Under `src/`, changes only `ApplicationDescriptor.cs` metadata; production runtime remains unchanged.
+
+## M10.9.4.1-I.1 Hotfix 1 — Profile Compatibility & Legacy Retirement Inventory — VALIDATED
+
+- User-reported compilation, complete ordinary tests and focused I.1 audit passed on 2026-08-19 after the analyzer-only xUnit2031 repair.
+- 12 registered exact versions across 9 IDs; 2 compatibility-retained; 0 delete-now profiles.
+- Exact v2 remains authoritative explicit default/rollback/reference and exact v3 remains qualified corrected opt-in.
+- H.5 hybrid and H.21 shadow-integrated modes remain audit-only retirement candidates.
+- `profile-compatibility-inventory-passes=True`, `i1-audit-passes=True`, `phase-i-compatibility-baseline-established=True`.
+
 ## M10.9.4.1-I.1 Hotfix 1 — xUnit2031 Audit Assertion Repair — CANDIDATE
 
 - Fixes the only reported build failure in `ProfileCompatibilityLegacyRetirementInventoryAuditTests.cs`.

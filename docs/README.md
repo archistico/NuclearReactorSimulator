@@ -1,6 +1,6 @@
 # Documentation
 
-Current continuation: `M10_9_4_1_I1_PROFILE_COMPATIBILITY_LEGACY_RETIREMENT_INVENTORY.md`, `M10_9_4_1_I1_VALIDATION_CHECKLIST.md` and ADR 0160. H.30 is validated and Phase H is closed as `OPT-IN ONLY`. Map
+Current continuation: `M10_9_4_1_I2_AUDIT_CONSOLIDATION_CI_BASELINE.md`, `M10_9_4_1_I2_VALIDATION_CHECKLIST.md` and ADR 0161. I.1 Hotfix 1 is validated; H.30 remains closed as `OPT-IN ONLY`. Map
 
 This directory is the architectural and continuity record for Nuclear Reactor Simulator.
 
@@ -18,6 +18,9 @@ This directory is the architectural and continuity record for Nuclear Reactor Si
 - `milestones/M10.9.4.md` — validated subsystem-engineering-schematics milestone.
 - `M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md` — completed user-facing M10.9.4 sign-off.
 - `milestones/M10.9.4.1.md` — active operational-envelope and numerical-hardening milestone before M10.9.5.
+- `M10_9_4_1_I1_PROFILE_COMPATIBILITY_LEGACY_RETIREMENT_INVENTORY.md` — validated Phase-I exact-version compatibility and retirement inventory.
+- `M10_9_4_1_I2_AUDIT_CONSOLIDATION_CI_BASELINE.md` — current candidate tiered audit/CI baseline and frozen historical-evidence policy.
+- `M10_9_4_1_I2_VALIDATION_CHECKLIST.md` / `M10_9_4_1_I2_STATIC_REVIEW.md` — I.2 promotion and isolation contracts.
 - `M10_9_4_1_A_EXTENDED_AUDIT.md` — executed non-green extended audit and exact ~70-second trip evidence.
 - `M10_9_4_1_EXTERNAL_TECHNICAL_AUDIT_REVIEW.md` — adjudication of the two external LLM reviews and accepted planning decisions.
 - `OPERATIONAL_ENVELOPE_NUMERICAL_HARDENING_PLAN.md` — revised A.1–I evidence/physics/numerical hardening sequence.

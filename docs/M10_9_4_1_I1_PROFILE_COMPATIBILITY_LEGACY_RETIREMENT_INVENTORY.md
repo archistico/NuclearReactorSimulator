@@ -2,7 +2,7 @@
 
 ## Status
 
-**CANDIDATE.** Built directly on user-validated H.30, which closed Phase H as `OPT-IN ONLY` and unblocked Phase I. I.1 is a compatibility/engineering-hardening milestone; it does not alter plant physics, numerical mathematics, production selection, save/replay identity or the 10 ms fixed step.
+**VALIDATED via Hotfix 1 on 2026-08-19.** Built directly on user-validated H.30, which closed Phase H as `OPT-IN ONLY` and unblocked Phase I. The initial I.1 candidate had one analyzer-only xUnit2031 build failure; Hotfix 1 corrected the assertion form without changing semantics, after which build, ordinary tests and focused I.1 audit passed. I.1 is a compatibility/engineering-hardening milestone; it does not alter plant physics, numerical mathematics, production selection, save/replay identity or the 10 ms fixed step.
 
 ## Purpose
 
@@ -120,4 +120,4 @@ phase-i-compatibility-baseline-established=True
 
 ## Next step after validation
 
-A green I.1 establishes the compatibility baseline. The next Phase-I milestone should consolidate historical audit execution/evidence and CI gating before any code retirement or before M10.9.5 begins.
+I.1 is green and establishes the compatibility baseline. I.2 now consolidates historical audit execution/evidence and CI gating before any code retirement or before M10.9.5 begins.
