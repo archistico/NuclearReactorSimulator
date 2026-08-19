@@ -402,7 +402,7 @@ public sealed class FourNodePerformanceAttributionAuditTests
         => Math.Abs(denominator) > 1e-12d ? numerator / denominator : (Math.Abs(numerator) <= 1e-12d ? 1d : double.PositiveInfinity);
 
     private static string EvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence");
+        => Path.Combine(FindRepositoryRoot(), "eng", "frozen-evidence", "ordinary");
 
     private static string ReportDirectory()
         => Path.Combine(FindRepositoryRoot(), "artifacts", "h28-1a-four-node-performance-attribution");

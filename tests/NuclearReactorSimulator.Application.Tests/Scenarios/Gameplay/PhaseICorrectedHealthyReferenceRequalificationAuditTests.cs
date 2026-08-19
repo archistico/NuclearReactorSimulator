@@ -44,8 +44,18 @@ public sealed class PhaseICorrectedHealthyReferenceRequalificationAuditTests
         foreach (var expected in FrozenValidatedClassifierFingerprints)
         {
             var path = Path.Combine(EvidenceDirectory(), expected.Key);
-            Assert.True(File.Exists(path), $"Missing validated I.3 Hotfix 4 evidence: {expected.Key}");
-            Assert.Equal(expected.Value, CanonicalSha256(path));
+            if (File.Exists(path))
+            {
+                Assert.Equal(expected.Value, CanonicalSha256(path));
+            }
+            else
+            {
+                Assert.Equal(
+                    expected.Value,
+                    FrozenLargeEvidenceManifest.CanonicalSha256(
+                        FindRepositoryRoot(),
+                        $"I3_HF5_PreH30/{expected.Key}"));
+            }
         }
 
         var summary = File.ReadAllText(Path.Combine(EvidenceDirectory(), "01-phase-i-v2-v3-branch-discontinuity-comparison.summary.txt"));
@@ -464,7 +474,7 @@ public sealed class PhaseICorrectedHealthyReferenceRequalificationAuditTests
         => engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant.IntegratedCycle.PrimaryCircuit.HydraulicNumerics;
 
     private static string EvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence", "I3_HF5_PreH30");
+        => Path.Combine(FindRepositoryRoot(), "eng", "frozen-evidence", "ordinary", "I3_HF5_PreH30");
 
     private static string ReportDirectory()
         => Path.Combine(FindRepositoryRoot(), "artifacts", "i3-hotfix5-corrected-300s-healthy-reference-requalification");

@@ -6,21 +6,13 @@ The project models a reduced RBMK-like plant as a deterministic, headless-testab
 
 ## Current project state
 
-**Authoritative validated baseline:** `M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening`.
+**Authoritative validated production policy:** `M10.9.4.1-H.30 Requalification 1` — `ACTIVATE`.
 
-**Current candidate:** `M10.9.4.1-H.30 Requalification 1 — Production Policy Re-review after I.3 Continuity Evidence`.
+Exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` is the authoritative desktop production default. Exact v2 `ExplicitCommittedState` remains the fail-closed rollback/reference and compatibility path. The fixed timestep remains 10 ms and the corrected path retains H.28's `bounded-but-costly` performance classification.
 
-The original H.30 decision was `OPT-IN ONLY`: exact v2 `ExplicitCommittedState` remained the desktop production default and exact v3 corrected-commit remained qualified opt-in because H.28 classified its runtime cost as `bounded-but-costly`.
+**Current Phase-I candidate:** `M10.9.4.1-I.3 Hotfix 2 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline / Compact Frozen Evidence Contracts`.
 
-Subsequent validated Phase-I evidence changed that trade-off:
-
-- exact v2: 338 generation-drop steps in the 100 s / 10 ms comparison, all 338 coincident one-for-one with reverse flow in the targeted stop/control/admission train;
-- exact v3: 0 generation drops and 0 targeted reverse-flow steps in the same comparison;
-- exact v3: 300 s / 30,000-step healthy reference requalification with 0 generation-health violations, 0 targeted reverse-flow violations, 0 rollback/fallback/unsafe commits and deterministic repeat.
-
-H.30 Requalification 1 therefore **proposes `ACTIVATE`**: exact v3 becomes the authoritative desktop production default while exact v2 remains the exact-version fail-closed rollback/reference path. This proposal is not authoritative until local build, ordinary tests and the focused H.30 RQ1 audit all pass.
-
-I.3 tolerance budgets remain **unfrozen** until the production-policy re-review is validated and the reference baseline is rerun under the resulting authoritative policy.
+I.3 reruns the healthy 300-second reference under the production selector, checks generation/steam-train continuity at every 10 ms step, records one-second conservation/inventory samples, and derives the first 19 versioned internal regression budgets from the final 60 seconds. No runtime physics is retuned to fit those budgets.
 
 ## Build and run
 
@@ -38,10 +30,10 @@ dotnet test
 
 Run the desktop application with the normal App project command used by your environment/IDE.
 
-For the current H.30 RQ1 candidate:
+For the current I.3 candidate:
 
 ```bat
-scripts\run-h30-rq1-production-policy-rereview-audit.cmd
+scripts\run-phase-i-reference-trajectory-conservation-inventory-baseline-audit.cmd
 ```
 
 CI entry points are under `eng\`:
@@ -69,13 +61,13 @@ The core rules that should remain stable across future milestones are:
 
 ## Current desktop hydraulic versions
 
-| Exact version | Hydraulic mode | Role in H.30 RQ1 candidate |
+| Exact version | Hydraulic mode | Current role |
 | --- | --- | --- |
 | `integrated-operations-desktop-stable@1` | explicit historical | compatibility retained |
 | `integrated-operations-desktop-stable@2` | `ExplicitCommittedState` | rollback/reference |
-| `integrated-operations-desktop-stable@3` | `FourNodeBranchContinuityCorrectedCommitOptIn` | proposed authoritative default |
+| `integrated-operations-desktop-stable@3` | `FourNodeBranchContinuityCorrectedCommitOptIn` | authoritative production default |
 
-The v3 mode name retains its historical H.29/H.22 lineage even if H.30 RQ1 promotes it to production default. Renaming the numerical enum is not part of this requalification. H.30 RQ1 uses a new production scenario identity, `integrated-normal-operations-training-h30-rq1-production`, so the historical H.29 candidate scenario is not repurposed.
+The v3 mode name retains its historical H.29/H.22 lineage even though H.30 RQ1 promotes it to production default. Renaming the numerical enum is not part of the activated policy. H.30 RQ1 uses a new production scenario identity, `integrated-normal-operations-training-h30-rq1-production`, so the historical H.29 candidate scenario is not repurposed.
 
 ## Main capabilities
 
@@ -99,13 +91,13 @@ Start with:
 - `docs/PROJECT_HANDOFF.md` — exact continuation point for development;
 - `docs/ROADMAP.md` — remaining Phase-I work and M10.9.5–M10.9.8 direction;
 - `docs/KNOWN_MODEL_LIMITATIONS.md` — current limitations only;
-- `docs/current/` — documents for the active candidate;
+- `docs/current/` — only documents for the active candidate;
 - `docs/history/` — completed/superseded milestone records retained for provenance;
 - `docs/adr/` — architectural decision records;
 - `docs/milestones/` — milestone summaries;
 - `docs/README.md` — documentation map.
 
-The repository deliberately separates **current documentation** from **historical evidence**. Do not determine the current production policy by reading an old H/I milestone note under `docs/history/`.
+The repository deliberately separates **current documentation** from **historical evidence**. Large generated audit payloads under `tests/.../Gameplay/Evidence` and `artifacts/` are local/separate and are excluded from candidate ZIPs. Ordinary tests use the bounded immutable store under `eng/frozen-evidence/ordinary`; intentionally omitted multi-megabyte historical traces are represented only by canonical hashes in `eng/frozen-evidence/large-payload-manifest.csv`. Decision provenance remains under `eng/evidence-manifests/`. Do not determine current policy from old notes under `docs/history/`.
 
 ## Safety and scope
 

@@ -26,8 +26,8 @@ This register contains **current** limitations only. Historical limitations and 
 
 ## Numerical coupling
 
-- H.30 RQ1 candidate promotes the exact-v3 four-node corrected-commit path because exact-v2 explicit was shown to suffer targeted steam-train reverse-flow/shaft-drop discontinuities during otherwise healthy operation.
-- The corrected path remains materially more expensive than explicit. H.28 classifies it `bounded-but-costly`; the performance cost is accepted by the H.30 RQ1 candidate because continuity evidence materially changes the production trade-off.
+- Validated H.30 RQ1 promotes the exact-v3 four-node corrected-commit path because exact-v2 explicit was shown to suffer targeted steam-train reverse-flow/shaft-drop discontinuities during otherwise healthy operation.
+- The corrected path remains materially more expensive than explicit. H.28 classifies it `bounded-but-costly`; the performance cost is accepted by the validated H.30 RQ1 production decision because continuity evidence materially changes the production trade-off.
 - H.5 hybrid and H.21 shadow-integrated modes remain source-retained historical audit dependencies. They are not current production choices and are not yet safe to delete.
 
 ## Plant completeness

@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed by M10.9.4.1-H.30; becomes accepted only when H.30 is locally validated.
+Accepted by original H.30, then superseded by validated H.30 Requalification 1 after Phase-I continuity evidence demonstrated a healthy-operation defect in exact v2.
 
 ## Context
 
@@ -31,4 +31,4 @@ The corrected path has sufficient evidence for controlled production availabilit
 - Existing v2 saves/replays retain exact meaning.
 - v3 remains available for qualified use and future performance work.
 - Phase I may resume after H.30 validation.
-- Any future attempt to make corrected ownership the default requires a separate decision supported by materially improved cost evidence and regression qualification.
+- The required separate decision occurred in H.30 Requalification 1. It accepted the bounded cost because later Phase-I evidence demonstrated a reproducible exact-v2 continuity defect that exact v3 suppresses.

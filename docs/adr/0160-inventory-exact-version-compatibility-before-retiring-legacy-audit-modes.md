@@ -6,7 +6,7 @@ Accepted / I.1 Hotfix 1 user-validated on 2026-08-19.
 
 ## Context
 
-Phase H closed as `OPT-IN ONLY`: exact v2 explicit remains authoritative and exact v3 corrected remains qualified opt-in. The repository also contains older exact-version scenario identities and historical numerical modes used by the H.5/H.21 audit lineage.
+At I.1 validation time, Phase H had closed as `OPT-IN ONLY`: exact v2 explicit was authoritative and exact v3 corrected was qualified opt-in. H.30 Requalification 1 later superseded only that production-policy role assignment; the exact-version compatibility rule in this ADR remains valid. The repository also contains older exact-version scenario identities and historical numerical modes used by the H.5/H.21 audit lineage.
 
 Deleting code merely because it is old would risk two distinct failures:
 
@@ -21,11 +21,11 @@ Exact-version identities are retained whenever they are registered or referenced
 
 Historical numerical modes that are no longer production-selectable may be marked as retirement candidates, but they are not removed until audit consolidation proves that executable historical seams are no longer required.
 
-The H.30 production decision remains unchanged:
+The I.1 compatibility inventory does not reinterpret exact versions. Current role assignment after H.30 Requalification 1 is:
 
 ```text
-v2 ExplicitCommittedState                         authoritative default / rollback / reference
-v3 FourNodeBranchContinuityCorrectedCommitOptIn  qualified opt-in
+v2 ExplicitCommittedState                         rollback / reference / compatibility-retained
+v3 FourNodeBranchContinuityCorrectedCommitOptIn  authoritative production default
 ```
 
 ## Consequences

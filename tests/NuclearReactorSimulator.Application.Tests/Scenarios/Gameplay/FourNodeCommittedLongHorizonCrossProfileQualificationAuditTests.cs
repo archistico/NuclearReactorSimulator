@@ -495,11 +495,9 @@ public sealed class FourNodeCommittedLongHorizonCrossProfileQualificationAuditTe
     private static string EvidenceDirectory()
         => Path.Combine(
             FindRepositoryRoot(),
-            "tests",
-            "NuclearReactorSimulator.Application.Tests",
-            "Scenarios",
-            "Gameplay",
-            "Evidence");
+            "eng",
+            "frozen-evidence",
+            "ordinary");
 
     private static string ReportDirectory()
         => Path.Combine(FindRepositoryRoot(), "artifacts", "h24-four-node-committed-long-horizon-cross-profile-qualification");

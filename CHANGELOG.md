@@ -1,5 +1,21 @@
 # Changelog
 
+## M10.9.4.1-I.3 Hotfix 2 — Compact Frozen Evidence Contract Migration — CANDIDATE
+
+- Fixes the 39 ordinary-test failures caused by the new source-package rule that excludes `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence` while historical frozen-evidence assertions still read that path directly.
+- Moves the compact immutable prerequisite payload required by ordinary/current lightweight evidence tests to `eng/frozen-evidence/ordinary`; generated/local `Gameplay/Evidence` is no longer a source-package dependency.
+- Keeps only frozen files below 1 MB in the bundled compact store. The three identical 7.1 MB I.3 ten-millisecond traces remain external and are authenticated by canonical SHA-256 through `eng/frozen-evidence/large-payload-manifest.csv` because preflight tests only require their identity.
+- Redirects historical evidence locators in Gameplay audit tests to the compact store and adds manifest fallback only for intentionally omitted large payloads; numerical/runtime assertions are unchanged.
+- Adds `Gameplay/Evidence/` to `.gitignore` and documents the evidence-retention boundary. No plant physics, numerical mathematics, H.30 ACTIVATE policy, production selector, persistence semantics, tolerance-budget logic or 10 ms fixed-step behavior changes.
+- I.3 remains unvalidated until build, ordinary tests and the focused 300 s authoritative-production reference gate are green.
+
+## M10.9.4.1-I.3 Hotfix 1 — Artifact Pass-Flags Compile Fix — CANDIDATE
+
+- Fixes the only reported I.3 build failure: `conservationPasses` and `telemetryPasses` were computed in the long-audit method but referenced inside `WriteArtifacts(...)` without being passed into that method.
+- Passes both already-computed booleans explicitly to `WriteArtifacts(...)` and adds them to the method signature; no threshold, pass criterion, summary meaning, runtime behavior, production selector, numerical policy, physics, persistence semantics or 10 ms fixed step changes.
+- Preserves the packaging contract introduced by I.3: `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence` and runtime `artifacts` are not bundled in candidate ZIPs.
+- H.30 Requalification 1 remains the validated production-policy baseline; I.3 remains a candidate until build, ordinary tests and the focused 300 s gate are green.
+
 ## M10.9.4.1-H.30 Requalification 1 Hotfix 1 — Operations Namespace Compile Fix — CANDIDATE
 
 - Fixes the only reported H.30 RQ1 build failure: CS0246 for `PowerManoeuvringGuidancePlan` in `DesktopIntegratedOperationsProductionProgram.cs`.
@@ -2529,3 +2545,22 @@
 - Exact v3 remains clean in the same 100 s domain: `0` generation drops and `0` targeted-train reverse-flow steps, with `1791/1791` corrected commits and `0` rollback/fallback/unsafe/untargeted disagreement in the observed failed-classification run.
 - Replaces the overly narrow Hotfix 4 requirement `every drop has reverse admission flow` with the physically correct targeted-train requirement `every drop has reverse flow on stop, control or admission`.
 - Does not change H.30 `OPT-IN ONLY`, does not freeze I.3 tolerance budgets and leaves I.2 as the authoritative validated baseline until this corrected focused classifier passes locally.
+
+## M10.9.4.1-H.30 Requalification 1 Hotfix 1 — VALIDATED
+
+- Local build, complete ordinary suite and focused production-policy re-review gate passed on 2026-08-20.
+- Production decision is now `ACTIVATE`.
+- Exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` is the authoritative desktop production default.
+- Exact v2 `ExplicitCommittedState` remains fail-closed rollback/reference and compatibility-retained.
+- H.28 remains `bounded-but-costly`; no numerical retuning or fixed-step change was required.
+
+## M10.9.4.1-I.3 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline — CANDIDATE
+
+- Runs the H.30-RQ1-authoritative production selector for 300 simulated seconds / 30,000 steps.
+- Checks generation health and stop/control/admission flow direction at every 10 ms step.
+- Records 301 one-second reference samples and seven final-window conservation/inventory slopes.
+- Derives 19 versioned internal regression tolerance budgets from the final 60 seconds.
+- Verifies corrected production telemetry and a separate deterministic control fingerprint.
+- Adds a compact H.30 RQ1 evidence manifest under `eng/evidence-manifests/` instead of bundling large audit payloads.
+- Candidate ZIP packaging excludes `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence`; applying the candidate preserves any local Evidence directory.
+- Does not modify H.9/H.20/H.22, P060/F040, hysteresis limits, physical coefficients or the deterministic 10 ms fixed step.

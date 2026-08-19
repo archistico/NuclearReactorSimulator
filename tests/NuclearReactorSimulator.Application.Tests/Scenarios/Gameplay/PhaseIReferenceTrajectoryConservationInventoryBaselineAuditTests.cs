@@ -5,117 +5,134 @@ using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.Recording;
 using NuclearReactorSimulator.Application.Scenarios.Training;
 using NuclearReactorSimulator.Domain.Plant;
+using NuclearReactorSimulator.Simulation.Plant;
 using Xunit;
 
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 
 /// <summary>
-/// I.3 establishes the first Phase-I versioned 300-second current-v2 reference trajectory together with
-/// consolidated conservation/inventory observations and tolerance budgets. It is observational only.
+/// I.3 authoritative post-H.30-RQ1 production reference baseline. Runs the selected production default for 300 simulated seconds, verifies every 10 ms step for generation health and targeted-train flow direction, samples conservation/inventory every second, and derives the first frozen tolerance-budget candidate from the final 60 seconds. Runtime physics and numerical mathematics are observationally unchanged.
 /// </summary>
 public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests
 {
+    private const string OptInEnvironmentVariable = "NRS_I3_PRODUCTION_REFERENCE_AUDIT";
     private const int StepsPerSecond = 100;
     private const int ReferenceSeconds = 300;
-    private const int FinalWindowSeconds = 60;
     private const int ReferenceSteps = ReferenceSeconds * StepsPerSecond;
+    private const int FinalWindowSeconds = 60;
+    private const int DeterminismSteps = 256;
     private const double MaximumMassClosureResidualKilograms = 1e-6d;
     private const double MaximumEnergyClosureResidualJoules = 1e-2d;
     private const double MaximumBalanceMassRateResidualKilogramsPerSecond = 1e-8d;
     private const double MaximumBalancePowerResidualWatts = 1e-3d;
     private static readonly UTF8Encoding Utf8WithoutBom = new(encoderShouldEmitUTF8Identifier: false);
-    private const string LongAuditOptInEnvironmentVariable = "NRS_I3_LONG_AUDIT";
 
     [Fact]
-    public void FrozenI2Evidence_ProvesAuditCiBaselineBeforeReferenceBaseline()
+    public void H30Rq1ValidatedManifest_RecordsActivatedProductionPolicyWithoutBundlingAuditPayloads()
     {
-        AssertFrozenEvidence(
-            "I2_ValidatedAuditConsolidationCiBaselineSummary.txt",
-            "59597F9D2B3E00E985488298F66DF1A17CE0A7B6245A58BC103A0C44A6FCA68B",
-            "phase-i-audit-consolidation-passes=True",
-            "i2-audit-passes=True",
-            "phase-i-ci-baseline-established=True",
-            "runtime-behavior-changed=False");
-
-        AssertFrozenEvidence(
-            "I2_ValidatedAuditTierManifest.csv",
-            "074007E5D9714FEC8E10C3C4AF46C5B7F1EF0363C54F9C6CA9C81B956714A071",
-            "gameplay-long,SCHEDULED-LONG",
-            "operational-envelope,SCHEDULED-LONG",
-            "reference-plant-scale,SCHEDULED-LONG",
-            "H24-post-H28,HISTORICAL-FROZEN");
-
-        AssertFrozenEvidence(
-            "I2_ValidatedLegacyModeRetirementReadiness.csv",
-            "6815B4B4A92A5AE0194CCBB482D720EFD2B4388557E718E5116684230477736A",
-            "DeterministicHybridSemiImplicit,HISTORICAL-FROZEN-CANDIDATE,False,False,True,False",
-            "FourNodeBranchContinuityShadowIntegrated,HISTORICAL-FROZEN-CANDIDATE,False,False,True,False");
+        var path = Path.Combine(FindRepositoryRoot(), "eng", "evidence-manifests", "h30-rq1-validated.csv");
+        Assert.True(File.Exists(path), "H.30 RQ1 compact evidence manifest is missing.");
+        var text = File.ReadAllText(path);
+        Assert.Contains("decision,ACTIVATE", text, StringComparison.Ordinal);
+        Assert.Contains("authoritative-default,integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn", text, StringComparison.Ordinal);
+        Assert.Contains("rollback-reference,integrated-operations-desktop-stable@2|ExplicitCommittedState", text, StringComparison.Ordinal);
+        Assert.Contains("summary-sha256,5F615FB8125095721449B3299076FB192701B5CA91255DE1CCAE6070BEFBE2FE", text, StringComparison.Ordinal);
+        Assert.Contains("metrics-sha256,96B8ECEC4026665B9DFB223CE1EA9040F66FAC3BEB02E7509C7793D12AF949FA", text, StringComparison.Ordinal);
     }
 
     [Fact]
-    public void ReferenceTrajectoryContract_IsExactVersionedAndBaselineEstablishing()
+    public void ProductionSelector_IsValidatedH30Rq1V3WithExactV2FailClosedRollback()
+    {
+        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+
+        var production = DesktopHydraulicProductionPolicySelector.Resolve(DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, production.EffectivePolicy);
+        Assert.Equal("integrated-operations-desktop-stable", production.InitialCondition.InitialConditionId);
+        Assert.Equal(3, production.InitialCondition.Version);
+        Assert.False(production.ExplicitKillApplied);
+
+        var rollback = DesktopHydraulicProductionPolicySelector.Resolve(DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy, explicitKillRequested: true);
+        Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, rollback.EffectivePolicy);
+        Assert.Equal("integrated-operations-desktop-stable", rollback.InitialCondition.InitialConditionId);
+        Assert.Equal(2, rollback.InitialCondition.Version);
+        Assert.True(rollback.ExplicitKillApplied);
+    }
+
+    [Fact]
+    public void ProductionReferenceContract_IsAuthoritativeV3AndBudgetEstablishing()
     {
         var path = Path.Combine(FindRepositoryRoot(), "eng", "phase-i-reference-trajectory-contract.csv");
-        Assert.True(File.Exists(path), "Phase-I reference trajectory contract is missing.");
+        Assert.True(File.Exists(path));
         var lines = File.ReadAllLines(path);
         Assert.Equal(2, lines.Length);
-        Assert.Equal(
-            "trajectory_id,schema_version,exact_initial_condition,production_policy,simulated_seconds,logical_steps,sample_stride_steps,final_window_seconds,reference_role,budget_derivation,baseline_status",
-            lines[0]);
-
-        var fields = lines[1].Split(',');
-        Assert.Equal(11, fields.Length);
-        Assert.Equal("phase-i-desktop-v2-healthy-300s-v1", fields[0]);
-        Assert.Equal("1", fields[1]);
-        Assert.Equal("integrated-operations-desktop-stable@2", fields[2]);
-        Assert.Equal("ExplicitCommittedState", fields[3]);
-        Assert.Equal("300", fields[4]);
-        Assert.Equal("30000", fields[5]);
-        Assert.Equal("100", fields[6]);
-        Assert.Equal("60", fields[7]);
-        Assert.Equal("AUTHORITATIVE-DEFAULT-REFERENCE", fields[8]);
-        Assert.Equal("final-window-mean-plus-2x-observed-deviation-with-absolute-floor", fields[9]);
-        Assert.Equal("CANDIDATE-TO-FREEZE-AFTER-I3", fields[10]);
+        Assert.Equal("trajectory_id,schema_version,exact_initial_condition,production_policy,simulated_seconds,logical_steps,step_health_resolution_ms,reference_sample_stride_steps,final_window_seconds,reference_role,budget_derivation,baseline_status", lines[0]);
+        Assert.Equal("phase-i-production-v3-healthy-300s-v1,1,integrated-operations-desktop-stable@3,FourNodeBranchContinuityCorrectedCommitOptIn,300,30000,10,100,60,AUTHORITATIVE-PRODUCTION-REFERENCE,final-window-mean-plus-2x-observed-deviation-with-absolute-floor,CANDIDATE-TO-FREEZE-AFTER-I3", lines[1]);
     }
 
     [Fact(Explicit = true)]
     [Trait("Category", "PhaseIReferenceTrajectoryConservationInventoryBaselineAudit")]
-    public void DesktopV2HealthyReferenceTrajectory_EstablishesThreeHundredSecondConservationInventoryAndToleranceEvidence()
+    public void AuthoritativeProductionV3_ThreeHundredSeconds_EstablishesReferenceConservationInventoryAndToleranceBudgets()
     {
-        if (!string.Equals(
-                Environment.GetEnvironmentVariable(LongAuditOptInEnvironmentVariable),
-                "1",
-                StringComparison.Ordinal))
+        if (!string.Equals(Environment.GetEnvironmentVariable(OptInEnvironmentVariable), "1", StringComparison.Ordinal))
         {
             return;
         }
 
         ResetReportDirectory();
-        Assert.Equal("integrated-operations-desktop-stable", DesktopSustainedGenerationInitialConditionFactory.Reference.InitialConditionId);
-        Assert.Equal(2, DesktopSustainedGenerationInitialConditionFactory.Reference.Version);
+        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        var decision = DesktopHydraulicProductionPolicySelector.Resolve(DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        Assert.False(decision.ExplicitKillApplied);
+        Assert.Equal("integrated-operations-desktop-stable", decision.InitialCondition.InitialConditionId);
+        Assert.Equal(3, decision.InitialCondition.Version);
+
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
-        Assert.Equal(
-            HydraulicNumericalCouplingMode.ExplicitCommittedState,
-            engine.CurrentState.PlantDefinition.PlantDefinition.HydraulicNumericalCoupling.Mode);
+            DesktopHydraulicProductionPolicySelector.CreateFactory(decision).CreateRuntimeEngine());
+        Assert.Equal(TimeSpan.FromMilliseconds(10d), engine.FixedDeltaTime);
+        Assert.Equal(HydraulicNumericalCouplingMode.FourNodeBranchContinuityCorrectedCommitOptIn, CurrentHydraulics(engine).Mode);
+
         var coordinator = new ControlRoomRuntimeCoordinator(engine);
-        var samples = new List<ReferenceTrajectorySample>(ReferenceSeconds + 1)
+        var samples = new List<ReferenceSample>(ReferenceSeconds + 1)
         {
-            Capture(engine, coordinator.Current),
+            CaptureReferenceSample(engine, coordinator.Current),
         };
+        var healthViolations = new List<StepObservation>();
+        var reverseFlowViolations = new List<StepObservation>();
+        var telemetryProbe = new DesktopHydraulicProductionTelemetryProbe();
+        var maxMassClosure = 0d;
+        var maxEnergyClosure = 0d;
+        var maxBalanceMassRate = 0d;
+        var maxBalancePower = 0d;
 
-        coordinator.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.Run));
-        for (var second = 1; second <= ReferenceSeconds; second++)
+        for (var step = 1; step <= ReferenceSteps; step++)
         {
-            AdvanceCheckpoint(coordinator, StepsPerSecond);
-            var sample = Capture(engine, coordinator.Current);
-            samples.Add(sample);
+            var presentation = engine.Step(ControlRoomRunState.Running);
+            telemetryProbe.Observe(engine);
+            var observation = CaptureStepObservation(engine, presentation);
+            AssertFinite(observation);
 
-            if (second % 30 == 0)
+            maxMassClosure = Math.Max(maxMassClosure, Math.Abs(observation.MassClosureResidualKilograms));
+            maxEnergyClosure = Math.Max(maxEnergyClosure, Math.Abs(observation.EnergyClosureResidualJoules));
+            maxBalanceMassRate = Math.Max(maxBalanceMassRate, Math.Abs(observation.BalanceMassRateResidualKilogramsPerSecond));
+            maxBalancePower = Math.Max(maxBalancePower, Math.Abs(observation.BalancePowerResidualWatts));
+
+            if (!IsHealthy(observation))
+            {
+                healthViolations.Add(observation);
+            }
+            if (HasTargetedReverseFlow(observation))
+            {
+                reverseFlowViolations.Add(observation);
+            }
+
+            if (step % StepsPerSecond == 0)
+            {
+                samples.Add(CaptureReferenceSample(engine, presentation));
+            }
+            if (step % 3000 == 0)
             {
                 File.AppendAllText(
                     Path.Combine(ReportDirectory(), "00-progress.txt"),
-                    $"{DateTimeOffset.UtcNow:O} simulated-seconds={second}; logical-step={sample.LogicalStep}{Environment.NewLine}",
+                    $"{DateTimeOffset.UtcNow:O} simulated-seconds={step / StepsPerSecond}; logical-step={step}{Environment.NewLine}",
                     Utf8WithoutBom);
             }
         }
@@ -123,23 +140,11 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
         Assert.Equal(ReferenceSeconds + 1, samples.Count);
         Assert.Equal(ReferenceSteps, samples[^1].LogicalStep);
 
-        var maxMassClosure = samples.Max(static sample => Math.Abs(sample.MassClosureResidualKilograms));
-        var maxEnergyClosure = samples.Max(static sample => Math.Abs(sample.EnergyClosureResidualJoules));
-        var maxBalanceMassRate = samples.Max(static sample => Math.Abs(sample.BalanceMassRateResidualKilogramsPerSecond));
-        var maxBalancePower = samples.Max(static sample => Math.Abs(sample.BalancePowerResidualWatts));
-
-        Assert.InRange(maxMassClosure, 0d, MaximumMassClosureResidualKilograms);
-        Assert.InRange(maxEnergyClosure, 0d, MaximumEnergyClosureResidualJoules);
-        Assert.InRange(maxBalanceMassRate, 0d, MaximumBalanceMassRateResidualKilogramsPerSecond);
-        Assert.InRange(maxBalancePower, 0d, MaximumBalancePowerResidualWatts);
-
         var finalWindow = samples.Where(static sample => sample.SimulatedSeconds >= ReferenceSeconds - FinalWindowSeconds).ToArray();
         Assert.Equal(FinalWindowSeconds + 1, finalWindow.Length);
-
         var slopes = BuildInventorySlopes(finalWindow);
         Assert.Equal(7, slopes.Count);
-        Assert.All(slopes, static slope => Assert.True(double.IsFinite(slope.SlopePerSecond), $"Non-finite slope for {slope.MetricId}."));
-
+        Assert.All(slopes, static slope => Assert.True(double.IsFinite(slope.SlopePerSecond)));
         var budgets = BuildToleranceBudgets(finalWindow, slopes);
         Assert.Equal(19, budgets.Count);
         Assert.All(budgets, static budget =>
@@ -149,66 +154,105 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             Assert.True(budget.AbsoluteTolerance > 0d);
         });
 
-        var operatingSamples = samples.Skip(1).ToArray();
-        Assert.Equal(ReferenceSeconds, operatingSamples.Length);
-
-        var healthViolations = operatingSamples.Where(static sample => !IsHealthy(sample)).ToArray();
-        var shaftFloorViolations = operatingSamples.Where(static sample => sample.ShaftPowerMegawatts <= 4.5d).ToArray();
-        var shaftDropEpisodes = BuildShaftDropEpisodes(operatingSamples);
-
+        var telemetry = telemetryProbe.Snapshot();
+        var deterministicFingerprintA = DeterminismFingerprint();
+        var deterministicFingerprintB = DeterminismFingerprint();
+        var deterministicRepeat = string.Equals(deterministicFingerprintA, deterministicFingerprintB, StringComparison.Ordinal);
         var trajectoryFingerprint = ComputeTrajectoryFingerprint(samples);
-        var finalPresentationFingerprint = samples[^1].PresentationFingerprint;
-        var passes = healthViolations.Length == 0
-            && maxMassClosure <= MaximumMassClosureResidualKilograms
+
+        var conservationPasses = maxMassClosure <= MaximumMassClosureResidualKilograms
             && maxEnergyClosure <= MaximumEnergyClosureResidualJoules
             && maxBalanceMassRate <= MaximumBalanceMassRateResidualKilogramsPerSecond
             && maxBalancePower <= MaximumBalancePowerResidualWatts
             && slopes.All(static slope => double.IsFinite(slope.SlopePerSecond))
-            && budgets.All(static budget => double.IsFinite(budget.Target) && budget.AbsoluteTolerance > 0d);
+            && budgets.All(static budget => double.IsFinite(budget.Target) && double.IsFinite(budget.AbsoluteTolerance) && budget.AbsoluteTolerance > 0d);
+        var telemetryPasses = telemetry.ObservedSteps == ReferenceSteps
+            && telemetry.FourNodeTelemetrySteps == ReferenceSteps
+            && telemetry.TriggeredSteps > 0
+            && telemetry.CandidateEligibleSteps == telemetry.TriggeredSteps
+            && telemetry.CommitAuthorizedSteps == telemetry.TriggeredSteps
+            && telemetry.CorrectedCommittedSteps == telemetry.TriggeredSteps
+            && telemetry.RollbackSteps == 0
+            && telemetry.ExplicitFallbackSteps == 0
+            && telemetry.FallbackCommitViolations == 0
+            && telemetry.UnsafeCommitViolations == 0
+            && telemetry.UntargetedBranchDisagreementSteps == 0;
+        var passes = healthViolations.Count == 0
+            && reverseFlowViolations.Count == 0
+            && conservationPasses
+            && telemetryPasses
+            && deterministicRepeat;
+
         WriteArtifacts(
             samples,
             slopes,
             budgets,
             healthViolations,
-            shaftFloorViolations,
-            shaftDropEpisodes,
+            reverseFlowViolations,
+            telemetry,
             maxMassClosure,
             maxEnergyClosure,
             maxBalanceMassRate,
             maxBalancePower,
+            deterministicFingerprintA,
+            deterministicFingerprintB,
+            deterministicRepeat,
             trajectoryFingerprint,
-            finalPresentationFingerprint,
+            conservationPasses,
+            telemetryPasses,
             passes);
 
         Assert.True(
             passes,
-            BuildHealthFailureDiagnostic(healthViolations, shaftFloorViolations, shaftDropEpisodes));
+            FormattableString.Invariant(
+                $"I.3 authoritative production reference baseline failed. health-violations={healthViolations.Count}; targeted-reverse-flow={reverseFlowViolations.Count}; commits={telemetry.CorrectedCommittedSteps}; rollbacks={telemetry.RollbackSteps}; fallbacks={telemetry.ExplicitFallbackSteps}; unsafe={telemetry.UnsafeCommitViolations}; untargeted={telemetry.UntargetedBranchDisagreementSteps}; deterministic={deterministicRepeat}; max-closure={maxMassClosure:G17}/{maxEnergyClosure:G17}; max-balance={maxBalanceMassRate:G17}/{maxBalancePower:G17}."));
     }
 
-    private static ReferenceTrajectorySample Capture(IntegratedAutomaticOperationRuntimeEngine engine, ControlRoomSnapshot presentation)
+    private static StepObservation CaptureStepObservation(IntegratedAutomaticOperationRuntimeEngine engine, ControlRoomSnapshot presentation)
+    {
+        var fullPlant = engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant;
+        var turbine = fullPlant.IntegratedCycle.TurbineExpansion;
+        var train = Assert.Single(turbine.MainSteamNetwork.AdmissionTrains);
+        var stage = Assert.Single(turbine.StageGroups);
+        var generator = Assert.Single(presentation.Electrical.Generators);
+        var rotor = Assert.Single(presentation.TurbineSecondary.Rotors);
+        return new StepObservation(
+            presentation.LogicalStep,
+            presentation.LogicalStep / (double)StepsPerSecond,
+            presentation.AnyTripActive,
+            generator.BreakerClosed,
+            generator.RequestedElectricalPower.NumericValue ?? double.NaN,
+            generator.ElectricalOutput.NumericValue ?? double.NaN,
+            rotor.ShaftPower.NumericValue ?? double.NaN,
+            turbine.TotalShaftPower.Megawatts,
+            stage.EffectiveMassFlowRate.KilogramsPerSecond,
+            train.StopValve.MassFlowRate.KilogramsPerSecond,
+            train.ControlValve.MassFlowRate.KilogramsPerSecond,
+            train.AdmissionValve.MassFlowRate.KilogramsPerSecond,
+            fullPlant.HeatBalance.MassClosureResidualKilograms,
+            fullPlant.HeatBalance.FullEnergyPathClosureResidualJoules,
+            fullPlant.IntegratedCycle.ThermofluidAudit.BalanceMassRateResidualKilogramsPerSecond,
+            fullPlant.IntegratedCycle.ThermofluidAudit.BalancePowerResidualWatts);
+    }
+
+    private static ReferenceSample CaptureReferenceSample(IntegratedAutomaticOperationRuntimeEngine engine, ControlRoomSnapshot presentation)
     {
         var fullPlant = engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant;
         var plant = fullPlant.CandidatePlant;
-        var heatBalance = fullPlant.HeatBalance;
-        var thermofluid = fullPlant.IntegratedCycle.ThermofluidAudit;
         var turbine = fullPlant.IntegratedCycle.TurbineExpansion;
         var admissionTrain = Assert.Single(turbine.MainSteamNetwork.AdmissionTrains);
         var condenser = Assert.Single(fullPlant.IntegratedCycle.Condenser.Condensers);
-        var train = Assert.Single(fullPlant.IntegratedCycle.CondensateFeedwater.Trains);
+        var condensateTrain = Assert.Single(fullPlant.IntegratedCycle.CondensateFeedwater.Trains);
         var drum = Assert.Single(fullPlant.IntegratedCycle.PrimaryCircuit.SteamDrums.Drums);
-        var steamLine = Assert.Single(fullPlant.IntegratedCycle.TurbineExpansion.MainSteamNetwork.SteamLines);
+        var steamLine = Assert.Single(turbine.MainSteamNetwork.SteamLines);
         var generator = Assert.Single(presentation.Electrical.Generators);
         var rotor = Assert.Single(presentation.TurbineSecondary.Rotors);
-
         var exhaust = plant.GetFluidNode(condenser.SteamSpaceNodeId);
         var hotwell = plant.GetFluidNode(condenser.HotwellNodeId);
-        var feedwater = plant.GetFluidNode(train.FeedwaterInventoryNodeId);
+        var feedwater = plant.GetFluidNode(condensateTrain.FeedwaterInventoryNodeId);
         var drumInventory = plant.GetFluidNode(drum.InventoryNodeId);
         var header = plant.GetFluidNode(steamLine.HeaderNodeId);
-        var totalFluidMass = plant.FluidNodes.Sum(static node => node.Mass.Kilograms);
-        var totalFluidEnergy = plant.FluidNodes.Sum(static node => node.InternalEnergy.Joules);
-
-        var sample = new ReferenceTrajectorySample(
+        return new ReferenceSample(
             presentation.LogicalStep,
             presentation.LogicalStep / (double)StepsPerSecond,
             ControlRoomSnapshotFingerprint.Compute(presentation),
@@ -219,130 +263,58 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             rotor.ShaftPower.NumericValue ?? double.NaN,
             turbine.TotalShaftPower.Megawatts,
             turbine.TotalSteamMassFlowRate.KilogramsPerSecond,
+            admissionTrain.StopValve.MassFlowRate.KilogramsPerSecond,
+            admissionTrain.ControlValve.MassFlowRate.KilogramsPerSecond,
             admissionTrain.AdmissionValve.MassFlowRate.KilogramsPerSecond,
-            admissionTrain.ControlValve.EffectivePosition.Percent,
-            admissionTrain.AdmissionValve.EffectivePosition.Percent,
-            admissionTrain.TurbineInletPressure.Kilopascals,
-            admissionTrain.TurbineInletTemperature.DegreesCelsius,
-            admissionTrain.TurbineInletPhase.ToString(),
             rotor.Speed.NumericValue ?? double.NaN,
             condenser.FinalSteamSpacePressure.Kilopascals,
             drum.LiquidLevelFraction.Fraction,
-            totalFluidMass,
-            totalFluidEnergy,
+            plant.FluidNodes.Sum(static node => node.Mass.Kilograms),
+            plant.FluidNodes.Sum(static node => node.InternalEnergy.Joules),
             exhaust.Mass.Kilograms,
             hotwell.Mass.Kilograms,
             feedwater.Mass.Kilograms,
             drumInventory.Mass.Kilograms,
-            header.Mass.Kilograms,
-            heatBalance.MassClosureResidualKilograms,
-            heatBalance.FullEnergyPathClosureResidualJoules,
-            thermofluid.BalanceMassRateResidualKilogramsPerSecond,
-            thermofluid.BalancePowerResidualWatts);
-
-        AssertFinite(sample);
-        return sample;
+            header.Mass.Kilograms);
     }
 
-    private static bool IsHealthy(ReferenceTrajectorySample sample)
-        => !sample.AnyTrip
-            && sample.GeneratorBreakerClosed
-            && sample.RequestedElectricalPowerMegawatts > 4.5d
-            && sample.GrossElectricalPowerMegawatts > 4.0d
-            && sample.ShaftPowerMegawatts > 4.5d;
+    private static bool IsHealthy(StepObservation observation)
+        => !observation.AnyTrip
+            && observation.GeneratorBreakerClosed
+            && observation.RequestedElectricalPowerMegawatts > 4.5d
+            && observation.GrossElectricalPowerMegawatts > 4.0d
+            && observation.RotorShaftPowerMegawatts > 4.5d
+            && observation.CanonicalShaftPowerMegawatts > 4.5d;
 
-    private static void AssertFinite(ReferenceTrajectorySample sample)
+    private static bool HasTargetedReverseFlow(StepObservation observation)
+        => observation.StopFlowKilogramsPerSecond < 0d
+            || observation.ControlFlowKilogramsPerSecond < 0d
+            || observation.AdmissionFlowKilogramsPerSecond < 0d;
+
+    private static void AssertFinite(StepObservation observation)
     {
         foreach (var value in new[]
         {
-            sample.SimulatedSeconds,
-            sample.RequestedElectricalPowerMegawatts,
-            sample.GrossElectricalPowerMegawatts,
-            sample.ShaftPowerMegawatts,
-            sample.CanonicalTotalTurbineShaftPowerMegawatts,
-            sample.TotalTurbineSteamFlowKilogramsPerSecond,
-            sample.AdmissionMassFlowKilogramsPerSecond,
-            sample.ControlValvePositionPercent,
-            sample.AdmissionValvePositionPercent,
-            sample.TurbineInletPressureKilopascals,
-            sample.TurbineInletTemperatureDegreesCelsius,
-            sample.RotorSpeedRpm,
-            sample.CondenserPressureKilopascals,
-            sample.DrumLevelFraction,
-            sample.TotalFluidMassKilograms,
-            sample.TotalFluidInternalEnergyJoules,
-            sample.ExhaustMassKilograms,
-            sample.HotwellMassKilograms,
-            sample.FeedwaterInventoryMassKilograms,
-            sample.DrumInventoryMassKilograms,
-            sample.MainSteamHeaderMassKilograms,
-            sample.MassClosureResidualKilograms,
-            sample.EnergyClosureResidualJoules,
-            sample.BalanceMassRateResidualKilogramsPerSecond,
-            sample.BalancePowerResidualWatts,
+            observation.SimulatedSeconds,
+            observation.RequestedElectricalPowerMegawatts,
+            observation.GrossElectricalPowerMegawatts,
+            observation.RotorShaftPowerMegawatts,
+            observation.CanonicalShaftPowerMegawatts,
+            observation.StageFlowKilogramsPerSecond,
+            observation.StopFlowKilogramsPerSecond,
+            observation.ControlFlowKilogramsPerSecond,
+            observation.AdmissionFlowKilogramsPerSecond,
+            observation.MassClosureResidualKilograms,
+            observation.EnergyClosureResidualJoules,
+            observation.BalanceMassRateResidualKilogramsPerSecond,
+            observation.BalancePowerResidualWatts,
         })
         {
-            Assert.True(double.IsFinite(value), $"Non-finite I.3 reference trajectory value at logical step {sample.LogicalStep}.");
+            Assert.True(double.IsFinite(value), $"Non-finite corrected 300 s observation at logical step {observation.LogicalStep}.");
         }
     }
 
-    private static IReadOnlyList<ShaftDropEpisode> BuildShaftDropEpisodes(IReadOnlyList<ReferenceTrajectorySample> operatingSamples)
-    {
-        var episodes = new List<ShaftDropEpisode>();
-        var start = -1;
-        for (var i = 0; i <= operatingSamples.Count; i++)
-        {
-            var belowFloor = i < operatingSamples.Count && operatingSamples[i].ShaftPowerMegawatts <= 4.5d;
-            if (belowFloor && start < 0)
-            {
-                start = i;
-                continue;
-            }
-
-            if (belowFloor || start < 0)
-            {
-                continue;
-            }
-
-            var episodeSamples = operatingSamples.Skip(start).Take(i - start).ToArray();
-            episodes.Add(new ShaftDropEpisode(
-                episodeSamples[0].LogicalStep,
-                episodeSamples[^1].LogicalStep,
-                episodeSamples[0].SimulatedSeconds,
-                episodeSamples[^1].SimulatedSeconds,
-                episodeSamples.Length,
-                episodeSamples.Min(static sample => sample.ShaftPowerMegawatts),
-                episodeSamples.Min(static sample => sample.CanonicalTotalTurbineShaftPowerMegawatts),
-                episodeSamples.Min(static sample => sample.GrossElectricalPowerMegawatts),
-                episodeSamples.Min(static sample => sample.TotalTurbineSteamFlowKilogramsPerSecond),
-                episodeSamples.Min(static sample => sample.AdmissionMassFlowKilogramsPerSecond),
-                string.Join("|", episodeSamples.Select(static sample => sample.TurbineInletPhase).Distinct(StringComparer.Ordinal))));
-            start = -1;
-        }
-
-        return episodes;
-    }
-
-    private static string BuildHealthFailureDiagnostic(
-        IReadOnlyList<ReferenceTrajectorySample> healthViolations,
-        IReadOnlyList<ReferenceTrajectorySample> shaftFloorViolations,
-        IReadOnlyList<ShaftDropEpisode> shaftDropEpisodes)
-    {
-        if (healthViolations.Count == 0)
-        {
-            return "I.3 failed outside the generation-health predicate; inspect generated artifacts.";
-        }
-
-        var first = healthViolations[0];
-        var longest = shaftDropEpisodes.OrderByDescending(static episode => episode.SampleCount).FirstOrDefault();
-        var longestText = longest is null
-            ? "none"
-            : FormattableString.Invariant($"{longest.StartSeconds:0.###}-{longest.EndSeconds:0.###}s/{longest.SampleCount} samples/min-shaft={longest.MinimumRotorShaftPowerMegawatts:0.###}MW");
-        return FormattableString.Invariant(
-            $"I.3 completed the full 300 s trajectory but generation-health did not remain continuously green. violations={healthViolations.Count}; shaft-floor-violations={shaftFloorViolations.Count}; shaft-drop-episodes={shaftDropEpisodes.Count}; first=step {first.LogicalStep} t={first.SimulatedSeconds:0.###}s request/gross/rotor-shaft/canonical-shaft={first.RequestedElectricalPowerMegawatts:0.###}/{first.GrossElectricalPowerMegawatts:0.###}/{first.ShaftPowerMegawatts:0.###}/{first.CanonicalTotalTurbineShaftPowerMegawatts:0.###}MW steam/admission={first.TotalTurbineSteamFlowKilogramsPerSecond:0.###}/{first.AdmissionMassFlowKilogramsPerSecond:0.###}kg/s phase={first.TurbineInletPhase}; longest={longestText}. See 03/06/07 diagnostic CSV artifacts.");
-    }
-
-    private static IReadOnlyList<InventorySlope> BuildInventorySlopes(IReadOnlyList<ReferenceTrajectorySample> window)
+    private static IReadOnlyList<InventorySlope> BuildInventorySlopes(IReadOnlyList<ReferenceSample> window)
         => new[]
         {
             BuildSlope("total-fluid-mass", "kg/s", window, static sample => sample.TotalFluidMassKilograms),
@@ -354,11 +326,7 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             BuildSlope("main-steam-header-mass", "kg/s", window, static sample => sample.MainSteamHeaderMassKilograms),
         };
 
-    private static InventorySlope BuildSlope(
-        string metricId,
-        string unit,
-        IReadOnlyList<ReferenceTrajectorySample> window,
-        Func<ReferenceTrajectorySample, double> selector)
+    private static InventorySlope BuildSlope(string metricId, string unit, IReadOnlyList<ReferenceSample> window, Func<ReferenceSample, double> selector)
     {
         var meanTime = window.Average(static sample => sample.SimulatedSeconds);
         var meanValue = window.Average(selector);
@@ -370,19 +338,17 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             numerator += dx * (selector(sample) - meanValue);
             denominator += dx * dx;
         }
-
-        var slope = denominator > 0d ? numerator / denominator : double.NaN;
-        return new InventorySlope(metricId, unit, meanValue, slope);
+        return new InventorySlope(metricId, unit, meanValue, denominator > 0d ? numerator / denominator : double.NaN);
     }
 
     private static IReadOnlyList<ToleranceBudget> BuildToleranceBudgets(
-        IReadOnlyList<ReferenceTrajectorySample> window,
+        IReadOnlyList<ReferenceSample> window,
         IReadOnlyList<InventorySlope> slopes)
     {
         var budgets = new List<ToleranceBudget>
         {
             BuildWindowBudget("gross-electrical-power", "MW", window, static sample => sample.GrossElectricalPowerMegawatts, 0.05d),
-            BuildWindowBudget("shaft-power", "MW", window, static sample => sample.ShaftPowerMegawatts, 0.05d),
+            BuildWindowBudget("shaft-power", "MW", window, static sample => sample.RotorShaftPowerMegawatts, 0.05d),
             BuildWindowBudget("rotor-speed", "rpm", window, static sample => sample.RotorSpeedRpm, 1d),
             BuildWindowBudget("condenser-pressure", "kPa", window, static sample => sample.CondenserPressureKilopascals, 0.1d),
             BuildWindowBudget("drum-level-fraction", "fraction", window, static sample => sample.DrumLevelFraction, 0.005d),
@@ -403,7 +369,7 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
                 slope.Unit,
                 0d,
                 Math.Max(floor, 2d * Math.Abs(slope.SlopePerSecond)),
-                "I3-observed-final-60s-linear-slope; target-zero; freeze-after-validation"));
+                "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"));
         }
 
         return budgets;
@@ -412,8 +378,8 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
     private static ToleranceBudget BuildWindowBudget(
         string metricId,
         string unit,
-        IReadOnlyList<ReferenceTrajectorySample> window,
-        Func<ReferenceTrajectorySample, double> selector,
+        IReadOnlyList<ReferenceSample> window,
+        Func<ReferenceSample, double> selector,
         double absoluteFloor)
     {
         var target = window.Average(selector);
@@ -423,130 +389,124 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             unit,
             target,
             Math.Max(absoluteFloor, 2d * maximumDeviation),
-            "I3-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation");
+            "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation");
     }
 
-    private static string ComputeTrajectoryFingerprint(IReadOnlyList<ReferenceTrajectorySample> samples)
+    private static string DeterminismFingerprint()
     {
-        var text = string.Join("\n", samples.Select(FormatFingerprintRow));
+        var decision = DesktopHydraulicProductionPolicySelector.Resolve(DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
+            DesktopHydraulicProductionPolicySelector.CreateFactory(decision).CreateRuntimeEngine());
+        var builder = new StringBuilder();
+        for (var step = 1; step <= DeterminismSteps; step++)
+        {
+            var presentation = engine.Step(ControlRoomRunState.Running);
+            var telemetry = CurrentHydraulics(engine).FourNodeBranchContinuity as FourNodeBranchContinuityIntegrationTelemetry;
+            builder.Append(FormattableString.Invariant(
+                $"{step}:{ControlRoomSnapshotFingerprint.Compute(presentation)}:{telemetry?.TriggerObserved}:{telemetry?.ProposedAuthority}:{telemetry?.Reason}:{telemetry?.RollbackRequired}:{telemetry?.CorrectedCommitAuthorized}:{telemetry?.CorrectedCandidateCommitted}:{telemetry?.CorrectedCommitReason}:{telemetry?.ShadowIterationCount}||"));
+        }
+        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString())));
+    }
+
+    private static string ComputeTrajectoryFingerprint(IReadOnlyList<ReferenceSample> samples)
+    {
+        var text = string.Join("\n", samples.Select(static sample => FormattableString.Invariant(
+            $"{sample.LogicalStep}|{sample.PresentationFingerprint}|{sample.AnyTrip}|{sample.GeneratorBreakerClosed}|{sample.RequestedElectricalPowerMegawatts:G17}|{sample.GrossElectricalPowerMegawatts:G17}|{sample.RotorShaftPowerMegawatts:G17}|{sample.CanonicalShaftPowerMegawatts:G17}|{sample.TotalSteamFlowKilogramsPerSecond:G17}|{sample.StopFlowKilogramsPerSecond:G17}|{sample.ControlFlowKilogramsPerSecond:G17}|{sample.AdmissionFlowKilogramsPerSecond:G17}|{sample.RotorSpeedRpm:G17}|{sample.CondenserPressureKilopascals:G17}|{sample.DrumLevelFraction:G17}|{sample.TotalFluidMassKilograms:G17}|{sample.TotalFluidInternalEnergyJoules:G17}|{sample.ExhaustMassKilograms:G17}|{sample.HotwellMassKilograms:G17}|{sample.FeedwaterInventoryMassKilograms:G17}|{sample.DrumInventoryMassKilograms:G17}|{sample.MainSteamHeaderMassKilograms:G17}")));
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(text)));
     }
 
-    private static string FormatFingerprintRow(ReferenceTrajectorySample sample)
-        => FormattableString.Invariant(
-            $"{sample.LogicalStep}|{sample.PresentationFingerprint}|{sample.AnyTrip}|{sample.GeneratorBreakerClosed}|{sample.RequestedElectricalPowerMegawatts:G17}|{sample.GrossElectricalPowerMegawatts:G17}|{sample.ShaftPowerMegawatts:G17}|{sample.CanonicalTotalTurbineShaftPowerMegawatts:G17}|{sample.TotalTurbineSteamFlowKilogramsPerSecond:G17}|{sample.AdmissionMassFlowKilogramsPerSecond:G17}|{sample.ControlValvePositionPercent:G17}|{sample.AdmissionValvePositionPercent:G17}|{sample.TurbineInletPressureKilopascals:G17}|{sample.TurbineInletTemperatureDegreesCelsius:G17}|{sample.TurbineInletPhase}|{sample.RotorSpeedRpm:G17}|{sample.CondenserPressureKilopascals:G17}|{sample.DrumLevelFraction:G17}|{sample.TotalFluidMassKilograms:G17}|{sample.TotalFluidInternalEnergyJoules:G17}|{sample.ExhaustMassKilograms:G17}|{sample.HotwellMassKilograms:G17}|{sample.FeedwaterInventoryMassKilograms:G17}|{sample.DrumInventoryMassKilograms:G17}|{sample.MainSteamHeaderMassKilograms:G17}|{sample.MassClosureResidualKilograms:G17}|{sample.EnergyClosureResidualJoules:G17}|{sample.BalanceMassRateResidualKilogramsPerSecond:G17}|{sample.BalancePowerResidualWatts:G17}");
-
     private static void WriteArtifacts(
-        IReadOnlyList<ReferenceTrajectorySample> samples,
+        IReadOnlyList<ReferenceSample> samples,
         IReadOnlyList<InventorySlope> slopes,
         IReadOnlyList<ToleranceBudget> budgets,
-        IReadOnlyList<ReferenceTrajectorySample> healthViolations,
-        IReadOnlyList<ReferenceTrajectorySample> shaftFloorViolations,
-        IReadOnlyList<ShaftDropEpisode> shaftDropEpisodes,
+        IReadOnlyList<StepObservation> healthViolations,
+        IReadOnlyList<StepObservation> reverseFlowViolations,
+        FourNodeProductionActivationTelemetrySnapshot telemetry,
         double maxMassClosure,
         double maxEnergyClosure,
         double maxBalanceMassRate,
         double maxBalancePower,
+        string determinismA,
+        string determinismB,
+        bool deterministicRepeat,
         string trajectoryFingerprint,
-        string finalPresentationFingerprint,
+        bool conservationPasses,
+        bool telemetryPasses,
         bool passes)
     {
         var directory = ReportDirectory();
-        File.Copy(
-            Path.Combine(FindRepositoryRoot(), "eng", "phase-i-reference-trajectory-contract.csv"),
-            Path.Combine(directory, "02-reference-trajectory-contract.csv"),
-            overwrite: true);
+        File.Copy(Path.Combine(FindRepositoryRoot(), "eng", "phase-i-reference-trajectory-contract.csv"), Path.Combine(directory, "02-reference-trajectory-contract.csv"), overwrite: true);
 
-        var trajectoryLines = new List<string>
+        var sampleLines = new List<string>
         {
-            "logical_step,simulated_seconds,presentation_fingerprint,any_trip,generator_breaker_closed,requested_mwe,gross_mwe,rotor_shaft_mwe,canonical_total_turbine_shaft_mwe,total_turbine_steam_flow_kg_s,admission_flow_kg_s,control_valve_percent,admission_valve_percent,turbine_inlet_pressure_kpa,turbine_inlet_temperature_c,turbine_inlet_phase,rotor_rpm,condenser_pressure_kpa,drum_level_fraction,total_fluid_mass_kg,total_fluid_internal_energy_j,exhaust_mass_kg,hotwell_mass_kg,feedwater_inventory_mass_kg,drum_inventory_mass_kg,main_steam_header_mass_kg,mass_closure_kg,energy_closure_j,balance_mass_rate_kg_s,balance_power_w",
+            "logical_step,simulated_seconds,presentation_fingerprint,trip,breaker,request_mwe,gross_mwe,rotor_shaft_mwe,canonical_shaft_mwe,total_steam_flow_kg_s,stop_flow_kg_s,control_flow_kg_s,admission_flow_kg_s,rotor_rpm,condenser_kpa,drum_level_fraction,total_fluid_mass_kg,total_fluid_internal_energy_j,exhaust_mass_kg,hotwell_mass_kg,feedwater_mass_kg,drum_inventory_mass_kg,header_mass_kg",
         };
-        trajectoryLines.AddRange(samples.Select(FormatCsvRow));
-        File.WriteAllLines(Path.Combine(directory, "03-reference-trajectory-samples.csv"), trajectoryLines, Utf8WithoutBom);
+        sampleLines.AddRange(samples.Select(FormatReferenceSample));
+        File.WriteAllLines(Path.Combine(directory, "03-reference-trajectory-samples.csv"), sampleLines, Utf8WithoutBom);
 
-        var slopeLines = new List<string>
-        {
-            "metric_id,unit,final_window_mean,linear_slope_per_second",
-        };
-        slopeLines.AddRange(slopes.Select(static slope => FormattableString.Invariant(
-            $"{slope.MetricId},{slope.Unit},{slope.MeanValue:G17},{slope.SlopePerSecond:G17}")));
+        var slopeLines = new List<string> { "metric_id,unit,final_window_mean,linear_slope_per_second" };
+        slopeLines.AddRange(slopes.Select(static slope => FormattableString.Invariant($"{slope.MetricId},{slope.Unit},{slope.MeanValue:G17},{slope.SlopePerSecond:G17}")));
         File.WriteAllLines(Path.Combine(directory, "04-conservation-inventory-final-window-slopes.csv"), slopeLines, Utf8WithoutBom);
 
-        var budgetLines = new List<string>
-        {
-            "metric_id,unit,target,absolute_tolerance,derivation",
-        };
-        budgetLines.AddRange(budgets.Select(static budget => FormattableString.Invariant(
-            $"{budget.MetricId},{budget.Unit},{budget.Target:G17},{budget.AbsoluteTolerance:G17},{budget.Derivation}")));
+        var budgetLines = new List<string> { "metric_id,unit,target,absolute_tolerance,derivation" };
+        budgetLines.AddRange(budgets.Select(static budget => FormattableString.Invariant($"{budget.MetricId},{budget.Unit},{budget.Target:G17},{budget.AbsoluteTolerance:G17},{budget.Derivation}")));
         File.WriteAllLines(Path.Combine(directory, "05-versioned-tolerance-budgets.csv"), budgetLines, Utf8WithoutBom);
 
-        var violationLines = new List<string>
-        {
-            "logical_step,simulated_seconds,reasons,requested_mwe,gross_mwe,rotor_shaft_mwe,canonical_total_turbine_shaft_mwe,total_turbine_steam_flow_kg_s,admission_flow_kg_s,control_valve_percent,admission_valve_percent,turbine_inlet_pressure_kpa,turbine_inlet_temperature_c,turbine_inlet_phase,rotor_rpm,condenser_pressure_kpa,drum_level_fraction",
-        };
-        violationLines.AddRange(healthViolations.Select(static sample => string.Join(",", new[]
-        {
-            sample.LogicalStep.ToString(CultureInfo.InvariantCulture),
-            sample.SimulatedSeconds.ToString("G17", CultureInfo.InvariantCulture),
-            HealthViolationReasons(sample),
-            sample.RequestedElectricalPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
-            sample.GrossElectricalPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
-            sample.ShaftPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
-            sample.CanonicalTotalTurbineShaftPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TotalTurbineSteamFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
-            sample.AdmissionMassFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
-            sample.ControlValvePositionPercent.ToString("G17", CultureInfo.InvariantCulture),
-            sample.AdmissionValvePositionPercent.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TurbineInletPressureKilopascals.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TurbineInletTemperatureDegreesCelsius.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TurbineInletPhase,
-            sample.RotorSpeedRpm.ToString("G17", CultureInfo.InvariantCulture),
-            sample.CondenserPressureKilopascals.ToString("G17", CultureInfo.InvariantCulture),
-            sample.DrumLevelFraction.ToString("G17", CultureInfo.InvariantCulture),
-        })));
-        File.WriteAllLines(Path.Combine(directory, "06-generation-health-violations.csv"), violationLines, Utf8WithoutBom);
+        WriteStepObservations(Path.Combine(directory, "06-step-health-violations.csv"), healthViolations);
+        WriteStepObservations(Path.Combine(directory, "07-targeted-reverse-flow-violations.csv"), reverseFlowViolations);
 
-        var episodeLines = new List<string>
+        var telemetryLines = new[]
         {
-            "start_step,end_step,start_seconds,end_seconds,sampled_seconds,min_rotor_shaft_mwe,min_canonical_total_turbine_shaft_mwe,min_gross_mwe,min_total_turbine_steam_flow_kg_s,min_admission_flow_kg_s,turbine_inlet_phases",
+            "metric,value",
+            $"observed_steps,{telemetry.ObservedSteps}",
+            $"four_node_steps,{telemetry.FourNodeTelemetrySteps}",
+            $"triggered,{telemetry.TriggeredSteps}",
+            $"eligible,{telemetry.CandidateEligibleSteps}",
+            $"authorized,{telemetry.CommitAuthorizedSteps}",
+            $"committed,{telemetry.CorrectedCommittedSteps}",
+            $"fallbacks,{telemetry.ExplicitFallbackSteps}",
+            $"rollbacks,{telemetry.RollbackSteps}",
+            $"fallback_commit_violations,{telemetry.FallbackCommitViolations}",
+            $"unsafe_commits,{telemetry.UnsafeCommitViolations}",
+            $"untargeted_disagreements,{telemetry.UntargetedBranchDisagreementSteps}",
         };
-        episodeLines.AddRange(shaftDropEpisodes.Select(static episode => FormattableString.Invariant(
-            $"{episode.StartLogicalStep},{episode.EndLogicalStep},{episode.StartSeconds:G17},{episode.EndSeconds:G17},{episode.SampleCount},{episode.MinimumRotorShaftPowerMegawatts:G17},{episode.MinimumCanonicalTotalTurbineShaftPowerMegawatts:G17},{episode.MinimumGrossElectricalPowerMegawatts:G17},{episode.MinimumTotalTurbineSteamFlowKilogramsPerSecond:G17},{episode.MinimumAdmissionFlowKilogramsPerSecond:G17},{episode.TurbineInletPhases}")));
-        File.WriteAllLines(Path.Combine(directory, "07-shaft-drop-episodes.csv"), episodeLines, Utf8WithoutBom);
+        File.WriteAllLines(Path.Combine(directory, "08-production-telemetry.csv"), telemetryLines, Utf8WithoutBom);
+        File.WriteAllLines(Path.Combine(directory, "09-determinism-control.csv"), new[]
+        {
+            "control_steps,fingerprint_a,fingerprint_b,repeat",
+            $"{DeterminismSteps},{determinismA},{determinismB},{deterministicRepeat}",
+        }, Utf8WithoutBom);
 
         var summary = new[]
         {
-            "=== 01-current-v2-phase-i-reference-trajectory-conservation-inventory-baseline ===",
-            "I.3 Hotfix 1 completes the full versioned 300-second exact-v2 ExplicitCommittedState trajectory even when generation-health fails, so transient shaft-power drops are characterized before the unchanged final health gate is evaluated. It does not change plant physics, numerical mathematics, H.30 OPT-IN ONLY policy, exact-version persistence semantics or the 10 ms fixed step.",
-            $"trajectory-id=phase-i-desktop-v2-healthy-300s-v1; exact-initial-condition=integrated-operations-desktop-stable@2; production-policy=ExplicitCommittedState; simulated-seconds={ReferenceSeconds}; logical-steps={ReferenceSteps}; sample-stride-steps={StepsPerSecond}; samples={samples.Count}; final-window-seconds={FinalWindowSeconds};",
-            $"healthy-operating-samples={samples.Skip(1).Count(IsHealthy)}/{ReferenceSeconds}; generation-health-violations={healthViolations.Count}; shaft-floor-violations={shaftFloorViolations.Count}; shaft-drop-episodes={shaftDropEpisodes.Count}; trip-samples={samples.Count(static sample => sample.AnyTrip)}; initial-reference-sample-included=True; final-presentation-fingerprint={finalPresentationFingerprint}; trajectory-fingerprint={trajectoryFingerprint};",
-            healthViolations.Count == 0
-                ? "first-generation-health-violation=none;"
-                : FormattableString.Invariant($"first-generation-health-violation-step={healthViolations[0].LogicalStep}; first-generation-health-violation-seconds={healthViolations[0].SimulatedSeconds:G17}; first-rotor-shaft-mwe={healthViolations[0].ShaftPowerMegawatts:G17}; first-canonical-total-shaft-mwe={healthViolations[0].CanonicalTotalTurbineShaftPowerMegawatts:G17}; first-steam-flow-kg-s={healthViolations[0].TotalTurbineSteamFlowKilogramsPerSecond:G17}; first-admission-flow-kg-s={healthViolations[0].AdmissionMassFlowKilogramsPerSecond:G17}; first-turbine-inlet-phase={healthViolations[0].TurbineInletPhase};"),
-            FormattableString.Invariant($"max-network-mass-closure-kg={maxMassClosure:G17}; max-network-energy-closure-j={maxEnergyClosure:G17}; max-network-balance-mass-rate-kg-s={maxBalanceMassRate:G17}; max-network-balance-power-w={maxBalancePower:G17};"),
-            $"inventory-slope-observations={slopes.Count}; tolerance-budget-entries={budgets.Count}; tolerance-budget-schema=I3-v1; tolerance-budget-derivation=final-window baseline statistics plus explicit absolute floors; budgets-freeze-after-validation=True;",
-            "authoritative-default=integrated-operations-desktop-stable@2|ExplicitCommittedState; qualified-opt-in=integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn; phase-h-production-policy-decision=OPT-IN ONLY; production-fixed-step=10.000 ms; runtime-behavior-changed=False;",
-            "legacy-mode-retirement-authorized=False; H24-post-H28-rerun=False; H28-rerun=False; reference-baseline-is-internal-regression-evidence=True; external-historical-measurement=False;",
-            $"phase-i-reference-trajectory-baseline-passes={passes}; phase-i-conservation-inventory-baseline-passes={passes}; i3-audit-passes={passes}; phase-i-reference-tolerance-baseline-established={passes};",
+            "=== 01-current-v3-phase-i-authoritative-reference-trajectory-conservation-inventory-tolerance-baseline ===",
+            "I.3 runs the H.30 RQ1-authoritative production default for the full 300-second healthy reference horizon. Every 10 ms step is checked for generation health and reverse flow across stop/control/admission; one-second samples establish conservation/inventory observations, final-window slopes and versioned internal regression tolerance budgets. This gate does not retune runtime physics or numerical mathematics.",
+            $"trajectory-id=phase-i-production-v3-healthy-300s-v1; exact-initial-condition=integrated-operations-desktop-stable@3; production-policy=FourNodeBranchContinuityCorrectedCommitOptIn; simulated-seconds={ReferenceSeconds}; logical-steps={ReferenceSteps}; step-health-resolution-ms=10; reference-samples={samples.Count}; final-window-seconds={FinalWindowSeconds};",
+            $"generation-health-violations={healthViolations.Count}; targeted-reverse-flow-violations={reverseFlowViolations.Count}; trip-reference-samples={samples.Count(static sample => sample.AnyTrip)}; trajectory-fingerprint={trajectoryFingerprint}; final-presentation-fingerprint={samples[^1].PresentationFingerprint};",
+            FormattableString.Invariant($"max-network-mass-closure-kg={maxMassClosure:G17}; max-network-energy-closure-j={maxEnergyClosure:G17}; max-network-balance-mass-rate-kg-s={maxBalanceMassRate:G17}; max-network-balance-power-w={maxBalancePower:G17}; inventory-slope-observations={slopes.Count}; tolerance-budget-entries={budgets.Count}; tolerance-budget-schema=I3-production-v1;"),
+            $"corrected-triggered={telemetry.TriggeredSteps}; corrected-eligible={telemetry.CandidateEligibleSteps}; corrected-authorized={telemetry.CommitAuthorizedSteps}; corrected-committed={telemetry.CorrectedCommittedSteps}; corrected-rollbacks={telemetry.RollbackSteps}; corrected-fallbacks={telemetry.ExplicitFallbackSteps}; corrected-fallback-commit-violations={telemetry.FallbackCommitViolations}; corrected-unsafe={telemetry.UnsafeCommitViolations}; corrected-untargeted-disagreements={telemetry.UntargetedBranchDisagreementSteps};",
+            $"determinism-control-steps={DeterminismSteps}; deterministic-repeat={deterministicRepeat}; deterministic-fingerprint={determinismA};",
+            "authoritative-default=integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn; rollback-reference=integrated-operations-desktop-stable@2|ExplicitCommittedState; phase-h-production-policy-decision=ACTIVATE; production-fixed-step=10.000 ms; runtime-behavior-changed=False; i3-reference-budgets-freeze-on-validation=True;",
+            $"phase-i-reference-trajectory-baseline-passes={passes}; phase-i-generation-continuity-baseline-passes={healthViolations.Count == 0 && reverseFlowViolations.Count == 0}; phase-i-conservation-inventory-baseline-passes={conservationPasses}; phase-i-production-telemetry-baseline-passes={telemetryPasses}; phase-i-reference-determinism-passes={deterministicRepeat}; i3-audit-passes={passes}; phase-i-reference-tolerance-baseline-established={passes};",
             passes
-                ? "I.3 recommendation: after a green gate, freeze this exact trajectory, slope and tolerance-budget evidence as the Phase-I v1 regression baseline. Keep slope budgets observational/regression-facing; do not tune runtime physics or seed values to fit them."
-                : "I.3 Hotfix 1 recommendation: do not freeze tolerance budgets and do not weaken the generation-health contract. Use 03/06/07 artifacts to classify the shaft-power drop against steam flow, admission flow and turbine-inlet phase before deciding whether a runtime correction is required. Keep slope budgets observational/regression-facing; do not tune runtime physics or seed values to fit them.",
+                ? "I.3 recommendation: freeze this exact authoritative-v3 trajectory, final-window slopes and 19 tolerance budgets as the Phase-I production regression baseline. Keep the budgets regression-facing; do not tune runtime physics or seed values to fit them. Proceed to I.4 known-limitations and legacy-retirement review."
+                : "I.3 recommendation: keep the reference baseline unfrozen. Do not weaken generation/continuity floors or retune runtime physics to fit candidate budgets; localize the failing production-reference condition first.",
         };
         File.WriteAllLines(Path.Combine(directory, "01-phase-i-reference-trajectory-conservation-inventory-baseline.summary.txt"), summary, Utf8WithoutBom);
     }
 
-    private static string HealthViolationReasons(ReferenceTrajectorySample sample)
+    private static void WriteStepObservations(string path, IReadOnlyList<StepObservation> observations)
     {
-        var reasons = new List<string>();
-        if (sample.AnyTrip) reasons.Add("trip");
-        if (!sample.GeneratorBreakerClosed) reasons.Add("breaker-open");
-        if (sample.RequestedElectricalPowerMegawatts <= 4.5d) reasons.Add("request-floor");
-        if (sample.GrossElectricalPowerMegawatts <= 4.0d) reasons.Add("gross-floor");
-        if (sample.ShaftPowerMegawatts <= 4.5d) reasons.Add("shaft-floor");
-        return string.Join("|", reasons);
+        var lines = new List<string>
+        {
+            "logical_step,simulated_seconds,trip,breaker,request_mwe,gross_mwe,rotor_shaft_mwe,canonical_shaft_mwe,stage_flow_kg_s,stop_flow_kg_s,control_flow_kg_s,admission_flow_kg_s,mass_closure_kg,energy_closure_j,balance_mass_rate_kg_s,balance_power_w",
+        };
+        lines.AddRange(observations.Select(static item => FormattableString.Invariant(
+            $"{item.LogicalStep},{item.SimulatedSeconds:G17},{item.AnyTrip},{item.GeneratorBreakerClosed},{item.RequestedElectricalPowerMegawatts:G17},{item.GrossElectricalPowerMegawatts:G17},{item.RotorShaftPowerMegawatts:G17},{item.CanonicalShaftPowerMegawatts:G17},{item.StageFlowKilogramsPerSecond:G17},{item.StopFlowKilogramsPerSecond:G17},{item.ControlFlowKilogramsPerSecond:G17},{item.AdmissionFlowKilogramsPerSecond:G17},{item.MassClosureResidualKilograms:G17},{item.EnergyClosureResidualJoules:G17},{item.BalanceMassRateResidualKilogramsPerSecond:G17},{item.BalancePowerResidualWatts:G17}")));
+        File.WriteAllLines(path, lines, Utf8WithoutBom);
     }
 
-    private static string FormatCsvRow(ReferenceTrajectorySample sample)
+    private static string FormatReferenceSample(ReferenceSample sample)
         => string.Join(",", new[]
         {
             sample.LogicalStep.ToString(CultureInfo.InvariantCulture),
@@ -556,15 +516,12 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             sample.GeneratorBreakerClosed.ToString(),
             sample.RequestedElectricalPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
             sample.GrossElectricalPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
-            sample.ShaftPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
-            sample.CanonicalTotalTurbineShaftPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TotalTurbineSteamFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
-            sample.AdmissionMassFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
-            sample.ControlValvePositionPercent.ToString("G17", CultureInfo.InvariantCulture),
-            sample.AdmissionValvePositionPercent.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TurbineInletPressureKilopascals.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TurbineInletTemperatureDegreesCelsius.ToString("G17", CultureInfo.InvariantCulture),
-            sample.TurbineInletPhase,
+            sample.RotorShaftPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
+            sample.CanonicalShaftPowerMegawatts.ToString("G17", CultureInfo.InvariantCulture),
+            sample.TotalSteamFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
+            sample.StopFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
+            sample.ControlFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
+            sample.AdmissionFlowKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
             sample.RotorSpeedRpm.ToString("G17", CultureInfo.InvariantCulture),
             sample.CondenserPressureKilopascals.ToString("G17", CultureInfo.InvariantCulture),
             sample.DrumLevelFraction.ToString("G17", CultureInfo.InvariantCulture),
@@ -575,41 +532,14 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             sample.FeedwaterInventoryMassKilograms.ToString("G17", CultureInfo.InvariantCulture),
             sample.DrumInventoryMassKilograms.ToString("G17", CultureInfo.InvariantCulture),
             sample.MainSteamHeaderMassKilograms.ToString("G17", CultureInfo.InvariantCulture),
-            sample.MassClosureResidualKilograms.ToString("G17", CultureInfo.InvariantCulture),
-            sample.EnergyClosureResidualJoules.ToString("G17", CultureInfo.InvariantCulture),
-            sample.BalanceMassRateResidualKilogramsPerSecond.ToString("G17", CultureInfo.InvariantCulture),
-            sample.BalancePowerResidualWatts.ToString("G17", CultureInfo.InvariantCulture),
         });
 
-    private static void AdvanceCheckpoint(ControlRoomRuntimeCoordinator coordinator, int stepCount)
-    {
-        var remaining = stepCount;
-        while (remaining > 0)
-        {
-            var requested = Math.Min(remaining, coordinator.ExecutionBudget.MaximumSimulationStepsPerBatch);
-            var result = coordinator.AdvanceRunning(requested, publicationStride: requested);
-            Assert.Equal(requested, result.ExecutedStepCount);
-            remaining -= result.ExecutedStepCount;
-        }
-    }
+    private static PlantNetworkHydraulicNumericalSnapshot CurrentHydraulics(IntegratedAutomaticOperationRuntimeEngine engine)
+        => engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant.IntegratedCycle.PrimaryCircuit.HydraulicNumerics;
 
-    private static void AssertFrozenEvidence(string fileName, string expectedSha256, params string[] expectedTokens)
-    {
-        var path = Path.Combine(EvidenceDirectory(), fileName);
-        Assert.True(File.Exists(path), $"Frozen I.2 evidence file is missing: {fileName}");
-        Assert.Equal(expectedSha256, CanonicalSha256(path));
-        var text = File.ReadAllText(path);
-        foreach (var token in expectedTokens)
-        {
-            Assert.Contains(token, text, StringComparison.Ordinal);
-        }
-    }
-
-    private static string EvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence");
 
     private static string ReportDirectory()
-        => Path.Combine(FindRepositoryRoot(), "artifacts", "i3-phase-i-reference-trajectory-conservation-inventory-baseline");
+        => Path.Combine(FindRepositoryRoot(), "artifacts", "i3-phase-i-authoritative-reference-trajectory-baseline");
 
     private static void ResetReportDirectory()
     {
@@ -619,10 +549,7 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             Directory.Delete(directory, recursive: true);
         }
         Directory.CreateDirectory(directory);
-        File.WriteAllText(
-            Path.Combine(directory, "00-progress.txt"),
-            $"{DateTimeOffset.UtcNow:O} I.3 Phase-I reference trajectory / conservation-inventory baseline started{Environment.NewLine}",
-            Utf8WithoutBom);
+        File.WriteAllText(Path.Combine(directory, "00-progress.txt"), $"{DateTimeOffset.UtcNow:O} I.3 authoritative production reference baseline started{Environment.NewLine}", Utf8WithoutBom);
     }
 
     private static string FindRepositoryRoot()
@@ -636,17 +563,29 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
             }
             current = current.Parent;
         }
-
         throw new DirectoryNotFoundException("Could not locate NuclearReactorSimulator.sln from the test output directory.");
     }
 
-    private static string CanonicalSha256(string path)
-    {
-        var text = File.ReadAllText(path).Replace("\r\n", "\n", StringComparison.Ordinal).Replace('\r', '\n');
-        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(text)));
-    }
 
-    private sealed record ReferenceTrajectorySample(
+    private sealed record StepObservation(
+        long LogicalStep,
+        double SimulatedSeconds,
+        bool AnyTrip,
+        bool GeneratorBreakerClosed,
+        double RequestedElectricalPowerMegawatts,
+        double GrossElectricalPowerMegawatts,
+        double RotorShaftPowerMegawatts,
+        double CanonicalShaftPowerMegawatts,
+        double StageFlowKilogramsPerSecond,
+        double StopFlowKilogramsPerSecond,
+        double ControlFlowKilogramsPerSecond,
+        double AdmissionFlowKilogramsPerSecond,
+        double MassClosureResidualKilograms,
+        double EnergyClosureResidualJoules,
+        double BalanceMassRateResidualKilogramsPerSecond,
+        double BalancePowerResidualWatts);
+
+    private sealed record ReferenceSample(
         long LogicalStep,
         double SimulatedSeconds,
         string PresentationFingerprint,
@@ -654,15 +593,12 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
         bool GeneratorBreakerClosed,
         double RequestedElectricalPowerMegawatts,
         double GrossElectricalPowerMegawatts,
-        double ShaftPowerMegawatts,
-        double CanonicalTotalTurbineShaftPowerMegawatts,
-        double TotalTurbineSteamFlowKilogramsPerSecond,
-        double AdmissionMassFlowKilogramsPerSecond,
-        double ControlValvePositionPercent,
-        double AdmissionValvePositionPercent,
-        double TurbineInletPressureKilopascals,
-        double TurbineInletTemperatureDegreesCelsius,
-        string TurbineInletPhase,
+        double RotorShaftPowerMegawatts,
+        double CanonicalShaftPowerMegawatts,
+        double TotalSteamFlowKilogramsPerSecond,
+        double StopFlowKilogramsPerSecond,
+        double ControlFlowKilogramsPerSecond,
+        double AdmissionFlowKilogramsPerSecond,
         double RotorSpeedRpm,
         double CondenserPressureKilopascals,
         double DrumLevelFraction,
@@ -672,26 +608,9 @@ public sealed class PhaseIReferenceTrajectoryConservationInventoryBaselineAuditT
         double HotwellMassKilograms,
         double FeedwaterInventoryMassKilograms,
         double DrumInventoryMassKilograms,
-        double MainSteamHeaderMassKilograms,
-        double MassClosureResidualKilograms,
-        double EnergyClosureResidualJoules,
-        double BalanceMassRateResidualKilogramsPerSecond,
-        double BalancePowerResidualWatts);
+        double MainSteamHeaderMassKilograms);
 
     private sealed record InventorySlope(string MetricId, string Unit, double MeanValue, double SlopePerSecond);
 
     private sealed record ToleranceBudget(string MetricId, string Unit, double Target, double AbsoluteTolerance, string Derivation);
-
-    private sealed record ShaftDropEpisode(
-        long StartLogicalStep,
-        long EndLogicalStep,
-        double StartSeconds,
-        double EndSeconds,
-        int SampleCount,
-        double MinimumRotorShaftPowerMegawatts,
-        double MinimumCanonicalTotalTurbineShaftPowerMegawatts,
-        double MinimumGrossElectricalPowerMegawatts,
-        double MinimumTotalTurbineSteamFlowKilogramsPerSecond,
-        double MinimumAdmissionFlowKilogramsPerSecond,
-        string TurbineInletPhases);
 }

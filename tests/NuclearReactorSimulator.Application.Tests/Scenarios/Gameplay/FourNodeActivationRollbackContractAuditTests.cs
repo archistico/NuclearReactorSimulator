@@ -452,11 +452,9 @@ public sealed class FourNodeActivationRollbackContractAuditTests
     private static string EvidencePath(string fileName)
         => Path.Combine(
             FindRepositoryRoot(),
-            "tests",
-            "NuclearReactorSimulator.Application.Tests",
-            "Scenarios",
-            "Gameplay",
-            "Evidence",
+            "eng",
+            "frozen-evidence",
+            "ordinary",
             fileName);
 
     private static string ReportDirectory()

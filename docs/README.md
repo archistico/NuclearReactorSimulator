@@ -13,13 +13,14 @@ This directory is split between **current engineering documentation** and **hist
 
 ## Active candidate
 
-Current candidate documentation lives in `current/`.
+`current/` contains only the active I.3 documents:
 
-- `current/H30_RQ1_PRODUCTION_POLICY_REREVIEW.md`
-- `current/H30_RQ1_VALIDATION_CHECKLIST.md`
-- `current/H30_RQ1_STATIC_REVIEW.md`
+- `current/I3_REFERENCE_BASELINE.md`
+- `current/I3_VALIDATION_CHECKLIST.md`
 
-H.30 RQ1 proposes promoting exact v3 corrected-commit to the authoritative desktop production default because Phase-I evidence revealed a reproducible exact-v2 continuity defect. Exact v2 remains the rollback/reference identity. The proposal is not authoritative until its local validation gate is explicitly reported green.
+H.30 RQ1 is validated and its detailed records have moved to `history/m10.9.4.1/`.
+
+Large generated CSV/TXT audit payloads are intentionally not part of candidate ZIPs. Local/separate artifacts remain the validation record. Ordinary-test frozen prerequisites live in the bounded `../eng/frozen-evidence/ordinary/` store, omitted large trace identities live in `../eng/frozen-evidence/large-payload-manifest.csv`, and decision provenance lives under `../eng/evidence-manifests/`.
 
 ## Stable technical documentation
 

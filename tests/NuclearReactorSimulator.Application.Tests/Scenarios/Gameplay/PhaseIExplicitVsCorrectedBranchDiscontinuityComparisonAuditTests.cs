@@ -66,8 +66,18 @@ public sealed class PhaseIExplicitVsCorrectedBranchDiscontinuityComparisonAuditT
         foreach (var expected in FrozenFailedClassifierFingerprints)
         {
             var path = Path.Combine(directory, expected.Key);
-            Assert.True(File.Exists(path), $"Missing frozen I.3 Hotfix 4 failed-classifier evidence: {expected.Key}");
-            Assert.Equal(expected.Value, CanonicalSha256(path));
+            if (File.Exists(path))
+            {
+                Assert.Equal(expected.Value, CanonicalSha256(path));
+            }
+            else
+            {
+                Assert.Equal(
+                    expected.Value,
+                    FrozenLargeEvidenceManifest.CanonicalSha256(
+                        FindRepositoryRoot(),
+                        $"I3_HF4_ClassifierFix1/{expected.Key}"));
+            }
         }
 
         var summary = File.ReadAllText(Path.Combine(directory, "01-phase-i-v2-v3-branch-discontinuity-comparison.summary.txt"));
@@ -306,10 +316,10 @@ public sealed class PhaseIExplicitVsCorrectedBranchDiscontinuityComparisonAuditT
         => engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant.IntegratedCycle.PrimaryCircuit.HydraulicNumerics;
 
     private static string EvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence", "I3_HF4");
+        => Path.Combine(FindRepositoryRoot(), "eng", "frozen-evidence", "ordinary", "I3_HF4");
 
     private static string ClassifierFixEvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence", "I3_HF4_ClassifierFix1");
+        => Path.Combine(FindRepositoryRoot(), "eng", "frozen-evidence", "ordinary", "I3_HF4_ClassifierFix1");
 
     private static string ReportDirectory()
         => Path.Combine(FindRepositoryRoot(), "artifacts", "i3-hotfix4-explicit-vs-corrected-branch-discontinuity-comparison");

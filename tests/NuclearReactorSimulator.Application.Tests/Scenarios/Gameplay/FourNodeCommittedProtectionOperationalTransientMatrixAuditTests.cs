@@ -415,7 +415,7 @@ public sealed class FourNodeCommittedProtectionOperationalTransientMatrixAuditTe
     }
 
     private static string EvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence");
+        => Path.Combine(FindRepositoryRoot(), "eng", "frozen-evidence", "ordinary");
 
     private static string ReportDirectory()
         => Path.Combine(FindRepositoryRoot(), "artifacts", "h25-four-node-committed-protection-operational-transient-matrix");

@@ -53,8 +53,18 @@ public sealed class FourNodeH30ProductionPolicyRereviewAuditTests
         foreach (var expected in FrozenI3Fingerprints)
         {
             var path = Path.Combine(I3EvidenceDirectory(), expected.Key);
-            Assert.True(File.Exists(path), $"Frozen H.30 RQ1 I.3 evidence file is missing: {expected.Key}");
-            Assert.Equal(expected.Value, CanonicalSha256(path));
+            if (File.Exists(path))
+            {
+                Assert.Equal(expected.Value, CanonicalSha256(path));
+            }
+            else
+            {
+                Assert.Equal(
+                    expected.Value,
+                    FrozenLargeEvidenceManifest.CanonicalSha256(
+                        FindRepositoryRoot(),
+                        $"H30_RQ1_I3/{expected.Key}"));
+            }
         }
 
         AssertI3Contains(
@@ -299,7 +309,7 @@ public sealed class FourNodeH30ProductionPolicyRereviewAuditTests
         => File.ReadAllText(Path.Combine(EvidenceDirectory(), fileName)).Contains(token, StringComparison.Ordinal);
 
     private static string EvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence");
+        => Path.Combine(FindRepositoryRoot(), "eng", "frozen-evidence", "ordinary");
 
     private static string I3EvidenceDirectory()
         => Path.Combine(EvidenceDirectory(), "H30_RQ1_I3");

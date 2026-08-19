@@ -311,11 +311,9 @@ public sealed class FourNodePhaseHClosureDecisionAuditTests
     private static string EvidenceDirectory()
         => Path.Combine(
             FindRepositoryRoot(),
-            "tests",
-            "NuclearReactorSimulator.Application.Tests",
-            "Scenarios",
-            "Gameplay",
-            "Evidence");
+            "eng",
+            "frozen-evidence",
+            "ordinary");
 
     private static string ReportDirectory()
         => Path.Combine(FindRepositoryRoot(), "artifacts", "h30-phase-h-closure-production-qualification-decision");

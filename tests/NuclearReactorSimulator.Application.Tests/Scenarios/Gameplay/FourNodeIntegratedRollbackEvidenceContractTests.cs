@@ -48,7 +48,7 @@ public sealed class FourNodeIntegratedRollbackEvidenceContractTests
     }
 
     private static string EvidenceDirectory()
-        => Path.Combine(FindRepositoryRoot(), "tests", "NuclearReactorSimulator.Application.Tests", "Scenarios", "Gameplay", "Evidence");
+        => Path.Combine(FindRepositoryRoot(), "eng", "frozen-evidence", "ordinary");
 
     private static string CanonicalSha256(string path)
     {

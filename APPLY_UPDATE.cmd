@@ -4,20 +4,24 @@ set "ROOT=%~dp0"
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.4.1-H.30 Requalification 1 Hotfix 1 - Operations Namespace Compile Fix...
-echo Removing stale build and H.30 RQ1 Hotfix 1 audit outputs...
+echo Applying M10.9.4.1-I.3 Hotfix 2 - Compact Frozen Evidence Contract Migration...
+echo Removing stale build and I.3 runtime audit outputs...
 for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
-if exist "artifacts\h30-rq1-production-policy-rereview" rd /s /q "artifacts\h30-rq1-production-policy-rereview"
+if exist "artifacts\i3-phase-i-authoritative-reference-trajectory-baseline" rd /s /q "artifacts\i3-phase-i-authoritative-reference-trajectory-baseline"
 
-echo Removing superseded root-level M10.9.4.1 chronology now archived under docs\history...
+echo Local tests\NuclearReactorSimulator.Application.Tests\Scenarios\Gameplay\Evidence payloads are optional and are left untouched.
+echo Ordinary tests now use eng\frozen-evidence\ordinary plus the compact large-payload hash manifest.
+echo Candidate ZIPs intentionally do not bundle the generated/local Gameplay\Evidence directory.
+
+echo Removing superseded root-level M10.9.4.1 chronology already archived under docs\history...
 if exist "docs\M10_9_4_1_*.md" del /q "docs\M10_9_4_1_*.md"
 
 echo.
-echo I.2 remains authoritative until this candidate is explicitly validated.
-echo Candidate policy: ACTIVATE exact v3 corrected-commit as desktop default; preserve exact v2 as fail-closed rollback/reference.
-echo Documentation has been consolidated: current docs stay in docs root/current, detailed M10.9.4.1 chronology is under docs\history\m10.9.4.1.
+echo H.30 Requalification 1 is validated: exact v3 corrected-commit is the authoritative production default.
+echo Exact v2 explicit remains fail-closed rollback/reference.
+echo I.3 Hotfix 2 preserves the authoritative 300 s reference contract and decouples ordinary tests from the excluded Gameplay\Evidence payload directory.
 echo Run:
 echo   dotnet build
 echo   dotnet test
-echo   scripts\run-h30-rq1-production-policy-rereview-audit.cmd
+echo   scripts\run-phase-i-reference-trajectory-conservation-inventory-baseline-audit.cmd
 exit /b 0

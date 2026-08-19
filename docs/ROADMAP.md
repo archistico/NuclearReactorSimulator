@@ -1,76 +1,42 @@
 # Roadmap
 
-This roadmap lists **remaining work**. Detailed history of completed M10.9.4.1 A–I investigations is archived under `history/m10.9.4.1/` and summarized in milestone records.
+This file lists remaining work. Detailed completed chronology is under `history/`.
 
 ## Current checkpoint
 
-Authoritative fully validated baseline: **M10.9.4.1-I.2 — Audit Consolidation & CI Baseline Hardening**.
+Validated production decision: **H.30 Requalification 1 — ACTIVATE**. Exact v3 corrected-commit is the authoritative desktop default; exact v2 explicit remains rollback/reference.
 
-Validated evidence after I.2:
-
-- I.3 Hotfix 4 Classifier Fix 1 — explicit-v2 targeted-train discontinuity classified and corrected-v3 suppression validated;
-- I.3 Hotfix 5 — corrected-v3 300 s healthy reference requalification validated.
-
-Current candidate: **H.30 Requalification 1 — Production Policy Re-review after I.3 Continuity Evidence**.
-
-### H.30 Requalification 1 — current
-
-Decision candidate: `ACTIVATE`.
-
-Reason:
-
-- H.28 cost remains bounded but materially higher than explicit;
-- exact v2 now has a validated healthy-operation continuity defect: 338/338 generation-drop steps coincide with targeted stop/control/admission reverse flow in the 100 s comparison;
-- exact v3 eliminates the defect in the same comparison and remains continuously healthy over 300 s / 30,000 steps;
-- v3 telemetry remains fail-closed and deterministic;
-- no numerical retuning is required.
-
-If validated:
-
-- exact v3 becomes authoritative desktop production default;
-- exact v2 remains exact-version rollback/reference;
-- original H.30 `OPT-IN ONLY` becomes superseded historical policy evidence.
+Current candidate: **I.3 Hotfix 2 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline / Compact Frozen Evidence Contracts**.
 
 ## Phase I — remaining closure work
 
-### I.3 — Authoritative reference trajectory and tolerance budgets
+### I.3 — Authoritative production reference baseline
 
-After H.30 RQ1 validation, rerun the I.3 reference baseline under the authoritative production policy.
+Required:
 
-Required outputs:
-
-- healthy 300 s reference trajectory;
-- per-step generation/continuity health;
+- 300 s / 30,000-step production-selector journey;
+- per-step generation and stop/control/admission flow-direction health;
+- one-second reference samples;
 - conservation/inventory observations;
-- final-window slopes;
-- deterministic fingerprint;
-- versioned internal regression budgets derived from the validated authoritative trajectory.
+- seven final-window slopes;
+- 19 versioned internal regression budgets;
+- corrected telemetry clean;
+- deterministic repeat.
 
-Do not freeze budgets from the failed exact-v2 baseline.
+Large CSV/TXT audit payloads remain local/separate and are not bundled in candidate ZIPs.
 
 ### I.4 — Known-limitations and legacy retirement review
 
-- reconcile `KNOWN_MODEL_LIMITATIONS.md` with the validated production policy;
+- reconcile current limitations with the activated v3 policy;
 - enumerate remaining H.5/H.21 source dependencies;
-- remove legacy numerical modes only when executable provenance no longer depends on them;
+- remove legacy numerical modes only when executable provenance no longer requires them;
 - preserve exact-version scenario/save/replay identities.
 
 ### I.5 — Cumulative M10.9.4.1 closure gate
 
-Before leaving numerical hardening, require a clean cumulative evidence set including:
+Require ordinary suite, current production-policy evidence, 60 s gameplay, healthy 300 s authoritative reference, protection/replay determinism, conservation/inventory slopes, scale contract, performance classification and scheduled long gates.
 
-- ordinary suite;
-- current production-policy audit;
-- 60 s gameplay journeys;
-- healthy 300 s authoritative reference journey;
-- protection evidence;
-- replay/checkpoint determinism;
-- conservation/inventory slopes;
-- reference-plant scale contract;
-- performance/cost classification;
-- scheduled long gates as defined by the Phase-I CI contract.
-
-Only a green cumulative Phase-I/M10.9.4.1 gate unblocks M10.9.5.
+Only a green I.5 unblocks M10.9.5.
 
 ## M10.9.5 — Contextual Command Consequence Model
 

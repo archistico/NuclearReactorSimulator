@@ -6,11 +6,13 @@ cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 if not exist "NuclearReactorSimulator.sln" exit /b 1
 
-echo Running M10.9.4.1-I.3 Phase-I reference trajectory / conservation-inventory baseline gate...
+echo Running M10.9.4.1-I.3 authoritative production reference / conservation-inventory / tolerance-baseline gate...
 echo.
-echo I.2 must already be validated. This gate runs one exact-v2 healthy 300-second reference journey.
-echo It records one-second samples, consolidated conservation/inventory evidence, final-window slopes and v1 tolerance budgets.
-echo It does not rerun H.24/H.28 and does not change runtime physics or numerical policy.
+echo H.30 RQ1 must already be validated with ACTIVATE.
+echo This scheduled/manual gate runs the authoritative production selector for 300 simulated seconds.
+echo Generation health and stop/control/admission flow direction are checked every 10 ms.
+echo One-second samples establish conservation/inventory slopes and 19 versioned regression budgets.
+echo No runtime physics or numerical mathematics are retuned by this gate.
 echo.
 
 dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj" -- ^
@@ -19,32 +21,35 @@ dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearRe
 if errorlevel 1 exit /b 1
 
 dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj" -- ^
-    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.FrozenI2Evidence_ProvesAuditCiBaselineBeforeReferenceBaseline" ^
+    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.H30Rq1ValidatedManifest_RecordsActivatedProductionPolicyWithoutBundlingAuditPayloads" ^
     --parallel none
 if errorlevel 1 exit /b 1
 
 dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj" -- ^
-    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.ReferenceTrajectoryContract_IsExactVersionedAndBaselineEstablishing" ^
+    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.ProductionSelector_IsValidatedH30Rq1V3WithExactV2FailClosedRollback" ^
     --parallel none
 if errorlevel 1 exit /b 1
 
-set "REPORT_DIR=%CD%\artifacts\i3-phase-i-reference-trajectory-conservation-inventory-baseline"
+dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj" -- ^
+    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.ProductionReferenceContract_IsAuthoritativeV3AndBudgetEstablishing" ^
+    --parallel none
+if errorlevel 1 exit /b 1
+
+set "REPORT_DIR=%CD%\artifacts\i3-phase-i-authoritative-reference-trajectory-baseline"
 if exist "%REPORT_DIR%" rmdir /s /q "%REPORT_DIR%"
 
-rem I.3 is a scheduled/manual long gate. The environment opt-in prevents this 300 s run
-rem from executing inside ordinary dotnet test even if runner explicit-test policy changes.
-set "NRS_I3_LONG_AUDIT=1"
+set "NRS_I3_PRODUCTION_REFERENCE_AUDIT=1"
 
 dotnet test --project "tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj" --no-build -- ^
     --explicit only ^
-    --filter-trait "Category=PhaseIReferenceTrajectoryConservationInventoryBaselineAudit" ^
+    --filter-method "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.AuthoritativeProductionV3_ThreeHundredSeconds_EstablishesReferenceConservationInventoryAndToleranceBudgets" ^
     --parallel none
 if errorlevel 1 (
     echo.
-    echo I.3 Hotfix 2 focused diagnostic run completed with a red health gate. Generated evidence follows.
+    echo I.3 authoritative production reference gate failed. Generated diagnostics follow if available.
     if exist "%REPORT_DIR%\01-phase-i-reference-trajectory-conservation-inventory-baseline.summary.txt" type "%REPORT_DIR%\01-phase-i-reference-trajectory-conservation-inventory-baseline.summary.txt"
-    if exist "%REPORT_DIR%\06-generation-health-violations.csv" echo Generation-health diagnostics: "%REPORT_DIR%\06-generation-health-violations.csv"
-    if exist "%REPORT_DIR%\07-shaft-drop-episodes.csv" echo Shaft-drop episodes: "%REPORT_DIR%\07-shaft-drop-episodes.csv"
+    if exist "%REPORT_DIR%\06-step-health-violations.csv" echo Step-health diagnostics: "%REPORT_DIR%\06-step-health-violations.csv"
+    if exist "%REPORT_DIR%\07-targeted-reverse-flow-violations.csv" echo Targeted reverse-flow diagnostics: "%REPORT_DIR%\07-targeted-reverse-flow-violations.csv"
     exit /b 1
 )
 
@@ -55,8 +60,10 @@ for %%F in (
     "03-reference-trajectory-samples.csv"
     "04-conservation-inventory-final-window-slopes.csv"
     "05-versioned-tolerance-budgets.csv"
-    "06-generation-health-violations.csv"
-    "07-shaft-drop-episodes.csv"
+    "06-step-health-violations.csv"
+    "07-targeted-reverse-flow-violations.csv"
+    "08-production-telemetry.csv"
+    "09-determinism-control.csv"
 ) do (
     if not exist "%REPORT_DIR%\%%~F" (
         echo ERROR: expected I.3 artifact missing: %%F
@@ -67,5 +74,5 @@ for %%F in (
 echo.
 type "%REPORT_DIR%\01-phase-i-reference-trajectory-conservation-inventory-baseline.summary.txt"
 echo Detailed CSV files: "%REPORT_DIR%"
-echo M10.9.4.1-I.3 Phase-I reference trajectory / conservation-inventory baseline gate completed.
+echo M10.9.4.1-I.3 authoritative production reference baseline gate completed.
 exit /b 0

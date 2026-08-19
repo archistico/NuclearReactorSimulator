@@ -277,11 +277,9 @@ public sealed class FourNodeLongHorizonCrossProfileQualificationAuditTests
     {
         var path = Path.Combine(
             FindRepositoryRoot(),
-            "tests",
-            "NuclearReactorSimulator.Application.Tests",
-            "Scenarios",
-            "Gameplay",
-            "Evidence",
+            "eng",
+            "frozen-evidence",
+            "ordinary",
             "H17_Hotfix6_FrozenQualifiedRepresentativeEvidence.csv");
         var lines = File.ReadAllLines(path);
         Assert.True(lines.Length > 1, "Frozen H.17 representative evidence is empty.");

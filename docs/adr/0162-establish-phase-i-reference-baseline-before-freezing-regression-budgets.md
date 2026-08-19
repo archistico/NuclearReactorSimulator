@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M10.9.4.1-I.3 candidate validation.
+Partially superseded. The budget methodology remains accepted, but the original exact-v2 reference identity was invalidated by I.3 continuity diagnostics and H.30 Requalification 1. The authoritative reference is now exact v3.
 
 ## Context
 
@@ -10,7 +10,7 @@ M9.6 already provides versioned reference cases and explicit tolerance budgets, 
 
 ## Decision
 
-1. Use exact v2 `integrated-operations-desktop-stable@2` with `ExplicitCommittedState` as the authoritative Phase-I 300-second reference trajectory.
+1. Use the authoritative production selector. After validated H.30 Requalification 1 this resolves to exact v3 `integrated-operations-desktop-stable@3` with `FourNodeBranchContinuityCorrectedCommitOptIn`; exact v2 remains rollback/reference only.
 2. Keep the production 10 ms fixed step and sample immutable/canonical evidence every 1 simulated second.
 3. Consolidate existing conservation residuals and selected conserved fluid inventories without adding a new physics owner.
 4. Compute final-window inventory slopes observationally.
@@ -22,6 +22,6 @@ M9.6 already provides versioned reference cases and explicit tolerance budgets, 
 ## Consequences
 
 - I.3 is a scheduled/manual long gate, not ordinary push/PR work.
-- A green I.3 produces the first Phase-I v1 trajectory and slope/tolerance artifacts suitable for immutable freezing in subsequent milestones.
+- A green post-H.30-RQ1 I.3 produces the first authoritative-production Phase-I v1 trajectory and slope/tolerance artifacts suitable for immutable freezing in subsequent milestones.
 - H.24/H.28 remain frozen and are not rerun by I.3.
 - Legacy numerical-mode retirement remains a separate decision.

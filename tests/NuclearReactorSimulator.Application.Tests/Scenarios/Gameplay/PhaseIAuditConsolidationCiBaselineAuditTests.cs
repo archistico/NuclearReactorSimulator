@@ -229,11 +229,9 @@ public sealed class PhaseIAuditConsolidationCiBaselineAuditTests
     private static string EvidenceDirectory()
         => Path.Combine(
             FindRepositoryRoot(),
-            "tests",
-            "NuclearReactorSimulator.Application.Tests",
-            "Scenarios",
-            "Gameplay",
-            "Evidence");
+            "eng",
+            "frozen-evidence",
+            "ordinary");
 
     private static string ReportDirectory()
         => Path.Combine(FindRepositoryRoot(), "artifacts", "i2-phase-i-audit-consolidation-ci-baseline");
