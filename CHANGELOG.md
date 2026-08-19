@@ -1,7 +1,23 @@
 # Changelog
 
-## M10.9.4.1-H.29 — Production Activation Candidate — CANDIDATE
+## M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision — CANDIDATE
 
+- Built directly on user-validated H.29.
+- Promotes the user-supplied H.29 summary/metrics into immutable test evidence and records the canonical SHA-256 of the complete 1,026-row H.29 telemetry artifact.
+- Adds a cheap cumulative H.19–H.29 fingerprinted closure audit; H.24 and H.28 are not rerun.
+- Derives the candidate decision `OPT-IN ONLY`: all technical qualification gates are green, but H.28 remains `bounded-but-costly`.
+- Preserves exact v2 `ExplicitCommittedState` as authoritative default/rollback/reference and exact v3 corrected ownership as the qualified opt-in path.
+- Leaves the H.29 production policy selector, H.9, H.20, H.22, P060/F040, hysteresis, physical coefficients and 10 ms fixed step unchanged.
+- A green H.30 gate closes Phase H and unblocks Phase I.
+
+## M10.9.4.1-H.29 — Production Activation Candidate — VALIDATED
+
+- User-reported compilation, complete ordinary tests and focused H.29 gate passed on 2026-08-19.
+- 1,024 qualification intervals + 2 transitions = 1,026 runtime steps; 400 triggers, 400 eligible, 400 authorized and 400 corrected commits.
+- Zero rollback, explicit fallback, fallback-commit violation, unsafe commit and untargeted branch disagreement.
+- 256-interval deterministic repeat passed with activation telemetry fingerprint `BB16A2395682226B6E037901317D70B4A12E8E5C184CFC0E7C4B044643B05D68`.
+- Exact v3 replay/checkpoint qualification passed; exact v2 remains independently loadable and explicit kill resolves to v2.
+- `h30-closure-review-unblocked=True`; H.29 is a validated activation candidate but does not change the authoritative default.
 - Built directly on user-validated H.24 Requalification 1 post-H.28.
 - Preserves exact v2 `integrated-operations-desktop-stable` as the authoritative `ExplicitCommittedState` default and operational kill/rollback reference.
 - Adds exact v3 as a separately reviewed `FourNodeBranchContinuityCorrectedCommitOptIn` production-default candidate without reinterpreting v2 saves/replays.

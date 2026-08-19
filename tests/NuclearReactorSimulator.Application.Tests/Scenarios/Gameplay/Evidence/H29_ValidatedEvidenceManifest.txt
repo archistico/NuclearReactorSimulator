@@ -1,0 +1,24 @@
+M10.9.4.1-H.29 validated production activation candidate evidence manifest
+validated-date=2026-08-19
+full-telemetry-file=02-production-activation-candidate-step-telemetry.csv
+full-telemetry-data-rows=1026
+full-telemetry-canonical-sha256=F0AD7D802769F1EA3ECD4900C3104C275CE2E6C2970ED5FFD883A3F9F83A3E44
+summary-canonical-sha256=D9CAF6C953F2A593C9E9409EF91A379A2C7AB1CB295FE33FA6C6C0AABDD29F5F
+metrics-canonical-sha256=9534425D12539A084D837061AF5430C9A1AA151340B99C206CEA4D3A196465C3
+qualification-intervals=1024
+runtime-steps=1026
+corrected-candidates-committed=400
+h20-rollbacks=0
+safe-explicit-fallbacks=0
+fallback-commit-violations=0
+unsafe-corrected-commits=0
+untargeted-branch-disagreements=0
+deterministic-repeat=True
+activation-telemetry-fingerprint=BB16A2395682226B6E037901317D70B4A12E8E5C184CFC0E7C4B044643B05D68
+full-replay-equivalent=True
+checkpoint-prefix-equivalent=True
+candidate-v3-version-preserved=True
+explicit-v2-still-loadable=True
+four-node-production-activation-candidate-passes=True
+h29-audit-passes=True
+h30-closure-review-unblocked=True

@@ -1,10 +1,10 @@
 # Nuclear Reactor Simulator
 
-## M10.9.4.1-H.29 — Production Activation Candidate — CANDIDATE
+## M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision — CANDIDATE
 
-H.24 Requalification 1 is now user-validated after H.28: **30,000 qualification intervals + 8 transition steps**, **9,626/9,626 corrected commits**, zero rollback/fallback/unsafe/untargeted disagreement, all four profiles trip-free, and deterministic fingerprint `7AF233CE51A866B3E00C2C032AA58EEFBD7290DE0940725E5F4B7860EA6287BE`. The H.28 classification remains **bounded-but-costly**.
+H.29 is now user-validated: exact v3 corrected ownership completed **400/400 qualified commits** with zero rollback/fallback/unsafe/untargeted disagreement, deterministic repeat, exact replay/checkpoint compatibility and explicit kill back to exact v2. H.28 remains **bounded-but-costly**.
 
-H.29 does not retune the solver and does not activate corrected ownership by default. It introduces an exact-version **v3 corrected production candidate**, preserves the existing **v2 explicit** version as authoritative default/kill/rollback reference, adds internal observational production telemetry, and qualifies exact save/replay/checkpoint compatibility. H.30 remains the sole final activation authority.
+H.30 adds no solver or runtime retuning. It freezes the validated H.19–H.29 chain and proposes the evidence-derived closure decision **OPT-IN ONLY**: exact v2 `ExplicitCommittedState` remains the authoritative default/rollback/reference, while exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` remains the qualified production opt-in. A green H.30 gate closes Phase H and unblocks Phase I.
 
 Local gate:
 
@@ -12,16 +12,16 @@ Local gate:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-four-node-production-activation-candidate-audit.cmd
+scripts\run-phase-h-closure-production-qualification-decision-audit.cmd
 ```
 
-> **Authoritative validated baseline:** M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression — VALIDATED.
+> **Authoritative validated baseline:** M10.9.4.1-H.29 — Production Activation Candidate — VALIDATED.
 >
-> **Current candidate:** M10.9.4.1-H.29 — Production Activation Candidate.
+> **Current candidate:** M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision.
 >
-> **Production/default:** exact v2 `ExplicitCommittedState` at 10 ms. H.29 exact v3 corrected remains candidate-only.
+> **Proposed closure:** `OPT-IN ONLY`; v2 explicit remains default, v3 corrected remains qualified opt-in.
 >
-> **Next only after green H.29:** H.30 — Phase H Closure & Production Qualification Decision.
+> **After green H.30:** Phase H closes and Phase I may resume.
 
 Educational full-plant nuclear reactor simulator built with C#/.NET 10 and Avalonia.
 
@@ -31,9 +31,9 @@ Use `docs/PROJECT_HANDOFF.md` as the authoritative current checkpoint and `docs/
 
 ## Current validated baseline
 
-The authoritative numerical baseline is **M10.9.4.1-H.24 Requalification 1 — VALIDATED** on top of validated H.28. The post-optimization long-horizon gate completed 30,008 runtime steps with 9,626 corrected commits, zero rollback/fallback/unsafe/untargeted disagreement and exact deterministic repeat. The corrected path remains **bounded-but-costly** from H.28 and standard production remains exact v2 `ExplicitCommittedState`. The current candidate is **H.29 — Production Activation Candidate**.
+The authoritative numerical baseline is **M10.9.4.1-H.29 — VALIDATED**. H.29 qualified exact v3 corrected ownership as a production activation candidate with 400/400 commits, zero rollback/fallback/unsafe/untargeted disagreement, deterministic repeat and exact replay/checkpoint compatibility. The corrected path remains **bounded-but-costly** from H.28 and standard production remains exact v2 `ExplicitCommittedState`. The current candidate is **H.30 — Phase H Closure & Production Qualification Decision**.
 
-The validated activation-hardening provenance remains H.19→H.28 plus the post-H.28 H.24 requalification; historical details are retained under `docs/`. H.29 preserves P060/F040, H.9 mathematics, H.20/H.22 semantics, branch-continuity limits, physical coefficients and the 10 ms fixed step while adding only the production-selection/versioning/telemetry/replay qualification seam.
+The validated activation-hardening provenance remains H.19→H.29, including the post-H.28 H.24 requalification. H.30 is evidence/metadata only: it preserves P060/F040, H.9 mathematics, H.20/H.22 semantics, branch-continuity limits, physical coefficients, the 10 ms fixed step and the H.29 selector while deriving the proposed `OPT-IN ONLY` closure decision.
 
 ## Architectural principles
 
@@ -593,4 +593,4 @@ M8.4–M8.7 hotfix 2 are validated and compose secondary transients, bounded edu
 
 ## Current development checkpoint
 
-M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and the cumulative M10.9.4.1 continuation through H.28 plus H.24 Requalification 1 post-H.28 are validated; Phase G is complete and standard production remains exact v2 `ExplicitCommittedState` at 10 ms. The current working source is **H.29 — Production Activation Candidate**: exact v3 provides the separately reviewed corrected candidate while v2 remains the explicit authoritative default/kill/rollback reference. H.29 changes no numerical mathematics and cannot activate v3 by itself; H.30 retains the final Phase H policy decision.
+M9.1 Recorder, Checkpoints & Full Replay through M9.7 Advanced Fidelity Integration Gate are validated and the M9 gate is complete. M10.1–M10.9.4 and the cumulative M10.9.4.1 continuation through H.29 are validated; Phase G is complete and standard production remains exact v2 `ExplicitCommittedState` at 10 ms. The current working source is **H.30 — Phase H Closure & Production Qualification Decision**: the validated exact v3 corrected path remains available as a qualified opt-in, while v2 remains the explicit authoritative default/kill/rollback reference. H.30 adds no numerical mathematics and proposes the evidence-derived closure decision `OPT-IN ONLY`.

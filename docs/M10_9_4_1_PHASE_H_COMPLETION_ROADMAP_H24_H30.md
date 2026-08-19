@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-This roadmap is the authoritative Phase H continuation plan. **M10.9.4.1-H.28** is user-validated on 2026-08-19 after the H.28.1 optimization branch and remains classified **`bounded-but-costly`**. The single required **H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression** is also user-validated: 30,008 runtime steps, 9,626 corrected commits, zero rollback/fallback/unsafe/untargeted disagreement and deterministic repeat. **H.29 — Production Activation Candidate** is therefore the current candidate; exact v2 explicit remains authoritative until H.30.
+This roadmap is the authoritative Phase H continuation plan. **M10.9.4.1-H.29 — Production Activation Candidate** is user-validated on 2026-08-19 on top of the fully requalified H.19–H.28 chain. H.28 remains classified **`bounded-but-costly`**. H.29 qualified exact v3 corrected ownership with 400/400 commits, zero rollback/fallback/unsafe/untargeted disagreement, deterministic repeat and exact replay/checkpoint compatibility while preserving exact v2 explicit as default/kill/rollback. **H.30 — Phase H Closure & Production Qualification Decision** is now the current candidate and proposes the evidence-derived outcome **`OPT-IN ONLY`**.
 
 The standard production numerical path remains:
 
@@ -251,7 +251,7 @@ A numerically correct path may still remain opt-in because H.28 explicitly class
 
 ### Current status
 
-**CANDIDATE.** H.24 Requalification 1 post-H.28 is validated, so H.29 is now active. The candidate uses exact v3 for corrected ownership while preserving exact v2 explicit as authoritative default/kill/rollback. A green H.29 still does not activate v3; H.30 owns the final closure decision.
+**VALIDATED.** H.29 passed build, complete ordinary tests and its focused production activation candidate gate on 2026-08-19. Exact v3 corrected ownership is therefore a qualified activation candidate; exact v2 explicit remains authoritative default/kill/rollback until H.30 closes the phase.
 
 ### Question
 
@@ -281,6 +281,10 @@ Define and test:
 `ExplicitCommittedState` must remain available as an operational rollback/reference mode.
 
 ## H.30 — Phase H Closure & Production Qualification Decision
+
+### Current status
+
+**CANDIDATE.** The cumulative evidence is green, but H.28 remains `bounded-but-costly`. The H.30 candidate therefore derives `OPT-IN ONLY`: keep exact v2 explicit authoritative and retain exact v3 corrected as the qualified opt-in path. H.30 is evidence/metadata only and does not rerun H.24/H.28 or change the runtime selector.
 
 ### Question
 
@@ -315,6 +319,20 @@ Phase H has three acceptable evidence-derived closure decisions:
 3. **REMAIN EXPLICIT** — corrected ownership remains research/diagnostic evidence only because the total risk/cost does not justify production use.
 
 The roadmap must not assume outcome 1 in advance.
+
+### H.30 candidate decision
+
+The validated evidence supports **`OPT-IN ONLY`**. All mandatory technical gates are green, so `REMAIN EXPLICIT` would be unnecessarily restrictive; however H.28 explicitly classifies the corrected runtime as `bounded-but-costly`, so the evidence does not justify replacing the cheaper validated explicit default.
+
+A green H.30 therefore records:
+
+```text
+authoritative default / rollback / reference = exact v2 ExplicitCommittedState
+qualified opt-in                         = exact v3 FourNodeBranchContinuityCorrectedCommitOptIn
+explicit kill                            = exact v2 ExplicitCommittedState
+```
+
+The closure audit is cumulative and fingerprint-based. It does not rerun H.24 or H.28 and it fails closed if prerequisite evidence is missing or changed.
 
 ## Phase H closure criterion
 

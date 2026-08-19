@@ -1,13 +1,14 @@
 # Nuclear Reactor Simulator — authoritative new-chat start
 
-- **Authoritative validated baseline:** `M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression` VALIDATED on 2026-08-19, built on H.28 VALIDATED.
-- **H.28 classification:** `bounded-but-costly`; median wall ratio 4.6215 <= 8, p95 ratio 10.6844 <= 12, allocation ratio 1.1164 <= 16.
-- **Post-H.28 H.24 result:** 30,000 qualification intervals + 8 transitions, 9,626/9,626 corrected commits, 0 rollback/fallback/unsafe/untargeted disagreement, all four profiles trip-free, deterministic fingerprint `7AF233CE51A866B3E00C2C032AA58EEFBD7290DE0940725E5F4B7860EA6287BE`.
-- **Current candidate:** `M10.9.4.1-H.29 — Production Activation Candidate`.
-- **Authoritative production/default:** exact v2 `integrated-operations-desktop-stable` using `ExplicitCommittedState` at 10 ms.
-- **H.29 candidate:** exact v3 of the same validated physical seed using `FourNodeBranchContinuityCorrectedCommitOptIn`.
-- **Kill/rollback:** an explicit deployment kill always resolves to v2; H.20 remains same-step fail-closed inside corrected runtime.
-- **Final authority:** H.29 does not activate corrected ownership by default; H.30 decides `ACTIVATE`, `OPT-IN ONLY` or `REMAIN EXPLICIT`.
+- **Authoritative validated baseline:** `M10.9.4.1-H.29 — Production Activation Candidate` VALIDATED on 2026-08-19.
+- **H.29 result:** 1,026 runtime steps; 400/400 trigger/eligible/authorized/commit; zero rollback/fallback/unsafe/untargeted disagreement; deterministic fingerprint `BB16A2395682226B6E037901317D70B4A12E8E5C184CFC0E7C4B044643B05D68`; replay/checkpoint exact; v3 preserved and v2 still loadable.
+- **H.28 classification:** `bounded-but-costly`; median wall ratio 4.6215, p95 ratio 10.6844, allocation ratio 1.1164.
+- **Current candidate:** `M10.9.4.1-H.30 — Phase H Closure & Production Qualification Decision`.
+- **Candidate closure decision:** `OPT-IN ONLY`.
+- **Authoritative default:** exact v2 `ExplicitCommittedState` at 10 ms.
+- **Qualified opt-in:** exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn`.
+- **Kill/rollback:** explicit deployment kill always resolves to exact v2; H.20 remains same-step fail-closed inside corrected runtime.
+- **H.30 runtime scope:** none beyond `ApplicationDescriptor` metadata; selector, H.9/H.20/H.22, P060/F040, hysteresis, coefficients and timestep remain frozen.
 
 ## Current gate
 
@@ -15,19 +16,19 @@
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-four-node-production-activation-candidate-audit.cmd
+scripts\run-phase-h-closure-production-qualification-decision-audit.cmd
 ```
 
-H.29 fingerprints validated H.23/H.24-post-H.28/H.25/H.26/H.27/H.28 prerequisites and does not rerun the expensive H.24/H.28 gates. It then qualifies selection/kill, internal telemetry, deterministic v3 operation and exact-version save/replay/checkpoint compatibility.
-
-Required final flags:
+H.30 fingerprints frozen H.19-H.29 evidence and does not rerun H.24/H.28. Required final flags:
 
 ```text
-four-node-production-activation-candidate-passes=True
-h29-audit-passes=True
-h30-closure-review-unblocked=True
+phase-h-production-policy-decision=OPT-IN ONLY
+phase-h-closure-evidence-chain-passes=True
+h30-audit-passes=True
+phase-h-closed=True
+phase-i-unblocked=True
 ```
 
-After a green result, promote H.29 and proceed to **H.30 — Phase H Closure & Production Qualification Decision**. Until H.30 explicitly chooses otherwise, v2 `ExplicitCommittedState` remains authoritative.
+After a green result, promote H.30, close Phase H and resume Phase I with v2 explicit still authoritative and v3 corrected retained as qualified opt-in.
 
-Read `docs/PROJECT_HANDOFF.md`, `docs/M10_9_4_1_H29_PRODUCTION_ACTIVATION_CANDIDATE.md`, its validation checklist, ADR 0158, and the Phase H completion roadmap before changing code.
+Read `docs/PROJECT_HANDOFF.md`, `docs/M10_9_4_1_H30_PHASE_H_CLOSURE_PRODUCTION_QUALIFICATION_DECISION.md`, its validation checklist/static review, ADR 0159 and the Phase H completion roadmap before changing code.
