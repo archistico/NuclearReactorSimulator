@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-This roadmap is the authoritative Phase H continuation plan. **M10.9.4.1-H.27 Hotfix 1** was user-validated on 2026-08-19. H.28 subsequently failed only its performance/cost gate as `unbounded-regression`; **H.28.1-A Hotfix 2 is validated diagnostic evidence**, **H.28.1-C Hotfix 2 is validated allocation/hot-path optimization evidence**, **H.28.1-B is validated historical-explicit predictor reuse**, and **H.28.1-D** is the current hydraulic-probe CPU hot-path candidate. H.29 remains blocked.
+This roadmap is the authoritative Phase H continuation plan. **M10.9.4.1-H.28** is user-validated on 2026-08-19 after the H.28.1 optimization branch. Its corrected-path cost classification is **`bounded-but-costly`**. Because the optimization branch changed committed-runtime implementation code, the current candidate is the single roadmap-required **H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression**. H.29 remains blocked until this regression is green.
 
 The standard production numerical path remains:
 
@@ -220,30 +220,32 @@ Measure at minimum:
 
 The production timestep must remain 10 ms. H.28 must not "solve" cost by changing timestep or weakening the numerical contract.
 
-### Actual H.28 result
+### Actual H.28 result — VALIDATED
 
-H.28 compiled and passed the ordinary suite but its focused performance gate returned `unbounded-regression`:
+After the H.28.1 attribution/optimization branch, the unchanged H.28 performance/soak gate passed:
 
 ```text
-median wall ratio       9.1252571494799053
-p95 wall ratio        100.01553278882017
-trigger average step  1702179.99 us
-trigger allocation    43460418 bytes
+median wall ratio       4.6214685710690242 <= 8
+p95 wall ratio         10.684444741413872  <= 12
+median allocation ratio 1.1164372201028363 <= 16
+benchmark trigger/commit 20/20
+soak trigger/commit      379/379
+rollback/fallback/unsafe 0/0/0
+untargeted disagreements 0
+deterministic repeat     True
+fingerprint 518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38
+classification           bounded-but-costly
 ```
 
-Numerical safety/determinism remained green. This blocks H.29 but does not justify relaxing performance ceilings.
+No H.28 ceiling, timestep or numerical contract was weakened. The result permits continued qualification but does not itself justify default activation.
 
-### H.28.1 attribution/optimization branch
+### H.28.1 attribution/optimization branch — CLOSED
 
-Before H.29, insert a bounded branch:
+The branch is now historical provenance: attribution, allocation reduction, historical predictor reuse, hydraulic/probe CPU work reduction, coordinate-residual specialization and the untargeted-disagreement scan fast path collectively brought the original unchanged H.28 gate to green while preserving the deterministic contract.
 
-1. **H.28.1-A — Performance Attribution:** measure historical explicit preparation, duplicate predictor, H.9 layout/residual/Jacobian/line-search, disagreement scan, authority and accounting without changing numerical behavior.
-2. **H.28.1-B — Duplicate-Work Reduction:** only if attribution shows repeated predictor/base-path work is material; preserve exact trigger and committed trajectory.
-3. **H.28.1-C — H.9 Allocation/Hot-Path Optimization:** only if attribution shows avoidable allocation/layout/buffer churn; preserve finite-difference Newton mathematics.
-4. **H.28 rerun:** only a green rerun can move the branch toward H.29.
-5. **One H.24 rerun after optimization stabilizes:** because B/C change committed-runtime implementation code, rerun the rare long-horizon qualification once after the optimization branch is final, not after every intermediate iteration. H.29 remains blocked until both H.28 and this post-optimization H.24 regression are green.
+Per the original roadmap, **one H.24 rerun is now mandatory** because the branch changed committed-runtime implementation code. It is run once after stabilization, not after each intermediate optimization. H.29 remains blocked until this post-H.28 H.24 regression is green.
 
-A numerically correct path may still remain opt-in if its runtime cost remains unsuitable after conservative optimization.
+A numerically correct path may still remain opt-in because H.28 explicitly classifies it `bounded-but-costly`.
 
 ## H.29 — Production Activation Candidate
 

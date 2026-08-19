@@ -1,14 +1,13 @@
 # Changelog
 
-## M10.9.4.1-H.28 Requalification 2 — Performance, Cost & Long-Running Operational Soak — CANDIDATE
+## M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression — CANDIDATE
 
-- Built directly on user-validated H.28.1-G.
-- H.28.1-G passed build, complete ordinary tests and focused gate with 20/20 trigger/commit, zero safety violations, 35 hydraulic evaluations, 32 probes, Jacobian dimension 32 and deterministic fingerprint unchanged.
-- Triggered p95 fell to 79.7023 ms, below the unchanged H.28 readiness threshold 88.3812 ms; estimated p95 ratio is 10.821618172190465.
-- Restores the original H.28 benchmark/soak gate with unchanged hard ceilings: median wall <=8, p95 wall <=12, median allocations <=16.
-- Adds frozen H.28.1-G user evidence fingerprints; no numerical runtime source changes.
-- H.29 remains blocked. A green H.28 removes the performance block but still requires one H.24 long-horizon rerun before activation review.
-
+- Built directly on the user-validated H.28 optimized runtime.
+- Freezes the supplied green H.28 summary/benchmark/soak/metrics artifacts with canonical SHA-256 fingerprints in ordinary-test Evidence.
+- Records H.28 as `bounded-but-costly`: median wall ratio 4.6215 <= 8, p95 ratio 10.6844 <= 12, allocation ratio 1.1164 <= 16, 379/379 soak commits and zero rollback/fallback/unsafe/untargeted-disagreement violations.
+- Adds a separate post-H.28 H.24 audit that reruns the original 30,000 interval + 8 transition-step, four-profile committed domain without overwriting the historical H.24 artifacts.
+- Changes no production numerical algorithm, H.9 tolerance, P060/F040 trigger, H.20/H.22 contract, branch-continuity limit, target node, physical coefficient or 10 ms fixed step.
+- Standard current-v2 remains `ExplicitCommittedState`; H.29 remains blocked until this requalification passes.
 
 ## M10.9.4.1-H.28.1-G — Untargeted Branch-Disagreement Scan Fast Path — CANDIDATE
 

@@ -1,142 +1,107 @@
 # Nuclear Reactor Simulator — Project Handoff
 
-> **CURRENT AUTHORITATIVE CHECKPOINT — 2026-08-19**
+> **Authoritative validated baseline:** M10.9.4.1-H.28 — Performance, Cost & Long-Running Operational Soak — VALIDATED on 2026-08-19.
 >
-> **Validated performance baseline:** `M10.9.4.1-H.28.1-G — Untargeted Branch-Disagreement Scan Fast Path` VALIDATED.
+> **Current candidate:** M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression.
 >
-> **G evidence:** 20/20 trigger/commit, 0 rollback/unsafe/fallback violation, 35 hydraulic evaluations, 32 probes, Jacobian dimension 32, triggered p95 `79.7023 ms`, estimated unchanged-H.28 p95 ratio `10.821618172190465`, exact deterministic fingerprint `518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38`.
+> **Production/default:** `ExplicitCommittedState` at 10 ms. Corrected commit remains `FourNodeBranchContinuityCorrectedCommitOptIn`.
 >
-> **Current candidate:** `M10.9.4.1-H.28 Requalification 2 — Performance, Cost & Long-Running Operational Soak`.
->
-> **Default production:** `ExplicitCommittedState` at 10 ms. **H.29 remains blocked.**
->
-> If H.28 Requalification 2 passes unchanged ceilings, rerun H.24 once over the stabilized runtime before H.29. This block supersedes older status lines below where they conflict.
+> **Activation status:** H.29 remains blocked until the single post-optimization H.24 requalification is green.
 
-> **Authoritative numerical baseline:** M10.9.4.1-H.27 Hotfix 1 VALIDATED.
->
-> **Validated diagnostic baseline:** M10.9.4.1-H.28.1-A Hotfix 2 — Performance Attribution.
->
-> **Validated performance implementation evidence:** M10.9.4.1-H.28.1-C Hotfix 2 — H.9 Jacobian/Probe Allocation & Hot-Path Optimization.
->
-> **Failed performance evidence:** H.28 remains `unbounded-regression`; it is not a validated baseline.
->
-> **Validated predictor optimization:** M10.9.4.1-H.28.1-B — Historical Explicit Predictor Reuse — VALIDATED.
->
-> **Working candidate:** M10.9.4.1-H.28 Requalification 2 — Performance, Cost & Long-Running Operational Soak.
->
-> **Activation status:** H.29 blocked; standard current-v2 remains `ExplicitCommittedState` at 10 ms.
+## 1. Validated Phase H chain
 
-## 1. Validated activation-hardening chain
+- **H.19 VALIDATED:** four-node shadow policy 473/473 over the complete 30,000-interval/four-profile representative contract.
+- **H.20 VALIDATED:** fail-closed authority plus 8/8 typed rollback challenges.
+- **H.21 Hotfix 1 VALIDATED:** real-orchestrator sidecar wiring with committed trajectory transparency.
+- **H.22 VALIDATED:** separately opt-in corrected ownership, 443 corrected commits / 2,000 steps, zero unsafe/fallback commits.
+- **H.23 Hotfix 2 VALIDATED:** exact replay/checkpoint/protection interaction.
+- **H.24 Hotfix 1 VALIDATED:** 30,000 qualification intervals + 8 transition steps, 9,626 corrected commits, all four nominal profiles trip-free; rare 4h31m55s gate.
+- **H.25 VALIDATED:** five protection/transient scenarios, 837 runtime steps, 178 corrected commits.
+- **H.26 Hotfix 1 VALIDATED:** 12/12 same-step explicit fallbacks over typed rollback/denial controls.
+- **H.27 Hotfix 1 VALIDATED:** six off-design scenarios, 2,080 steps, 529 corrected commits, four `corrected-qualified` and two `protected-boundary` outcomes.
+- **H.28 VALIDATED:** performance/cost/soak gate passed after H.28.1 optimization.
 
-- **H.19 VALIDATED:** four-node shadow policy 473/473.
-- **H.20 VALIDATED:** fail-closed authority and 8/8 typed rollback challenges.
-- **H.21 Hotfix 1 VALIDATED:** real-orchestrator sidecar wiring with zero corrected commits.
-- **H.22 VALIDATED:** first opt-in corrected ownership, 443 commits / 2,000 steps.
-- **H.23 Hotfix 2 VALIDATED:** replay/checkpoint/reverse-power protection equivalence.
-- **H.24 Hotfix 1 VALIDATED:** 30,008 committed runtime steps, 9,626 corrected commits, all four nominal profiles trip-free; 4h31m55s rare qualification gate.
-- **H.25 VALIDATED:** five targeted protection/transient scenarios, 837 runtime steps, 178 commits.
-- **H.26 Hotfix 1 VALIDATED:** 12/12 atomic explicit fallbacks across all typed rollback reasons/denial controls.
-- **H.27 Hotfix 1 VALIDATED:** six bounded off-design scenarios, 2,080 steps, 529 commits, four corrected-qualified and two protected-boundary outcomes, zero unsafe/fallback commits.
+## 2. Validated H.28 result
 
-## 2. Why H.28 did not advance the baseline
-
-H.28 did not change the numerical runtime and remained correct/deterministic, but its focused cost gate failed:
+The unchanged H.28 limits passed:
 
 ```text
-median wall ratio        9.1252571494799053
-p95 wall ratio         100.01553278882017
-trigger average step   1702179.99 us
-trigger allocation     43460418 bytes
-performance class      unbounded-regression
+benchmark steps/mode                  256
+explicit median step                1589.3 us
+corrected median step               7344.9 us
+median wall-cost ratio               4.6214685710690242 <= 8
+explicit p95                        7483 us
+corrected p95                      79951.7 us
+p95 wall-cost ratio                 10.684444741413872 <= 12
+median allocation ratio              1.1164372201028363 <= 16
+corrected trigger/commit              20/20
+soak steps                            1536
+soak trigger/commit                  379/379
+rollback/fallback/unsafe               0/0/0
+untargeted disagreements                  0
+trip steps                                0
+deterministic repeat                   True
+fingerprint 518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38
+classification            bounded-but-costly
 ```
 
-Therefore H.27 Hotfix 1 remains the authoritative validated baseline. H.29 default activation is blocked.
+The result is intentionally **not** interpreted as cheap enough to activate by default. It is only bounded enough to continue qualification. Do not change the 10 ms timestep or weaken the numerical contract to hide cost.
 
+## 3. Why H.24 must be rerun once
 
-## 2A. H.28.1-A first build and Hotfix 1
+H.24 itself is already validated, but H.28.1-B/C/D/E/F/G changed committed-runtime implementation code while preserving the numerical contract. The Phase H completion roadmap therefore requires one post-optimization long-horizon/cross-profile regression after the performance branch is stable.
 
-The first local H.28.1-A build failed only in `FourNodeBranchContinuityShadowIntegrationSolver.cs` with eight CS0136 errors. The new non-trigger attribution branch declared `authority*`, `sidecar*`, `result` and `attribution` locals whose names were reused later in the containing method scope.
+This rerun is intentionally not chained after each optimization iteration. H.28 is now green, so this is the one required requalification.
 
-Hotfix 1 renames only the non-trigger locals to `noTriggerAuthority*`, `noTriggerSidecar*`, `noTriggerResult` and `noTriggerAttribution`. Measurement formulas, registry writes, H.9/H.20/H.22 decisions and all numerical behavior are unchanged. H.27 Hotfix 1 remains the validated baseline through the H.28.1-A repair sequence.
+## 4. Current candidate
 
-## 2B. H.28.1-A Hotfix 2 architecture repair
+`M10.9.4.1-H.24 Requalification 1 — Post-H.28 Committed Long-Horizon & Cross-Profile Regression`:
 
-Hotfix 1 compiled, but the ordinary suite then failed only `ArchitectureRulesTests.SimulationProject_DoesNotUseWallClockTimerOrDelayApis`: direct `Stopwatch` calls in the new Simulation-layer attribution violated the existing deterministic architecture contract.
+- freezes the user-supplied H.28 green artifacts under `Application.Tests/.../Evidence`;
+- fingerprint-checks those artifacts in the ordinary suite;
+- leaves the historical H.24 test/evidence intact;
+- reruns the exact H.24 domain: `steady-long 12000`, `load-pulse 6000`, `cooling-pulse 6000`, `combined-load-cooling 6000`, plus 8 deterministic action-transition steps;
+- writes separate post-H.28 artifacts;
+- changes no production numerical runtime behavior.
 
-Hotfix 2 removes direct wall-clock and allocation-counter API calls from the Simulation project. Simulation reads only an internal audit measurement provider; the H.28.1-A focused Application test temporarily injects `Stopwatch.GetTimestamp` and `GC.GetAllocatedBytesForCurrentThread` readers and restores the prior provider on scope disposal. Public/production construction cannot configure this provider. The weak-reference attribution registries and deterministic H.9/H.21/H.22 records remain unchanged.
-
-H.27 Hotfix 1 remains the validated baseline until build, ordinary tests and the focused H.28.1-A Hotfix 2 gate all pass.
-
-## 3. H.28.1-A question
-
-Where is the corrected-path cost actually spent, and how much is intrinsic H.9 numerical work versus duplicated/allocating implementation work?
-
-H.28.1-A adds diagnostic timing/allocation around existing phases only. It performs no optimization and no retuning.
-
-## 4. Determinism-safe diagnostic design
-
-Nondeterministic wall-clock/allocation values must not enter deterministic record equality. H.28.1-A therefore uses `ConditionalWeakTable` registries keyed to existing result/telemetry object identity.
-
-A fresh 128-step numerical trace must still equal the failed-H.28 fingerprint:
+Frozen controls remain:
 
 ```text
-518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38
+current-v2 default       ExplicitCommittedState
+corrected mode           FourNodeBranchContinuityCorrectedCommitOptIn
+fixed step               10 ms
+trigger                  P060/F040
+corrector                H.9 finite-difference Jacobian + damped Newton
+branch continuity        bounded previous-phase hysteresis
+hysteresis               2% pressure / 5 K
+targets                  steam | stop-out | header | turbine-inlet
 ```
 
-## 5. Frozen contract
-
-Do not retune or replace:
-
-- P060/F040;
-- H.9 finite-difference Newton/tolerances;
-- 2% pressure / 5 K hysteresis;
-- `steam|stop-out|header|turbine-inlet` target set;
-- H.20 authority;
-- H.22 commit seam;
-- physical coefficients;
-- 10 ms simulated fixed step.
-
-Standard factory remains explicit. H.24 is not rerun.
-
-## 6. Validation
+## 5. Validation command
 
 ```bat
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-four-node-performance-attribution-audit.cmd
+scripts\run-four-node-post-h28-committed-long-horizon-requalification-audit.cmd
 ```
 
-## 7. Remaining Phase H roadmap
+Promotion requires all three gates to be explicitly green. The focused pass flags are:
 
 ```text
-H.28.1-A  performance attribution (VALIDATED)
-H.28.1-C  H.9 allocation/hot-path optimization (VALIDATED)
-H.28.1-B  historical explicit predictor reuse (VALIDATED)
-H.28.1-G  untargeted branch-disagreement scan fast path (VALIDATED)
-H.28      Requalification 2 performance/cost/soak qualification (CURRENT CANDIDATE)
-H.29      production activation candidate only if H.28 becomes green
-H.30      closure decision: ACTIVATE / OPT-IN ONLY / REMAIN EXPLICIT
+post-h28-four-node-committed-long-horizon-cross-profile-requalification-passes=True
+h24-post-h28-requalification-audit-passes=True
 ```
 
-## H.28.1-C Hotfix 2 validated optimization
+## 6. After a green result
 
-Validated H.28.1-A measured H.9 at ~1.654 s and ~41.52 MB per triggered step, with Jacobian build/probes ~1.556 s and ~39.07 MB. Work is regular: 35 hydraulic evaluations, 32 probes, dimension 32, one accepted Jacobian build, no fallback pathology.
+A green requalification completes the roadmap prerequisite for **H.29 — Production Activation Candidate**. H.29 should not introduce a new numerical solver. It must decide whether the already-qualified corrected path is appropriate as a production-default candidate while carrying forward the H.28 `bounded-but-costly` classification.
 
-H.28.1-C therefore changes implementation cost only: transient Jacobian trials use canonical fluid-node lists rather than materializing full `PlantState` graphs; immutable hydraulic topology indexes are cached in the evaluator; intermediate combined-balance dictionaries and duplicate evaluation canonical copies are removed. The internal water/steam saturation scan also uses a private value-type carrier so the 512-sample inverse scans do not allocate a public saturation-property object at every sample; the public API, equations and branch/search order are unchanged. Final H.9 candidate state materialization remains unchanged at the ownership boundary.
+Default production remains explicit until H.29/H.30 explicitly decide otherwise. Phase I remains deferred until Phase H closes.
 
-H.28.1-C Hotfix 2 passed build, ordinary tests and focused audit. It preserved 20/20 trigger/commit behavior, 35/32 work counts, dimension 32 and fingerprint `518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38`. Jacobian/probe allocation fell from 39,071,378 B to 925,328 B per trigger and total H.9 allocation from 41,523,908 B to about 1,004,460 B, while Jacobian wall time remained ~1.558 s.
+See also:
 
-## H.28.1-B validated optimization
-
-H.28.1-B targets the remaining ~9.31 ms sidecar predictor on non-trigger steps. The real orchestrator already computes both the same-step fallback fluid-node candidate and the committed hydraulic solve. The candidate passes those results plus the historical applied total balances into an internal exact-reuse seam. For each fluid node, reuse is allowed only when the historical applied total balance exactly equals the canonical H.4 hydraulic-plus-frozen-non-hydraulic balance; mismatched nodes are reintegrated through the unchanged H.4 path. Predictor-end hydraulics are still evaluated for F040, and the legacy public predictor path remains unchanged.
-
-The H.28.1-B gate passed with exact 20/20 trigger/commit behavior, exact 35/32 H.9 work counts and the same deterministic fingerprint. Non-trigger predictor wall fell to ~392 us (~4.2% of the H.28.1-C value) and non-trigger engine wall to ~10.36 ms, while the triggered Jacobian remained ~1.561 s.
-
-## H.28.1-D current candidate
-
-H.28.1-D targets that remaining CPU bottleneck without reducing the 32 probes or changing Newton. Probe fluid-node states are reused only on exact hydraulic-balance equality; changed nodes use the original integration path. The fixed 513-point coarse saturated-mixture grid reuses precomputed immutable saturation properties, while boundary-aware and bisection paths stay dynamic. The focused gate requires material wall reduction versus H.28.1-B and the exact H.28 fingerprint. H.28 remains failed until its original gate is rerun. Because runtime implementation code changed in C/B/D, H.24 must be rerun once after the performance branch stabilizes and before H.29; it is not chained into each optimization iteration.
-
-## H.28.1-G working checkpoint
-
-H.28.1-G is now user-validated: build, complete ordinary suite and focused G gate passed. It preserved 20/20 trigger/commit behavior, 35 hydraulic evaluations, 32 probes, Jacobian dimension 32 and the exact deterministic fingerprint, while reducing triggered p95 to 79.7023 ms below the unchanged H.28 readiness threshold 88.3812 ms. H.28 Requalification 2 is the current candidate and reruns the original H.28 ceilings unchanged. H.29 remains blocked; if H.28 becomes green, H.24 long-horizon qualification must be rerun once before activation review.
+- `M10_9_4_1_H24_POST_H28_REQUALIFICATION.md`;
+- `M10_9_4_1_H24_POST_H28_REQUALIFICATION_VALIDATION_CHECKLIST.md`;
+- `M10_9_4_1_PHASE_H_COMPLETION_ROADMAP_H24_H30.md`;
+- historical H.24/H.28/H.28.1 audit documents for detailed provenance.
