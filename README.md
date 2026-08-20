@@ -8,9 +8,9 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 M10.9.4.1 / Phase I and M10.9.5 **Contextual Command Consequence Model** are validated and closed. Authoritative desktop production remains exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step.
 
-M10.9.6.1 **Challenge Lifecycle & Logical-Time Contract** is validated.
+M10.9.6.1 **Challenge Lifecycle & Logical-Time Contract** and M10.9.6.2 **Deterministic External Energy-Demand Profiles** are validated.
 
-Current candidate: **M10.9.6.2 Hotfix 1 — Nullable Demand-Output Error Compile Fix**. The M10.9.6.2 demand semantics are unchanged; Hotfix 1 fixes only explicit nullable typing for observational demand/output error evidence after the first build exposed CS0173. It adds versioned challenge-owned logical-step demand references (constant, step, bounded ramp and piecewise HOLD/LINEAR) while keeping `EXTERNAL GRID DEMAND`, generator requested load and actual electrical output strictly separate. Demand never commands the generator or grid model, and no scoring arithmetic or challenge UI is introduced.
+Current candidate: **M10.9.6.3 Hotfix 1 — Missing Parent Challenge Namespace Test Compile Fix**. The scoring contract itself is unchanged; the hotfix only restores the missing parent challenge namespace in the focused test. The underlying M10.9.6.3 contract adds versioned observational score policies only: explicit safety/procedure/stability/demand/logical-time dimensions, 60/75/90 grade thresholds, dominant critical-safety/procedure caps at 39/59%, fail-closed unavailable evidence and explicit guidance/authority modifiers. Standard v1 modifiers are neutral; scoring never commands the plant and no challenge pack or UI is introduced.
 
 The authoritative checkpoint and validation sequence live in:
 
@@ -24,12 +24,12 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.6.2 Hotfix 1 candidate:
+For the active M10.9.6.3 Hotfix 1 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1096-external-energy-demand-audit.cmd
+scripts\run-m1096-multidimensional-scoring-audit.cmd
 ```
 
 ## Core runtime principles

@@ -20,23 +20,21 @@ Final Phase-I closure evidence is green across ordinary/current evidence, Gamepl
 
 ## Active candidate
 
-**M10.9.6.2 Hotfix 1 — Nullable Demand-Output Error Compile Fix — CANDIDATE.**
+**M10.9.6.3 Hotfix 1 — Missing Parent Challenge Namespace Test Compile Fix — CANDIDATE.**
 
-M10.9.6.1 Hotfix 1 is **VALIDATED** after build, complete ordinary tests and `scripts/run-m1096-challenge-lifecycle-audit.cmd` passed. Its logical-step lifecycle, required-observation gating, authored failure/deadline semantics and read-only evidence ownership are frozen as the challenge-state baseline.
+M10.9.6.1 Hotfix 1 and M10.9.6.2 Hotfix 1 are **VALIDATED** after build, complete ordinary tests and their focused lifecycle/external-demand audits passed. Lifecycle/logical-time and external-demand semantics are frozen prerequisites.
 
-The first M10.9.6.2 build was blocked only by CS0173 in `ScenarioChallengeExternalDemandProjector`: `var` could not infer a common type for observational `double` demand/output error versus `null`. Hotfix 1 makes that local explicitly `double?`; no demand/runtime contract changes.
+The first M10.9.6.3 build compiled every production project and failed only in `NuclearReactorSimulator.Application.Tests` with CS0246 because the new scoring test omitted `using NuclearReactorSimulator.Application.Scenarios.Challenges;`. Hotfix 1 is test-only and changes no scoring semantics or production source.
 
-M10.9.6.2 adds only deterministic Application-layer external electrical-demand evidence. A `ChallengeDefinition` may optionally own a versioned `ExternalEnergyDemandProfileDefinition`; demand is unavailable when no profile is owned or before challenge activation. Profiles are bounded ordered logical-step control points with `HOLD` / `LINEAR` interpolation, supporting constant, step, bounded-ramp and piecewise sequences.
+M10.9.6.3 adds only deterministic Application-layer scoring arithmetic. Standard exact v1 policies are `general-operations@1` (SAFETY 45 / PROCEDURE 30 / STABILITY 20 / LOGICAL TIME 5) and `demand-following@1` (SAFETY 40 / PROCEDURE 25 / STABILITY 15 / DEMAND 15 / LOGICAL TIME 5). Grade thresholds are pass 60%, proficient 75%, excellent 90%.
 
-The semantic separation is authoritative:
+Safety/procedure dominate: authored critical safety failure makes the result non-passing and caps it at 39%; authored critical procedure failure caps it at 59%; safety wins if both exist. Missing required evidence scores zero and makes evaluation incomplete/non-passing. A protection trip is not globally a scoring failure: challenge-owned evidence decides whether an event is failure, protected completion or other observation.
 
-`EXTERNAL GRID DEMAND != GENERATOR REQUESTED LOAD != ACTUAL ELECTRICAL OUTPUT`
+Guidance mode and plant-control authority remain distinct inputs. Standard v1 policies explicitly use neutral 1.00 modifiers for every defined guidance/authority mode, so there is no hidden assistance penalty. Any non-neutral modifier requires an explicit versioned policy. `ChallengeScoreCalculator` owns no command dispatcher, control authority, protection ownership, wall-clock or Simulation mutation path.
 
-`ScenarioChallengeExternalDemandProjector` reads challenge/lifecycle/control-room snapshots only. It may expose current external demand, aggregate requested generator load, actual gross output, observational demand/output error and an optional definition-owned next scheduled control point. It owns no command dispatcher, generator setpoint, grid coupling, supervisory authority or Simulation mutation path. No scoring arithmetic or challenge UI is introduced in M10.9.6.2.
+Technical reference: `OPERATIONAL_CHALLENGE_SCORING.md`.
 
-Technical reference: `OPERATIONAL_CHALLENGE_ENERGY_DEMAND.md`.
-
-## Local validation for M10.9.6.2 Hotfix 1
+## Local validation for M10.9.6.3 Hotfix 1
 
 Run:
 
@@ -44,10 +42,10 @@ Run:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1096-external-energy-demand-audit.cmd
+scripts\run-m1096-multidimensional-scoring-audit.cmd
 ```
 
-Promotion requires build, complete ordinary suite and the focused deterministic external-demand gate to be green. If a gate fails, fix only the demonstrated demand-contract defect. Do not introduce scoring, UI, automatic load following, grid-coupling changes or physical/control retuning while closing M10.9.6.2. If green, M10.9.6.2 becomes VALIDATED and M10.9.6.3 multidimensional evaluation/scoring is next.
+Promotion requires build, complete ordinary suite and the focused multidimensional scoring gate to be green. If a gate fails, fix only the demonstrated scoring-contract defect. Do not add challenge packs, UI, new faults, control retuning or physical changes while closing M10.9.6.3. If green, M10.9.6.3 becomes VALIDATED and M10.9.6.4 initial challenge packs are next.
 
 ## Evidence and package policy
 
@@ -68,7 +66,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I and M10.9.5 are closed; M10.9.6.1 is validated. Continue milestone-by-milestone from the latest validated baseline: M10.9.6.1 lifecycle/logical-time contract → active M10.9.6.2 deterministic external demand. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
+Phase I and M10.9.5 are closed; M10.9.6.1 and M10.9.6.2 are validated. Continue milestone-by-milestone from the latest validated baseline: frozen lifecycle/logical-time + external-demand contracts → active M10.9.6.3 multidimensional scoring. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

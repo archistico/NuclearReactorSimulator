@@ -1,5 +1,24 @@
 # Changelog
 
+## M10.9.6.3 Hotfix 1 — Missing Parent Challenge Namespace Test Compile Fix — CANDIDATE
+
+- Records the first M10.9.6.3 build result accurately: all production projects compiled, but `NuclearReactorSimulator.Application.Tests` was blocked only by CS0246 in `M10963ChallengeScoringContractTests` because the test imported the `.Demand` and `.Scoring` child namespaces but not the parent `Scenarios.Challenges` namespace that owns `ChallengeDefinition` and related lifecycle types.
+- Adds only `using NuclearReactorSimulator.Application.Scenarios.Challenges;` to the focused M10.9.6.3 test.
+- Re-checks the complete scoring-contract test for the recent xUnit2013 collection-size analyzer pattern; no such case is present.
+- Changes no Application scoring implementation, exact policy identity, weights, thresholds, dominance caps, evidence semantics, guidance/authority modifiers, Simulation, UI, command authority, physics, protection or exact-version behavior.
+- Validation remains `dotnet build`, `dotnet test`, then `scripts/run-m1096-multidimensional-scoring-audit.cmd`.
+
+## M10.9.6.3 — Multidimensional Evaluation & Scoring Contract — CANDIDATE
+
+- Promotes M10.9.6.2 Hotfix 1 external-demand semantics to validated baseline after build, ordinary suite and focused audit passed.
+- Adds pure Application-layer scoring contracts under `Scenarios/Challenges/Scoring`; no Simulation/Avalonia/dispatcher/control/protection ownership changes.
+- Freezes standard exact policies: `general-operations@1` = 45 safety / 30 procedure / 20 stability / 5 logical-time and `demand-following@1` = 40 safety / 25 procedure / 15 stability / 15 demand / 5 logical-time.
+- Freezes grade thresholds 60/75/90% and dominance caps: authored critical safety failure 39%, authored critical procedure failure 59%; safety wins if both occur.
+- Unavailable required evidence scores zero and makes evaluation incomplete/non-passing; every evidence item carries a stable source ID and summary.
+- Standard v1 guidance and plant-authority modifiers are explicitly neutral 1.00; non-neutral effects require a distinct versioned policy.
+- Protection trips are not globally failures; challenge-owned authored evidence determines semantic classification.
+- Adds focused scoring tests, artifact summary, `scripts/run-m1096-multidimensional-scoring-audit.cmd`, `docs/OPERATIONAL_CHALLENGE_SCORING.md` and ADR-0174.
+
 ## M10.9.6.2 Hotfix 1 — Nullable Demand-Output Error Compile Fix — CANDIDATE
 
 - Records the first M10.9.6.2 build result accurately: all projects before `NuclearReactorSimulator.Application` compiled, then Application was blocked only by CS0173 in `ScenarioChallengeExternalDemandProjector` because a conditional expression mixed `double` with `null` under `var` inference.
