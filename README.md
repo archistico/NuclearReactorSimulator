@@ -6,13 +6,11 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 ## Current work
 
-M10.9.4.1 / Phase I is **validated and closed**. Authoritative desktop production is exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step. Historical desktop exact @3, rollback exact @2 and synchronization exact @3 remain immutable in their respective roles.
+M10.9.4.1 / Phase I is **validated and closed**. Authoritative desktop production remains exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step.
 
-M10.9.5.1, M10.9.5.2 and **M10.9.5.3 Hotfix 2 are validated**.
+M10.9.5.1, M10.9.5.2, M10.9.5.3 Hotfix 2 and **M10.9.5.4 are validated**.
 
-Current candidate: **M10.9.5.4 — Observed Response Evidence**.
-
-F4 COMMANDS now keeps three semantics visibly separate: authored `DIRECT EFFECT`, qualitative `EXPECTED INFLUENCE`, and post-dispatch `OBSERVED RESPONSE`. M10.9.5.4 samples the already-authored monitor set at the dispatch boundary and through a bounded 500-logical-step window, displaying actual baseline/latest values and delta/direction when meaningful. Rejected commands show feedback but no fictional plant effects. The evidence is presentation-only, JsonIgnored for compatibility, and never becomes generic command success/failure or proof of causality.
+Current candidate: **M10.9.5.5 — Contextual Command Consequence Model Closure Gate**. It adds no new operator behavior; it reruns the four validated focused gates, verifies their shared non-mutation/compatibility boundaries and writes cumulative closure evidence. Final promotion also requires the manual HMI checklist.
 
 The authoritative checkpoint and validation sequence live in:
 
@@ -26,13 +24,15 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.5.4 candidate:
+For the active M10.9.5.5 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1095-command-observed-response-audit.cmd
+scripts\run-m1095-command-consequence-closure-audit.cmd
 ```
+
+Then perform `docs\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md`.
 
 ## Core runtime principles
 

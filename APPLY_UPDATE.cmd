@@ -4,25 +4,25 @@ set "ROOT=%~dp0"
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.5.4 - Observed Response Evidence...
-echo Removing stale build outputs...
+echo Applying M10.9.5.5 - Contextual Command Consequence Model Closure Gate...
+echo Removing stale build and closure outputs...
 for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
+if exist "artifacts\m1095-command-consequence-closure" rd /s /q "artifacts\m1095-command-consequence-closure"
 
 echo.
-echo M10.9.5.3 Hotfix 2 is the validated baseline.
-echo M10.9.5.4 adds only presentation/application evidence after F4 COMMANDS dispatch:
-echo   - authored monitor values at the dispatch boundary;
-echo   - latest values through a bounded 500 logical-step window;
-echo   - actual delta/direction when meaningful;
-echo   - accepted/rejected feedback and observed protection state;
-echo   - no causal claim, no generic SUCCESS/FAILURE and no fictional effects for rejected commands.
-echo Observation samples are derivable JsonIgnored presentation evidence.
-echo Physics, Simulation, protection ownership, dispatch semantics and exact-version identities are unchanged.
+echo M10.9.5.4 is the validated baseline.
+echo M10.9.5.5 adds no new runtime feature. It reruns the validated 5.1-5.4 focused gates,
+echo verifies shared consequence-model boundaries and writes cumulative automated closure evidence.
+echo Final promotion still requires the manual HMI checklist.
+echo Physics, Simulation, protection ownership, command dispatch and exact-version identities are unchanged.
 echo.
 echo Run:
 echo   dotnet build
 echo   dotnet test
-echo   scripts\run-m1095-command-observed-response-audit.cmd
+echo   scripts\run-m1095-command-consequence-closure-audit.cmd
 echo.
-echo If all gates are green, M10.9.5.4 is validated and M10.9.5.5 closure is next.
+echo If automated gates are green, perform:
+echo   docs\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md
+echo.
+echo If manual HMI is also green, M10.9.5 is VALIDATED and M10.9.6.1 is next.
 exit /b 0

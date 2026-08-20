@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed in M10.9.5.4; becomes Accepted after local build, complete ordinary tests and the focused observed-response gate are explicitly green.
+Accepted — M10.9.5.4 local build, complete ordinary tests and the focused observed-response gate were explicitly green on 2026-08-20.
 
 ## Context
 

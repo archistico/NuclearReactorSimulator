@@ -1,5 +1,20 @@
 # Changelog
 
+## M10.9.5.5 — Contextual Command Consequence Model Closure Gate — CANDIDATE
+
+- Promotes M10.9.5.4 to the validated baseline after build, complete ordinary tests and `scripts/run-m1095-command-observed-response-audit.cmd` passed on 2026-08-20.
+- Adds no new runtime/UI feature. Adds a cumulative closure runner that reruns the four validated M10.9.5.1-5.4 focused gates in order and writes final evidence only when all four pass in the same invocation.
+- Adds cross-cutting closure tests for 27/current command-kind authored coverage, exact monitor-step reuse, zero dispatch/zero observed-response start during inspection/navigation, explicit ENTER/EXECUTE ownership, expected-vs-observed separation, 500-logical-step evidence window and `[JsonIgnore]` observation compatibility.
+- Adds `docs/M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md` covering representative command families, exact schematic focus behavior, accepted/rejected observed response, keyboard-only operation and minimum-window readability.
+- Final automated evidence deliberately reports `m1095-closure-ready=True`, not unconditional milestone promotion; M10.9.5 becomes VALIDATED only after explicit manual HMI confirmation.
+- No Simulation, physics, protection, command type, dispatcher, exact-version, challenge/scoring or automatic graph traversal changes.
+
+## M10.9.5.4 — Observed Response Evidence — VALIDATED
+
+- Local build, complete ordinary tests and `scripts/run-m1095-command-observed-response-audit.cmd` passed on 2026-08-20.
+- ADR-0171 is Accepted.
+- M10.9.5.4 is the validated baseline for the M10.9.5.5 closure candidate.
+
 ## M10.9.5.4 — Observed Response Evidence — CANDIDATE
 
 - Promotes M10.9.5.3 Hotfix 2 to the validated baseline after build, complete ordinary tests, focused context-inspector/schematic audit and manual HMI continuation were green.

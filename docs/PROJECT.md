@@ -20,17 +20,15 @@ Final Phase-I closure evidence is green across ordinary/current evidence, Gamepl
 
 ## Active candidate
 
-**M10.9.5.4 — Observed Response Evidence — CANDIDATE.**
+**M10.9.5.5 — Contextual Command Consequence Model Closure Gate — CANDIDATE.**
 
-M10.9.5.1 consequence semantics, M10.9.5.2 explicit dependency-chain projection and M10.9.5.3 Hotfix 2 COMMANDS/context-inspector/schematic integration are explicitly validated post-Phase-I baselines. M10.9.5.4 adds the missing post-dispatch evidence layer without reopening their contracts.
+M10.9.5.1 consequence semantics/catalog, M10.9.5.2 bounded dependency-chain projection, M10.9.5.3 Hotfix 2 COMMANDS/context-inspector/schematic integration and M10.9.5.4 observed-response evidence are explicitly validated post-Phase-I baselines. M10.9.5.5 adds no new runtime behavior.
 
-For each F4 COMMANDS attempt, the presentation distinguishes accepted/rejected dispatch feedback from plant response. Accepted dispatch captures the command's authored M10.9.5.1 monitor set at the dispatch logical step and compares it with later UI-safe snapshots through a bounded **500 logical-step** window. The presentation reports baseline/latest value or state, actual delta/direction when meaningful, and observed protection state. It explicitly labels the result as post-dispatch co-variation: it does not infer that every change was caused by the command and it does not invent generic `SUCCESS/FAILURE` from numeric deltas.
+The automated closure reruns all four validated focused gates and then writes cumulative evidence that the shared boundaries remain coherent: 27/27 authored command semantics, bounded authored dependency chains, inspection/navigation with zero dispatch, explicit ENTER/EXECUTE dispatch ownership, distinct expected-vs-observed presentation, 500-logical-step observed-response windows, no causal or generic success inference, and `[JsonIgnore]` observation samples for save/replay compatibility.
 
-Advisory-blocked commands, missing-dispatcher cases and canonical runtime/scenario rejection record rejection feedback but expose **no fictional plant-effect deltas**. Observation samples are derivable `[JsonIgnore]` presentation evidence on the existing command snapshot and therefore do not change save/replay fingerprints or authoritative physical state.
+Final M10.9.5 promotion still requires the manual HMI closure checklist `M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md`. No physics, Simulation state, command/protection owner, exact-version identity, challenge/scoring state or automatic graph traversal is introduced.
 
-No physics, Simulation state, command type, dispatch owner, protection/permissive owner, exact-version identity, fixed timestep, challenge/scoring semantics or automatic graph traversal is introduced.
-
-## Local validation for M10.9.5.4
+## Local validation for M10.9.5.5
 
 Run:
 
@@ -38,10 +36,14 @@ Run:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1095-command-observed-response-audit.cmd
+scripts\run-m1095-command-consequence-closure-audit.cmd
 ```
 
-Promotion requires build, complete ordinary suite and the focused M10.9.5.4 gate to be green. If a gate fails, fix only the demonstrated observed-response/presentation contract. Do not alter plant physics or reopen Phase-I numerical qualification. If green, M10.9.5.5 closure is next.
+If all automated gates are green, perform:
+
+`docs\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md`
+
+Promotion requires build, complete ordinary suite, the cumulative focused closure and the manual HMI gate to be green. If a gate fails, fix only the demonstrated consequence-model/presentation contract. Do not alter plant physics or reopen Phase-I numerical qualification. If green, M10.9.5 becomes VALIDATED and M10.9.6.1 is next.
 
 ## Evidence and package policy
 
@@ -62,7 +64,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I is closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.5.4 → M10.9.5.5. Do not reopen numerical Phase-I work unless a post-Phase-I gate produces direct evidence that the validated production baseline is invalid.
+Phase I is closed. Continue milestone-by-milestone from the latest validated baseline: validated M10.9.5.4 → active M10.9.5.5 closure. Do not reopen numerical Phase-I work unless a post-Phase-I gate produces direct evidence that the validated production baseline is invalid.
 
 M10.9.5 may present existing command/control/protection truth but must not add new plant physics, protection thresholds or control ownership. Missing physics discovered while authoring consequence explanations is a post-M11 backlog item rather than an M10.9.5 scope expansion.
 
