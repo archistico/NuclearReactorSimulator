@@ -4,7 +4,7 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I and M10.9.5 are VALIDATED and CLOSED.** The repaired-v4 Phase-I cumulative chain is green and the completed Contextual Command Consequence Model is the validated operator-experience baseline for M10.9.6.
+**M10.9.4.1 / Phase I and M10.9.5 are VALIDATED and CLOSED; M10.9.6.1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 are VALIDATED.** The repaired-v4 Phase-I cumulative chain and completed Contextual Command Consequence Model remain frozen prerequisites; deterministic challenge lifecycle, external-demand semantics and multidimensional scoring are now the validated baseline for M10.9.6.4.
 
 Authoritative desktop production is:
 
@@ -20,21 +20,19 @@ Final Phase-I closure evidence is green across ordinary/current evidence, Gamepl
 
 ## Active candidate
 
-**M10.9.6.3 Hotfix 1 — Missing Parent Challenge Namespace Test Compile Fix — CANDIDATE.**
+**M10.9.6.4 — Initial Challenge Packs — CANDIDATE.**
 
-M10.9.6.1 Hotfix 1 and M10.9.6.2 Hotfix 1 are **VALIDATED** after build, complete ordinary tests and their focused lifecycle/external-demand audits passed. Lifecycle/logical-time and external-demand semantics are frozen prerequisites.
+M10.9.6.1 Hotfix 1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 are **VALIDATED** after build, complete ordinary tests and their focused lifecycle, external-demand and multidimensional-scoring audits passed. Lifecycle/logical-time, demand semantics and exact scoring policies are frozen prerequisites.
 
-The first M10.9.6.3 build compiled every production project and failed only in `NuclearReactorSimulator.Application.Tests` with CS0246 because the new scoring test omitted `using NuclearReactorSimulator.Application.Scenarios.Challenges;`. Hotfix 1 is test-only and changes no scoring semantics or production source.
+M10.9.6.4 composes six versioned challenge packs from existing validated M7.2/M7.5/M7.6 scenario/check owners and the existing M8.4 generator-trip/load-rejection fault owner. The pack layer introduces no new fault, plant physics, command authority, protection ownership or UI.
 
-M10.9.6.3 adds only deterministic Application-layer scoring arithmetic. Standard exact v1 policies are `general-operations@1` (SAFETY 45 / PROCEDURE 30 / STABILITY 20 / LOGICAL TIME 5) and `demand-following@1` (SAFETY 40 / PROCEDURE 25 / STABILITY 15 / DEMAND 15 / LOGICAL TIME 5). Grade thresholds are pass 60%, proficient 75%, excellent 90%.
+The initial catalog covers pre-start circulation preparation, synchronization/initial loading, bounded 5→10→5 MWe demand-following, post-load-change 10 MWe stabilization, controlled normal shutdown and generator-trip/load-rejection response. Only the bounded demand-following challenge exposes the next scheduled demand change; post-load-change stabilization exposes current demand only; synchronization owns no demand profile. External demand never writes generator requested load.
 
-Safety/procedure dominate: authored critical safety failure makes the result non-passing and caps it at 39%; authored critical procedure failure caps it at 59%; safety wins if both exist. Missing required evidence scores zero and makes evaluation incomplete/non-passing. A protection trip is not globally a scoring failure: challenge-owned evidence decides whether an event is failure, protected completion or other observation.
+Every pack binds one exact scoring policy and one documented evidence source for each policy dimension, but M10.9.6.4 performs no score arithmetic. Challenge failure semantics remain local: unexpected trips are failures only in authored normal-operation challenges, while the generator trip is required evidence in the load-rejection response challenge. No hard failure deadlines are introduced before M10.9.6.5 runtime qualification.
 
-Guidance mode and plant-control authority remain distinct inputs. Standard v1 policies explicitly use neutral 1.00 modifiers for every defined guidance/authority mode, so there is no hidden assistance penalty. Any non-neutral modifier requires an explicit versioned policy. `ChallengeScoreCalculator` owns no command dispatcher, control authority, protection ownership, wall-clock or Simulation mutation path.
+Technical reference: `OPERATIONAL_CHALLENGE_PACKS.md`.
 
-Technical reference: `OPERATIONAL_CHALLENGE_SCORING.md`.
-
-## Local validation for M10.9.6.3 Hotfix 1
+## Local validation for M10.9.6.4
 
 Run:
 
@@ -42,10 +40,10 @@ Run:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1096-multidimensional-scoring-audit.cmd
+scripts\run-m1096-initial-challenge-pack-audit.cmd
 ```
 
-Promotion requires build, complete ordinary suite and the focused multidimensional scoring gate to be green. If a gate fails, fix only the demonstrated scoring-contract defect. Do not add challenge packs, UI, new faults, control retuning or physical changes while closing M10.9.6.3. If green, M10.9.6.3 becomes VALIDATED and M10.9.6.4 initial challenge packs are next.
+Promotion requires build, complete ordinary suite and the focused initial challenge-pack gate to be green. If a gate fails, fix only the demonstrated pack/evidence-composition defect. Do not add UI, new faults, control retuning or physical changes while closing M10.9.6.4. If green, M10.9.6.4 becomes VALIDATED and M10.9.6.5 replay/checkpoint/determinism closure is next.
 
 ## Evidence and package policy
 
@@ -66,7 +64,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I and M10.9.5 are closed; M10.9.6.1 and M10.9.6.2 are validated. Continue milestone-by-milestone from the latest validated baseline: frozen lifecycle/logical-time + external-demand contracts → active M10.9.6.3 multidimensional scoring. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
+Phase I and M10.9.5 are closed; M10.9.6.1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 are validated. Continue milestone-by-milestone from the latest validated baseline: frozen lifecycle/logical-time + external-demand + scoring contracts → active M10.9.6.4 initial challenge packs. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

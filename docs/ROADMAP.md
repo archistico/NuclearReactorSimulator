@@ -51,7 +51,7 @@ M10.9.5–M10.9.7 should not normally require multi-hour numerical requalificati
 
 M10.9.4.1 / Phase I and M10.9.5 are validated and closed. Authoritative desktop exact `@4` and synchronization exact `@3` remain the frozen production baselines for post-Phase-I operator-experience work.
 
-M10.9.6.1 **challenge lifecycle and logical-time contract** and M10.9.6.2 **deterministic external energy-demand profiles** are validated. The active milestone is **M10.9.6.3 — multidimensional evaluation/scoring contract**. It freezes versioned weights, grade thresholds, safety/procedure dominance and explicit guidance/authority modifiers without adding challenge packs, UI or plant-control authority. M10.9.6.4 remains next only after 6.3 validation.
+M10.9.6.1 **challenge lifecycle and logical-time contract**, M10.9.6.2 **deterministic external energy-demand profiles** and M10.9.6.3 **multidimensional evaluation/scoring contract** are validated. The active milestone is **M10.9.6.4 — initial challenge packs**. It composes six versioned exercises from existing M7.2/M7.5/M7.6 scenario/check owners and the existing M8.4 generator-trip/load-rejection fault owner without adding UI, new fault physics or plant-control authority. M10.9.6.5 replay/checkpoint/determinism closure remains next only after 6.4 validation.
 
 ## M10.9.5 — Contextual Command Consequence Model
 
@@ -73,7 +73,7 @@ No predictive UI physics, automatic command execution, invented causality or new
 
 ## M10.9.6 — Operational Challenge & Energy-Demand Framework
 
-**Status:** ACTIVE — M10.9.6.1 and M10.9.6.2 VALIDATED; M10.9.6.3 candidate.
+**Status:** ACTIVE — M10.9.6.1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 VALIDATED; M10.9.6.4 candidate.
 
 **Purpose:** add deterministic training objectives and external electrical-demand references without making scoring or challenge state a physical plant owner.
 

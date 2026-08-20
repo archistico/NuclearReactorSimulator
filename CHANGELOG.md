@@ -1,5 +1,17 @@
 # Changelog
 
+## M10.9.6.4 — Initial Challenge Packs — CANDIDATE
+
+- Promotes M10.9.6.3 Hotfix 1 to VALIDATED after build, complete ordinary tests and `scripts/run-m1096-multidimensional-scoring-audit.cmd` passed; ADR-0174 becomes Accepted.
+- Adds six exact Application-layer operational challenge packs: pre-start circulation preparation, synchronization/initial loading, bounded 5→10→5 MWe demand-following, post-load-change 10 MWe stabilization, controlled normal shutdown and generator-trip/load-rejection response.
+- Reuses validated M7.2/M7.5/M7.6 checklist evidence and committed M8.4 fault/action evidence rather than duplicating physical ownership.
+- Freezes demand-schedule visibility: only bounded demand-following exposes the next scheduled change; post-load-change stabilization exposes current demand only; synchronization owns no demand profile. Demand never writes generator requested load.
+- Adds exact score-evidence provenance bindings for every policy dimension but no new score arithmetic.
+- Keeps failure semantics challenge-specific: normal-operation unexpected trips/emergency substitutions may fail authored challenges; generator trip is required evidence rather than failure in the load-rejection response challenge.
+- Authors no hard failure deadlines before M10.9.6.5 runtime qualification.
+- Adds focused pack tests, artifact summary, `scripts/run-m1096-initial-challenge-pack-audit.cmd`, `docs/OPERATIONAL_CHALLENGE_PACKS.md` and ADR-0175.
+- Adds no Simulation/Avalonia changes, new fault physics, protection ownership, command dispatcher/control authority or exact-version change.
+
 ## M10.9.6.3 Hotfix 1 — Missing Parent Challenge Namespace Test Compile Fix — CANDIDATE
 
 - Records the first M10.9.6.3 build result accurately: all production projects compiled, but `NuclearReactorSimulator.Application.Tests` was blocked only by CS0246 in `M10963ChallengeScoringContractTests` because the test imported the `.Demand` and `.Scoring` child namespaces but not the parent `Scenarios.Challenges` namespace that owns `ChallengeDefinition` and related lifecycle types.

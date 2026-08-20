@@ -8,9 +8,9 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 M10.9.4.1 / Phase I and M10.9.5 **Contextual Command Consequence Model** are validated and closed. Authoritative desktop production remains exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step.
 
-M10.9.6.1 **Challenge Lifecycle & Logical-Time Contract** and M10.9.6.2 **Deterministic External Energy-Demand Profiles** are validated.
+M10.9.6.1 **Challenge Lifecycle & Logical-Time Contract**, M10.9.6.2 **Deterministic External Energy-Demand Profiles** and M10.9.6.3 **Multidimensional Evaluation & Scoring Contract** are validated.
 
-Current candidate: **M10.9.6.3 Hotfix 1 — Missing Parent Challenge Namespace Test Compile Fix**. The scoring contract itself is unchanged; the hotfix only restores the missing parent challenge namespace in the focused test. The underlying M10.9.6.3 contract adds versioned observational score policies only: explicit safety/procedure/stability/demand/logical-time dimensions, 60/75/90 grade thresholds, dominant critical-safety/procedure caps at 39/59%, fail-closed unavailable evidence and explicit guidance/authority modifiers. Standard v1 modifiers are neutral; scoring never commands the plant and no challenge pack or UI is introduced.
+Current candidate: **M10.9.6.4 — Initial Challenge Packs**. It composes six versioned operational challenges from existing M7.2/M7.5/M7.6 scenario/check owners and the existing M8.4 generator-trip/load-rejection fault owner. Demand remains observational, score arithmetic remains M10.9.6.3-owned, trip/failure meaning remains challenge-specific and no new physics, fault, UI or plant command authority is introduced.
 
 The authoritative checkpoint and validation sequence live in:
 
@@ -24,12 +24,12 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.6.3 Hotfix 1 candidate:
+For the active M10.9.6.4 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1096-multidimensional-scoring-audit.cmd
+scripts\run-m1096-initial-challenge-pack-audit.cmd
 ```
 
 ## Core runtime principles
