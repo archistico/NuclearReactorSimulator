@@ -1,5 +1,24 @@
 # Changelog
 
+## M10.9.6.1 Hotfix 1 — xUnit2013 Collection-Size Assertion Compile Fix — CANDIDATE
+
+- Records the first M10.9.6.1 validation attempt accurately: all production projects and all non-Application test projects compiled, but `NuclearReactorSimulator.Application.Tests` was blocked by two xUnit2013 analyzer errors in `M10961ChallengeLifecycleContractTests`.
+- Replaces only the two collection-size assertions `Assert.Equal(1, ...Actions.Count)` with analyzer-compliant `Assert.Single(...)`.
+- Re-scans the complete new M10.9.6.1 test file for the same collection-size anti-pattern; no additional xUnit2013 case remains in the new challenge-lifecycle test.
+- Changes no Application challenge lifecycle implementation, condition semantics, evidence ownership, logical-time contract, Simulation, UI, command dispatch, physics, protection or exact-version identity.
+- Validation remains `dotnet build`, `dotnet test`, then `scripts/run-m1096-challenge-lifecycle-audit.cmd`.
+
+## M10.9.6.1 — Operational Challenge & Energy-Demand Framework / Challenge Lifecycle & Logical-Time Contract — CANDIDATE
+
+- Promotes M10.9.5 Contextual Command Consequence Model to VALIDATED/CLOSED after its cumulative automated closure passed and the user explicitly continued beyond the required manual HMI gate.
+- Adds versioned Application-layer `ChallengeDefinition`, logical-step-only timing metadata, assistance/scoring-policy declarations and deterministic lifecycle states `NotStarted|Ready|Active|Completed|Failed|Cancelled`.
+- Adds read-only `IChallengeEvidenceSource` / `ScenarioChallengeEvidenceSource` so lifecycle tracking consumes immutable `ControlRoomSnapshot` values plus accepted `ScenarioOperatorActionRecord` history without receiving plant command or control-authority seams.
+- Adds `ScenarioChallengeTracker` with authored activation/required-observation/completion/failure conditions, explicit cancel/reset, observational target windows, optional hard logical-step failure deadline and deterministic same-step failure precedence.
+- Adds tests proving publication-stride independence, same logical/action trace reconstruction, explicit deadline semantics, cancel/reset non-dispatch behavior, version/objective/assistance ownership and absence of wall-clock types in the public lifecycle contract.
+- Adds `scripts/run-m1096-challenge-lifecycle-audit.cmd`, artifact summary under `artifacts/m1096-challenge-lifecycle`, `docs/OPERATIONAL_CHALLENGE_LIFECYCLE.md` and ADR-0172.
+- Adds no external demand profile, score arithmetic, challenge UI, new physical model, protection rule, command type, supervisory authority or exact-version change. M10.9.6.2 deterministic external energy-demand profiles remains next after validation.
+
+
 ## M10.9.5.5 — Contextual Command Consequence Model Closure Gate — CANDIDATE
 
 - Promotes M10.9.5.4 to the validated baseline after build, complete ordinary tests and `scripts/run-m1095-command-observed-response-audit.cmd` passed on 2026-08-20.

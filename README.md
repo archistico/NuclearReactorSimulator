@@ -6,11 +6,9 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 ## Current work
 
-M10.9.4.1 / Phase I is **validated and closed**. Authoritative desktop production remains exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step.
+M10.9.4.1 / Phase I and M10.9.5 **Contextual Command Consequence Model** are validated and closed. Authoritative desktop production remains exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step.
 
-M10.9.5.1, M10.9.5.2, M10.9.5.3 Hotfix 2 and **M10.9.5.4 are validated**.
-
-Current candidate: **M10.9.5.5 — Contextual Command Consequence Model Closure Gate**. It adds no new operator behavior; it reruns the four validated focused gates, verifies their shared non-mutation/compatibility boundaries and writes cumulative closure evidence. Final promotion also requires the manual HMI checklist.
+Current candidate: **M10.9.6.1 Hotfix 1 — xUnit2013 Collection-Size Assertion Compile Fix**, preserving the M10.9.6.1 Challenge Lifecycle & Logical-Time Contract unchanged. It adds deterministic Application-layer challenge state driven only by logical simulation steps, immutable presentation snapshots and accepted operator-action history. It adds no external demand profile, scoring arithmetic, challenge UI, plant-control authority or physics.
 
 The authoritative checkpoint and validation sequence live in:
 
@@ -24,15 +22,13 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.5.5 candidate:
+For the active M10.9.6.1 Hotfix 1 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1095-command-consequence-closure-audit.cmd
+scripts\run-m1096-challenge-lifecycle-audit.cmd
 ```
-
-Then perform `docs\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md`.
 
 ## Core runtime principles
 

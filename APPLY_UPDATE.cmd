@@ -4,25 +4,21 @@ set "ROOT=%~dp0"
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.5.5 - Contextual Command Consequence Model Closure Gate...
-echo Removing stale build and closure outputs...
+echo Applying M10.9.6.1 Hotfix 1 - xUnit2013 Collection-Size Assertion Compile Fix...
+echo Removing stale build and focused-audit outputs...
 for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
-if exist "artifacts\m1095-command-consequence-closure" rd /s /q "artifacts\m1095-command-consequence-closure"
+if exist "artifacts\m1096-challenge-lifecycle" rd /s /q "artifacts\m1096-challenge-lifecycle"
 
 echo.
-echo M10.9.5.4 is the validated baseline.
-echo M10.9.5.5 adds no new runtime feature. It reruns the validated 5.1-5.4 focused gates,
-echo verifies shared consequence-model boundaries and writes cumulative automated closure evidence.
-echo Final promotion still requires the manual HMI checklist.
-echo Physics, Simulation, protection ownership, command dispatch and exact-version identities are unchanged.
+echo M10.9.5 is the validated and closed baseline.
+echo M10.9.6.1 Hotfix 1 preserves the deterministic Application-layer challenge lifecycle and fixes only two xUnit2013 test assertions.
+echo It uses logical simulation steps, immutable presentation snapshots and accepted operator-action evidence.
+echo It adds no energy-demand profile, score arithmetic, UI, plant-control authority, protection change or physics.
 echo.
 echo Run:
 echo   dotnet build
 echo   dotnet test
-echo   scripts\run-m1095-command-consequence-closure-audit.cmd
+echo   scripts\run-m1096-challenge-lifecycle-audit.cmd
 echo.
-echo If automated gates are green, perform:
-echo   docs\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md
-echo.
-echo If manual HMI is also green, M10.9.5 is VALIDATED and M10.9.6.1 is next.
+echo If all gates are green, M10.9.6.1 is VALIDATED and M10.9.6.2 deterministic external energy-demand profiles is next.
 exit /b 0

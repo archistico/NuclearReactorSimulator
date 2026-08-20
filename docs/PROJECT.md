@@ -4,7 +4,7 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I is VALIDATED and CLOSED.** The final repaired-v4 cumulative chain is green and `m1095-unblocked=True`.
+**M10.9.4.1 / Phase I and M10.9.5 are VALIDATED and CLOSED.** The repaired-v4 Phase-I cumulative chain is green and the completed Contextual Command Consequence Model is the validated operator-experience baseline for M10.9.6.
 
 Authoritative desktop production is:
 
@@ -20,15 +20,17 @@ Final Phase-I closure evidence is green across ordinary/current evidence, Gamepl
 
 ## Active candidate
 
-**M10.9.5.5 — Contextual Command Consequence Model Closure Gate — CANDIDATE.**
+**M10.9.6.1 — Operational Challenge & Energy-Demand Framework / Challenge Lifecycle & Logical-Time Contract — CANDIDATE.**
 
-M10.9.5.1 consequence semantics/catalog, M10.9.5.2 bounded dependency-chain projection, M10.9.5.3 Hotfix 2 COMMANDS/context-inspector/schematic integration and M10.9.5.4 observed-response evidence are explicitly validated post-Phase-I baselines. M10.9.5.5 adds no new runtime behavior.
+**Hotfix 1 status:** the first validation attempt was blocked only by two xUnit2013 analyzer errors in the new focused test (`Assert.Equal(1, collection.Count)`). Hotfix 1 replaces them with `Assert.Single`; the M10.9.6.1 Application contract is unchanged.
 
-The automated closure reruns all four validated focused gates and then writes cumulative evidence that the shared boundaries remain coherent: 27/27 authored command semantics, bounded authored dependency chains, inspection/navigation with zero dispatch, explicit ENTER/EXECUTE dispatch ownership, distinct expected-vs-observed presentation, 500-logical-step observed-response windows, no causal or generic success inference, and `[JsonIgnore]` observation samples for save/replay compatibility.
+M10.9.5 is **VALIDATED and CLOSED** after build, complete ordinary tests, the cumulative `run-m1095-command-consequence-closure-audit.cmd` gate and explicit continuation beyond the required manual HMI closure gate. Its authored consequence semantics, bounded dependency chains, F4 COMMANDS/context/mimic integration and logical-step observed-response evidence are frozen as the validated operator-experience baseline.
 
-Final M10.9.5 promotion still requires the manual HMI closure checklist `M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md`. No physics, Simulation state, command/protection owner, exact-version identity, challenge/scoring state or automatic graph traversal is introduced.
+M10.9.6.1 adds only deterministic Application-layer challenge lifecycle ownership. A versioned challenge references an existing scenario objective, authored activation/observation/completion/failure conditions, logical-step readiness/target/deadline metadata, allowed assistance modes and a future scoring-policy identity. The tracker consumes only immutable `ControlRoomSnapshot` evidence plus accepted operator-action history through a read-only evidence seam. It has no plant command dispatcher, supervisory authority or Simulation mutation path.
 
-## Local validation for M10.9.5.5
+Lifecycle is `NOT STARTED -> READY -> ACTIVE -> COMPLETED|FAILED|CANCELLED`. Target completion windows are observational; only an explicitly authored hard logical-step deadline can fail a challenge by time. Declared failure conditions take precedence if completion and failure become true in the same logical step. Cancel/reset are explicit lifecycle operations and are never driven by presentation navigation. No demand profile, score arithmetic or challenge UI is introduced in M10.9.6.1.
+
+## Local validation for M10.9.6.1
 
 Run:
 
@@ -36,14 +38,10 @@ Run:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1095-command-consequence-closure-audit.cmd
+scripts\run-m1096-challenge-lifecycle-audit.cmd
 ```
 
-If all automated gates are green, perform:
-
-`docs\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md`
-
-Promotion requires build, complete ordinary suite, the cumulative focused closure and the manual HMI gate to be green. If a gate fails, fix only the demonstrated consequence-model/presentation contract. Do not alter plant physics or reopen Phase-I numerical qualification. If green, M10.9.5 becomes VALIDATED and M10.9.6.1 is next.
+Promotion requires build, complete ordinary suite and the focused lifecycle/logical-time gate to be green. If a gate fails, fix only the demonstrated challenge-contract defect. Do not introduce external demand, scoring arithmetic, UI or physical/control changes while closing M10.9.6.1. If green, M10.9.6.1 becomes VALIDATED and M10.9.6.2 deterministic external energy-demand profiles is next.
 
 ## Evidence and package policy
 
@@ -64,11 +62,11 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I is closed. Continue milestone-by-milestone from the latest validated baseline: validated M10.9.5.4 → active M10.9.5.5 closure. Do not reopen numerical Phase-I work unless a post-Phase-I gate produces direct evidence that the validated production baseline is invalid.
+Phase I and M10.9.5 are closed. Continue milestone-by-milestone from the latest validated baseline: validated M10.9.5 → active M10.9.6.1 lifecycle/logical-time contract. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
 
-M10.9.5 may present existing command/control/protection truth but must not add new plant physics, protection thresholds or control ownership. Missing physics discovered while authoring consequence explanations is a post-M11 backlog item rather than an M10.9.5 scope expansion.
+M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 
-The post-Phase-I execution order is now pre-planned rather than open-ended: M10.9.5 consequence semantics → M10.9.6 deterministic challenge/demand/scoring → M10.9.7 mission/performance presentation → M10.9.8 integrated M10 validation → M11 release hardening. Detailed contracts live in `ROADMAP.md` and `docs/milestones/M10.9.5.md` through `M11.md`. Phase I is green; this plan now governs the active post-Phase-I execution sequence.
+The post-Phase-I execution order remains fixed: M10.9.6 deterministic challenge/demand/scoring → M10.9.7 mission/performance presentation → M10.9.8 integrated M10 validation → M11 release hardening. Detailed contracts live in `ROADMAP.md` and `docs/milestones/M10.9.6.md` through `M11.md`.
 
 ## Documentation authority
 

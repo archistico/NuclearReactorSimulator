@@ -47,13 +47,15 @@ This is a planning classification, not a duration promise:
 
 M10.9.5–M10.9.7 should not normally require multi-hour numerical requalification. The two intentionally expensive future checkpoints are M10.9.8 integration closure and M11 release closure.
 
-## Current transition — Phase I closed / M10.9.5 active
+## Current transition — M10.9.5 closed / M10.9.6 active
 
-M10.9.4.1 / Phase I is validated and closed. Authoritative desktop exact `@4` and synchronization exact `@3` remain the frozen production baselines for post-Phase-I operator-experience work.
+M10.9.4.1 / Phase I and M10.9.5 are validated and closed. Authoritative desktop exact `@4` and synchronization exact `@3` remain the frozen production baselines for post-Phase-I operator-experience work.
 
-M10.9.5.1, M10.9.5.2, M10.9.5.3 Hotfix 2 and M10.9.5.4 are validated. The active milestone is **M10.9.5.5 — cumulative automated/manual closure**. It adds no new runtime feature: it reruns the four validated focused gates, freezes their shared invariants and requires final keyboard/minimum-window/manual HMI acceptance before M10.9.5 can close.
+The active milestone is **M10.9.6.1 — challenge lifecycle and logical-time contract**. It adds deterministic Application-layer challenge state only: no energy-demand profile, score arithmetic, UI, new plant-control authority or physics. M10.9.6.2 remains next only after 6.1 validation.
 
 ## M10.9.5 — Contextual Command Consequence Model
+
+**Status:** VALIDATED / CLOSED.
 
 **Purpose:** explain what a selected command directly requests, what it is expected to influence, what currently blocks it, what the operator should monitor, and what the simulator actually did after dispatch.
 
@@ -70,6 +72,8 @@ Planned sequence:
 No predictive UI physics, automatic command execution, invented causality or new permissive owner is allowed.
 
 ## M10.9.6 — Operational Challenge & Energy-Demand Framework
+
+**Status:** ACTIVE — M10.9.6.1 candidate.
 
 **Purpose:** add deterministic training objectives and external electrical-demand references without making scoring or challenge state a physical plant owner.
 
