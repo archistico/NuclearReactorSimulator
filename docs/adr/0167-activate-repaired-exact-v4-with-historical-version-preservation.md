@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted — authoritative production activation validated in M10.9.4.1-I.5 REV1 Hotfix 16.2; final Phase-I cumulative closure remains pending Hotfix 17/17.1.
+Accepted — authoritative production activation validated in M10.9.4.1-I.5 REV1 Hotfix 16.2 and final repaired-v4 Phase-I cumulative closure subsequently validated on Hotfix 17.1.
 
 ## Context
 
@@ -21,4 +21,4 @@ Silently changing the thermodynamic closure behind exact `@3` would break the pr
 
 ## Consequences
 
-Old exact-version saves and scenarios remain reproducible rather than being migrated implicitly to new thermodynamics. Current production benefits from the repaired inverse topology, while rollback and historical evidence remain available under their original semantics. Phase I may close only after current @4 passes the scheduled-long/reference/cumulative chain; failure of a final gate must be localized rather than addressed by retuning frozen budgets or rewriting historical versions.
+Old exact-version saves and scenarios remain reproducible rather than being migrated implicitly to new thermodynamics. Current production benefits from the repaired inverse topology, while rollback and historical evidence remain available under their original semantics. Current @4 subsequently passed the scheduled-long/reference/cumulative chain and Phase I is closed. Frozen budgets and historical exact-version semantics remain unchanged for post-Phase-I work.

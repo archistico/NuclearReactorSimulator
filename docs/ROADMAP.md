@@ -47,11 +47,11 @@ This is a planning classification, not a duration promise:
 
 M10.9.5–M10.9.7 should not normally require multi-hour numerical requalification. The two intentionally expensive future checkpoints are M10.9.8 integration closure and M11 release closure.
 
-## Immediate gate — M10.9.4.1-I.5 final closure
+## Current transition — Phase I closed / M10.9.5 active
 
-Authoritative desktop exact `@4` (`CorrelationConsistentInverseDomain` + `FourNodeBranchContinuityCorrectedCommitOptIn`) and synchronization exact `@3` are already validated and activated in their separate version families. The only remaining Phase-I work is the Hotfix 17/17.1 final chain: ordinary/current evidence, GameplayLong, OperationalEnvelope, ReferencePlantScale, repaired exact-v4 300 s reference regression against the unchanged 19 I.3 budgets, then cumulative closure.
+M10.9.4.1 / Phase I is validated and closed. Authoritative desktop exact `@4` and synchronization exact `@3` remain the frozen production baselines for post-Phase-I operator-experience work.
 
-A green chain closes M10.9.4.1 / Phase I and unlocks M10.9.5. No additional numerical tuning or requalification stage belongs in I.5 unless a final gate provides direct contrary evidence.
+The active milestone is **M10.9.5.1 — consequence semantics and command catalog**. It may add Application/presentation metadata and tests only; it must not alter plant physics, numerical authority, protection thresholds or command dispatch ownership.
 
 ## M10.9.5 — Contextual Command Consequence Model
 

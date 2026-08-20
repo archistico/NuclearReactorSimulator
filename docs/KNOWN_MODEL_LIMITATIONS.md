@@ -16,7 +16,7 @@ This register contains **current** limitations only. Resolved investigations and
 
 ## Validated reference drift / inventory redistribution
 
-Historical validated I.3 was continuously healthy over 300 s on the then-authoritative exact-v3 production path, but the final 60 s are **not a claim of asymptotic steady state**. Exact @3 is now frozen provenance; exact @4 is current authoritative production and must earn its own final reference evidence rather than inheriting these observations. The frozen regression observations include:
+Historical validated I.3 was continuously healthy over 300 s on the then-authoritative exact-v3 production path, but the final 60 s are **not a claim of asymptotic steady state**. Exact @3 is now frozen provenance; exact @4 is current authoritative production and has separately passed the final repaired-v4 300 s reference requalification against all 19 unchanged I.3 budgets rather than inheriting exact-v3 evidence. The frozen regression observations include:
 
 - drum inventory slope: **+8.2451672984622224 kg/s**;
 - main-steam-header inventory slope: **-0.35293086123580603 kg/s**;

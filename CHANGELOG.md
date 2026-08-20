@@ -1,3 +1,14 @@
+## M10.9.5.1 — Contextual Command Consequence Model / Consequence Semantics & Catalog — CANDIDATE
+
+- Starts from the user-validated M10.9.4.1 / Phase-I-closed repaired-v4 baseline; no Phase-I numerical contract is reopened.
+- Adds `OperatorComputerCommandConsequenceCatalog`, a deterministic Application-only authored semantic catalog covering all 27 current `ControlRoomCommandKind` values, including turbine valve/control-valve commands that are runtime-supported but not yet exposed by the M10.4 COMMANDS console.
+- Freezes qualitative relation vocabulary (`INCREASES/DECREASES EXPECTED DEMAND ON`, `ENABLES/DISABLES PATH`, `AFFECTS`, `MAY AFFECT`, `PROTECTION MAY OVERRIDE`) without numerical future prediction.
+- Associates authored consequences with existing whole-plant mimic element IDs and published `ControlRoomSnapshot` property paths; monitor targets carry MEASURED / MODEL / canonical-state provenance.
+- Adds explicit fail-closed `NO AUTHORED CONSEQUENCE MAP` behavior for unsupported/future command-target shapes rather than inventing causality.
+- Adds focused tests for enum/catalog completeness, current COMMANDS-console coverage, turbine-valve family coverage, canonical reference resolution, deterministic qualitative separation and explicit-unmapped behavior.
+- Adds `scripts\run-m1095-command-consequence-catalog-audit.cmd`.
+- No command dispatch, runtime physics, protection ownership, numerical solver, exact-version identity, scenario seed or Avalonia UI is changed. M10.9.5.2 dependency-chain projection remains the next step after validation.
+
 ## M10.9.4.1-I.5 REV1 Hotfix 17.1 Docs Planning 1 — Post-Phase-I / M11 Execution Plan — DOCUMENTATION-ONLY CANDIDATE
 
 - Adds detailed planning contracts for M10.9.5, M10.9.6, M10.9.7, M10.9.8 and M11 without changing runtime, tests, CI scripts or validation gates.

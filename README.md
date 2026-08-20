@@ -6,13 +6,13 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 ## Current work
 
-Current candidate: **M10.9.4.1-I.5 REV1 Hotfix 17.1 — Final Repaired-v4 Phase-I Closure / Preflight Documentation Alignment**.
+M10.9.4.1 / Phase I is **validated and closed**. Authoritative desktop production is exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step. Historical desktop exact @3, rollback exact @2 and synchronization exact @3 remain immutable in their respective roles.
 
-Hotfix 16.2 is locally validated: authoritative desktop production is exact `integrated-operations-desktop-stable@4`, with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step. Historical exact @3 and rollback exact @2 remain immutable.
+Current candidate: **M10.9.5.1 — Contextual Command Consequence Model / Consequence Semantics & Catalog**.
 
-Hotfix 17 adds no new repair stage. It realigns current CI so H.30 RQ1, I.3 exact-v3 and I.4 are frozen historical provenance, adds the final authoritative exact-v4 300-second production-reference requalification against the unchanged 19 I.3 budgets, and makes the existing cumulative closure command run the final repaired-v4 long matrix. Hotfix 17.1 changes no runtime/test/CI logic: it completes the static preflight of namespaces, filter targets, script targets, budget hashes and evidence paths, and realigns the current technical documentation to authoritative exact @4.
+M10.9.5.1 adds deterministic qualitative command-consequence metadata for every current typed command. It does not add UI integration yet, does not dispatch commands, does not predict numeric outcomes and does not change physics/protection/control ownership. Unknown command-target shapes fail closed as `NO AUTHORED CONSEQUENCE MAP`.
 
-The detailed checkpoint and final validation sequence live in:
+The authoritative checkpoint and validation sequence live in:
 
 **[`docs/PROJECT.md`](docs/PROJECT.md)**
 
@@ -24,15 +24,13 @@ dotnet build
 dotnet test
 ```
 
-For the final Phase-I closure candidate, first run the short compile/ordinary preflight, then launch the cumulative closure:
+For the active M10.9.5.1 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m10941-cumulative-closure-audit.cmd
+scripts\run-m1095-command-consequence-catalog-audit.cmd
 ```
-
-The cumulative command intentionally reruns ordinary/current evidence and the complete scheduled-long matrix. It can take multiple hours. If it is green, M10.9.4.1 / Phase I is closed and M10.9.5 is unblocked.
 
 ## Core runtime principles
 
