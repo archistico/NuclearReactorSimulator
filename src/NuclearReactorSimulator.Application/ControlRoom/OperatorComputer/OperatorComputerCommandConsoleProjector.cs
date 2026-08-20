@@ -15,7 +15,10 @@ public static class OperatorComputerCommandConsoleProjector
         AddPrimaryCommands(commands, snapshot);
         AddTurbineElectricalCommands(commands, snapshot);
         AddAlarmCommands(commands, snapshot);
-        return new OperatorComputerCommandConsoleSnapshot(commands);
+        return new OperatorComputerCommandConsoleSnapshot(commands.Select(command => command with
+        {
+            ObservationSamples = OperatorComputerCommandObservationProjector.Project(snapshot, command.Command),
+        }));
     }
 
     private static void AddRuntimeCommands(List<OperatorComputerCommandSnapshot> commands, ControlRoomSnapshot snapshot)

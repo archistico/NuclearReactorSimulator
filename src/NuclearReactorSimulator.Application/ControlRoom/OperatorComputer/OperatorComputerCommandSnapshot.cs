@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using NuclearReactorSimulator.Application.ControlRoom;
 
 namespace NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
@@ -50,6 +51,9 @@ public sealed record OperatorComputerCommandSnapshot
     public string CurrentState { get; }
 
     public string? BlockReason { get; }
+
+    [JsonIgnore]
+    public IReadOnlyList<OperatorComputerCommandObservationSample> ObservationSamples { get; init; } = Array.Empty<OperatorComputerCommandObservationSample>();
 
     public bool CanDispatch => Availability == OperatorComputerCommandAvailability.Available;
 

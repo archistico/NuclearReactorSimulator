@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed in M10.9.5.3; becomes Accepted only after local build, complete ordinary tests, focused HMI-contract tests and manual HMI inspection are explicitly green.
+Accepted after M10.9.5.3 Hotfix 2 passed local build, complete ordinary tests, focused HMI-contract tests and manual HMI inspection on 2026-08-20.
 
 ## Context
 

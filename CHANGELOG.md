@@ -1,5 +1,16 @@
 # Changelog
 
+## M10.9.5.4 — Observed Response Evidence — CANDIDATE
+
+- Promotes M10.9.5.3 Hotfix 2 to the validated baseline after build, complete ordinary tests, focused context-inspector/schematic audit and manual HMI continuation were green.
+- Adds deterministic current-value projection for the exact authored M10.9.5.1 monitor set; target-specific values are read only from the existing UI-safe `ControlRoomSnapshot`.
+- Adds a presentation-only observed-response accumulator with a fixed 500-logical-step window, dispatch-boundary baseline, latest observed value/state, numeric delta/direction, accepted/rejected feedback and observed protection state.
+- Rejected commands expose no fictional plant-effect deltas; accepted monitor changes are labelled post-dispatch co-variation only and never converted into generic `SUCCESS/FAILURE` or proof of causality.
+- Adds a distinct F4 COMMANDS `OBSERVED RESPONSE — POST-DISPATCH EVIDENCE` panel while preserving the M10.9.5.3 Context Inspector, canonical mimic focus and explicit ENTER/EXECUTE dispatch boundary.
+- Marks command observation samples `[JsonIgnore]` because they are derivable presentation evidence; no save/replay fingerprint, exact-version identity or authoritative plant state is changed.
+- Adds Application/ViewModel/XAML focused tests, `scripts/run-m1095-command-observed-response-audit.cmd` and ADR-0171.
+- No Simulation physics, protection/permissive ownership, command kinds, graph traversal, challenge/scoring or numerical prediction is introduced.
+
 ## M10.9.5.3 Hotfix 2 — COMMANDS Context Inspector XAML Contract & Exact Schematic Focus Semantics — CANDIDATE
 
 - Records the Hotfix 1 result accurately: production/Application projects and the new App code compiled, but the complete ordinary suite had one failure in `OperatorComputerM10953ContextInspectorXamlTests` because the test expected `{Binding SelectedCommandSchematicElementId}` while the XAML intentionally uses `{Binding SelectedCommandSchematicElementId, Mode=OneWay}` for presentation-only focus.

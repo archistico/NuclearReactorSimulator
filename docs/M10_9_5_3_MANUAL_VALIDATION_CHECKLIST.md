@@ -1,5 +1,7 @@
 # M10.9.5.3 — Manual HMI validation checklist
 
+**Status:** completed as part of the validated M10.9.5.3 Hotfix 2 baseline on 2026-08-20.
+
 Use the validated M10.9.5.2 baseline plus the M10.9.5.3 candidate. Do not change physics/configuration merely to make the presentation look better.
 
 - [ ] Open **F4 COMMANDS** with the desktop at the minimum supported window size and confirm the page remains usable through normal scrolling.

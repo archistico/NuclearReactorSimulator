@@ -51,7 +51,7 @@ M10.9.5–M10.9.7 should not normally require multi-hour numerical requalificati
 
 M10.9.4.1 / Phase I is validated and closed. Authoritative desktop exact `@4` and synchronization exact `@3` remain the frozen production baselines for post-Phase-I operator-experience work.
 
-M10.9.5.1 and M10.9.5.2 are validated. The active milestone is **M10.9.5.3 — COMMANDS/context-inspector/schematic integration**. It may integrate the validated presentation metadata into Avalonia and reuse canonical mimic/schematic snapshots, but it must not alter plant physics, numerical authority, protection thresholds or command dispatch ownership.
+M10.9.5.1, M10.9.5.2 and M10.9.5.3 Hotfix 2 are validated. The active milestone is **M10.9.5.4 — observed-response evidence**. It may compare authored monitor values across a bounded logical-step post-dispatch window, but it must remain presentation-only: rejected commands produce no fictional effects, numeric deltas do not become generic success/failure, and post-dispatch co-variation is not presented as proven causality.
 
 ## M10.9.5 — Contextual Command Consequence Model
 

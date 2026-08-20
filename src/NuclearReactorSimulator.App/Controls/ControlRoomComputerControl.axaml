@@ -139,7 +139,7 @@
                        Text="{Binding SelectedPageContentText}" />
           </Border>
 
-          <Grid IsVisible="{Binding IsCommandsPageSelected}" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
+          <Grid IsVisible="{Binding IsCommandsPageSelected}" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
             <Border Grid.Row="0" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="4">
                 <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="CONTEXTUAL TYPED COMMAND CATALOG" />
@@ -204,7 +204,14 @@
               </StackPanel>
             </Border>
 
-            <Border Grid.Row="4" Padding="10" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
+            <Border Grid.Row="4" Padding="12" Background="#071014" BorderBrush="#2B6170" BorderThickness="1" CornerRadius="4">
+              <StackPanel Spacing="6">
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="OBSERVED RESPONSE — POST-DISPATCH EVIDENCE" />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="500 logical-step bounded observation of the authored monitor set. Deltas are evidence after dispatch, not proof of causality or generic command success." />
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding LastCommandObservedResponseText}" />
+              </StackPanel>
+            </Border>
+            <Border Grid.Row="5" Padding="10" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding CommandConsoleStatus}" />
             </Border>
           </Grid>

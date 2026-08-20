@@ -20,15 +20,17 @@ Final Phase-I closure evidence is green across ordinary/current evidence, Gamepl
 
 ## Active candidate
 
-**M10.9.5.3 Hotfix 2 — COMMANDS Context Inspector XAML Contract & Exact Schematic Focus Semantics — CANDIDATE.**
+**M10.9.5.4 — Observed Response Evidence — CANDIDATE.**
 
-M10.9.5.1 and M10.9.5.2 are explicitly validated post-Phase-I baselines. The initial M10.9.5.3 build exposed a ViewModel API-name mismatch (`Monitors`/`Explanation` vs `MonitorTargets`/`Reason`), fixed by Hotfix 1. Hotfix 1 then compiled, while the ordinary App suite found one stale XAML-contract assertion that expected `SelectedCommandSchematicElementId` without the intentional `Mode=OneWay`. Hotfix 2 corrects that test contract and, during the requested full re-review, also removes a presentation fallback that could highlight an unrelated mimic element when the selected dependency step itself was not graphical. M10.9.5.3 remains the first HMI integration step: F4 COMMANDS consumes the validated authored consequence map and dependency-chain projection without duplicating their semantics in Avalonia.
+M10.9.5.1 consequence semantics, M10.9.5.2 explicit dependency-chain projection and M10.9.5.3 Hotfix 2 COMMANDS/context-inspector/schematic integration are explicitly validated post-Phase-I baselines. M10.9.5.4 adds the missing post-dispatch evidence layer without reopening their contracts.
 
-For the selected command, progressive disclosure shows the existing availability/blocker state, direct effect, qualitative expected influence, authored monitor set and dependency chain. Selecting a dependency step changes only presentation focus on the canonical whole-plant mimic snapshot; it never dispatches a command or mutates plant state. Plant-mimic element steps highlight that element, plant-mimic connection steps use an explicitly labelled source-element proxy, and non-graphical command-target/published-state steps clear the highlight rather than fabricating one. The existing ENTER/EXECUTE typed-command boundary remains unchanged and blocked commands remain inspectable.
+For each F4 COMMANDS attempt, the presentation distinguishes accepted/rejected dispatch feedback from plant response. Accepted dispatch captures the command's authored M10.9.5.1 monitor set at the dispatch logical step and compares it with later UI-safe snapshots through a bounded **500 logical-step** window. The presentation reports baseline/latest value or state, actual delta/direction when meaningful, and observed protection state. It explicitly labels the result as post-dispatch co-variation: it does not infer that every change was caused by the command and it does not invent generic `SUCCESS/FAILURE` from numeric deltas.
 
-No new graph topology, numerical future prediction, plant physics, protection threshold, control authority or exact-version behavior is introduced.
+Advisory-blocked commands, missing-dispatcher cases and canonical runtime/scenario rejection record rejection feedback but expose **no fictional plant-effect deltas**. Observation samples are derivable `[JsonIgnore]` presentation evidence on the existing command snapshot and therefore do not change save/replay fingerprints or authoritative physical state.
 
-## Local validation for M10.9.5.3
+No physics, Simulation state, command type, dispatch owner, protection/permissive owner, exact-version identity, fixed timestep, challenge/scoring semantics or automatic graph traversal is introduced.
+
+## Local validation for M10.9.5.4
 
 Run:
 
@@ -36,12 +38,10 @@ Run:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1095-command-context-inspector-schematic-audit.cmd
+scripts\run-m1095-command-observed-response-audit.cmd
 ```
 
-Then perform a manual HMI check on representative reactor/primary/turbine/electrical/alarm commands: keyboard selection must not dispatch, direct effect must remain distinct from expected influence, the monitor list must be readable, dependency selection must only move schematic focus, blocked commands must remain inspectable, and the minimum supported window must remain usable through scrolling.
-
-Promotion requires build, complete ordinary suite, focused gate and manual HMI confirmation to be green. If a gate fails, fix only the demonstrated presentation/integration contract. Do not alter physics or reopen Phase-I numerical qualification.
+Promotion requires build, complete ordinary suite and the focused M10.9.5.4 gate to be green. If a gate fails, fix only the demonstrated observed-response/presentation contract. Do not alter plant physics or reopen Phase-I numerical qualification. If green, M10.9.5.5 closure is next.
 
 ## Evidence and package policy
 
@@ -62,7 +62,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I is closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.5.3 → M10.9.5.4 → M10.9.5.5. Do not reopen numerical Phase-I work unless a post-Phase-I gate produces direct evidence that the validated production baseline is invalid.
+Phase I is closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.5.4 → M10.9.5.5. Do not reopen numerical Phase-I work unless a post-Phase-I gate produces direct evidence that the validated production baseline is invalid.
 
 M10.9.5 may present existing command/control/protection truth but must not add new plant physics, protection thresholds or control ownership. Missing physics discovered while authoring consequence explanations is a post-M11 backlog item rather than an M10.9.5 scope expansion.
 

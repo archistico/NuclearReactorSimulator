@@ -22,6 +22,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
     private OperatorComputerPageSnapshot _selectedPage;
     private OperatorComputerCommandSnapshot? _selectedCommand;
     private OperatorComputerCommandDependencyStep? _selectedCommandDependencyStep;
+    private readonly OperatorComputerCommandObservedResponseAccumulator _observedResponse = new();
     private string _commandConsoleStatus = "Select a contextual command. Availability is advisory; runtime/scenario validation remains authoritative.";
     private string _modesStatus = "Training assistance and physical plant-control authority are independent axes.";
     private string _sessionStatus = "M10.7 session lifecycle is replay-backed. Pause before checkpoint/save/replay operations.";
@@ -254,6 +255,44 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         }
     }
 
+    public OperatorComputerCommandObservedResponseSnapshot LastCommandObservedResponse => _observedResponse.Current;
+
+    public string LastCommandObservedResponseText
+    {
+        get
+        {
+            var response = LastCommandObservedResponse;
+            if (!response.HasEvidence)
+            {
+                return "NO POST-DISPATCH EVIDENCE — execute an AVAILABLE command to begin a bounded logical-step observation window.";
+            }
+
+            var lines = new List<string>
+            {
+                $"COMMAND      {response.DisplayName} · {response.TargetText}",
+                $"OUTCOME      {response.Status.ToString().ToUpperInvariant()}",
+                $"DISPATCH     STEP {response.DispatchLogicalStep:D8}",
+                $"FEEDBACK     {response.Feedback}",
+            };
+
+            if (response.Status == OperatorComputerCommandDispatchObservationStatus.Rejected)
+            {
+                lines.Add("PLANT EFFECTS NOT INFERRED — the command was not accepted; no observed-response deltas are attributed or displayed.");
+                return string.Join(Environment.NewLine, lines);
+            }
+
+            lines.Add($"OBSERVED     STEP {response.LatestLogicalStep:D8} · AGE {response.ObservedAgeSteps}/{response.ObservationWindowSteps} LOGICAL STEPS · {(response.WindowComplete ? "WINDOW COMPLETE" : "WINDOW ACTIVE")}");
+            lines.Add($"PROTECTION   {(response.ProtectionActiveAtDispatch ? "ACTIVE" : "CLEAR")} → {(response.ProtectionActiveLatest ? "ACTIVE" : "CLEAR")} · observation only");
+            lines.Add("OBSERVED MONITOR DELTAS");
+            foreach (var delta in response.MonitorDeltas)
+            {
+                lines.Add(FormatObservedDelta(delta));
+            }
+            lines.Add("EVIDENCE NOTE — post-dispatch co-variation only; no generic SUCCESS/FAILURE or causal attribution is inferred from these deltas.");
+            return string.Join(Environment.NewLine, lines);
+        }
+    }
+
     public string CommandConsoleStatus
     {
         get => _commandConsoleStatus;
@@ -419,6 +458,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
                 ?? snapshot.Commands?.Commands.FirstOrDefault(static command => command.CanDispatch)
                 ?? snapshot.Commands?.Commands.FirstOrDefault();
         _selectedCommandDependencyStep = PreferredDependencyStep(CurrentDependencyChain);
+        _observedResponse.Observe(snapshot);
 
         var selectedCheckpointId = _selectedSessionCheckpoint?.CheckpointId;
         _selectedSessionCheckpoint = selectedCheckpointId is null
@@ -431,6 +471,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(SelectedCommand));
         OnPropertyChanged(nameof(SelectedCommandDetailText));
         RaiseCommandContextPropertiesChanged();
+        RaiseObservedResponsePropertiesChanged();
         OnPropertyChanged(nameof(SessionCheckpoints));
         OnPropertyChanged(nameof(SelectedSessionCheckpoint));
         OnPropertyChanged(nameof(SelectedSessionCheckpointDetailText));
@@ -730,6 +771,35 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(SelectedCommandSchematicFocusText));
     }
 
+    private static string FormatObservedDelta(OperatorComputerCommandObservedMonitorDelta delta)
+    {
+        var provenance = delta.Baseline.Provenance switch
+        {
+            OperatorComputerInformationProvenance.Measured => "MEASURED",
+            OperatorComputerInformationProvenance.ModelDiagnostic => "MODEL",
+            OperatorComputerInformationProvenance.CanonicalState => "CANONICAL STATE",
+            _ => "UNAVAILABLE",
+        };
+        var baseline = FormatObservedValue(delta.Baseline);
+        var latest = FormatObservedValue(delta.Latest);
+        var direction = delta.Direction.ToString().ToUpperInvariant();
+        var numericDelta = delta.NumericDelta is { } numeric
+            ? $" · Δ {numeric.ToString("+0.######;-0.######;0", CultureInfo.InvariantCulture)} {delta.Latest.Unit}".TrimEnd()
+            : string.Empty;
+        return $"  [{provenance}] {delta.Baseline.Target.Label} · {baseline} → {latest} · {direction}{numericDelta}";
+    }
+
+    private static string FormatObservedValue(OperatorComputerCommandObservationSample sample)
+        => string.IsNullOrWhiteSpace(sample.Unit)
+            ? sample.ValueText
+            : $"{sample.ValueText} {sample.Unit}".TrimEnd();
+
+    private void RaiseObservedResponsePropertiesChanged()
+    {
+        OnPropertyChanged(nameof(LastCommandObservedResponse));
+        OnPropertyChanged(nameof(LastCommandObservedResponseText));
+    }
+
     private static string RelationText(OperatorComputerCommandConsequenceRelation relation) => relation switch
     {
         OperatorComputerCommandConsequenceRelation.IncreasesExpectedDemandOn => "INCREASES EXPECTED DEMAND ON",
@@ -776,24 +846,33 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         if (!SelectedCommand.CanDispatch)
         {
             CommandConsoleStatus = $"NOT DISPATCHED — {SelectedCommand.DisplayName}: {SelectedCommand.BlockReason}";
+            _observedResponse.RecordRejected(SelectedCommand, _snapshot.RuntimeStatus, CommandConsoleStatus);
+            RaiseObservedResponsePropertiesChanged();
             return;
         }
 
         if (_commandDispatcher is null)
         {
             CommandConsoleStatus = "NOT DISPATCHED — no IControlRoomCommandDispatcher is attached to this presentation instance.";
+            _observedResponse.RecordRejected(SelectedCommand, _snapshot.RuntimeStatus, CommandConsoleStatus);
+            RaiseObservedResponsePropertiesChanged();
             return;
         }
 
+        _observedResponse.BeginAttempt(SelectedCommand, _snapshot.RuntimeStatus);
+        RaiseObservedResponsePropertiesChanged();
         try
         {
             _commandDispatcher.Dispatch(SelectedCommand.Command);
             CommandConsoleStatus = $"DISPATCHED — {SelectedCommand.DisplayName} · {SelectedCommand.TargetText}. Runtime/scenario validation accepted the typed intent.";
+            _observedResponse.MarkAccepted(CommandConsoleStatus);
         }
         catch (InvalidOperationException exception)
         {
             CommandConsoleStatus = $"BLOCKED BY RUNTIME/SCENARIO — {exception.Message}";
+            _observedResponse.MarkRejected(CommandConsoleStatus);
         }
+        RaiseObservedResponsePropertiesChanged();
     }
 
     private string BuildModesText()

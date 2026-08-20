@@ -8,9 +8,11 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 M10.9.4.1 / Phase I is **validated and closed**. Authoritative desktop production is exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step. Historical desktop exact @3, rollback exact @2 and synchronization exact @3 remain immutable in their respective roles.
 
-Current candidate: **M10.9.5.3 Hotfix 2 — COMMANDS Context Inspector XAML-contract / schematic-focus fix**.
+M10.9.5.1, M10.9.5.2 and **M10.9.5.3 Hotfix 2 are validated**.
 
-M10.9.5.1 and M10.9.5.2 are validated. The initial M10.9.5.3 candidate exposed a ViewModel API-name mismatch, fixed by Hotfix 1. That package then compiled, but the ordinary App suite exposed one stale XAML-contract expectation: the presentation-only mimic focus is intentionally bound `Mode=OneWay`. Hotfix 2 aligns the test with that contract and removes a fallback highlight that could visually imply a schematic target for a non-graphical dependency step. Graphical element references focus directly; connection references use an explicitly labelled source-element proxy; command-target/published-state steps show no highlight. Selection never dispatches; ENTER/EXECUTE remains the only dispatch boundary. No new topology, predictive physics, protection/control ownership or plant-state mutation is introduced.
+Current candidate: **M10.9.5.4 — Observed Response Evidence**.
+
+F4 COMMANDS now keeps three semantics visibly separate: authored `DIRECT EFFECT`, qualitative `EXPECTED INFLUENCE`, and post-dispatch `OBSERVED RESPONSE`. M10.9.5.4 samples the already-authored monitor set at the dispatch boundary and through a bounded 500-logical-step window, displaying actual baseline/latest values and delta/direction when meaningful. Rejected commands show feedback but no fictional plant effects. The evidence is presentation-only, JsonIgnored for compatibility, and never becomes generic command success/failure or proof of causality.
 
 The authoritative checkpoint and validation sequence live in:
 
@@ -24,12 +26,12 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.5.3 candidate:
+For the active M10.9.5.4 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1095-command-context-inspector-schematic-audit.cmd
+scripts\run-m1095-command-observed-response-audit.cmd
 ```
 
 ## Core runtime principles
