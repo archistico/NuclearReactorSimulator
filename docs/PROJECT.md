@@ -20,17 +20,23 @@ Final Phase-I closure evidence is green across ordinary/current evidence, Gamepl
 
 ## Active candidate
 
-**M10.9.6.1 — Operational Challenge & Energy-Demand Framework / Challenge Lifecycle & Logical-Time Contract — CANDIDATE.**
+**M10.9.6.2 Hotfix 1 — Nullable Demand-Output Error Compile Fix — CANDIDATE.**
 
-**Hotfix 1 status:** the first validation attempt was blocked only by two xUnit2013 analyzer errors in the new focused test (`Assert.Equal(1, collection.Count)`). Hotfix 1 replaces them with `Assert.Single`; the M10.9.6.1 Application contract is unchanged.
+M10.9.6.1 Hotfix 1 is **VALIDATED** after build, complete ordinary tests and `scripts/run-m1096-challenge-lifecycle-audit.cmd` passed. Its logical-step lifecycle, required-observation gating, authored failure/deadline semantics and read-only evidence ownership are frozen as the challenge-state baseline.
 
-M10.9.5 is **VALIDATED and CLOSED** after build, complete ordinary tests, the cumulative `run-m1095-command-consequence-closure-audit.cmd` gate and explicit continuation beyond the required manual HMI closure gate. Its authored consequence semantics, bounded dependency chains, F4 COMMANDS/context/mimic integration and logical-step observed-response evidence are frozen as the validated operator-experience baseline.
+The first M10.9.6.2 build was blocked only by CS0173 in `ScenarioChallengeExternalDemandProjector`: `var` could not infer a common type for observational `double` demand/output error versus `null`. Hotfix 1 makes that local explicitly `double?`; no demand/runtime contract changes.
 
-M10.9.6.1 adds only deterministic Application-layer challenge lifecycle ownership. A versioned challenge references an existing scenario objective, authored activation/observation/completion/failure conditions, logical-step readiness/target/deadline metadata, allowed assistance modes and a future scoring-policy identity. The tracker consumes only immutable `ControlRoomSnapshot` evidence plus accepted operator-action history through a read-only evidence seam. It has no plant command dispatcher, supervisory authority or Simulation mutation path.
+M10.9.6.2 adds only deterministic Application-layer external electrical-demand evidence. A `ChallengeDefinition` may optionally own a versioned `ExternalEnergyDemandProfileDefinition`; demand is unavailable when no profile is owned or before challenge activation. Profiles are bounded ordered logical-step control points with `HOLD` / `LINEAR` interpolation, supporting constant, step, bounded-ramp and piecewise sequences.
 
-Lifecycle is `NOT STARTED -> READY -> ACTIVE -> COMPLETED|FAILED|CANCELLED`. Target completion windows are observational; only an explicitly authored hard logical-step deadline can fail a challenge by time. Declared failure conditions take precedence if completion and failure become true in the same logical step. Cancel/reset are explicit lifecycle operations and are never driven by presentation navigation. No demand profile, score arithmetic or challenge UI is introduced in M10.9.6.1.
+The semantic separation is authoritative:
 
-## Local validation for M10.9.6.1
+`EXTERNAL GRID DEMAND != GENERATOR REQUESTED LOAD != ACTUAL ELECTRICAL OUTPUT`
+
+`ScenarioChallengeExternalDemandProjector` reads challenge/lifecycle/control-room snapshots only. It may expose current external demand, aggregate requested generator load, actual gross output, observational demand/output error and an optional definition-owned next scheduled control point. It owns no command dispatcher, generator setpoint, grid coupling, supervisory authority or Simulation mutation path. No scoring arithmetic or challenge UI is introduced in M10.9.6.2.
+
+Technical reference: `OPERATIONAL_CHALLENGE_ENERGY_DEMAND.md`.
+
+## Local validation for M10.9.6.2 Hotfix 1
 
 Run:
 
@@ -38,10 +44,10 @@ Run:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1096-challenge-lifecycle-audit.cmd
+scripts\run-m1096-external-energy-demand-audit.cmd
 ```
 
-Promotion requires build, complete ordinary suite and the focused lifecycle/logical-time gate to be green. If a gate fails, fix only the demonstrated challenge-contract defect. Do not introduce external demand, scoring arithmetic, UI or physical/control changes while closing M10.9.6.1. If green, M10.9.6.1 becomes VALIDATED and M10.9.6.2 deterministic external energy-demand profiles is next.
+Promotion requires build, complete ordinary suite and the focused deterministic external-demand gate to be green. If a gate fails, fix only the demonstrated demand-contract defect. Do not introduce scoring, UI, automatic load following, grid-coupling changes or physical/control retuning while closing M10.9.6.2. If green, M10.9.6.2 becomes VALIDATED and M10.9.6.3 multidimensional evaluation/scoring is next.
 
 ## Evidence and package policy
 
@@ -62,7 +68,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I and M10.9.5 are closed. Continue milestone-by-milestone from the latest validated baseline: validated M10.9.5 → active M10.9.6.1 lifecycle/logical-time contract. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
+Phase I and M10.9.5 are closed; M10.9.6.1 is validated. Continue milestone-by-milestone from the latest validated baseline: M10.9.6.1 lifecycle/logical-time contract → active M10.9.6.2 deterministic external demand. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

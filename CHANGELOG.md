@@ -1,5 +1,26 @@
 # Changelog
 
+## M10.9.6.2 Hotfix 1 — Nullable Demand-Output Error Compile Fix — CANDIDATE
+
+- Records the first M10.9.6.2 build result accurately: all projects before `NuclearReactorSimulator.Application` compiled, then Application was blocked only by CS0173 in `ScenarioChallengeExternalDemandProjector` because a conditional expression mixed `double` with `null` under `var` inference.
+- Changes only that local declaration from `var error = ... ? double : null` to explicit `double? error = ...`, matching the already nullable `ExternalEnergyDemandEvidenceSnapshot.DemandOutputErrorMegawatts` contract.
+- Re-scans the new M10.9.6.2 demand files for the same nullable conditional-inference pattern; the only other `?: null` case returns a reference-type control point and is valid.
+- Re-scans the new M10.9.6.2 test for xUnit collection-size analyzer anti-patterns; none are present.
+- Changes no demand profile semantics, challenge lifecycle, requested-load/output separation, Simulation, UI, scoring, grid coupling, physics, protection or exact-version identity.
+- Validation remains `dotnet build`, `dotnet test`, then `scripts/run-m1096-external-energy-demand-audit.cmd`.
+
+## M10.9.6.2 — Deterministic External Energy-Demand Profiles — CANDIDATE
+
+- Promotes M10.9.6.1 Hotfix 1 to VALIDATED after build, complete ordinary tests and `scripts/run-m1096-challenge-lifecycle-audit.cmd` passed on 2026-08-20; ADR-0172 becomes Accepted.
+- Adds versioned challenge-owned `ExternalEnergyDemandProfileDefinition` with bounded logical-step control points and `HOLD` / `LINEAR` interpolation, supporting constant, step, bounded-ramp and piecewise demand primitives.
+- Adds optional `ChallengeDefinition.ExternalDemandProfile`; challenges without a profile or before activation expose demand as unavailable.
+- Adds pure `ScenarioChallengeExternalDemandProjector` evidence separating external grid demand, aggregate generator requested load and actual gross electrical output; demand/output error is observational only.
+- Makes future schedule visibility definition-owned and exposes only the next authored control point when permitted.
+- Adds fail-closed profile validation for invalid bounds, offsets, terminal interpolation and ramp contracts; all timing remains logical-step-only.
+- Adds focused tests and `scripts/run-m1096-external-energy-demand-audit.cmd`, technical reference `docs/OPERATIONAL_CHALLENGE_ENERGY_DEMAND.md` and ADR-0173.
+- Adds no score arithmetic, challenge UI, automatic generator load following, grid-coupling mutation, supervisory authority, physics, protection or exact-version change. M10.9.6.3 multidimensional scoring remains next after validation.
+
+
 ## M10.9.6.1 Hotfix 1 — xUnit2013 Collection-Size Assertion Compile Fix — CANDIDATE
 
 - Records the first M10.9.6.1 validation attempt accurately: all production projects and all non-Application test projects compiled, but `NuclearReactorSimulator.Application.Tests` was blocked by two xUnit2013 analyzer errors in `M10961ChallengeLifecycleContractTests`.

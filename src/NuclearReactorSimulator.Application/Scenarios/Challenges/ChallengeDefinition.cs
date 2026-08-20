@@ -1,3 +1,5 @@
+using NuclearReactorSimulator.Application.Scenarios.Challenges.Demand;
+
 namespace NuclearReactorSimulator.Application.Scenarios.Challenges;
 
 /// <summary>
@@ -22,7 +24,8 @@ public sealed class ChallengeDefinition
         IEnumerable<ChallengeConditionDefinition> completionConditions,
         IEnumerable<ChallengeConditionDefinition>? failureConditions,
         ChallengeLogicalTimeContract logicalTime,
-        ChallengeAssistancePolicy assistancePolicy)
+        ChallengeAssistancePolicy assistancePolicy,
+        ExternalEnergyDemandProfileDefinition? externalDemandProfile = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(challengeId);
         if (version <= 0)
@@ -36,6 +39,7 @@ public sealed class ChallengeDefinition
         ActivationCondition = activationCondition ?? throw new ArgumentNullException(nameof(activationCondition));
         LogicalTime = logicalTime ?? throw new ArgumentNullException(nameof(logicalTime));
         AssistancePolicy = assistancePolicy ?? throw new ArgumentNullException(nameof(assistancePolicy));
+        ExternalDemandProfile = externalDemandProfile;
         ArgumentNullException.ThrowIfNull(requiredObservations);
         ArgumentNullException.ThrowIfNull(completionConditions);
 
@@ -92,4 +96,5 @@ public sealed class ChallengeDefinition
     public IReadOnlyList<ChallengeConditionDefinition> FailureConditions => _failureConditions;
     public ChallengeLogicalTimeContract LogicalTime { get; }
     public ChallengeAssistancePolicy AssistancePolicy { get; }
+    public ExternalEnergyDemandProfileDefinition? ExternalDemandProfile { get; }
 }

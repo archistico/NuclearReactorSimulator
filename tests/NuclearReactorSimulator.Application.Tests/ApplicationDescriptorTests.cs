@@ -6,24 +6,22 @@ namespace NuclearReactorSimulator.Application.Tests;
 public sealed class ApplicationDescriptorTests
 {
     [Fact]
-    public void Current_DescribesM10961ChallengeLifecycleLogicalTimeCandidate()
+    public void Current_DescribesM10962DeterministicExternalEnergyDemandCandidate()
     {
         var descriptor = ApplicationDescriptor.Current;
 
         Assert.Equal("Nuclear Reactor Simulator", descriptor.ProductName);
-        Assert.Contains("M10.9.6.1", descriptor.Milestone, StringComparison.Ordinal);
-        Assert.Contains("Challenge Lifecycle", descriptor.Milestone, StringComparison.Ordinal);
-        Assert.Contains("Phase I and M10.9.5", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("M10.9.6.2", descriptor.Milestone, StringComparison.Ordinal);
+        Assert.Contains("External Energy-Demand", descriptor.Milestone, StringComparison.Ordinal);
+        Assert.Contains("M10.9.6.1", descriptor.Status, StringComparison.Ordinal);
         Assert.Contains("integrated-operations-desktop-stable@4", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("CorrelationConsistentInverseDomain", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("FourNodeBranchContinuityCorrectedCommitOptIn", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("exact @3 remains historical", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("exact @2 remains fail-closed", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("pre-synchronization-grid-loading@3", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("read-only evidence seam", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("NOT STARTED -> READY -> ACTIVE", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("hard logical-step deadline", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("No external demand profile", descriptor.Status, StringComparison.Ordinal);
-        Assert.Contains("score arithmetic", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("EXTERNAL GRID DEMAND", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("generator requested load", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("actual electrical output", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("logical-step-only", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("Demand is unavailable", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("future-schedule visibility is definition-owned", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("no dispatcher", descriptor.Status, StringComparison.Ordinal);
+        Assert.Contains("No score arithmetic", descriptor.Status, StringComparison.Ordinal);
     }
 }
