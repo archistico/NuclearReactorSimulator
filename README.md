@@ -1,103 +1,78 @@
 # Nuclear Reactor Simulator
 
+**Current candidate:** M10.9.4.1-I.4 Hotfix 2 — Canonical Frozen-Evidence Contract Alignment
+
 Educational full-plant nuclear reactor simulator built with **C# / .NET 10 / Avalonia**.
 
-The project models a reduced RBMK-like plant as a deterministic, headless-testable simulation with an operator-facing desktop control room. The model is intentionally educational: it aims for internally consistent plant behaviour, conservation, replayability and explicit limitations rather than industrial licensing-grade fidelity.
+The project models a reduced RBMK-like plant as a deterministic, headless-testable simulation with an operator-facing desktop control room. It targets internally consistent educational behaviour, conservation, replayability and explicit model limits rather than industrial licensing-grade fidelity.
 
 ## Current project state
 
-**Authoritative validated production policy:** `M10.9.4.1-H.30 Requalification 1` — `ACTIVATE`.
+**Validated production policy:** `M10.9.4.1-H.30 Requalification 1 — ACTIVATE`.
 
-Exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` is the authoritative desktop production default. Exact v2 `ExplicitCommittedState` remains the fail-closed rollback/reference and compatibility path. The fixed timestep remains 10 ms and the corrected path retains H.28's `bounded-but-costly` performance classification.
+Exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` is the authoritative desktop production default. Exact v2 `ExplicitCommittedState` remains fail-closed rollback/reference. The fixed timestep remains 10 ms and H.28 still classifies the corrected path `bounded-but-costly`.
 
-**Current Phase-I candidate:** `M10.9.4.1-I.3 Hotfix 2 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline / Compact Frozen Evidence Contracts`.
+**Validated Phase-I reference baseline:** `M10.9.4.1-I.3 Hotfix 2`.
 
-I.3 reruns the healthy 300-second reference under the production selector, checks generation/steam-train continuity at every 10 ms step, records one-second conservation/inventory samples, and derives the first 19 versioned internal regression budgets from the final 60 seconds. No runtime physics is retuned to fit those budgets.
+The authoritative v3 reference completed 300 s / 30,000 steps with zero generation-health violations, zero targeted stop/control/admission reverse-flow violations, clean corrected telemetry and deterministic repeat. Seven final-window slope observations and 19 internal regression budgets are frozen.
 
-## Build and run
+**Current candidate:** `M10.9.4.1-I.4 — Known Limitations & Legacy Retirement Review`.
 
-Requirements:
+I.4 records the remaining reference drifts as known limitations and reviews the H.5 hybrid / H.21 shadow-integrated historical numerical modes. Neither mode is a production, exact-version or current-CI dependency; physical source removal is deferred because executable historical seams still compile against them.
 
-- .NET SDK 10 matching `global.json`;
-- Windows, Linux or macOS supported by Avalonia and the selected .NET runtime.
+## Build and validate
 
 ```bat
-
 dotnet restore
 dotnet build
 dotnet test
+scripts\run-phase-i-known-limitations-legacy-retirement-review-audit.cmd
 ```
 
-Run the desktop application with the normal App project command used by your environment/IDE.
-
-For the current I.3 candidate:
-
-```bat
-scripts\run-phase-i-reference-trajectory-conservation-inventory-baseline-audit.cmd
-```
-
-CI entry points are under `eng\`:
+CI entry points:
 
 ```text
-eng\ci-ordinary.cmd          ordinary build/test + current evidence
-eng\ci-current-evidence.cmd current lightweight evidence gates
-eng\ci-long.cmd              scheduled/manual long-running gates
+eng\ci-ordinary.cmd
+eng\ci-current-evidence.cmd
+eng\ci-long.cmd
 ```
 
 ## Runtime contract
 
-The core rules that should remain stable across future milestones are:
-
 - deterministic external fixed step: **10 ms**;
-- simulation logic independent from UI refresh and wall-clock cadence;
+- simulation logic independent from UI refresh/wall-clock cadence;
 - immutable/copy-on-write state across kernel steps;
-- staged committed-state plant solving;
-- each conserved inventory integrated exactly once per plant step;
+- each conserved inventory integrated once per plant step;
 - mass/energy ownership explicit and auditable;
-- runtime faults and corrected-candidate refusal fail closed;
-- scenario/save/replay identities are exact-versioned and never silently reinterpreted;
+- corrected-candidate refusal fails closed;
+- exact-version scenario/save/replay identities are never silently reinterpreted;
 - GUI contains no reactor-physics calculations;
-- automated tests can run the simulation headlessly.
+- headless automated validation remains authoritative.
 
 ## Current desktop hydraulic versions
 
 | Exact version | Hydraulic mode | Current role |
 | --- | --- | --- |
-| `integrated-operations-desktop-stable@1` | explicit historical | compatibility retained |
+| `integrated-operations-desktop-stable@1` | historical explicit | compatibility retained |
 | `integrated-operations-desktop-stable@2` | `ExplicitCommittedState` | rollback/reference |
 | `integrated-operations-desktop-stable@3` | `FourNodeBranchContinuityCorrectedCommitOptIn` | authoritative production default |
 
-The v3 mode name retains its historical H.29/H.22 lineage even though H.30 RQ1 promotes it to production default. Renaming the numerical enum is not part of the activated policy. H.30 RQ1 uses a new production scenario identity, `integrated-normal-operations-training-h30-rq1-production`, so the historical H.29 candidate scenario is not repurposed.
-
-## Main capabilities
-
-The validated codebase includes, among other areas:
-
-- strongly typed physical quantities and simplified water/steam thermodynamics;
-- point kinetics, delayed neutron precursors, decay heat, temperature/void/xenon feedback;
-- primary circulation, steam drums, main-steam network, turbine, condenser, feedwater and electrical/grid coupling;
-- protection/interlock/trip logic and deterministic fault/scenario infrastructure;
-- operator control-room UI, alarms, trends, mimic/schematics and operator-computer workflows;
-- recorder, checkpoints, exact-version save/replay and deterministic replay verification;
-- long-running gameplay, operational-envelope, conservation, protection and performance audit tiers.
-
-This list is intentionally high-level. Detailed subsystem contracts live under `docs/`.
+The v3 enum name retains historical H.22/H.29 lineage; H.30 RQ1 activated the already-qualified path without renaming or retuning it.
 
 ## Documentation
 
 Start with:
 
-- `docs/PROJECT_STATUS.md` — current authoritative/candidate state;
-- `docs/PROJECT_HANDOFF.md` — exact continuation point for development;
-- `docs/ROADMAP.md` — remaining Phase-I work and M10.9.5–M10.9.8 direction;
+- `docs/PROJECT_STATUS.md` — authoritative checkpoint;
+- `docs/PROJECT_HANDOFF.md` — continuation instructions;
+- `docs/ROADMAP.md` — remaining Phase-I work;
 - `docs/KNOWN_MODEL_LIMITATIONS.md` — current limitations only;
-- `docs/current/` — only documents for the active candidate;
-- `docs/history/` — completed/superseded milestone records retained for provenance;
-- `docs/adr/` — architectural decision records;
-- `docs/milestones/` — milestone summaries;
-- `docs/README.md` — documentation map.
+- `docs/current/` — active candidate documents only;
+- `docs/history/` — completed/superseded chronology;
+- `docs/adr/` — architectural decisions;
+- `docs/milestones/` — milestone summaries.
 
-The repository deliberately separates **current documentation** from **historical evidence**. Large generated audit payloads under `tests/.../Gameplay/Evidence` and `artifacts/` are local/separate and are excluded from candidate ZIPs. Ordinary tests use the bounded immutable store under `eng/frozen-evidence/ordinary`; intentionally omitted multi-megabyte historical traces are represented only by canonical hashes in `eng/frozen-evidence/large-payload-manifest.csv`. Decision provenance remains under `eng/evidence-manifests/`. Do not determine current policy from old notes under `docs/history/`.
+Large generated audit payloads under `tests/.../Gameplay/Evidence` and `artifacts/` are deliberately excluded from candidate ZIPs. Ordinary tests use compact immutable prerequisites under `eng/frozen-evidence/ordinary`; large historical traces used only for identity checks are represented by hashes in `eng/frozen-evidence/large-payload-manifest.csv`.
 
 ## Safety and scope
 

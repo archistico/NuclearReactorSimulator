@@ -4,37 +4,41 @@ This file lists remaining work. Detailed completed chronology is under `history/
 
 ## Current checkpoint
 
-Validated production decision: **H.30 Requalification 1 — ACTIVATE**. Exact v3 corrected-commit is the authoritative desktop default; exact v2 explicit remains rollback/reference.
+Validated production decision: **H.30 Requalification 1 — ACTIVATE**.
 
-Current candidate: **I.3 Hotfix 2 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline / Compact Frozen Evidence Contracts**.
+Validated Phase-I reference: **I.3 Hotfix 2** — 300 s / 30,000-step exact-v3 production reference, seven frozen slopes, 19 regression budgets.
+
+Current candidate: **I.4 — Known Limitations & Legacy Retirement Review**.
 
 ## Phase I — remaining closure work
 
-### I.3 — Authoritative production reference baseline
+### I.4 — Known limitations and legacy retirement review
 
 Required:
 
-- 300 s / 30,000-step production-selector journey;
-- per-step generation and stop/control/admission flow-direction health;
-- one-second reference samples;
-- conservation/inventory observations;
-- seven final-window slopes;
-- 19 versioned internal regression budgets;
-- corrected telemetry clean;
-- deterministic repeat.
+- reconcile current limitations with the activated v3 policy and validated I.3 reference;
+- make non-zero final-window inventory/energy drifts explicit rather than treating I.3 as asymptotic steady-state proof;
+- verify H.5/H.21 modes are not production, exact-version or current-CI dependencies;
+- enumerate remaining source/test seams;
+- preserve exact-version scenario/save/replay identities;
+- remove legacy source only if executable provenance no longer depends on it.
 
-Large CSV/TXT audit payloads remain local/separate and are not bundled in candidate ZIPs.
-
-### I.4 — Known-limitations and legacy retirement review
-
-- reconcile current limitations with the activated v3 policy;
-- enumerate remaining H.5/H.21 source dependencies;
-- remove legacy numerical modes only when executable provenance no longer requires them;
-- preserve exact-version scenario/save/replay identities.
+Candidate decision: defer physical deletion through M10.9.4.1 closure because historical executable seams still remain.
 
 ### I.5 — Cumulative M10.9.4.1 closure gate
 
-Require ordinary suite, current production-policy evidence, 60 s gameplay, healthy 300 s authoritative reference, protection/replay determinism, conservation/inventory slopes, scale contract, performance classification and scheduled long gates.
+Require:
+
+- ordinary suite;
+- H.30 RQ1 production-policy evidence;
+- I.3 authoritative reference + frozen budgets;
+- 60 s gameplay;
+- protection/replay determinism;
+- conservation/inventory slopes;
+- reference-plant scale contract;
+- H.28 performance classification;
+- scheduled long gates;
+- I.4 known-limitations/legacy review.
 
 Only a green I.5 unblocks M10.9.5.
 
@@ -78,7 +82,3 @@ After M10 closes:
 - packaging/publish pipeline;
 - deployment verification;
 - final documentation/manual cleanup.
-
-## Deferred severe-incident direction
-
-Persistent damage, fire, rupture/explosion and severe-accident progression remain approved future directions but must not interrupt the current M10 numerical/operational closure. They require explicit physical ownership, validated extreme-state numerics and deterministic replayable state before becoming authoritative gameplay systems.

@@ -1,2 +1,2 @@
 trajectory_id,schema_version,exact_initial_condition,production_policy,simulated_seconds,logical_steps,step_health_resolution_ms,reference_sample_stride_steps,final_window_seconds,reference_role,budget_derivation,baseline_status
-phase-i-production-v3-healthy-300s-v1,1,integrated-operations-desktop-stable@3,FourNodeBranchContinuityCorrectedCommitOptIn,300,30000,10,100,60,AUTHORITATIVE-PRODUCTION-REFERENCE,final-window-mean-plus-2x-observed-deviation-with-absolute-floor,CANDIDATE-TO-FREEZE-AFTER-I3
+phase-i-production-v3-healthy-300s-v1,1,integrated-operations-desktop-stable@3,FourNodeBranchContinuityCorrectedCommitOptIn,300,30000,10,100,60,AUTHORITATIVE-PRODUCTION-REFERENCE,final-window-mean-plus-2x-observed-deviation-with-absolute-floor,VALIDATED-FROZEN-I3

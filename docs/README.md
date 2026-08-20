@@ -13,12 +13,12 @@ This directory is split between **current engineering documentation** and **hist
 
 ## Active candidate
 
-`current/` contains only the active I.3 documents:
+`current/` contains only the active I.4 documents:
 
-- `current/I3_REFERENCE_BASELINE.md`
-- `current/I3_VALIDATION_CHECKLIST.md`
+- `current/I4_KNOWN_LIMITATIONS_LEGACY_RETIREMENT_REVIEW.md`
+- `current/I4_VALIDATION_CHECKLIST.md`
 
-H.30 RQ1 is validated and its detailed records have moved to `history/m10.9.4.1/`.
+I.3 is validated and its detailed candidate records have moved to `history/m10.9.4.1/`.
 
 Large generated CSV/TXT audit payloads are intentionally not part of candidate ZIPs. Local/separate artifacts remain the validation record. Ordinary-test frozen prerequisites live in the bounded `../eng/frozen-evidence/ordinary/` store, omitted large trace identities live in `../eng/frozen-evidence/large-payload-manifest.csv`, and decision provenance lives under `../eng/evidence-manifests/`.
 

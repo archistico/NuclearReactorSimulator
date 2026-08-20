@@ -2,13 +2,21 @@
 
 ## Validated baseline
 
-H.30 Requalification 1 is validated with decision `ACTIVATE`. Exact v3 corrected-commit is the authoritative desktop default; exact v2 explicit remains fail-closed rollback/reference. H.28 remains `bounded-but-costly`; the 10 ms timestep and numerical contracts are unchanged.
+H.30 Requalification 1 is validated with `ACTIVATE`: exact v3 corrected-commit is the authoritative desktop default and exact v2 explicit remains rollback/reference.
+
+I.3 Hotfix 2 is validated. Its authoritative 300 s / 30,000-step production reference freezes seven final-window slopes and 19 internal regression budgets with zero generation-health or targeted reverse-flow violations.
 
 ## Current candidate
 
-`M10.9.4.1-I.3 Hotfix 2 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline / Compact Frozen Evidence Contracts`.
+`M10.9.4.1-I.4 — Known Limitations & Legacy Retirement Review`.
 
-The gate runs the production selector for 300 s / 30,000 steps, checks generation and targeted-train continuity every step, samples conservation/inventory each second, verifies corrected telemetry/determinism and derives seven slopes plus 19 internal regression budgets from the final 60 s.
+The focused review:
+
+- verifies compact I.3 frozen evidence;
+- records the validated non-zero final-window drift observations as current limitations;
+- verifies H.5/H.21 modes have no production/exact-version/current-CI dependency;
+- counts their remaining source/test seams;
+- deliberately defers physical source deletion.
 
 ## Validate
 
@@ -16,25 +24,22 @@ The gate runs the production selector for 300 s / 30,000 steps, checks generatio
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-phase-i-reference-trajectory-conservation-inventory-baseline-audit.cmd
+scripts\run-phase-i-known-limitations-legacy-retirement-review-audit.cmd
 ```
 
-Required focused flags:
+Expected focused flags:
 
 ```text
-phase-i-reference-trajectory-baseline-passes=True
-phase-i-generation-continuity-baseline-passes=True
-phase-i-conservation-inventory-baseline-passes=True
-phase-i-production-telemetry-baseline-passes=True
-phase-i-reference-determinism-passes=True
-i3-audit-passes=True
-phase-i-reference-tolerance-baseline-established=True
+phase-i-known-limitations-review-passes=True
+phase-i-legacy-retirement-review-passes=True
+i4-audit-passes=True
+i5-closure-gate-unblocked=True
 ```
 
 ## Packaging rule
 
-Do not bundle `tests\NuclearReactorSimulator.Application.Tests\Scenarios\Gameplay\Evidence` into candidate ZIPs. Keep large audit outputs as local/separate artifact archives. Ordinary tests must use `eng\frozen-evidence\ordinary`; large traces used only for identity checks belong in `eng\frozen-evidence\large-payload-manifest.csv`, not in the source package. `APPLY_UPDATE.cmd` must not delete an optional local Evidence directory.
+Do not bundle `tests\NuclearReactorSimulator.Application.Tests\Scenarios\Gameplay\Evidence`, `artifacts`, `bin` or `obj` into candidate ZIPs. Keep the compact immutable store under `eng\frozen-evidence\ordinary` bounded; large trace identities belong in the hash manifest rather than source packages.
 
-## After I.3
+## After I.4
 
-Proceed to I.4 known-limitations and legacy-retirement review. Do not begin M10.9.5 until the cumulative I.5 gate is green.
+Proceed to I.5 cumulative M10.9.4.1 closure. Do not begin M10.9.5 until I.5 is green.

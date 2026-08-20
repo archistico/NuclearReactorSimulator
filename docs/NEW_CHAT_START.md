@@ -1,7 +1,16 @@
 # New chat start
 
-Continue the Nuclear Reactor Simulator C#/.NET 10/Avalonia project from validated **H.30 Requalification 1 — ACTIVATE**. Exact v3 corrected-commit is the authoritative desktop production default; exact v2 explicit is rollback/reference. H.28 remains `bounded-but-costly`; the fixed step is 10 ms.
+Authoritative checkpoint:
 
-Current candidate: **M10.9.4.1-I.3 Hotfix 2 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline / Compact Frozen Evidence Contracts**. It must establish the healthy 300 s v3 reference, seven final-window slopes, 19 versioned regression budgets, corrected telemetry and deterministic fingerprint without runtime retuning.
+- H.30 Requalification 1: VALIDATED, decision `ACTIVATE`;
+- exact v3 corrected-commit: authoritative production default;
+- exact v2 explicit: rollback/reference;
+- I.3 Hotfix 2: VALIDATED authoritative 300 s reference baseline;
+- seven final-window slopes + 19 regression budgets frozen;
+- current candidate: **M10.9.4.1-I.4 — Known Limitations & Legacy Retirement Review**.
 
-Candidate ZIPs intentionally exclude `tests/.../Gameplay/Evidence`; large audit payloads remain local/separate. Read `PROJECT_STATUS.md`, `PROJECT_HANDOFF.md` and `current/I3_REFERENCE_BASELINE.md` first.
+I.4 must not retune runtime physics or delete historical numerical modes merely for cleanup. It should review their remaining source/test dependencies and preserve exact-version compatibility.
+
+Candidate ZIPs exclude `tests/.../Gameplay/Evidence`, `artifacts`, `bin` and `obj`.
+
+After I.4, run I.5 cumulative closure. M10.9.5 remains blocked until I.5 passes.

@@ -1,4 +1,29 @@
+# M10.9.4.1-I.4 Hotfix 2 — Canonical Frozen-Evidence Contract Alignment
+
+- Fixes the I.4 frozen-I.3 provenance test to hash text evidence canonically with LF line endings, matching the existing manifest contract and avoiding CRLF/LF false negatives.
+- Aligns the I.3 reference-contract ordinary test with the already validated `VALIDATED-FROZEN-I3` baseline status.
+- No runtime physics, numerical mathematics, production selector, tolerance budget, legacy-retirement decision or packaging policy changes.
+- `Gameplay/Evidence` remains excluded from candidate ZIPs; compact frozen prerequisites remain under `eng/frozen-evidence/ordinary`.
+
+# M10.9.4.1-I.4 Hotfix 1 — Frozen I.3 Evidence Hash Alignment
+
+- Corrects only the four canonical SHA-256 values for the validated I.3 frozen summary/slopes/budgets/determinism artifacts.
+- The frozen files themselves are byte-equivalent to the user-validated I.3 artifacts; only the previously transcribed hash constants were wrong.
+- No runtime, numerical, physics, production-policy, CI-tier, retirement-decision or tolerance-budget behavior changes.
+- Candidate packaging continues to exclude `tests/.../Gameplay/Evidence`, `bin`, `obj` and `artifacts`.
+
 # Changelog
+
+## M10.9.4.1-I.4 — Known Limitations & Legacy Retirement Review — CANDIDATE
+
+- Built directly on user-validated I.3 Hotfix 2. The authoritative exact-v3 300 s / 30,000-step reference, seven final-window slopes and 19 regression budgets are frozen as the Phase-I production regression baseline.
+- Adds compact I.3 frozen summary/slope/budget/determinism evidence plus `eng/evidence-manifests/i3-validated.csv`; generated trajectory artifacts remain separate and `tests/.../Gameplay/Evidence` remains excluded from candidate ZIPs.
+- Records the validated non-zero final-window drift observations as current limitations: drum inventory `+8.2451672984622224 kg/s`, main-steam header `-0.35293086123580603 kg/s`, and total fluid internal energy `-2.061802762164879 MW`. These are regression observations, not calibration targets or proof of asymptotic steady state.
+- Reviews `DeterministicHybridSemiImplicit` and `FourNodeBranchContinuityShadowIntegrated`. Neither is a production, exact-version or current-CI dependency, but each remains referenced by four source files and four test files.
+- Candidate retirement decision is `DEFER-SOURCE-REMOVAL`: keep historical executable seams through I.5, do not expose the modes as production choices, and perform physical deletion only in a separately scoped maintenance change after historical tests are archived/replaced.
+- Adds I.4 current-evidence gate and moves the validated I.3 300 s reference into the scheduled-long CI tier. Phase-I audit-tier contract becomes 16 rows: 1 ORDINARY, 3 CURRENT-EVIDENCE, 4 SCHEDULED-LONG, 8 HISTORICAL-FROZEN.
+- Moves completed I.3 current docs into history and keeps `docs/current/` limited to I.4.
+- No runtime physics, numerical mathematics, exact-version identity, H.30 RQ1 production policy, H.28 cost classification or 10 ms fixed-step behavior changes.
 
 ## M10.9.4.1-I.3 Hotfix 2 — Compact Frozen Evidence Contract Migration — CANDIDATE
 

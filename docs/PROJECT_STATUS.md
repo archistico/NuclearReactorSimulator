@@ -2,37 +2,41 @@
 
 ## Authoritative state
 
-**Validated production policy:** `M10.9.4.1-H.30 Requalification 1 — ACTIVATE`.
+**Production policy:** `M10.9.4.1-H.30 Requalification 1 — ACTIVATE`.
 
-- authoritative desktop default: `integrated-operations-desktop-stable@3` / `FourNodeBranchContinuityCorrectedCommitOptIn`;
-- rollback/reference: `integrated-operations-desktop-stable@2` / `ExplicitCommittedState`;
-- explicit kill resolves to exact v2;
-- H.28 performance class remains `bounded-but-costly`;
-- fixed step remains 10 ms;
-- no H.9/H.20/H.22/P060-F040/hysteresis/physical-coefficient retuning was required.
+- exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn`: authoritative desktop default;
+- exact v2 `ExplicitCommittedState`: fail-closed rollback/reference;
+- fixed step: 10 ms;
+- H.28 performance class: `bounded-but-costly`;
+- no H.9/H.20/H.22/P060-F040/hysteresis/physical-coefficient retuning.
 
-H.30 RQ1 was promoted after validated Phase-I evidence showed 338/338 exact-v2 generation-drop steps coincident with targeted steam-train reverse flow, while exact v3 produced 0 drops / 0 targeted reverse flow and then completed 300 s / 30,000 steps continuously healthy and deterministic.
+## Validated Phase-I baseline
+
+**I.3 Hotfix 2 — VALIDATED.**
+
+The authoritative v3 reference completed 300 s / 30,000 steps with:
+
+- 0 generation-health violations;
+- 0 targeted stop/control/admission reverse-flow violations;
+- 3,757/3,757 corrected commits with 0 rollback/fallback/unsafe/untargeted disagreement;
+- deterministic repeat;
+- seven frozen final-window slopes;
+- 19 frozen regression budgets.
+
+The reference remains operationally healthy but is not an asymptotic steady-state proof; current drift observations are recorded in `KNOWN_MODEL_LIMITATIONS.md`.
 
 ## Current candidate
 
-**M10.9.4.1-I.3 Hotfix 2 — Authoritative Production Reference Trajectory, Conservation/Inventory & Tolerance Baseline / Compact Frozen Evidence Contracts**.
+**M10.9.4.1-I.4 — Known Limitations & Legacy Retirement Review.**
 
-I.3 runs the authoritative production selector for 300 s. It checks every 10 ms step for generation health and reverse flow across stop/control/admission, samples conservation/inventory every second, measures seven final-window slopes, verifies corrected telemetry/determinism and derives 19 versioned regression budgets.
-
-The budgets are candidate evidence until I.3 is explicitly validated. They are not calibration targets and must not drive hidden physics retuning.
+I.4 reviews the two historical numerical modes remaining in source. Neither is a current production, exact-version or current-CI dependency. Source removal is candidate-deferred because executable historical tests still compile against those seams.
 
 ## Evidence/package policy
 
-Large audit outputs under `artifacts/` or historical `tests/.../Gameplay/Evidence` are not bundled into new candidate ZIPs. The original validation artifact archives remain separate. Ordinary tests use the bounded immutable prerequisites under `eng/frozen-evidence/ordinary`; intentionally omitted large trace identities are stored in `eng/frozen-evidence/large-payload-manifest.csv`, and decision provenance remains under `eng/evidence-manifests/`. An existing local Evidence directory is optional and must not be deleted by candidate application.
+Candidate ZIPs do not bundle `tests/.../Gameplay/Evidence`, `artifacts`, `bin` or `obj`. Compact immutable prerequisites live under `eng/frozen-evidence/ordinary`; decision/reference manifests live under `eng/evidence-manifests`.
 
-## Phase I
+## Remaining Phase I
 
-Validated: I.1, I.2, H.30 RQ1 production re-review and the diagnostic/requalification evidence that supported it.
-
-Remaining:
-
-1. I.3 authoritative reference/budget baseline;
-2. I.4 known-limitations and legacy-retirement review;
-3. I.5 cumulative M10.9.4.1 closure gate.
-
-M10.9.5 remains blocked until I.5 is green.
+1. validate I.4;
+2. I.5 cumulative M10.9.4.1 closure gate;
+3. only a green I.5 unblocks M10.9.5.
