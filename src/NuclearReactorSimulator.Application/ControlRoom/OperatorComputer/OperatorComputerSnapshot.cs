@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 
 namespace NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
 
@@ -14,7 +15,8 @@ public sealed record OperatorComputerSnapshot
         OperatorComputerLogSnapshot? log = null,
         OperatorComputerCommandConsoleSnapshot? commands = null,
         OperatorComputerModesSnapshot? modes = null,
-        OperatorComputerSessionSnapshot? session = null)
+        OperatorComputerSessionSnapshot? session = null,
+        ControlRoomPlantMimicSnapshot? plantMimic = null)
     {
         RuntimeStatus = runtimeStatus ?? throw new ArgumentNullException(nameof(runtimeStatus));
         ArgumentNullException.ThrowIfNull(pages);
@@ -45,6 +47,7 @@ public sealed record OperatorComputerSnapshot
         Commands = commands;
         Modes = modes;
         Session = session;
+        PlantMimic = plantMimic;
     }
 
     public OperatorComputerRuntimeStatusSnapshot RuntimeStatus { get; }
@@ -66,4 +69,6 @@ public sealed record OperatorComputerSnapshot
     public OperatorComputerModesSnapshot? Modes { get; }
 
     public OperatorComputerSessionSnapshot? Session { get; }
+
+    public ControlRoomPlantMimicSnapshot? PlantMimic { get; }
 }

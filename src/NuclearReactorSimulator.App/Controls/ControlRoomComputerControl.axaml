@@ -3,6 +3,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:NuclearReactorSimulator.App.ViewModels"
+    xmlns:controls="using:NuclearReactorSimulator.App.Controls"
     xmlns:computer="using:NuclearReactorSimulator.Application.ControlRoom.OperatorComputer"
     x:DataType="vm:OperatorComputerViewModel"
     MinHeight="420"
@@ -138,7 +139,7 @@
                        Text="{Binding SelectedPageContentText}" />
           </Border>
 
-          <Grid IsVisible="{Binding IsCommandsPageSelected}" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10">
+          <Grid IsVisible="{Binding IsCommandsPageSelected}" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="10">
             <Border Grid.Row="0" Padding="12" Background="#09151B" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <StackPanel Spacing="4">
                 <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="CONTEXTUAL TYPED COMMAND CATALOG" />
@@ -171,7 +172,39 @@
               </Grid>
             </Border>
 
-            <Border Grid.Row="3" Padding="10" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
+            <Border Grid.Row="3" Padding="12" Background="#071014" BorderBrush="#2B6170" BorderThickness="1" CornerRadius="4">
+              <StackPanel Spacing="10">
+                <StackPanel Spacing="3">
+                  <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="12" FontWeight="SemiBold" Foreground="#B9F2F7" Text="CONTEXT INSPECTOR — AUTHORED CONSEQUENCE / DEPENDENCY EVIDENCE" />
+                  <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap"
+                             Text="Selection and schematic focus are presentation-only. DIRECT EFFECT, EXPECTED INFLUENCE and WHAT TO MONITOR remain distinct; no numerical future state is predicted." />
+                </StackPanel>
+                <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" LineHeight="17" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding SelectedCommandContextSummaryText}" />
+                <Grid ColumnDefinitions="0.9*,1.1*" ColumnSpacing="10">
+                  <StackPanel Grid.Column="0" Spacing="6">
+                    <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" FontWeight="SemiBold" Foreground="#8FB8C0" Text="DEPENDENCY CHAIN — SELECT A STEP" />
+                    <ListBox MinHeight="160" MaxHeight="310" ItemsSource="{Binding SelectedCommandDependencySteps}" SelectedItem="{Binding SelectedCommandDependencyStep, Mode=TwoWay}"
+                             Background="#09151B" BorderBrush="#244C58" BorderThickness="1" FontFamily="{StaticResource InterfaceFont}">
+                      <ListBox.ItemTemplate>
+                        <DataTemplate x:DataType="computer:OperatorComputerCommandDependencyStep">
+                          <StackPanel Margin="5,3" Spacing="2">
+                            <TextBlock FontSize="9" Foreground="#6FC7D6" Text="{Binding Kind}" />
+                            <TextBlock FontSize="10" Foreground="#D7E7EA" TextWrapping="Wrap" Text="{Binding Explanation}" />
+                          </StackPanel>
+                        </DataTemplate>
+                      </ListBox.ItemTemplate>
+                    </ListBox>
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Spacing="6">
+                    <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" FontWeight="SemiBold" Foreground="#8FB8C0" Text="CANONICAL WHOLE-PLANT SCHEMATIC FOCUS" />
+                    <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="9" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding SelectedCommandSchematicFocusText}" />
+                    <controls:ControlRoomPlantMimicControl Snapshot="{Binding CommandContextPlantMimic}" SelectedElementId="{Binding SelectedCommandSchematicElementId, Mode=OneWay}" IsHitTestVisible="False" MinHeight="320" Height="380" />
+                  </StackPanel>
+                </Grid>
+              </StackPanel>
+            </Border>
+
+            <Border Grid.Row="4" Padding="10" Background="#0B1820" BorderBrush="#244C58" BorderThickness="1" CornerRadius="4">
               <TextBlock FontFamily="{StaticResource InterfaceFont}" FontSize="10" Foreground="#6FC7D6" TextWrapping="Wrap" Text="{Binding CommandConsoleStatus}" />
             </Border>
           </Grid>

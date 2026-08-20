@@ -1,4 +1,5 @@
 using NuclearReactorSimulator.Application.ControlRoom;
+using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 using NuclearReactorSimulator.Application.Scenarios.Analysis;
 using NuclearReactorSimulator.Application.Scenarios.Recording;
 
@@ -43,7 +44,8 @@ public static class OperatorComputerSnapshotProjector
             operationalHistory is null ? null : OperatorComputerAlarmLogProjector.ProjectLog(operationalHistory, sessionEvents, incident),
             OperatorComputerCommandConsoleProjector.Project(controlRoomSnapshot),
             modes,
-            session);
+            session,
+            ControlRoomPlantMimicProjector.Project(controlRoomSnapshot));
     }
 
     private static OperatorComputerPageContentState ContentState(

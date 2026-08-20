@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed in M10.9.5.2; becomes Accepted only after local build, complete ordinary tests and the focused dependency-chain gate are explicitly green.
+Accepted. M10.9.5.2 passed local build, complete ordinary tests and the focused dependency-chain gate.
 
 ## Context
 

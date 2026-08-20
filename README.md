@@ -8,9 +8,9 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 M10.9.4.1 / Phase I is **validated and closed**. Authoritative desktop production is exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step. Historical desktop exact @3, rollback exact @2 and synchronization exact @3 remain immutable in their respective roles.
 
-Current candidate: **M10.9.5.2 — Contextual Command Consequence Model / Explicit Dependency-Chain Projection**.
+Current candidate: **M10.9.5.3 Hotfix 2 — COMMANDS Context Inspector XAML-contract / schematic-focus fix**.
 
-M10.9.5.1 is validated. M10.9.5.2 adds deterministic authored bounded dependency chains over that catalog, using only existing typed command targets, whole-plant mimic elements/connections and published snapshot paths. It performs no automatic graph traversal, adds no UI integration yet and changes no physics/protection/control ownership. Unknown command-target shapes fail closed as `NO AUTHORED DEPENDENCY CHAIN`.
+M10.9.5.1 and M10.9.5.2 are validated. The initial M10.9.5.3 candidate exposed a ViewModel API-name mismatch, fixed by Hotfix 1. That package then compiled, but the ordinary App suite exposed one stale XAML-contract expectation: the presentation-only mimic focus is intentionally bound `Mode=OneWay`. Hotfix 2 aligns the test with that contract and removes a fallback highlight that could visually imply a schematic target for a non-graphical dependency step. Graphical element references focus directly; connection references use an explicitly labelled source-element proxy; command-target/published-state steps show no highlight. Selection never dispatches; ENTER/EXECUTE remains the only dispatch boundary. No new topology, predictive physics, protection/control ownership or plant-state mutation is introduced.
 
 The authoritative checkpoint and validation sequence live in:
 
@@ -24,12 +24,12 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.5.2 candidate:
+For the active M10.9.5.3 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1095-command-dependency-chain-audit.cmd
+scripts\run-m1095-command-context-inspector-schematic-audit.cmd
 ```
 
 ## Core runtime principles

@@ -1,3 +1,33 @@
+# Changelog
+
+## M10.9.5.3 Hotfix 2 — COMMANDS Context Inspector XAML Contract & Exact Schematic Focus Semantics — CANDIDATE
+
+- Records the Hotfix 1 result accurately: production/Application projects and the new App code compiled, but the complete ordinary suite had one failure in `OperatorComputerM10953ContextInspectorXamlTests` because the test expected `{Binding SelectedCommandSchematicElementId}` while the XAML intentionally uses `{Binding SelectedCommandSchematicElementId, Mode=OneWay}` for presentation-only focus.
+- Corrects that XAML contract test and additionally requires `IsHitTestVisible="False"`, freezing the non-interactive mimic boundary.
+- Full re-review found a presentation inconsistency not yet caught by the failing test: non-graphical dependency steps (`CommandTarget` / `PublishedState`) could inherit a fallback highlight from another graphical step. Hotfix 2 removes that fabricated fallback.
+- Initial command selection now prefers the first dependency step with an authored `PlantMimicElement` or `PlantMimicConnection` reference when one exists; otherwise it preserves the first step with no schematic highlight.
+- Element steps highlight the exact canonical element; connection steps use the existing connection's `FromElementId` only as an explicitly labelled proxy; non-graphical steps clear the highlight and state that no canonical mimic focus exists.
+- Adds a regression proving non-graphical step selection clears the highlight and never dispatches.
+- No M10.9.5.1 consequence semantics, M10.9.5.2 dependency topology, command dispatch, Simulation, protection, physics or exact-version behavior changes.
+
+# M10.9.5.3 Hotfix 1 — Consequence Monitor Projection Compile Fix — CANDIDATE
+
+- fixes the only reported M10.9.5.3 build failure in `OperatorComputerViewModel`: `OperatorComputerCommandConsequenceProjection` exposes `MonitorTargets`, not `Monitors`;
+- also aligns the monitor explanation field with the validated M10.9.5.1 record contract: `OperatorComputerCommandMonitorTarget.Reason`, not `Explanation`;
+- changes no catalog semantics, dependency-chain semantics, XAML contract, dispatch boundary, runtime state, physics, protection, exact-version identity or manual HMI acceptance criterion;
+- validation remains `dotnet build`, `dotnet test`, `scripts\run-m1095-command-context-inspector-schematic-audit.cmd`, then the existing M10.9.5.3 manual HMI checklist.
+
+# M10.9.5.3 — COMMANDS Context Inspector & Schematic Integration — CANDIDATE
+
+- builds exclusively on validated M10.9.5.2;
+- integrates the validated consequence/dependency projections into F4 COMMANDS;
+- adds progressive disclosure for direct effect, expected influence and monitor evidence;
+- adds selectable dependency-chain presentation and canonical whole-plant mimic focus;
+- command selection/navigation remains non-dispatching; ENTER/EXECUTE remains authoritative;
+- blocked commands remain inspectable;
+- no new physics, graph traversal, protection/control ownership or predictive numerical UI is introduced;
+- adds focused App/ViewModel/XAML tests, runner and ADR-0170.
+
 ## M10.9.5.2 — Contextual Command Consequence Model / Explicit Dependency-Chain Projection — CANDIDATE
 
 - Starts exclusively from the user-validated M10.9.5.1 consequence-semantics/catalog baseline.

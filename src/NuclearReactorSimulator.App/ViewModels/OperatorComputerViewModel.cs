@@ -5,6 +5,7 @@ using System.Windows.Input;
 using NuclearReactorSimulator.App.Commands;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.Automation;
+using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 using NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
 using NuclearReactorSimulator.Application.Scenarios.Training;
 using NuclearReactorSimulator.Domain.Physics.Control.Supervisory;
@@ -20,6 +21,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
     private OperatorComputerSnapshot _snapshot;
     private OperatorComputerPageSnapshot _selectedPage;
     private OperatorComputerCommandSnapshot? _selectedCommand;
+    private OperatorComputerCommandDependencyStep? _selectedCommandDependencyStep;
     private string _commandConsoleStatus = "Select a contextual command. Availability is advisory; runtime/scenario validation remains authoritative.";
     private string _modesStatus = "Training assistance and physical plant-control authority are independent axes.";
     private string _sessionStatus = "M10.7 session lifecycle is replay-backed. Pause before checkpoint/save/replay operations.";
@@ -50,6 +52,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         _selectedPage = snapshot.Pages.Single(static page => page.Id == OperatorComputerPageId.Guidance);
         _selectedCommand = snapshot.Commands?.Commands.FirstOrDefault(static command => command.CanDispatch)
             ?? snapshot.Commands?.Commands.FirstOrDefault();
+        _selectedCommandDependencyStep = PreferredDependencyStep(CurrentDependencyChain);
 
         SelectGuidancePageCommand = new DelegateCommand(() => SelectPage(OperatorComputerPageId.Guidance));
         SelectInfoPageCommand = new DelegateCommand(() => SelectPage(OperatorComputerPageId.Info));
@@ -129,8 +132,10 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
             }
 
             _selectedCommand = value;
+            _selectedCommandDependencyStep = PreferredDependencyStep(CurrentDependencyChain);
             OnPropertyChanged();
             OnPropertyChanged(nameof(SelectedCommandDetailText));
+            RaiseCommandContextPropertiesChanged();
         }
     }
 
@@ -141,6 +146,113 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
           $"STATE        {SelectedCommand.CurrentState}{Environment.NewLine}" +
           $"AVAILABILITY {SelectedCommand.AvailabilityText}" +
           (SelectedCommand.BlockReason is null ? string.Empty : $"{Environment.NewLine}BLOCKED BY   {SelectedCommand.BlockReason}");
+
+    public OperatorComputerCommandConsequenceProjection CurrentConsequence => SelectedCommand is null
+        ? OperatorComputerCommandConsequenceCatalog.Project(new ControlRoomCommand((ControlRoomCommandKind)int.MaxValue))
+        : OperatorComputerCommandConsequenceCatalog.Project(SelectedCommand.Command);
+
+    public OperatorComputerCommandDependencyChainProjection CurrentDependencyChain => SelectedCommand is null
+        ? OperatorComputerCommandDependencyChainCatalog.Project(new ControlRoomCommand((ControlRoomCommandKind)int.MaxValue))
+        : OperatorComputerCommandDependencyChainCatalog.Project(SelectedCommand.Command);
+
+    public IReadOnlyList<OperatorComputerCommandDependencyStep> SelectedCommandDependencySteps => CurrentDependencyChain.Steps;
+
+    public OperatorComputerCommandDependencyStep? SelectedCommandDependencyStep
+    {
+        get => _selectedCommandDependencyStep;
+        set
+        {
+            if (_selectedCommandDependencyStep == value)
+            {
+                return;
+            }
+
+            _selectedCommandDependencyStep = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(SelectedCommandSchematicElementId));
+            OnPropertyChanged(nameof(SelectedCommandSchematicFocusText));
+        }
+    }
+
+    public ControlRoomPlantMimicSnapshot CommandContextPlantMimic => _snapshot.PlantMimic ?? ControlRoomPlantMimicSnapshot.Empty;
+
+    public string? SelectedCommandSchematicElementId
+    {
+        get
+        {
+            var reference = SelectedCommandDependencyStep?.Reference;
+            if (reference is null)
+            {
+                return null;
+            }
+
+            if (reference.Kind == OperatorComputerCommandConsequenceReferenceKind.PlantMimicElement)
+            {
+                return reference.Id;
+            }
+
+            if (reference.Kind == OperatorComputerCommandConsequenceReferenceKind.PlantMimicConnection)
+            {
+                return CommandContextPlantMimic.Connections
+                    .FirstOrDefault(connection => string.Equals(connection.ConnectionId, reference.Id, StringComparison.Ordinal))
+                    ?.FromElementId;
+            }
+
+            return null;
+        }
+    }
+
+    public string SelectedCommandContextSummaryText
+    {
+        get
+        {
+            var consequence = CurrentConsequence;
+            if (!consequence.HasAuthoredMap)
+            {
+                return consequence.MappingNote;
+            }
+
+            var lines = new List<string>
+            {
+                $"DIRECT EFFECT  {consequence.DirectIntentText}",
+                "EXPECTED INFLUENCE",
+            };
+            lines.AddRange(consequence.ExpectedInfluences.Select(static item =>
+                $"  {RelationText(item.Relation),-28} {item.Target.Label} · {item.Explanation}"));
+            lines.Add("WHAT TO MONITOR");
+            lines.AddRange(consequence.MonitorTargets.Select(static item =>
+                $"  [{item.Provenance}] {item.Target.Label} · {item.Reason}"));
+            return string.Join(Environment.NewLine, lines);
+        }
+    }
+
+    public string SelectedCommandSchematicFocusText
+    {
+        get
+        {
+            var step = SelectedCommandDependencyStep;
+            if (step is null)
+            {
+                return "SCHEMATIC FOCUS — no dependency-chain step is selected.";
+            }
+
+            var reference = step.Reference;
+            if (reference is null || !HasCanonicalMimicReference(step))
+            {
+                return $"SCHEMATIC FOCUS — STEP {step.Sequence:D2} {step.Kind.ToString().ToUpperInvariant()} has no canonical whole-plant mimic element/connection.";
+            }
+
+            if (reference.Kind == OperatorComputerCommandConsequenceReferenceKind.PlantMimicConnection)
+            {
+                var connection = CommandContextPlantMimic.Connections
+                    .FirstOrDefault(item => string.Equals(item.ConnectionId, reference.Id, StringComparison.Ordinal));
+                var proxy = connection is null ? "UNAVAILABLE" : connection.FromElementId;
+                return $"SCHEMATIC FOCUS — STEP {step.Sequence:D2} {step.Kind.ToString().ToUpperInvariant()} · CONNECTION {reference.Label} [{reference.Id}] · PROXY HIGHLIGHT {proxy}";
+            }
+
+            return $"SCHEMATIC FOCUS — STEP {step.Sequence:D2} {step.Kind.ToString().ToUpperInvariant()} · ELEMENT {reference.Label} [{reference.Id}]";
+        }
+    }
 
     public string CommandConsoleStatus
     {
@@ -306,6 +418,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
             : snapshot.Commands?.Commands.FirstOrDefault(command => string.Equals(command.EntryId, selectedCommandId, StringComparison.Ordinal))
                 ?? snapshot.Commands?.Commands.FirstOrDefault(static command => command.CanDispatch)
                 ?? snapshot.Commands?.Commands.FirstOrDefault();
+        _selectedCommandDependencyStep = PreferredDependencyStep(CurrentDependencyChain);
 
         var selectedCheckpointId = _selectedSessionCheckpoint?.CheckpointId;
         _selectedSessionCheckpoint = selectedCheckpointId is null
@@ -317,6 +430,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(CommandEntries));
         OnPropertyChanged(nameof(SelectedCommand));
         OnPropertyChanged(nameof(SelectedCommandDetailText));
+        RaiseCommandContextPropertiesChanged();
         OnPropertyChanged(nameof(SessionCheckpoints));
         OnPropertyChanged(nameof(SelectedSessionCheckpoint));
         OnPropertyChanged(nameof(SelectedSessionCheckpointDetailText));
@@ -595,6 +709,38 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         return string.Join(Environment.NewLine, lines);
     }
 
+
+    private static OperatorComputerCommandDependencyStep? PreferredDependencyStep(OperatorComputerCommandDependencyChainProjection chain)
+        => chain.Steps.FirstOrDefault(HasCanonicalMimicReference)
+            ?? chain.Steps.FirstOrDefault();
+
+    private static bool HasCanonicalMimicReference(OperatorComputerCommandDependencyStep step)
+        => step.Reference?.Kind is OperatorComputerCommandConsequenceReferenceKind.PlantMimicElement
+            or OperatorComputerCommandConsequenceReferenceKind.PlantMimicConnection;
+
+    private void RaiseCommandContextPropertiesChanged()
+    {
+        OnPropertyChanged(nameof(CurrentConsequence));
+        OnPropertyChanged(nameof(CurrentDependencyChain));
+        OnPropertyChanged(nameof(SelectedCommandDependencySteps));
+        OnPropertyChanged(nameof(SelectedCommandDependencyStep));
+        OnPropertyChanged(nameof(CommandContextPlantMimic));
+        OnPropertyChanged(nameof(SelectedCommandSchematicElementId));
+        OnPropertyChanged(nameof(SelectedCommandContextSummaryText));
+        OnPropertyChanged(nameof(SelectedCommandSchematicFocusText));
+    }
+
+    private static string RelationText(OperatorComputerCommandConsequenceRelation relation) => relation switch
+    {
+        OperatorComputerCommandConsequenceRelation.IncreasesExpectedDemandOn => "INCREASES EXPECTED DEMAND ON",
+        OperatorComputerCommandConsequenceRelation.DecreasesExpectedDemandOn => "DECREASES EXPECTED DEMAND ON",
+        OperatorComputerCommandConsequenceRelation.EnablesPath => "ENABLES PATH",
+        OperatorComputerCommandConsequenceRelation.DisablesPath => "DISABLES PATH",
+        OperatorComputerCommandConsequenceRelation.Affects => "AFFECTS",
+        OperatorComputerCommandConsequenceRelation.MayAffect => "MAY AFFECT",
+        OperatorComputerCommandConsequenceRelation.ProtectionMayOverride => "PROTECTION MAY OVERRIDE",
+        _ => relation.ToString().ToUpperInvariant(),
+    };
 
     private string BuildCommandsText()
     {

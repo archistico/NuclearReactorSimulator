@@ -60,3 +60,5 @@ Large generated audit payloads are not documentation and are not bundled in sour
 ## Maintenance rule
 
 Do not create another status/handoff/restart/candidate-summary file when the information belongs in `PROJECT.md`. Create a new document only when it has a distinct long-lived responsibility: architecture, subsystem reference, limitation register, ADR, user manual, research or historical provenance.
+
+- `M10_9_5_3_MANUAL_VALIDATION_CHECKLIST.md` — focused manual HMI acceptance for M10.9.5.3 COMMANDS context-inspector/schematic integration.
