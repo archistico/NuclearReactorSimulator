@@ -51,7 +51,7 @@ M10.9.5–M10.9.7 should not normally require multi-hour numerical requalificati
 
 M10.9.4.1 / Phase I is validated and closed. Authoritative desktop exact `@4` and synchronization exact `@3` remain the frozen production baselines for post-Phase-I operator-experience work.
 
-The active milestone is **M10.9.5.1 — consequence semantics and command catalog**. It may add Application/presentation metadata and tests only; it must not alter plant physics, numerical authority, protection thresholds or command dispatch ownership.
+M10.9.5.1 is validated. The active milestone is **M10.9.5.2 — explicit dependency-chain projection**. It may add Application/presentation metadata and tests only; it must not alter plant physics, numerical authority, protection thresholds or command dispatch ownership.
 
 ## M10.9.5 — Contextual Command Consequence Model
 

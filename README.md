@@ -8,9 +8,9 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 M10.9.4.1 / Phase I is **validated and closed**. Authoritative desktop production is exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step. Historical desktop exact @3, rollback exact @2 and synchronization exact @3 remain immutable in their respective roles.
 
-Current candidate: **M10.9.5.1 — Contextual Command Consequence Model / Consequence Semantics & Catalog**.
+Current candidate: **M10.9.5.2 — Contextual Command Consequence Model / Explicit Dependency-Chain Projection**.
 
-M10.9.5.1 adds deterministic qualitative command-consequence metadata for every current typed command. It does not add UI integration yet, does not dispatch commands, does not predict numeric outcomes and does not change physics/protection/control ownership. Unknown command-target shapes fail closed as `NO AUTHORED CONSEQUENCE MAP`.
+M10.9.5.1 is validated. M10.9.5.2 adds deterministic authored bounded dependency chains over that catalog, using only existing typed command targets, whole-plant mimic elements/connections and published snapshot paths. It performs no automatic graph traversal, adds no UI integration yet and changes no physics/protection/control ownership. Unknown command-target shapes fail closed as `NO AUTHORED DEPENDENCY CHAIN`.
 
 The authoritative checkpoint and validation sequence live in:
 
@@ -24,12 +24,12 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.5.1 candidate:
+For the active M10.9.5.2 candidate:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1095-command-consequence-catalog-audit.cmd
+scripts\run-m1095-command-dependency-chain-audit.cmd
 ```
 
 ## Core runtime principles

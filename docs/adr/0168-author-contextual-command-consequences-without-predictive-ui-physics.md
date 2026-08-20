@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed in M10.9.5.1; becomes Accepted only after local build, complete ordinary tests and the focused consequence-catalog gate are explicitly green.
+Accepted. M10.9.5.1 was locally validated with build, complete ordinary tests and the focused consequence-catalog gate green on 2026-08-20.
 
 ## Context
 

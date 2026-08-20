@@ -26,6 +26,7 @@ public enum OperatorComputerCommandConsequenceReferenceKind
     PlantMimicElement = 0,
     PublishedState = 1,
     CommandTarget = 2,
+    PlantMimicConnection = 3,
 }
 
 public sealed record OperatorComputerCommandConsequenceReference(

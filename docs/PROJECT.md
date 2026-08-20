@@ -20,23 +20,15 @@ Final Phase-I closure evidence is green across ordinary/current evidence, Gamepl
 
 ## Active candidate
 
-**M10.9.5.1 — Contextual Command Consequence Model / Consequence Semantics & Catalog — CANDIDATE.**
+**M10.9.5.2 — Contextual Command Consequence Model / Explicit Dependency-Chain Projection — CANDIDATE.**
 
-This is the first post-Phase-I operator-experience milestone and starts from the validated Phase-I-closed baseline only.
+M10.9.5.1 is now the explicitly validated post-Phase-I baseline: build, complete ordinary suite and focused command-consequence catalog audit are green.
 
-The candidate adds an Application-only authored catalog for all 27 current `ControlRoomCommandKind` values. It separates:
+M10.9.5.2 adds a second Application-only presentation layer over that validated catalog. It projects explicit bounded dependency chains with typed steps for command intent, control/actuator state, physical process path, measurement/model observation and protection/alarm relation. Static topology references are limited to existing whole-plant mimic element/connection IDs and published `ControlRoomSnapshot` paths; targeted device/group steps retain the canonical typed `ControlRoomCommand` target.
 
-- direct accepted intent;
-- qualitative expected influence;
-- already-published permissive/blocker references;
-- monitor targets with MEASURED / MODEL / canonical-state provenance;
-- explicit `NO AUTHORED CONSEQUENCE MAP` fail-closed behavior for unsupported/future command-target shapes.
+There is no graph search, shortest-path inference or automatic causal traversal. Unknown/future command-target shapes fail closed as `NO AUTHORED DEPENDENCY CHAIN`. M10.9.5.2 intentionally adds no COMMANDS/Avalonia integration; that remains M10.9.5.3.
 
-The catalog is presentation metadata only. It does not dispatch commands, write Simulation state, predict numeric future values, create new permissive/protection ownership, traverse arbitrary topology or change exact-version/runtime physics.
-
-Every authored reference must resolve either to an existing whole-plant mimic element or to a published `ControlRoomSnapshot` property path. M10.9.5.1 intentionally does **not** integrate the catalog into COMMANDS/HMI yet; dependency chains are M10.9.5.2 and UI integration is M10.9.5.3.
-
-## Local validation for M10.9.5.1
+## Local validation for M10.9.5.2
 
 Run:
 
@@ -44,10 +36,10 @@ Run:
 APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1095-command-consequence-catalog-audit.cmd
+scripts\run-m1095-command-dependency-chain-audit.cmd
 ```
 
-Promotion requires all three gates to be green. M10.9.5.1 does not require a manual HMI gate because it adds no UI surface; manual HMI acceptance belongs to M10.9.5.5 after COMMANDS/schematic integration exists.
+Promotion requires all three gates to be green. M10.9.5.2 does not require a manual HMI gate because it still adds no UI surface; manual HMI acceptance belongs to M10.9.5.5 after COMMANDS/schematic integration exists.
 
 If a gate fails, fix only the demonstrated catalog/contract issue. Do not reopen Phase I numerical qualification or change plant physics to make consequence wording easier.
 
@@ -70,7 +62,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I is closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.5.1 → M10.9.5.2 → M10.9.5.3 → M10.9.5.4 → M10.9.5.5. Do not reopen numerical Phase-I work unless a post-Phase-I gate produces direct evidence that the validated production baseline is invalid.
+Phase I is closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.5.2 → M10.9.5.3 → M10.9.5.4 → M10.9.5.5. Do not reopen numerical Phase-I work unless a post-Phase-I gate produces direct evidence that the validated production baseline is invalid.
 
 M10.9.5 may present existing command/control/protection truth but must not add new plant physics, protection thresholds or control ownership. Missing physics discovered while authoring consequence explanations is a post-M11 backlog item rather than an M10.9.5 scope expansion.
 

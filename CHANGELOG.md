@@ -1,3 +1,20 @@
+## M10.9.5.2 — Contextual Command Consequence Model / Explicit Dependency-Chain Projection — CANDIDATE
+
+- Starts exclusively from the user-validated M10.9.5.1 consequence-semantics/catalog baseline.
+- Adds `OperatorComputerCommandDependencyChainCatalog`, a deterministic Application-only bounded chain projection for every authored current command shape.
+- Distinguishes command intent, control/actuator state, physical process path, measurement/model observation and protection/alarm relation.
+- Reuses canonical typed command targets, existing whole-plant mimic elements/connections and published `ControlRoomSnapshot` paths; M10.9.5.1 monitor targets/provenance remain authoritative.
+- Adds fail-closed `NO AUTHORED DEPENDENCY CHAIN` behavior for invalid/future command-target shapes.
+- Explicitly forbids automatic graph traversal, shortest-path inference, numerical prediction and runtime side effects.
+- Adds focused tests and `scripts\run-m1095-command-dependency-chain-audit.cmd`; adds ADR-0169.
+- No Avalonia/COMMANDS integration yet; M10.9.5.3 remains next after validation.
+
+## M10.9.5.1 — Contextual Command Consequence Model / Consequence Semantics & Catalog — VALIDATED
+
+- Local build, complete ordinary tests and `scripts\run-m1095-command-consequence-catalog-audit.cmd` passed on 2026-08-20.
+- M10.9.5.1 is the authoritative post-Phase-I baseline for M10.9.5.2.
+- ADR-0168 is Accepted.
+
 ## M10.9.5.1 — Contextual Command Consequence Model / Consequence Semantics & Catalog — CANDIDATE
 
 - Starts from the user-validated M10.9.4.1 / Phase-I-closed repaired-v4 baseline; no Phase-I numerical contract is reopened.
