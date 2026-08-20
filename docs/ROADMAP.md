@@ -1,84 +1,160 @@
 # Roadmap
 
-This file lists remaining work. Detailed completed chronology is under `history/`.
+This file contains **future work only**. The authoritative current checkpoint and active validation gate remain in `PROJECT.md`.
 
-## Current checkpoint
+## Execution discipline after Phase I
 
-Validated production decision: **H.30 Requalification 1 — ACTIVATE**.
+The post-Phase-I sequence is fixed unless a gate produces direct contrary evidence:
 
-Validated Phase-I reference: **I.3 Hotfix 2** — 300 s / 30,000-step exact-v3 production reference, seven frozen slopes, 19 regression budgets.
+```text
+M10.9.4.1 / Phase I final closure
+        ↓
+M10.9.5 Contextual Command Consequence Model
+        ↓
+M10.9.6 Operational Challenge & Energy-Demand Framework
+        ↓
+M10.9.7 Mission & Performance Workstation
+        ↓
+M10.9.8 Integrated Human-Automation-HMI Validation Gate
+        ↓
+M11 Release Hardening
+        ↓
+post-release engineering backlog
+```
 
-Current candidate: **I.4 — Known Limitations & Legacy Retirement Review**.
+Rules:
 
-## Phase I — remaining closure work
+1. work on one milestone at a time;
+2. each milestone starts from the latest explicitly validated baseline only;
+3. implementation begins only after the milestone contract, non-scope and gate are documented;
+4. promotion requires build + complete ordinary suite + focused gate + any stated manual HMI check;
+5. a failing gate authorizes work only on the demonstrated failing contract;
+6. M10.9.5–M10.9.8 may expose or present existing physics/control/protection truth but may not create new reactor physics, component laws, protection thresholds or control ownership;
+7. if operator-experience work reveals missing physics, record it for the post-M11 engineering backlog instead of expanding M10 scope;
+8. no speculative audit, retuning or numerical requalification is added after a green gate merely “for safety”.
 
-### I.4 — Known limitations and legacy retirement review
+## Expected validation burden
 
-Required:
+This is a planning classification, not a duration promise:
 
-- reconcile current limitations with the activated v3 policy and validated I.3 reference;
-- make non-zero final-window inventory/energy drifts explicit rather than treating I.3 as asymptotic steady-state proof;
-- verify H.5/H.21 modes are not production, exact-version or current-CI dependencies;
-- enumerate remaining source/test seams;
-- preserve exact-version scenario/save/replay identities;
-- remove legacy source only if executable provenance no longer depends on it.
+| Milestone | Expected validation profile | Relative cost |
+| --- | --- | --- |
+| M10.9.5 | ordinary + focused semantic/replay tests + manual HMI | low/medium |
+| M10.9.6 | ordinary + deterministic challenge/demand/replay tests + manual exercise checks | medium |
+| M10.9.7 | ordinary + focused presentation/replay tests + manual HMI | low/medium |
+| M10.9.8 | integrated 3×3 assistance/authority matrix + degraded/protection/replay + full manual HMI | high |
+| M11 | compatibility, long/performance/memory, packaging/clean-machine and release-manual gates | high |
 
-Candidate decision: defer physical deletion through M10.9.4.1 closure because historical executable seams still remain.
+M10.9.5–M10.9.7 should not normally require multi-hour numerical requalification. The two intentionally expensive future checkpoints are M10.9.8 integration closure and M11 release closure.
 
-### I.5 — Cumulative M10.9.4.1 closure gate
+## Immediate gate — M10.9.4.1-I.5 final closure
 
-Require:
+Authoritative desktop exact `@4` (`CorrelationConsistentInverseDomain` + `FourNodeBranchContinuityCorrectedCommitOptIn`) and synchronization exact `@3` are already validated and activated in their separate version families. The only remaining Phase-I work is the Hotfix 17/17.1 final chain: ordinary/current evidence, GameplayLong, OperationalEnvelope, ReferencePlantScale, repaired exact-v4 300 s reference regression against the unchanged 19 I.3 budgets, then cumulative closure.
 
-- ordinary suite;
-- H.30 RQ1 production-policy evidence;
-- I.3 authoritative reference + frozen budgets;
-- 60 s gameplay;
-- protection/replay determinism;
-- conservation/inventory slopes;
-- reference-plant scale contract;
-- H.28 performance classification;
-- scheduled long gates;
-- I.4 known-limitations/legacy review.
-
-Only a green I.5 unblocks M10.9.5.
+A green chain closes M10.9.4.1 / Phase I and unlocks M10.9.5. No additional numerical tuning or requalification stage belongs in I.5 unless a final gate provides direct contrary evidence.
 
 ## M10.9.5 — Contextual Command Consequence Model
 
-- focused commands explain direct effect, expected downstream influence, permissives/blockers and what to monitor;
-- selected dependency chains can be highlighted on schematics;
-- expected influence must remain distinct from observed response;
-- no UI-side predictive reactor physics or invented causality.
+**Purpose:** explain what a selected command directly requests, what it is expected to influence, what currently blocks it, what the operator should monitor, and what the simulator actually did after dispatch.
+
+Detailed plan: [`milestones/M10.9.5.md`](milestones/M10.9.5.md).
+
+Planned sequence:
+
+1. M10.9.5.1 — consequence semantics and command catalog;
+2. M10.9.5.2 — explicit dependency-chain projection;
+3. M10.9.5.3 — COMMANDS/context-inspector/schematic integration;
+4. M10.9.5.4 — observed-response presentation separated from expected influence;
+5. M10.9.5.5 — automated/manual closure gate.
+
+No predictive UI physics, automatic command execution, invented causality or new permissive owner is allowed.
 
 ## M10.9.6 — Operational Challenge & Energy-Demand Framework
 
-- deterministic timed objectives for startup, shutdown, testing, power manoeuvring, stabilization and recovery;
-- deterministic external electrical-demand profiles;
-- multidimensional scoring with safety/procedure dominant;
-- challenge timing based on logical simulation time, not wall-clock time.
+**Purpose:** add deterministic training objectives and external electrical-demand references without making scoring or challenge state a physical plant owner.
+
+Detailed plan: [`milestones/M10.9.6.md`](milestones/M10.9.6.md).
+
+Planned sequence:
+
+1. M10.9.6.1 — challenge lifecycle and logical-time contract;
+2. M10.9.6.2 — deterministic external energy-demand profiles;
+3. M10.9.6.3 — multidimensional evaluation/scoring contract;
+4. M10.9.6.4 — bounded challenge packs using existing plant/fault owners;
+5. M10.9.6.5 — replay/checkpoint/determinism and closure gate.
+
+`GRID DEMAND`, generator requested load and actual electrical output remain three separate semantics.
 
 ## M10.9.7 — Mission & Performance Workstation
 
-- current objective and progress;
-- elapsed/target logical time;
-- demand/output/error;
-- score decomposition;
-- assistance independent from plant-control authority.
+**Purpose:** present objectives, demand, progress, score decomposition and deterministic performance history without changing the M10.9.6 evaluation owner.
+
+Detailed plan: [`milestones/M10.9.7.md`](milestones/M10.9.7.md).
+
+Planned sequence:
+
+1. M10.9.7.1 — immutable mission/performance presentation contract;
+2. M10.9.7.2 — workstation placement/navigation decision;
+3. M10.9.7.3 — objective/demand/progress/score UI;
+4. M10.9.7.4 — deterministic timeline and drill-down;
+5. M10.9.7.5 — keyboard/minimum-window/manual closure gate.
+
+**Open design decision before implementation:** the existing Operator Computer has a validated fixed F1–F8 contract. The current recommendation is a dedicated main-HMI Mission/Performance workspace linked from COMPUTER, with only a compact summary/link inside the existing computer pages; do not invent F9 without an explicit architecture decision.
 
 ## M10.9.8 — Integrated Human-Automation-HMI Validation Gate
 
-- matrix validation across training assistance and plant-control authority;
-- deterministic fault/invalid-measurement/protection/trip/manual-takeover cases;
-- gauge/range, mimic/schematic, command-consequence and scoring integrity;
-- degraded/fail-closed behaviour and protection priority;
-- replay/checkpoint fidelity and same-seed determinism;
-- manual HMI acceptance.
+**Purpose:** validate M10 as one coherent operator system across assistance, control authority, faults, protection, challenge/scoring, replay and manual operation.
 
-## M11 — Release hardening
+Detailed plan: [`milestones/M10.9.8.md`](milestones/M10.9.8.md).
 
-After M10 closes:
+Planned sequence:
 
-- save/scenario/session migration hardening;
-- performance/memory budgets across headless simulation, recorder/replay and desktop UI;
-- packaging/publish pipeline;
-- deployment verification;
-- final documentation/manual cleanup.
+1. M10.9.8.1 — freeze the validation matrix and invariants;
+2. M10.9.8.2 — automated assistance × authority matrix;
+3. M10.9.8.3 — degraded measurement/fault/protection/takeover cases;
+4. M10.9.8.4 — replay/checkpoint/same-seed and scoring integrity;
+5. M10.9.8.5 — manual HMI/keyboard acceptance and M10 closure.
+
+M10 closes only after M10.9.8 is explicitly validated.
+
+## M11 — Release Hardening
+
+**Purpose:** turn the validated M10 simulator into a release candidate without adding new gameplay or physics features.
+
+Detailed plan: [`milestones/M11.md`](milestones/M11.md).
+
+Planned sequence:
+
+1. M11.1 — release/support contract and version freeze;
+2. M11.2 — save/scenario/session compatibility and migration hardening;
+3. M11.3 — performance, memory and long-run release budgets;
+4. M11.4 — packaging/publish/deployment verification;
+5. M11.5 — documentation/manual/known-limitations release alignment;
+6. M11.6 — release-candidate clean-machine and final acceptance gate.
+
+No feature work is accepted inside M11 unless it fixes a release-blocking defect demonstrated by an M11 gate.
+
+## Post-M11 engineering horizon — not on the M10/M11 critical path
+
+The approved extreme-operation/damage/accident direction remains in `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md`.
+
+The intended order after release hardening is:
+
+1. extreme-envelope component directionality/support audit;
+2. persistent equipment integrity/stress primitives;
+3. pressure-boundary, rotating-equipment and electrical-damage models, one causal family at a time;
+4. post-trip decay-heat/core-damage prerequisites before severe core-damage claims;
+5. incident severity and post-incident persistence/replay integration;
+6. later spatial-core and control-room visual extensions.
+
+These items must not become prerequisites for M10.9.5–M11 merely because they are valuable future work.
+
+## Deferred maintenance
+
+Also non-blocking for M10.9.5 unless new evidence changes the risk:
+
+- physical removal of H.5 `DeterministicHybridSemiImplicit` historical source seams;
+- physical removal of H.21 `FourNodeBranchContinuityShadowIntegrated` historical source seams;
+- investigation of whether validated long-horizon inventory/energy drifts can be reduced by a separately qualified physical/initialization improvement;
+- simplification/removal of branch-continuity machinery only after a separate post-Phase-I proof that current repaired trajectories no longer require it;
+- performance optimization of the authoritative corrected path beyond the validated repaired Stage-4 bounds.

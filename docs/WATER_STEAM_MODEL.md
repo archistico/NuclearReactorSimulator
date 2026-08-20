@@ -28,11 +28,16 @@ The remaining closure uses compact, deterministic approximations:
 - critical-scaling correlations for saturated liquid/vapor density;
 - constant liquid specific heat for the liquid internal-energy reference;
 - Watson-style latent-heat decay toward the critical point;
-- ideal-gas-style vapor pressure relationship for the superheated branch;
+- a reduced-order vapor pressure relation for the superheated branch;
 - constant effective vapor `cv` for superheat above the local saturation reference;
 - constant effective liquid bulk modulus for compressed/subcooled liquid pressure response.
 
-Every approximation is isolated inside `SimplifiedWaterSteamThermodynamicModel` so a future high-fidelity backend can replace it behind `IFluidThermodynamicModel`.
+`SimplifiedWaterSteamThermodynamicModel` now has two explicit closure modes:
+
+- `HistoricalCorrelationTopology` — compatibility mode used by historical exact desktop `@2` and `@3`; the parameterless constructor deliberately preserves this mode so old exact-version behavior is not silently reinterpreted;
+- `CorrelationConsistentInverseDomain` — authoritative desktop exact `@4` mode, validated in I.5 after the historical vapor phase-boundary mismatch and low-temperature inverse-search blind spot were mapped.
+
+Every approximation remains isolated inside `SimplifiedWaterSteamThermodynamicModel` so a future high-fidelity backend can replace it behind `IFluidThermodynamicModel`.
 
 ## Phase regions
 
@@ -72,11 +77,13 @@ u = (1 - x) uf + x ug
 
 A deterministic bracket scan plus fixed-iteration bisection finds the temperature where both conserved specific volume and conserved specific internal energy are satisfied.
 
-### Saturation-boundary bracketing robustness
+### Saturation-boundary bracketing and interval-aware inversion
 
 The original coarse scan spans the complete supported saturation-temperature range. Near quality endpoints (`x → 0` or `x → 1`), the temperature interval in which a fixed specific volume is physically admissible can end between two coarse samples. A valid two-phase root can therefore exist in a narrow terminal interval without producing a sampled sign change.
 
-The resolver preserves the original fast paths, but before failing out of range it now performs a deterministic boundary-aware saturated-mixture fallback: it first locates the upper temperature at which the node's specific volume still lies between saturated-liquid and saturated-vapor specific volumes, then rescans only that mathematically admissible interval and uses the same fixed-iteration bisection. This closes numerical root-bracketing gaps without clamping conserved state, widening the declared thermodynamic envelope or introducing a new property correlation.
+`HistoricalCorrelationTopology` preserves the earlier boundary-aware fallback for exact-version compatibility. That fallback assumes the valid interval is connected to the triple point. The saturated-liquid density correlation, however, contains the physical water-density maximum near 4 °C; a fixed volume can therefore have a valid local saturation interval that is not triple-point-connected. The validated I.5 census found 83/83 historical misses from 4.01–8.16 °C despite independently bracketed roots.
+
+`CorrelationConsistentInverseDomain` instead locates the saturated-liquid density maximum and solves the cold liquid, warm liquid and vapor specific-volume boundaries separately. Their intersection defines the complete valid saturation-temperature interval for the conserved specific volume. The same deterministic scan/bisection machinery is then applied inside that interval. This repairs root discovery without clamping mass/energy or expanding the declared thermodynamic envelope.
 
 ## Subcooled/compressed liquid closure
 
@@ -88,20 +95,30 @@ For dense states below the saturation-volume boundary:
 
 ## Superheated vapor closure
 
-For low-density/high-energy states:
+For low-density/high-energy states, both modes derive the local saturation temperature from pressure, use saturated-vapor internal energy at that pressure as the reference, and add superheat with the effective vapor `cv`. They differ in the pressure relation used to connect the superheated branch to saturation.
 
-- vapor pressure follows the ideal-gas-style `p = rho R T` relationship;
-- the local saturation temperature is found from pressure;
-- saturated-vapor internal energy at that pressure is the reference;
-- superheat adds internal energy using the effective vapor `cv`.
+### Historical compatibility relation
 
-A deterministic root solve finds the temperature consistent with the conserved inventory and fixed volume.
+`HistoricalCorrelationTopology` uses the original ideal-gas-style relation:
 
-### Superheated phase-boundary bracketing robustness
+```text
+p = R T / v
+```
 
-The superheated branch has the same numerical boundary hazard as the saturated branch. For a fixed specific volume, the first temperature that satisfies the branch's pressure/saturation admissibility test can lie between two coarse full-range scan samples. A valid superheated root may then exist in the narrow interval immediately above that onset while the first sampled valid point already lies beyond the residual sign change.
+while saturated vapor uses the independently correlated `v_g(T) = 1 / rho_g(T)`. I.5 topology auditing proved that these two boundaries do not coincide: the historical model contains a low-pressure no-root band and a higher-pressure overlap/multiple-root band. Exact desktop `@2` and `@3` retain this behavior only for replay compatibility.
 
-The resolver therefore preserves the original superheated fast path and, only before final out-of-range failure, locates the exact contiguous temperature interval in which the existing superheated equations are admissible. It injects those valid interval endpoints into a deterministic rescan and reuses the existing bisection/equations. The fallback does not clamp conserved state, interpolate across a correlation gap or widen the declared envelope; states for which neither the saturated nor superheated equations contain a real root still fail closed.
+### Correlation-consistent relation used by exact @4
+
+`CorrelationConsistentInverseDomain` anchors the superheated branch to the same saturated-vapor boundary. For a boundary temperature `Tb` define:
+
+```text
+Δv(Tb) = R Tb / Psat(Tb) - vg(Tb)
+p(T, v) = R T / (v + Δv(Tb))
+```
+
+For temperatures inside the supported saturation range, `Tb = T`; above the 640 K saturation ceiling, the 640 K shift is retained so the saturation domain is not implicitly extended. At `v = vg(Tb)`, the repaired pressure is exactly `Psat(Tb)`, so saturated and superheated branches meet on one boundary instead of leaving a gap or overlap.
+
+A deterministic root solve finds the temperature consistent with conserved specific volume/internal energy. Boundary-aware superheated bracketing remains deterministic and fail-closed: states with no mathematical root in the declared simplified domain still raise `WaterSteamStateOutOfRangeException`.
 
 ## Supported envelope
 
@@ -110,6 +127,19 @@ The simplified saturation correlations are intentionally bounded below the criti
 The saturation and vapor branches remain bounded below critical pressure. The simplified compressed-liquid branch may cross the critical isobar while its derived temperature remains below the supported saturation-temperature ceiling; this is still classified as compressed/subcooled liquid, not as supercritical fluid, and uses the same finite bulk-modulus response without clamping pressure.
 
 Supercritical-temperature water, metastable states, detailed compressed-liquid properties and high-fidelity transport properties are outside M1.7.
+
+
+## Exact-version thermodynamic identity
+
+Desktop exact-version semantics are intentionally preserved:
+
+```text
+integrated-operations-desktop-stable@2 -> HistoricalCorrelationTopology + ExplicitCommittedState
+integrated-operations-desktop-stable@3 -> HistoricalCorrelationTopology + FourNodeBranchContinuityCorrectedCommitOptIn
+integrated-operations-desktop-stable@4 -> CorrelationConsistentInverseDomain + FourNodeBranchContinuityCorrectedCommitOptIn
+```
+
+Exact `@4` is authoritative production after I.5 Hotfix 16.2 validation. Exact `@2` remains fail-closed rollback/reference and exact `@3` remains immutable H.29/H.30/I.3 replay provenance. The separate `pre-synchronization-grid-loading` family keeps its own exact versions; its supported corrected identity remains synchronization `@3` and is not renamed to desktop `@4`.
 
 ## Architectural consequence
 

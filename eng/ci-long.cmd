@@ -17,8 +17,8 @@ call scripts\run-operational-envelope-audit.cmd || exit /b 1
 echo [CI LONG] Reference-plant scale gate...
 call scripts\run-reference-plant-scale-audit.cmd || exit /b 1
 
-echo [CI LONG] I.3 authoritative production reference baseline...
-call scripts\run-phase-i-reference-trajectory-conservation-inventory-baseline-audit.cmd || exit /b 1
+echo [CI LONG] I.5 repaired exact-v4 300 s production-reference requalification...
+call scripts\run-i5-repaired-v4-300s-reference-requalification-audit.cmd || exit /b 1
 
 echo [CI LONG] PASSED.
 exit /b 0

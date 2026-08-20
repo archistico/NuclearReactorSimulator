@@ -4,7 +4,10 @@ This register contains **current** limitations only. Resolved investigations and
 
 ## Thermodynamics and fluid mechanics
 
-- Water/steam properties are reduced-order educational correlations, not an industrial IAPWS/steam-table implementation across the full operating envelope.
+- Water/steam properties remain reduced-order educational correlations, not an industrial IAPWS/steam-table implementation across the full operating envelope.
+- Authoritative desktop exact `@4` uses `CorrelationConsistentInverseDomain`. Its superheated branch is anchored to the same correlated saturated-vapor boundary used by the saturated branch, and its saturated inverse search is interval-aware around the water-density maximum. The validated repair census resolved the three observed historical no-root states, 7/7 two-sided seam probes and 231/231 low-temperature probes; the repaired 7000-step load journey, 30,000-interval cross-profile run, replay/protection/off-design matrix and performance/soak gates are green. The former vapor seam gap/overlap and 4–8 °C inverse-search blind spot are therefore **resolved for authoritative exact @4 within the validated domain**, not current production blockers.
+- Historical exact desktop `@2` and `@3` deliberately retain `HistoricalCorrelationTopology` for exact-version replay compatibility. Their old gap/overlap and low-temperature inverse-search behavior is historical compatibility semantics, not the authoritative production thermodynamic closure. Old saves/scenarios must not be silently reinterpreted through @4.
+- `CorrelationConsistentInverseDomain` is still a simplified closure. Matching the phase boundary removes an internal inverse-map inconsistency; it does not make the model a complete high-fidelity steam-table implementation, nor does it validate arbitrary metastable/supercritical states outside the declared envelope. Genuinely unsupported states continue to fail closed.
 - Fluid nodes and most components are zero-dimensional lumped control volumes.
 - Pipe/valve hydraulics use reduced resistance laws; general distributed pressure loss, elevation/static head, acoustic waves and water hammer are not modeled.
 - General wet-steam/two-phase critical-flow and choking fidelity remains limited to explicitly implemented reduced-order paths.
@@ -13,7 +16,7 @@ This register contains **current** limitations only. Resolved investigations and
 
 ## Validated reference drift / inventory redistribution
 
-Validated I.3 is continuously healthy over 300 s on the authoritative exact-v3 production path, but the final 60 s are **not a claim of asymptotic steady state**. The frozen regression observations include:
+Historical validated I.3 was continuously healthy over 300 s on the then-authoritative exact-v3 production path, but the final 60 s are **not a claim of asymptotic steady state**. Exact @3 is now frozen provenance; exact @4 is current authoritative production and must earn its own final reference evidence rather than inheriting these observations. The frozen regression observations include:
 
 - drum inventory slope: **+8.2451672984622224 kg/s**;
 - main-steam-header inventory slope: **-0.35293086123580603 kg/s**;
@@ -36,9 +39,11 @@ These values are a regression baseline, not a claim of asymptotic steady state a
 
 ## Numerical coupling
 
-- H.30 RQ1 promotes exact-v3 corrected-commit because exact-v2 explicit was shown to suffer targeted steam-train reverse-flow/shaft-drop discontinuities during otherwise healthy operation.
-- The corrected path remains materially more expensive than explicit. H.28 classifies it `bounded-but-costly`; H.30 RQ1 accepts that cost because continuity evidence changed the production trade-off.
-- `DeterministicHybridSemiImplicit` and `FourNodeBranchContinuityShadowIntegrated` are **source-retained historical modes**. They are not production choices, not exact-version compatibility requirements and not current-CI dependencies. I.4 defers physical deletion because four source files and four test files per mode still preserve executable historical seams.
+- Historical H.30 RQ1 promoted exact desktop `@3` corrected-commit because exact `@2` explicit showed targeted steam-train reverse-flow/shaft-drop discontinuities. Exact `@3` remains immutable replay provenance. Authoritative desktop production is now exact `@4`, which preserves corrected-commit ownership while using the repaired thermodynamic closure.
+- `pre-synchronization-grid-loading@2` is retained as an exact explicit compatibility/reference identity, but it is not the supported sustained low-load synchronization journey: the I.5 long diagnostic reproduced late rotor/export instability and reverse-admission steps. Synchronization exact `@3` preserves the @2 physical/control/grid seed and uses corrected-commit for the supported sustained journey. This synchronization version family is independent from desktop exact `@4`.
+- Historical H.28 remains `bounded-but-costly` provenance for the old closure. Repaired Stage 4 compares repaired explicit vs repaired corrected on the same thermodynamic closure and passed the original relative ceilings with median wall ratio `0.97677554038185532`, p95 ratio `0.83442338580147768` and allocation ratio `1.1163446388589435`; the validated repaired classification is `bounded-at-or-below-explicit` on that machine-local benchmark.
+- Repaired Stage 2 observed zero branch overrides but 3,720 previous-phase holds across 58 trigger steps, including 50 post-startup continuity-active steps. Branch override machinery may now be topologically obsolete, but previous-phase hysteresis remains materially exercised and must not be removed merely because the vapor seam became single-root. Any retirement requires separately scoped evidence after Phase-I closure.
+- `DeterministicHybridSemiImplicit` and `FourNodeBranchContinuityShadowIntegrated` are **source-retained historical modes**. They are not production choices, not exact-version compatibility requirements and not current-CI dependencies. I.4 defers physical deletion because historical executable seams still preserve provenance.
 
 ## Plant completeness
 

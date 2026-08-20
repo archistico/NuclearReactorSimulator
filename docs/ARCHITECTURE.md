@@ -16,7 +16,7 @@ Nuclear Reactor Simulator is designed as an educational full-plant simulator. Th
 - M7, M8 and M9 gates are complete. M8.1–M8.7 hotfix 2 and M9.1–M9.7 are validated; M9.7 hotfix 5 passed all 760 automated tests and the final user-corrected `MainWindow.axaml` is integrated as the validated GUI layout baseline. M10.1–M10.9.3 are validated; M10.9.3 Interactive Full-Plant Mimic is the official application baseline. M10.9.4 Hotfix 23 Pressure/Temperature/Vapor-Dependent Turbine Work is the latest user-validated structural checkpoint; final manual HMI acceptance remains before milestone promotion, and M10.9.4.1 owns the remaining operational-envelope/numerical hardening. ADR 0075–ADR 0090 record the HMI, replay, hydraulic, condenser, grid, pump, protection, actuator, governor and turbine-work boundaries.
 - M8.2 hotfix 2 introduced a headless `NuclearReactorSimulator.App.Tests` boundary for ViewModel/XAML interaction contracts. These tests may reference `App`, but production dependency direction is unchanged: `App` still has no `Simulation` reference and owns no physics.
 
-For the exact validation/restart state, `PROJECT_HANDOFF.md` is authoritative.
+For the exact validation/restart state, `PROJECT.md` is authoritative.
 
 ## Production projects
 
@@ -564,7 +564,7 @@ A component must not mutate a shared node and thereby change the input observed 
 
 M3 initially keeps global point kinetics and introduces coarse zones only as configurable power-distribution/thermal-hydraulic/feedback domains. Individual full-core channels and spatial neutron transport are explicitly deferred.
 
-See `docs/PROJECT_STATUS.md`, `docs/PRIMARY_CIRCUIT_PLAN.md` and ADR 0023.
+See `docs/PROJECT.md`, `docs/PRIMARY_CIRCUIT_PLAN.md` and ADR 0023.
 
 
 ## M9.4 quasi-spatial refinement over the aggregated-core boundary

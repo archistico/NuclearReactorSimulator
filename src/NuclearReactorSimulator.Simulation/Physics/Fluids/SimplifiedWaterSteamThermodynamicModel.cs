@@ -36,6 +36,24 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
     private static readonly SaturationPropertyValue[] CoarseSaturationScan = BuildCoarseSaturationScan();
     private static readonly double MinimumSaturationPressurePascals = SaturationPressurePascals(TriplePointTemperatureKelvins);
     private static readonly double MaximumSupportedSaturationPressurePascals = SaturationPressurePascals(MaximumSaturationTemperatureKelvins);
+    private static readonly double SaturatedLiquidDensityMaximumTemperatureKelvins = FindSaturatedLiquidDensityMaximumTemperatureKelvins();
+
+    private readonly WaterSteamThermodynamicClosureMode _closureMode;
+
+    public SimplifiedWaterSteamThermodynamicModel()
+        : this(WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
+    {
+    }
+
+    public SimplifiedWaterSteamThermodynamicModel(WaterSteamThermodynamicClosureMode closureMode)
+    {
+        if (!Enum.IsDefined(closureMode))
+        {
+            throw new ArgumentOutOfRangeException(nameof(closureMode), closureMode, "Unknown simplified water/steam thermodynamic closure mode.");
+        }
+
+        _closureMode = closureMode;
+    }
 
     public static Temperature MinimumTemperature { get; } = Temperature.FromKelvins(TriplePointTemperatureKelvins);
 
@@ -408,12 +426,20 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return false;
     }
 
-    private static bool TryResolveBoundaryAwareSaturatedMixture(
+    private bool TryResolveBoundaryAwareSaturatedMixture(
+        double specificVolume,
+        double specificInternalEnergy,
+        out FluidThermodynamicState state)
+        => _closureMode == WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain
+            ? TryResolveIntervalAwareSaturatedMixture(specificVolume, specificInternalEnergy, out state)
+            : TryResolveHistoricalBoundaryAwareSaturatedMixture(specificVolume, specificInternalEnergy, out state);
+
+    private static bool TryResolveHistoricalBoundaryAwareSaturatedMixture(
         double specificVolume,
         double specificInternalEnergy,
         out FluidThermodynamicState state)
     {
-        if (!TryGetSaturatedTemperatureUpperBound(specificVolume, out var maximum))
+        if (!TryGetHistoricalSaturatedTemperatureUpperBound(specificVolume, out var maximum))
         {
             state = null!;
             return false;
@@ -457,7 +483,156 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return false;
     }
 
-    private static bool TryGetSaturatedTemperatureUpperBound(double specificVolume, out double upperBoundKelvins)
+    private static bool TryResolveIntervalAwareSaturatedMixture(
+        double specificVolume,
+        double specificInternalEnergy,
+        out FluidThermodynamicState state)
+    {
+        if (!TryGetSaturatedTemperatureInterval(specificVolume, out var minimum, out var maximum))
+        {
+            state = null!;
+            return false;
+        }
+
+        SaturatedEvaluation? previous = null;
+        for (var index = 0; index <= SearchSegments; index++)
+        {
+            var temperature = minimum + ((maximum - minimum) * index / SearchSegments);
+            var evaluation = EvaluateSaturatedCandidate(temperature, specificVolume, specificInternalEnergy);
+            if (evaluation is null)
+            {
+                previous = null;
+                continue;
+            }
+
+            if (IsRoot(evaluation.Value.ResidualJoulesPerKilogram, specificInternalEnergy))
+            {
+                state = CreateSaturatedState(evaluation.Value);
+                return true;
+            }
+
+            if (previous is not null
+                && HasSignChange(previous.Value.ResidualJoulesPerKilogram, evaluation.Value.ResidualJoulesPerKilogram))
+            {
+                var root = BisectSaturated(
+                    previous.Value.TemperatureKelvins,
+                    evaluation.Value.TemperatureKelvins,
+                    specificVolume,
+                    specificInternalEnergy);
+                state = CreateSaturatedState(root);
+                return true;
+            }
+
+            previous = evaluation;
+        }
+
+        state = null!;
+        return false;
+    }
+
+    private static bool TryGetSaturatedTemperatureInterval(
+        double specificVolume,
+        out double minimumKelvins,
+        out double maximumKelvins)
+    {
+        var triple = EvaluateSaturationValue(TriplePointTemperatureKelvins);
+        var densityMaximum = EvaluateSaturationValue(SaturatedLiquidDensityMaximumTemperatureKelvins);
+        var ceiling = EvaluateSaturationValue(MaximumSaturationTemperatureKelvins);
+
+        var minimumLiquidSpecificVolume = densityMaximum.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram;
+        var tripleLiquidSpecificVolume = triple.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram;
+        var ceilingLiquidSpecificVolume = ceiling.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram;
+        var tripleVaporSpecificVolume = triple.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
+        var ceilingVaporSpecificVolume = ceiling.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
+
+        if (specificVolume < minimumLiquidSpecificVolume || specificVolume > tripleVaporSpecificVolume)
+        {
+            minimumKelvins = 0d;
+            maximumKelvins = 0d;
+            return false;
+        }
+
+        if (specificVolume >= tripleLiquidSpecificVolume)
+        {
+            minimumKelvins = TriplePointTemperatureKelvins;
+        }
+        else
+        {
+            minimumKelvins = FindSpecificVolumeBoundary(
+                TriplePointTemperatureKelvins,
+                SaturatedLiquidDensityMaximumTemperatureKelvins,
+                specificVolume,
+                useLiquidBoundary: true,
+                returnUpperSide: true);
+        }
+
+        var liquidUpper = specificVolume >= ceilingLiquidSpecificVolume
+            ? MaximumSaturationTemperatureKelvins
+            : FindSpecificVolumeBoundary(
+                SaturatedLiquidDensityMaximumTemperatureKelvins,
+                MaximumSaturationTemperatureKelvins,
+                specificVolume,
+                useLiquidBoundary: true,
+                returnUpperSide: false);
+
+        var vaporUpper = specificVolume <= ceilingVaporSpecificVolume
+            ? MaximumSaturationTemperatureKelvins
+            : FindSpecificVolumeBoundary(
+                TriplePointTemperatureKelvins,
+                MaximumSaturationTemperatureKelvins,
+                specificVolume,
+                useLiquidBoundary: false,
+                returnUpperSide: false);
+
+        maximumKelvins = Math.Min(liquidUpper, vaporUpper);
+        if (maximumKelvins + 1e-12d < minimumKelvins)
+        {
+            minimumKelvins = 0d;
+            maximumKelvins = 0d;
+            return false;
+        }
+
+        return true;
+    }
+
+    private static double FindSpecificVolumeBoundary(
+        double lowerTemperatureKelvins,
+        double upperTemperatureKelvins,
+        double targetSpecificVolume,
+        bool useLiquidBoundary,
+        bool returnUpperSide)
+    {
+        var lower = lowerTemperatureKelvins;
+        var upper = upperTemperatureKelvins;
+        var lowerValue = SaturationBoundarySpecificVolume(lower, useLiquidBoundary) - targetSpecificVolume;
+
+        for (var iteration = 0; iteration < BisectionIterations; iteration++)
+        {
+            var middle = (lower + upper) / 2d;
+            var middleValue = SaturationBoundarySpecificVolume(middle, useLiquidBoundary) - targetSpecificVolume;
+            if (HasSignChange(lowerValue, middleValue))
+            {
+                upper = middle;
+            }
+            else
+            {
+                lower = middle;
+                lowerValue = middleValue;
+            }
+        }
+
+        return returnUpperSide ? upper : lower;
+    }
+
+    private static double SaturationBoundarySpecificVolume(double temperatureKelvins, bool useLiquidBoundary)
+    {
+        var saturation = EvaluateSaturationValue(temperatureKelvins);
+        return useLiquidBoundary
+            ? saturation.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram
+            : saturation.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
+    }
+
+    private static bool TryGetHistoricalSaturatedTemperatureUpperBound(double specificVolume, out double upperBoundKelvins)
     {
         if (!IsInsideSaturationSpecificVolumeEnvelope(TriplePointTemperatureKelvins, specificVolume))
         {
@@ -500,7 +675,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
             && specificVolume <= saturation.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
     }
 
-    private static bool TryResolveBoundaryAwareSuperheatedVapor(
+    private bool TryResolveBoundaryAwareSuperheatedVapor(
         double specificVolume,
         double specificInternalEnergy,
         out FluidThermodynamicState state)
@@ -546,7 +721,15 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return true;
     }
 
-    private static bool TryGetSuperheatedTemperatureBounds(
+    private bool TryGetSuperheatedTemperatureBounds(
+        double specificVolume,
+        out double minimumKelvins,
+        out double maximumKelvins)
+        => _closureMode == WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain
+            ? TryGetCorrelationConsistentSuperheatedTemperatureBounds(specificVolume, out minimumKelvins, out maximumKelvins)
+            : TryGetHistoricalSuperheatedTemperatureBounds(specificVolume, out minimumKelvins, out maximumKelvins);
+
+    private static bool TryGetHistoricalSuperheatedTemperatureBounds(
         double specificVolume,
         out double minimumKelvins,
         out double maximumKelvins)
@@ -556,14 +739,14 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         maximumKelvins = Math.Min(MaximumSuperheatedTemperatureKelvins, pressureLimitedMaximum);
 
         if (maximumKelvins < TriplePointTemperatureKelvins
-            || !IsSuperheatedTemperatureAdmissible(maximumKelvins, specificVolume))
+            || !IsHistoricalSuperheatedTemperatureAdmissible(maximumKelvins, specificVolume))
         {
             minimumKelvins = 0d;
             maximumKelvins = 0d;
             return false;
         }
 
-        if (IsSuperheatedTemperatureAdmissible(TriplePointTemperatureKelvins, specificVolume))
+        if (IsHistoricalSuperheatedTemperatureAdmissible(TriplePointTemperatureKelvins, specificVolume))
         {
             minimumKelvins = TriplePointTemperatureKelvins;
             return true;
@@ -571,7 +754,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
         var lower = TriplePointTemperatureKelvins;
         var upper = Math.Min(MaximumSaturationTemperatureKelvins, maximumKelvins);
-        if (!IsSuperheatedTemperatureAdmissible(upper, specificVolume))
+        if (!IsHistoricalSuperheatedTemperatureAdmissible(upper, specificVolume))
         {
             minimumKelvins = 0d;
             maximumKelvins = 0d;
@@ -581,7 +764,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         for (var iteration = 0; iteration < BisectionIterations; iteration++)
         {
             var middle = (lower + upper) / 2d;
-            if (IsSuperheatedTemperatureAdmissible(middle, specificVolume))
+            if (IsHistoricalSuperheatedTemperatureAdmissible(middle, specificVolume))
             {
                 upper = middle;
             }
@@ -595,9 +778,21 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return true;
     }
 
-    private static bool IsSuperheatedTemperatureAdmissible(double temperatureKelvins, double specificVolume)
+    private bool IsSuperheatedTemperatureAdmissible(double temperatureKelvins, double specificVolume)
+        => IsSuperheatedTemperatureAdmissible(temperatureKelvins, specificVolume, SuperheatedPressurePascals(temperatureKelvins, specificVolume));
+
+    private static bool IsHistoricalSuperheatedTemperatureAdmissible(double temperatureKelvins, double specificVolume)
+        => IsSuperheatedTemperatureAdmissible(
+            temperatureKelvins,
+            specificVolume,
+            WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / specificVolume);
+
+    private static bool IsSuperheatedTemperatureAdmissible(
+        double temperatureKelvins,
+        double specificVolume,
+        double pressurePascals)
     {
-        var pressurePascals = WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / specificVolume;
+        _ = specificVolume;
         if (!double.IsFinite(pressurePascals) || pressurePascals <= 0d || pressurePascals >= CriticalPressurePascals)
         {
             return false;
@@ -605,6 +800,67 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
         var saturationTemperature = SaturationTemperatureFromPressure(pressurePascals);
         return saturationTemperature is not null && temperatureKelvins >= saturationTemperature.Value;
+    }
+
+    private bool TryGetCorrelationConsistentSuperheatedTemperatureBounds(
+        double specificVolume,
+        out double minimumKelvins,
+        out double maximumKelvins)
+    {
+        if (!IsSuperheatedTemperatureAdmissible(MaximumSaturationTemperatureKelvins, specificVolume))
+        {
+            minimumKelvins = 0d;
+            maximumKelvins = 0d;
+            return false;
+        }
+
+        if (IsSuperheatedTemperatureAdmissible(TriplePointTemperatureKelvins, specificVolume))
+        {
+            minimumKelvins = TriplePointTemperatureKelvins;
+        }
+        else
+        {
+            var lower = TriplePointTemperatureKelvins;
+            var upper = MaximumSaturationTemperatureKelvins;
+            for (var iteration = 0; iteration < BisectionIterations; iteration++)
+            {
+                var middle = (lower + upper) / 2d;
+                if (IsSuperheatedTemperatureAdmissible(middle, specificVolume))
+                {
+                    upper = middle;
+                }
+                else
+                {
+                    lower = middle;
+                }
+            }
+
+            minimumKelvins = upper;
+        }
+
+        if (IsSuperheatedTemperatureAdmissible(MaximumSuperheatedTemperatureKelvins, specificVolume))
+        {
+            maximumKelvins = MaximumSuperheatedTemperatureKelvins;
+            return true;
+        }
+
+        var validLower = MaximumSaturationTemperatureKelvins;
+        var invalidUpper = MaximumSuperheatedTemperatureKelvins;
+        for (var iteration = 0; iteration < BisectionIterations; iteration++)
+        {
+            var middle = (validLower + invalidUpper) / 2d;
+            if (IsSuperheatedTemperatureAdmissible(middle, specificVolume))
+            {
+                validLower = middle;
+            }
+            else
+            {
+                invalidUpper = middle;
+            }
+        }
+
+        maximumKelvins = validLower;
+        return maximumKelvins + 1e-12d >= minimumKelvins;
     }
 
     private static bool TryResolveSubcooledLiquid(
@@ -656,7 +912,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return true;
     }
 
-    private static bool TryResolveSuperheatedVapor(
+    private bool TryResolveSuperheatedVapor(
         double specificVolume,
         double specificInternalEnergy,
         out FluidThermodynamicState state)
@@ -701,7 +957,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
     /// by a guarded margin proves the sampled temperature cannot be superheated. Standard production Resolve
     /// and the public diagnostic continue to use TryResolveSuperheatedVapor unchanged.
     /// </summary>
-    private static bool TryResolveSuperheatedVaporForContinuity(
+    private bool TryResolveSuperheatedVaporForContinuity(
         double specificVolume,
         double specificInternalEnergy,
         out FluidThermodynamicState state)
@@ -829,12 +1085,34 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
             ?? throw new InvalidOperationException("Could not finalize saturated-state root.");
     }
 
-    private static SuperheatedEvaluation? EvaluateSuperheatedCandidateForContinuity(
+    private double SuperheatedPressurePascals(double temperatureKelvins, double specificVolume)
+    {
+        if (_closureMode == WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
+        {
+            return WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / specificVolume;
+        }
+
+        var boundaryTemperatureKelvins = Math.Min(temperatureKelvins, MaximumSaturationTemperatureKelvins);
+        var boundary = EvaluateSaturationValue(boundaryTemperatureKelvins);
+        var idealBoundarySpecificVolume = WaterVaporGasConstantJoulesPerKilogramKelvin
+            * boundaryTemperatureKelvins
+            / boundary.Pressure.Pascals;
+        var volumeShift = idealBoundarySpecificVolume - boundary.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
+        var effectiveSpecificVolume = specificVolume + volumeShift;
+        if (!double.IsFinite(effectiveSpecificVolume) || effectiveSpecificVolume <= 0d)
+        {
+            return double.NaN;
+        }
+
+        return WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / effectiveSpecificVolume;
+    }
+
+    private SuperheatedEvaluation? EvaluateSuperheatedCandidateForContinuity(
         double temperatureKelvins,
         double specificVolume,
         double targetSpecificInternalEnergy)
     {
-        var pressurePascals = WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / specificVolume;
+        var pressurePascals = SuperheatedPressurePascals(temperatureKelvins, specificVolume);
         if (!double.IsFinite(pressurePascals) || pressurePascals <= 0d || pressurePascals >= CriticalPressurePascals)
         {
             return null;
@@ -854,12 +1132,12 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return EvaluateSuperheatedCandidate(temperatureKelvins, specificVolume, targetSpecificInternalEnergy);
     }
 
-    private static SuperheatedEvaluation? EvaluateSuperheatedCandidate(
+    private SuperheatedEvaluation? EvaluateSuperheatedCandidate(
         double temperatureKelvins,
         double specificVolume,
         double targetSpecificInternalEnergy)
     {
-        var pressurePascals = WaterVaporGasConstantJoulesPerKilogramKelvin * temperatureKelvins / specificVolume;
+        var pressurePascals = SuperheatedPressurePascals(temperatureKelvins, specificVolume);
 
         if (!double.IsFinite(pressurePascals) || pressurePascals <= 0d || pressurePascals >= CriticalPressurePascals)
         {
@@ -883,7 +1161,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
             modeledSpecificInternalEnergy - targetSpecificInternalEnergy);
     }
 
-    private static SuperheatedEvaluation BisectSuperheated(
+    private SuperheatedEvaluation BisectSuperheated(
         double lowerTemperatureKelvins,
         double upperTemperatureKelvins,
         double specificVolume,
@@ -992,6 +1270,33 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         var c = (n6 * theta * theta) + (n7 * theta) + n8;
         var pressureMegapascals = Math.Pow((2d * c) / (-b + Math.Sqrt((b * b) - (4d * a * c))), 4d);
         return pressureMegapascals * 1_000_000d;
+    }
+
+    private static double FindSaturatedLiquidDensityMaximumTemperatureKelvins()
+    {
+        var lower = TriplePointTemperatureKelvins;
+        var upper = MaximumSaturationTemperatureKelvins;
+
+        // The saturated-liquid correlation is unimodal over the supported interval: it rises from the
+        // triple point to the physical density maximum near 4 C and then decreases toward the critical region.
+        // Ternary search locates that turning point without hard-coding a temperature into inverse-domain logic.
+        for (var iteration = 0; iteration < BisectionIterations; iteration++)
+        {
+            var left = lower + ((upper - lower) / 3d);
+            var right = upper - ((upper - lower) / 3d);
+            var leftDensity = SaturatedLiquidDensityKilogramsPerCubicMetre(left);
+            var rightDensity = SaturatedLiquidDensityKilogramsPerCubicMetre(right);
+            if (leftDensity < rightDensity)
+            {
+                lower = left;
+            }
+            else
+            {
+                upper = right;
+            }
+        }
+
+        return (lower + upper) / 2d;
     }
 
     private static double SaturatedLiquidDensityKilogramsPerCubicMetre(double temperatureKelvins)

@@ -142,7 +142,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool useHybridSemiImplicitHydraulics = false,
         TimeSpan? runtimeStep = null,
         bool useFourNodeBranchContinuityShadowIntegration = false,
-        bool useFourNodeBranchContinuityCorrectedCommitOptIn = false)
+        bool useFourNodeBranchContinuityCorrectedCommitOptIn = false,
+        WaterSteamThermodynamicClosureMode thermodynamicClosureMode = WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
     {
         var effectiveRuntimeStep = runtimeStep ?? RuntimeStep;
         if (effectiveRuntimeStep <= TimeSpan.Zero)
@@ -227,7 +228,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             useEnthalpyTransportForTurbineExpansion,
             useHybridSemiImplicitHydraulics,
             useFourNodeBranchContinuityShadowIntegration,
-            useFourNodeBranchContinuityCorrectedCommitOptIn);
+            useFourNodeBranchContinuityCorrectedCommitOptIn,
+            thermodynamicClosureMode);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -328,7 +330,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool useEnthalpyTransportForTurbineExpansion,
         bool useHybridSemiImplicitHydraulics,
         bool useFourNodeBranchContinuityShadowIntegration,
-        bool useFourNodeBranchContinuityCorrectedCommitOptIn)
+        bool useFourNodeBranchContinuityCorrectedCommitOptIn,
+        WaterSteamThermodynamicClosureMode thermodynamicClosureMode)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -685,7 +688,7 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 "Primary operational-flow display lag must be finite, greater than zero and no greater than 10 seconds when specified.");
         }
 
-        var thermodynamicModel = new SimplifiedWaterSteamThermodynamicModel();
+        var thermodynamicModel = new SimplifiedWaterSteamThermodynamicModel(thermodynamicClosureMode);
         var passiveEnergyTransportMode = useEnthalpyTransportForPassivePipesAndValves
             ? FluidEnergyTransportMode.SpecificEnthalpy
             : FluidEnergyTransportMode.SpecificInternalEnergy;

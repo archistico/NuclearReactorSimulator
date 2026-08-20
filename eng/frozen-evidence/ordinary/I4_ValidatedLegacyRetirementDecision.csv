@@ -1,0 +1,3 @@
+mode,production_dependency,exact_version_dependency,current_ci_dependency,source_dependency,test_dependency,decision
+DeterministicHybridSemiImplicit,False,False,False,True,True,DEFER-SOURCE-REMOVAL
+FourNodeBranchContinuityShadowIntegrated,False,False,False,True,True,DEFER-SOURCE-REMOVAL

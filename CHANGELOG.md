@@ -1,3 +1,220 @@
+## M10.9.4.1-I.5 REV1 Hotfix 17.1 Docs Planning 1 — Post-Phase-I / M11 Execution Plan — DOCUMENTATION-ONLY CANDIDATE
+
+- Adds detailed planning contracts for M10.9.5, M10.9.6, M10.9.7, M10.9.8 and M11 without changing runtime, tests, CI scripts or validation gates.
+- Expands `ROADMAP.md` from milestone bullets into a fixed execution discipline with explicit entry/exit gates, non-scope, failure discipline and a post-M11 engineering horizon.
+- Freezes M10.9.5 as a qualitative/authored consequence model that keeps direct effect, expected influence, blockers, monitor targets and observed response separate and never performs UI-side predictive physics.
+- Plans M10.9.6 as deterministic logical-time challenge/demand/scoring ownership; external demand, requested generator load and actual output remain distinct. Exact score weights and selected challenge semantics are explicit pre-implementation decisions, not hidden implementation choices.
+- Plans M10.9.7 as presentation-only mission/performance aggregation. Records one open HMI architecture decision: the validated Operator Computer F1–F8 contract must not silently become F1–F9; the recommended plan is a dedicated main-HMI Mission/Performance workspace linked from COMPUTER.
+- Plans M10.9.8 as the M10 closure matrix across `Hidden|ChecklistOnly|Guided` assistance and `Manual|Assisted|SupervisoryAutomatic` authority, with degraded measurement, protection, fault, takeover, challenge/scoring and replay/checkpoint cases.
+- Plans M11 as strict release hardening: support/version freeze, persistence compatibility/migration, performance/memory budgets, packaging/deployment, documentation/manual alignment and a final clean release-candidate gate. No new feature work is accepted unless a release gate proves a blocker.
+- Refreshes the approved future gameplay/damage/accident direction so it is explicitly post-M11 and ordered by causal prerequisites: extreme-envelope audit → integrity/stress primitives → component damage families → core-damage prerequisites → incident severity/persistence → later fidelity/UI extensions.
+
+## M10.9.4.1-I.5 REV1 Hotfix 17.1 — Final Preflight Static Audit & Documentation Alignment — CANDIDATE
+
+- Performs a static preflight over every Hotfix 17 C# / batch / evidence-contract delta before the multi-hour cumulative closure. The new repaired-v4 300 s audit has the required namespaces, including `Application.Scenarios.Recording` for `ControlRoomSnapshotFingerprint`; no escaped-string interpolation pattern like the Hotfix 9 compile failure remains.
+- Verifies all batch `call` targets and all `--filter-method` targets exist; opt-in environment-variable names match their tests; the repaired-v4 artifact producer/consumer paths align with cumulative closure; fixes the stale root `APPLY_UPDATE.cmd` that still announced Hotfix 16 and pointed users back to the already validated narrow activation audit.
+- Recomputes the canonical SHA-256 of `I3_ValidatedAuthoritativeToleranceBudgets.csv` as `9B7A2653F08059ECBD16F39FEB0DD7350F62C98A5892A8215D34404D6C9301BB`, confirms 19 budget rows, the two-line repaired-v4 contract, and the 19-row Phase-I tier split `1 ORDINARY / 3 CURRENT-EVIDENCE / 4 SCHEDULED-LONG / 11 HISTORICAL-FROZEN`.
+- No C# runtime/test logic or CI gate logic is changed by this hotfix. `APPLY_UPDATE.cmd` is corrected from stale Hotfix-16 instructions to the final Hotfix-17/17.1 cleanup and validation sequence.
+- Updates `README.md`, `docs/PROJECT.md`, `docs/ROADMAP.md`, `docs/KNOWN_MODEL_LIMITATIONS.md`, `docs/WATER_STEAM_MODEL.md` and ADR 0165/0166; adds ADR 0167 to record exact-v4 authoritative activation while exact @2/@3 and synchronization exact @3 remain immutable compatibility/provenance identities.
+- Final validation remains `dotnet build`, `dotnet test`, then `scripts\run-m10941-cumulative-closure-audit.cmd`. No additional repair stage is introduced.
+
+## M10.9.4.1-I.5 REV1 Hotfix 17 — Final Repaired-v4 Phase-I Closure — CANDIDATE
+
+- Promotes Hotfix 16.2 production activation to locally validated evidence: authoritative exact @4 completed the 1200-step healthy control with zero health/trip/breaker violations, 2/2 corrected trigger/commit, zero rollback/fallback/unsafe/untargeted disagreement and deterministic repeat.
+- Adds the final authoritative exact-v4 300-second production-reference requalification. The gate runs 30,000 steps at 10 ms, checks health and stop/control/admission flow every step, samples one-second reference state, computes the seven final-window slopes and compares 19 observations directly against the unchanged frozen I.3 exact-v3 tolerance budgets.
+- The 19 I.3 budgets are acceptance authority only: Hotfix 17 neither regenerates nor widens them. Historical exact-v3 I.3 evidence remains immutable provenance and is explicitly not reinterpreted as exact @4 evidence.
+- Realigns `eng/ci-current-evidence.cmd` and `eng/phase-i-audit-tiers.csv`: H.30 RQ1, I.3 exact-v3 and I.4 move to `HISTORICAL-FROZEN`; current evidence becomes I.2 contract + synchronization exact-v3 activation + repaired exact-v4 production activation.
+- Realigns `eng/ci-long.cmd`: GameplayLong, OperationalEnvelope and ReferencePlantScale remain, while the stale authoritative-v3 I.3 rerun is replaced by the repaired exact-v4 300-second reference requalification.
+- Updates the cumulative M10.9.4.1 closure to require current exact-v4 activation, synchronization exact-v3 evidence, repaired exact-v4 frozen-budget reference evidence and the complete scheduled-long chain before writing `phase-i-closed=True` and `m1095-unblocked=True`.
+- Preserves exact @2 rollback, exact @3 historical replay, synchronization exact @3, the 10 ms fixed step, H.20/H.22 ownership, H.9/P060-F040/hysteresis contracts and all physical coefficients. The only `src/` change is application metadata describing the final closure candidate.
+- Final validation is `dotnet build`, `dotnet test`, then `scripts\run-m10941-cumulative-closure-audit.cmd`. No additional I.5 repair stage is planned if this chain is green.
+
+## M10.9.4.1-I.5 REV1 Hotfix 16.2 — Production Activation Descriptor Contract Fix — CANDIDATE
+
+- Fixes the only ordinary-suite failure remaining after Hotfix 16.1: `ApplicationDescriptorTests.Current_DescribesI5RepairedExactV4ProductionActivation` used ordinal case-sensitive matching for `"exact v3"`, while the authoritative descriptor correctly says `"Exact v3 remains..."`.
+- Changes only the expected casing in that application test plus current candidate documentation/changelog. No production/runtime code, selector, exact-version composition, thermodynamic closure, numerical contract or acceptance criterion changes from Hotfix 16.1.
+- Validation remains `dotnet build`, `dotnet test`, then `scripts/run-i5-repaired-exact-v4-production-activation-audit.cmd`.
+
+## M10.9.4.1-I.5 REV1 Hotfix 16.1 — Production Activation Audit Compile Fix — CANDIDATE
+
+- Fixes the Hotfix 16 focused activation audit compile failure `CS0103` by importing `NuclearReactorSimulator.Application.Scenarios.Recording`, the namespace that owns `ControlRoomSnapshotFingerprint`.
+- Changes only the new application-test audit plus current candidate documentation/changelog. Production/runtime code, exact @2/@3/@4 composition, selector activation, thermodynamic closure, numerical contracts and acceptance criteria are unchanged from Hotfix 16.
+- The validation sequence remains `dotnet build`, `dotnet test`, then `scripts/run-i5-repaired-exact-v4-production-activation-audit.cmd`. The multi-hour cumulative closure remains deferred until this narrow activation gate is green.
+
+## M10.9.4.1-I.5 REV1 Hotfix 16 — Repaired Exact Version 4 Authoritative Production Activation — CANDIDATE
+
+- Promotes Hotfix 15 exact-v4 readiness to locally validated evidence: exact @1/@2/@3/@4 resolve distinctly; the actual @4 factory completed the frozen 7000-step gap journey with 9/9 trigger/commit, zero rollback/fallback/unsafe/untargeted disagreement and no thermodynamic out-of-range failure.
+- Adds `DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit` and changes the authoritative desktop production selector from historical exact @3 to repaired exact @4.
+- Keeps exact @2 as fail-closed `ExplicitCommittedState` rollback/reference and exact @3 as an immutable historical H.29/H.30 corrected-commit replay identity; `H29ActivationCandidatePolicy` still resolves exact @3.
+- Adds a distinct production scenario `integrated-normal-operations-training-i5-repaired-v4-production` while retaining the historical H.30 production and I.5 readiness scenario identities for replay/training-plan compatibility.
+- Updates ordinary current-selector/versioning contracts so historical H.30/I.3 manifests remain frozen provenance while current production is exact @4.
+- Adds a narrow production-activation audit: 1200 healthy default-production steps, fail-closed corrected telemetry, conservation bounds and 128-step deterministic repeat.
+- Does not alter thermodynamic equations, physical coefficients, H.9 tolerances, P060/F040, hysteresis bounds, synchronization exact versions or the 10 ms fixed step.
+- The next and final technical block is repaired-v4 scheduled-long/reference compatibility and cumulative M10.9.4.1 / Phase-I closure.
+
+## M10.9.4.1-I.5 REV1 Hotfix 15 — Repaired Exact Version 4 Registration & Activation Readiness — CANDIDATE
+
+- Promotes Hotfix 14 Stage 4 to locally validated repaired performance/cost/operational-soak evidence: original H.28 relative ceilings pass, repaired corrected is bounded at-or-below repaired explicit on median/p95 wall time, 1536-step corrected soak is trip/rollback/unsafe/disagreement free, and deterministic repeat passes.
+- Adds exact `integrated-operations-desktop-stable@4` through `DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory`. Exact @4 preserves the exact-v2 physical seed, the exact-v3 H.22 corrected-commit ownership and 10 ms fixed step while selecting the validated `CorrelationConsistentInverseDomain` water/steam closure.
+- Keeps exact @2 and @3 immutable. The current production selector deliberately remains H.30 exact @3 in this readiness candidate; @4 is registered for exact loading/replay and is not yet authoritative production.
+- Adds a distinct replayable training scenario `integrated-normal-operations-training-i5-repaired-v4-activation-candidate` and registers exact @4 in the desktop application composition root so candidate saves/archives can resolve without reinterpreting historical identities.
+- Adds a narrow activation-readiness audit that resolves exact @1/@2/@3/@4 independently, proves current production still points to @3 and explicit kill to @2, verifies @4 uses corrected hydraulics at 10 ms, and drives @4 through the frozen 7000-step exhaust-gap journey with fail-closed corrected telemetry; trip count remains observational because the historical load-step contract does not impose a no-trip floor.
+- No production selector switch occurs in Hotfix 15. If the narrow gate is green, the next candidate performs the single authoritative @3 -> @4 production switch and immediately runs the final scheduled-long/reference-plant/I.3/cumulative Phase-I closure chain.
+
+## M10.9.4.1-I.5 REV1 Hotfix 14 — Thermodynamic Repair Performance/Cost/Operational-Soak Requalification Stage 4 — CANDIDATE
+
+- Promotes user-validated Hotfix 13 Stage 3 evidence: repaired replay/checkpoint/reverse-power protection and all six repaired H.27 off-design scenarios passed with deterministic/fail-closed ownership and bounded conservation.
+- Adds an explicit repaired H.28-style performance/cost gate. Both benchmark modes use `CorrelationConsistentInverseDomain`; only hydraulic ownership differs, isolating corrected-path overhead from thermodynamic-repair cost.
+- Preserves the original H.28 machine-local relative ceilings unchanged: median wall-cost ratio <= 8, p95 wall-cost ratio <= 12 and median allocation ratio <= 16. The benchmark remains 64 warmup + 256 measured steps per mode with the historical 5 -> 0 -> 5 MWe manoeuvre repeated twice.
+- Adds a 1536-step repaired corrected operational soak using six repetitions of the bounded H.28 benchmark load cycle, with fail-closed ownership, no trips, conservation budgets, memory/GC observations and sampled telemetry.
+- Adds a 128-step deterministic control repeated twice. Timing/allocation values are observational only and never enter deterministic runtime behavior.
+- No registered exact-version identity or production selector is changed. The 10 ms fixed step, H.20/H.22 authority/ownership, H.9, P060/F040, four-node target set, hysteresis limits and physical coefficients are unchanged.
+- If Stage 4 is green, the next step is a narrow new exact repaired desktop identity followed by activation evidence, then the final scheduled-long/reference-plant/I.3/cumulative Phase-I closure.
+
+## M10.9.4.1-I.5 REV1 Hotfix 13 — Thermodynamic Repair Replay/Protection/Off-Design Requalification Stage 3 — CANDIDATE
+
+- Promotes Hotfix 12 Stage 2 to locally validated repaired long-horizon evidence: 30,000 qualification intervals across `steady-long|load-pulse|cooling-pulse|combined-load-cooling`, 58/58 triggers/eligible/authorized/commits, zero rollback/fallback/unsafe/untargeted violations, deterministic repeat and bounded conservation.
+- Freezes the Stage-2 continuity classification: branch overrides `0`, previous-phase holds `3720`, hysteresis releases `0`, 58 continuity-active trigger steps total and 50 after the first two startup intervals. Detailed telemetry shows 30 trigger steps with 82 holds and 28 with 45; previous-phase hysteresis remains materially exercised and is not retired.
+- Adds `PhaseIThermodynamicRepairReplayCheckpointProtectionRequalificationAuditTests`, using an audit-only exact-version factory over `CorrelationConsistentInverseDomain` + H.29 corrected ownership to requalify full scenario replay, checkpoint continuation, deterministic telemetry identity and evidence-derived reverse-power generator protection without registering a production identity.
+- Adds `PhaseIThermodynamicRepairOffDesignRequalificationAuditTests`, replaying the validated H.27 six-scenario bounded off-design envelope through the repaired closure with the existing fail-closed corrected-commit authority.
+- Adds `scripts/run-i5-thermodynamic-repair-replay-protection-off-design-requalification-stage3-audit.cmd`, which runs both explicit gates and collects their seven evidence files into `artifacts/i5-thermodynamic-repair-requalification-stage3`.
+- No file under `src/` changes in Hotfix 13. Historical H.23/H.27 tests and frozen evidence remain untouched; exact desktop `@2`/`@3` and the production selector remain unchanged.
+- Performance/cost/operational-soak requalification is deliberately deferred to Stage 4 so semantic replay/protection/off-design failures can be separated from timing/cost regressions. Cumulative Phase-I closure remains blocked.
+
+## M10.9.4.1-I.5 REV1 Hotfix 12 — Thermodynamic Repair Long-Horizon/Cross-Profile Requalification Stage 2 — CANDIDATE
+
+- Promotes Hotfix 11 Stage 1 to locally validated repaired-closure evidence: build and tests passed; 1024-interval H.29 control completed under explicit and corrected hydraulics; corrected authority exercised with `2/2` commits, zero rollback/unsafe/untargeted violations, exact deterministic repeat and bounded conservation.
+- Freezes the key Stage-1 classification: branch overrides are `0`, previous-phase holds are `164` total (`82` on each of the first two trigger steps), hysteresis releases are `0`, and no continuity activity was observed after the initial two intervals in that control pattern.
+- Adds `PhaseIThermodynamicRepairLongHorizonCrossProfileRequalificationAuditTests`, reusing the validated H.19/H.24 four-profile domain: `steady-long` 12000, `load-pulse` 6000, `cooling-pulse` 6000 and `combined-load-cooling` 6000 intervals.
+- Runs the Hotfix 10 `CorrelationConsistentInverseDomain` evidence seam with real H.29 corrected-commit ownership for all 30000 qualification intervals. No registered exact-version identity or production selector is changed.
+- Keeps hard acceptance on no trip, H.20/H.22 fail-closed commit safety, zero unsafe/fallback commits, zero untargeted disagreement, conservation budgets and deterministic repeat.
+- Treats trigger/commit/branch-override/previous-phase-hold/hysteresis-release counts as classification evidence rather than inheriting the historical H.17/H.19 counts as floors. The audit separately reports continuity activity after the first two startup intervals.
+- Production activation remains false. A green Stage 2 advances to repaired replay/checkpoint/protection plus off-design/performance requalification before any new exact repaired production identity or cumulative Phase-I closure.
+
+## M10.9.4.1-I.5 REV1 Hotfix 11 — Thermodynamic Repair Requalification Stage 1 — CANDIDATE
+
+- Promotes Hotfix 10 to locally validated opt-in repair evidence: topology `3/3` observed vapor probes resolved, `7/7` saturated-only seam-below and `7/7` superheated-only seam-above, `231/231` low-temperature census resolved, and both explicit/corrected 7000-step frozen load journeys completed without thermodynamic out-of-range failure.
+- Keeps every registered/default runtime, exact-version identity and production selector unchanged. No file under `src/` changes in Hotfix 11.
+- Adds `PhaseIThermodynamicRepairRequalificationStage1AuditTests`, which runs the validated H.29 1024-interval control pattern through the Hotfix 10 repaired-closure evidence seam under explicit and corrected hydraulics.
+- Re-establishes no-trip, conservation, deterministic-repeat and H.20/H.22 fail-closed commit safety under the changed thermodynamic topology.
+- Records P060/F040 triggers, eligibility, authorization, commits, rollbacks, untargeted disagreements, branch overrides, previous-phase holds and hysteresis releases without turning historical counts into new acceptance floors.
+- Adds explicit-vs-corrected physical comparison evidence. The purpose is to determine whether H.13-H.19 continuity machinery remains materially active after the historical vapor overlap is removed, so the next long-horizon requalification can preserve only behavior still justified by evidence.
+- Production activation remains false. Exact desktop `@2` and `@3` are not overwritten, and cumulative Phase-I closure remains blocked pending repaired long-horizon/cross-profile, replay/protection/off-design/performance and scheduled-long requalification.
+
+## M10.9.4.1-I.5 REV1 Hotfix 10 — Correlation-Consistent Inverse-Domain Repair Candidate — CANDIDATE
+
+- Promotes the user-validated Hotfix 9.1 census as frozen evidence: ordinary suite green (`1176` completed / `83` ignored), @2/@3 exhaust no-root reproduction green, vapor topology green (`194` no-root / `130` overlap / `44` missing-onset samples), and low-temperature census green (`83/83` proven inverse-search blind spots with local saturated-root brackets).
+- Adds `WaterSteamThermodynamicClosureMode`. The parameterless/default mode remains `HistoricalCorrelationTopology`; all registered runtime identities and production selectors therefore retain pre-Hotfix-10 thermodynamic behavior.
+- Adds opt-in `CorrelationConsistentInverseDomain`: saturation properties are unchanged, while the superheated pressure relation is volume-shifted so the superheated branch touches the correlated `vg(T), Psat(T), ug(T)` saturated-vapor boundary exactly instead of using the incompatible ideal boundary volume.
+- Makes the opt-in saturated fallback interval-aware by locating the saturated-liquid density maximum numerically and solving cold-liquid, warm-liquid and vapor specific-volume boundaries independently. This removes the triple-point-connected monotonic-validity assumption responsible for the 4–8.17 °C blind spot.
+- Adds an evidence-only desktop factory seam using the unchanged v2 physical seed with repaired thermodynamics under either explicit or H.29 corrected-commit hydraulics. No registered exact version or production policy is changed.
+- Adds ordinary unit regressions for the historical M9.7 vapor-gap point and the 5.01 °C disconnected saturation root under the repaired mode while preserving the default historical negative-gap contract.
+- Adds `PhaseIThermodynamicInverseDomainRepairCandidateAuditTests` plus `scripts\run-i5-thermodynamic-inverse-domain-repair-candidate-audit.cmd`. The focused gate requires all three observed vapor gaps to resolve, seven two-sided seam probes to have one branch per side, all 231 low-temperature census states to resolve, and the full 7000-step load raise/lower journey to complete under both explicit and corrected hydraulics.
+- Production activation remains false. H.12-H.30 and all scheduled long gates must be requalified before the repaired closure can become authoritative. No `exhaust` special case, inventory clamp, condenser retune, tolerance widening or fail-closed weakening is introduced.
+
+## M10.9.4.1-I.5 REV1 Hotfix 9.1 — Low-Temperature Census Compile Fix — CANDIDATE
+
+- Fixes the only compile blocker introduced by Hotfix 9 in `PhaseIWaterSteamLowTemperatureLiquidSeamAuditTests`: the summary interpolation embedded an escaped `"OUT-OF-RANGE"` string literal inside an interpolation expression, which is invalid C# syntax and caused 13 cascade parser errors.
+- Computes `productionOutOfRange` before building the summary string, so the interpolation contains only the numeric result and no nested string literal.
+- The low-temperature census algorithm, sampling domain, density-maximum/warm-twin search, local saturated-root proof, assertions, expected evidence and all Hotfix 8/9 diagnostics are unchanged.
+- No file under `src/` changes. No runtime/model/equation/coefficient/tolerance/target-set/fail-closed behaviour changes.
+
+## M10.9.4.1-I.5 REV1 Hotfix 9 — Full Inverse-Domain Gap Census — CANDIDATE
+
+- Treats the Hotfix 8 focused result as new evidence rather than a failed premise. The vapor audit confirmed 194 no-root samples, 130 overlap samples and 44 no-superheated-onset samples, while all @2/@3/M9.7 observed failures classify inside the same vapor no-root family.
+- Reclassifies the single liquid-side failure at 5.01 °C as a second internal inverse-map defect family. The saturated-liquid density correlation is non-monotonic around the water density maximum (~4 °C); a valid local saturated root exists for the rejected `vf(T), uf(T)-10 J/kg` state, but the current boundary-aware saturated search assumes triple-point-connected monotonic validity and therefore never scans the disconnected valid interval.
+- Updates the model-wide topology audit so the 5.01 °C result is frozen as expected evidence while regular liquid probes from 15.01 °C upward must remain resolvable.
+- Adds `PhaseIWaterSteamLowTemperatureLiquidSeamAuditTests` and a focused runner. The new census maps 0.5–12 K above the triple point, locates the density maximum and warm triple-volume twin, independently proves local saturated-root brackets, and records every production out-of-range state for which a real root exists.
+- No file under `src/` changes. No thermodynamic equation, condenser coefficient, solver tolerance, hydraulic policy, target set, acceptance floor or fail-closed rule changes.
+- Phase I remains blocked. The next production step, if this census validates, is one coherent inverse-domain repair covering both the vapor seam closure and interval-aware saturated root discovery, followed by focused and cumulative requalification.
+
+## M10.9.4.1-I.5 REV1 Hotfix 8 — Water/Steam Correlation Topology Audit — CANDIDATE
+
+- Reclassifies the Hotfix 7 result: exact desktop @2 also reaches `WaterSteamStateOutOfRangeException` at `exhaust`, later than @3 (4498 successful steps vs 3763), so corrected-commit history changes reachability/timing but does not create the underlying no-root state.
+- Adds an evidence-only topology audit over the production `SimplifiedWaterSteamThermodynamicModel`. It maps the full saturated-vapor/superheated seam, probes the saturated-liquid/subcooled seam and classifies the @2/@3 plus historical M9.7 no-root points.
+- The audit explicitly compares the saturated-vapor boundary `vg = 1/rho_g(T)` with the superheated onset implied by `p = R*T/v` against `Psat(T)`. It records no-root-gap, overlap/multiple-root and no-superheated-onset-below-640-K regions rather than treating the exhaust failure as an isolated point.
+- Adds representative low-pressure seam midpoint probes which must fail closed at several distinct temperatures and liquid-side +/-10 J/kg probes which must remain resolvable across the sampled saturated-liquid/subcooled seam.
+- Updates the Hotfix 7 focused diagnostic so both @2 and @3 exhaust failures are valid evidence and the diagnostic returns green when it reproduces the shared family with @3 failing earlier.
+- No file under `src/` changes. No thermodynamic equation, condenser coefficient, hydraulic policy, four-node target, tolerance, operating gate or fail-closed rule is changed. Phase I remains blocked pending a coherent vapor-boundary correction and requalification.
+
+## M10.9.4.1-I.5 REV1 Hotfix 6 — Synchronization Corrected Exact-Version Activation — CANDIDATE
+
+- Promotes user-validated Hotfix 5 qualification evidence: exact `pre-synchronization-grid-loading@3` passed the 10 s bounded stabilization plus strict 20–60 s sustained low-load contract with zero trip, breaker, shaft, stable rotor-band or reverse-admission violations.
+- Registers exact @3 in desktop composition while preserving @1 and @2 loadable and unchanged. @2 remains explicit compatibility/reference; @3 is the supported sustained-synchronization exact version using `FourNodeBranchContinuityCorrectedCommitOptIn`.
+- Moves the scheduled synchronization gameplay-long journey from @2 to @3. The first 10 s checkpoint verifies bounded stabilization/integrity; checkpoints 20–60 s retain the strict >4.0 MWe, >4.5 MW shaft, 2990–3010 rpm and forward-admission contract.
+- Freezes only the compact Hotfix 5 summary/metrics/checkpoints plus a canonical evidence manifest; generated qualification artifacts remain external to candidate ZIPs.
+- Adds a fast current-evidence activation audit and makes the cumulative I.5 closure require its artifact before declaring Phase I closed. The Phase-I tier manifest becomes 17 entries: 1 ORDINARY, 4 CURRENT-EVIDENCE, 4 SCHEDULED-LONG and 8 HISTORICAL-FROZEN.
+- Re-aligns the scheduled reference-plant-scale gate to the authoritative desktop production selector and synchronization @3 instead of stale direct-v2 factories; the 10 MWe/grid-coupling expectations are unchanged.
+- Re-labels the old I.1 source inventory tests explicitly as frozen historical provenance rather than pretending their 12-profile snapshot is the current registry.
+- No steam-path coefficient, governor gain, grid coupling, protection, desktop production policy, solver mathematics or 10 ms fixed-step retuning. Candidate packaging continues to exclude `Gameplay/Evidence`, generated `artifacts`, `bin` and `obj`.
+
+## M10.9.4.1-I.5 REV1 Hotfix 5 — Synchronization Corrected Exact-Version Qualification — CANDIDATE
+
+- Treats the user-validated Hotfix 4 loaded-contract diagnostic as evidence: exactly 1/7 bounded candidates qualified, `corrected-only`.
+- Adds exact `pre-synchronization-grid-loading@3` as an unregistered qualification candidate. It preserves every v2 physical seed, steam-path coefficient, governor gain, grid-coupling parameter, protection setting and the 10 ms fixed step; only hydraulic numerical ownership changes to `FourNodeBranchContinuityCorrectedCommitOptIn`.
+- Preserves exact @1/@2 identities unchanged and keeps the H.30 desktop production policy unchanged.
+- Freezes only the compact Hotfix 4 summary and candidate-metrics artifacts plus a small evidence manifest; the 147 KB detailed trace remains outside candidate ZIPs.
+- Adds ordinary contract tests for v2/v3 policy separation and frozen-diagnostic provenance.
+- Adds an explicit 60 s @3 qualification gate. The 10 s post-load point is treated as bounded stabilization with no trip/breaker/request/shaft/reverse-admission loss; from 20–60 s the sustained floor remains >4.0 MWe with rotor 2990–3010 rpm, shaft >4.5 MW and forward admission.
+- Does not yet register @3 in desktop composition or change the existing cumulative long journey. If validated, the next step is a narrow activation change before rerunning I.5 closure.
+- Candidate packaging continues to exclude `Gameplay/Evidence`, generated `artifacts`, `bin` and `obj`.
+
+## M10.9.4.1-I.5 REV1 Hotfix 4 — Synchronization Loaded-Contract Diagnostic — CANDIDATE
+
+- Treats the governor-only diagnostic result as evidence: frozen v2 remains unstable and 0/4 bounded controller-only candidates satisfy the strict 20–60 s gross/shaft/rotor/admission window.
+- Preserves exact `pre-synchronization-grid-loading@2` unchanged and does not weaken the original long-journey floor.
+- Adds a second explicit diagnostic that separates the historical D.3.2 loaded main-steam line capacity (`850` vs v2 `1000`), loaded stop-out pressure grade (`276.755 °C` vs v2 `277 °C`), H.30 corrected-commit hydraulics and the validated desktop PID.
+- Compares eight bounded contracts, including single-factor controls and the full loaded-contract combination, while keeping reactor/primary seed, condenser/feedwater, grid coupling, protections and fixed 10 ms step unchanged.
+- Adds richer one-second trace evidence for gross/mechanical/shaft power, rotor speed, main-line flow/pressure drop, steam/admission flow, valve position, turbine-inlet, drum and condenser state.
+- The evidence-only diagnostic reports qualification in artifacts instead of failing merely because no candidate qualifies. No file under `src/` changes and no new exact-version runtime is registered.
+- Candidate packaging continues to exclude `Gameplay/Evidence`, `artifacts`, `bin` and `obj`.
+
+## M10.9.4.1-I.5 REV1 Hotfix 3 — Diagnostic Interpolated-String Compile Fix — CANDIDATE
+
+- Fixes the only compile blocker in the new synchronization-governor diagnostic: an escaped string literal inside an interpolated-expression lambda corrupted C# parsing and produced 15 cascade syntax errors.
+- Computes the qualifying-candidate count before building the summary string, avoiding nested string literals inside the interpolation hole entirely.
+- Diagnostic candidate set, 60 s acceptance criteria, strict long-journey floor, registered runtimes, exact-version identities, physics, hydraulics, grid coupling and production policy are unchanged.
+- No file under `src/` changes. Candidate packaging continues to exclude `Gameplay/Evidence`, `artifacts`, `bin` and `obj`.
+
+## M10.9.4.1-I.5 REV1 Hotfix 2 — Synchronization Governor Stability Diagnostic — CANDIDATE
+
+- Treats REV1 Hotfix 1 as failed diagnostic evidence: the synchronization long journey recovered above 4.0 MWe at 20–50 s but fell again to 3.923 MWe and 2954.247 rpm at 60 s.
+- Restores the original strict gameplay-long acceptance contract: gross electrical output must remain above 4.0 MWe at every 10 s checkpoint; no stabilization-window exception remains.
+- Adds an explicit closure-blocker diagnostic that reproduces frozen `pre-synchronization-grid-loading@2` and compares four bounded governor-only candidates while keeping plant physics, hydraulic mode, grid coupling, protections, seed and exact-v2 identity unchanged.
+- Candidate set: legacy PI 0.5/0.02/0; add Kd=0.1; add Kd=0.2; Kp=1 PI; desktop-proven PID 1/0.02/0.2.
+- Strict candidate qualification requires no trip/breaker/request/shaft/reverse-admission violation over the 60 s run and, from 20–60 s one-second samples, gross >4.0 MWe, shaft >4.5 MW and rotor 2990–3010 rpm.
+- Does not change any registered initial condition, production runtime, exact-version identity, physics coefficient, hydraulic selector or I.3 budget. I.5 remains blocked until the diagnostic selects a qualifying controller and that controller is introduced/qualified as a new exact synchronization version.
+
+## M10.9.4.1-I.5 REV1 Hotfix 1 — Synchronization stabilization-window contract alignment
+
+- Keeps I.5 runtime physics/numerics unchanged.
+- Keeps the synchronization journey immediate post-load establishment check above 4.5 MWe.
+- Treats only checkpoint 1 (first 10 simulated seconds after the load command) as the bounded stabilization window already implied by the scenario guidance.
+- Keeps the existing sustained electrical-export floor above 4.0 MWe unchanged for checkpoints 2–6 (20–60 s).
+- Keeps breaker, request, shaft-power and no-trip checks active at every checkpoint.
+- Reason: the cumulative I.5 long gate observed 3.959 MWe at 10 s with healthy 5.051 MW shaft power, positive admission flow and no trip; the bidirectional grid coupling unloads the 2982 rpm rotor by the configured frequency-slip damping while turbine torque restores speed.
+- No source/runtime production file changes.
+
+## M10.9.4.1-I.5 Revision 1 — static re-verification and documentation consolidation
+
+- Re-verified the I.5 code/test/script delta without changing runtime behaviour: I.4 frozen hashes, descriptor contracts, MTP filter targets, CI script targets, xUnit2031 patterns and candidate packaging all pass static checks.
+- Consolidated duplicated current-state documentation into `docs/PROJECT.md`; removed current duplicates `PROJECT_STATUS.md`, `PROJECT_HANDOFF.md`, `NEW_CHAT_START.md`, `docs/current/I5_*` and the in-progress `docs/milestones/M10.9.4.1.md`.
+- Preserved the removed administrative material as one historical snapshot under `docs/history/project/I5_PRE_CONSOLIDATION_ADMIN_SNAPSHOT.md`.
+- Simplified root `README.md`, `docs/README.md` and `docs/ROADMAP.md` so each has a single responsibility.
+- `APPLY_UPDATE.cmd` now removes the obsolete duplicate current-state files when the candidate is stacked over an existing checkout.
+- Candidate packaging continues to exclude `Gameplay/Evidence`, `artifacts`, `bin` and `obj`.
+
+# M10.9.4.1-I.5 — Cumulative M10.9.4.1 Closure Gate — CANDIDATE
+
+- Built directly on user-validated I.4 Hotfix 2. H.30 RQ1 `ACTIVATE`, I.3 authoritative reference and I.4 known-limitations/legacy-retirement decisions are treated as validated prerequisites.
+- Freezes the compact I.4 summary/dependency/limitation/retirement artifacts and adds `eng/evidence-manifests/i4-validated.csv`.
+- Adds a cumulative closure script that runs `eng\ci-ordinary.cmd`, then `eng\ci-long.cmd`, then writes the final M10.9.4.1/Phase-I closure artifact.
+- Closure requires current 60 s gameplay, current-production operational-envelope protection/replay/load-rejection tests, reference-plant scale, the I.3 300 s reference, H.28 `bounded-but-costly` classification and the I.4 `DEFER-SOURCE-REMOVAL` decision.
+- Updates the reference-plant scale audit to construct the authoritative production runtime through `DesktopHydraulicProductionPolicySelector` rather than the historical direct v2 factory; scale constants/expectations are unchanged.
+- Moves validated I.4 candidate docs to history and keeps `docs/current/` limited to I.5.
+- No plant physics, numerical mathematics, H.20/H.22 authority, exact-version identity, production fixed step or I.3 budget changes.
+- Candidate packaging continues to exclude `tests/.../Gameplay/Evidence`, `artifacts`, `bin` and `obj`.
+
 # M10.9.4.1-I.4 Hotfix 2 — Canonical Frozen-Evidence Contract Alignment
 
 - Fixes the I.4 frozen-I.3 provenance test to hash text evidence canonically with LF line endings, matching the existing manifest contract and avoiding CRLF/LF false negatives.

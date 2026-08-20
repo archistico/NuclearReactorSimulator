@@ -196,6 +196,45 @@ public sealed class SimplifiedWaterSteamThermodynamicModelTests
     }
 
     [Fact]
+    public void CorrelationConsistentInverseDomain_ResolvesHistoricalVaporSeamGapWithoutChangingDefaultContract()
+    {
+        const double specificVolume = 65.477888248812704d;
+        const double specificInternalEnergy = 2_434_355d;
+        var definition = new FluidNodeDefinition("correlation-consistent-vapor-seam", Volume.FromCubicMetres(specificVolume));
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(1d),
+            Energy.FromJoules(specificInternalEnergy));
+        var repaired = new SimplifiedWaterSteamThermodynamicModel(
+            WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain);
+
+        var result = repaired.Resolve(definition, inventory, PreviousState());
+
+        Assert.Equal(FluidPhase.SuperheatedVapor, result.Phase);
+        Assert.InRange(result.Temperature.DegreesCelsius, 17.87d, 18.10d);
+        Assert.InRange(result.Pressure.Kilopascals, 2.04d, 2.10d);
+    }
+
+    [Fact]
+    public void CorrelationConsistentInverseDomain_FindsDisconnectedLowTemperatureSaturatedRoot()
+    {
+        var boundaryTemperature = Temperature.FromDegreesCelsius(5.01d);
+        var boundary = _model.GetSaturationProperties(boundaryTemperature);
+        var specificVolume = boundary.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram;
+        var targetEnergy = boundary.SaturatedLiquidInternalEnergy.JoulesPerKilogram - 10d;
+        var definition = new FluidNodeDefinition("low-temperature-liquid-island", Volume.FromCubicMetres(specificVolume));
+        var inventory = new FluidNodeInventory(Mass.FromKilograms(1d), Energy.FromJoules(targetEnergy));
+        var repaired = new SimplifiedWaterSteamThermodynamicModel(
+            WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain);
+
+        var result = repaired.Resolve(definition, inventory, PreviousState());
+
+        Assert.Equal(FluidPhase.SaturatedMixture, result.Phase);
+        Assert.NotNull(result.VaporQuality);
+        Assert.InRange(result.Temperature.DegreesCelsius, 5.00d, 5.01d);
+        Assert.InRange(result.VaporQuality!.Value.Fraction, 0d, 0.001d);
+    }
+
+    [Fact]
     public void NegativeSpecificInternalEnergy_IsRejectedAsOutOfRange()
     {
         var definition = new FluidNodeDefinition("invalid", Volume.FromCubicMetres(1d));

@@ -16,10 +16,16 @@ public sealed class ReferencePlantScaleMigrationTests
 {
     [Fact(Explicit = true)]
     [Trait("Category", "ReferencePlantScaleAudit")]
-    public void CurrentV2_SustainedProfilesOwnTenMegawattBidirectionalContract()
+    public void CurrentProductionProfilesOwnTenMegawattBidirectionalContract()
     {
-        AssertCurrentV2(new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine(), expectedRequestMegawatts: 5d);
-        AssertCurrentV2(new GridSynchronizationSustainedInitialConditionFactory().CreateRuntimeEngine(), expectedRequestMegawatts: 0d);
+        var productionDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        AssertCurrentScale(
+            DesktopHydraulicProductionPolicySelector.CreateFactory(productionDecision).CreateRuntimeEngine(),
+            expectedRequestMegawatts: 5d);
+        AssertCurrentScale(
+            new GridSynchronizationCorrectedInitialConditionFactory().CreateRuntimeEngine(),
+            expectedRequestMegawatts: 0d);
     }
 
     [Fact(Explicit = true)]
@@ -40,10 +46,12 @@ public sealed class ReferencePlantScaleMigrationTests
 
     [Fact(Explicit = true)]
     [Trait("Category", "ReferencePlantScaleAudit")]
-    public void CurrentV2_LoadCommandsClampAtTenMegawattsAndSignedHmiRangeTracksDefinition()
+    public void CurrentProduction_LoadCommandsClampAtTenMegawattsAndSignedHmiRangeTracksDefinition()
     {
+        var productionDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+            DesktopHydraulicProductionPolicySelector.CreateFactory(productionDecision).CreateRuntimeEngine());
         var initial = engine.CreatePresentationSnapshot(ControlRoomRunState.Paused);
         var generator = Assert.Single(initial.Electrical.Generators);
 
@@ -66,7 +74,7 @@ public sealed class ReferencePlantScaleMigrationTests
         Assert.Equal(10d, Assert.Single(clamped.Electrical.Generators).RequestedElectricalPower.NumericValue!.Value, 12);
     }
 
-    private static void AssertCurrentV2(IControlRoomRuntimeEngine runtime, double expectedRequestMegawatts)
+    private static void AssertCurrentScale(IControlRoomRuntimeEngine runtime, double expectedRequestMegawatts)
     {
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(runtime);
         var plant = engine.CurrentState.PlantDefinition;

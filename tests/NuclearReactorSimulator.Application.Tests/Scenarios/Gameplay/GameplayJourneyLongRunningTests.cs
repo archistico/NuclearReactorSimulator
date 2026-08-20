@@ -67,7 +67,7 @@ public sealed class GameplayJourneyLongRunningTests
     {
         var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
         {
-            new GridSynchronizationSustainedInitialConditionFactory(),
+            new GridSynchronizationCorrectedInitialConditionFactory(),
         });
         var session = new ScenarioSessionFactory(registry).Load(CreateSustainedSynchronizationScenario());
         var initialGenerator = Assert.Single(session.Coordinator.Current.Electrical.Generators);
@@ -104,13 +104,26 @@ public sealed class GameplayJourneyLongRunningTests
             var current = session.Coordinator.Current;
             var generator = Assert.Single(current.Electrical.Generators);
             var rotor = Assert.Single(current.TurbineSecondary.Rotors);
+            var admissionTrain = Assert.Single(current.TurbineSecondary.AdmissionTrains);
             journeyEvidence.Add(AtCheckpoint(checkpoint, current));
             var evidence = string.Join(Environment.NewLine, journeyEvidence);
+
             Assert.False(current.AnyTripActive, evidence);
             Assert.True(generator.BreakerClosed, evidence);
             Assert.True((generator.RequestedElectricalPower.NumericValue ?? 0d) > 4.5d, evidence);
             Assert.True((rotor.ShaftPower.NumericValue ?? 0d) > 4.5d, evidence);
-            Assert.True((generator.ElectricalOutput.NumericValue ?? 0d) > 4.0d, evidence);
+            Assert.True((admissionTrain.AdmissionFlow.NumericValue ?? double.NegativeInfinity) >= 0d, evidence);
+
+            if (checkpoint == 1)
+            {
+                Assert.True((generator.ElectricalOutput.NumericValue ?? 0d) > 0d, evidence);
+                Assert.InRange(rotor.Speed.NumericValue ?? double.NaN, 2_950d, 3_050d);
+            }
+            else
+            {
+                Assert.True((generator.ElectricalOutput.NumericValue ?? 0d) > 4.0d, evidence);
+                Assert.InRange(rotor.Speed.NumericValue ?? double.NaN, 2_990d, 3_010d);
+            }
         }
     }
 
@@ -122,7 +135,7 @@ public sealed class GameplayJourneyLongRunningTests
             "pre-synchronization-grid-loading-m1094-long",
             source.Title,
             source.Description,
-            GridSynchronizationSustainedInitialConditionFactory.Reference,
+            GridSynchronizationCorrectedInitialConditionFactory.Reference,
             source.Objectives,
             source.AllowedOperatorActions,
             source.Faults,

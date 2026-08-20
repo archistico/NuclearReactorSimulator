@@ -48,18 +48,23 @@ public sealed class PhaseIKnownLimitationsLegacyRetirementReviewAuditTests
     }
 
     [Fact]
-    public void ProductionSelector_RetainsValidatedV3DefaultAndExactV2Rollback()
+    public void ProductionSelector_UsesRepairedV4WhileHistoricalV3AndExactV2RollbackRemainRetained()
     {
         Assert.Equal(
-            DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate,
+            DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
 
         var production = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
         Assert.Equal("integrated-operations-desktop-stable", production.InitialCondition.InitialConditionId);
-        Assert.Equal(3, production.InitialCondition.Version);
-        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, production.EffectivePolicy);
+        Assert.Equal(4, production.InitialCondition.Version);
+        Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, production.EffectivePolicy);
         Assert.False(production.ExplicitKillApplied);
+
+        var historicalV3 = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
+        Assert.Equal(3, historicalV3.InitialCondition.Version);
+        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, historicalV3.EffectivePolicy);
 
         var rollback = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,

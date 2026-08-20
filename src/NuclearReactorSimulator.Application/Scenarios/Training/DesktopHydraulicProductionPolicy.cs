@@ -1,14 +1,15 @@
 namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
-/// Deployment-level hydraulic policy selection for the desktop current-v2/current-v3 operating profile.
-/// H.30 Requalification 1 promotes the already-qualified exact-v3 corrected-commit path to the authoritative default,
-/// while exact v2 remains the explicit rollback/reference policy.
+/// Deployment-level desktop production selection. Exact v2 remains the explicit fail-closed rollback/reference,
+/// exact v3 remains the historical H.29/H.30 corrected-commit production identity, and I.5 activates exact v4 with
+/// the validated CorrelationConsistentInverseDomain thermodynamic repair plus the same corrected-commit ownership.
 /// </summary>
 public enum DesktopHydraulicProductionPolicy
 {
     ExplicitCommittedState = 0,
     H29FourNodeCorrectedCommitCandidate = 1,
+    I5RepairedFourNodeCorrectedCommit = 2,
 }
 
 /// <summary>
@@ -23,19 +24,22 @@ public sealed record DesktopHydraulicProductionPolicyDecision(
     bool ExplicitKillApplied);
 
 /// <summary>
-/// Versioned desktop hydraulic production selector. H.29 introduced the exact-v3 candidate and fail-closed v2 kill seam;
-/// H.30 Requalification 1 changes only which already-qualified exact version is authoritative by default.
+/// Versioned desktop production selector. H.29/H.30 retain exact-v3 as a historical corrected identity; I.5 activates
+/// exact-v4 as the authoritative repaired production identity after Stages 1-4 plus exact-v4 readiness qualification.
 /// </summary>
 public static class DesktopHydraulicProductionPolicySelector
 {
     public static DesktopHydraulicProductionPolicy AuthoritativeDefaultPolicy
-        => DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate;
+        => DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit;
 
     public static DesktopHydraulicProductionPolicy ExplicitRollbackPolicy
         => DesktopHydraulicProductionPolicy.ExplicitCommittedState;
 
     public static DesktopHydraulicProductionPolicy H29ActivationCandidatePolicy
         => DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate;
+
+    public static DesktopHydraulicProductionPolicy I5RepairedProductionPolicy
+        => DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit;
 
     public static DesktopHydraulicProductionPolicyDecision Resolve(
         DesktopHydraulicProductionPolicy requestedPolicy,
@@ -55,6 +59,8 @@ public static class DesktopHydraulicProductionPolicySelector
                 => DesktopSustainedGenerationInitialConditionFactory.Reference,
             DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate
                 => DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
+            DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit
+                => DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference,
             _ => throw new ArgumentOutOfRangeException(nameof(requestedPolicy)),
         };
 
@@ -74,7 +80,9 @@ public static class DesktopHydraulicProductionPolicySelector
                 => new DesktopSustainedGenerationInitialConditionFactory(),
             DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate
                 => new DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory(),
-            _ => throw new ArgumentOutOfRangeException(nameof(decision), "Unknown effective desktop hydraulic production policy."),
+            DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit
+                => new DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory(),
+            _ => throw new ArgumentOutOfRangeException(nameof(decision), "Unknown effective desktop production policy."),
         };
     }
 }

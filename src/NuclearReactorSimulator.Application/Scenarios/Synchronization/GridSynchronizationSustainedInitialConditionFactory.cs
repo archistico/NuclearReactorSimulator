@@ -8,8 +8,9 @@ using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
 namespace NuclearReactorSimulator.Application.Scenarios.Synchronization;
 
 /// <summary>
-/// M10.9.4 opt-in generation-ready synchronization seed used by long gameplay/system acceptance. The historical M7.5
-/// v1 seed remains unchanged. This v2 profile retains zero initial generator load while using matched primary circulation,
+/// M10.9.4 generation-ready synchronization seed retained as exact-v2 compatibility/reference evidence after I.5
+/// promotes exact v3 for sustained long-gameplay acceptance. The historical M7.5 v1 seed remains unchanged. This v2
+/// profile retains zero initial generator load while using matched primary circulation,
 /// a half-full saturated steam drum and solid-to-coolant heat transfer, a bumpless spinning-reserve governor bias, a staged
 /// pressurized steam inventory and matched steam/condensation/feedwater capacity with condenser headroom for deliberate
 /// post-synchronization loading.

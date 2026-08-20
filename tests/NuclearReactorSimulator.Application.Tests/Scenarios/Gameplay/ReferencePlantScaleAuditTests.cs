@@ -7,7 +7,7 @@ using Xunit;
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 
 /// <summary>
-/// M10.9.4.1-E.2 evidence for the accepted reduced-scale current-v2 reference plant.
+/// M10.9.4.1-E.2-origin evidence for the accepted reduced-scale reference plant, retained as the current production scale contract.
 /// The audit freezes the coordinated 10 MWe nameplate, retained rotor inertia, normalized governor droop
 /// and deliberately retained synchronizing magnitudes.
 /// </summary>
@@ -18,10 +18,12 @@ public sealed class ReferencePlantScaleAuditTests
     [Fact(Explicit = true)]
     [Trait("Category", "OperationalEnvelopeAudit")]
     [Trait("Category", "ReferencePlantScaleAudit")]
-    public void CurrentV2_ReferencePlantScaleEvidence_IsExplicitAndReproducible()
+    public void CurrentProduction_ReferencePlantScaleEvidence_IsExplicitAndReproducible()
     {
+        var productionDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
-            new DesktopSustainedGenerationInitialConditionFactory().CreateRuntimeEngine());
+            DesktopHydraulicProductionPolicySelector.CreateFactory(productionDecision).CreateRuntimeEngine());
         var plant = engine.CurrentState.PlantDefinition;
         var rotor = Assert.Single(plant.TurbineExpansionSystem.Rotors);
         var generator = Assert.Single(plant.GeneratorGridSystem.Generators);

@@ -92,37 +92,37 @@ public sealed class FourNodeH30ProductionPolicyRereviewAuditTests
     }
 
     [Fact]
-    public void ProductionSelector_ActivatesExactV3ByDefaultAndKeepsExactV2FailClosedRollback()
+    public void HistoricalH30ExactV3RemainsReplayableWhileI5ExactV4IsCurrentAndV2RemainsFailClosedRollback()
     {
-        var defaultDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+        var currentDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        var historicalV3Decision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
             explicitKillRequested: true);
 
-        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, defaultDecision.EffectivePolicy);
-        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, defaultDecision.InitialCondition);
-        Assert.Equal(3, defaultDecision.InitialCondition.Version);
-        Assert.False(defaultDecision.ExplicitKillApplied);
+        Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, currentDecision.EffectivePolicy);
+        Assert.Equal(DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference, currentDecision.InitialCondition);
+        Assert.Equal(4, currentDecision.InitialCondition.Version);
+        Assert.False(currentDecision.ExplicitKillApplied);
+
+        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, historicalV3Decision.EffectivePolicy);
+        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, historicalV3Decision.InitialCondition);
+        Assert.Equal(3, historicalV3Decision.InitialCondition.Version);
 
         Assert.True(killDecision.ExplicitKillApplied);
         Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, killDecision.EffectivePolicy);
         Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, killDecision.InitialCondition);
         Assert.Equal(2, killDecision.InitialCondition.Version);
 
-        Assert.Equal(DesktopIntegratedOperationsProductionProgram.CorrectedProductionScenario, DesktopIntegratedOperationsProductionProgram.Scenario);
-        Assert.Equal(3, DesktopIntegratedOperationsProductionProgram.Scenario.InitialCondition.Version);
+        Assert.Equal(DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario, DesktopIntegratedOperationsProductionProgram.Scenario);
+        Assert.Equal(4, DesktopIntegratedOperationsProductionProgram.Scenario.InitialCondition.Version);
+        Assert.Equal(3, DesktopIntegratedOperationsProductionProgram.CorrectedProductionScenario.InitialCondition.Version);
         Assert.Equal(
             DesktopIntegratedOperationsProductionProgram.Scenario.ScenarioId,
             DesktopIntegratedOperationsProductionProgram.ResolveTrainingPlan(
                 DesktopIntegratedOperationsProductionProgram.Scenario.ScenarioId).ScenarioId);
-
-        Assert.Equal(2, DesktopIntegratedOperationsProgram.Scenario.InitialCondition.Version);
-        Assert.Equal(3, DesktopIntegratedOperationsH29ActivationCandidateProgram.Scenario.InitialCondition.Version);
-        Assert.Equal(3, DesktopIntegratedOperationsProductionProgram.CorrectedProductionScenario.InitialCondition.Version);
-        Assert.NotEqual(
-            DesktopIntegratedOperationsH29ActivationCandidateProgram.Scenario.ScenarioId,
-            DesktopIntegratedOperationsProductionProgram.CorrectedProductionScenario.ScenarioId);
     }
 
     [Fact]

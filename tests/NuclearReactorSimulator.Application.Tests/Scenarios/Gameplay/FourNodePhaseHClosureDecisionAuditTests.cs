@@ -99,19 +99,25 @@ public sealed class FourNodePhaseHClosureDecisionAuditTests
     }
 
     [Fact]
-    public void ClosurePolicyContract_PreservesExactV2RollbackAndExactV3IdentityAfterPolicyRequalification()
+    public void ClosurePolicyContract_PreservesHistoricalExactV3AndExactV2RollbackAfterI5RepairedV4Activation()
     {
         var currentDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+        var historicalV3Decision = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var historicalExplicitDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicy.ExplicitCommittedState);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
             explicitKillRequested: true);
 
-        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, currentDecision.EffectivePolicy);
-        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, currentDecision.InitialCondition);
-        Assert.Equal(3, currentDecision.InitialCondition.Version);
+        Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, currentDecision.EffectivePolicy);
+        Assert.Equal(DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference, currentDecision.InitialCondition);
+        Assert.Equal(4, currentDecision.InitialCondition.Version);
+
+        Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, historicalV3Decision.EffectivePolicy);
+        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, historicalV3Decision.InitialCondition);
+        Assert.Equal(3, historicalV3Decision.InitialCondition.Version);
 
         Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, historicalExplicitDecision.EffectivePolicy);
         Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, historicalExplicitDecision.InitialCondition);
@@ -119,13 +125,12 @@ public sealed class FourNodePhaseHClosureDecisionAuditTests
 
         Assert.True(killDecision.ExplicitKillApplied);
         Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, killDecision.EffectivePolicy);
-        Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, killDecision.InitialCondition);
         Assert.Equal(2, killDecision.InitialCondition.Version);
 
-        Assert.IsType<DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory>(
+        Assert.IsType<DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory>(
             DesktopHydraulicProductionPolicySelector.CreateFactory(currentDecision));
-        Assert.IsType<DesktopSustainedGenerationInitialConditionFactory>(
-            DesktopHydraulicProductionPolicySelector.CreateFactory(historicalExplicitDecision));
+        Assert.IsType<DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory>(
+            DesktopHydraulicProductionPolicySelector.CreateFactory(historicalV3Decision));
         Assert.IsType<DesktopSustainedGenerationInitialConditionFactory>(
             DesktopHydraulicProductionPolicySelector.CreateFactory(killDecision));
     }

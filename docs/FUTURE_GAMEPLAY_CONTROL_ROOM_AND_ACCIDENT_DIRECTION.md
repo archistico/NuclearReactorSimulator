@@ -1,6 +1,6 @@
 # Future Gameplay, Control-Room and Accident-Progression Direction
 
-> **Status:** APPROVED FUTURE BACKLOG / ARCHITECTURE DIRECTION — decision checkpoint 2026-08-16. This document does not change the active hardening scope. G.4 closed Phase G; H.1–H.8 are validated. H.6 proved that bounded fixed-relaxation Picard rescue reaches only 6/7 frozen trigger events; H.7 proved that true-residual deterministic backtracking still reaches only 5/7 and exhausts two line searches; H.8 safeguarded Anderson also remained 5/7 with two line-search exhaustions. H.9 is the active shadow-only Jacobian-informed corrector candidate. Production remains explicit while the numerical method is still being qualified. These backlog epics remain deferred until the numerical method is settled and Phase I hardening is complete.
+> **Status:** APPROVED POST-RELEASE BACKLOG / ARCHITECTURE DIRECTION. The current critical path is the final M10.9.4.1 / Phase-I closure, followed by M10.9.5–M10.9.8 and M11 release hardening. Authoritative desktop production is exact `@4`; historical numerical qualification details remain provenance only. The backlog in this document must not interrupt M10/M11 unless a current gate proves a release-blocking physical defect.
 
 ## 1. Purpose
 
@@ -14,6 +14,19 @@ The project therefore retains these priorities:
 4. the control room remains divided into subsystem workspaces/tabs rather than becoming one giant all-controls screen;
 5. future visual improvements may use `archistico/IndustrialControls`, but visual controls remain presentation-only adapters over canonical application snapshots and commands;
 6. multi-monitor operation is explicitly deferred and is not part of the approved near-term backlog.
+
+## 1.1 Sequencing after M11
+
+After release hardening, future physical/gameplay expansion should proceed in this order so that consequences are built on explicit causal prerequisites rather than on scripted severity:
+
+1. **Extreme-envelope support and directionality audit** — classify every flow-owning component as bidirectional, one-way by physics, one-way by check/isolation device, or unsupported outside the validated envelope.
+2. **Persistent integrity/stress primitives** — introduce definition-owned exposure/stress accumulation and separate operational state from physical integrity.
+3. **Component-damage families one at a time** — pressure-boundary damage/leak growth, rotating-equipment degradation/failure, then electrical damage/fire only where a modeled ignition mechanism exists. Each family receives its own deterministic/replay gate before the next begins.
+4. **Post-trip/core-damage prerequisites** — strengthen residual/decay-heat and thermal-state evidence before any fuel/channel/core-damage progression is claimed.
+5. **Incident severity and persistence** — derive severity from modeled physical consequence, preserve damage through replay/checkpoint/session state, and keep alarm priority separate from incident severity.
+6. **Later fidelity/UI extensions** — spatial-core refinement, Instructor/Fault presentation, industrial-control visual upgrades and other non-critical control-room extensions.
+
+This order is not a calendar commitment. It is a dependency rule: a later item cannot be pulled forward merely because it is visually/gameplay attractive.
 
 ## 2. Extreme operation and out-of-envelope robustness
 

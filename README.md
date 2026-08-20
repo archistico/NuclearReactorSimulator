@@ -1,79 +1,65 @@
 # Nuclear Reactor Simulator
 
-**Current candidate:** M10.9.4.1-I.4 Hotfix 2 — Canonical Frozen-Evidence Contract Alignment
+Educational full-plant nuclear reactor simulator built with **C# / .NET 10 / Avalonia**. The project models a reduced RBMK-like plant as a deterministic, headless-testable simulation with an operator-facing desktop control room.
 
-Educational full-plant nuclear reactor simulator built with **C# / .NET 10 / Avalonia**.
+It targets internally consistent educational behaviour, conservation, replayability and explicit model limits rather than industrial licensing-grade fidelity.
 
-The project models a reduced RBMK-like plant as a deterministic, headless-testable simulation with an operator-facing desktop control room. It targets internally consistent educational behaviour, conservation, replayability and explicit model limits rather than industrial licensing-grade fidelity.
+## Current work
 
-## Current project state
+Current candidate: **M10.9.4.1-I.5 REV1 Hotfix 17.1 — Final Repaired-v4 Phase-I Closure / Preflight Documentation Alignment**.
 
-**Validated production policy:** `M10.9.4.1-H.30 Requalification 1 — ACTIVATE`.
+Hotfix 16.2 is locally validated: authoritative desktop production is exact `integrated-operations-desktop-stable@4`, with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step. Historical exact @3 and rollback exact @2 remain immutable.
 
-Exact v3 `FourNodeBranchContinuityCorrectedCommitOptIn` is the authoritative desktop production default. Exact v2 `ExplicitCommittedState` remains fail-closed rollback/reference. The fixed timestep remains 10 ms and H.28 still classifies the corrected path `bounded-but-costly`.
+Hotfix 17 adds no new repair stage. It realigns current CI so H.30 RQ1, I.3 exact-v3 and I.4 are frozen historical provenance, adds the final authoritative exact-v4 300-second production-reference requalification against the unchanged 19 I.3 budgets, and makes the existing cumulative closure command run the final repaired-v4 long matrix. Hotfix 17.1 changes no runtime/test/CI logic: it completes the static preflight of namespaces, filter targets, script targets, budget hashes and evidence paths, and realigns the current technical documentation to authoritative exact @4.
 
-**Validated Phase-I reference baseline:** `M10.9.4.1-I.3 Hotfix 2`.
+The detailed checkpoint and final validation sequence live in:
 
-The authoritative v3 reference completed 300 s / 30,000 steps with zero generation-health violations, zero targeted stop/control/admission reverse-flow violations, clean corrected telemetry and deterministic repeat. Seven final-window slope observations and 19 internal regression budgets are frozen.
+**[`docs/PROJECT.md`](docs/PROJECT.md)**
 
-**Current candidate:** `M10.9.4.1-I.4 — Known Limitations & Legacy Retirement Review`.
-
-I.4 records the remaining reference drifts as known limitations and reviews the H.5 hybrid / H.21 shadow-integrated historical numerical modes. Neither mode is a production, exact-version or current-CI dependency; physical source removal is deferred because executable historical seams still compile against them.
-
-## Build and validate
+## Build and test
 
 ```bat
 dotnet restore
 dotnet build
 dotnet test
-scripts\run-phase-i-known-limitations-legacy-retirement-review-audit.cmd
 ```
 
-CI entry points:
+For the final Phase-I closure candidate, first run the short compile/ordinary preflight, then launch the cumulative closure:
 
-```text
-eng\ci-ordinary.cmd
-eng\ci-current-evidence.cmd
-eng\ci-long.cmd
+```bat
+dotnet build
+dotnet test
+scripts\run-m10941-cumulative-closure-audit.cmd
 ```
 
-## Runtime contract
+The cumulative command intentionally reruns ordinary/current evidence and the complete scheduled-long matrix. It can take multiple hours. If it is green, M10.9.4.1 / Phase I is closed and M10.9.5 is unblocked.
 
-- deterministic external fixed step: **10 ms**;
+## Core runtime principles
+
+- deterministic external fixed timestep;
 - simulation logic independent from UI refresh/wall-clock cadence;
-- immutable/copy-on-write state across kernel steps;
-- each conserved inventory integrated once per plant step;
-- mass/energy ownership explicit and auditable;
-- corrected-candidate refusal fails closed;
+- explicit mass/energy ownership;
+- fail-closed numerical correction/rollback contracts;
 - exact-version scenario/save/replay identities are never silently reinterpreted;
 - GUI contains no reactor-physics calculations;
 - headless automated validation remains authoritative.
 
-## Current desktop hydraulic versions
-
-| Exact version | Hydraulic mode | Current role |
-| --- | --- | --- |
-| `integrated-operations-desktop-stable@1` | historical explicit | compatibility retained |
-| `integrated-operations-desktop-stable@2` | `ExplicitCommittedState` | rollback/reference |
-| `integrated-operations-desktop-stable@3` | `FourNodeBranchContinuityCorrectedCommitOptIn` | authoritative production default |
-
-The v3 enum name retains historical H.22/H.29 lineage; H.30 RQ1 activated the already-qualified path without renaming or retuning it.
-
 ## Documentation
 
-Start with:
+Start at **[`docs/README.md`](docs/README.md)**.
 
-- `docs/PROJECT_STATUS.md` — authoritative checkpoint;
-- `docs/PROJECT_HANDOFF.md` — continuation instructions;
-- `docs/ROADMAP.md` — remaining Phase-I work;
-- `docs/KNOWN_MODEL_LIMITATIONS.md` — current limitations only;
-- `docs/current/` — active candidate documents only;
-- `docs/history/` — completed/superseded chronology;
-- `docs/adr/` — architectural decisions;
-- `docs/milestones/` — milestone summaries.
+The current documentation is intentionally split by responsibility rather than milestone chronology:
 
-Large generated audit payloads under `tests/.../Gameplay/Evidence` and `artifacts/` are deliberately excluded from candidate ZIPs. Ordinary tests use compact immutable prerequisites under `eng/frozen-evidence/ordinary`; large historical traces used only for identity checks are represented by hashes in `eng/frozen-evidence/large-payload-manifest.csv`.
+- `docs/PROJECT.md` — **only** current status/handoff/active validation source;
+- `docs/ROADMAP.md` — future milestones and sequencing;
+- `docs/KNOWN_MODEL_LIMITATIONS.md` — unresolved model limitations;
+- `docs/ARCHITECTURE.md` — stable architecture and ownership;
+- subsystem documents — detailed technical reference;
+- `docs/history/` — superseded milestone/hotfix chronology;
+- `docs/adr/` — architectural decisions.
+
+Generated audit CSV/TXT payloads and `tests/.../Gameplay/Evidence` are deliberately excluded from candidate ZIPs. Compact frozen prerequisites required by ordinary tests live under `eng/frozen-evidence/`.
 
 ## Safety and scope
 
-This is an educational simulator, not a reactor design, operations, licensing or safety-analysis tool. Thermodynamic properties, component models, spatial physics, protection and severe-incident behaviour are reduced-order approximations with explicit documented limitations.
+This is an educational simulator, not a reactor design, operations, licensing or safety-analysis tool. Thermodynamic properties, component models, spatial physics, protection and severe-incident behaviour are reduced-order approximations with documented limitations.

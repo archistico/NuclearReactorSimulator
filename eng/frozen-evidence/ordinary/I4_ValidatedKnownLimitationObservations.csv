@@ -1,0 +1,6 @@
+observation_id,value,unit,classification
+i3-drum-inventory-final-window-slope,8.2451672984622224,kg/s,FROZEN-REGRESSION-DRIFT
+i3-main-steam-header-final-window-slope,-0.35293086123580603,kg/s,FROZEN-REGRESSION-DRIFT
+i3-total-fluid-internal-energy-final-window-slope,-2061802.7621648791,W,FROZEN-REGRESSION-DRIFT
+h28-corrected-median-wall-cost-ratio,4.6214685710690242,ratio,BOUNDED-BUT-COSTLY
+h28-corrected-p95-wall-cost-ratio,10.684444741413872,ratio,BOUNDED-BUT-COSTLY

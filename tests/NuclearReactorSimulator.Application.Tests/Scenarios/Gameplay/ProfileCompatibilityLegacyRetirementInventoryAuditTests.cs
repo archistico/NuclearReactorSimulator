@@ -16,10 +16,9 @@ using Xunit;
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 
 /// <summary>
-/// M10.9.4.1-I.1 closes the first Phase-I compatibility debt without changing runtime behavior. It inventories every
-/// exact-version initial-condition factory registered by the desktop composition, distinguishes current/default/opt-in
-/// profiles from compatibility-retained historical identities, and separates production-qualified numerical modes from
-/// audit-only Phase-H modes. Exact-version compatibility is retained; no historical save/replay identity is reinterpreted.
+/// Frozen M10.9.4.1-I.1 compatibility/retirement provenance. These tests intentionally preserve the validated I.1-era
+/// 12-profile inventory and original H.30 policy evidence. Later exact-version additions are verified by current milestone
+/// contracts instead of rewriting this historical baseline. No historical save/replay identity is reinterpreted.
 /// </summary>
 public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
 {
@@ -50,9 +49,9 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
     }
 
     [Fact]
-    public void ExactVersionInventory_EnumeratesSupportedCompatibilityWithoutDeletingReplayIdentities()
+    public void ExactVersionInventory_EnumeratesFrozenI1CompatibilityWhileCurrentI5SelectionUsesDistinctV4()
     {
-        var profiles = ProfileCases();
+        var profiles = FrozenI1ProfileCases();
         var registry = new VersionedInitialConditionRegistry(profiles.Select(static profile => profile.Factory));
 
         Assert.Equal(12, profiles.Count);
@@ -74,7 +73,7 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
         AssertProfile(profiles, "pre-synchronization-grid-loading", 2, "SUPPORTED-CURRENT", "RETAIN");
 
         Assert.Equal(
-            DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
+            DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference,
             DesktopHydraulicProductionPolicySelector.Resolve(
                 DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy).InitialCondition);
         Assert.Equal(
@@ -84,7 +83,7 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
         Assert.Equal(
             DesktopSustainedGenerationInitialConditionFactory.Reference,
             DesktopHydraulicProductionPolicySelector.Resolve(
-                DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy,
+                DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
                 explicitKillRequested: true).InitialCondition);
     }
 
@@ -94,7 +93,7 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
     {
         ResetReportDirectory();
 
-        var profiles = ProfileCases();
+        var profiles = FrozenI1ProfileCases();
         var rows = new List<string>
         {
             "initial_condition_id,version,classification,expected_hydraulic_mode,observed_hydraulic_mode,retirement_action,fixed_step_ms",
@@ -172,7 +171,7 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
         File.WriteAllLines(Path.Combine(directory, "01-phase-i-profile-compatibility-legacy-retirement-inventory.summary.txt"), summary, Utf8WithoutBom);
     }
 
-    private static IReadOnlyList<ProfileCase> ProfileCases()
+    private static IReadOnlyList<ProfileCase> FrozenI1ProfileCases()
         => new ProfileCase[]
         {
             new(new ColdShutdownInitialConditionFactory(), new InitialConditionReference("cold-shutdown-pre-start", 1), "SUPPORTED", HydraulicNumericalCouplingMode.ExplicitCommittedState, "RETAIN"),

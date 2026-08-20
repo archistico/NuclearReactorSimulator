@@ -2,11 +2,15 @@
 
 M7.5 continues from the validated M7.4 turbine-startup handoff and owns the first deliberate connection of the modeled generator to the infinite-bus grid plus initial low-load pickup.
 
-## Exact initial condition
+## Exact initial conditions
 
-`pre-synchronization-grid-loading` version 1 reuses the canonical M7.2 object-graph construction path. It seeds the already-rolled turbine at 3000 rpm with generator/grid electrical phase initially matched, breaker open, zero requested electrical power, low reactor power and main circulation established.
+`pre-synchronization-grid-loading@1` is the historical M7.5 identity and reuses the canonical M7.2 object-graph construction path. It seeds the already-rolled turbine at 3000 rpm with generator/grid electrical phase initially matched, breaker open, zero requested electrical power, low reactor power and main circulation established.
 
-The recipe does not close the breaker or fabricate a synchronized snapshot. The first deterministic seed step is still solved through M1–M5 owners; the published M4.5 `SynchronizationConditionsSatisfied` result remains authoritative.
+`@2` is the later generation-ready explicit profile. It remains loadable as an exact compatibility/reference identity and is never reinterpreted. I.5 long-running evidence showed that its `ExplicitCommittedState` hydraulics do not reliably sustain the modern 60 s low-load journey.
+
+`@3` is the supported sustained-synchronization profile. It preserves the complete @2 physical seed, steam-path coefficients, PI governor, grid coupling, protections and 10 ms step, changing only hydraulic numerical ownership to `FourNodeBranchContinuityCorrectedCommitOptIn`. The qualified journey treats 10 s after load pickup as bounded stabilization and requires strict sustained operation from 20–60 s.
+
+None of these recipes closes the breaker or fabricates a synchronized snapshot. The first deterministic seed step is still solved through M1–M5 owners; the published M4.5 `SynchronizationConditionsSatisfied` result remains authoritative.
 
 ## Synchronization ownership
 

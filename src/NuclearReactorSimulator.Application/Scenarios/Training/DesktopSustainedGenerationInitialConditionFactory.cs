@@ -4,6 +4,7 @@ using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
+using NuclearReactorSimulator.Simulation.Physics.Fluids;
 
 namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
@@ -132,13 +133,56 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
     internal static IControlRoomRuntimeEngine CreateFourNodeCorrectedCommitEvidenceRuntimeEngine(TimeSpan runtimeStep)
         => CreateFourNodeCorrectedCommitProductionCandidateRuntimeEngine(runtimeStep);
 
+    /// <summary>
+    /// I.5 REV1 repaired exact-version composition candidate. It preserves the validated v2 physical seed, 10 ms
+    /// timestep and H.22 corrected-commit ownership while selecting the validated correlation-consistent water/steam
+    /// inverse-domain closure. Historical exact v2/v3 factories remain unchanged.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateRepairedCorrectedCommitProductionCandidateRuntimeEngine(TimeSpan runtimeStep)
+        => CreateThermodynamicInverseDomainRepairEvidenceRuntimeEngine(runtimeStep, useFourNodeCorrectedCommit: true);
+
+    /// <summary>
+    /// I.5 REV1 thermodynamic-repair evidence seam. It preserves the exact v2 physical seed and 10 ms composition
+    /// while opting only the water/steam inverse-domain closure into the correlation-consistent candidate. The
+    /// caller selects explicit or H.29 corrected-commit hydraulics independently so the frozen operational journey
+    /// can demonstrate that the thermodynamic repair, rather than a hydraulic-policy change, removes the gap.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateThermodynamicInverseDomainRepairEvidenceRuntimeEngine(
+        TimeSpan runtimeStep,
+        bool useFourNodeCorrectedCommit)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Thermodynamic inverse-domain repair evidence timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false,
+            useFourNodeBranchContinuityShadowIntegration: false,
+            useFourNodeBranchContinuityCorrectedCommitOptIn: useFourNodeCorrectedCommit,
+            thermodynamicClosureMode: WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain);
+    }
+
     private static IControlRoomRuntimeEngine CreateRuntimeEngine(
         bool includeEvidenceDerivedElectricalProtections,
         TimeSpan? runtimeStep = null,
         int deterministicSeedStepCount = 2,
         bool useHybridSemiImplicitHydraulics = false,
         bool useFourNodeBranchContinuityShadowIntegration = false,
-        bool useFourNodeBranchContinuityCorrectedCommitOptIn = false)
+        bool useFourNodeBranchContinuityCorrectedCommitOptIn = false,
+        WaterSteamThermodynamicClosureMode thermodynamicClosureMode = WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
             GenerationReadySeed,
             mainCirculationRunning: true,
@@ -205,5 +249,6 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             deterministicSeedStepCount: deterministicSeedStepCount,
             runtimeStep: runtimeStep,
             useFourNodeBranchContinuityShadowIntegration: useFourNodeBranchContinuityShadowIntegration,
-            useFourNodeBranchContinuityCorrectedCommitOptIn: useFourNodeBranchContinuityCorrectedCommitOptIn);
+            useFourNodeBranchContinuityCorrectedCommitOptIn: useFourNodeBranchContinuityCorrectedCommitOptIn,
+            thermodynamicClosureMode: thermodynamicClosureMode);
 }

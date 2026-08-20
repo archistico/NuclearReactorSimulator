@@ -1,0 +1,2 @@
+trajectory_id,schema_version,exact_initial_condition,production_policy,thermodynamic_closure,simulated_seconds,logical_steps,step_health_resolution_ms,reference_sample_stride_steps,final_window_seconds,budget_source,budget_count,reference_role
+phase-i-production-v4-repaired-healthy-300s-rq1,1,integrated-operations-desktop-stable@4,FourNodeBranchContinuityCorrectedCommitOptIn,CorrelationConsistentInverseDomain,300,30000,10,100,60,I3_ValidatedAuthoritativeToleranceBudgets.csv,19,PHASE-I-FINAL-PRODUCTION-REQUALIFICATION
