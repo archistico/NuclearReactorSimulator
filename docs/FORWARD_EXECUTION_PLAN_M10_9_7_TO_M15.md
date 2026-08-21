@@ -26,16 +26,16 @@ Every future implementation slice follows the same rules:
 
 ## Immediate transition
 
-M10.9.7.3 Hotfix 2 REV2 is validated. The active candidate is M10.9.7.4 deterministic timeline / drill-down / replay equivalence.
+M10.9.7.4 Hotfix 1 is validated after automatic and manual gates. The active candidate is M10.9.7.5 Hotfix 1 Mission/Performance closure. The original M10.9.7.5 candidate passed build and ordinary tests but is superseded/not validated because its Windows focused-gate wrapper failed on a batch-label subroutine lookup.
 
 ```text
 M10.9.7.3 Hotfix 1 REV2 VALIDATED
         ↓
 M10.9.7.3 Hotfix 2 REV2 VALIDATED
         ↓
-M10.9.7.4 deterministic timeline + drill-down + replay/archive equivalence
+M10.9.7.4 Hotfix 1 timeline + drill-down + replay/archive equivalence VALIDATED
         ↓
-M10.9.7.5 M10.9.7 closure
+M10.9.7.5 Hotfix 1 M10.9.7 closure ACTIVE
         ↓
 M10.9.8 integrated M10 human/automation/HMI validation
         ↓
@@ -87,7 +87,7 @@ Hotfix 2 REV2 is validated and is the required baseline for M10.9.7.4. UI-thread
 
 ### M10.9.7.5 closure
 
-Close against a matrix including no mission, active mission, demand-following, completed/failed mission, required trip evidence, unexpected trip failure, terminal mission with continuing plant time, checkpoint restore, assistance changes and requested/effective authority changes.
+M10.9.7.5 Hotfix 1 is now the active candidate, stacked exclusively on the original M10.9.7.5 candidate over M10.9.7.4 Hotfix 1 VALIDATED. Hotfix 1 repairs only the Windows focused-audit wrapper and adds regression coverage; the underlying closure evidence and production behavior are unchanged. Close against a matrix including no mission, active mission without external demand, demand-following, completed/failed mission, required trip evidence, unexpected trip failure, terminal mission with continuing plant time, checkpoint restore, assistance changes and requested/effective authority changes.
 
 M10.9.7 must close with:
 

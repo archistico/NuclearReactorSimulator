@@ -4,47 +4,49 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1, M10.9.7.2 Hotfix 2 REV1, M10.9.7.2 Hotfix 3 REV1, M10.9.7.3 Hotfix 1 REV2 and M10.9.7.3 Hotfix 2 REV2 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.3 Hotfix 2 REV2 passed build, the complete ordinary suite, `scripts\run-m10973-desktop-host-session-integrity-audit.cmd` and its manual desktop-host/session-integrity checklist on 2026-08-21. The validated baseline therefore includes the live read-only `MISSION` workspace plus desktop numerical-failure containment and non-destructive local session-save replacement.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1, M10.9.7.2 Hotfix 2 REV1, M10.9.7.2 Hotfix 3 REV1, M10.9.7.3 Hotfix 1 REV2, M10.9.7.3 Hotfix 2 REV2 and M10.9.7.4 Hotfix 1 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.4 Hotfix 1 passed build, the complete ordinary suite, `scripts\run-m10974-mission-performance-timeline-audit.cmd` and its manual timeline/drill-down/archive checklist on 2026-08-22. The validated baseline therefore includes the live read-only `MISSION` workspace, deterministic logical-step timeline, presentation-only drill-down and verified archive/checkpoint mission reconstruction.
 
 Authoritative desktop production remains:
 
 `integrated-operations-desktop-stable@4 | CorrelationConsistentInverseDomain | FourNodeBranchContinuityCorrectedCommitOptIn | 10 ms`
 
-Historical exact-version identities remain immutable; no M10.9.7 presentation/host work reopens Phase-I numerical ownership.
+Historical exact-version identities remain immutable; no M10.9.7 presentation/closure work reopens Phase-I numerical ownership.
 
 ## Active candidate
 
-**M10.9.7.4 Hotfix 1 — Ordinary Suite Contract Alignment — CANDIDATE.**
+**M10.9.7.5 Hotfix 1 — Mission/Performance Closure Audit Wrapper Repair — CANDIDATE.**
 
-The original M10.9.7.4 candidate was stacked exclusively on **M10.9.7.3 Hotfix 2 REV2 VALIDATED** plus Docs4 and compiled, but the complete ordinary suite reported 3 test failures. Hotfix 1 is stacked exclusively on that M10.9.7.4 candidate and changes tests/contracts documentation plus candidate descriptor metadata only: it aligns the historical M10.9.7.3 visual-heading assertion with the intentional timeline UI, makes the no-F9 regression inspect `KeyBinding Gesture="F9"` rather than arbitrary XAML substrings, and recognizes the retained H29 primary-valve presentation as topology-empty while keeping the frozen golden hash unchanged. No production XAML, runtime semantics, physics, fingerprint implementation or replay/archive behavior is changed by Hotfix 1.
+M10.9.7.5 Hotfix 1 is stacked **exclusively on the original M10.9.7.5 closure candidate**, itself stacked on M10.9.7.4 Hotfix 1 VALIDATED. The original candidate compiled and passed the complete ordinary suite, but its focused Windows `.cmd` aborted on the `run_app_class` batch subroutine lookup and is therefore SUPERSEDED / NOT VALIDATED. Hotfix 1 repairs only that audit wrapper and adds source-level regression coverage. It remains a closure gate, not feature work. Production XAML/runtime semantics, Simulation physics, challenge/scoring/protection ownership, archive schema, fingerprint algorithm and plant-command authority remain unchanged.
 
-The underlying M10.9.7.4 implementation extends presentation/replay evidence only:
+The closure candidate adds cumulative executable evidence for the frozen M10.9.7 matrix:
 
-- freezes `sha256-control-room-snapshot-v1` with the populated retained H29 exact-version 128-step golden fingerprint `63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362`;
-- separates a protected bounded lifecycle spine from bounded recent operational evidence before deterministic timeline merge;
-- projects lifecycle, demand-change, operator-action, alarm/protection/fault and scoring context by logical step/canonical sequence;
-- adds presentation-only drill-down to existing ELECTRICAL, ALARMS/EVENTS and COMPUTER evidence surfaces without plant-command authority;
-- reconstructs mission lifecycle/demand from an already verified full-replay or checkpoint prefix, then continues on future live deterministic evidence without an opaque challenge-state checkpoint blob;
-- preserves archive schema v1: restored MISSION state requires an explicit exact pack binding matching scenario + initial-condition identity; an unbound archive remains unbound and no pack is inferred from `ScenarioId`;
-- `START RECORDED SESSION` preserves an already explicit mission binding so the desktop archive/replay round-trip can be exercised without creating a challenge launcher.
+- no active mission remains explicit/unbound and never fabricates mission state;
+- active missions with no external-demand profile keep requested and actual output visible while external demand/error remain unavailable;
+- bounded demand-following keeps GRID DEMAND, REQUESTED LOAD and ACTUAL OUTPUT semantically distinct;
+- Active, Completed and Failed lifecycle states remain presentable;
+- terminal lifecycle boundaries remain frozen while plant logical time may continue;
+- generator trip remains required evidence for the dedicated load-rejection challenge but an explicit authored failure for normal-operation challenges where unexpected;
+- assistance-mode changes and requested/effective control-authority divergence remain observational presentation state;
+- checkpoint/full-archive replay and continuation reuse the already validated deterministic M10.9.6/M10.9.7.4 evidence path;
+- F1–F8 remain preserved, F9 remains absent, MISSION plant-command authority remains false and score remains copied from the M10.9.6 owner.
 
-M10.9.7.3 `RecentEvents`, challenge/scoring arithmetic, Simulation physics, protection ownership, F1–F8 and the no-F9 contract remain unchanged.
+See `MISSION_PERFORMANCE_CLOSURE.md`.
 
-## Validation required for M10.9.7.4 Hotfix 1
+## Validation required for M10.9.7.5 Hotfix 1
 
 Run:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m10974-mission-performance-timeline-audit.cmd
+scripts\run-m1097-mission-performance-closure-audit.cmd
 ```
 
 Then complete:
 
-`docs\M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md`
+`docs\M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md`
 
-Only after Hotfix 1 automatic + manual gates are green may M10.9.7.4 be promoted and M10.9.7.5 closure begin.
+Only after automatic + manual closure gates are green may **M10.9.7 be declared VALIDATED/CLOSED** and M10.9.8 begin.
 
 ## Evidence and package policy
 
@@ -68,7 +70,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.3 Hotfix 2 REV2 VALIDATED → active M10.9.7.4 Hotfix 1 ordinary-suite contract alignment → M10.9.7.5 closure**. Do not begin 7.5 until M10.9.7.4 has passed its own automatic and manual gates.
+Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.4 Hotfix 1 VALIDATED → active M10.9.7.5 Hotfix 1 closure → M10.9.8 integrated validation**. Do not begin M10.9.8 until M10.9.7.5 Hotfix 1 has passed build, ordinary tests, the focused closure gate and explicit manual closure acceptance.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

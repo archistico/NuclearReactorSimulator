@@ -1,5 +1,26 @@
 # Changelog
-## 2026-08-22 — M10.9.7.4 Hotfix 1 — Ordinary Suite Contract Alignment — CANDIDATE
+## 2026-08-22 — M10.9.7.5 Hotfix 1 — Closure Audit Batch Subroutine Repair — CANDIDATE
+
+- Stacks exclusively on the original **M10.9.7.5 Mission/Performance Closure candidate**, which compiled and passed the complete ordinary suite (1423 total / 1328 passed / 95 ignored / 0 failed) but was **NOT VALIDATED** because the focused Windows audit aborted after its Application test groups with `Impossibile trovare l'etichetta batch specificata - run_app_class`.
+- Confirms from the emitted closure artifact that the underlying closure matrix had already produced `m10975-mission-performance-closure-automated-passes=True`; the failure was in the wrapper execution path, not in Mission/Performance runtime semantics.
+- Removes all `call :run_application_class` / `call :run_app_class` batch subroutines and their labels from `scripts/run-m1097-mission-performance-closure-audit.cmd`; every focused test group is now invoked explicitly and fail-closed.
+- Writes the focused `.cmd` with Windows CRLF terminators and adds `M10975Hotfix1ClosureAuditScriptContractTests` so ordinary tests freeze the no-label-subroutine wrapper structure.
+- Keeps production XAML/runtime behavior, Simulation physics, challenge/scoring/protection ownership, archive schema v1, fingerprint-v1 golden, F1–F8/no-F9 and plant-command authority unchanged.
+
+Validation required: `dotnet build`, complete `dotnet test`, `scripts\run-m1097-mission-performance-closure-audit.cmd`, then `docs\M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md`. Only after all four gates are green may M10.9.7 be declared VALIDATED/CLOSED and M10.9.8 begin.
+
+## 2026-08-22 — M10.9.7.5 — Mission/Performance Closure — SUPERSEDED / NOT VALIDATED (focused batch-wrapper failure)
+
+- Stacks exclusively on **M10.9.7.4 Hotfix 1 VALIDATED** after build, complete ordinary tests, focused timeline audit and manual HMI acceptance passed.
+- Adds no production XAML/runtime semantics and no Simulation, challenge, scoring, protection, archive-schema, fingerprint-algorithm or plant-command-authority change.
+- Adds `M10975MissionPerformanceClosureContractTests` to exercise the closure matrix for demand/no-demand, Active/Completed/Failed presentation, required-trip versus unexpected-trip semantics, terminal mission with continuing plant logical time, assistance modes and requested/effective authority divergence.
+- Re-runs the validated M10.9.6 replay/checkpoint closure and M10.9.7.1/7.3/7.4 presentation, timeline, archive and drill-down contracts through `scripts/run-m1097-mission-performance-closure-audit.cmd`.
+- Freezes closure invariants: F1–F8 preserved, F9 absent, MISSION plant-command authority false, demand/request/actual separated, score copied from the M10.9.6 owner, deterministic replay/checkpoint presentation, archive schema v1 unchanged and fingerprint-v1 golden unchanged.
+- Adds `docs/MISSION_PERFORMANCE_CLOSURE.md` and `docs/M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md`.
+
+Validation required: `dotnet build`, complete `dotnet test`, `scripts\run-m1097-mission-performance-closure-audit.cmd`, then the M10.9.7.5 manual closure checklist. Only after all gates are green may M10.9.7 be declared VALIDATED/CLOSED and M10.9.8 begin.
+
+## 2026-08-22 — M10.9.7.4 Hotfix 1 — Ordinary Suite Contract Alignment — VALIDATED
 
 - Stacks exclusively on the original M10.9.7.4 candidate, which compiled but is **SUPERSEDED / NOT VALIDATED** after the complete ordinary suite reported 3 failures.
 - Aligns the historical M10.9.7.3 XAML regression with the intentional M10.9.7.4 visual replacement of `RECENT DETERMINISTIC EVIDENCE` by `DETERMINISTIC TIMELINE / DRILL-DOWN`; the M10.9.7.3 `RecentEvents` Application contract remains unchanged and covered by its existing projection/live-wiring tests.
@@ -7,7 +28,7 @@
 - Corrects the populated H29 fingerprint fixture precondition: `PrimaryCircuit.Valves` is intentionally empty because the retained topology has no valve endpoint in the primary-node projection; the stop/control/admission valves are turbine/secondary. The test now positively anchors primary pumps/branches and explicitly anchors the topology-empty primary-valve surface before checking the unchanged frozen golden hash.
 - Keeps `sha256-control-room-snapshot-v1`, golden hash `63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362`, MISSION timeline/drill-down implementation, archive schema v1, replay/checkpoint behavior, F1–F8, XAML, plant-command authority and Simulation physics unchanged.
 
-Validation required: `dotnet build`, complete `dotnet test`, `scripts\run-m10974-mission-performance-timeline-audit.cmd`, then the unchanged M10.9.7.4 manual timeline/drill-down checklist.
+Validation completed: build, complete ordinary suite, `scripts\run-m10974-mission-performance-timeline-audit.cmd` and the M10.9.7.4 manual timeline/drill-down/archive checklist are green.
 
 ## 2026-08-22 — M10.9.7.4 — Deterministic Mission Timeline, Drill-Down & Replay Equivalence — SUPERSEDED / NOT VALIDATED (3 ordinary-suite failures)
 

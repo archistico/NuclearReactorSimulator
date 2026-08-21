@@ -62,12 +62,14 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.3 Hotfix 2 manual validation checklist | Acceptance / validation |
 | [`M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.3 Hotfix 1 REV2 manual HMI validation checklist | Acceptance / validation |
 | [`M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.4 manual timeline / drill-down / replay-equivalence checklist | Acceptance / validation |
+| [`M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.5 Hotfix 1 manual Mission / Performance closure checklist | Acceptance / validation |
 | [`M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md`](M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md) | M9 Advanced Fidelity Integration Gate | Acceptance / validation |
 | [`M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md`](M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md) | M9 Final Manual GUI Validation Checklist | Acceptance / validation |
 | [`MAIN_CIRCULATION_SYSTEM.md`](MAIN_CIRCULATION_SYSTEM.md) | Main Circulation System | Physics / plant / controls |
 | [`MAIN_STEAM_NETWORK.md`](MAIN_STEAM_NETWORK.md) | Main Steam Network & Turbine Admission | Physics / plant / controls |
 | [`MANUAL_GUI_VALIDATION_CHECKLIST.md`](MANUAL_GUI_VALIDATION_CHECKLIST.md) | Manual GUI Validation Checklist | Acceptance / validation |
 | [`MISSION_PERFORMANCE_DETERMINISTIC_TIMELINE.md`](MISSION_PERFORMANCE_DETERMINISTIC_TIMELINE.md) | Mission / Performance deterministic timeline | HMI / operator experience |
+| [`MISSION_PERFORMANCE_CLOSURE.md`](MISSION_PERFORMANCE_CLOSURE.md) | Mission / Performance cumulative closure contract | HMI / operator experience |
 | [`MISSION_PERFORMANCE_LIVE_WORKSPACE.md`](MISSION_PERFORMANCE_LIVE_WORKSPACE.md) | Mission & Performance live workspace | HMI / operator experience |
 | [`MISSION_PERFORMANCE_PRESENTATION_CONTRACT.md`](MISSION_PERFORMANCE_PRESENTATION_CONTRACT.md) | Mission / Performance Presentation Contract | Physics / plant / controls |
 | [`MISSION_PERFORMANCE_WORKSTATION_NAVIGATION.md`](MISSION_PERFORMANCE_WORKSTATION_NAVIGATION.md) | Mission & Performance workstation navigation | Physics / plant / controls |

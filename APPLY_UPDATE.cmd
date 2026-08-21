@@ -4,22 +4,20 @@ set "ROOT=%~dp0"
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.7.4 - Deterministic Mission Timeline, Drill-Down ^& Replay Equivalence...
-echo Removing stale build and focused-audit outputs...
+echo Applying M10.9.7.5 - Mission / Performance Closure...
+echo Removing stale build and closure-audit outputs...
 for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
-if exist "artifacts\m10974-mission-performance-timeline" rd /s /q "artifacts\m10974-mission-performance-timeline"
+if exist "artifacts\m1097-mission-performance-closure" rd /s /q "artifacts\m1097-mission-performance-closure"
 
 echo.
-echo Baseline: M10.9.7.3 Hotfix 2 REV2 VALIDATED after automatic and manual desktop-host/session-integrity gates.
-echo M10.9.7.4 adds presentation/reconstruction only: fingerprint-v1 golden anchor, protected lifecycle spine,
-echo bounded deterministic mission timeline, presentation-only drill-down and verified archive/checkpoint mission restoration.
-echo Archive schema v1 is unchanged. Restored MISSION requires an explicit exact pack binding and never infers a pack from ScenarioId.
-echo No Simulation physics, challenge/scoring/protection authority, plant-command authority, F1-F8 or no-F9 contract changes.
+echo Baseline: M10.9.7.4 Hotfix 1 VALIDATED after build, ordinary tests, focused timeline audit and manual HMI acceptance.
+echo M10.9.7.5 is a cumulative closure gate only: closure tests, audit script, documentation/checklist and descriptor metadata.
+echo No production XAML/runtime semantics, Simulation physics, challenge/scoring/protection authority, archive schema or plant-command authority change.
 echo.
 echo Run:
 echo   dotnet build
 echo   dotnet test
-echo   scripts\run-m10974-mission-performance-timeline-audit.cmd
+echo   scripts\run-m1097-mission-performance-closure-audit.cmd
 echo Then complete:
-echo   docs\M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md
+echo   docs\M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md
 exit /b 0
