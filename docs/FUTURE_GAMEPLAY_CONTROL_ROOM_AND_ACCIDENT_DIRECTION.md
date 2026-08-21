@@ -454,7 +454,7 @@ Epic C — Control-Room Experience
 
 The approved dependency order is **M12 → M13 → M14 → M15**. This is deliberate:
 
-- M12 establishes extreme-envelope, decay-heat, integrity and incident-state foundations before severe consequences are claimed;
+- M12 establishes flow directionality, near-zero hydraulic/conditioning support, pump energy ownership, extreme-envelope, decay-heat, integrity and incident-state foundations before severe consequences are claimed;
 - M13 upgrades the operator environment and Instructor/Fault shell without requiring speculative new physics;
 - M14 provides deterministic quasi-spatial evidence and local visualization surfaces;
 - M15 may then introduce one explicit damage/consequence family at a time using the validated foundations and, where relevant, the spatial/operator surfaces.
@@ -475,3 +475,8 @@ Every future implementation increment remains subject to the existing project di
 - regression tests and explicit audits for new dynamics;
 - local validation before baseline promotion;
 - known limitations stated explicitly when fidelity is educational rather than licensing-grade.
+
+
+### Control-room selection safety refinement
+
+Future dynamic/spatial presentation must preserve command-target identity by canonical equipment ID. If a selected command-bearing target disappears or is no longer valid, clear/disable the selection and require explicit reselection; do not silently clamp an index onto another component. This refinement is owned by M13.3 together with broader control-room selection semantics.

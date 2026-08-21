@@ -1,6 +1,8 @@
 # ADR-0172 — Own challenge lifecycle by logical evidence without plant-command authority
 
-**Status:** Accepted — M10.9.6.1 validated 2026-08-20
+## Status
+
+Accepted — M10.9.6.1 validated 2026-08-20
 
 ## Context
 

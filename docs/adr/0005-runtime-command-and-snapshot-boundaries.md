@@ -1,5 +1,9 @@
 # ADR 0005 — Runtime command scheduling and snapshot boundaries
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted
 - Date: 2026-07-20
 

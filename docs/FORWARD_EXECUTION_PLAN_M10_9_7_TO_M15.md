@@ -31,7 +31,9 @@ The M10.9.7.2 persistence closure is validated. The active step is now M10.9.7.3
 ```text
 M10.9.7.2 Hotfix 3 REV1 VALIDATED
         ↓
-M10.9.7.3 live Mission/Performance workspace
+M10.9.7.3 Hotfix 1 REV2 live Mission/Performance workspace + manual HMI validation
+        ↓
+M10.9.7.3 Hotfix 2 desktop-host failure/session-save integrity
         ↓
 M10.9.7.4 deterministic timeline + drill-down
         ↓
@@ -69,13 +71,21 @@ The detailed milestone plan splits 7.3 into these implementation slices:
 7. **Keyboard/minimum-window contract** — deterministic focus and readable primary mission state.
 8. **Focused + manual gate** — shell contract, no-command authority, semantic fidelity, keyboard and visual hierarchy.
 
+### Pre-7.4 host integrity — M10.9.7.3 Hotfix 2
+
+After Hotfix 1 REV2 manual HMI validation and promotion, build a separate Hotfix 2 on that validated baseline. Close desktop numerical-failure containment, start/reset/load/restore boundary consistency, picker-before-export, non-destructive/atomic local-filesystem session replacement and invariant engineering-number formatting. Planned focused gate: `run-m10973-desktop-host-session-integrity-audit.cmd`.
+
+M10.9.7.4 is blocked until this Hotfix 2 is validated. UI-thread worker migration, MainWindowViewModel decomposition, streaming persistence and simulation-speed features remain out of scope.
+
 ### M10.9.7.4 timeline/drill-down — implementation order
 
-1. bounded deterministic timeline projection;
-2. timeline UI using logical-step ordering;
-3. presentation-only drill-down targets to subsystem/alarm/COMPUTER evidence;
-4. replay/checkpoint equivalence and duplicate suppression;
-5. focused + manual navigation gate.
+1. populated `sha256-control-room-snapshot-v1` golden/schema anchor;
+2. protected lifecycle-spine retention separated from bounded recent operational evidence;
+3. bounded deterministic timeline projection merging those sources;
+4. timeline UI using logical-step ordering;
+5. presentation-only drill-down targets to subsystem/alarm/COMPUTER evidence;
+6. replay/checkpoint/archive-restored exact-pack equivalence and duplicate suppression;
+7. focused + manual navigation gate.
 
 ### M10.9.7.5 closure
 
@@ -121,7 +131,7 @@ M11 is feature-frozen and proceeds in this order:
 2. **M11.2** scenario/save/session/checkpoint compatibility and migration hardening;
 3. **M11.3** measured performance, memory, long-run and persistence-allocation budgets;
 4. **M11.4** packaging/publish/clean-target verification;
-5. **M11.5** Italian manual, README, release notes and known-limitations alignment;
+5. **M11.5** Italian manual, README/release notes/known-limitations alignment plus automated documentation-index/ADR/link/architecture-drift checks;
 6. **M11.6** clean-state release-candidate final gate.
 
 Key persistence decisions:
@@ -129,6 +139,27 @@ Key persistence decisions:
 - schema-v1 numeric enum ordinals remain frozen unless M11.2 deliberately introduces schema v2;
 - string enums, if adopted, require explicit v1 compatibility/migration tests;
 - stream/`Utf8JsonWriter` persistence belongs to M11.3 only if measurements demonstrate material allocation/LOH pressure.
+
+Key Simulation decisions from the post-7.3 review:
+
+- M11.3 may measure and optimize temporary Pump/Valve `PipeDefinition` construction, four-node trigger-path allocations, expected infeasible-probe exception cost and thermodynamic search ceilings only when representative outputs remain exact;
+- M11.3 inventories the supported `SimulationRuntime.Advance(elapsed)` callers and defines an explicit catch-up/backlog policy if the generic API is retained; the desktop five-step cooperative path is already bounded separately;
+- any near-zero hydraulic constitutive smoothing, check-valve leakage/smoothing, Jacobian conditioning-policy change or trajectory-changing summation convention is **not** release optimization and routes to M12.2;
+- pump shaft/electrical/loss-to-heat physical ownership routes to M12.4.
+
+Key Application recording/replay decisions from the post-7.3 review:
+
+- M11.2 owns future snapshot-fingerprint multi-version compatibility; a v2, if introduced, must not reinterpret historical `sha256-control-room-snapshot-v1` evidence;
+- M11.3 measures full-step fingerprint JSON/SHA/hex cost, recorder collection-copy cost, long-session memory/LOH growth and the cost/meaning of per-step `LifecycleChanged`;
+- M11.3 must explicitly decide recorder evidence-failure policy before claiming that recording cannot affect host execution; silently swallowing evidence failures is forbidden;
+- M9.1 recording v1 remains one contiguous fingerprinted frame per logical step. Silent truncation/decimation/circular-buffer semantics require a new versioned recording contract, not an optimization.
+
+Key desktop-host/App decisions from the post-7.3 review:
+
+- the pre-7.4 Hotfix 2 owns correctness: numerical step-failure containment, handler policy alignment, picker-before-export and atomic/non-destructive session replacement;
+- M11.3 measures UI-thread batch/projection/notification cost, archive-export responsiveness and any worker-ownership proposal; `DispatcherTimer` callbacks are serialized on the UI thread, so the problem is responsiveness coupling rather than concurrent tick overlap;
+- background runtime/export work requires an explicit immutable/single-owner handoff; opportunistic `Task.Run` around mutable session state is forbidden;
+- user-facing simulation-speed is a separate product decision, not an automatic release optimization.
 
 M11 closes only when source baseline, published artifact, compatibility statement, support statement, manual and known limitations all agree.
 
@@ -143,11 +174,13 @@ Dependency purpose: M12 must establish the physical/state foundations before M15
 Execution order:
 
 1. **M12.1 flow-owner directionality inventory** — every flow owner classified as bidirectional, one-way by physics, one-way by explicit device or unsupported;
-2. **M12.2 extreme-state matrix** — near-empty inventories, pressure/temperature/void/flow extremes classified supported/reduced-fidelity/fail-closed;
-3. **M12.3 full-plant post-trip decay heat** — history-dependent residual heat carried through the integrated energy chain;
-4. **M12.4 integrity/stress primitives** — persistent physical integrity separated from functional equipment state;
-5. **M12.5 IncidentSeverity** — physical consequence severity separate from alarm priority;
-6. **M12.6 closure** — directionality/extreme/decay/integrity/replay evidence and explicit unsupported-envelope register.
+2. **M12.2 near-zero hydraulic regularity / conditioning audit** — measure the quadratic near-zero law, ideal check-valve non-smoothness, valve near-close behavior, normalized Jacobian/pivot diagnostics, summation semantics and branch-continuity interaction before any production smoothing;
+3. **M12.3 extreme-state matrix** — near-empty inventories, pressure/temperature/void/flow extremes classified supported/reduced-fidelity/fail-closed;
+4. **M12.4 pump mechanical/electrical/thermal energy ownership** — close shaft-demand and modeled inefficiency/loss-to-heat ownership before stronger conservation/consequence claims;
+5. **M12.5 full-plant post-trip decay heat** — history-dependent residual heat carried through the integrated energy chain;
+6. **M12.6 integrity/stress primitives** — persistent physical integrity separated from functional equipment state;
+7. **M12.7 IncidentSeverity** — physical consequence severity separate from alarm priority;
+8. **M12.8 closure** — directionality/numerical/extreme/pump-energy/decay/integrity/replay evidence and explicit unsupported-envelope register.
 
 M12 **does not** yet add scripted leaks, rupture, fire or severe core damage.
 
@@ -161,12 +194,13 @@ Execution order:
 
 1. **M13.1 industrial control/presentation boundary** — adopt/wrap/retain IndustrialControls deliberately;
 2. **M13.2 maintained handle/selector semantics** — requested operator position distinct from effective equipment state where physically appropriate;
-3. **M13.3 first-class mimic viewport** — zoom/pan/fit/reset/selection/drill-down;
-4. **M13.4 versioned persistent mimic layout** — edit/lock/reset and `EquipmentId → position` overrides;
-5. **M13.5 workspace presets** — presentation-only context presets;
-6. **M13.6 real operating procedures** — procedures over canonical commands/evidence;
-7. **M13.7 Instructor/Fault mode** — visually distinct deterministic fault authority, never normal operator control;
-8. **M13.8 integrated UX closure**.
+3. **M13.3 stable selection identity / command-target safety** — canonical-ID selection, clear/disable on disappearance, never silent retargeting;
+4. **M13.4 first-class mimic viewport** — zoom/pan/fit/reset/selection/drill-down;
+5. **M13.5 versioned persistent mimic layout** — edit/lock/reset and `EquipmentId → position` overrides;
+6. **M13.6 workspace presets** — presentation-only context presets;
+7. **M13.7 real operating procedures** — procedures over canonical commands/evidence;
+8. **M13.8 Instructor/Fault mode** — visually distinct deterministic fault authority, never normal operator control;
+9. **M13.9 integrated UX closure**, including staged `MainWindowViewModel` decomposition informed by M11.3 measurements.
 
 Multi-monitor/multi-computer operation remains explicitly deferred.
 
@@ -227,6 +261,14 @@ These items are intentionally deferred, not forgotten:
 | relief/bypass hysteresis/blowdown | post-M11 physical-model work with explicit component semantics |
 | signed generator lead/lag phase representation | future synchronization/HMI fidelity work if an operator procedure requires it |
 | stricter PI/PID mode-gain consistency | Domain maintenance unless behavioral evidence raises priority |
+| near-zero hydraulic constitutive/conditioning change | M12.2 after frozen observational census and H/I requalification plan |
+| pump mechanical/electrical/loss-to-heat ownership | M12.4 before severe full-plant energy claims |
+| measured Simulation hot-path allocations / generic Advance policy | M11.3, exact-output/explicit-time-policy only |
+| branch-continuity semantic retirement/unification | dedicated M12.2 evidence; current conditional corrected role remains |
+| UI-thread runtime/projection responsiveness and PropertyChanged fan-out | M11.3 measurement first; worker ownership only if justified |
+| stable command-target selection / no silent index retargeting | M13.3 |
+| MainWindowViewModel structural decomposition | M13, staged and behavior-preserving |
+| user-facing simulation-speed/pacing control | separate product decision; not implicit M11 optimization |
 | multi-monitor/multi-computer operation | after M13; explicitly deferred |
 
 ## Planned focused-gate naming map
@@ -236,11 +278,12 @@ These names are planning conventions, not existing scripts. They should be used 
 | Work | Planned gate / closure artifact stem |
 | --- | --- |
 | M10.9.7.3 live MISSION | `run-m10973-mission-performance-live-workspace-audit.cmd` |
+| M10.9.7.3 host/session integrity | `run-m10973-desktop-host-session-integrity-audit.cmd` |
 | M10.9.7.4 timeline/drill-down | `run-m10974-mission-performance-timeline-audit.cmd` |
 | M10.9.7.5 closure | `run-m1097-mission-performance-closure-audit.cmd` + manual checklist |
 | M10.9.8 integrated M10 | `run-m1098-integrated-human-automation-hmi-audit.cmd` + manual closure checklist |
 | M11 release closure | milestone-specific M11.1–M11.5 gates + `run-m11-release-candidate-closure-audit.cmd` |
-| M12 foundations | milestone-specific M12.1–M12.5 gates + `run-m12-extreme-foundations-closure-audit.cmd` |
+| M12 foundations | milestone-specific M12.1–M12.8 gates + `run-m12-extreme-foundations-closure-audit.cmd` |
 | M13 control-room experience | milestone-specific gates + `run-m13-control-room-experience-closure-audit.cmd` |
 | M14 spatial reactor | milestone-specific gates + `run-m14-spatial-reactor-closure-audit.cmd` |
 | M15 accident progression | consequence-family gates + `run-m15-accident-progression-closure-audit.cmd` |

@@ -1,5 +1,9 @@
 # ADR 0056 — Turbine startup lineup remains versioned and governing control uses the existing seam
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted / validated with M7.4
 - Date: 2026-07-21
 

@@ -1,6 +1,8 @@
 # ADR 0061 — Hydraulic faults constrain canonical components and use the single network source-term boundary
 
-**Status:** Accepted — M8.2 validated
+## Status
+
+Accepted — M8.2 validated
 
 ## Context
 

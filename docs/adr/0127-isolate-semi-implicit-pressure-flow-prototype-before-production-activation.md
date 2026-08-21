@@ -1,6 +1,8 @@
 # ADR 0127 — Isolate semi-implicit pressure/flow prototype before production activation
 
-**Status:** Accepted / validated by M10.9.4.1-H.3 Hotfix 1
+## Status
+
+Accepted / validated by M10.9.4.1-H.3 Hotfix 1
 
 ## Context
 

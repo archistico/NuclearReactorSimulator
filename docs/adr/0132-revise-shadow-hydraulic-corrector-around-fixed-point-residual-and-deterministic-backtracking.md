@@ -1,6 +1,8 @@
 # ADR 0132 — Revise the shadow hydraulic corrector around a fixed-point residual and deterministic backtracking
 
-**Status:** Accepted for M10.9.4.1-H.7 candidate
+## Status
+
+Accepted for M10.9.4.1-H.7 candidate
 
 ## Context
 

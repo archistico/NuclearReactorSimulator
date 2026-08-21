@@ -1,5 +1,9 @@
 # ADR 0010 — Passive pipe flow and conservative transport
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted for M1.3
 - Date: 2026-07-20
 

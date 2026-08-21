@@ -1,6 +1,8 @@
 # ADR-0173 — External energy demand is versioned logical-step evidence, not generator control
 
-**Status:** Accepted — M10.9.6.2 Hotfix 1 validated 2026-08-20
+## Status
+
+Accepted — M10.9.6.2 Hotfix 1 validated 2026-08-20
 
 ## Context
 

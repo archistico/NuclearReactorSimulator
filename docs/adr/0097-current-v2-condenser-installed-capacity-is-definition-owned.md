@@ -1,6 +1,8 @@
 # ADR 0097 — Current-v2 condenser installed capacity is definition-owned
 
-**Status:** Accepted as M10.9.4.1-C.2 candidate decision
+## Status
+
+Accepted as M10.9.4.1-C.2 candidate decision
 **Date:** 2026-07-24
 
 ## Context

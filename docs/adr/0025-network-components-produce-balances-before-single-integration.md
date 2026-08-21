@@ -1,5 +1,9 @@
 # ADR 0025: Network components produce balances before single integration
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted
 - Date: 2026-07-20
 

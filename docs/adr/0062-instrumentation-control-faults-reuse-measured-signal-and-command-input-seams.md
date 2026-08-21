@@ -1,6 +1,8 @@
 # ADR 0062 — Instrumentation/control faults reuse measured-signal and canonical command-input seams
 
-**Status:** Accepted / M8.3 VALIDATED
+## Status
+
+Accepted / M8.3 VALIDATED
 
 ## Context
 

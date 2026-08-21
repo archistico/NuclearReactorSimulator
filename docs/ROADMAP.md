@@ -4,18 +4,12 @@ This file contains **future work only**. The authoritative current checkpoint an
 
 Detailed implementation slices, gate expectations and deferred-item ownership are maintained in [`FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`](FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md).
 
-## Execution discipline after Phase I
+## Execution discipline
 
-The post-Phase-I sequence is fixed unless a gate produces direct contrary evidence:
+Resolve the active checkpoint from `PROJECT.md`; this roadmap begins only with work that still lies **ahead** of that checkpoint. The forward product sequence is:
 
 ```text
-M10.9.4.1 / Phase I final closure
-        ↓
-M10.9.5 Contextual Command Consequence Model
-        ↓
-M10.9.6 Operational Challenge & Energy-Demand Framework
-        ↓
-M10.9.7 Mission & Performance Workstation
+remaining M10.9.7 work
         ↓
 M10.9.8 Integrated Human-Automation-HMI Validation Gate
         ↓
@@ -35,12 +29,12 @@ future release train / engineering backlog
 Rules:
 
 1. work on one milestone at a time;
-2. each milestone starts from the latest explicitly validated baseline only;
-3. implementation begins only after the milestone contract, non-scope and gate are documented;
+2. each implementation slice starts from the latest explicitly validated baseline only;
+3. implementation begins only after its contract, non-scope and gate are documented;
 4. promotion requires build + complete ordinary suite + focused gate + any stated manual HMI check;
 5. a failing gate authorizes work only on the demonstrated failing contract;
-6. M10.9.5–M10.9.8 may expose or present existing physics/control/protection truth but may not create new reactor physics, component laws, protection thresholds or control ownership;
-7. if operator-experience work reveals missing physics, record it for the post-M11 engineering backlog instead of expanding M10 scope;
+6. remaining M10 work may expose or present existing physics/control/protection truth but may not create new reactor physics, component laws, protection thresholds or control ownership;
+7. if operator-experience work reveals missing physics, assign it to the post-M11 engineering milestones instead of expanding M10 scope;
 8. no speculative audit, retuning or numerical requalification is added after a green gate merely “for safety”.
 
 ## Expected validation burden
@@ -49,23 +43,19 @@ This is a planning classification, not a duration promise:
 
 | Milestone | Expected validation profile | Relative cost |
 | --- | --- | --- |
-| M10.9.5 | ordinary + focused semantic/replay tests + manual HMI | low/medium |
-| M10.9.6 | ordinary + deterministic challenge/demand/replay tests + manual exercise checks | medium |
 | M10.9.7 | ordinary + focused presentation/replay tests + manual HMI | low/medium |
 | M10.9.8 | integrated 3×3 assistance/authority matrix + degraded/protection/replay + full manual HMI | high |
 | M11 | compatibility, long/performance/memory, packaging/clean-machine and release-manual gates | high |
-| M12 | directionality/extreme-state/decay-heat/integrity/replay qualification | high |
+| M12 | directionality + near-zero/conditioning + pump-energy ownership + extreme-state/decay-heat/integrity/replay qualification | high |
 | M13 | UI/persistence/procedure/Instructor automated gates + broad manual HMI | medium/high |
 | M14 | quasi-spatial aggregate/replay/performance qualification + manual fidelity review | high |
 | M15 | consequence-family physics/replay/post-incident/long-horizon matrices | very high |
 
-M10.9.5–M10.9.7 should not normally require multi-hour numerical requalification. M10.9.8 and M11 are intentionally expensive integration/release checkpoints. M12–M15 are post-release engineering milestones whose expensive validation is justified by new physical/persistent state, spatial computation or consequence progression rather than by routine UI work.
+Remaining M10.9.7 work should not normally require multi-hour numerical requalification. M10.9.8 and M11 are intentionally expensive integration/release checkpoints. M12–M15 are post-release engineering milestones whose expensive validation is justified by new physical/persistent state, spatial computation or consequence progression rather than by routine UI work.
 
-## M10.9.7 forward transition prerequisites
+## Remaining M10.9.7 constraints
 
-Current validated/candidate status is intentionally not duplicated here; use `PROJECT.md`. The persistence payload/error-contract prerequisite is satisfied. M10.9.7.3 may activate the live Mission/Performance route provided it preserves the validated ownership and navigation contracts below.
-
-The M10.9.7.3 implementation must preserve the already-decided topology and pre-live constraints:
+Current validated/candidate status is intentionally not duplicated here; use `PROJECT.md`. Any remaining M10.9.7 implementation must preserve these fixed ownership/navigation constraints:
 
 - dedicated main-HMI `MISSION` workspace with contextual navigation from COMPUTER;
 - Operator Computer F1–F8 unchanged and no F9;
@@ -80,41 +70,18 @@ Persistence follow-ups discovered during the pre-7.3 Infrastructure review have 
 - **M11.3 performance/memory gate:** evaluate stream-based persistence / `Utf8JsonWriter` only against measured save/load allocation and LOH evidence;
 - low-risk scenario-definition double-parse and DTO comparer cleanup remain maintenance work and are not prerequisites for M10.9.7.3 unless a gate demonstrates a defect.
 
-## M10.9.5 — Contextual Command Consequence Model
+Application recording/replay follow-ups from the post-7.3 review are likewise assigned explicitly:
 
-**Status:** VALIDATED / CLOSED.
+- **M10.9.7.4 prerequisite:** add a populated golden/schema anchor for `sha256-control-room-snapshot-v1`;
+- **M10.9.7.4 timeline contract:** separate a protected mission lifecycle spine from bounded recent operational evidence before merging them for display;
+- **M11.2 compatibility:** if a snapshot fingerprint v2 is introduced, replay/checkpoint compatibility must select by persisted algorithm id and retain supported v1 verification;
+- **M11.3 measured Application hardening:** measure `LifecycleChanged` notification cost/semantics, fingerprint JSON+SHA+hex cost, recorder read-only collection copies, long-session memory growth and recorder failure policy; never silently decimate recording v1.
 
-**Purpose:** explain what a selected command directly requests, what it is expected to influence, what currently blocks it, what the operator should monitor, and what the simulator actually did after dispatch.
+App desktop-host follow-ups from the post-7.3 review are also explicitly owned:
 
-Detailed plan: [`milestones/M10.9.5.md`](milestones/M10.9.5.md).
-
-Planned sequence:
-
-1. M10.9.5.1 — consequence semantics and command catalog;
-2. M10.9.5.2 — explicit dependency-chain projection;
-3. M10.9.5.3 — COMMANDS/context-inspector/schematic integration;
-4. M10.9.5.4 — observed-response presentation separated from expected influence;
-5. M10.9.5.5 — automated/manual closure gate.
-
-No predictive UI physics, automatic command execution, invented causality or new permissive owner is allowed.
-
-## M10.9.6 — Operational Challenge & Energy-Demand Framework
-
-**Status:** VALIDATED / CLOSED — M10.9.6.5 Hotfix 1 completed automated + manual closure.
-
-**Purpose:** add deterministic training objectives and external electrical-demand references without making scoring or challenge state a physical plant owner.
-
-Detailed plan: [`milestones/M10.9.6.md`](milestones/M10.9.6.md).
-
-Planned sequence:
-
-1. M10.9.6.1 — challenge lifecycle and logical-time contract;
-2. M10.9.6.2 — deterministic external energy-demand profiles;
-3. M10.9.6.3 — multidimensional evaluation/scoring contract;
-4. M10.9.6.4 — bounded challenge packs using existing plant/fault owners;
-5. M10.9.6.5 — replay/checkpoint/determinism and closure gate.
-
-`GRID DEMAND`, generator requested load and actual electrical output remain three separate semantics.
+- **pre-M10.9.7.4:** before timeline work, validate the planned M10.9.7.3 desktop-host/session-integrity hotfix for expected numerical-step failure containment, start/reset/load/restore boundary consistency, picker-before-export and non-destructive/atomic local-filesystem session replacement;
+- **M11.3 measured host hardening:** measure UI-thread batch/projection/PropertyChanged cost and long-session export responsiveness before any worker/off-thread redesign;
+- **M13:** move command-bearing selections toward stable canonical IDs and decompose the mega-ViewModel in staged behavior-preserving slices.
 
 ## M10.9.7 — Mission & Performance Workstation
 
@@ -124,17 +91,14 @@ Planned sequence:
 
 Detailed plan: [`milestones/M10.9.7.md`](milestones/M10.9.7.md).
 
-Planned sequence:
+Remaining sequence:
 
-1. M10.9.7.1 — immutable mission/performance presentation contract;
-2. M10.9.7.2 — placement/navigation decision plus any demonstrated pre-live robustness/hardening required before activation;
-3. M10.9.7.3 — objective/demand/progress/score UI;
-4. M10.9.7.4 — deterministic timeline and drill-down;
-5. M10.9.7.5 — keyboard/minimum-window/manual closure gate.
+1. pre-7.4 M10.9.7.3 desktop-host/session-integrity hardening required by the App review;
+2. M10.9.7.4 — deterministic timeline and drill-down;
+3. M10.9.7.5 — keyboard/minimum-window/manual closure gate.
 
-The detailed execution map breaks 7.3 into shell activation, live publication/change detection, dedicated ViewModel, primary layout, COMPUTER contextual navigation, keyboard/minimum-window behavior and a focused/manual gate; 7.4 is similarly split into timeline projection, UI, drill-down and replay/checkpoint equivalence.
+Before 7.4 archive/timeline equivalence, a populated snapshot-fingerprint-v1 golden anchor is required; 7.4 then separates protected mission lifecycle-spine retention from bounded recent operational evidence before timeline projection, UI, drill-down and replay/checkpoint/archive-restored equivalence.
 
-**M10.9.7.2 decision:** option A is selected and VALIDATED in REV1: a dedicated main-HMI Mission/Performance workspace linked contextually from COMPUTER. The validated F1–F8 contract remains fixed and no F9 is introduced. Live activation remains deferred to 7.3.
 
 ## M10.9.8 — Integrated Human-Automation-HMI Validation Gate
 
@@ -203,11 +167,13 @@ Detailed plan: [`milestones/M12.md`](milestones/M12.md).
 Planned sequence:
 
 1. M12.1 — flow-owner directionality/support inventory (`BIDIRECTIONAL`, `ONE-WAY BY PHYSICS`, `ONE-WAY BY CHECK/ISOLATION`, `UNSUPPORTED OUTSIDE ENVELOPE`);
-2. M12.2 — near-empty inventory and extreme pressure/temperature/inventory validation matrix before expanding fault authority;
-3. M12.3 — credible post-trip decay-heat ownership integrated through the full-plant runtime and energy accounting;
-4. M12.4 — persistent component integrity/stress primitives separated from functional/effective state;
-5. M12.5 — physical `IncidentSeverity` contract separated from alarm priority, with deterministic checkpoint/replay/post-incident persistence scaffolding;
-6. M12.6 — integrated extreme-foundation closure gate.
+2. M12.2 — **near-zero hydraulic constitutive regularity and conditioning audit**: quadratic `sqrt(|Δp|)` behavior, ideal check-valve non-smoothness, valve near-close conditioning, normalized Jacobian/pivot diagnostics and deterministic summation semantics; no production smoothing before evidence/requalification;
+3. M12.3 — near-empty inventory and extreme pressure/temperature/inventory validation matrix before expanding fault authority;
+4. M12.4 — **pump mechanical/electrical/thermal energy ownership closure**, including explicit treatment of shaft demand and modeled inefficiency/loss-to-heat before stronger full-plant conservation claims;
+5. M12.5 — credible post-trip decay-heat ownership integrated through the full-plant runtime and energy accounting;
+6. M12.6 — persistent component integrity/stress primitives separated from functional/effective state;
+7. M12.7 — physical `IncidentSeverity` contract separated from alarm priority, with deterministic checkpoint/replay/post-incident persistence scaffolding;
+8. M12.8 — integrated extreme-foundation closure gate.
 
 No leak, rupture, fire or severe core-damage claim is authorized merely by completing M12.
 
@@ -219,12 +185,13 @@ Planned sequence:
 
 1. M13.1 — IndustrialControls/presentation-boundary integration and stronger retro-industrial visual identity;
 2. M13.2 — maintained handle/selector position separated from effective equipment state where the physical control semantics require it;
-3. M13.3 — first-class mimic viewport: zoom, pan, fit/reset, stable selection and drill-down;
-4. M13.4 — explicit layout-edit/lock/reset with versioned persistent equipment positions keyed by canonical IDs;
-5. M13.5 — presentation-only workspace presets;
-6. M13.6 — real operating procedures expressed over canonical commands/interlocks;
-7. M13.7 — visually distinct Instructor/Fault mode using only fault/damage authority already modeled at that point;
-8. M13.8 — integrated keyboard/minimum-window/replay/session UX closure across subsystem workspaces.
+3. M13.3 — stable canonical-ID selection and command-target safety: disappear/reorder -> clear/disable, never silent retargeting;
+4. M13.4 — first-class mimic viewport: zoom, pan, fit/reset, stable selection and drill-down;
+5. M13.5 — explicit layout-edit/lock/reset with versioned persistent equipment positions keyed by canonical IDs;
+6. M13.6 — presentation-only workspace presets;
+7. M13.7 — real operating procedures expressed over canonical commands/interlocks;
+8. M13.8 — visually distinct Instructor/Fault mode using only fault/damage authority already modeled at that point;
+9. M13.9 — integrated keyboard/minimum-window/replay/session UX closure plus staged MainWindowViewModel decomposition informed by M11.3 measurements.
 
 Area/subsystem workspaces remain; no giant all-controls screen and no multi-monitor/multi-computer dependency are introduced.
 
@@ -269,4 +236,13 @@ Also non-blocking for M10.9.5 unless new evidence changes the risk:
 - physical removal of H.21 `FourNodeBranchContinuityShadowIntegrated` historical source seams;
 - investigation of whether validated long-horizon inventory/energy drifts can be reduced by a separately qualified physical/initialization improvement;
 - simplification/removal of branch-continuity machinery only after a separate post-Phase-I proof that current repaired trajectories no longer require it;
-- performance optimization of the authoritative corrected path beyond the validated repaired Stage-4 bounds.
+- performance optimization of the authoritative corrected path beyond the validated repaired Stage-4 bounds;
+- measured Pump/Valve temporary-definition allocation, corrector trigger-path allocation, infeasible-probe exception cost and root-search ceilings in M11.3 only when exact-output evidence supports them;
+- generic `SimulationRuntime.Advance(elapsed)` catch-up/API policy in M11.3; desktop cooperative batching is already separately bounded;
+- desktop UI-thread batch/projection/PropertyChanged responsiveness measurement in M11.3; any worker runtime must establish single ownership plus immutable snapshot handoff before moving execution off Avalonia;
+- long-session archive export responsiveness in M11.3; off-thread serialization requires immutable captured evidence, not direct concurrent access to the live session;
+- stable command-target selection/no silent index retargeting in M13.3;
+- staged `MainWindowViewModel` decomposition in M13, informed by M11.3 measurements;
+- near-zero hydraulic constitutive regularization, check-valve smoothing/leakage, Jacobian conditioning-policy changes and trajectory-changing summation changes only through M12.2 evidence/requalification;
+- pump shaft/electrical/inefficiency-to-heat ownership closure in M12.4 before stronger severe-incident/full-plant conservation claims;
+- branch-continuity retirement/unification only after dedicated M12.2/post-Phase-I evidence; current bounded previous-phase continuity may conditionally contribute to committed corrected state.

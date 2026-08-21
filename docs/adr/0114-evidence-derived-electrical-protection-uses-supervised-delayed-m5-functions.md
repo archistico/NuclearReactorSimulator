@@ -1,6 +1,8 @@
 # ADR 0114 — Evidence-derived electrical protection uses supervised delayed M5.5 functions
 
-**Status:** Accepted and validated in M10.9.4.1-E.3.2 Hotfix 3 on 2026-07-26
+## Status
+
+Accepted and validated in M10.9.4.1-E.3.2 Hotfix 3 on 2026-07-26
 
 **Date:** 2026-07-26
 

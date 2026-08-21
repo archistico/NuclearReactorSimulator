@@ -1,6 +1,8 @@
 # ADR 0058 — Power manoeuvring and normal shutdown compose existing owners
 
-**Status:** Accepted / M7.6 validated
+## Status
+
+Accepted / M7.6 validated
 
 ## Context
 

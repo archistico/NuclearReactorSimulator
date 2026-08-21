@@ -1,6 +1,8 @@
 # ADR-0176 — Reconstruct challenge state from canonical recordings instead of persisting opaque state
 
-**Status:** Proposed  
+## Status
+
+Proposed
 **Date:** 2026-08-20
 
 ## Context

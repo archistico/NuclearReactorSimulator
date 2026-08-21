@@ -1,6 +1,8 @@
 # ADR-0179 — Fail closed at defaultable Domain definition boundaries
 
-**Status:** Accepted — M10.9.7.2 Hotfix 1 REV1 VALIDATED on 2026-08-21
+## Status
+
+Accepted — M10.9.7.2 Hotfix 1 REV1 VALIDATED on 2026-08-21
 
 ## Context
 

@@ -1,6 +1,8 @@
 # ADR 0126 — H.1 evidence selects deterministic semi-implicit pressure/flow coupling
 
-**Status:** Accepted / H.2 validated; runtime activation deferred to H.4 after H.3 prototype evidence.
+## Status
+
+Accepted / H.2 validated; runtime activation deferred to H.4 after H.3 prototype evidence.
 
 ## Context
 

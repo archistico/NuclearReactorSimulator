@@ -1,5 +1,9 @@
 # ADR 0055 — First criticality uses a versioned source-range seed and observational guidance
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted / validated with M7.3
 - Date: 2026-07-21
 

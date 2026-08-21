@@ -1,5 +1,9 @@
 # ADR 0028 — Main circulation composes canonical network components
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted
 - Milestone: M3.5
 

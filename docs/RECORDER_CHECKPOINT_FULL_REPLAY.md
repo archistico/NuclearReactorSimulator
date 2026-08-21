@@ -20,7 +20,7 @@ A completed `ScenarioRecording` contains:
 - a monotonic event stream for operator actions, alarm events, fault lifecycle transitions and protection-trip transitions;
 - zero or more versioned checkpoints.
 
-The recorder observes only. It never queues commands, changes stepping, mutates state or influences fault/protection decisions.
+The recorder is observational with respect to plant state and command authority: it never queues commands, changes stepping, mutates plant state or influences fault/protection decisions. Recording work is synchronous evidence work, however, so it consumes execution time and evidence-production failures currently fail closed rather than being silently ignored. M11.3 owns any future explicit compromised-recorder/continue-plant policy.
 
 ## Operator action timing
 
@@ -38,7 +38,13 @@ The complete immutable control-room snapshot is serialized deterministically and
 
 Run/pause is a host execution concern; normalizing it prevents a session originally executed through `Run + AdvanceRunning` from diverging when replayed through fixed paused single steps. Logical step, measured state, panels, alarms, protection and fault lifecycle remain part of the fingerprint.
 
-Changing the fingerprint contract in the future requires a new algorithm id rather than silently redefining v1.
+Changing the fingerprint contract in the future requires a new algorithm id rather than silently redefining v1. M10.9.7.4 must add a populated golden/schema-anchor snapshot fixture with an exact expected v1 hash before expanding archive/replay-equivalence presentation work. If a future v2 exists, M11.2 must make replay/seek select the algorithm declared by persisted evidence rather than assuming only the current algorithm.
+
+## Recording-v1 retention and performance policy
+
+M9.1 recording v1 intentionally retains one contiguous fingerprinted frame per logical step. Silent prefix truncation, circular buffering or decimation would redefine the verification contract and is therefore forbidden under the v1 label.
+
+M11.3 may measure and improve recorder memory/throughput through non-semantic techniques such as stable non-copying read-only collection views, chunked/incremental persistence, compression, streaming and bounded in-memory caching backed by a complete persisted recording. Any actual retention/decimation semantics require a separately versioned recording/archive contract under M11.2 compatibility ownership.
 
 ## Versioned checkpoints
 

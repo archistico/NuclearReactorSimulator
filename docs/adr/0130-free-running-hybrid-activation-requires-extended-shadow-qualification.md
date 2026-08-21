@@ -1,6 +1,8 @@
 # ADR 0130 — Free-running hybrid activation requires extended shadow qualification
 
-**Status:** Accepted / H.5 Hotfix 2 user-validated
+## Status
+
+Accepted / H.5 Hotfix 2 user-validated
 
 ## Context
 

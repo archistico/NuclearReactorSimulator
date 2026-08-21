@@ -1,6 +1,9 @@
 # ADR 0064 — Educational LOCA-class breaks are bounded conservative source terms
 
-- **Status:** Accepted / M8.5 hotfix 2 validated
+## Status
+
+Accepted / M8.5 hotfix 2 validated
+
 - **Date:** 2026-07-21
 
 ## Context

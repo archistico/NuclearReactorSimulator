@@ -1,6 +1,8 @@
 # ADR 0085 — Paralleled generators use explicit phase/frequency grid stiffness
 
-**Status:** Accepted for M10.9.4 Hotfix 18 implementation candidate.
+## Status
+
+Accepted for M10.9.4 Hotfix 18 implementation candidate.
 
 ## Context
 

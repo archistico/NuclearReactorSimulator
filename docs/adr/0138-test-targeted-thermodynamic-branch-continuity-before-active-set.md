@@ -1,6 +1,8 @@
 # ADR 0138 — Test targeted thermodynamic branch continuity before active-set reformulation
 
-**Status:** Accepted for M10.9.4.1-H.13 candidate.
+## Status
+
+Accepted for M10.9.4.1-H.13 candidate.
 
 ## Context
 

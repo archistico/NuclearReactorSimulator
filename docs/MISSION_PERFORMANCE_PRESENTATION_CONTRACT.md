@@ -14,7 +14,7 @@ The contract preserves three independent electrical values: external grid demand
 
 ## Logical time and events
 
-Elapsed progress is represented in deterministic logical steps. No `DateTime`, `DateTimeOffset` or `TimeSpan` participates in authoritative presentation state. Objective metadata comes from the matched `ScenarioObjectiveDefinition`, while objective events come from lifecycle transitions. Protection evidence may be copied from canonical recorder protection-transition events only when `event.LogicalStep <= presentation.LogicalStep`; future evidence is never surfaced. `RecentEvents` retains at most the 100 newest deterministically ordered objective/protection/scoring events. The full timeline/drill-down owner remains M10.9.7.4.
+Elapsed progress is represented in deterministic logical steps. No `DateTime`, `DateTimeOffset` or `TimeSpan` participates in authoritative presentation state. Objective metadata comes from the matched `ScenarioObjectiveDefinition`, while objective events come from lifecycle transitions. Protection evidence may be copied from canonical recorder protection-transition events only when `event.LogicalStep <= presentation.LogicalStep`; future evidence is never surfaced. `RecentEvents` retains at most the 100 newest deterministically ordered objective/protection/scoring events for the live at-a-glance panel. It is not the full timeline owner: M10.9.7.4 must retain a separately bounded mission lifecycle spine so sparse activation/terminal/reset transitions cannot be evicted merely by dense protection/scoring evidence, then merge that spine with bounded recent operational evidence under deterministic ordering.
 
 ## Hotfix 2 pre-workstation hardening
 

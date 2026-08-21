@@ -1,5 +1,9 @@
 # ADR 0011 — Valves modulate the existing passive-flow model
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted for M1.4
 - Date: 2026-07-20
 

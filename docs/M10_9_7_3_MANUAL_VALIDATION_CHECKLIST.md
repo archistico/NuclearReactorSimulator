@@ -67,4 +67,4 @@ Confirm there is no UI control in MISSION that directly issues plant commands, c
 
 Archive-restored mission binding/timeline reconstruction is intentionally **not** an M10.9.7.3 acceptance criterion; it is owned by M10.9.7.4.
 
-If automated gates and all applicable checks above are green, promote M10.9.7.3 Hotfix 1 REV2 to VALIDATED and begin M10.9.7.4.
+If automated gates and all applicable checks above are green, promote M10.9.7.3 Hotfix 1 REV2 to VALIDATED. Do **not** begin M10.9.7.4 yet: the accepted post-7.3 App review requires M10.9.7.3 Hotfix 2 — Desktop Host Failure & Session Save Integrity — to be built exclusively on that validated REV2 baseline and validated first.

@@ -1,5 +1,9 @@
 # ADR 0107 — Generation-ready condenser cooling is capacity, not forced inventory depletion
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted for M10.9.4 Hotfix 11 implementation candidate
 
 ## Context

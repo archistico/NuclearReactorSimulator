@@ -1,5 +1,9 @@
 # ADR 0012 — Active pumps compose with the existing hydraulic network
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted for M1.5 baseline candidate
 - Date: 2026-07-20
 

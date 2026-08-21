@@ -1,6 +1,8 @@
 # ADR 0120 — Current-v2 remaining non-turbine paths advect enthalpy with explicit work and boundary ownership
 
-**Status:** Accepted / validated with M10.9.4.1-G.3
+## Status
+
+Accepted / validated with M10.9.4.1-G.3
 
 ## Context
 

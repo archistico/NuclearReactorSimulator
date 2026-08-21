@@ -1,6 +1,8 @@
 # ADR 0118 — Open-control-volume advection uses enthalpy and keeps shaft work separate
 
-**Status:** Accepted with validated M10.9.4.1-G.1
+## Status
+
+Accepted with validated M10.9.4.1-G.1
 
 ## Context
 

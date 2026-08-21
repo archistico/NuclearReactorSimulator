@@ -1,5 +1,9 @@
 # ADR-0177 — Project mission/performance as read-only aggregation of validated owners
 
+## Status
+
+Accepted — M10.9.7.1 Hotfix 3 validated; the read-only Mission/Performance projection ownership remains current.
+
 - Status: Accepted
 - Date: 2026-08-21
 

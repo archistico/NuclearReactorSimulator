@@ -1,6 +1,8 @@
 # ADR 0115 — Choked steam flow is an isolated one-way capacity seam before relief/bypass topology
 
-**Status:** Accepted and validated for M10.9.4.1-F.1
+## Status
+
+Accepted and validated for M10.9.4.1-F.1
 
 **Date:** 2026-07-26
 

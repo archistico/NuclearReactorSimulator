@@ -1,6 +1,8 @@
 # ADR 0131 — Refine the hybrid corrector with a bounded two-tier shadow envelope before reactivation
 
-**Status:** Accepted — M10.9.4.1-H.6 validated
+## Status
+
+Accepted — M10.9.4.1-H.6 validated
 
 ## Context
 

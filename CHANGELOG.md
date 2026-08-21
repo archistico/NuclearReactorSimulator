@@ -1,4 +1,43 @@
 # Changelog
+## M10.9.7.3 Hotfix 1 REV2 Docs4 — Documentation Architecture / Indexing / Limitations Alignment — CANDIDATE
+
+- Documentation-only revision over the unchanged REV2 runtime/test/script candidate.
+- Reorganized `docs/ARCHITECTURE.md` by subsystem ownership and moved the former milestone-led ledger to `docs/history/ARCHITECTURE_MILESTONE_LEDGER.md`.
+- Restored `docs/ROADMAP.md` to future-only content.
+- Added exhaustive top-level-doc and ADR indexes, normalized ADR status headings, ADR-0186 and documentation-governance policy.
+- Added current relief/bypass no-blowdown/reseat limitation, clarified existing physical control-rod travel ownership, reduced human-facing precision where exact values already live in frozen evidence, and assigned documentation-integrity automation to M11.5.
+- No source, test, script, eng or CI change; M10.9.7.3 Hotfix 1 REV2 still awaits only manual HMI acceptance.
+
+
+## 2026-08-21 — M10.9.7.3 Hotfix 1 REV2 Docs3 — Desktop Host / Session Integrity Roadmap Alignment — DOCUMENTATION-ONLY CANDIDATE
+
+- Documentation-only alignment over Hotfix 1 REV2 Docs2; runtime, tests, scripts, engineering gates and CI are unchanged.
+- Adds `docs/DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md` and ADR-0185.
+- Plans M10.9.7.3 Hotfix 2 only after REV2 manual validation: expected desktop numerical-step failure containment, common session-handler failure policy, picker-before-export, temp-sibling + safe replacement session save, and invariant engineering-number formatting.
+- Assigns UI-thread/projection/PropertyChanged/archive-export responsiveness measurement to M11.3.
+- Expands M13 with stable canonical-ID command-target selection and staged `MainWindowViewModel` decomposition.
+- M10.9.7.4 remains blocked until REV2 and the planned Hotfix 2 are both validated.
+
+## 2026-08-21 — M10.9.7.3 Hotfix 1 REV2 Docs2 — Application Recording / Replay Review Roadmap Alignment
+
+- Documentation-only follow-up over the same M10.9.7.3 Hotfix 1 REV2 runtime/test/script candidate; automated build/ordinary/focused evidence remains green and the manual HMI checklist remains the only promotion gate.
+- Adds `docs/APPLICATION_RECORDING_REPLAY_REVIEW.md` and ADR-0184.
+- Assigns a populated `sha256-control-room-snapshot-v1` golden/schema anchor plus protected lifecycle-spine retention to M10.9.7.4 before archive/timeline equivalence.
+- Assigns future fingerprint multi-version compatibility and any versioned recording-retention format to M11.2.
+- Assigns fingerprint JSON/SHA/hex cost, recorder collection-copy hardening, per-step lifecycle-notification measurement, long-session memory/LOH growth and recorder evidence-failure policy to M11.3.
+- Clarifies that Hotfix 2 intentionally preserved per-step `LifecycleChanged` observation semantics while removing string-fingerprint allocation; no silent semantic change is made.
+- Clarifies M9.1 recording-v1 retention: no silent frame truncation/decimation/circular-buffer reinterpretation.
+
+
+## M10.9.7.3 Hotfix 1 REV2 Docs1 — Simulation Review / Roadmap Alignment — DOCUMENTATION-ONLY CANDIDATE
+
+- Records that Hotfix 1 REV2 build, complete ordinary tests and `scripts/run-m10973-mission-performance-live-workspace-audit.cmd` are green; manual HMI validation remains the only promotion gate.
+- Adds `docs/SIMULATION_NUMERICAL_REGULARITY_AND_RUNTIME_REVIEW.md` and ADR-0183 with the verified disposition of the post-7.3 Simulation review.
+- Clarifies that the quadratic near-zero hydraulic law is genuinely non-differentiable, while the ideal pump check-valve transition is continuous but non-smooth; no speculative smoothing/leakage is authorized.
+- Clarifies current branch-continuity ownership: memoryless base resolver plus conditional bounded previous-phase continuity in the corrected four-node path that may become committed when authority permits.
+- Expands M11.3 with measured physics-preserving hot-path candidates and generic runtime catch-up policy audit.
+- Expands M12 from six to eight planned slices: directionality; near-zero/conditioning; extreme envelope; pump mechanical/electrical/thermal energy ownership; decay heat; integrity; IncidentSeverity; closure.
+- Updates architecture, limitations, roadmap and forward-plan ownership. No `src/`, `tests/`, `scripts/`, `eng/` or CI file changes belong to Docs1.
 
 ## M10.9.7.3 Hotfix 1 REV2 — Live Mission / Performance Historical Shell Contract Alignment — CANDIDATE
 
@@ -6,7 +45,7 @@
 - Records Hotfix 1 REV1 as SUPERSEDED / NOT VALIDATED after Application.Tests passed but the correctly scoped historical shell regression still expected `{Binding LogicalStepText}` in the top shell.
 - Aligns that historical test to the actual validated top runtime-step presentation `{Binding RuntimeProgressText}` (`STEP n`), matching `HMI_VISUAL_DESIGN_SYSTEM.md` and avoiding a duplicate current-step field in the situation strip.
 - No runtime behavior change from Hotfix 1 REV1; only the historical App test and candidate descriptor/gate/documentation metadata change.
-- Automated promotion still requires build, complete ordinary tests and `scripts/run-m10973-mission-performance-live-workspace-audit.cmd`, followed by the manual HMI checklist.
+- Build, complete ordinary tests and `scripts/run-m10973-mission-performance-live-workspace-audit.cmd` are green for REV2; promotion now requires only the manual HMI checklist unless source/test/script files change.
 
 ## M10.9.7.3 Hotfix 1 REV1 — Live Mission / Performance Batch-Publication & HMI Regression Alignment — SUPERSEDED / NOT VALIDATED
 
@@ -141,7 +180,6 @@
 - Adds ADR-0177, `MISSION_PERFORMANCE_PRESENTATION_CONTRACT.md`, focused tests and `scripts/run-m1097-mission-performance-contract-audit.cmd`.
 - Does not add UI, workstation placement, F9, challenge definitions, plant command authority, protection changes or physics changes. M10.9.7.2 remains the explicit placement/navigation decision.
 
-# Changelog
 
 ## M10.9.6.5 Hotfix 1 — Terminal Lifecycle Replay-Step Alignment — CANDIDATE
 
@@ -548,7 +586,6 @@
 - No runtime, numerical, physics, production-policy, CI-tier, retirement-decision or tolerance-budget behavior changes.
 - Candidate packaging continues to exclude `tests/.../Gameplay/Evidence`, `bin`, `obj` and `artifacts`.
 
-# Changelog
 
 ## M10.9.4.1-I.4 — Known Limitations & Legacy Retirement Review — CANDIDATE
 

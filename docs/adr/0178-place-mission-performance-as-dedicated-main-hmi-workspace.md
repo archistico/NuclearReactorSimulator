@@ -1,5 +1,9 @@
 # ADR-0178 — Place Mission/Performance as a dedicated main-HMI workspace
 
+## Status
+
+Accepted — M10.9.7.2 REV1 validated; subsequent hotfixes preserve the dedicated MISSION workspace/no-F9/navigation-only decision.
+
 - Status: Accepted
 - Date: 2026-08-21
 

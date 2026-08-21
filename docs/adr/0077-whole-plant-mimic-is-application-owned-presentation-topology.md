@@ -1,6 +1,8 @@
 # ADR 0077 — Whole-plant mimic is Application-owned presentation topology
 
-**Status:** Accepted for M10.9.3 implementation candidate.
+## Status
+
+Accepted for M10.9.3 implementation candidate.
 
 ## Context
 

@@ -1,6 +1,8 @@
 # ADR 0059 — Training evaluation is deterministic observational Application state
 
-**Status:** Accepted / M7.7 validated
+## Status
+
+Accepted / M7.7 validated
 
 ## Context
 

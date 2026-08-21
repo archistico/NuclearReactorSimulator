@@ -1,6 +1,8 @@
 # ADR 0128 — Hybrid semi-implicit production activation requires a deterministic bounded-work gate
 
-**Status:** Accepted / H.4 VALIDATED
+## Status
+
+Accepted / H.4 VALIDATED
 
 ## Context
 

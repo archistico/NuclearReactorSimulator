@@ -81,3 +81,10 @@ The historical M9.7 validation still records that both 6,000-step / 60-second en
 - no bypass of exact scenario/initial-condition version resolution.
 
 Checkpoint prefixes also preserve recorder-event evidence exactly: operator-action events accepted between committed frames are included only when their corresponding action belongs to the applied checkpoint prefix, while later same-step accepted actions are excluded from that restore point.
+
+
+## Planned desktop overwrite-integrity hardening (pre-M10.9.7.4)
+
+The current desktop overwrite implementation is not the final release contract because it truncates the selected destination before the replacement archive write has completed. The accepted M10.9.7.3 Hotfix 2 plan requires destination selection before export, temporary-sibling write, successful flush/close and safe local-filesystem replace/move so the previous archive remains intact on failure. Unsupported provider semantics must fail closed rather than silently reverting to truncate-first overwrite.
+
+This is a host/file-integrity change only. Scenario/session schema v1 and deterministic replay semantics remain unchanged. Stream-based persistence and off-thread serialization remain M11.3 measurement-driven work. See `DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md` and ADR-0185.

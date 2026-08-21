@@ -1,5 +1,9 @@
 # ADR 0053 — Versioned initial conditions own deterministic session reconstruction
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted; M7.1 locally validated on 2026-07-21
 - Date: 2026-07-21
 

@@ -1,6 +1,8 @@
 # ADR 0119 — Current-v2 passive hydraulics advect enthalpy while pump paths remain versioned
 
-**Status:** Accepted with validated M10.9.4.1-G.2 Hotfix 2
+## Status
+
+Accepted with validated M10.9.4.1-G.2 Hotfix 2
 
 ## Context
 

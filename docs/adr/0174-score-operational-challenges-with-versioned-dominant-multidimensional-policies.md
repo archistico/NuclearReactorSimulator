@@ -1,6 +1,8 @@
 # ADR-0174 — Score operational challenges with versioned dominant multidimensional policies
 
-**Status:** Accepted — M10.9.6.3 Hotfix 1 validated 2026-08-20  
+## Status
+
+Accepted — M10.9.6.3 Hotfix 1 validated 2026-08-20
 **Date:** 2026-08-20
 
 ## Context

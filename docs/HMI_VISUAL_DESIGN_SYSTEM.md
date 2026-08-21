@@ -316,3 +316,10 @@ Proposte da valutare in iterazioni successive:
 5. **Ricerca e filtro allarmi:** severity, active, unacknowledged, returned e first-out.
 6. **Densità operatore/analisi:** stessa gerarchia e semantica, diversa quantità di diagnostica.
 7. **Test visuali automatizzati:** screenshot alle dimensioni nominale/minima per prevenire regressioni di sovrapposizione.
+
+
+## Engineering numeric-format consistency
+
+Within the current technical HMI contract, a single instrument/panel must not mix invariant decimal-point values with current-culture decimal-comma scale/setpoint labels. Until a deliberate full localization policy is introduced, App-only gauge-scale and COMPUTER engineering-number formatting should follow the same invariant convention as canonical Application presentation values.
+
+A future localized numeric policy is allowed only as a coherent presentation decision across values, scales, trends and operator-computer text; it must not produce mixed decimal conventions inside one control.

@@ -1,6 +1,8 @@
 # ADR 0129 — Activate H.4-selected hybrid hydraulics only in versioned current-v2 production
 
-**Status:** REJECTED BY VALIDATION / superseded by H.5 Hotfix 2 shadow qualification
+## Status
+
+REJECTED BY VALIDATION / superseded by H.5 Hotfix 2 shadow qualification
 
 ## Context
 

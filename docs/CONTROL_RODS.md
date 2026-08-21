@@ -46,6 +46,8 @@ committed position
 
 Movement is clamped to `[0, 1]`. Reaching either mechanical endpoint automatically changes motion to `Hold`. No wall-clock time or UI cadence participates.
 
+The controller-side `ActuatorDefinition.ControlRod` intentionally does **not** carry a second generic actuator `travelRate`. That layer maps controller output to the canonical rod command target; physical motion rate remains owned here by `ControlRodDefinition.TravelRate` and `ControlRodMotionSolver`. A null generic actuator travel-rate therefore does not mean instantaneous physical rod motion.
+
 ## Groups and command ordering
 
 `ControlRodGroupDefinition` is only a command grouping. Individual rods remain the sole physical state.

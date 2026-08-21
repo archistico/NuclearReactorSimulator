@@ -1,6 +1,8 @@
 # ADR 0063 — Secondary-system transients perturb canonical inputs and protection seams
 
-**Status:** Accepted / M8.4 hotfix 2 validated
+## Status
+
+Accepted / M8.4 hotfix 2 validated
 
 ## Context
 

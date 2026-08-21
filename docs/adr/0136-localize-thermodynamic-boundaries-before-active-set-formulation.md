@@ -1,6 +1,8 @@
 # ADR 0136 — Localize thermodynamic boundaries before active-set formulation
 
-**Status:** Accepted for M10.9.4.1-H.11 candidate.
+## Status
+
+Accepted for M10.9.4.1-H.11 candidate.
 
 ## Context
 

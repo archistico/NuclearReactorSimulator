@@ -1,6 +1,8 @@
 # ADR 0137 — Audit inverse thermodynamic branch selection before active-set formulation
 
-**Status:** Accepted for M10.9.4.1-H.12 candidate.
+## Status
+
+Accepted for M10.9.4.1-H.12 candidate.
 
 ## Context
 

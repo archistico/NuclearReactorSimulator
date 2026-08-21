@@ -1,5 +1,9 @@
 # ADR 0026: Keep point kinetics global while core zones provide configurable spatial projection
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted
 - Milestone: M3.3
 

@@ -1,6 +1,9 @@
 # ADR 0065 — Electrical loss constrains the canonical grid connection and composes explicit powered-load losses
 
-- **Status:** Accepted / M8.6 validated
+## Status
+
+Accepted / M8.6 validated
+
 - **Date:** 2026-07-22
 
 ## Context

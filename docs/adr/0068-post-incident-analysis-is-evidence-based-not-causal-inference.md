@@ -1,6 +1,9 @@
 # ADR 0068 — Post-incident analysis is evidence-based, not causal inference
 
-- **Status:** Accepted / M9.2 VALIDATED
+## Status
+
+Accepted / M9.2 VALIDATED
+
 - **Date:** 2026-07-22
 
 ## Context

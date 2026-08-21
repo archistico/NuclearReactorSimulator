@@ -10,19 +10,25 @@ This register contains **current** limitations only. Resolved investigations and
 - `CorrelationConsistentInverseDomain` is still a simplified closure. Matching the phase boundary removes an internal inverse-map inconsistency; it does not make the model a complete high-fidelity steam-table implementation, nor does it validate arbitrary metastable/supercritical states outside the declared envelope. Genuinely unsupported states continue to fail closed.
 - Fluid nodes and most components are zero-dimensional lumped control volumes.
 - Pipe/valve hydraulics use reduced resistance laws; general distributed pressure loss, elevation/static head, acoustic waves and water hammer are not modeled.
+
+- The passive reduced quadratic hydraulic inversion is continuous through zero flow but has unbounded local slope as driving pressure approaches zero; the ideal pump discharge check transition is continuous but non-smooth. No epsilon/laminar/check-leakage regularization is currently claimed. M12.2 owns the frozen near-zero/conditioning audit before any trajectory-changing law change.
+- `ThermodynamicBranchContinuityModel` retains historical “shadow” naming/provenance, but in the authoritative corrected-commit path its bounded previous-phase selection can contribute to a committed candidate when trigger/authority contracts permit. The base inverse resolver remains memoryless; retirement or unification requires separate evidence.
+- Pump hydraulic power and positive shaft demand are modeled, while motor/electrical dynamics and inefficiency-to-heat deposition were deliberately outside the original M1.5 primitive. M12.4 must close that ownership before stronger severe-accident/full-plant energy claims.
+- Generic `SimulationRuntime.Advance(elapsed)` has no intrinsic per-call catch-up ceiling. The desktop production path is separately bounded through fixed cooperative step batches; M11.3 owns the supported generic-API/catch-up policy audit.
 - General wet-steam/two-phase critical-flow and choking fidelity remains limited to explicitly implemented reduced-order paths.
 - Cavitation/NPSH, detailed non-condensable gases and full circulating-water dynamics are not modeled.
 - Drum swell/shrink and detailed separator carryover/carryunder are not modeled at industrial fidelity.
+- Main-steam relief and turbine-bypass opening are stateless pressure functions. They do not model safety-valve blowdown/reseat hysteresis, lift dynamics or actuator memory; reopening and reclosing therefore use the same pressure threshold family. This is a deliberate reduced-order limitation, not a hidden state elsewhere.
 
 ## Validated reference drift / inventory redistribution
 
 Historical validated I.3 was continuously healthy over 300 s on the then-authoritative exact-v3 production path, but the final 60 s are **not a claim of asymptotic steady state**. Exact @3 is now frozen provenance; exact @4 is current authoritative production and has separately passed the final repaired-v4 300 s reference requalification against all 19 unchanged I.3 budgets rather than inheriting exact-v3 evidence. The frozen regression observations include:
 
-- drum inventory slope: **+8.2451672984622224 kg/s**;
-- main-steam-header inventory slope: **-0.35293086123580603 kg/s**;
-- total fluid internal-energy slope: **-2.061802762164879 MW**.
+- drum inventory slope: approximately **+8.245 kg/s**;
+- main-steam-header inventory slope: approximately **-0.3529 kg/s**;
+- total fluid internal-energy slope: approximately **-2.062 MW**.
 
-These values are a regression baseline, not a claim of asymptotic steady state and not calibration targets. They indicate continuing reduced-order inventory/energy redistribution over the reference window. Future work may investigate whether a longer horizon, improved initialization/trim, or a separately validated physical model should reduce those drifts; production physics must not be tuned merely to make the slopes approach zero.
+Exact regression values are frozen in `../eng/frozen-evidence/ordinary/I3_ValidatedAuthoritativeReferenceSlopes.csv` and `../eng/evidence-manifests/i3-validated.csv`. These values are a regression baseline, not a claim of asymptotic steady state and not calibration targets. They indicate continuing reduced-order inventory/energy redistribution over the reference window. Future work may investigate whether a longer horizon, improved initialization/trim, or a separately validated physical model should reduce those drifts; production physics must not be tuned merely to make the slopes approach zero.
 
 ## Reactor physics
 
@@ -41,7 +47,7 @@ These values are a regression baseline, not a claim of asymptotic steady state a
 
 - Historical H.30 RQ1 promoted exact desktop `@3` corrected-commit because exact `@2` explicit showed targeted steam-train reverse-flow/shaft-drop discontinuities. Exact `@3` remains immutable replay provenance. Authoritative desktop production is now exact `@4`, which preserves corrected-commit ownership while using the repaired thermodynamic closure.
 - `pre-synchronization-grid-loading@2` is retained as an exact explicit compatibility/reference identity, but it is not the supported sustained low-load synchronization journey: the I.5 long diagnostic reproduced late rotor/export instability and reverse-admission steps. Synchronization exact `@3` preserves the @2 physical/control/grid seed and uses corrected-commit for the supported sustained journey. This synchronization version family is independent from desktop exact `@4`.
-- Historical H.28 remains `bounded-but-costly` provenance for the old closure. Repaired Stage 4 compares repaired explicit vs repaired corrected on the same thermodynamic closure and passed the original relative ceilings with median wall ratio `0.97677554038185532`, p95 ratio `0.83442338580147768` and allocation ratio `1.1163446388589435`; the validated repaired classification is `bounded-at-or-below-explicit` on that machine-local benchmark.
+- Historical H.28 remains `bounded-but-costly` provenance for the old closure. Repaired Stage 4 compares repaired explicit vs repaired corrected on the same thermodynamic closure and passed the original relative ceilings (approximately median wall ratio **0.977**, p95 **0.834**, allocation ratio **1.116**); the validated repaired classification is `bounded-at-or-below-explicit` on that machine-local benchmark. Exact values remain in the corresponding frozen Phase-I/H.28 evidence rather than being treated as human-facing calibration targets.
 - Repaired Stage 2 observed zero branch overrides but 3,720 previous-phase holds across 58 trigger steps, including 50 post-startup continuity-active steps. Branch override machinery may now be topologically obsolete, but previous-phase hysteresis remains materially exercised and must not be removed merely because the vapor seam became single-root. Any retirement requires separately scoped evidence after Phase-I closure.
 - `DeterministicHybridSemiImplicit` and `FourNodeBranchContinuityShadowIntegrated` are **source-retained historical modes**. They are not production choices, not exact-version compatibility requirements and not current-CI dependencies. I.4 defers physical deletion because historical executable seams still preserve provenance.
 
@@ -54,6 +60,13 @@ Still simplified or omitted:
 - detailed ventilation/fire/suppression systems;
 - detailed structural/mechanical failure progression;
 - complete severe-accident chemistry and containment behaviour.
+
+## Recorder / replay evidence
+
+- Full-step M9.1 recording intentionally retains one fingerprinted frame per logical step and can grow substantially during hour-scale sessions. Current v1 has no silent decimation/truncation contract; M11.3 owns measured memory/streaming/chunking work and M11.2 owns any versioned retention-format change.
+- `ControlRoomSnapshotFingerprint` v1 is JSON-shape-derived deterministic evidence. M10.9.7.4 must add a populated golden anchor before expanding archive/timeline equivalence; a future fingerprint v2 requires explicit multi-algorithm compatibility rather than redefining v1.
+- `ScenarioRecorder` is observational with respect to plant state/authority but executes synchronously. Its long-term evidence-failure/continue policy is not yet generalized; M11.3 owns that robustness decision.
+- `ScenarioChallengeTracker.LifecycleChanged` currently preserves per-step observation-refresh semantics while a challenge is active; M10.9.7.3 suppresses redundant UI work independently through presentation cadence and structural change detection. Any outcome-only notification split is future measured Application hardening.
 
 ## HMI / operator model
 
@@ -68,3 +81,10 @@ Faults, leaks/LOCA-class scenarios, blackout-class scenarios, trips and post-inc
 ## Validation interpretation
 
 A green regression gate means the current reduced-order contract is internally consistent for the tested domain. It does not imply industrial accuracy outside that domain.
+
+
+## Desktop host / session-save integrity
+
+The desktop host still has two known integrity gaps before timeline expansion: expected arithmetic/numerical step failures can escape the current runtime-pump catch contract, and overwrite save truncates the destination before the replacement archive is proven writable.
+
+The planned pre-7.4 host/session-integrity hardening owns those defects. They are not reasons to change physics, challenge/scoring semantics or archive schema. UI-thread responsiveness, notification fan-out, stable-ID command-target selection and MainWindowViewModel decomposition remain M11.3/M13 work as described in [`DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md`](DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md). Current candidate/validation status belongs only in [`PROJECT.md`](PROJECT.md).

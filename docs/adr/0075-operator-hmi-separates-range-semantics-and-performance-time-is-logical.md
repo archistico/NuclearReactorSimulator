@@ -1,6 +1,8 @@
 # ADR 0075 — Operator HMI separates range semantics and performance time is logical
 
-**Status:** Accepted  
+## Status
+
+Accepted
 **Date:** 2026-07-23
 
 ## Context

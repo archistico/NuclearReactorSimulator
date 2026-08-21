@@ -1,5 +1,9 @@
 # ADR 0054 — Cold-shutdown recipe and pre-start guidance remain layered
 
+## Status
+
+Accepted — legacy/foundational decision retained; this ADR predates the explicit status-heading convention.
+
 - Status: Accepted / M7.2 validated
 - Date: 2026-07-21
 

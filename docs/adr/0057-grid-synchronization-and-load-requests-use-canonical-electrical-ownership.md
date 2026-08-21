@@ -1,6 +1,8 @@
 # ADR 0057 — Grid synchronization and load requests use canonical electrical ownership
 
-**Status:** Accepted / M7.5 validated
+## Status
+
+Accepted / M7.5 validated
 
 ## Context
 
