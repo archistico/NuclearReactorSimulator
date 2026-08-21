@@ -1,5 +1,7 @@
 # M10.9.7.3 Hotfix 1 REV2 manual HMI validation checklist
 
+**Result: PASSED / VALIDATED locally on 2026-08-21.** This checklist is retained as acceptance evidence for the promoted REV2 baseline.
+
 Run this review only after build, ordinary tests and `scripts\run-m10973-mission-performance-live-workspace-audit.cmd` are green.
 
 M10.9.7.3 Hotfix 1 REV2 activates presentation only. Do not interpret this gate as challenge selection, score ownership, protection ownership or plant-command authority.

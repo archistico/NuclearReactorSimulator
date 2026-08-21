@@ -85,6 +85,6 @@ Checkpoint prefixes also preserve recorder-event evidence exactly: operator-acti
 
 ## Planned desktop overwrite-integrity hardening (pre-M10.9.7.4)
 
-The current desktop overwrite implementation is not the final release contract because it truncates the selected destination before the replacement archive write has completed. The accepted M10.9.7.3 Hotfix 2 plan requires destination selection before export, temporary-sibling write, successful flush/close and safe local-filesystem replace/move so the previous archive remains intact on failure. Unsupported provider semantics must fail closed rather than silently reverting to truncate-first overwrite.
+The M10.9.7.3 Hotfix 2 desktop contract selects the destination before archive export, requires a local filesystem path for safe replacement, writes a unique temporary sibling, flushes/closes it completely and only then uses local-filesystem replace/move semantics. The App never truncate-writes the existing destination before the replacement is complete. Unsupported provider semantics fail closed rather than silently reverting to destructive overwrite.
 
 This is a host/file-integrity change only. Scenario/session schema v1 and deterministic replay semantics remain unchanged. Stream-based persistence and off-thread serialization remain M11.3 measurement-driven work. See `DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md` and ADR-0185.

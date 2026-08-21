@@ -85,6 +85,6 @@ A green regression gate means the current reduced-order contract is internally c
 
 ## Desktop host / session-save integrity
 
-The desktop host still has two known integrity gaps before timeline expansion: expected arithmetic/numerical step failures can escape the current runtime-pump catch contract, and overwrite save truncates the destination before the replacement archive is proven writable.
+The validated pre-Hotfix-2 desktop baseline does not yet carry the new host/session-integrity evidence: expected arithmetic/numerical step failures need an explicit PAUSE + diagnostic boundary, and destructive truncate-first session overwrite must be retired before timeline expansion. The dedicated pre-7.4 gate owns proof of those corrections; current candidate/validation status belongs only in [`PROJECT.md`](PROJECT.md).
 
-The planned pre-7.4 host/session-integrity hardening owns those defects. They are not reasons to change physics, challenge/scoring semantics or archive schema. UI-thread responsiveness, notification fan-out, stable-ID command-target selection and MainWindowViewModel decomposition remain M11.3/M13 work as described in [`DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md`](DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md). Current candidate/validation status belongs only in [`PROJECT.md`](PROJECT.md).
+These items are not reasons to change physics, challenge/scoring semantics or archive schema. UI-thread responsiveness, notification fan-out, stable-ID command-target selection and MainWindowViewModel decomposition remain M11.3/M13 work as described in [`DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md`](DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md).

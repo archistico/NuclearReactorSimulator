@@ -66,7 +66,20 @@ public sealed partial class MainWindow : Window
             return;
         }
 
-        var replacement = _runtimeFactory();
+        (ControlRoomRuntimeCoordinator Coordinator, MainWindowViewModel ViewModel) replacement;
+        try
+        {
+            replacement = _runtimeFactory();
+        }
+        catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedRuntimeConstructionFailure(exception))
+        {
+            if (DataContext is MainWindowViewModel viewModel)
+            {
+                viewModel.ReportRuntimeHostOperationFailure("RESET SESSION", exception.Message);
+            }
+            return;
+        }
+
         ReplaceRuntime(replacement.Coordinator, replacement.ViewModel);
     }
 }

@@ -73,10 +73,27 @@ public sealed class M10971Hotfix2PreWorkstationRobustnessTests
 
         Assert.DoesNotContain("ArgumentException.ThrowIfNullOrWhiteSpace(content);", compositionRoot, StringComparison.Ordinal);
         Assert.Contains("archiveSerializer.Deserialize(content)", compositionRoot, StringComparison.Ordinal);
+        var failurePolicy = File.ReadAllText(Path.Combine(
+            root,
+            "src",
+            "NuclearReactorSimulator.App",
+            "Runtime",
+            "DesktopHostFailurePolicy.cs"));
+
         Assert.Contains(
-            "InvalidDataException or ArgumentException or KeyNotFoundException or OverflowException",
+            "DesktopHostFailurePolicy.IsExpectedArchiveOperationFailure(exception)",
             computerControl,
             StringComparison.Ordinal);
+
+        var archivePolicyStart = failurePolicy.IndexOf(
+            "public static bool IsExpectedArchiveOperationFailure",
+            StringComparison.Ordinal);
+        Assert.True(archivePolicyStart >= 0);
+        var archivePolicy = failurePolicy[archivePolicyStart..];
+        Assert.Contains("or InvalidDataException", archivePolicy, StringComparison.Ordinal);
+        Assert.Contains("or ArgumentException", archivePolicy, StringComparison.Ordinal);
+        Assert.Contains("or KeyNotFoundException", archivePolicy, StringComparison.Ordinal);
+        Assert.Contains("or ArithmeticException", archivePolicy, StringComparison.Ordinal);
     }
 
     [Fact]

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using NuclearReactorSimulator.App.Presentation;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.Hmi;
 
@@ -186,8 +187,8 @@ public sealed class ControlRoomLinearGauge : Border
         _unit.Text = snapshot?.Unit ?? string.Empty;
         _state.Text = ControlRoomPalette.StateText(state);
         _state.Foreground = accent;
-        _minimum.Text = scale is null ? "min —" : $"{scale.Minimum:0.###}";
-        _maximum.Text = scale is null ? "max —" : $"{scale.Maximum:0.###}";
+        _minimum.Text = scale is null ? "min —" : EngineeringNumberFormatter.Compact(scale.Minimum);
+        _maximum.Text = scale is null ? "max —" : EngineeringNumberFormatter.Compact(scale.Maximum);
         _scaleStatus.Text = snapshot?.ScaleStatusText ?? "SCALE —";
         _scaleStatus.Foreground = snapshot?.IsOffScale == true
             ? ControlRoomPalette.Accent(ControlRoomVisualState.Warning)

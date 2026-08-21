@@ -272,7 +272,7 @@ See [`OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`](OPERATOR_EXPERIENCE_HMI_ARCHITEC
 
 The desktop host requests bounded cooperative deterministic batches through Application; it does not drive Simulation from elapsed wall-clock catch-up. Avalonia remains single-threaded for UI callbacks, so long physical/projection work delays responsiveness rather than creating concurrent timer execution.
 
-Expected numerical-step failure containment and non-destructive session replacement are host-integrity responsibilities, not physics changes. The planned desktop-host/session-integrity hardening must pause/report expected step failures and replace existing archives only after a new temporary sibling has been written and safely closed.
+Expected numerical-step failure containment and non-destructive session replacement are App-host integrity responsibilities, not physics changes. The desktop host classifies only expected fail-closed step failures for PAUSE + diagnostic handling; unknown programming failures remain visible. Session overwrite selects the target before export and replaces an existing local file only after a temporary sibling has been completely written and durably flushed.
 
 See [`DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md`](DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md) and ADR 0185.
 

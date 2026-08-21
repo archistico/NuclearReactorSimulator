@@ -2,9 +2,8 @@
 
 ## Purpose
 
-This document records the disposition of the post-M10.9.7.3 static review of `NuclearReactorSimulator.App`. It is a planning/architecture record only. It does not change the current M10.9.7.3 Hotfix 1 REV2 runtime candidate or its already-green automated gates.
+This document records the disposition of the post-M10.9.7.3 static review of `NuclearReactorSimulator.App`. M10.9.7.3 Hotfix 1 REV2 is now VALIDATED; the review findings assigned to pre-7.4 correctness are implemented by the separate Hotfix 2 candidate. Current-state authority remains `PROJECT.md`.
 
-Current-state authority remains `PROJECT.md`.
 
 ## Confirmed immediate risks
 
@@ -54,13 +53,13 @@ The desktop session handlers currently do not share one consistent failure polic
 - load and restore eventually exercise overlapping archive/reconstruction logic but their catch contracts have diverged;
 - save has a narrower failure contract than load/restore and currently owns destructive file-write details in code-behind.
 
-M10.9.7.3 Hotfix 2 must centralize the **policy**, even if individual commands retain separate handlers. Equivalent failure categories should produce equivalent operator-visible behavior and must not crash the desktop process.
+M10.9.7.3 Hotfix 2 centralizes the **classification policy**, while individual commands retain separate handlers. Equivalent failure categories should produce equivalent operator-visible behavior and must not crash the desktop process.
 
 ## Numeric presentation consistency
 
 The current Application presentation contract formats engineering values with invariant decimal syntax, while a small number of App-layer gauge scale labels and COMPUTER setpoint strings use `CurrentCulture` implicitly. On an `it-IT` host the same instrument can therefore mix `1234.5` and `1234,5`.
 
-For the current technical HMI contract, M10.9.7.3 Hotfix 2 should align those remaining App strings to invariant technical formatting. A future full localization policy may deliberately choose local numeric culture, but it must then apply coherently across values, scales, trends and computer text rather than mixing policies inside one instrument.
+For the current technical HMI contract, M10.9.7.3 Hotfix 2 aligns those remaining App strings to invariant technical formatting. A future full localization policy may deliberately choose local numeric culture, but it must then apply coherently across values, scales, trends and computer text rather than mixing policies inside one instrument.
 
 ## Confirmed but deferred App/runtime work
 
@@ -103,15 +102,9 @@ Automatic retargeting to an adjacent element is forbidden for command-bearing se
 
 The current desktop host uses a deliberate fixed number of deterministic steps per timer callback and does not expose generic Simulation `SimulationSpeed` as a desktop pacing control. M11.3 may measure/document the current pacing contract. Adding a user-facing simulation-speed feature is a product decision, not release-performance cleanup, and remains deferred unless separately approved.
 
-## Planned immediate work: M10.9.7.3 Hotfix 2
+## Implemented candidate scope: M10.9.7.3 Hotfix 2 REV2
 
-Hotfix 2 is **not** to be stacked on the current REV2 candidate while manual HMI validation is pending. Sequence:
-
-1. complete `M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md` on Hotfix 1 REV2;
-2. promote Hotfix 1 REV2 only if manual evidence is green;
-3. build Hotfix 2 exclusively on that validated REV2 baseline;
-4. rerun build, ordinary suite, focused desktop-host/session-integrity gate and the affected manual save/failure checks;
-5. only after Hotfix 2 validation may M10.9.7.4 begin.
+Hotfix 1 REV2 completed its manual HMI gate and is VALIDATED. The original Hotfix 2 candidate failed only on xUnit1051 compilation diagnostics; REV1 fixed those diagnostics but ordinary tests exposed three additional contract-alignment defects. Hotfix 2 REV2 is therefore the active candidate on that same validated baseline plus Docs4: it adds explicit `InvalidDataException` archive classification, scopes backup cleanup to a successfully committed replacement, and updates the historical archive-boundary source regression to assert the centralized policy. Promotion requires build, ordinary suite, `scripts/run-m10973-desktop-host-session-integrity-audit.cmd` and `M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md`; only then may M10.9.7.4 begin.
 
 ### Hotfix 2 scope
 
@@ -175,4 +168,4 @@ The gate should prove at least:
 
 ## Decision summary
 
-The App review does not reopen M10.9.7.3 Mission/Performance semantics. It does identify two pre-7.4 host-integrity blockers: expected numerical failures must not terminate the desktop host, and overwriting a session archive must not destroy the prior valid file before a new archive is safely committed. Those are isolated in M10.9.7.3 Hotfix 2 after REV2 manual validation; the larger reactivity/modularity work remains measured/deferred.
+The App review does not reopen M10.9.7.3 Mission/Performance semantics. It does identify two pre-7.4 host-integrity blockers: expected numerical failures must not terminate the desktop host, and overwriting a session archive must not destroy the prior valid file before a new archive is safely committed. Those are isolated in M10.9.7.3 Hotfix 2 on REV2 VALIDATED; the larger reactivity/modularity work remains measured/deferred.

@@ -38,7 +38,7 @@ dotnet test --project "%APPLICATION_PROJECT%" --no-build -- ^
 if errorlevel 1 exit /b 1
 
 dotnet test --project "%APPLICATION_PROJECT%" --no-build -- ^
-  --filter-method "NuclearReactorSimulator.Application.Tests.ApplicationDescriptorTests.Current_DescribesM10973Hotfix1Rev2LiveMissionPerformanceWorkspaceCandidate" ^
+  --filter-method "NuclearReactorSimulator.Application.Tests.ApplicationDescriptorTests.Current_DescribesM10973Hotfix2DesktopHostSessionIntegrityCandidate" ^
   --parallel none
 if errorlevel 1 exit /b 1
 
@@ -63,5 +63,5 @@ if exist "artifacts\m10973-mission-performance-live-workspace\01-m10973-mission-
 
 echo.
 echo M10.9.7.3 Hotfix 1 REV2 automated live-workspace audit completed.
-echo Final promotion also requires docs\M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md.
+echo M10.9.7.3 Hotfix 1 REV2 manual HMI validation is already complete; this script now serves as a regression gate on later candidates.
 exit /b 0

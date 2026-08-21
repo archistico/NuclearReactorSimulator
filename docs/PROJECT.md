@@ -4,37 +4,47 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1, M10.9.7.2 Hotfix 2 REV1 and M10.9.7.2 Hotfix 3 REV1 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.2 Hotfix 3 REV1 passed build, complete ordinary tests and `scripts\run-m10972-persistence-payload-integrity-audit.cmd` on 2026-08-21. Schema-v1 command numeric payloads, adapter enum/error boundaries and post-incident DTO ownership are therefore qualified before live MISSION activation.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1, M10.9.7.2 Hotfix 2 REV1, M10.9.7.2 Hotfix 3 REV1 and M10.9.7.3 Hotfix 1 REV2 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.3 Hotfix 1 REV2 passed build, the complete ordinary suite, `scripts\run-m10973-mission-performance-live-workspace-audit.cmd` and `docs\M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md` on 2026-08-21. The dedicated read-only `MISSION` / `Mission & Performance` workspace is therefore the current validated presentation baseline; COMPUTER F1–F8 remain fixed, no F9 exists, normal startup remains mission-unbound and explicit exact pack binding remains required for live mission validation.
 
 Authoritative desktop production remains:
 
 `integrated-operations-desktop-stable@4 | CorrelationConsistentInverseDomain | FourNodeBranchContinuityCorrectedCommitOptIn | 10 ms`
 
-Historical exact-version identities remain immutable; no M10.9.7 presentation work reopens Phase-I numerical ownership.
+Historical exact-version identities remain immutable; no M10.9.7 presentation/host work reopens Phase-I numerical ownership.
 
 ## Active candidate
 
-**M10.9.7.3 Hotfix 1 REV2 — Live Mission / Performance Historical Shell Contract Alignment — CANDIDATE.**
+**M10.9.7.3 Hotfix 2 REV2 — Desktop Host Failure & Session Save Integrity — CANDIDATE.**
 
-The runtime candidate was originally rebuilt exclusively on M10.9.7.2 Hotfix 3 REV1 VALIDATED plus the pre-7.3 Detailed Forward Execution Plan documentation baseline. The distributed Docs1/Docs2/Docs3/Docs4 alignments change documentation only: Docs1 records the post-7.3 Simulation review disposition, Docs2 records the Application recording/replay review disposition, Docs3 records the App desktop-host/session-integrity review disposition, and Docs4 reorganizes documentation architecture/indexing, normalizes ADR discoverability and aligns current limitation/reference documentation. None changes the REV2 runtime/test/script candidate or its already-green automated evidence. Build, the complete ordinary suite and `scripts\run-m10973-mission-performance-live-workspace-audit.cmd` have now passed for Hotfix 1 REV2; **manual HMI validation is still pending**, so REV2 is not yet promoted. The original M10.9.7.3 package is SUPERSEDED / NOT VALIDATED after two compile-contract defects. The first Hotfix 1 fixed those compile contracts and built, but ordinary tests exposed stale batch-presentation ordering plus an over-broad M10.9.1 shell assertion. Hotfix 1 REV1 fixed the runtime ordering and correctly scoped the historical `GRID DEMAND` absence check; Application.Tests then passed, proving the live-source fix, while App.Tests exposed one remaining stale expectation: the top runtime block publishes current step through `RuntimeProgressText` (`STEP n`), not a direct `LogicalStepText` binding. Hotfix 1 REV2 changes only that historical test contract plus candidate metadata; the REV1 runtime fix and all 7.3 presentation semantics remain unchanged.
+This candidate is stacked exclusively on **M10.9.7.3 Hotfix 1 REV2 VALIDATED** plus the Docs4 documentation alignment. It closes the two pre-7.4 integrity gaps identified by the App review without changing Mission/Performance semantics:
 
-The live presentation path:
+- `DesktopControlRoomRuntimePump` classifies expected deterministic-step `InvalidOperationException`/`ArithmeticException` failures, including `OverflowException`, and converts them into one PAUSE + diagnostic boundary; unknown/programming exceptions remain unhandled rather than silently swallowed;
+- start-recorded-session and reset/recreate-session are protected by the same explicit runtime-construction failure policy; load, restore and save share one archive-operation failure classifier;
+- SAVE opens the picker **before** full archive export; cancellation therefore performs no archive serialization;
+- safe desktop overwrite requires a local filesystem path from the storage provider, writes a unique temporary sibling, flushes it durably, and only then moves/replaces the destination;
+- existing archives are never opened and truncated before replacement is complete; injected write/replace failures preserve the previous destination under the local-filesystem contract and temporary cleanup is best-effort;
+- providers that cannot expose a safe local path fail closed rather than falling back to destructive truncate-first write;
+- the remaining App gauge-scale and COMPUTER setpoint numbers use the same invariant technical decimal convention as canonical HMI values.
 
-- accumulates external-demand/scoring evidence on every deterministic step;
-- publishes immutable MISSION snapshots at presentation cadence and relevant same-step context changes;
-- uses explicit structural change detection instead of generated record equality over `IReadOnlyList<>`;
-- keeps `GRID DEMAND`, `REQUESTED LOAD` and `ACTUAL OUTPUT` separate;
-- copies score/classification from the existing M10.9.6 owner and gives safety/protection evidence visual priority;
-- exposes contextual `OPEN MISSION` navigation from COMPUTER as workspace selection only;
-- gives the normal desktop startup a truthful unbound `NO ACTIVE MISSION` state rather than inferring a challenge;
-- allows an exact authored pack to be bound explicitly for live/manual validation via `--mission-pack=<exact-id>`;
-- adds no challenge definition, scoring arithmetic, protection authority, plant command authority or physics change.
+No Simulation physics, fixed timestep, challenge definition, score arithmetic, protection authority, plant-command authority, MISSION navigation contract or archive schema changes in Hotfix 2.
 
-Archive-restored mission binding and deterministic timeline/drill-down equivalence remain explicitly deferred to M10.9.7.4. A user-facing challenge launcher is not part of 7.3.
+## Validation required for M10.9.7.3 Hotfix 2 REV2
 
-## Remaining validation for M10.9.7.3 Hotfix 1 REV2
+Run:
 
-The automated build, ordinary-suite and focused live-workspace gate are green. Promotion now requires only completion of `docs\M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md`. If source/test/script files change before that review, rerun the automated gates; documentation-only alignment does not invalidate the already reported automated result. Only after the manual HMI gate is green may M10.9.7.3 Hotfix 1 REV2 be promoted. **M10.9.7.4 still must not begin immediately:** the accepted App review requires a separate M10.9.7.3 Hotfix 2 — Desktop Host Failure & Session Save Integrity — stacked only on REV2 VALIDATED and itself validated first.
+```bat
+dotnet build
+dotnet test
+scripts\run-m10973-desktop-host-session-integrity-audit.cmd
+```
+
+Then complete:
+
+`docs\M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md`
+
+The original Hotfix 2 candidate is SUPERSEDED / NOT VALIDATED because compilation stopped only on eight xUnit1051 violations in the newly added async App tests. Hotfix 2 REV1 fixed those analyzer call sites but is also SUPERSEDED / NOT VALIDATED: the ordinary suite then exposed three contract issues — `InvalidDataException` was missing from the centralized archive failure classifier, the new-file save path attempted an unnecessary backup cleanup, and the historical M10.9.7.1 source regression still expected the superseded inline catch list. Hotfix 2 REV2 fixes those three points without changing the broader host/save design.
+
+Only after the automated gate and manual save/load checks are green may Hotfix 2 REV2 be promoted. M10.9.7.4 remains blocked until that promotion.
 
 ## Evidence and package policy
 
@@ -52,17 +62,17 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 - branch overrides disappeared in repaired long-horizon evidence, but previous-phase hysteresis remained materially active and must not be removed without separately scoped post-Phase-I retirement evidence;
 - H.5/H.21 historical numerical source seams remain retained for provenance;
 - severe-incident, structural-damage and several plant-system models remain reduced-order or incomplete;
-- the reduced quadratic hydraulic map is continuous but not differentiable through some near-zero/reversal transitions, and the generic runtime/numerical-conditioning findings from the post-7.3 Simulation review are explicitly assigned to M11.3/M12 rather than patched into M10 presentation work; see `SIMULATION_NUMERICAL_REGULARITY_AND_RUNTIME_REVIEW.md`;
+- the reduced quadratic hydraulic map is continuous but not differentiable through some near-zero/reversal transitions, and the generic runtime/numerical-conditioning findings from the post-7.3 Simulation review are assigned to M11.3/M12 rather than patched into M10 presentation work; see `SIMULATION_NUMERICAL_REGULARITY_AND_RUNTIME_REVIEW.md`;
 - the post-7.3 Application review assigns fingerprint-v1 anchoring plus lifecycle-spine/recent-evidence separation to M10.9.7.4, while recorder notification cost, fingerprint cost, collection-copy traps, long-session memory growth and recorder failure policy belong to M11.2/M11.3; see `APPLICATION_RECORDING_REPLAY_REVIEW.md` and ADR-0184;
-- the post-7.3 App review identifies desktop numerical-failure containment and non-destructive/atomic session replacement as pre-7.4 integrity work. After REV2 manual validation, M10.9.7.3 Hotfix 2 must close these items before 7.4; UI-thread/projection measurement belongs to M11.3 and stable command-target selection/MainWindowViewModel decomposition to M13. See `DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md` and ADR-0185.
+- UI-thread runtime/projection responsiveness, notification fan-out and archive-export cost remain M11.3 measurement work; stable command-target identity and `MainWindowViewModel` decomposition remain M13 work; see `DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md` and ADR-0185.
 
 ## Continuation rule
 
-Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.7.2 Hotfix 3 REV1 VALIDATED → active M10.9.7.3 Hotfix 1 REV2 live Mission/Performance workspace wiring/manual review → planned M10.9.7.3 Hotfix 2 desktop-host/session-integrity closure → M10.9.7.4 deterministic timeline/drill-down. Do not promote the superseded pre-Hotfix-3 7.2 package or reopen numerical Phase-I/command-consequence work without direct evidence against a validated contract.
+Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.3 Hotfix 1 REV2 VALIDATED → active M10.9.7.3 Hotfix 2 REV2 desktop-host/session-integrity closure → M10.9.7.4 deterministic timeline/drill-down/replay-equivalence**. Do not begin 7.4 until Hotfix 2 REV2 has passed its own automatic and manual gates.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 
-The post-Phase-I execution order remains fixed: M10.9.6 deterministic challenge/demand/scoring → M10.9.7 mission/performance presentation → M10.9.8 integrated M10 validation → M11 release hardening. Detailed contracts live in [`ROADMAP.md`](ROADMAP.md) and the milestone plans from [`M10.9.6.md`](milestones/M10.9.6.md) through [`M11.md`](milestones/M11.md).
+The post-Phase-I execution order remains fixed: M10.9.7 mission/performance → M10.9.8 integrated M10 validation → M11 release hardening → M12–M15 approved post-release epics. Detailed future contracts live in [`ROADMAP.md`](ROADMAP.md) and the milestone plans.
 
 ## Documentation authority
 

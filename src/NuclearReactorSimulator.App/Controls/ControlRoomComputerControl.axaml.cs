@@ -2,6 +2,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using NuclearReactorSimulator.App.Composition;
+using NuclearReactorSimulator.App.Persistence;
+using NuclearReactorSimulator.App.Runtime;
 using NuclearReactorSimulator.App.ViewModels;
 using NuclearReactorSimulator.App.Views;
 using NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
@@ -15,6 +17,8 @@ public sealed partial class ControlRoomComputerControl : UserControl
         Patterns = new[] { "*.nrs-session.json", "*.json" },
     };
 
+    private readonly DesktopSessionArchiveSaveCoordinator _archiveSaveCoordinator = new();
+
     public ControlRoomComputerControl()
     {
         InitializeComponent();
@@ -22,11 +26,23 @@ public sealed partial class ControlRoomComputerControl : UserControl
 
     private void StartRecordedSession_Click(object? sender, RoutedEventArgs e)
     {
-        if (TopLevel.GetTopLevel(this) is not MainWindow window)
+        if (DataContext is not OperatorComputerViewModel viewModel
+            || TopLevel.GetTopLevel(this) is not MainWindow window)
         {
             return;
         }
-        var root = CompositionRoot.Create(enableSessionRecording: true);
+
+        ApplicationRoot root;
+        try
+        {
+            root = CompositionRoot.Create(enableSessionRecording: true);
+        }
+        catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedRuntimeConstructionFailure(exception))
+        {
+            viewModel.ReportSessionWorkspaceStatus($"START RECORDED SESSION FAILED/BLOCKED — {exception.Message}");
+            return;
+        }
+
         window.ReplaceRuntime(root.RuntimeCoordinator, root.MainWindowViewModel);
         root.MainWindowViewModel.OperatorComputer.SelectPage(OperatorComputerPageId.Session);
         root.MainWindowViewModel.OperatorComputer.ReportSessionWorkspaceStatus(
@@ -39,31 +55,41 @@ public sealed partial class ControlRoomComputerControl : UserControl
         {
             return;
         }
+
         try
         {
-            var content = viewModel.ExportSessionArchive();
-            var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+            var savedTarget = await _archiveSaveCoordinator.SaveAsync(
+                async () =>
+                {
+                    var file = await topLevel.StorageProvider.SaveFilePickerAsync(new FilePickerSaveOptions
+                    {
+                        Title = "Save replay-backed reactor session",
+                        SuggestedFileName = "nuclear-reactor-session.nrs-session.json",
+                        FileTypeChoices = new[] { SessionArchiveFileType },
+                        DefaultExtension = "json",
+                    });
+                    if (file is null)
+                    {
+                        return null;
+                    }
+
+                    return DesktopSessionArchiveSaveCoordinator.RequireLocalTarget(file.TryGetLocalPath(), file.Name);
+                },
+                viewModel.ExportSessionArchive);
+
+            if (savedTarget is null)
             {
-                Title = "Save replay-backed reactor session",
-                SuggestedFileName = "nuclear-reactor-session.nrs-session.json",
-                FileTypeChoices = new[] { SessionArchiveFileType },
-                DefaultExtension = "json",
-            });
-            if (file is null)
-            {
-                viewModel.ReportSessionWorkspaceStatus("SAVE CANCELLED — session remains unchanged.");
+                viewModel.ReportSessionWorkspaceStatus("SAVE CANCELLED — session remains unchanged; archive export was not requested.");
                 return;
             }
-            await using var stream = await file.OpenWriteAsync();
-            stream.SetLength(0);
-            await using var writer = new StreamWriter(stream);
-            await writer.WriteAsync(content);
-            await writer.FlushAsync();
-            viewModel.ReportSessionWorkspaceStatus($"ARCHIVE SAVED — {file.Name}. Exact restoration remains replay/fingerprint verified.");
+
+            viewModel.ReportSessionWorkspaceStatus(
+                $"ARCHIVE SAVED — {savedTarget.DisplayName}. Non-destructive local replacement completed; restoration remains replay/fingerprint verified.");
         }
-        catch (Exception exception) when (exception is InvalidOperationException or IOException or UnauthorizedAccessException or NotSupportedException)
+        catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedArchiveOperationFailure(exception))
         {
-            viewModel.ReportSessionWorkspaceStatus($"SAVE FAILED/BLOCKED — {exception.Message}");
+            viewModel.ReportSessionWorkspaceStatus(
+                $"SAVE FAILED/BLOCKED — {exception.Message} Existing archive was not truncate-written by NRS.");
         }
     }
 
@@ -74,6 +100,9 @@ public sealed partial class ControlRoomComputerControl : UserControl
         {
             return;
         }
+
+        ApplicationRoot root;
+        string fileName;
         try
         {
             var files = await window.StorageProvider.OpenFilePickerAsync(new FilePickerOpenOptions
@@ -88,19 +117,23 @@ public sealed partial class ControlRoomComputerControl : UserControl
                 viewModel.ReportSessionWorkspaceStatus("LOAD CANCELLED — session remains unchanged.");
                 return;
             }
+
             await using var stream = await file.OpenReadAsync();
             using var reader = new StreamReader(stream);
             var content = await reader.ReadToEndAsync();
-            var root = CompositionRoot.CreateFromSessionArchive(content);
-            window.ReplaceRuntime(root.RuntimeCoordinator, root.MainWindowViewModel);
-            root.MainWindowViewModel.OperatorComputer.SelectPage(OperatorComputerPageId.Session);
-            root.MainWindowViewModel.OperatorComputer.ReportSessionWorkspaceStatus(
-                $"ARCHIVE LOADED & VERIFIED — {file.Name}. Recording resumed from the verified final state.");
+            root = CompositionRoot.CreateFromSessionArchive(content);
+            fileName = file.Name;
         }
-        catch (Exception exception) when (exception is InvalidOperationException or InvalidDataException or ArgumentException or KeyNotFoundException or OverflowException or IOException or UnauthorizedAccessException or NotSupportedException)
+        catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedArchiveOperationFailure(exception))
         {
             viewModel.ReportSessionWorkspaceStatus($"LOAD FAILED — {exception.Message}");
+            return;
         }
+
+        window.ReplaceRuntime(root.RuntimeCoordinator, root.MainWindowViewModel);
+        root.MainWindowViewModel.OperatorComputer.SelectPage(OperatorComputerPageId.Session);
+        root.MainWindowViewModel.OperatorComputer.ReportSessionWorkspaceStatus(
+            $"ARCHIVE LOADED & VERIFIED — {fileName}. Recording resumed from the verified final state.");
     }
 
     private void RestoreSelectedCheckpoint_Click(object? sender, RoutedEventArgs e)
@@ -110,20 +143,25 @@ public sealed partial class ControlRoomComputerControl : UserControl
         {
             return;
         }
+
+        ApplicationRoot root;
+        string checkpointId;
         try
         {
-            var checkpointId = viewModel.SelectedSessionCheckpointId
+            checkpointId = viewModel.SelectedSessionCheckpointId
                 ?? throw new InvalidOperationException("Select a replay-backed checkpoint before restore.");
             var archive = viewModel.ExportSessionArchive();
-            var root = CompositionRoot.CreateFromSessionArchive(archive, checkpointId);
-            window.ReplaceRuntime(root.RuntimeCoordinator, root.MainWindowViewModel);
-            root.MainWindowViewModel.OperatorComputer.SelectPage(OperatorComputerPageId.Session);
-            root.MainWindowViewModel.OperatorComputer.ReportSessionWorkspaceStatus(
-                $"CHECKPOINT RESTORED & VERIFIED — {checkpointId}. Recording resumed from that deterministic prefix.");
+            root = CompositionRoot.CreateFromSessionArchive(archive, checkpointId);
         }
-        catch (Exception exception) when (exception is InvalidOperationException or InvalidDataException or KeyNotFoundException or NotSupportedException)
+        catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedArchiveOperationFailure(exception))
         {
             viewModel.ReportSessionWorkspaceStatus($"RESTORE FAILED/BLOCKED — {exception.Message}");
+            return;
         }
+
+        window.ReplaceRuntime(root.RuntimeCoordinator, root.MainWindowViewModel);
+        root.MainWindowViewModel.OperatorComputer.SelectPage(OperatorComputerPageId.Session);
+        root.MainWindowViewModel.OperatorComputer.ReportSessionWorkspaceStatus(
+            $"CHECKPOINT RESTORED & VERIFIED — {checkpointId}. Recording resumed from that deterministic prefix.");
     }
 }

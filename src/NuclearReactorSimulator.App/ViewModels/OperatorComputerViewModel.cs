@@ -3,6 +3,7 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using NuclearReactorSimulator.App.Commands;
+using NuclearReactorSimulator.App.Presentation;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.Automation;
 using NuclearReactorSimulator.Application.ControlRoom.Hmi;
@@ -906,7 +907,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         lines.Add(string.Empty);
         lines.Add("LOCAL CONTROLLERS");
         lines.AddRange(automation.ControllerModes.Select(static controller =>
-            $"{controller.Area,-22} {controller.ControllerId,-20} {controller.Mode,-9} SETPOINT {controller.Setpoint:0.###} {controller.SetpointUnit}"));
+            $"{controller.Area,-22} {controller.ControllerId,-20} {controller.Mode,-9} SETPOINT {EngineeringNumberFormatter.Compact(controller.Setpoint)} {controller.SetpointUnit}"));
         return string.Join(Environment.NewLine, lines);
     }
 

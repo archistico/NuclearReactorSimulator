@@ -73,7 +73,7 @@ The detailed milestone plan splits 7.3 into these implementation slices:
 
 ### Pre-7.4 host integrity — M10.9.7.3 Hotfix 2
 
-After Hotfix 1 REV2 manual HMI validation and promotion, build a separate Hotfix 2 on that validated baseline. Close desktop numerical-failure containment, start/reset/load/restore boundary consistency, picker-before-export, non-destructive/atomic local-filesystem session replacement and invariant engineering-number formatting. Planned focused gate: `run-m10973-desktop-host-session-integrity-audit.cmd`.
+Before 7.4, Hotfix 2 owns desktop numerical-failure containment, start/reset/load/restore boundary consistency, picker-before-export, non-destructive/atomic local-filesystem session replacement and invariant engineering-number formatting. Focused gate: `run-m10973-desktop-host-session-integrity-audit.cmd`; current validation state remains in `PROJECT.md`.
 
 M10.9.7.4 is blocked until this Hotfix 2 is validated. UI-thread worker migration, MainWindowViewModel decomposition, streaming persistence and simulation-speed features remain out of scope.
 

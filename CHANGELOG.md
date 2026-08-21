@@ -1,4 +1,35 @@
 # Changelog
+## 2026-08-21 — M10.9.7.3 Hotfix 2 REV2 — Archive Failure / Cleanup / Historical Contract Alignment — CANDIDATE
+
+- Keeps **M10.9.7.3 Hotfix 1 REV2 VALIDATED + Docs4** as the only promoted baseline.
+- Marks Hotfix 2 REV1 **SUPERSEDED / NOT VALIDATED** after the ordinary suite reported three failures.
+- Explicitly includes `InvalidDataException` in `DesktopHostFailurePolicy.IsExpectedArchiveOperationFailure`; it is not an `IOException` subtype and therefore was not covered by the REV1 policy.
+- Scopes `.nrs-bak` cleanup to a successfully committed `File.Replace`; a new-file `File.Move` now performs only temporary-file cleanup, while a failed replace does not risk deleting an emergency backup artifact.
+- Updates the historical M10.9.7.1 archive-boundary regression to assert use/content of the centralized archive policy instead of requiring the superseded inline catch-list syntax.
+- Retains all Hotfix 2 host-integrity behavior: expected numerical step failure containment, START/RESET/LOAD/RESTORE policy alignment, picker-before-export, temp-sibling durable write, safe replace/move, failure preservation and invariant engineering-number formatting.
+- No Simulation physics, challenge/scoring/protection authority, plant-command authority, archive schema or MISSION semantics change.
+
+Validation required: `dotnet build`, `dotnet test`, `scripts\run-m10973-desktop-host-session-integrity-audit.cmd`, then `docs\M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md`.
+
+## 2026-08-21 — M10.9.7.3 Hotfix 2 REV1 — xUnit1051 Cancellation Contract Alignment — SUPERSEDED / NOT VALIDATED
+
+- Rebuilt over M10.9.7.3 Hotfix 1 REV2 VALIDATED + Docs4 after the original Hotfix 2 failed compilation only on eight xUnit1051 analyzer violations in its new async App tests.
+- Passes `TestContext.Current.CancellationToken` to every affected cancellation-aware test call in `DesktopSessionArchiveFileWriterTests`, `DesktopSessionArchiveSaveCoordinatorTests` and `M10973DesktopHostSessionIntegrityAuditTests`.
+- Keeps all Hotfix 2 production behavior unchanged: desktop numerical-failure containment, shared host failure policy, picker-before-export, non-destructive temp-sibling save/replace and invariant engineering-number formatting.
+- Original Hotfix 2 is SUPERSEDED / NOT VALIDATED. REV1 compiled, but the ordinary suite then failed 3 tests: missing explicit `InvalidDataException` archive classification, unnecessary backup cleanup on the new-file path, and a historical source assertion still tied to the old inline catch syntax. REV1 is therefore also SUPERSEDED / NOT VALIDATED by REV2.
+
+## 2026-08-21 — M10.9.7.3 Hotfix 2 — Desktop Host Failure & Session Save Integrity — SUPERSEDED / NOT VALIDATED (xUnit1051 build failure)
+
+- Promotes M10.9.7.3 Hotfix 1 REV2 to VALIDATED after build, complete ordinary tests, focused live-workspace audit and manual HMI checklist passed.
+- Extends the desktop runtime-pump boundary from `InvalidOperationException` only to the explicit expected fail-closed family `InvalidOperationException` / `ArithmeticException` (therefore `OverflowException`), converting those failures to PAUSE + one diagnostic while leaving unknown/programming exceptions unhandled.
+- Protects start-recorded-session and reset/recreate-session boundaries and unifies load/restore/save archive-operation failure classification.
+- Reorders SAVE to destination-picker first; cancellation performs no archive export.
+- Replaces destructive truncate-first overwrite with a testable local-filesystem writer: unique temporary sibling, complete UTF-8 write, durable flush/close, `File.Replace` for existing destinations or `File.Move` for new files, best-effort cleanup, and fail-closed behavior when no local path is available.
+- Adds injected write/replace preservation tests plus a successful overwrite → replay-loadable archive integration test.
+- Aligns App gauge-scale and COMPUTER controller-setpoint formatting to the invariant technical HMI decimal convention.
+- Adds `scripts/run-m10973-desktop-host-session-integrity-audit.cmd` and a focused manual save/load checklist.
+- No Simulation physics, challenge/scoring/protection authority, MISSION navigation semantics, plant-command authority or archive schema change.
+
 ## M10.9.7.3 Hotfix 1 REV2 Docs4 — Documentation Architecture / Indexing / Limitations Alignment — CANDIDATE
 
 - Documentation-only revision over the unchanged REV2 runtime/test/script candidate.

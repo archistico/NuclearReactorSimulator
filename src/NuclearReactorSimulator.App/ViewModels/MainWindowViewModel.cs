@@ -1418,6 +1418,13 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         CommandStatus = $"Runtime paused after deterministic step failure: {message}";
     }
 
+    internal void ReportRuntimeHostOperationFailure(string operation, string message)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(operation);
+        ArgumentException.ThrowIfNullOrWhiteSpace(message);
+        CommandStatus = $"{operation} FAILED/BLOCKED — {message}";
+    }
+
     private void OpenOperatorComputerPage(OperatorComputerPageId pageId)
     {
         SelectedWorkspace = Workspaces.Single(static workspace => workspace.Id == ControlRoomWorkspaceId.OperatorComputer);

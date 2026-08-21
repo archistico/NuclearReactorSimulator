@@ -59,6 +59,7 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`M10_9_6_5_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_6_5_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.6.5 manual closure checklist | Acceptance / validation |
 | [`M10_9_7_3_HOTFIX1_REV2_DOCS3_ALIGNMENT.md`](M10_9_7_3_HOTFIX1_REV2_DOCS3_ALIGNMENT.md) | M10.9.7.3 Hotfix 1 REV2 Docs3 — Desktop Host / Session Integrity Roadmap Alignment | Planning / engineering review |
 | [`M10_9_7_3_HOTFIX1_REV2_DOCS4_ALIGNMENT.md`](M10_9_7_3_HOTFIX1_REV2_DOCS4_ALIGNMENT.md) | M10.9.7.3 Hotfix 1 REV2 Docs4 — Documentation Architecture / Indexing / Limitations Alignment | Planning / engineering review |
+| [`M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.3 Hotfix 2 manual validation checklist | Acceptance / validation |
 | [`M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.3 Hotfix 1 REV2 manual HMI validation checklist | Acceptance / validation |
 | [`M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md`](M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md) | M9 Advanced Fidelity Integration Gate | Acceptance / validation |
 | [`M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md`](M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md) | M9 Final Manual GUI Validation Checklist | Acceptance / validation |

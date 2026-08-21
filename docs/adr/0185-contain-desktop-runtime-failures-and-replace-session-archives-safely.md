@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted as forward plan; implementation deferred until M10.9.7.3 Hotfix 1 REV2 manual validation is green.
+Accepted.
 
 ## Context
 
