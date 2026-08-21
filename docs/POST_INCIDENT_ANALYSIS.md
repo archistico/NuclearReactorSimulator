@@ -85,3 +85,8 @@ Post-incident analysis is intended for deterministic educational debrief. Tempor
 ## Deliberate omission: conservation audits
 
 M9.1 recordings currently retain `ControlRoomSnapshot`, not private M4/M5 solver audit objects. M9.2 therefore does not reach into Simulation to fabricate conservation diagnostics after the fact. If conservation residuals are required in debrief reports, they must first be promoted through an explicit, versioned presentation/recording contract in a later milestone.
+
+
+## Persistence boundary
+
+`JsonPostIncidentAnalysisSerializer` owns private JSON document DTOs. Typed operator commands are mapped through an Infrastructure `CommandDocument` containing kind, target metadata and numeric payload rather than serializing the Application `ControlRoomCommand` record directly. This preserves the v1 JSON payload shape while preventing Application-record changes from silently redefining the persisted document. Malformed or structurally invalid JSON is normalized to `InvalidDataException`; unsupported future schema versions remain `NotSupportedException`.

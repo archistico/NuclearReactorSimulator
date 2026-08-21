@@ -20,24 +20,21 @@ public static class ScenarioChallengeExternalDemandProjector
         {
             throw new ArgumentException("Challenge definition and lifecycle snapshot exact IDs must match.", nameof(lifecycle));
         }
-        if (snapshot.LogicalStep != lifecycle.LogicalStep)
-        {
-            throw new ArgumentException("External-demand projection requires the lifecycle and control-room snapshot from the same logical step.", nameof(snapshot));
-        }
 
+        var alignedLifecycle = ChallengeLifecycleLogicalStepAlignment.Align(lifecycle, snapshot.LogicalStep);
         var profile = challenge.ExternalDemandProfile;
-        if (profile is null || !lifecycle.ActivatedLogicalStep.HasValue)
+        if (profile is null || !alignedLifecycle.ActivatedLogicalStep.HasValue)
         {
             return ExternalEnergyDemandEvidenceSnapshot.Unavailable(snapshot.LogicalStep);
         }
-        if (lifecycle.ActivatedLogicalStep.Value > snapshot.LogicalStep)
+        if (alignedLifecycle.ActivatedLogicalStep.Value > snapshot.LogicalStep)
         {
             throw new InvalidOperationException("Challenge activation logical step cannot be later than the evidence snapshot.");
         }
 
-        var offset = snapshot.LogicalStep - lifecycle.ActivatedLogicalStep.Value;
+        var offset = snapshot.LogicalStep - alignedLifecycle.ActivatedLogicalStep.Value;
         var evaluated = profile.Evaluate(offset);
-        var requested = RequestedGeneratorLoadMegawatts(snapshot);
+        var requested = ControlRoomElectricalEvidence.RequestedGeneratorLoadMegawatts(snapshot);
         var actual = snapshot.Electrical.GrossElectricalOutput.NumericValue;
         double? error = actual.HasValue ? evaluated.DemandMegawatts - actual.Value : null;
 
@@ -45,7 +42,7 @@ public static class ScenarioChallengeExternalDemandProjector
         double? nextDemandMegawatts = null;
         if (profile.ExposeNextScheduledChange && evaluated.NextControlPoint is { } next)
         {
-            nextChangeLogicalStep = lifecycle.ActivatedLogicalStep.Value + next.OffsetLogicalStep;
+            nextChangeLogicalStep = alignedLifecycle.ActivatedLogicalStep.Value + next.OffsetLogicalStep;
             nextDemandMegawatts = next.DemandMegawatts;
         }
 
@@ -60,24 +57,5 @@ public static class ScenarioChallengeExternalDemandProjector
             error,
             nextChangeLogicalStep,
             nextDemandMegawatts);
-    }
-
-    private static double? RequestedGeneratorLoadMegawatts(ControlRoomSnapshot snapshot)
-    {
-        if (snapshot.Electrical.Generators.Count == 0)
-        {
-            return null;
-        }
-
-        var total = 0d;
-        foreach (var generator in snapshot.Electrical.Generators)
-        {
-            if (!generator.RequestedElectricalPower.NumericValue.HasValue)
-            {
-                return null;
-            }
-            total += generator.RequestedElectricalPower.NumericValue.Value;
-        }
-        return total;
     }
 }

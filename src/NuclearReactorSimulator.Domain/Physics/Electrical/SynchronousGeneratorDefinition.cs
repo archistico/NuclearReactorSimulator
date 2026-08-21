@@ -55,6 +55,32 @@ public sealed class SynchronousGeneratorDefinition
             throw new ArgumentOutOfRangeException(nameof(efficiency), efficiency, "Generator efficiency must be greater than zero and no greater than one.");
         }
 
+        if (maximumSynchronizationFrequencyDifference <= Frequency.Zero)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maximumSynchronizationFrequencyDifference),
+                maximumSynchronizationFrequencyDifference,
+                "Maximum synchronization frequency difference must be greater than zero.");
+        }
+
+        if (maximumSynchronizationPhaseDifference <= PhaseAngleDifference.Zero
+            || maximumSynchronizationPhaseDifference.Radians >= Math.PI)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maximumSynchronizationPhaseDifference),
+                maximumSynchronizationPhaseDifference,
+                "Maximum synchronization phase difference must be greater than zero and less than 180 degrees.");
+        }
+
+        if (maximumSynchronizationVoltageDifference <= ElectricPotential.Zero
+            || maximumSynchronizationVoltageDifference >= ratedLineVoltage)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(maximumSynchronizationVoltageDifference),
+                maximumSynchronizationVoltageDifference,
+                "Maximum synchronization voltage difference must be greater than zero and less than generator rated line voltage.");
+        }
+
         Id = id.Trim();
         RotorId = rotorId.Trim();
         BreakerId = breakerId.Trim();

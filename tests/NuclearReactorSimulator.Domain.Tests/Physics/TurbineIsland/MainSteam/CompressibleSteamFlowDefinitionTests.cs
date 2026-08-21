@@ -38,6 +38,20 @@ public sealed class CompressibleSteamFlowDefinitionTests
             new CompressibleSteamFlowDefinition(area, 0.95d, gasConstant, 2.01d));
     }
 
+    [Fact]
+    public void CriticalPressureRatio_RemainsCanonicalForImmutableDefinition()
+    {
+        var definition = CreateDefinition();
+        var expected = Math.Pow(
+            2d / (definition.HeatCapacityRatio + 1d),
+            definition.HeatCapacityRatio / (definition.HeatCapacityRatio - 1d));
+
+        Assert.Equal(expected, definition.CriticalDownstreamToUpstreamPressureRatio, 15);
+        Assert.Equal(
+            definition.CriticalDownstreamToUpstreamPressureRatio,
+            definition.CriticalDownstreamToUpstreamPressureRatio);
+    }
+
     private static CompressibleSteamFlowDefinition CreateDefinition()
         => new(
             Area.FromSquareMillimetres(100d),

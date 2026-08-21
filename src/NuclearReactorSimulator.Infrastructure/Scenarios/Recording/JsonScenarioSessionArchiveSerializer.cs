@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.Automation;
 using NuclearReactorSimulator.Application.Scenarios;
@@ -93,6 +94,26 @@ public sealed class JsonScenarioSessionArchiveSerializer : IScenarioSessionArchi
 
     public ScenarioSessionArchive Deserialize(string content)
     {
+        try
+        {
+            return DeserializeCore(content);
+        }
+        catch (InvalidDataException)
+        {
+            throw;
+        }
+        catch (NotSupportedException)
+        {
+            throw;
+        }
+        catch (Exception exception) when (exception is JsonException or ArgumentException or OverflowException)
+        {
+            throw new InvalidDataException("Session archive contains malformed or structurally invalid data.", exception);
+        }
+    }
+
+    private ScenarioSessionArchive DeserializeCore(string content)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(content);
         var document = JsonSerializer.Deserialize<ArchiveDocument>(content, Options)
             ?? throw new InvalidDataException("Session archive document could not be deserialized.");
@@ -120,7 +141,7 @@ public sealed class JsonScenarioSessionArchiveSerializer : IScenarioSessionArchi
             {
                 throw new InvalidDataException($"Archive operator action at index {index} must contain a typed command.");
             }
-            return new ScenarioOperatorActionRecord(action.Sequence, action.LogicalStep, FromDocument(action.Command));
+            return new ScenarioOperatorActionRecord(action.Sequence, action.LogicalStep, FromDocument(action.Command, $"operatorActions[{index}].command"));
         }).ToArray();
 
         var intents = (document.AutomationIntents ?? Array.Empty<AutomationIntentDocument>()).Select((intent, index) =>
@@ -145,13 +166,17 @@ public sealed class JsonScenarioSessionArchiveSerializer : IScenarioSessionArchi
             }
             ValidateText(item.SourceId, $"events[{index}].sourceId");
             ValidateText(item.Detail, $"events[{index}].detail");
+            if (!Enum.IsDefined(item.Kind))
+            {
+                throw new InvalidDataException($"Session archive event at index {index} contains unsupported kind '{item.Kind}'.");
+            }
             return new ScenarioRecordingEvent(
                 item.Sequence,
                 item.LogicalStep,
                 item.Kind,
                 item.SourceId!,
                 item.Detail!,
-                item.OperatorCommand is null ? null : FromDocument(item.OperatorCommand));
+                item.OperatorCommand is null ? null : FromDocument(item.OperatorCommand, $"events[{index}].operatorCommand"));
         }).ToArray();
 
         var checkpoints = (document.Checkpoints ?? Array.Empty<CheckpointDocument>()).Select((checkpoint, index) =>
@@ -188,10 +213,43 @@ public sealed class JsonScenarioSessionArchiveSerializer : IScenarioSessionArchi
     }
 
     private static CommandDocument ToDocument(ControlRoomCommand command)
-        => new() { Kind = command.Kind, TargetId = command.TargetId, TargetKind = command.TargetKind };
+    {
+        ArgumentNullException.ThrowIfNull(command);
+        ValidateCommand(command.Kind, command.TargetKind, command.NumericValue, "command");
+        return new CommandDocument
+        {
+            Kind = command.Kind,
+            TargetId = command.TargetId,
+            TargetKind = command.TargetKind,
+            NumericValue = command.NumericValue,
+        };
+    }
 
-    private static ControlRoomCommand FromDocument(CommandDocument document)
-        => new(document.Kind, document.TargetId, document.TargetKind);
+    private static ControlRoomCommand FromDocument(CommandDocument document, string fieldName)
+    {
+        ValidateCommand(document.Kind, document.TargetKind, document.NumericValue, fieldName);
+        return new ControlRoomCommand(document.Kind, document.TargetId, document.TargetKind, document.NumericValue);
+    }
+
+    private static void ValidateCommand(
+        ControlRoomCommandKind kind,
+        ControlRoomCommandTargetKind? targetKind,
+        double? numericValue,
+        string fieldName)
+    {
+        if (!Enum.IsDefined(kind))
+        {
+            throw new InvalidDataException($"Session archive field '{fieldName}.kind' contains unsupported value '{kind}'.");
+        }
+        if (targetKind.HasValue && !Enum.IsDefined(targetKind.Value))
+        {
+            throw new InvalidDataException($"Session archive field '{fieldName}.targetKind' contains unsupported value '{targetKind.Value}'.");
+        }
+        if (kind == ControlRoomCommandKind.TurbineControlValveManualDemandSet && !numericValue.HasValue)
+        {
+            throw new InvalidDataException($"Session archive field '{fieldName}' contains a turbine control-valve manual-demand command without numericValue.");
+        }
+    }
 
     private static SupervisoryObjectiveRequest FromDocument(ObjectiveDocument document)
         => document.Kind switch
@@ -285,5 +343,7 @@ public sealed class JsonScenarioSessionArchiveSerializer : IScenarioSessionArchi
         public ControlRoomCommandKind Kind { get; set; }
         public string? TargetId { get; set; }
         public ControlRoomCommandTargetKind? TargetKind { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public double? NumericValue { get; set; }
     }
 }

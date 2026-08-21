@@ -1,9 +1,8 @@
 # Operator Experience & HMI Architecture
 
-**Approved direction:** M10.9 operator-experience refactor  
-**Validated baseline:** M10.9.2 Hotfix 2 — Advanced Instrument & Gauge System  
-**Current candidate:** M10.9.4 — Subsystem Engineering Schematics  
-**Validated baseline:** M10.9.1 — HMI Information Architecture & Visual Language
+**Document role:** stable operator-experience/HMI architecture reference.  
+**Current project status:** intentionally not duplicated here; use `PROJECT.md`.  
+**Scope:** M10.9 operator-experience architecture, information hierarchy, navigation, progressive disclosure and authority separation.
 
 ## 1. Product objective
 

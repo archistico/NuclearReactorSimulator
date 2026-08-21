@@ -10,6 +10,14 @@ namespace NuclearReactorSimulator.Domain.Plant;
 /// </summary>
 public sealed class PlantDefinition
 {
+    private readonly Dictionary<string, int> _fluidNodeIndex;
+    private readonly Dictionary<string, int> _pipeIndex;
+    private readonly Dictionary<string, int> _valveIndex;
+    private readonly Dictionary<string, int> _pumpIndex;
+    private readonly Dictionary<string, int> _thermalBodyIndex;
+    private readonly Dictionary<string, int> _heatTransferIndex;
+    private readonly Dictionary<string, int> _heatSourceIndex;
+
     public PlantDefinition(
         string id,
         IEnumerable<FluidNodeDefinition> fluidNodes,
@@ -98,6 +106,13 @@ public sealed class PlantDefinition
         ThermalBodies = new ReadOnlyCollection<ThermalBodyDefinition>(canonicalThermalBodies);
         HeatTransfers = new ReadOnlyCollection<HeatTransferDefinition>(canonicalHeatTransfers);
         HeatSources = new ReadOnlyCollection<HeatSourceDefinition>(canonicalHeatSources);
+        _fluidNodeIndex = CreateIndex(canonicalFluidNodes, static item => item.Id);
+        _pipeIndex = CreateIndex(canonicalPipes, static item => item.Id);
+        _valveIndex = CreateIndex(canonicalValves, static item => item.Id);
+        _pumpIndex = CreateIndex(canonicalPumps, static item => item.Id);
+        _thermalBodyIndex = CreateIndex(canonicalThermalBodies, static item => item.Id);
+        _heatTransferIndex = CreateIndex(canonicalHeatTransfers, static item => item.Id);
+        _heatSourceIndex = CreateIndex(canonicalHeatSources, static item => item.Id);
         HydraulicNumericalCoupling = hydraulicNumericalCoupling ?? HydraulicNumericalCouplingDefinition.ExplicitCommittedState;
     }
 
@@ -119,19 +134,29 @@ public sealed class PlantDefinition
 
     public HydraulicNumericalCouplingDefinition HydraulicNumericalCoupling { get; }
 
-    public FluidNodeDefinition GetFluidNode(string id) => GetById(FluidNodes, id, static item => item.Id, "fluid node");
+    public FluidNodeDefinition GetFluidNode(string id) => FluidNodes[GetFluidNodeIndex(id)];
 
-    public PipeDefinition GetPipe(string id) => GetById(Pipes, id, static item => item.Id, "pipe");
+    public PipeDefinition GetPipe(string id) => Pipes[GetIndex(_pipeIndex, id, "pipe")];
 
-    public ValveDefinition GetValve(string id) => GetById(Valves, id, static item => item.Id, "valve");
+    public ValveDefinition GetValve(string id) => Valves[GetValveIndex(id)];
 
-    public PumpDefinition GetPump(string id) => GetById(Pumps, id, static item => item.Id, "pump");
+    public PumpDefinition GetPump(string id) => Pumps[GetPumpIndex(id)];
 
-    public ThermalBodyDefinition GetThermalBody(string id) => GetById(ThermalBodies, id, static item => item.Id, "thermal body");
+    public ThermalBodyDefinition GetThermalBody(string id) => ThermalBodies[GetThermalBodyIndex(id)];
 
-    public HeatTransferDefinition GetHeatTransfer(string id) => GetById(HeatTransfers, id, static item => item.Id, "heat transfer");
+    public HeatTransferDefinition GetHeatTransfer(string id) => HeatTransfers[GetIndex(_heatTransferIndex, id, "heat transfer")];
 
-    public HeatSourceDefinition GetHeatSource(string id) => GetById(HeatSources, id, static item => item.Id, "heat source");
+    public HeatSourceDefinition GetHeatSource(string id) => HeatSources[GetHeatSourceIndex(id)];
+
+    internal int GetFluidNodeIndex(string id) => GetIndex(_fluidNodeIndex, id, "fluid node");
+
+    internal int GetValveIndex(string id) => GetIndex(_valveIndex, id, "valve");
+
+    internal int GetPumpIndex(string id) => GetIndex(_pumpIndex, id, "pump");
+
+    internal int GetThermalBodyIndex(string id) => GetIndex(_thermalBodyIndex, id, "thermal body");
+
+    internal int GetHeatSourceIndex(string id) => GetIndex(_heatSourceIndex, id, "heat source");
 
     private static T[] Canonicalize<T>(IEnumerable<T> source, Func<T, string> idSelector, string parameterName)
         where T : class
@@ -243,19 +268,26 @@ public sealed class PlantDefinition
         }
     }
 
-    private static T GetById<T>(
-        IEnumerable<T> source,
-        string id,
-        Func<T, string> idSelector,
-        string label)
+    private static Dictionary<string, int> CreateIndex<T>(IReadOnlyList<T> source, Func<T, string> idSelector)
         where T : class
+    {
+        var index = new Dictionary<string, int>(source.Count, StringComparer.Ordinal);
+        for (var position = 0; position < source.Count; position++)
+        {
+            index.Add(idSelector(source[position]), position);
+        }
+        return index;
+    }
+
+    private static int GetIndex(IReadOnlyDictionary<string, int> index, string id, string label)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
             throw new ArgumentException($"A {label} id cannot be empty or whitespace.", nameof(id));
         }
 
-        return source.FirstOrDefault(item => string.Equals(idSelector(item), id, StringComparison.Ordinal))
-            ?? throw new KeyNotFoundException($"Unknown {label} '{id}'.");
+        return index.TryGetValue(id, out var position)
+            ? position
+            : throw new KeyNotFoundException($"Unknown {label} '{id}'.");
     }
 }

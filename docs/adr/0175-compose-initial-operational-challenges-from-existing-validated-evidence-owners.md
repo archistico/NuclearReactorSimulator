@@ -1,6 +1,6 @@
 # ADR-0175 — Compose initial operational challenges from existing validated evidence owners
 
-**Status:** Proposed  
+**Status:** Accepted  
 **Date:** 2026-08-20
 
 ## Context

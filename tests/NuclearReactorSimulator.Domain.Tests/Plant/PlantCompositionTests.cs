@@ -114,6 +114,37 @@ public sealed class PlantCompositionTests
             [new HeatSourceState("heater-a")]));
     }
 
+
+    [Fact]
+    public void State_RejectsStructurallyEqualButNonCanonicalDefinitions()
+    {
+        var definition = Plant();
+        var structurallyEqualFluidDefinition = new FluidNodeDefinition("node-a", Volume.FromCubicMetres(10d));
+        var structurallyEqualThermalDefinition = new ThermalBodyDefinition(
+            "wall-a",
+            HeatCapacity.FromJoulesPerKelvin(5_000_000d));
+
+        Assert.Equal(definition.GetFluidNode("node-a"), structurallyEqualFluidDefinition);
+        Assert.False(ReferenceEquals(definition.GetFluidNode("node-a"), structurallyEqualFluidDefinition));
+        Assert.Throws<ArgumentException>(() => new PlantState(
+            definition,
+            [FluidState(structurallyEqualFluidDefinition), FluidState(definition.GetFluidNode("node-b"))],
+            [new ValveState("valve-a", ValvePosition.FullyOpen)],
+            [new PumpState("pump-a", PumpSpeed.Rated)],
+            [ThermalBodyState.FromTemperature(definition.GetThermalBody("wall-a"), Temperature.FromDegreesCelsius(300d))],
+            [new HeatSourceState("heater-a")]));
+
+        Assert.Equal(definition.GetThermalBody("wall-a"), structurallyEqualThermalDefinition);
+        Assert.False(ReferenceEquals(definition.GetThermalBody("wall-a"), structurallyEqualThermalDefinition));
+        Assert.Throws<ArgumentException>(() => new PlantState(
+            definition,
+            [FluidState(definition.GetFluidNode("node-a")), FluidState(definition.GetFluidNode("node-b"))],
+            [new ValveState("valve-a", ValvePosition.FullyOpen)],
+            [new PumpState("pump-a", PumpSpeed.Rated)],
+            [ThermalBodyState.FromTemperature(structurallyEqualThermalDefinition, Temperature.FromDegreesCelsius(300d))],
+            [new HeatSourceState("heater-a")]));
+    }
+
     [Fact]
     public void State_IsCanonicalCompleteAndIndependentFromCallerArrays()
     {
@@ -137,6 +168,42 @@ public sealed class PlantCompositionTests
         Assert.Equal(50d, state.GetValve("valve-a").Position.Percent, 12);
         Assert.Equal(75d, state.GetPump("pump-a").Speed.Percent, 12);
         Assert.False(state.GetHeatSource("heater-a").IsEnabled);
+    }
+
+    [Fact]
+    public void IndexedLookups_PreserveCanonicalIdentityUnknownIdAndStateOrdering()
+    {
+        var nodes = Enumerable.Range(0, 32)
+            .Select(index => FluidNode($"node-{index:D3}"))
+            .Reverse()
+            .ToArray();
+        var definition = Plant(
+            nodes: nodes,
+            pipes: Array.Empty<PipeDefinition>(),
+            valves: Array.Empty<ValveDefinition>(),
+            pumps: Array.Empty<PumpDefinition>(),
+            thermalBodies: Array.Empty<ThermalBodyDefinition>(),
+            heatTransfers: Array.Empty<HeatTransferDefinition>(),
+            heatSources: Array.Empty<HeatSourceDefinition>());
+        var states = definition.FluidNodes
+            .Reverse()
+            .Select(FluidState)
+            .ToArray();
+        var state = new PlantState(
+            definition,
+            states,
+            Array.Empty<ValveState>(),
+            Array.Empty<PumpState>(),
+            Array.Empty<ThermalBodyState>(),
+            Array.Empty<HeatSourceState>());
+
+        Assert.Same(definition.FluidNodes[31], definition.GetFluidNode("node-031"));
+        Assert.Same(state.FluidNodes[31], state.GetFluidNode("node-031"));
+        Assert.Equal("node-000", state.FluidNodes[0].Id);
+        Assert.Throws<KeyNotFoundException>(() => definition.GetFluidNode("missing"));
+        Assert.Throws<KeyNotFoundException>(() => state.GetFluidNode("missing"));
+        Assert.Throws<ArgumentException>(() => definition.GetFluidNode(" "));
+        Assert.Throws<ArgumentException>(() => state.GetFluidNode(" "));
     }
 
     internal static PlantDefinition Plant(

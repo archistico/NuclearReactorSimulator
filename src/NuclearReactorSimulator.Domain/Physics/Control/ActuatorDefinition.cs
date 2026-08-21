@@ -41,6 +41,11 @@ public sealed class ActuatorDefinition
             throw new ArgumentException("Control-rod actuators require a rod command target kind.", nameof(rodTargetKind));
         }
 
+        if (rodTargetKind.HasValue && !Enum.IsDefined(rodTargetKind.GetValueOrDefault()))
+        {
+            throw new ArgumentOutOfRangeException(nameof(rodTargetKind), rodTargetKind, "Unknown control-rod command target kind.");
+        }
+
         Id = id.Trim();
         ControllerId = controllerId.Trim();
         TargetKind = targetKind;

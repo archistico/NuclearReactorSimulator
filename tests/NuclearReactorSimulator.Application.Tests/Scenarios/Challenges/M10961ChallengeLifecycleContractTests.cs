@@ -207,6 +207,31 @@ public sealed class M10961ChallengeLifecycleContractTests
     }
 
     [Fact]
+    public void LifecycleChanged_PreservesPerStepObservationChangeSemanticsWithoutStringFingerprint()
+    {
+        var pair = CreateSessionAndTracker(CreateDefinition(
+            readyAtLogicalStep: 0,
+            activationConditionId: "step>=0",
+            requiredObservationId: "step>=3-observation",
+            completionConditionId: "step>=99",
+            targetStartOffset: null,
+            targetEndOffset: null,
+            hardDeadlineOffset: null));
+        using var tracker = pair.Tracker;
+        var changedCount = 0;
+        tracker.LifecycleChanged += (_, _) => changedCount++;
+
+        pair.Session.CommandDispatcher.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.Run));
+        Assert.Equal(0, changedCount);
+
+        pair.Session.Coordinator.AdvanceRunning(3, publicationStride: 1);
+
+        Assert.Equal(3, changedCount);
+        Assert.Equal(3L, tracker.Snapshot.LogicalStep);
+        Assert.Contains(tracker.Snapshot.Observations, static item => item.LogicalStep == 3L);
+    }
+
+    [Fact]
     public void M10961FocusedAudit_WritesLifecycleContractEvidence()
     {
         var first = CreateSessionAndTracker(CreateDefinition());

@@ -19,7 +19,15 @@ M10.9.8 Integrated Human-Automation-HMI Validation Gate
         ↓
 M11 Release Hardening
         ↓
-post-release engineering backlog
+M12 Extreme Operations Foundations
+        ↓
+M13 Control-Room Experience
+        ↓
+M14 Spatial Reactor
+        ↓
+M15 Accident Progression & Consequence Models
+        ↓
+future release train / engineering backlog
 ```
 
 Rules:
@@ -47,11 +55,24 @@ This is a planning classification, not a duration promise:
 
 M10.9.5–M10.9.7 should not normally require multi-hour numerical requalification. The two intentionally expensive future checkpoints are M10.9.8 integration closure and M11 release closure.
 
-## Current transition — M10.9.5 closed / M10.9.6 active
+## M10.9.7 forward transition prerequisites
 
-M10.9.4.1 / Phase I and M10.9.5 are validated and closed. Authoritative desktop exact `@4` and synchronization exact `@3` remain the frozen production baselines for post-Phase-I operator-experience work.
+Current validated/candidate status is intentionally not duplicated here; use `PROJECT.md`. Before M10.9.7.3 live Mission/Performance wiring may begin, the active persistence payload/error-contract closure recorded in `PROJECT.md` must pass build, complete ordinary tests and its focused persistence gate.
 
-M10.9.6.1 **challenge lifecycle and logical-time contract**, M10.9.6.2 **deterministic external energy-demand profiles** and M10.9.6.3 **multidimensional evaluation/scoring contract** are validated. The active milestone is **M10.9.6.4 — initial challenge packs**. It composes six versioned exercises from existing M7.2/M7.5/M7.6 scenario/check owners and the existing M8.4 generator-trip/load-rejection fault owner without adding UI, new fault physics or plant-control authority. M10.9.6.5 replay/checkpoint/determinism closure remains next only after 6.4 validation.
+The M10.9.7.3 implementation must preserve the already-decided topology and pre-live constraints:
+
+- dedicated main-HMI `MISSION` workspace with contextual navigation from COMPUTER;
+- Operator Computer F1–F8 unchanged and no F9;
+- navigation remains presentation-only with no plant-command authority;
+- presentation change detection must be explicit; generated record equality over snapshots containing `IReadOnlyList<>` is not a valid UI change detector;
+- demand, requested load and actual output remain distinct;
+- live projection continues to use the validated logical-step alignment and bounded recent-event contract.
+
+Persistence follow-ups discovered during the pre-7.3 Infrastructure review have explicit future homes rather than being left as unowned deferred work:
+
+- **M11.2 compatibility/migration hardening:** evaluate an explicit session-archive schema v2 only if string-enum persistence is desired; schema-v1 numeric enum ordinals remain frozen until such a migration exists;
+- **M11.3 performance/memory gate:** evaluate stream-based persistence / `Utf8JsonWriter` only against measured save/load allocation and LOH evidence;
+- low-risk scenario-definition double-parse and DTO comparer cleanup remain maintenance work and are not prerequisites for M10.9.7.3 unless a gate demonstrates a defect.
 
 ## M10.9.5 — Contextual Command Consequence Model
 
@@ -73,7 +94,7 @@ No predictive UI physics, automatic command execution, invented causality or new
 
 ## M10.9.6 — Operational Challenge & Energy-Demand Framework
 
-**Status:** ACTIVE — M10.9.6.1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 VALIDATED; M10.9.6.4 candidate.
+**Status:** VALIDATED / CLOSED — M10.9.6.5 Hotfix 1 completed automated + manual closure.
 
 **Purpose:** add deterministic training objectives and external electrical-demand references without making scoring or challenge state a physical plant owner.
 
@@ -91,6 +112,8 @@ Planned sequence:
 
 ## M10.9.7 — Mission & Performance Workstation
 
+**Status source:** use `PROJECT.md`; this roadmap records forward sequencing only.
+
 **Purpose:** present objectives, demand, progress, score decomposition and deterministic performance history without changing the M10.9.6 evaluation owner.
 
 Detailed plan: [`milestones/M10.9.7.md`](milestones/M10.9.7.md).
@@ -98,12 +121,12 @@ Detailed plan: [`milestones/M10.9.7.md`](milestones/M10.9.7.md).
 Planned sequence:
 
 1. M10.9.7.1 — immutable mission/performance presentation contract;
-2. M10.9.7.2 — workstation placement/navigation decision;
+2. M10.9.7.2 — placement/navigation decision plus any demonstrated pre-live robustness/hardening required before activation;
 3. M10.9.7.3 — objective/demand/progress/score UI;
 4. M10.9.7.4 — deterministic timeline and drill-down;
 5. M10.9.7.5 — keyboard/minimum-window/manual closure gate.
 
-**Open design decision before implementation:** the existing Operator Computer has a validated fixed F1–F8 contract. The current recommendation is a dedicated main-HMI Mission/Performance workspace linked from COMPUTER, with only a compact summary/link inside the existing computer pages; do not invent F9 without an explicit architecture decision.
+**M10.9.7.2 decision:** option A is selected and VALIDATED in REV1: a dedicated main-HMI Mission/Performance workspace linked contextually from COMPUTER. The validated F1–F8 contract remains fixed and no F9 is introduced. Live activation remains deferred to 7.3.
 
 ## M10.9.8 — Integrated Human-Automation-HMI Validation Gate
 
@@ -138,20 +161,97 @@ Planned sequence:
 
 No feature work is accepted inside M11 unless it fixes a release-blocking defect demonstrated by an M11 gate.
 
-## Post-M11 engineering horizon — not on the M10/M11 critical path
+Persistence-specific carry-forward: M11.2 owns any deliberate schema-v2/string-enum migration decision and compatibility matrix; M11.3 owns any stream-based persistence change justified by measured allocation/LOH evidence. Neither is required merely because the current schema-v1 adapter remains numeric/string-materialized.
 
-The approved extreme-operation/damage/accident direction remains in `FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md`.
+## Post-M11 strategic epics and milestone mapping
 
-The intended order after release hardening is:
+The approved long-horizon direction is maintained in [`FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md`](FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md), but it is now mapped to explicit post-release milestones so that the work is visible and dependency-ordered.
 
-1. extreme-envelope component directionality/support audit;
-2. persistent equipment integrity/stress primitives;
-3. pressure-boundary, rotating-equipment and electrical-damage models, one causal family at a time;
-4. post-trip decay-heat/core-damage prerequisites before severe core-damage claims;
-5. incident severity and post-incident persistence/replay integration;
-6. later spatial-core and control-room visual extensions.
+Three strategic epics remain authoritative:
 
-These items must not become prerequisites for M10.9.5–M11 merely because they are valuable future work.
+- **Epic A — Extreme Operations & Accident Progression** spans **M12 + M15**. M12 builds the physical/extreme-envelope and persistence foundations; M15 adds explicit damage/consequence families only after those prerequisites are validated.
+- **Epic B — Spatial Reactor** maps to **M14**. It evolves the reference core toward multiple 2D zones/equivalent channel groups and educational local layers without claiming full-channel neutron transport.
+- **Epic C — Control-Room Experience** maps to **M13**. It strengthens operator presentation, maintained-handle semantics, procedures, presets, mimic interaction/layout persistence and Instructor/Fault presentation without moving physics into Avalonia.
+
+The dependency order after M11 is therefore:
+
+```text
+M12 Extreme Operations Foundations
+    ↓ establishes extreme-envelope, decay-heat, integrity and incident-state prerequisites
+M13 Control-Room Experience
+    ↓ provides plant-like presentation, procedures, mimic layout and Instructor/Fault shell
+M14 Spatial Reactor
+    ↓ provides deterministic quasi-spatial zones/groups, rods and local evidence layers
+M15 Accident Progression & Consequence Models
+    ↓ consumes M12 foundations and may expose M14-localized / M13-instructor evidence
+```
+
+This order deliberately prevents visually attractive severe-accident features from outrunning their physical owners. M12–M15 are post-M11 work and must not become prerequisites for M10.9.7, M10.9.8 or M11 unless a current gate demonstrates a release-blocking defect.
+
+### M12 — Extreme Operations Foundations — Epic A, foundation phase
+
+Detailed plan: [`milestones/M12.md`](milestones/M12.md).
+
+Planned sequence:
+
+1. M12.1 — flow-owner directionality/support inventory (`BIDIRECTIONAL`, `ONE-WAY BY PHYSICS`, `ONE-WAY BY CHECK/ISOLATION`, `UNSUPPORTED OUTSIDE ENVELOPE`);
+2. M12.2 — near-empty inventory and extreme pressure/temperature/inventory validation matrix before expanding fault authority;
+3. M12.3 — credible post-trip decay-heat ownership integrated through the full-plant runtime and energy accounting;
+4. M12.4 — persistent component integrity/stress primitives separated from functional/effective state;
+5. M12.5 — physical `IncidentSeverity` contract separated from alarm priority, with deterministic checkpoint/replay/post-incident persistence scaffolding;
+6. M12.6 — integrated extreme-foundation closure gate.
+
+No leak, rupture, fire or severe core-damage claim is authorized merely by completing M12.
+
+### M13 — Control-Room Experience — Epic C
+
+Detailed plan: [`milestones/M13.md`](milestones/M13.md).
+
+Planned sequence:
+
+1. M13.1 — IndustrialControls/presentation-boundary integration and stronger retro-industrial visual identity;
+2. M13.2 — maintained handle/selector position separated from effective equipment state where the physical control semantics require it;
+3. M13.3 — first-class mimic viewport: zoom, pan, fit/reset, stable selection and drill-down;
+4. M13.4 — explicit layout-edit/lock/reset with versioned persistent equipment positions keyed by canonical IDs;
+5. M13.5 — presentation-only workspace presets;
+6. M13.6 — real operating procedures expressed over canonical commands/interlocks;
+7. M13.7 — visually distinct Instructor/Fault mode using only fault/damage authority already modeled at that point;
+8. M13.8 — integrated keyboard/minimum-window/replay/session UX closure across subsystem workspaces.
+
+Area/subsystem workspaces remain; no giant all-controls screen and no multi-monitor/multi-computer dependency are introduced.
+
+### M14 — Spatial Reactor — Epic B
+
+Detailed plan: [`milestones/M14.md`](milestones/M14.md).
+
+Planned sequence:
+
+1. M14.1 — explicit quasi-spatial fidelity contract and limits;
+2. M14.2 — multi-zone/equivalent-channel-group reference-core composition;
+3. M14.3 — multiple rods/rod groups with explicit zone mapping and deterministic command/state ownership;
+4. M14.4 — physically justified local/quasi-spatial power, flow, void, temperature and xenon feedback/evidence;
+5. M14.5 — 2D core map with selectable educational layers for power, flow, void, temperature, xenon and rod influence;
+6. M14.6 — local drill-down and deterministic trends without implying unsupported full-channel neutron transport;
+7. M14.7 — replay/checkpoint/performance/manual-fidelity closure gate.
+
+Local damage visualization remains deferred until M15 owns an explicit damage mechanism.
+
+### M15 — Accident Progression & Consequence Models — Epic A, consequence phase
+
+Detailed plan: [`milestones/M15.md`](milestones/M15.md).
+
+Planned sequence:
+
+1. M15.1 — pressure-boundary stress, leak initiation/growth and rupture where explicitly supported;
+2. M15.2 — rotating-equipment degradation/failure from modeled mechanical/thermal exposure;
+3. M15.3 — electrical damage/fire only from explicit electrical/thermal/ignition mechanisms;
+4. M15.4 — severe core-damage prerequisite gate, then bounded progression only if M12 decay heat and required M14/local thermal evidence are sufficient;
+5. M15.5 — incident severity derived from modeled physical consequence rather than alarm class or scripted flags;
+6. M15.6 — persistent damage across checkpoint/replay/session state and post-incident analysis;
+7. M15.7 — Instructor/Fault and local/spatial damage presentation using M13/M14 surfaces without UI-owned consequence logic;
+8. M15.8 — integrated deterministic extreme-operation/accident closure gate.
+
+Every consequence family is introduced one at a time with its own causal owner and focused gate. Scripted `fault → severity` or `threshold → explosion` shortcuts remain prohibited.
 
 ## Deferred maintenance
 

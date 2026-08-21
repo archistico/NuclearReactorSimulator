@@ -57,6 +57,12 @@ A checkpoint deliberately does **not** serialize private solver/runtime object g
 
 This is slower than an opaque memory dump but preserves determinism, schema clarity and state ownership. A future optimized state-snapshot format would require its own explicitly versioned contract and restore invariants.
 
+## Session archive schema v1 payload integrity
+
+`JsonScenarioSessionArchiveSerializer` persists the replay-backed archive rather than an opaque runtime-state dump. Schema v1 retains its numeric enum representation, but the complete typed `ControlRoomCommand` payload is part of the persistence contract: `Kind`, optional `TargetId`, optional `TargetKind` and optional `NumericValue`. `TurbineControlValveManualDemandSet` requires `NumericValue`; an archive containing that command without the numeric payload is structurally incomplete and fails during deserialization with `InvalidDataException` before replay begins.
+
+The schema-v1 numeric enum ordinals are frozen by regression tests until an explicitly versioned migration replaces them. Undefined persisted command/target/event enum values fail at the adapter boundary.
+
 ## Full replay
 
 `ScenarioFullReplayRunner.ReplayAndVerify`:

@@ -44,6 +44,23 @@ public sealed class GeneratorGridSystemDefinition
             throw new ArgumentException("Generator breaker ids must be unique.", nameof(generators));
         }
 
+        foreach (var generator in canonical)
+        {
+            if (generator.MaximumSynchronizationFrequencyDifference >= Grid.NominalFrequency)
+            {
+                throw new ArgumentException(
+                    $"Generator '{generator.Id}' synchronization frequency window must be smaller than the grid nominal frequency.",
+                    nameof(generators));
+            }
+
+            if (generator.MaximumSynchronizationVoltageDifference >= Grid.NominalLineVoltage)
+            {
+                throw new ArgumentException(
+                    $"Generator '{generator.Id}' synchronization voltage window must be smaller than the grid nominal line voltage.",
+                    nameof(generators));
+            }
+        }
+
         var expectedRotorIds = TurbineExpansionSystem.Rotors.Select(static item => item.Id).OrderBy(static id => id, StringComparer.Ordinal).ToArray();
         var actualRotorIds = canonical.Select(static item => item.RotorId).OrderBy(static id => id, StringComparer.Ordinal).ToArray();
         if (actualRotorIds.Distinct(StringComparer.Ordinal).Count() != actualRotorIds.Length

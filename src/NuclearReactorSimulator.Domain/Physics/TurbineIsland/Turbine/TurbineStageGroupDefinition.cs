@@ -51,6 +51,15 @@ public sealed class TurbineStageGroupDefinition
             throw new ArgumentOutOfRangeException(nameof(efficiency), efficiency, "Turbine efficiency must be greater than zero and no greater than one.");
         }
 
+        if (expansionResistance.HasValue
+            && expansionResistance.GetValueOrDefault().PascalSecondsSquaredPerKilogramSquared <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(expansionResistance),
+                expansionResistance,
+                "Turbine expansion resistance must be greater than zero when specified.");
+        }
+
         if (!Enum.IsDefined(admissionPhasePolicy))
         {
             throw new ArgumentOutOfRangeException(nameof(admissionPhasePolicy), admissionPhasePolicy, "Unknown turbine admission phase policy.");

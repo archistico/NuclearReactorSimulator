@@ -47,6 +47,31 @@ public sealed class IodineXenonDomainTests
             XenonReactivityCoefficient.Zero));
     }
 
+
+    [Fact]
+    public void Definition_RejectsDefaultDecayConstantsAtConstructionBoundary()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new IodineXenonDefinition(
+            "core",
+            Power.FromMegawatts(1_000d),
+            PoisonProductionRate.Zero,
+            PoisonProductionRate.Zero,
+            default,
+            DecayConstant.FromPerSecond(0.01d),
+            XenonBurnupCoefficient.Zero,
+            XenonReactivityCoefficient.Zero));
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => new IodineXenonDefinition(
+            "core",
+            Power.FromMegawatts(1_000d),
+            PoisonProductionRate.Zero,
+            PoisonProductionRate.Zero,
+            DecayConstant.FromPerSecond(0.1d),
+            default,
+            XenonBurnupCoefficient.Zero,
+            XenonReactivityCoefficient.Zero));
+    }
+
     [Fact]
     public void EquilibriumState_BalancesConfiguredSourcesAndRemoval()
     {

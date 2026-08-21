@@ -17,6 +17,7 @@ public sealed class ScenarioChallengeTracker : IDisposable
     private ChallengeLifecycleState _state = ChallengeLifecycleState.NotStarted;
     private long _logicalStep;
     private long _nextTransitionSequence = 1;
+    private long _observationVersion;
     private long? _activatedLogicalStep;
     private long? _terminalLogicalStep;
     private bool _disposed;
@@ -74,6 +75,13 @@ public sealed class ScenarioChallengeTracker : IDisposable
             definition,
             evaluator);
     }
+
+    internal static ScenarioChallengeTracker AttachDeterministicEvidence(
+        ScenarioDefinition scenario,
+        IChallengeEvidenceSource evidence,
+        ChallengeDefinition definition,
+        IChallengeConditionEvaluator evaluator)
+        => new(scenario, evidence, definition, evaluator);
 
     public void Cancel(string reason)
     {
@@ -140,10 +148,10 @@ public sealed class ScenarioChallengeTracker : IDisposable
         {
             ThrowIfDisposed();
             var previousTransitionCount = _transitions.Count;
-            var previousObservationFingerprint = ObservationFingerprint();
+            var previousObservationVersion = _observationVersion;
             EvaluateLocked(snapshot);
             changed = previousTransitionCount != _transitions.Count
-                || !string.Equals(previousObservationFingerprint, ObservationFingerprint(), StringComparison.Ordinal);
+                || previousObservationVersion != _observationVersion;
             lifecycleSnapshot = BuildSnapshot();
         }
         if (changed)
@@ -239,7 +247,12 @@ public sealed class ScenarioChallengeTracker : IDisposable
         {
             throw new InvalidOperationException($"Challenge evaluator evidence for '{condition.ConditionId}' must use current logical step {snapshot.LogicalStep}.");
         }
-        _observations[condition.ConditionId] = observation;
+        if (!_observations.TryGetValue(condition.ConditionId, out var previous)
+            || previous != observation)
+        {
+            _observations[condition.ConditionId] = observation;
+            _observationVersion++;
+        }
         return observation;
     }
 
@@ -290,13 +303,6 @@ public sealed class ScenarioChallengeTracker : IDisposable
         => _activatedLogicalStep.HasValue && Definition.LogicalTime.HardFailureDeadlineOffsetSteps.HasValue
             ? checked(_activatedLogicalStep.Value + Definition.LogicalTime.HardFailureDeadlineOffsetSteps.Value)
             : null;
-
-    private string ObservationFingerprint()
-        => string.Join(
-            "|",
-            _observations.Values
-                .OrderBy(static item => item.ConditionId, StringComparer.Ordinal)
-                .Select(static item => $"{item.ConditionId}:{item.IsSatisfied}:{item.LogicalStep}:{item.Evidence}"));
 
     private void ThrowIfDisposed()
     {

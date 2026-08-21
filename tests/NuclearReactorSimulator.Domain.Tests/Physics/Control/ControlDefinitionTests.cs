@@ -92,6 +92,18 @@ public sealed class ControlDefinitionTests
         Assert.False(actuator.PositiveRodOutputWithdraws);
     }
 
+
+    [Fact]
+    public void RodActuator_RejectsUnknownCommandTargetKind()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => ActuatorDefinition.ControlRod(
+            "rod-actuator",
+            "controller",
+            "rod-group",
+            (ControlRodCommandTargetKind)999,
+            new ControllerOutputRange(-1d, 1d)));
+    }
+
     private static InstrumentationSystemDefinition Instrumentation()
         => new("instrumentation", new[]
         {

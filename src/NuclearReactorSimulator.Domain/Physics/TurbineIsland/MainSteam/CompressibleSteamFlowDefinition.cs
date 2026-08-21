@@ -55,6 +55,9 @@ public sealed class CompressibleSteamFlowDefinition
         DischargeCoefficient = dischargeCoefficient;
         SpecificGasConstant = specificGasConstant;
         HeatCapacityRatio = heatCapacityRatio;
+        CriticalDownstreamToUpstreamPressureRatio = Math.Pow(
+            2d / (HeatCapacityRatio + 1d),
+            HeatCapacityRatio / (HeatCapacityRatio - 1d));
     }
 
     public Area FullOpenThroatArea { get; }
@@ -65,8 +68,5 @@ public sealed class CompressibleSteamFlowDefinition
 
     public double HeatCapacityRatio { get; }
 
-    public double CriticalDownstreamToUpstreamPressureRatio
-        => Math.Pow(
-            2d / (HeatCapacityRatio + 1d),
-            HeatCapacityRatio / (HeatCapacityRatio - 1d));
+    public double CriticalDownstreamToUpstreamPressureRatio { get; }
 }

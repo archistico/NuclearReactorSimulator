@@ -6,15 +6,11 @@ It targets internally consistent educational behaviour, conservation, replayabil
 
 ## Current work
 
-M10.9.4.1 / Phase I and M10.9.5 **Contextual Command Consequence Model** are validated and closed. Authoritative desktop production remains exact `integrated-operations-desktop-stable@4` with `CorrelationConsistentInverseDomain` thermodynamics and `FourNodeBranchContinuityCorrectedCommitOptIn` hydraulics at the unchanged 10 ms fixed step.
-
-M10.9.6.1 **Challenge Lifecycle & Logical-Time Contract**, M10.9.6.2 **Deterministic External Energy-Demand Profiles** and M10.9.6.3 **Multidimensional Evaluation & Scoring Contract** are validated.
-
-Current candidate: **M10.9.6.4 — Initial Challenge Packs**. It composes six versioned operational challenges from existing M7.2/M7.5/M7.6 scenario/check owners and the existing M8.4 generator-trip/load-rejection fault owner. Demand remains observational, score arithmetic remains M10.9.6.3-owned, trip/failure meaning remains challenge-specific and no new physics, fault, UI or plant command authority is introduced.
-
-The authoritative checkpoint and validation sequence live in:
+The authoritative current checkpoint, active candidate, superseded chain and candidate-specific validation commands live only in:
 
 **[`docs/PROJECT.md`](docs/PROJECT.md)**
+
+README intentionally does not duplicate milestone status. `docs/ROADMAP.md` contains future sequencing only, while detailed milestone contracts live under `docs/milestones/`.
 
 ## Build and test
 
@@ -24,13 +20,7 @@ dotnet build
 dotnet test
 ```
 
-For the active M10.9.6.4 candidate:
-
-```bat
-dotnet build
-dotnet test
-scripts\run-m1096-initial-challenge-pack-audit.cmd
-```
+For the active candidate, use the focused validation command recorded in `docs/PROJECT.md`; README deliberately keeps only the generic build/test entry point.
 
 ## Core runtime principles
 

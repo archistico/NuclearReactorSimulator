@@ -45,7 +45,6 @@ internal static class CompositionRoot
 
     public static ApplicationRoot CreateFromSessionArchive(string content, string? checkpointId = null)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(content);
         var descriptor = ApplicationDescriptor.Current;
         var sessionFactory = CreateSessionFactory();
         var archiveSerializer = new JsonScenarioSessionArchiveSerializer();

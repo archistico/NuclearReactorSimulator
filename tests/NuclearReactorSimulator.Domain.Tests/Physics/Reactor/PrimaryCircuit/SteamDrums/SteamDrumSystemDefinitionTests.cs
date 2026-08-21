@@ -45,6 +45,13 @@ public sealed class SteamDrumSystemDefinitionTests
         Assert.Equal(100d, definition.Drums.Single().SteamSource!.HydraulicResistance.PascalSecondsSquaredPerKilogramSquared, 12);
     }
 
+
+    [Fact]
+    public void SteamSourceDefinition_RejectsDefaultHydraulicResistance()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new SteamDrumSteamSourceDefinition(default));
+    }
+
     [Fact]
     public void Constructor_RejectsInventoryNodeThatIsNotLoopReturnCollector()
     {

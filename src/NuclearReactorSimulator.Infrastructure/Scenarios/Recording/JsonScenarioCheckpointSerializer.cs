@@ -38,6 +38,26 @@ public sealed class JsonScenarioCheckpointSerializer : IScenarioCheckpointSerial
 
     public ScenarioCheckpoint Deserialize(string content)
     {
+        try
+        {
+            return DeserializeCore(content);
+        }
+        catch (InvalidDataException)
+        {
+            throw;
+        }
+        catch (NotSupportedException)
+        {
+            throw;
+        }
+        catch (Exception exception) when (exception is JsonException or ArgumentException or OverflowException)
+        {
+            throw new InvalidDataException("Checkpoint document contains malformed or structurally invalid data.", exception);
+        }
+    }
+
+    private static ScenarioCheckpoint DeserializeCore(string content)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(content);
         var document = JsonSerializer.Deserialize<CheckpointDocument>(content, Options)
             ?? throw new InvalidDataException("Checkpoint document could not be deserialized.");

@@ -41,7 +41,7 @@ public sealed class JsonPostIncidentAnalysisSerializer : IPostIncidentAnalysisSe
                 Kind = item.Kind,
                 SourceId = item.SourceId,
                 Detail = item.Detail,
-                OperatorCommand = item.OperatorCommand,
+                OperatorCommand = item.OperatorCommand is null ? null : ToDocument(item.OperatorCommand),
             }).ToArray(),
             Trends = report.Trends.Select(ToDocument).ToArray(),
             WindowStartState = ToDocument(report.WindowStartState),
@@ -64,6 +64,26 @@ public sealed class JsonPostIncidentAnalysisSerializer : IPostIncidentAnalysisSe
 
     public PostIncidentAnalysisReport Deserialize(string content)
     {
+        try
+        {
+            return DeserializeCore(content);
+        }
+        catch (InvalidDataException)
+        {
+            throw;
+        }
+        catch (NotSupportedException)
+        {
+            throw;
+        }
+        catch (Exception exception) when (exception is JsonException or ArgumentException or OverflowException)
+        {
+            throw new InvalidDataException("Post-incident analysis document contains malformed or structurally invalid data.", exception);
+        }
+    }
+
+    private static PostIncidentAnalysisReport DeserializeCore(string content)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(content);
         var document = JsonSerializer.Deserialize<ReportDocument>(content, Options)
             ?? throw new InvalidDataException("Post-incident analysis document could not be deserialized.");
@@ -85,7 +105,7 @@ public sealed class JsonPostIncidentAnalysisSerializer : IPostIncidentAnalysisSe
             document.AnchorDetail!,
             document.WindowStartLogicalStep,
             document.WindowEndLogicalStep,
-            document.Timeline!.Select(static item => new PostIncidentAnalysisTimelineEntry(
+            document.Timeline!.Select((item, index) => new PostIncidentAnalysisTimelineEntry(
                 item.Sequence,
                 item.LogicalStep,
                 item.RelativeLogicalStep,
@@ -93,7 +113,7 @@ public sealed class JsonPostIncidentAnalysisSerializer : IPostIncidentAnalysisSe
                 item.Kind,
                 item.SourceId!,
                 item.Detail!,
-                item.OperatorCommand)),
+                item.OperatorCommand is null ? null : FromDocument(item.OperatorCommand, $"timeline[{index}].operatorCommand"))),
             document.Trends!.Select(FromDocument),
             FromDocument(document.WindowStartState!),
             FromDocument(document.AnchorState!),
@@ -108,6 +128,46 @@ public sealed class JsonPostIncidentAnalysisSerializer : IPostIncidentAnalysisSe
                 document.Metrics.PeakUnacknowledgedAlarmCount,
                 document.Metrics.PeakActiveFaultCount),
             document.PrecedingCheckpointId);
+    }
+
+
+    private static CommandDocument ToDocument(ControlRoomCommand command)
+    {
+        ArgumentNullException.ThrowIfNull(command);
+        ValidateCommand(command.Kind, command.TargetKind, command.NumericValue, "operatorCommand");
+        return new CommandDocument
+        {
+            Kind = command.Kind,
+            TargetId = command.TargetId,
+            TargetKind = command.TargetKind,
+            NumericValue = command.NumericValue,
+        };
+    }
+
+    private static ControlRoomCommand FromDocument(CommandDocument document, string fieldName)
+    {
+        ValidateCommand(document.Kind, document.TargetKind, document.NumericValue, fieldName);
+        return new ControlRoomCommand(document.Kind, document.TargetId, document.TargetKind, document.NumericValue);
+    }
+
+    private static void ValidateCommand(
+        ControlRoomCommandKind kind,
+        ControlRoomCommandTargetKind? targetKind,
+        double? numericValue,
+        string fieldName)
+    {
+        if (!Enum.IsDefined(kind))
+        {
+            throw new InvalidDataException($"Post-incident analysis field '{fieldName}.kind' contains unsupported value '{kind}'.");
+        }
+        if (targetKind.HasValue && !Enum.IsDefined(targetKind.Value))
+        {
+            throw new InvalidDataException($"Post-incident analysis field '{fieldName}.targetKind' contains unsupported value '{targetKind.Value}'.");
+        }
+        if (kind == ControlRoomCommandKind.TurbineControlValveManualDemandSet && !numericValue.HasValue)
+        {
+            throw new InvalidDataException($"Post-incident analysis field '{fieldName}' contains a turbine control-valve manual-demand command without numericValue.");
+        }
     }
 
     private static TrendDocument ToDocument(PostIncidentTrendSample sample) => new()
@@ -180,14 +240,31 @@ public sealed class JsonPostIncidentAnalysisSerializer : IPostIncidentAnalysisSe
         ValidateText(d.InitialConditionId, "initialConditionId");
         ValidateText(d.AnchorSourceId, "anchorSourceId");
         ValidateText(d.AnchorDetail, "anchorDetail");
+        if (!Enum.IsDefined(d.AnchorKind))
+        {
+            throw new InvalidDataException($"Post-incident analysis field 'anchorKind' contains unsupported value '{d.AnchorKind}'.");
+        }
         if (d.Timeline is null || d.Trends is null || d.WindowStartState is null || d.AnchorState is null || d.WindowEndState is null || d.Metrics is null)
         {
             throw new InvalidDataException("Post-incident analysis document is incomplete.");
         }
-        foreach (var item in d.Timeline)
+        for (var index = 0; index < d.Timeline.Length; index++)
         {
-            ValidateText(item.SourceId, "timeline.sourceId");
-            ValidateText(item.Detail, "timeline.detail");
+            var item = d.Timeline[index];
+            if (item is null)
+            {
+                throw new InvalidDataException($"Post-incident timeline entry at index {index} cannot be null.");
+            }
+            ValidateText(item.SourceId, $"timeline[{index}].sourceId");
+            ValidateText(item.Detail, $"timeline[{index}].detail");
+            if (!Enum.IsDefined(item.Relation))
+            {
+                throw new InvalidDataException($"Post-incident timeline entry at index {index} contains unsupported relation '{item.Relation}'.");
+            }
+            if (!Enum.IsDefined(item.Kind))
+            {
+                throw new InvalidDataException($"Post-incident timeline entry at index {index} contains unsupported kind '{item.Kind}'.");
+            }
         }
     }
 
@@ -242,7 +319,15 @@ public sealed class JsonPostIncidentAnalysisSerializer : IPostIncidentAnalysisSe
         public ScenarioRecordingEventKind Kind { get; set; }
         public string? SourceId { get; set; }
         public string? Detail { get; set; }
-        public ControlRoomCommand? OperatorCommand { get; set; }
+        public CommandDocument? OperatorCommand { get; set; }
+    }
+
+    private sealed class CommandDocument
+    {
+        public ControlRoomCommandKind Kind { get; set; }
+        public string? TargetId { get; set; }
+        public ControlRoomCommandTargetKind? TargetKind { get; set; }
+        public double? NumericValue { get; set; }
     }
 
     private sealed class TrendDocument

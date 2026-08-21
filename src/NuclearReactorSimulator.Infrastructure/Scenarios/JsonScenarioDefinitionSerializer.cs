@@ -57,6 +57,26 @@ public sealed class JsonScenarioDefinitionSerializer : IScenarioDefinitionSerial
 
     public ScenarioDefinition Deserialize(string content)
     {
+        try
+        {
+            return DeserializeCore(content);
+        }
+        catch (InvalidDataException)
+        {
+            throw;
+        }
+        catch (NotSupportedException)
+        {
+            throw;
+        }
+        catch (Exception exception) when (exception is JsonException or ArgumentException or OverflowException)
+        {
+            throw new InvalidDataException("Scenario document contains malformed or structurally invalid data.", exception);
+        }
+    }
+
+    private static ScenarioDefinition DeserializeCore(string content)
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(content);
 
         using var parsed = JsonDocument.Parse(content);

@@ -1,4 +1,121 @@
+## M10.9.7.2 Hotfix 3 REV1 — JsonDocument Parse Exception-Type Test Alignment — CANDIDATE
+
+- Documentation alignment pass (`Docs1`) reasserts `PROJECT.md` as the only current-state authority, removes duplicated live status from README/ROADMAP, updates ADR-0179/0180 to their validated states, keeps ADR-0181 proposed pending Hotfix 3 REV1 validation, and assigns deferred schema-v2/string-enum work to M11.2 and measured stream-persistence work to M11.3. No `src/`, test or validation-script behavior changes belong to Docs1.
+- Original Hotfix 3 is SUPERSEDED / NOT VALIDATED after one Infrastructure test used `Assert.IsType<JsonException>` for malformed input parsed by `JsonDocument.Parse`; REV1 uses the public-contract-safe assignable check and does not modify persistence runtime code.
+- Promotes M10.9.7.2 Hotfix 2 REV1 to VALIDATED after build, ordinary tests and the measured 10 ms focused gate passed on 2026-08-21.
+- Restores `ControlRoomCommand.NumericValue` in schema-v1 session-archive `CommandDocument` for both operator actions and recorder events; adds a real manual-demand serialize/deserialize/full-replay regression.
+- Rejects incomplete manual-demand payloads plus undefined persisted command/target/event enum values at the archive boundary.
+- Keeps session archive schema v1 and its numeric enum representation unchanged; executable tests freeze the current v1 ordinals.
+- Replaces the post-incident document's direct Application `ControlRoomCommand` property with a private Infrastructure DTO while preserving JSON payload shape including `numericValue`.
+- Normalizes malformed/structurally invalid scenario, checkpoint and post-incident JSON to `InvalidDataException`, matching the already-hardened session archive while preserving `NotSupportedException` for future schemas.
+- Adds ADR-0181, `docs/PERSISTENCE_PAYLOAD_INTEGRITY_ERROR_CONTRACT.md`, focused Infrastructure regressions and `scripts/run-m10972-persistence-payload-integrity-audit.cmd`.
+- Does not change replay authority, schema version, scenario semantics, hot-path optimization, workstation activation, scoring, challenge definitions, protection, physics or plant command authority.
+
+## M10.9.7.2 Hotfix 2 REV1 — Lifecycle Regression Fixture Condition-ID Alignment — VALIDATED
+
+- Records the original Hotfix 2 ordinary-suite result accurately: Domain, Simulation, Infrastructure and App test assemblies passed, while `NuclearReactorSimulator.Application.Tests` had exactly one failure.
+- The failure is test-only and deterministic: `LifecycleChanged_PreservesPerStepObservationChangeSemanticsWithoutStringFingerprint` authored `requiredObservationId: "step>=99-observation"`, but its local `TestConditionEvaluator` has no such case. Because the challenge activates at logical step 0, tracker construction immediately evaluates that unsupported ID and throws.
+- REV1 changes that fixture to the already-supported `step>=3-observation` while keeping completion at `step>=99`; the test therefore still verifies exactly three per-step observation changes across logical steps 1, 2 and 3 without permitting challenge completion.
+- All Hotfix 2 runtime optimization files (`ScenarioChallengeTracker`, `PlantDefinition`, `PlantState`, `CompressibleSteamFlowDefinition`) remain unchanged from the superseded Hotfix 2 candidate.
+- Updates candidate descriptor, focused-gate method name and artifact metadata so the superseded Hotfix 2 cannot be confused with this REV1.
+- Validation remains `dotnet build`, complete ordinary `dotnet test`, then `scripts/run-m10972-ten-ms-hot-path-hardening-audit.cmd`.
+
+## M10.9.7.2 Hotfix 2 — Measured 10 ms Hot-Path Allocation & Lookup Hardening — SUPERSEDED / NOT VALIDATED
+
+- Promotes M10.9.7.2 Hotfix 1 REV1 to VALIDATED after build, complete ordinary tests and `scripts/run-m10972-domain-definition-invariant-closure-audit.cmd` passed on 2026-08-21. The original Hotfix 1 remains SUPERSEDED / NOT VALIDATED.
+- Replaces `ScenarioChallengeTracker` observation string fingerprint construction with a private observation-version counter while preserving `LifecycleChanged` semantics.
+- Replaces hot `PlantDefinition` linear/capturing id scans with immutable id-to-canonical-index dictionaries built once per definition; `PlantState` reuses those indexes and deliberately owns no per-instance lookup dictionaries.
+- Precomputes `CompressibleSteamFlowDefinition.CriticalDownstreamToUpstreamPressureRatio` once at construction without changing the formula or coefficients.
+- Adds semantic regressions plus an explicit same-process measurement audit that records allocations and relative wall cost against test-local reference implementations equivalent to the replaced algorithms.
+- Adds ADR-0180, `docs/TEN_MILLISECOND_HOT_PATH_HARDENING.md`, metrics artifacts and `scripts/run-m10972-ten-ms-hot-path-hardening-audit.cmd`.
+- Does not change solver equations, reference-plant coefficients, MISSION activation, F1-F8/F9, scoring, challenge definitions, protection or plant-command authority.
+- After validation, M10.9.7.3 may begin live Mission/Performance wiring using explicit presentation change detection rather than generated record equality over `IReadOnlyList<>`.
+
+## M10.9.7.2 Hotfix 1 REV1 — Application Descriptor Contract Alignment — VALIDATED
+
+- The original Hotfix 1 Domain invariant candidate compiled all production projects and passed Domain, Simulation, Infrastructure and App test assemblies, but the ordinary suite remained red with exactly one `NuclearReactorSimulator.Application.Tests` failure. Static inspection identified the stale `ApplicationDescriptorTests` contract: production metadata had moved to `M10.9.7.2 Hotfix 1 — Domain Definition Invariant Closure`, while the test still required the previous `M10.9.7.2 REV1 — Workstation Placement / Navigation Decision` strings.
+- REV1 keeps every Domain guard and regression test from Hotfix 1 unchanged, updates only the Application descriptor regression contract to the active Hotfix 1 REV1 metadata, and adds that test to `scripts/run-m10972-domain-definition-invariant-closure-audit.cmd` so candidate metadata cannot drift outside the focused gate again.
+- No solver, reference-plant coefficient, Simulation runtime, Avalonia runtime, navigation contract, scoring, challenge definition, protection authority or plant-command authority changes from the original Hotfix 1 candidate. The original Hotfix 1 remains NOT VALIDATED / SUPERSEDED by this REV1.
+
+## M10.9.7.2 Hotfix 1 — Domain Definition Invariant Closure — SUPERSEDED / NOT VALIDATED
+
+- Promotes M10.9.7.2 REV1 to VALIDATED after build, complete ordinary tests and `scripts\run-m1097-workstation-navigation-decision-audit.cmd` passed on 2026-08-21. Option A remains frozen and no Mission/Performance UI route is activated.
+- Closes synchronization-window construction gaps without changing the validated reference-plant values: generator windows must be positive/non-degenerate, phase must remain below 180 degrees, voltage tolerance below rated voltage, and composed grid frequency/voltage windows may not span the complete nominal grid envelope.
+- Revalidates `default(T)` bypasses for strictly-positive Domain quantities at their consuming definition boundaries: steam-drum source hydraulic resistance, iodine/xenon decay constants and optional turbine expansion resistance.
+- Makes `PlantState` canonical fluid-node/thermal-body ownership use reference identity rather than record value equality, with structurally-equal clone regressions.
+- Rejects undefined `ControlRodCommandTargetKind` values at `ActuatorDefinition` construction time.
+- Adds ADR-0179, `docs/DOMAIN_DEFINITION_INVARIANT_CLOSURE.md`, focused regression coverage, artifact summary and `scripts\run-m10972-domain-definition-invariant-closure-audit.cmd`.
+- Deliberately does not change solver equations, reference-plant coefficients, relief/bypass hysteresis, PID semantics, pressure arithmetic, lookup implementation, `ObservationFingerprint()`, workstation UI activation, scoring, challenge definitions, protection or plant-command authority.
+- After validation, the next pre-live step is measured 10 ms hot-path allocation/lookup hardening before M10.9.7.3.
+
+## M10.9.7.2 REV1 — Workstation Placement / Navigation Decision — VALIDATED
+
+- Promotes M10.9.7.1 Hotfix 3 to the validated baseline after build, complete ordinary tests and `scripts\run-m10971-pre-workstation-robustness-audit.cmd` passed on 2026-08-21. Hotfix 3 includes the complete Hotfix 2 robustness implementation plus the test-only CS8629 fix.
+- Rebuilds the previously superseded M10.9.7.2 decision milestone exclusively from Hotfix 3 VALIDATED; the earlier pre-Hotfix-3 package remains NOT VALIDATED and must not be promoted.
+- Freezes placement option A in `MissionPerformanceNavigationDecision.Current`: future dedicated main-HMI `MISSION` / `Mission & Performance` workspace, contextual navigation from COMPUTER, unchanged Operator Computer F1–F8, no F9 and no plant-command authority.
+- Deliberately keeps `UiRouteActivated=false` and does not modify `ControlRoomWorkspaceId`, `ControlRoomWorkspaceCatalog.Default`, MainWindow, ViewModel or XAML; live route/UI activation remains M10.9.7.3 work.
+- Retains the pre-live review follow-ups without absorbing them into 7.2: tracker `ObservationFingerprint()` allocation must be addressed or qualified before live wiring; generated record equality over `IReadOnlyList<>` must not be used as UI change detection; score-dominance classification must fail earlier before future challenge-pack expansion; `FinalScore == FinalPercentage` remains valid only under the explicit v1 100-point policy invariant.
+- Adds ADR-0178, `MISSION_PERFORMANCE_WORKSTATION_NAVIGATION.md`, App-layer navigation-decision tests and `scripts\run-m1097-workstation-navigation-decision-audit.cmd`.
+- Adds no workstation UI, scoring formula, challenge definition, protection, physics, supervisory authority or plant command.
+
+## M10.9.7.1 Hotfix 3 — Nullable SourceSequence Test Compile Fix — CANDIDATE
+
+- Records the first M10.9.7.1 Hotfix 2 build result accurately: all production projects compiled, but `NuclearReactorSimulator.Application.Tests` was blocked by two CS8629 nullable-flow errors in the new bounded/future-event regression test.
+- Keeps the Hotfix 2 production changes unchanged and fixes only the test flow: captures the nullable `SourceSequence` values, asserts `HasValue`, then compares via `GetValueOrDefault()` so nullable warnings-as-errors no longer reject the test while null still fails the preceding assertion.
+- Changes no `src/` file, archive boundary, objective metadata, recent-event semantics, lifecycle alignment, requested-load ownership, scoring, challenge definition, UI/workstation placement, plant command authority, protection or physics.
+- Validation remains `dotnet build`, `dotnet test`, then `scripts\run-m10971-pre-workstation-robustness-audit.cmd`.
+
+## M10.9.7.1 Hotfix 2 — Pre-Workstation Presentation & Archive Robustness — CANDIDATE
+
+- Promotes M10.9.7.1 Hotfix 1 to VALIDATED after build, complete ordinary tests and the focused presentation-contract audit passed on 2026-08-21.
+- Marks the previously distributed M10.9.7.2 placement/navigation package SUPERSEDED / NOT VALIDATED; it must be rebuilt only after this hotfix validates.
+- Normalizes blank, malformed/truncated JSON and structurally invalid session-archive data to `InvalidDataException` while preserving `NotSupportedException` for future schema versions; removes the pre-serializer blank-content guard from `CompositionRoot` and adds defensive `ArgumentException` / `KeyNotFoundException` / `OverflowException` handling at the async UI load boundary.
+- Fixes Mission/Performance objective metadata to use the matched `ScenarioObjectiveDefinition.Title` and `.Description` instead of challenge title/description.
+- Excludes recorder protection events after the presented logical step and bounds `RecentEvents` to the 100 newest deterministically ordered entries, preventing future-information leakage and unbounded presentation growth.
+- Promotes the validated M10.9.6.5 terminal lifecycle as-of-step logic to shared internal `ChallengeLifecycleLogicalStepAlignment`, reused by replay, external-demand and Mission/Performance projectors without changing frozen terminal ownership. Non-terminal step mismatches still fail closed.
+- Centralizes aggregate requested-generator-load evidence in `ControlRoomElectricalEvidence`, removing duplicated projector implementations.
+- Strengthens elapsed-step and post-terminal regressions and adds malformed archive tests plus `scripts/run-m10971-pre-workstation-robustness-audit.cmd`.
+- Adds no workstation placement, F1–F8 change, scoring formula/policy, challenge pack, plant command authority, protection, Simulation or physics change.
+
+## M10.9.7.1 Hotfix 1 — xUnit2031 Assert.Single Predicate Compile Fix — CANDIDATE
+
+- Records the first M10.9.7.1 build result accurately: all production projects, including `NuclearReactorSimulator.Application`, compiled successfully; `NuclearReactorSimulator.Application.Tests` was blocked only by analyzer error xUnit2031 in `M10971MissionPerformancePresentationContractTests`.
+- Replaces the single analyzer-invalid `Assert.Single(projected.RecentEvents.Where(predicate))` assertion with the xUnit predicate overload `Assert.Single(projected.RecentEvents, predicate)`.
+- Scans the complete test tree for the same `Assert.Single(...Where(...))` pattern; no additional occurrence remains.
+- Changes no `src/` file, mission/performance projection semantics, M10.9.6 owner, scoring, challenge definition, workstation placement, F1–F8 navigation, plant command authority, protection or physics.
+- Validation remains `dotnet build`, `dotnet test`, then `scripts\run-m1097-mission-performance-contract-audit.cmd`.
+
+## M10.9.7.1 — Immutable Mission / Performance Presentation Contract — CANDIDATE
+
+- Promotes M10.9.6.5 Hotfix 1 and M10.9.6 to VALIDATED/CLOSED after build, complete ordinary tests, cumulative closure gate and manual artifact/semantic review passed on 2026-08-21.
+- Adds immutable `ControlRoom/MissionPerformance` snapshots and a pure projector over exact validated challenge lifecycle, external-demand and score owners plus existing assistance/control-authority presentation state.
+- Preserves separate external demand, requested generator load and actual output; request/actual remain available when external demand itself is unavailable.
+- Copies score/classification/dimension results without scoring arithmetic and projects deterministic objective/protection/scoring evidence without wall-clock ordering.
+- Adds ADR-0177, `MISSION_PERFORMANCE_PRESENTATION_CONTRACT.md`, focused tests and `scripts/run-m1097-mission-performance-contract-audit.cmd`.
+- Does not add UI, workstation placement, F9, challenge definitions, plant command authority, protection changes or physics changes. M10.9.7.2 remains the explicit placement/navigation decision.
+
 # Changelog
+
+## M10.9.6.5 Hotfix 1 — Terminal Lifecycle Replay-Step Alignment — CANDIDATE
+
+- Records the first M10.9.6.5 ordinary-suite result accurately: build completed, but three `M10965ChallengeReplayCheckpointClosureTests` failed because the validated M10.9.6.1 tracker intentionally freezes `ChallengeLifecycleSnapshot.LogicalStep` at the terminal step while the canonical recorder can continue producing later frames.
+- Keeps the strict M10.9.6.2 same-step demand projector unchanged; instead fixes only M10.9.6.5 replay reconstruction by deriving a terminal lifecycle *as-of replay frame* view whose `LogicalStep` matches the current recorder frame while preserving the exact terminal state, `TerminalLogicalStep`, activation step, observations and transitions.
+- Applies the same alignment to the final replay lifecycle used by scoring/fingerprinting, preventing the latent follow-on failure in `OperationalChallengeScoreEvidenceProjector`, which correctly requires final lifecycle evidence at `ScenarioRecording.FinalLogicalStep`.
+- Adds regression evidence that the returned final lifecycle logical step equals the recording final step, the true terminal step remains earlier when applicable, and every external-demand frame is projected at its matching recorder logical step.
+- Changes no validated M10.9.6.1 lifecycle transition semantics, M10.9.6.2 demand contract, M10.9.6.3 score arithmetic/policies, M10.9.6.4 pack definitions, Simulation, UI, plant command authority, physics, protection or exact-version identity.
+- Validation remains `dotnet build`, `dotnet test`, then `scripts/run-m1096-replay-checkpoint-closure-audit.cmd`, followed by the artifact-only manual checklist.
+
+## M10.9.6.5 — Replay / Checkpoint / Determinism & Closure — CANDIDATE
+
+- Promotes M10.9.6.4 to VALIDATED after build, complete ordinary tests and `scripts/run-m1096-initial-challenge-pack-audit.cmd` passed; ADR-0175 becomes Accepted.
+- Adds deterministic `OperationalChallengeRecordingProjector` over canonical M9.1/M10.7 `ScenarioRecording` evidence; challenge state remains derivable and no opaque challenge checkpoint/save blob is introduced.
+- Feeds recorded action acceptance and contiguous recorder frames through the existing M10.9.6.1 tracker, then projects M10.9.6.2 demand and M10.9.6.3 scoring evidence.
+- Adds `m10965-challenge-replay-sha256-v1` validation fingerprint covering lifecycle, recorder-frame fingerprints, demand/request/output evidence and score decomposition without replacing plant/save fingerprints.
+- Qualifies the exact `bounded-demand-following-5-10-5@1` pack across uninterrupted run, canonical replay, checkpoint seek and recorder resume; final challenge projection must match exactly despite publication-stride differences.
+- Preserves challenge-specific protection semantics and standard v1 neutral guidance/authority modifiers; demand remains observational and cannot write generator requested load.
+- Explicitly adds no demand-schedule action penalty or other new scoring criterion in closure; M10.9.6.3 exact scoring semantics remain frozen.
+- Adds cumulative closure runner, summary/matrix artifacts, artifact-only manual checklist, `docs/OPERATIONAL_CHALLENGE_REPLAY_CHECKPOINT_CLOSURE.md` and ADR-0176.
+- Adds no challenge UI, new challenge, Simulation change, fault physics, protection owner or plant command authority; Mission/Performance presentation remains M10.9.7.
 
 ## M10.9.6.4 — Initial Challenge Packs — CANDIDATE
 
@@ -2961,3 +3078,10 @@
 - Adds a compact H.30 RQ1 evidence manifest under `eng/evidence-manifests/` instead of bundling large audit payloads.
 - Candidate ZIP packaging excludes `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence`; applying the candidate preserves any local Evidence directory.
 - Does not modify H.9/H.20/H.22, P060/F040, hysteresis limits, physical coefficients or the deterministic 10 ms fixed step.
+
+## Documentation planning — post-M11 Epic A/B/C roadmap alignment
+
+- Restored explicit roadmap visibility for the previously approved Extreme Operations & Accident Progression, Spatial Reactor and Control-Room Experience epics.
+- Mapped Epic A to M12 foundations plus M15 consequence models, Epic C to M13, and Epic B to M14.
+- Added milestone plans M12–M15 and removed stale pre-Phase-I sequencing language from the long-lived future-direction document.
+- Kept all M12–M15 work post-M11 and non-blocking for the active M10.9.7 persistence candidate.

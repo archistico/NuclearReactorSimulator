@@ -4,46 +4,42 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I and M10.9.5 are VALIDATED and CLOSED; M10.9.6.1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 are VALIDATED.** The repaired-v4 Phase-I cumulative chain and completed Contextual Command Consequence Model remain frozen prerequisites; deterministic challenge lifecycle, external-demand semantics and multidimensional scoring are now the validated baseline for M10.9.6.4.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1 and M10.9.7.2 Hotfix 2 REV1 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.2 Hotfix 2 REV1 passed build, complete ordinary tests and `scripts\run-m10972-ten-ms-hot-path-hardening-audit.cmd` on 2026-08-21. The pre-live 10 ms hot-path hardening is therefore qualified: challenge observation version tracking, indexed immutable plant registries reused by `PlantState`, and cached compressible-steam critical ratio are validated. Option A remains frozen: future dedicated `MISSION` / `Mission & Performance`, contextual navigation from COMPUTER, unchanged F1-F8, no F9, no plant-command authority and `UiRouteActivated=False`.
 
 Authoritative desktop production is:
 
 `integrated-operations-desktop-stable@4 | CorrelationConsistentInverseDomain | FourNodeBranchContinuityCorrectedCommitOptIn | 10 ms`
 
-Historical identities remain immutable:
-
-- exact desktop `@3` = historical corrected-commit + `HistoricalCorrelationTopology` replay/evidence provenance;
-- exact desktop `@2` = fail-closed `ExplicitCommittedState` rollback/reference;
-- synchronization remains a separate exact-version family; supported current synchronization is `pre-synchronization-grid-loading@3 | FourNodeBranchContinuityCorrectedCommitOptIn`.
-
-Final Phase-I closure evidence is green across ordinary/current evidence, GameplayLong, OperationalEnvelope, ReferencePlantScale, synchronization-v3 and repaired-v4 300 s reference requalification. The repaired-v4 300 s gate completed 30,000 steps with zero health/reverse-flow violations, 0/19 frozen I.3 budget violations, 20/20 corrected trigger/eligible/authorized/commit, zero rollback/fallback/unsafe/untargeted disagreement and deterministic repeat.
+Historical exact-version identities remain immutable; no Phase-I numerical contract is reopened by M10.9.7.
 
 ## Active candidate
 
-**M10.9.6.4 — Initial Challenge Packs — CANDIDATE.**
+**M10.9.7.2 Hotfix 3 REV1 — JsonDocument Parse Exception-Type Test Alignment — CANDIDATE.**
 
-M10.9.6.1 Hotfix 1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 are **VALIDATED** after build, complete ordinary tests and their focused lifecycle, external-demand and multidimensional-scoring audits passed. Lifecycle/logical-time, demand semantics and exact scoring policies are frozen prerequisites.
+The distributed **Docs1 documentation-alignment rebuild** changes documentation only; `src/`, `tests/`, validation scripts and the Hotfix 3 REV1 runtime/test contract remain unchanged. Local validation is therefore still the Hotfix 3 REV1 gate below.
 
-M10.9.6.4 composes six versioned challenge packs from existing validated M7.2/M7.5/M7.6 scenario/check owners and the existing M8.4 generator-trip/load-rejection fault owner. The pack layer introduces no new fault, plant physics, command authority, protection ownership or UI.
+Hotfix 3 REV1 is stacked exclusively on M10.9.7.2 Hotfix 2 REV1 VALIDATED. The original Hotfix 3 package is SUPERSEDED / NOT VALIDATED after one Infrastructure regression assertion required the exact `JsonException` runtime type. REV1 keeps the persistence runtime byte-identical to that package and changes only the malformed-scenario exception assertion to accept the public `JsonException` contract. No local build/test result has yet been reported for REV1.
 
-The initial catalog covers pre-start circulation preparation, synchronization/initial loading, bounded 5→10→5 MWe demand-following, post-load-change 10 MWe stabilization, controlled normal shutdown and generator-trip/load-rejection response. Only the bounded demand-following challenge exposes the next scheduled demand change; post-load-change stabilization exposes current demand only; synchronization owns no demand profile. External demand never writes generator requested load.
+The candidate closes persistence defects before any live workstation route is activated:
 
-Every pack binds one exact scoring policy and one documented evidence source for each policy dimension, but M10.9.6.4 performs no score arithmetic. Challenge failure semantics remain local: unexpected trips are failures only in authored normal-operation challenges, while the generator trip is required evidence in the load-rejection response challenge. No hard failure deadlines are introduced before M10.9.6.5 runtime qualification.
+- schema-v1 session archives persist `ControlRoomCommand.NumericValue` in operator actions and recorder events;
+- a real turbine-control-valve manual-demand sequence is verified through serialize → deserialize → full replay;
+- incomplete manual-demand payloads and undefined persisted command/target/event enum values fail at the archive boundary;
+- post-incident JSON owns a private command DTO rather than persisting the Application record directly;
+- malformed/structurally invalid scenario, checkpoint, post-incident and session-archive data follow the same `InvalidDataException` boundary contract, while future schema versions remain `NotSupportedException`;
+- session archive schema remains v1 and numeric enum ordinals are frozen by executable tests.
 
-Technical reference: `OPERATIONAL_CHALLENGE_PACKS.md`.
+String-enum schema migration and stream-based persistence APIs are explicitly deferred. Replay authority, scenario semantics, hot-path optimization, F1-F8, `UiRouteActivated=false`, scoring, challenge definitions, protection, physics and plant command authority remain unchanged.
 
-## Local validation for M10.9.6.4
-
-Run:
+## Local validation for M10.9.7.2 Hotfix 3 REV1
 
 ```bat
-APPLY_UPDATE.cmd
 dotnet build
 dotnet test
-scripts\run-m1096-initial-challenge-pack-audit.cmd
+scripts\run-m10972-persistence-payload-integrity-audit.cmd
 ```
 
-Promotion requires build, complete ordinary suite and the focused initial challenge-pack gate to be green. If a gate fails, fix only the demonstrated pack/evidence-composition defect. Do not add UI, new faults, control retuning or physical changes while closing M10.9.6.4. If green, M10.9.6.4 becomes VALIDATED and M10.9.6.5 replay/checkpoint/determinism closure is next.
+Promotion requires all three gates green. After validation, M10.9.7.3 may begin live Mission/Performance wiring with explicit presentation change detection.
 
 ## Evidence and package policy
 
@@ -64,7 +60,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I and M10.9.5 are closed; M10.9.6.1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 are validated. Continue milestone-by-milestone from the latest validated baseline: frozen lifecycle/logical-time + external-demand + scoring contracts → active M10.9.6.4 initial challenge packs. Do not reopen numerical Phase-I or command-consequence work unless a later gate produces direct evidence that a validated contract is defective.
+Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.7.2 Hotfix 2 REV1 VALIDATED → active M10.9.7.2 Hotfix 3 REV1 persistence payload/error-contract closure (validation pending) → M10.9.7.3 live workstation implementation. Do not promote the superseded pre-Hotfix-3 7.2 package or reopen numerical Phase-I/command-consequence work without direct evidence against a validated contract.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

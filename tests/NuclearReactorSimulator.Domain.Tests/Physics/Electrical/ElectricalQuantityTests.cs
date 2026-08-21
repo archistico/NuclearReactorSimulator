@@ -52,6 +52,48 @@ public sealed class ElectricalQuantityTests
             (SynchronousGridPowerFlowMode)999));
     }
 
+
+    [Fact]
+    public void SynchronousGeneratorDefinition_RejectsZeroOrDegenerateSynchronizationWindows()
+    {
+        SynchronousGeneratorDefinition Create(
+            Frequency frequencyDifference,
+            PhaseAngleDifference phaseDifference,
+            ElectricPotential voltageDifference)
+            => new(
+                "generator",
+                "rotor",
+                "breaker",
+                polePairs: 1,
+                ElectricPotential.FromKilovolts(400d),
+                Power.FromMegawatts(1_000d),
+                GeneratorEfficiency.FromPercent(98d),
+                frequencyDifference,
+                phaseDifference,
+                voltageDifference);
+
+        Assert.Throws<ArgumentOutOfRangeException>(() => Create(
+            Frequency.Zero,
+            PhaseAngleDifference.FromDegrees(10d),
+            ElectricPotential.FromKilovolts(10d)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Create(
+            Frequency.FromHertz(0.2d),
+            PhaseAngleDifference.Zero,
+            ElectricPotential.FromKilovolts(10d)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Create(
+            Frequency.FromHertz(0.2d),
+            PhaseAngleDifference.FromDegrees(180d),
+            ElectricPotential.FromKilovolts(10d)));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Create(
+            Frequency.FromHertz(0.2d),
+            PhaseAngleDifference.FromDegrees(10d),
+            ElectricPotential.Zero));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Create(
+            Frequency.FromHertz(0.2d),
+            PhaseAngleDifference.FromDegrees(10d),
+            ElectricPotential.FromKilovolts(400d)));
+    }
+
     [Fact]
     public void SynchronousGeneratorDefinition_RejectsDefaultInvalidEfficiency()
     {

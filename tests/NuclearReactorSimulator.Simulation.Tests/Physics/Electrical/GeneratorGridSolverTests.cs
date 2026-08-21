@@ -255,6 +255,46 @@ public sealed class GeneratorGridSolverTests
             new[] { invalidGenerator }));
     }
 
+
+    [Fact]
+    public void Definition_RejectsSynchronizationWindowsThatSpanNominalGridEnvelope()
+    {
+        var fixture = CreateFixture(3_000d, breakerClosed: false, generatorPhaseDegrees: 0d, gridPhaseDegrees: 0d);
+        var frequencyWideGenerator = new SynchronousGeneratorDefinition(
+            "generator",
+            "rotor",
+            "breaker",
+            polePairs: 1,
+            ElectricPotential.FromKilovolts(400d),
+            Power.FromMegawatts(1_000d),
+            GeneratorEfficiency.FromPercent(98d),
+            Frequency.FromHertz(50d),
+            PhaseAngleDifference.FromDegrees(10d),
+            ElectricPotential.FromKilovolts(10d));
+        var voltageWideGenerator = new SynchronousGeneratorDefinition(
+            "generator",
+            "rotor",
+            "breaker",
+            polePairs: 1,
+            ElectricPotential.FromKilovolts(500d),
+            Power.FromMegawatts(1_000d),
+            GeneratorEfficiency.FromPercent(98d),
+            Frequency.FromHertz(0.2d),
+            PhaseAngleDifference.FromDegrees(10d),
+            ElectricPotential.FromKilovolts(450d));
+
+        Assert.Throws<ArgumentException>(() => new GeneratorGridSystemDefinition(
+            "frequency-wide",
+            fixture.Definition.CondensateFeedwaterSystem,
+            fixture.Definition.Grid,
+            new[] { frequencyWideGenerator }));
+        Assert.Throws<ArgumentException>(() => new GeneratorGridSystemDefinition(
+            "voltage-wide",
+            fixture.Definition.CondensateFeedwaterSystem,
+            fixture.Definition.Grid,
+            new[] { voltageWideGenerator }));
+    }
+
     [Fact]
     public void TurbineRotorInput_PublicManualContractStillRejectsNegativeTorque()
     {

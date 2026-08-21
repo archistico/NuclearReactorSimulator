@@ -97,7 +97,7 @@ public sealed partial class ControlRoomComputerControl : UserControl
             root.MainWindowViewModel.OperatorComputer.ReportSessionWorkspaceStatus(
                 $"ARCHIVE LOADED & VERIFIED — {file.Name}. Recording resumed from the verified final state.");
         }
-        catch (Exception exception) when (exception is InvalidOperationException or InvalidDataException or IOException or UnauthorizedAccessException or NotSupportedException)
+        catch (Exception exception) when (exception is InvalidOperationException or InvalidDataException or ArgumentException or KeyNotFoundException or OverflowException or IOException or UnauthorizedAccessException or NotSupportedException)
         {
             viewModel.ReportSessionWorkspaceStatus($"LOAD FAILED — {exception.Message}");
         }

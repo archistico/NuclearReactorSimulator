@@ -1,6 +1,6 @@
 # Future Gameplay, Control-Room and Accident-Progression Direction
 
-> **Status:** APPROVED POST-RELEASE BACKLOG / ARCHITECTURE DIRECTION. The current critical path is the final M10.9.4.1 / Phase-I closure, followed by M10.9.5–M10.9.8 and M11 release hardening. Authoritative desktop production is exact `@4`; historical numerical qualification details remain provenance only. The backlog in this document must not interrupt M10/M11 unless a current gate proves a release-blocking physical defect.
+> **Status:** APPROVED POST-M11 STRATEGIC DIRECTION. Current checkpoint/candidate status lives only in `PROJECT.md`; milestone sequencing lives in `ROADMAP.md`. This document owns the long-lived physical/gameplay/UI direction and acceptance principles.
 
 ## 1. Purpose
 
@@ -436,58 +436,32 @@ Potential future Instructor authority may include explicit repair/reset of persi
 
 Multi-monitor / multi-computer distributed control-room operation is **not** part of the current approved backlog. It may be reconsidered later, but no current architecture or UI milestone should depend on it.
 
-## 18. Approved sequencing
+## 18. Approved sequencing and roadmap ownership
 
-These decisions do not supersede the current hardening sequence.
+The old pre-Phase-I hardening sequence is historical. Current execution status is intentionally not duplicated here; use `PROJECT.md` for the active checkpoint and `ROADMAP.md` for future sequencing.
 
-Immediate continuation remains:
+The three strategic epics are retained, but they are now mapped to explicit post-M11 milestones:
 
 ```text
-G.3  remaining non-turbine enthalpy migration
-G.4  turbine expansion / shaft-work ownership
-H    numerical stiffness evidence, method selection, bounded hybrid gate and current-v2 integration
-I    compatibility and engineering hardening
+Epic A — Extreme Operations & Accident Progression
+    M12 Extreme Operations Foundations
+    M15 Accident Progression & Consequence Models
+
+Epic B — Spatial Reactor
+    M14 Spatial Reactor
+
+Epic C — Control-Room Experience
+    M13 Control-Room Experience
 ```
 
-After the hardening sequence, organize the approved future product work as three large epics.
+The approved dependency order is **M12 → M13 → M14 → M15**. This is deliberate:
 
-### Epic A — Extreme Operations & Accident Progression
+- M12 establishes extreme-envelope, decay-heat, integrity and incident-state foundations before severe consequences are claimed;
+- M13 upgrades the operator environment and Instructor/Fault shell without requiring speculative new physics;
+- M14 provides deterministic quasi-spatial evidence and local visualization surfaces;
+- M15 may then introduce one explicit damage/consequence family at a time using the validated foundations and, where relevant, the spatial/operator surfaces.
 
-1. extreme-envelope matrix;
-2. component directionality/reverse-flow audit;
-3. near-empty and extreme pressure/temperature/inventory robustness;
-4. integrated decay-heat ownership after trip;
-5. equipment integrity state;
-6. exposure/damage accumulation;
-7. evolving leaks/ruptures where supported;
-8. electrical/mechanical fire/failure mechanisms where supported;
-9. core-damage progression prerequisites and implementation;
-10. separate incident severity;
-11. persistent damage and replay evidence;
-12. incident visualization and post-incident reporting.
-
-### Epic B — Spatial Reactor
-
-1. reference core with multiple zones/equivalent channel groups;
-2. multiple rods/rod groups and zone mapping;
-3. local/quasi-spatial feedback extension where physically justified;
-4. 2D core map;
-5. selectable power/void/temperature/xenon/flow/rod layers;
-6. local drill-down and trends;
-7. local alarm/damage visualization when supported.
-
-### Epic C — Control-Room Experience
-
-1. IndustrialControls integration;
-2. stronger retro-industrial visual identity;
-3. persistent operator-handle semantics;
-4. real operating procedures;
-5. workspace presets;
-6. more plant-like mnemonic displays;
-7. mimic zoom/pan;
-8. mimic layout-edit mode and persistent positions;
-9. Instructor/Fault mode;
-10. integrated UX validation across all subsystem tabs.
+The detailed executable planning contracts live in `milestones/M12.md` through `milestones/M15.md`. This document remains the architectural rationale and does not duplicate their individual gates.
 
 ## 19. Acceptance principles for future work
 

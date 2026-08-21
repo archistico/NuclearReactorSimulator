@@ -10,6 +10,14 @@ public sealed record SteamDrumSteamSourceDefinition
 {
     public SteamDrumSteamSourceDefinition(QuadraticHydraulicResistance hydraulicResistance)
     {
+        if (hydraulicResistance.PascalSecondsSquaredPerKilogramSquared <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(hydraulicResistance),
+                hydraulicResistance,
+                "Steam-drum steam-source hydraulic resistance must be greater than zero.");
+        }
+
         HydraulicResistance = hydraulicResistance;
     }
 

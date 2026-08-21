@@ -4,21 +4,20 @@ set "ROOT=%~dp0"
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.6.4 - Initial Challenge Packs...
+echo Applying M10.9.7.2 Hotfix 3 REV1 - JsonDocument Parse Exception-Type Test Alignment...
 echo Removing stale build and focused-audit outputs...
 for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
-if exist "artifacts\m1096-initial-challenge-packs" rd /s /q "artifacts\m1096-initial-challenge-packs"
+if exist "artifacts\m10972-hotfix3-persistence-payload-integrity" rd /s /q "artifacts\m10972-hotfix3-persistence-payload-integrity"
 
 echo.
-echo M10.9.6.1 Hotfix 1, M10.9.6.2 Hotfix 1 and M10.9.6.3 Hotfix 1 are validated prerequisites.
-echo M10.9.6.4 composes six versioned challenge packs only from existing validated scenario/check/fault owners.
-echo Demand remains observational, scoring arithmetic remains M10.9.6.3-owned and failure semantics remain challenge-specific.
-echo It adds no UI, new fault physics, command authority, protection ownership or Simulation change.
+echo Baseline: M10.9.7.2 Hotfix 2 REV1 VALIDATED; original Hotfix 3 is SUPERSEDED / NOT VALIDATED.
+echo Persistence runtime is identical to Hotfix 3; REV1 only aligns the malformed-scenario JsonException regression assertion with the public exception contract.
+echo Malformed JSON across all persistence adapters fails as InvalidDataException; future schema versions remain NotSupportedException.
+echo String-enum schema migration and stream-based persistence remain deferred.
+echo No replay authority, MISSION activation, scoring, challenge, protection, physics or plant command authority change is included.
 echo.
 echo Run:
 echo   dotnet build
 echo   dotnet test
-echo   scripts\run-m1096-initial-challenge-pack-audit.cmd
-echo.
-echo If all gates are green, M10.9.6.4 is VALIDATED and M10.9.6.5 replay/checkpoint/determinism closure is next.
+echo   scripts\run-m10972-persistence-payload-integrity-audit.cmd
 exit /b 0

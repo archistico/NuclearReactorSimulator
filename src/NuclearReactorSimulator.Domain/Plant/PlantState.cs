@@ -54,7 +54,7 @@ public sealed class PlantState
 
         foreach (var state in canonicalFluidNodes)
         {
-            if (state.Definition != definition.GetFluidNode(state.Id))
+            if (!ReferenceEquals(state.Definition, definition.GetFluidNode(state.Id)))
             {
                 throw new ArgumentException($"Fluid-node state '{state.Id}' does not use the plant's canonical definition.", nameof(fluidNodes));
             }
@@ -62,7 +62,7 @@ public sealed class PlantState
 
         foreach (var state in canonicalThermalBodies)
         {
-            if (state.Definition != definition.GetThermalBody(state.Id))
+            if (!ReferenceEquals(state.Definition, definition.GetThermalBody(state.Id)))
             {
                 throw new ArgumentException($"Thermal-body state '{state.Id}' does not use the plant's canonical definition.", nameof(thermalBodies));
             }
@@ -90,15 +90,15 @@ public sealed class PlantState
 
     public IReadOnlyList<HeatSourceState> HeatSources { get; }
 
-    public FluidNodeState GetFluidNode(string id) => GetById(FluidNodes, id, static item => item.Id, "fluid node");
+    public FluidNodeState GetFluidNode(string id) => FluidNodes[Definition.GetFluidNodeIndex(id)];
 
-    public ValveState GetValve(string id) => GetById(Valves, id, static item => item.ValveId, "valve");
+    public ValveState GetValve(string id) => Valves[Definition.GetValveIndex(id)];
 
-    public PumpState GetPump(string id) => GetById(Pumps, id, static item => item.PumpId, "pump");
+    public PumpState GetPump(string id) => Pumps[Definition.GetPumpIndex(id)];
 
-    public ThermalBodyState GetThermalBody(string id) => GetById(ThermalBodies, id, static item => item.Id, "thermal body");
+    public ThermalBodyState GetThermalBody(string id) => ThermalBodies[Definition.GetThermalBodyIndex(id)];
 
-    public HeatSourceState GetHeatSource(string id) => GetById(HeatSources, id, static item => item.HeatSourceId, "heat source");
+    public HeatSourceState GetHeatSource(string id) => HeatSources[Definition.GetHeatSourceIndex(id)];
 
     private static T[] Canonicalize<T>(IEnumerable<T> source, Func<T, string> idSelector, string parameterName)
         where T : class
@@ -136,19 +136,4 @@ public sealed class PlantState
         }
     }
 
-    private static T GetById<T>(
-        IEnumerable<T> source,
-        string id,
-        Func<T, string> idSelector,
-        string label)
-        where T : class
-    {
-        if (string.IsNullOrWhiteSpace(id))
-        {
-            throw new ArgumentException($"A {label} id cannot be empty or whitespace.", nameof(id));
-        }
-
-        return source.FirstOrDefault(item => string.Equals(idSelector(item), id, StringComparison.Ordinal))
-            ?? throw new KeyNotFoundException($"Unknown {label} '{id}'.");
-    }
 }

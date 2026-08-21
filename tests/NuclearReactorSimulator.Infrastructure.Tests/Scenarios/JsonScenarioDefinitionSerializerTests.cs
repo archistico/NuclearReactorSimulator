@@ -1,3 +1,4 @@
+using System.Text.Json;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Faults;
@@ -215,6 +216,40 @@ public sealed class JsonScenarioDefinitionSerializerTests
         var serializer = new JsonScenarioDefinitionSerializer();
 
         Assert.Throws<InvalidDataException>(() => serializer.Deserialize(invalid));
+    }
+
+
+    [Fact]
+    public void Deserialize_TruncatedJsonIsNormalizedToInvalidDataException()
+    {
+        var serializer = new JsonScenarioDefinitionSerializer();
+        const string truncated = "{ \"schemaVersion\": 3, \"scenarioId\": \"broken\",";
+
+        var exception = Assert.Throws<InvalidDataException>(() => serializer.Deserialize(truncated));
+
+        Assert.IsAssignableFrom<JsonException>(exception.InnerException);
+    }
+
+    [Fact]
+    public void Deserialize_UnknownStringEnumIsNormalizedToInvalidDataException()
+    {
+        var serializer = new JsonScenarioDefinitionSerializer();
+        const string invalid = """
+        {
+          "schemaVersion": 3,
+          "scenarioId": "invalid-enum",
+          "title": "Invalid enum",
+          "description": "Invalid enum payload",
+          "initialCondition": { "id": "reference-state", "version": 1 },
+          "objectives": [],
+          "allowedOperatorActions": ["Frobnicare"],
+          "faults": []
+        }
+        """;
+
+        var exception = Assert.Throws<InvalidDataException>(() => serializer.Deserialize(invalid));
+
+        Assert.IsType<JsonException>(exception.InnerException);
     }
 
     [Fact]

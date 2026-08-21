@@ -30,6 +30,22 @@ public sealed record IodineXenonDefinition
                 "Reference fission power must be greater than zero.");
         }
 
+        if (iodineDecayConstant.PerSecond <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(iodineDecayConstant),
+                iodineDecayConstant,
+                "Iodine decay constant must be greater than zero.");
+        }
+
+        if (xenonDecayConstant.PerSecond <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(xenonDecayConstant),
+                xenonDecayConstant,
+                "Xenon decay constant must be greater than zero.");
+        }
+
         ReferenceFissionPower = referenceFissionPower;
         IodineProductionAtReferencePower = iodineProductionAtReferencePower;
         DirectXenonProductionAtReferencePower = directXenonProductionAtReferencePower;

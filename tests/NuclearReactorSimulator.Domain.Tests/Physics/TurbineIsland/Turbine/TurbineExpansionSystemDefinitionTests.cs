@@ -75,6 +75,20 @@ public sealed class TurbineExpansionSystemDefinitionTests
             admissionPhasePolicy: (TurbineAdmissionPhasePolicy)999));
     }
 
+
+    [Fact]
+    public void StageDefinition_RejectsDefaultExpansionResistanceWhenSpecified()
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(() => new TurbineStageGroupDefinition(
+            "stage",
+            "boundary",
+            "exhaust",
+            "rotor",
+            SpecificEnergy.FromKilojoulesPerKilogram(500d),
+            TurbineEfficiency.FromPercent(80d),
+            expansionResistance: default(QuadraticHydraulicResistance)));
+    }
+
     [Fact]
     public void Definition_RejectsMissingAdmissionBoundaryCoverage()
     {
