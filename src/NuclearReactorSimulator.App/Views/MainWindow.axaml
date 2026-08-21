@@ -295,17 +295,21 @@
 
               <Border Grid.Column="1" Padding="16" Background="#11161D" CornerRadius="6">
                 <StackPanel Spacing="10">
-                  <TextBlock Classes="sectionHeading" Text="RECENT DETERMINISTIC EVIDENCE" />
-                  <TextBlock FontSize="10" Opacity="0.68" Text="Objective, protection and scoring evidence · latest first · bounded presentation surface" TextWrapping="Wrap" />
-                  <TextBlock IsVisible="{Binding HasNoMission}" Opacity="0.72" Text="No mission evidence is available for the current session." />
-                  <ItemsControl ItemsSource="{Binding RecentEvents}">
+                  <TextBlock Classes="sectionHeading" Text="DETERMINISTIC TIMELINE / DRILL-DOWN" />
+                  <TextBlock FontSize="10" Opacity="0.68" Text="Lifecycle spine is protected from dense recent evidence · latest first · logical-step ordered" TextWrapping="Wrap" />
+                  <TextBlock FontFamily="{StaticResource DataFont}" FontSize="10" Opacity="0.74" Text="{Binding TimelineRetentionText}" />
+                  <TextBlock IsVisible="{Binding HasNoMission}" Opacity="0.72" Text="No mission timeline is available for the current session." />
+                  <ItemsControl ItemsSource="{Binding Timeline}">
                     <ItemsControl.ItemTemplate>
-                      <DataTemplate x:DataType="vm:MissionPerformanceEventRow">
+                      <DataTemplate x:DataType="vm:MissionPerformanceTimelineRow">
                         <Border Margin="0,2" Padding="9" Background="#0B1218" CornerRadius="3">
-                          <Grid ColumnDefinitions="Auto,Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="10">
+                          <Grid ColumnDefinitions="Auto,Auto,*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="10">
                             <TextBlock FontFamily="{StaticResource DataFont}" FontSize="10" Text="{Binding StepText}" />
                             <TextBlock Grid.Column="1" FontSize="10" FontWeight="SemiBold" Text="{Binding KindText}" />
                             <TextBlock Grid.Column="2" FontSize="10" Opacity="0.72" Text="{Binding SourceText}" TextTrimming="CharacterEllipsis" />
+                            <Button Grid.Column="3" Grid.RowSpan="2" Padding="8,4" VerticalAlignment="Center"
+                                    IsVisible="{Binding HasDrillDown}" Command="{Binding DrillDownCommand}" Content="{Binding DrillDownText}"
+                                    ToolTip.Tip="Presentation navigation only; does not dispatch a plant command." />
                             <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding DetailText}" TextWrapping="Wrap" />
                           </Grid>
                         </Border>

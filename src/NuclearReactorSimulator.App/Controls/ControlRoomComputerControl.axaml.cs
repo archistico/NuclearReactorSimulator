@@ -35,7 +35,12 @@ public sealed partial class ControlRoomComputerControl : UserControl
         ApplicationRoot root;
         try
         {
-            root = CompositionRoot.Create(enableSessionRecording: true);
+            var missionPack = (window.DataContext as MainWindowViewModel)?.MissionPerformancePackExactId is { } exactPackId
+                ? MissionChallengeStartupSelection.ResolveExactId(exactPackId)
+                : null;
+            root = missionPack is null
+                ? CompositionRoot.Create(enableSessionRecording: true)
+                : CompositionRoot.CreateMissionChallenge(missionPack, enableSessionRecording: true);
         }
         catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedRuntimeConstructionFailure(exception))
         {
@@ -121,7 +126,10 @@ public sealed partial class ControlRoomComputerControl : UserControl
             await using var stream = await file.OpenReadAsync();
             using var reader = new StreamReader(stream);
             var content = await reader.ReadToEndAsync();
-            root = CompositionRoot.CreateFromSessionArchive(content);
+            var missionPack = (window.DataContext as MainWindowViewModel)?.MissionPerformancePackExactId is { } exactPackId
+                ? MissionChallengeStartupSelection.ResolveExactId(exactPackId)
+                : null;
+            root = CompositionRoot.CreateFromSessionArchive(content, missionPack: missionPack);
             fileName = file.Name;
         }
         catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedArchiveOperationFailure(exception))
@@ -151,7 +159,10 @@ public sealed partial class ControlRoomComputerControl : UserControl
             checkpointId = viewModel.SelectedSessionCheckpointId
                 ?? throw new InvalidOperationException("Select a replay-backed checkpoint before restore.");
             var archive = viewModel.ExportSessionArchive();
-            root = CompositionRoot.CreateFromSessionArchive(archive, checkpointId);
+            var missionPack = (window.DataContext as MainWindowViewModel)?.MissionPerformancePackExactId is { } exactPackId
+                ? MissionChallengeStartupSelection.ResolveExactId(exactPackId)
+                : null;
+            root = CompositionRoot.CreateFromSessionArchive(archive, checkpointId, missionPack);
         }
         catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedArchiveOperationFailure(exception))
         {

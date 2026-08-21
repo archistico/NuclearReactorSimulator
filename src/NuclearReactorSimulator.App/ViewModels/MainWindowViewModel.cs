@@ -125,6 +125,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _plantControlAuthorityDispatcher,
             _sessionWorkspace);
         MissionPerformance = new MissionPerformanceViewModel(_missionPerformanceSource?.Current);
+        MissionPerformance.DrillDownRequested += OnMissionPerformanceDrillDownRequested;
 
         RunCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.Run));
         PauseCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.Pause));
@@ -188,6 +189,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     public void DetachRuntimeSubscriptions()
     {
+        MissionPerformance.DrillDownRequested -= OnMissionPerformanceDrillDownRequested;
         if (_runtimeSubscriptionsDetached)
         {
             return;
@@ -283,6 +285,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public OperatorComputerViewModel OperatorComputer { get; }
 
     public MissionPerformanceViewModel MissionPerformance { get; }
+
+    public string? MissionPerformancePackExactId => _missionPerformanceSource?.Current.PackExactId;
 
     public ControlRoomPerformanceBudget PerformanceBudget { get; }
 
@@ -1703,6 +1707,16 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _postIncidentAnalysis,
             modes,
             _sessionWorkspace?.Current);
+    }
+
+    private void OnMissionPerformanceDrillDownRequested(object? sender, MissionPerformanceDrillDownRequestedEventArgs e)
+    {
+        var target = e.Target;
+        SelectedWorkspace = Workspaces.Single(workspace => workspace.Id == target.WorkspaceId);
+        if (target.OperatorComputerPageId.HasValue)
+        {
+            OperatorComputer.SelectPage(target.OperatorComputerPageId.Value);
+        }
     }
 
     private void OnMissionPerformanceSnapshotChanged(object? sender, MissionPerformanceSnapshotChangedEventArgs e)

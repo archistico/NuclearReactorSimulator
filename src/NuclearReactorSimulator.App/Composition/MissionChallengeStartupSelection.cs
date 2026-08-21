@@ -37,8 +37,14 @@ internal static class MissionChallengeStartupSelection
             throw new ArgumentException("The --mission-pack option requires an exact pack id such as bounded-demand-following-5-10-5@1.", nameof(args));
         }
 
+        return ResolveExactId(exactId);
+    }
+
+    public static OperationalChallengePackDefinition ResolveExactId(string exactId)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(exactId);
         return InitialOperationalChallengePack.All.SingleOrDefault(
-                pack => string.Equals(pack.ExactId, exactId, StringComparison.Ordinal))
-            ?? throw new ArgumentException($"Unknown operational challenge pack '{exactId}'.", nameof(args));
+                pack => string.Equals(pack.ExactId, exactId.Trim(), StringComparison.Ordinal))
+            ?? throw new ArgumentException($"Unknown operational challenge pack '{exactId}'.", nameof(exactId));
     }
 }

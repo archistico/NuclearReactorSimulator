@@ -70,16 +70,10 @@ Persistence follow-ups discovered during the pre-7.3 Infrastructure review have 
 - **M11.3 performance/memory gate:** evaluate stream-based persistence / `Utf8JsonWriter` only against measured save/load allocation and LOH evidence;
 - low-risk scenario-definition double-parse and DTO comparer cleanup remain maintenance work and are not prerequisites for M10.9.7.3 unless a gate demonstrates a defect.
 
-Application recording/replay follow-ups from the post-7.3 review are likewise assigned explicitly:
+Application recording/replay follow-ups that remain future work after the active M10.9.7 checkpoint are explicitly assigned:
 
-- **M10.9.7.4 prerequisite:** add a populated golden/schema anchor for `sha256-control-room-snapshot-v1`;
-- **M10.9.7.4 timeline contract:** separate a protected mission lifecycle spine from bounded recent operational evidence before merging them for display;
-- **M11.2 compatibility:** if a snapshot fingerprint v2 is introduced, replay/checkpoint compatibility must select by persisted algorithm id and retain supported v1 verification;
-- **M11.3 measured Application hardening:** measure `LifecycleChanged` notification cost/semantics, fingerprint JSON+SHA+hex cost, recorder read-only collection copies, long-session memory growth and recorder failure policy; never silently decimate recording v1.
-
-App desktop-host follow-ups from the post-7.3 review are also explicitly owned:
-
-- **pre-M10.9.7.4:** before timeline work, validate the planned M10.9.7.3 desktop-host/session-integrity hotfix for expected numerical-step failure containment, start/reset/load/restore boundary consistency, picker-before-export and non-destructive/atomic local-filesystem session replacement;
+- **M11.2 compatibility:** if a snapshot fingerprint v2 is introduced, replay/checkpoint compatibility must select by persisted algorithm id and retain supported v1 verification; any persistent mission-pack identity requires an explicitly versioned archive contract rather than inference from `ScenarioId`;
+- **M11.3 measured Application hardening:** measure `LifecycleChanged` notification cost/semantics, fingerprint JSON+SHA+hex cost, recorder read-only collection copies, long-session memory growth and recorder failure policy; never silently decimate recording v1;
 - **M11.3 measured host hardening:** measure UI-thread batch/projection/PropertyChanged cost and long-session export responsiveness before any worker/off-thread redesign;
 - **M13:** move command-bearing selections toward stable canonical IDs and decompose the mega-ViewModel in staged behavior-preserving slices.
 
@@ -91,13 +85,11 @@ App desktop-host follow-ups from the post-7.3 review are also explicitly owned:
 
 Detailed plan: [`milestones/M10.9.7.md`](milestones/M10.9.7.md).
 
-Remaining sequence:
+Remaining sequence after the active checkpoint:
 
-1. pre-7.4 M10.9.7.3 desktop-host/session-integrity hardening required by the App review;
-2. M10.9.7.4 — deterministic timeline and drill-down;
-3. M10.9.7.5 — keyboard/minimum-window/manual closure gate.
+1. M10.9.7.5 — keyboard/minimum-window/manual closure gate.
 
-Before 7.4 archive/timeline equivalence, a populated snapshot-fingerprint-v1 golden anchor is required; 7.4 then separates protected mission lifecycle-spine retention from bounded recent operational evidence before timeline projection, UI, drill-down and replay/checkpoint/archive-restored equivalence.
+M10.9.7.5 consumes the validated deterministic timeline/drill-down/replay-equivalence surface and closes the full M10.9.7 matrix without adding new challenge/scoring/physics ownership.
 
 
 ## M10.9.8 — Integrated Human-Automation-HMI Validation Gate

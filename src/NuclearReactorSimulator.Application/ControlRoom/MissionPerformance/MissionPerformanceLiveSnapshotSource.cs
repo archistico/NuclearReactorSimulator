@@ -12,9 +12,10 @@ using NuclearReactorSimulator.Domain.Physics.Control.Supervisory;
 namespace NuclearReactorSimulator.Application.ControlRoom.MissionPerformance;
 
 /// <summary>
-/// M10.9.7.3 live read-side adapter. It observes deterministic session evidence, accumulates the same demand samples used by
-/// M10.9.6 scoring and publishes immutable MissionPerformanceSnapshot instances at presentation boundaries. It cannot
-/// dispatch plant commands, request control authority or mutate challenge/scoring owners.
+/// M10.9.7.3/7.4 live read-side adapter. It observes deterministic session evidence, accumulates the same demand samples
+/// used by M10.9.6 scoring and publishes immutable MissionPerformanceSnapshot instances at presentation boundaries. An
+/// optional already-verified recording prefix reconstructs challenge/demand evidence before future live evidence is attached.
+/// It cannot dispatch plant commands, request control authority or mutate challenge/scoring owners.
 /// </summary>
 public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSnapshotSource, IDisposable
 {
@@ -22,6 +23,7 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
     private readonly ScenarioSession _session;
     private readonly OperationalChallengePackDefinition _pack;
     private readonly ScenarioChallengeTracker _tracker;
+    private readonly ReplayedChallengeContinuationEvidenceSource? _replayedContinuationEvidence;
     private readonly ScenarioRecorder? _recorder;
     private readonly List<ExternalEnergyDemandEvidenceSnapshot> _demandTimeline = new();
     private IReadOnlyList<ScenarioRecordingEvent> _cachedRecordingEvents = Array.Empty<ScenarioRecordingEvent>();
@@ -35,7 +37,8 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
         ScenarioSession session,
         OperationalChallengePackDefinition pack,
         TrainingGuidanceMode assistanceMode = TrainingGuidanceMode.Guided,
-        ScenarioRecorder? recorder = null)
+        ScenarioRecorder? recorder = null,
+        ScenarioRecording? reconstructedPrefix = null)
     {
         _session = session ?? throw new ArgumentNullException(nameof(session));
         _pack = pack ?? throw new ArgumentNullException(nameof(pack));
@@ -51,7 +54,38 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
 
         _assistanceMode = assistanceMode;
         _latestDeterministicSnapshot = session.Coordinator.Current;
-        _tracker = ScenarioChallengeTracker.Attach(session, pack.Challenge, pack.ConditionEvaluator);
+        if (reconstructedPrefix is null)
+        {
+            _tracker = ScenarioChallengeTracker.Attach(session, pack.Challenge, pack.ConditionEvaluator);
+        }
+        else
+        {
+            if (!string.Equals(reconstructedPrefix.ScenarioId, pack.Scenario.ScenarioId, StringComparison.Ordinal)
+                || reconstructedPrefix.InitialCondition != pack.Scenario.InitialCondition
+                || reconstructedPrefix.FinalLogicalStep != session.Coordinator.Current.LogicalStep)
+            {
+                throw new ArgumentException("Reconstructed mission prefix must match the exact pack/session identity and current logical step.", nameof(reconstructedPrefix));
+            }
+
+            var replayProjection = OperationalChallengeRecordingProjector.Project(
+                pack,
+                reconstructedPrefix,
+                assistanceMode,
+                session.PlantControlAuthority.CurrentAutomation.IsAvailable
+                    ? session.PlantControlAuthority.CurrentAutomation.EffectiveAuthority
+                    : PlantControlAuthorityMode.Manual);
+            _demandTimeline.AddRange(replayProjection.Frames.Select(static frame => frame.ExternalDemand));
+
+            _replayedContinuationEvidence = new ReplayedChallengeContinuationEvidenceSource(reconstructedPrefix.Frames[0].Snapshot);
+            _tracker = ScenarioChallengeTracker.AttachDeterministicEvidence(
+                pack.Scenario,
+                _replayedContinuationEvidence,
+                pack.Challenge,
+                pack.ConditionEvaluator);
+            _replayedContinuationEvidence.ReplayPrefix(reconstructedPrefix);
+            _replayedContinuationEvidence.AttachLive(session);
+        }
+
         UpsertDemandSample(_latestDeterministicSnapshot);
         _current = BuildCurrent(_latestDeterministicSnapshot);
 
@@ -125,6 +159,7 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
         _session.Coordinator.SnapshotChanged -= OnPresentationSnapshotChanged;
         _session.PlantControlAuthority.AuthorityChanged -= OnAuthorityChanged;
         _tracker.Dispose();
+        _replayedContinuationEvidence?.Dispose();
     }
 
     private void OnDeterministicStepCompleted(object? sender, ControlRoomSnapshotChangedEventArgs e)
@@ -236,7 +271,8 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
             score,
             _assistanceMode,
             automation,
-            CurrentRecordingEvents());
+            CurrentRecordingEvents(),
+            _demandTimeline);
     }
 
     private void UpsertDemandSample(ControlRoomSnapshot snapshot)

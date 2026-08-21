@@ -25,7 +25,8 @@ public static class MissionPerformanceSnapshotProjector
         ChallengeScoreEvaluationResult? score,
         TrainingGuidanceMode assistanceMode,
         PlantControlAuthorityPresentationSnapshot? controlAuthority = null,
-        IEnumerable<ScenarioRecordingEvent>? recordingEvents = null)
+        IEnumerable<ScenarioRecordingEvent>? recordingEvents = null,
+        IReadOnlyList<ExternalEnergyDemandEvidenceSnapshot>? demandTimeline = null)
     {
         ArgumentNullException.ThrowIfNull(pack);
         ArgumentNullException.ThrowIfNull(lifecycle);
@@ -68,6 +69,11 @@ public static class MissionPerformanceSnapshotProjector
         long? elapsed = alignedLifecycle.ActivatedLogicalStep.HasValue
             ? Math.Max(0L, alignedLifecycle.LogicalStep - alignedLifecycle.ActivatedLogicalStep.Value)
             : null;
+        var timeline = MissionPerformanceTimelineProjector.Project(
+            alignedLifecycle,
+            score,
+            recordingEvents,
+            demandTimeline);
 
         return new MissionPerformanceSnapshot(
             pack.ExactId,
@@ -87,6 +93,9 @@ public static class MissionPerformanceSnapshotProjector
             demand,
             ProjectScore(score),
             ProjectEvents(alignedLifecycle, score, recordingEvents),
+            timeline.LifecycleSpine,
+            timeline.RecentOperationalEvidence,
+            timeline.Timeline,
             assistanceMode,
             authority.IsAvailable,
             authority.IsAvailable ? authority.RequestedAuthority : null,

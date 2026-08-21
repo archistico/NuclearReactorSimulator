@@ -34,6 +34,9 @@ public static class MissionPerformancePresentationComparer
             && DemandEquivalent(left.Demand, right.Demand)
             && ScoreEquivalent(left.Score, right.Score)
             && left.RecentEvents.SequenceEqual(right.RecentEvents)
+            && left.LifecycleSpine.SequenceEqual(right.LifecycleSpine)
+            && left.RecentOperationalEvidence.SequenceEqual(right.RecentOperationalEvidence)
+            && left.Timeline.SequenceEqual(right.Timeline)
             && left.AssistanceMode == right.AssistanceMode
             && left.PlantControlAuthorityAvailable == right.PlantControlAuthorityAvailable
             && left.RequestedControlAuthority == right.RequestedControlAuthority

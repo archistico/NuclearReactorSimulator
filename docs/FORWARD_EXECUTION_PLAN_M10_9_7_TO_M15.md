@@ -26,16 +26,14 @@ Every future implementation slice follows the same rules:
 
 ## Immediate transition
 
-The M10.9.7.2 persistence closure is validated. The active step is now M10.9.7.3 live MISSION wiring.
+M10.9.7.3 Hotfix 2 REV2 is validated. The active candidate is M10.9.7.4 deterministic timeline / drill-down / replay equivalence.
 
 ```text
-M10.9.7.2 Hotfix 3 REV1 VALIDATED
+M10.9.7.3 Hotfix 1 REV2 VALIDATED
         ↓
-M10.9.7.3 Hotfix 1 REV2 live Mission/Performance workspace + manual HMI validation
+M10.9.7.3 Hotfix 2 REV2 VALIDATED
         ↓
-M10.9.7.3 Hotfix 2 desktop-host failure/session-save integrity
-        ↓
-M10.9.7.4 deterministic timeline + drill-down
+M10.9.7.4 deterministic timeline + drill-down + replay/archive equivalence
         ↓
 M10.9.7.5 M10.9.7 closure
         ↓
@@ -75,7 +73,7 @@ The detailed milestone plan splits 7.3 into these implementation slices:
 
 Before 7.4, Hotfix 2 owns desktop numerical-failure containment, start/reset/load/restore boundary consistency, picker-before-export, non-destructive/atomic local-filesystem session replacement and invariant engineering-number formatting. Focused gate: `run-m10973-desktop-host-session-integrity-audit.cmd`; current validation state remains in `PROJECT.md`.
 
-M10.9.7.4 is blocked until this Hotfix 2 is validated. UI-thread worker migration, MainWindowViewModel decomposition, streaming persistence and simulation-speed features remain out of scope.
+Hotfix 2 REV2 is validated and is the required baseline for M10.9.7.4. UI-thread worker migration, MainWindowViewModel decomposition, streaming persistence and simulation-speed features remain out of scope.
 
 ### M10.9.7.4 timeline/drill-down — implementation order
 

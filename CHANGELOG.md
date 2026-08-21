@@ -1,5 +1,30 @@
 # Changelog
-## 2026-08-21 — M10.9.7.3 Hotfix 2 REV2 — Archive Failure / Cleanup / Historical Contract Alignment — CANDIDATE
+## 2026-08-22 — M10.9.7.4 Hotfix 1 — Ordinary Suite Contract Alignment — CANDIDATE
+
+- Stacks exclusively on the original M10.9.7.4 candidate, which compiled but is **SUPERSEDED / NOT VALIDATED** after the complete ordinary suite reported 3 failures.
+- Aligns the historical M10.9.7.3 XAML regression with the intentional M10.9.7.4 visual replacement of `RECENT DETERMINISTIC EVIDENCE` by `DETERMINISTIC TIMELINE / DRILL-DOWN`; the M10.9.7.3 `RecentEvents` Application contract remains unchanged and covered by its existing projection/live-wiring tests.
+- Replaces the raw-XAML substring no-F9 assertion with a structural `KeyBinding Gesture="F9"` check, avoiding the false positive caused by hexadecimal HMI colors such as `#6F929F`.
+- Corrects the populated H29 fingerprint fixture precondition: `PrimaryCircuit.Valves` is intentionally empty because the retained topology has no valve endpoint in the primary-node projection; the stop/control/admission valves are turbine/secondary. The test now positively anchors primary pumps/branches and explicitly anchors the topology-empty primary-valve surface before checking the unchanged frozen golden hash.
+- Keeps `sha256-control-room-snapshot-v1`, golden hash `63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362`, MISSION timeline/drill-down implementation, archive schema v1, replay/checkpoint behavior, F1–F8, XAML, plant-command authority and Simulation physics unchanged.
+
+Validation required: `dotnet build`, complete `dotnet test`, `scripts\run-m10974-mission-performance-timeline-audit.cmd`, then the unchanged M10.9.7.4 manual timeline/drill-down checklist.
+
+## 2026-08-22 — M10.9.7.4 — Deterministic Mission Timeline, Drill-Down & Replay Equivalence — SUPERSEDED / NOT VALIDATED (3 ordinary-suite failures)
+
+- Stacks exclusively on **M10.9.7.3 Hotfix 2 REV2 VALIDATED** plus Docs4.
+- Freezes `sha256-control-room-snapshot-v1` with the populated retained H29 exact-version 128-step golden fingerprint `63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362`; intentional fingerprint-visible semantic change requires a new algorithm id.
+- Adds a protected bounded lifecycle spine separate from bounded recent operational evidence, then merges them into a deterministic logical-step/source-sequence timeline without changing the M10.9.7.3 `RecentEvents` contract.
+- Projects demand changes, operator actions, alarm/protection/fault evidence and current scoring context from canonical existing owners only.
+- Adds presentation-only drill-down targets to ELECTRICAL, ALARMS/EVENTS and existing COMPUTER pages with no plant-command authority and no F9.
+- Reconstructs MISSION lifecycle/demand from an already verified archive/checkpoint recording prefix and then continues from future live deterministic evidence without an opaque challenge-state checkpoint blob.
+- Keeps session archive schema v1 unchanged: archive-restored MISSION requires an explicit exact pack binding matching scenario + initial-condition identity; unbound loads stay unbound and no pack is inferred from `ScenarioId`.
+- Preserves an already explicit mission pack when `START RECORDED SESSION` is used, enabling the desktop archive/checkpoint round-trip without introducing a challenge launcher.
+- Adds `scripts/run-m10974-mission-performance-timeline-audit.cmd`, ADR-0187, deterministic timeline documentation and a manual timeline/drill-down/replay checklist.
+- No Simulation physics, challenge/scoring/protection authority, archive schema, plant-command authority, F1–F8 or 10 ms fixed-step change.
+
+Validation required: `dotnet build`, `dotnet test`, `scripts\run-m10974-mission-performance-timeline-audit.cmd`, then `docs\M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md`.
+
+## 2026-08-21 — M10.9.7.3 Hotfix 2 REV2 — Archive Failure / Cleanup / Historical Contract Alignment — VALIDATED
 
 - Keeps **M10.9.7.3 Hotfix 1 REV2 VALIDATED + Docs4** as the only promoted baseline.
 - Marks Hotfix 2 REV1 **SUPERSEDED / NOT VALIDATED** after the ordinary suite reported three failures.
@@ -9,7 +34,7 @@
 - Retains all Hotfix 2 host-integrity behavior: expected numerical step failure containment, START/RESET/LOAD/RESTORE policy alignment, picker-before-export, temp-sibling durable write, safe replace/move, failure preservation and invariant engineering-number formatting.
 - No Simulation physics, challenge/scoring/protection authority, plant-command authority, archive schema or MISSION semantics change.
 
-Validation required: `dotnet build`, `dotnet test`, `scripts\run-m10973-desktop-host-session-integrity-audit.cmd`, then `docs\M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md`.
+Validation completed: build, complete ordinary suite, `scripts\run-m10973-desktop-host-session-integrity-audit.cmd` and the manual desktop-host/session-integrity checklist are green.
 
 ## 2026-08-21 — M10.9.7.3 Hotfix 2 REV1 — xUnit1051 Cancellation Contract Alignment — SUPERSEDED / NOT VALIDATED
 

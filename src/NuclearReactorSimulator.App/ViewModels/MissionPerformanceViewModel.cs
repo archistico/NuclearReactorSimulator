@@ -1,6 +1,8 @@
 using System.ComponentModel;
 using System.Globalization;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using NuclearReactorSimulator.App.Commands;
 using NuclearReactorSimulator.Application.ControlRoom.MissionPerformance;
 using NuclearReactorSimulator.Application.Scenarios.Challenges.Scoring;
 
@@ -15,6 +17,7 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
     private MissionPerformanceSnapshot? _snapshot;
     private IReadOnlyList<MissionPerformanceScoreDimensionRow> _scoreDimensions = Array.Empty<MissionPerformanceScoreDimensionRow>();
     private IReadOnlyList<MissionPerformanceEventRow> _recentEvents = Array.Empty<MissionPerformanceEventRow>();
+    private IReadOnlyList<MissionPerformanceTimelineRow> _timeline = Array.Empty<MissionPerformanceTimelineRow>();
     private long _presentationRevision;
 
     public MissionPerformanceViewModel(MissionPerformanceSnapshot? initial = null)
@@ -23,6 +26,7 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+    public event EventHandler<MissionPerformanceDrillDownRequestedEventArgs>? DrillDownRequested;
 
     public long PresentationRevision => _presentationRevision;
 
@@ -104,6 +108,16 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
     public IReadOnlyList<MissionPerformanceEventRow> RecentEvents => _recentEvents;
 
     public bool HasRecentEvents => _recentEvents.Count != 0;
+
+    public IReadOnlyList<MissionPerformanceTimelineRow> Timeline => _timeline;
+
+    public bool HasTimeline => _timeline.Count != 0;
+
+    public string TimelineRetentionText => _snapshot is null
+        ? "LIFECYCLE SPINE — · RECENT EVIDENCE —"
+        : string.Create(
+            CultureInfo.InvariantCulture,
+            $"LIFECYCLE SPINE {_snapshot.LifecycleSpine.Count} · RECENT EVIDENCE {_snapshot.RecentOperationalEvidence.Count}");
 
     public bool SafetyAlertActive => _snapshot is not null
         && (_snapshot.Score.DominanceOutcome == ChallengeScoreDominanceOutcome.CriticalSafetyFailure
@@ -187,6 +201,19 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
                 item.IsCritical))
             .ToArray()
             ?? Array.Empty<MissionPerformanceEventRow>();
+        _timeline = snapshot?.Timeline
+            .OrderByDescending(static item => item.LogicalStep)
+            .ThenByDescending(static item => item.SourceSequence ?? long.MinValue)
+            .Select(item => new MissionPerformanceTimelineRow(
+                string.Create(CultureInfo.InvariantCulture, $"STEP {item.LogicalStep}"),
+                item.Kind.ToString().ToUpperInvariant(),
+                item.SourceId,
+                item.Summary,
+                item.IsCritical,
+                item.DrillDownTarget,
+                () => RequestDrillDown(item.DrillDownTarget)))
+            .ToArray()
+            ?? Array.Empty<MissionPerformanceTimelineRow>();
         _presentationRevision++;
     }
 
@@ -213,6 +240,9 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(ScoreDimensions));
         OnPropertyChanged(nameof(RecentEvents));
         OnPropertyChanged(nameof(HasRecentEvents));
+        OnPropertyChanged(nameof(Timeline));
+        OnPropertyChanged(nameof(HasTimeline));
+        OnPropertyChanged(nameof(TimelineRetentionText));
         OnPropertyChanged(nameof(SafetyAlertActive));
         OnPropertyChanged(nameof(SafetyStatusText));
         OnPropertyChanged(nameof(AssistanceModeText));
@@ -237,6 +267,14 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
             _ => kind.ToString().ToUpperInvariant(),
         };
 
+    private void RequestDrillDown(MissionPerformanceDrillDownTarget? target)
+    {
+        if (target is not null)
+        {
+            DrillDownRequested?.Invoke(this, new MissionPerformanceDrillDownRequestedEventArgs(target));
+        }
+    }
+
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
@@ -253,3 +291,44 @@ public sealed record MissionPerformanceEventRow(
     string SourceText,
     string DetailText,
     bool IsCritical);
+
+public sealed class MissionPerformanceTimelineRow
+{
+    public MissionPerformanceTimelineRow(
+        string stepText,
+        string kindText,
+        string sourceText,
+        string detailText,
+        bool isCritical,
+        MissionPerformanceDrillDownTarget? target,
+        Action requestDrillDown)
+    {
+        StepText = stepText;
+        KindText = kindText;
+        SourceText = sourceText;
+        DetailText = detailText;
+        IsCritical = isCritical;
+        DrillDownText = target?.Label ?? "EVIDENCE ONLY";
+        HasDrillDown = target is not null;
+        DrillDownCommand = new DelegateCommand(requestDrillDown);
+    }
+
+    public string StepText { get; }
+    public string KindText { get; }
+    public string SourceText { get; }
+    public string DetailText { get; }
+    public bool IsCritical { get; }
+    public bool HasDrillDown { get; }
+    public string DrillDownText { get; }
+    public ICommand DrillDownCommand { get; }
+}
+
+public sealed class MissionPerformanceDrillDownRequestedEventArgs : EventArgs
+{
+    public MissionPerformanceDrillDownRequestedEventArgs(MissionPerformanceDrillDownTarget target)
+    {
+        Target = target ?? throw new ArgumentNullException(nameof(target));
+    }
+
+    public MissionPerformanceDrillDownTarget Target { get; }
+}

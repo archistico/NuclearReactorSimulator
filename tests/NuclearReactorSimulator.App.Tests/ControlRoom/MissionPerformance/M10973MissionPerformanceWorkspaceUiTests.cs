@@ -106,7 +106,10 @@ public sealed class M10973MissionPerformanceWorkspaceUiTests
         Assert.Contains("REQUESTED LOAD", texts);
         Assert.Contains("ACTUAL OUTPUT", texts);
         Assert.Contains("SCORE / CLASSIFICATION", texts);
-        Assert.Contains("RECENT DETERMINISTIC EVIDENCE", texts);
+        // M10.9.7.4 intentionally supersedes only the visual heading with the deterministic timeline/drill-down
+        // surface. The M10.9.7.3 RecentEvents Application contract remains unchanged and is covered by its
+        // presentation/live-wiring tests.
+        Assert.Contains("DETERMINISTIC TIMELINE / DRILL-DOWN", texts);
         _ = Assert.Single(
             document.Descendants(),
             static element => element.Name.LocalName == "Button"

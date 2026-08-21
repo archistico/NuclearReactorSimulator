@@ -85,12 +85,22 @@ internal static class CompositionRoot
         return new ApplicationRoot(mainWindowViewModel, session.Coordinator);
     }
 
-    public static ApplicationRoot CreateFromSessionArchive(string content, string? checkpointId = null)
+    public static ApplicationRoot CreateFromSessionArchive(
+        string content,
+        string? checkpointId = null,
+        OperationalChallengePackDefinition? missionPack = null)
     {
         var descriptor = ApplicationDescriptor.Current;
         var sessionFactory = CreateSessionFactory();
         var archiveSerializer = new JsonScenarioSessionArchiveSerializer();
         var archive = archiveSerializer.Deserialize(content);
+        if (missionPack is not null
+            && (!string.Equals(missionPack.Scenario.ScenarioId, archive.Scenario.ScenarioId, StringComparison.Ordinal)
+                || missionPack.Scenario.InitialCondition != archive.Scenario.InitialCondition))
+        {
+            throw new InvalidDataException(
+                $"Explicit mission pack '{missionPack.ExactId}' does not match archive scenario/initial-condition identity.");
+        }
         var replayRunner = new ScenarioFullReplayRunner(sessionFactory);
         ScenarioTrainingTracker? trainingTracker = null;
 
@@ -111,13 +121,21 @@ internal static class CompositionRoot
             recorder,
             replayRunner,
             archiveSerializer);
+        IMissionPerformanceSnapshotSource? missionPerformanceSource = missionPack is null
+            ? null
+            : new MissionPerformanceLiveSnapshotSource(
+                replay.Session,
+                missionPack,
+                TrainingGuidanceMode.Guided,
+                recorder,
+                replay.ReplayedRecording);
         var mainWindowViewModel = CreateMainWindowViewModel(
             descriptor,
             replay.Session,
             trainingTracker,
             recorder,
             sessionWorkspace,
-            missionPerformanceSource: null);
+            missionPerformanceSource);
 
         return new ApplicationRoot(mainWindowViewModel, replay.Session.Coordinator);
     }

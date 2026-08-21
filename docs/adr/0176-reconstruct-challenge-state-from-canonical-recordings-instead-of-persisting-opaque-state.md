@@ -2,7 +2,8 @@
 
 ## Status
 
-Proposed
+Accepted — M10.9.6.5 Hotfix 1 replay/checkpoint/determinism closure was validated on 2026-08-21.
+
 **Date:** 2026-08-20
 
 ## Context

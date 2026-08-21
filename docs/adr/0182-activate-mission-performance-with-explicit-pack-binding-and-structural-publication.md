@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed — implemented in M10.9.7.3 Hotfix 1 REV2. The original M10.9.7.3 package is superseded/not validated after two compile-contract failures. The first Hotfix 1 fixed those contracts but is also superseded/not validated after ordinary tests exposed stale batch-presentation ordering in the live source plus an over-broad historical situation-strip assertion. REV1 fixed both and left Application.Tests green, but its newly scoped historical shell assertion still expected the obsolete direct `LogicalStepText` binding. REV2 retains the REV1 runtime fix unchanged and aligns that test to the actual top runtime-step binding `RuntimeProgressText`. Build, ordinary tests, focused live-workspace audit and manual HMI acceptance are still required before promotion.
+Accepted — M10.9.7.3 Hotfix 1 REV2 passed build, complete ordinary tests, the focused live-workspace audit and manual HMI acceptance on 2026-08-21. Earlier M10.9.7.3 / Hotfix 1 / Hotfix 1 REV1 candidates remain superseded and were never promoted.
 
 ## Context
 

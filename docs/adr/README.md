@@ -199,17 +199,18 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 | [0173](0173-external-energy-demand-is-versioned-logical-step-evidence-not-generator-control.md) | External energy demand is versioned logical-step evidence, not generator control | Accepted | Scenarios / challenge / training |
 | [0174](0174-score-operational-challenges-with-versioned-dominant-multidimensional-policies.md) | Score operational challenges with versioned dominant multidimensional policies | Accepted | Scenarios / challenge / training |
 | [0175](0175-compose-initial-operational-challenges-from-existing-validated-evidence-owners.md) | Compose initial operational challenges from existing validated evidence owners | Accepted | Scenarios / challenge / training |
-| [0176](0176-reconstruct-challenge-state-from-canonical-recordings-instead-of-persisting-opaque-state.md) | Reconstruct challenge state from canonical recordings instead of persisting opaque state | Proposed | Recording / replay / persistence |
+| [0176](0176-reconstruct-challenge-state-from-canonical-recordings-instead-of-persisting-opaque-state.md) | Reconstruct challenge state from canonical recordings instead of persisting opaque state | Accepted | Recording / replay / persistence |
 | [0177](0177-project-mission-performance-as-read-only-aggregation-of-validated-owners.md) | Project mission/performance as read-only aggregation of validated owners | Accepted | HMI / operator experience |
 | [0178](0178-place-mission-performance-as-dedicated-main-hmi-workspace.md) | Place Mission/Performance as a dedicated main-HMI workspace | Accepted | HMI / operator experience |
 | [0179](0179-fail-closed-at-defaultable-domain-definition-boundaries.md) | Fail closed at defaultable Domain definition boundaries | Accepted | Protection / faults / incidents |
 | [0180](0180-index-immutable-plant-topology-once-and-version-challenge-observation-changes.md) | Index immutable plant topology once and version challenge observation changes | Accepted | Scenarios / challenge / training |
 | [0181](0181-preserve-session-v1-while-restoring-command-payload-integrity.md) | Preserve session schema v1 while restoring command payload integrity | Accepted | Recording / replay / persistence |
-| [0182](0182-activate-mission-performance-with-explicit-pack-binding-and-structural-publication.md) | Activate Mission/Performance with explicit pack binding and structural publication | Proposed | HMI / operator experience |
+| [0182](0182-activate-mission-performance-with-explicit-pack-binding-and-structural-publication.md) | Activate Mission/Performance with explicit pack binding and structural publication | Accepted | HMI / operator experience |
 | [0183](0183-defer-hydraulic-regularization-until-post-release-evidence.md) | Defer hydraulic constitutive regularization until a post-release evidence gate | Accepted | Fluids / thermo / secondary |
 | [0184](0184-anchor-snapshot-fingerprint-v1-and-separate-mission-timeline-retention.md) | Anchor snapshot fingerprint v1 and separate mission lifecycle retention from recent evidence | Accepted | HMI / operator experience |
 | [0185](0185-contain-desktop-runtime-failures-and-replace-session-archives-safely.md) | Contain desktop runtime failures and replace session archives safely before timeline expansion | Accepted | Recording / replay / persistence |
 | [0186](0186-separate-stable-architecture-from-chronology-and-index-live-documentation.md) | Separate stable architecture from milestone chronology and index live documentation | Accepted | Documentation / governance |
+| [0187](0187-project-mission-timeline-from-canonical-evidence-with-explicit-archive-pack-binding.md) | Project mission timeline from canonical evidence with explicit archive pack binding | Proposed | HMI / operator experience |
 
 ## Maintenance rule
 
