@@ -65,6 +65,7 @@ public sealed class ScenarioRecorder : IDisposable
     public IReadOnlyList<ScenarioRecordingFrame> Frames => Array.AsReadOnly(_frames.ToArray());
     public int FrameCount => _frames.Count;
     public ScenarioRecordingFrame LatestFrame => _frames[^1];
+    public int EventCount => _events.Count;
     public IReadOnlyList<ScenarioRecordingEvent> Events => Array.AsReadOnly(_events.ToArray());
     public IReadOnlyList<ScenarioCheckpoint> Checkpoints => Array.AsReadOnly(_checkpoints.ToArray());
 

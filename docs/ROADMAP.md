@@ -2,6 +2,8 @@
 
 This file contains **future work only**. The authoritative current checkpoint and active validation gate remain in `PROJECT.md`.
 
+Detailed implementation slices, gate expectations and deferred-item ownership are maintained in [`FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`](FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md).
+
 ## Execution discipline after Phase I
 
 The post-Phase-I sequence is fixed unless a gate produces direct contrary evidence:
@@ -52,12 +54,16 @@ This is a planning classification, not a duration promise:
 | M10.9.7 | ordinary + focused presentation/replay tests + manual HMI | low/medium |
 | M10.9.8 | integrated 3×3 assistance/authority matrix + degraded/protection/replay + full manual HMI | high |
 | M11 | compatibility, long/performance/memory, packaging/clean-machine and release-manual gates | high |
+| M12 | directionality/extreme-state/decay-heat/integrity/replay qualification | high |
+| M13 | UI/persistence/procedure/Instructor automated gates + broad manual HMI | medium/high |
+| M14 | quasi-spatial aggregate/replay/performance qualification + manual fidelity review | high |
+| M15 | consequence-family physics/replay/post-incident/long-horizon matrices | very high |
 
-M10.9.5–M10.9.7 should not normally require multi-hour numerical requalification. The two intentionally expensive future checkpoints are M10.9.8 integration closure and M11 release closure.
+M10.9.5–M10.9.7 should not normally require multi-hour numerical requalification. M10.9.8 and M11 are intentionally expensive integration/release checkpoints. M12–M15 are post-release engineering milestones whose expensive validation is justified by new physical/persistent state, spatial computation or consequence progression rather than by routine UI work.
 
 ## M10.9.7 forward transition prerequisites
 
-Current validated/candidate status is intentionally not duplicated here; use `PROJECT.md`. Before M10.9.7.3 live Mission/Performance wiring may begin, the active persistence payload/error-contract closure recorded in `PROJECT.md` must pass build, complete ordinary tests and its focused persistence gate.
+Current validated/candidate status is intentionally not duplicated here; use `PROJECT.md`. The persistence payload/error-contract prerequisite is satisfied. M10.9.7.3 may activate the live Mission/Performance route provided it preserves the validated ownership and navigation contracts below.
 
 The M10.9.7.3 implementation must preserve the already-decided topology and pre-live constraints:
 
@@ -125,6 +131,8 @@ Planned sequence:
 3. M10.9.7.3 — objective/demand/progress/score UI;
 4. M10.9.7.4 — deterministic timeline and drill-down;
 5. M10.9.7.5 — keyboard/minimum-window/manual closure gate.
+
+The detailed execution map breaks 7.3 into shell activation, live publication/change detection, dedicated ViewModel, primary layout, COMPUTER contextual navigation, keyboard/minimum-window behavior and a focused/manual gate; 7.4 is similarly split into timeline projection, UI, drill-down and replay/checkpoint equivalence.
 
 **M10.9.7.2 decision:** option A is selected and VALIDATED in REV1: a dedicated main-HMI Mission/Performance workspace linked contextually from COMPUTER. The validated F1–F8 contract remains fixed and no F9 is introduced. Live activation remains deferred to 7.3.
 
@@ -245,10 +253,10 @@ Planned sequence:
 1. M15.1 — pressure-boundary stress, leak initiation/growth and rupture where explicitly supported;
 2. M15.2 — rotating-equipment degradation/failure from modeled mechanical/thermal exposure;
 3. M15.3 — electrical damage/fire only from explicit electrical/thermal/ignition mechanisms;
-4. M15.4 — severe core-damage prerequisite gate, then bounded progression only if M12 decay heat and required M14/local thermal evidence are sufficient;
-5. M15.5 — incident severity derived from modeled physical consequence rather than alarm class or scripted flags;
-6. M15.6 — persistent damage across checkpoint/replay/session state and post-incident analysis;
-7. M15.7 — Instructor/Fault and local/spatial damage presentation using M13/M14 surfaces without UI-owned consequence logic;
+4. M15.4 — core-damage prerequisite gate proving decay-heat/cooling/local-thermal causal ownership before any core-damage implementation;
+5. M15.5 — bounded core-damage progression only if M15.4 passes;
+6. M15.6 — physical incident severity plus persistent replay/checkpoint/session/post-incident integration;
+7. M15.7 — Instructor/Fault and local/spatial consequence presentation using M13/M14 surfaces without UI-owned consequence logic;
 8. M15.8 — integrated deterministic extreme-operation/accident closure gate.
 
 Every consequence family is introduced one at a time with its own causal owner and focused gate. Scripted `fault → severity` or `threshold → explosion` shortcuts remain prohibited.

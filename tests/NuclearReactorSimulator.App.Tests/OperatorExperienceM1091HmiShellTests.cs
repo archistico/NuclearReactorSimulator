@@ -38,13 +38,17 @@ public sealed class OperatorExperienceM1091HmiShellTests
     public void SituationStrip_ExposesOperationalStatusWithoutInventingFutureDemandCapability()
     {
         var document = LoadMainWindow();
-        var textValues = document.Descendants()
+        var rootGrid = Assert.Single(document.Root!.Elements(), static element => element.Name.LocalName == "Grid");
+        var situationStrip = Assert.Single(
+            rootGrid.Elements(),
+            static element => element.Name.LocalName == "Border" && (string?)element.Attribute("Grid.Row") == "0");
+        var textValues = situationStrip.Descendants()
             .Select(static element => (string?)element.Attribute("Text"))
             .Where(static text => text is not null)
             .ToHashSet(StringComparer.Ordinal);
 
         Assert.Contains("{Binding RuntimeState}", textValues);
-        Assert.Contains("{Binding LogicalStepText}", textValues);
+        Assert.Contains("{Binding RuntimeProgressText}", textValues);
         Assert.Contains("{Binding ElectricalOutputText}", textValues);
         Assert.Contains("{Binding TrainingScoreText}", textValues);
         Assert.Contains("{Binding UnacknowledgedAlarmCountText}", textValues);

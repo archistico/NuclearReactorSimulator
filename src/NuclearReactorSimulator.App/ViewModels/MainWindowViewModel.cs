@@ -5,6 +5,7 @@ using NuclearReactorSimulator.App.Commands;
 using NuclearReactorSimulator.Application;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.Hmi;
+using NuclearReactorSimulator.Application.ControlRoom.MissionPerformance;
 using NuclearReactorSimulator.Application.ControlRoom.Automation;
 using NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
 using NuclearReactorSimulator.Application.Scenarios.Criticality;
@@ -29,6 +30,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     private readonly ScenarioRecorder? _scenarioRecorder;
     private readonly PostIncidentAnalysisReport? _postIncidentAnalysis;
     private readonly OperatorComputerSessionWorkspaceController? _sessionWorkspace;
+    private readonly IMissionPerformanceSnapshotSource? _missionPerformanceSource;
     private readonly PreStartupGuidancePlan? _preStartupGuidance;
     private readonly PreStartupChecklistEvaluator _preStartupChecklistEvaluator = new();
     private readonly FirstCriticalityGuidancePlan? _firstCriticalityGuidance;
@@ -71,7 +73,8 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         ScenarioRecorder? scenarioRecorder = null,
         PostIncidentAnalysisReport? postIncidentAnalysis = null,
         IPlantControlAuthorityDispatcher? plantControlAuthorityDispatcher = null,
-        OperatorComputerSessionWorkspaceController? sessionWorkspace = null)
+        OperatorComputerSessionWorkspaceController? sessionWorkspace = null,
+        IMissionPerformanceSnapshotSource? missionPerformanceSource = null)
     {
         ArgumentNullException.ThrowIfNull(descriptor);
         ArgumentNullException.ThrowIfNull(snapshotSource);
@@ -87,6 +90,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         _scenarioRecorder = scenarioRecorder;
         _postIncidentAnalysis = postIncidentAnalysis;
         _sessionWorkspace = sessionWorkspace;
+        _missionPerformanceSource = missionPerformanceSource;
         _commandStatus = trainingTracker is not null
             ? "Training session ready. No operator command has been issued yet. Fault-enabled scenarios use the same canonical instrumentation, control and protection paths as normal operation."
             : powerManoeuvringGuidance is not null
@@ -120,6 +124,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _trainingTracker,
             _plantControlAuthorityDispatcher,
             _sessionWorkspace);
+        MissionPerformance = new MissionPerformanceViewModel(_missionPerformanceSource?.Current);
 
         RunCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.Run));
         PauseCommand = new DelegateCommand(() => Dispatch(ControlRoomCommandKind.Pause));
@@ -158,6 +163,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         OpenOperatorComputerDiagnosticsPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Diagnostics));
         OpenOperatorComputerLogPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Log));
         OpenOperatorComputerSessionPageCommand = new DelegateCommand(() => OpenOperatorComputerPage(OperatorComputerPageId.Session));
+        OpenMissionPerformanceWorkspaceCommand = new DelegateCommand(OpenMissionPerformanceWorkspace);
         OpenSelectedMimicSubsystemCommand = new DelegateCommand(OpenSelectedMimicSubsystem);
 
         snapshotSource.SnapshotChanged += OnSnapshotChanged;
@@ -173,6 +179,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         if (_sessionWorkspace is not null)
         {
             _sessionWorkspace.Changed += OnSessionWorkspaceChanged;
+        }
+        if (_missionPerformanceSource is not null)
+        {
+            _missionPerformanceSource.SnapshotChanged += OnMissionPerformanceSnapshotChanged;
         }
     }
 
@@ -196,6 +206,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         if (_sessionWorkspace is not null)
         {
             _sessionWorkspace.Changed -= OnSessionWorkspaceChanged;
+        }
+        if (_missionPerformanceSource is not null)
+        {
+            _missionPerformanceSource.SnapshotChanged -= OnMissionPerformanceSnapshotChanged;
+            if (_missionPerformanceSource is IDisposable disposableMissionPerformanceSource)
+            {
+                disposableMissionPerformanceSource.Dispose();
+            }
         }
         _scenarioRecorder?.Dispose();
         _runtimeSubscriptionsDetached = true;
@@ -229,6 +247,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             OnPropertyChanged(nameof(IsElectricalWorkspaceSelected));
             OnPropertyChanged(nameof(IsAlarmsWorkspaceSelected));
             OnPropertyChanged(nameof(IsOperatorComputerWorkspaceSelected));
+            OnPropertyChanged(nameof(IsMissionPerformanceWorkspaceSelected));
             OnPropertyChanged(nameof(IsMainWorkspaceScrollVisible));
             OnPropertyChanged(nameof(IsShellHostWorkspaceSelected));
             OnPropertyChanged(nameof(IsOverviewWorkspaceSelected));
@@ -245,6 +264,9 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         ControlRoomWorkspaceId.Electrical => ElectricalContextText,
         ControlRoomWorkspaceId.AlarmsEvents => AlarmContextText,
         ControlRoomWorkspaceId.OperatorComputer => "Utility workstation for guidance, diagnostics, canonical commands, authority modes, log and replay-backed session tools.",
+        ControlRoomWorkspaceId.MissionPerformance => MissionPerformance.HasMission
+            ? $"{MissionPerformance.LifecycleText} · {MissionPerformance.SafetyStatusText} · {MissionPerformance.LogicalStepText}"
+            : "Mission workspace is live, but no M10.9.6 challenge pack is bound to the current session.",
         _ => SelectedMimicElement is null ? OperatorCurrentConditionText : $"{SelectedMimicTitle} · {SelectedMimicStatusText} · {SelectedMimicValuesText}",
     };
     public bool IsReactorWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Reactor;
@@ -253,11 +275,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public bool IsElectricalWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Electrical;
     public bool IsAlarmsWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.AlarmsEvents;
     public bool IsOperatorComputerWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.OperatorComputer;
+    public bool IsMissionPerformanceWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.MissionPerformance;
     public bool IsMainWorkspaceScrollVisible => !IsOperatorComputerWorkspaceSelected;
     public bool IsOverviewWorkspaceSelected => SelectedWorkspace.Id == ControlRoomWorkspaceId.Overview;
     public bool IsShellHostWorkspaceSelected => IsOverviewWorkspaceSelected;
 
     public OperatorComputerViewModel OperatorComputer { get; }
+
+    public MissionPerformanceViewModel MissionPerformance { get; }
 
     public ControlRoomPerformanceBudget PerformanceBudget { get; }
 
@@ -1177,6 +1202,7 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
     public ICommand OpenOperatorComputerDiagnosticsPageCommand { get; }
     public ICommand OpenOperatorComputerLogPageCommand { get; }
     public ICommand OpenOperatorComputerSessionPageCommand { get; }
+    public ICommand OpenMissionPerformanceWorkspaceCommand { get; }
     public ICommand OpenSelectedMimicSubsystemCommand { get; }
 
     private void OpenSelectedMimicSubsystem()
@@ -1397,6 +1423,9 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
         SelectedWorkspace = Workspaces.Single(static workspace => workspace.Id == ControlRoomWorkspaceId.OperatorComputer);
         OperatorComputer.SelectPage(pageId);
     }
+
+    private void OpenMissionPerformanceWorkspace()
+        => SelectedWorkspace = Workspaces.Single(static workspace => workspace.Id == ControlRoomWorkspaceId.MissionPerformance);
 
     private void Dispatch(ControlRoomCommandKind kind)
     {
@@ -1669,6 +1698,14 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
             _sessionWorkspace?.Current);
     }
 
+    private void OnMissionPerformanceSnapshotChanged(object? sender, MissionPerformanceSnapshotChangedEventArgs e)
+    {
+        if (MissionPerformance.UpdateSnapshot(e.Snapshot))
+        {
+            OnPropertyChanged(nameof(SelectedWorkspaceContextText));
+        }
+    }
+
     private void OnSessionWorkspaceChanged(object? sender, EventArgs e)
     {
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
@@ -1676,6 +1713,10 @@ public sealed class MainWindowViewModel : INotifyPropertyChanged
 
     private void OnTrainingGuidanceModeChanged(object? sender, EventArgs e)
     {
+        if (_missionPerformanceSource is MissionPerformanceLiveSnapshotSource liveMissionPerformance)
+        {
+            liveMissionPerformance.SetAssistanceMode(_trainingTracker?.GuidanceMode ?? TrainingGuidanceMode.Guided);
+        }
         OperatorComputer.UpdateSnapshot(ProjectOperatorComputerSnapshot());
         OnPropertyChanged(nameof(TrainingGuidanceModeText));
         OnPropertyChanged(nameof(GuidanceModeShortText));

@@ -25,9 +25,9 @@ M10.9.7.2 REV1 records the decision in `MissionPerformanceNavigationDecision.Cur
 
 This boundary avoids a transient blank or partially wired main-HMI workspace and lets the placement decision be validated independently from layout, ViewModel and manual HMI acceptance.
 
-## Pre-live constraints
+## Pre-live constraints — satisfied before activation
 
-Before the route is wired live, the pre-live hardening sequence must address or explicitly qualify the review follow-ups already retained in the milestone plan: per-step `ObservationFingerprint()` allocation and hot `PlantDefinition` / `PlantState` id lookup allocation/scanning at 10 ms cadence; UI change detection must not rely on generated record equality over `IReadOnlyList<>`; score-dominance authoring must fail earlier before future pack expansion; the current `FinalScore == FinalPercentage` equivalence remains tied to the explicit v1 100-point scoring invariant.
+The 10 ms observation/lookup allocation hardening validated in M10.9.7.2 Hotfix 2 REV1 and the persistence payload/error-contract closure validated in Hotfix 3 REV1 satisfy the pre-live blockers. M10.9.7.3 still obeys the retained rule that UI change detection must not use generated record equality over `IReadOnlyList<>`; score-dominance fail-fast remains required before future pack expansion, and `FinalScore == FinalPercentage` remains tied to the explicit v1 100-point scoring invariant.
 
 ## M10.9.7.3 implementation obligations
 

@@ -32,27 +32,71 @@ public static class OperationalChallengeScoreEvidenceProjector
         ChallengeLifecycleSnapshot lifecycle,
         IReadOnlyList<ExternalEnergyDemandEvidenceSnapshot> demandTimeline)
     {
-        ArgumentNullException.ThrowIfNull(pack);
         ArgumentNullException.ThrowIfNull(recording);
-        ArgumentNullException.ThrowIfNull(lifecycle);
-        ArgumentNullException.ThrowIfNull(demandTimeline);
-
-        if (!string.Equals(pack.Challenge.ExactId, lifecycle.ChallengeExactId, StringComparison.Ordinal))
-        {
-            throw new ArgumentException("Challenge pack and lifecycle exact identities must match.", nameof(lifecycle));
-        }
+        ValidateCommon(pack, lifecycle, demandTimeline);
         if (recording.FinalLogicalStep != lifecycle.LogicalStep)
         {
             throw new ArgumentException("Score projection requires lifecycle evidence at the recording final logical step.", nameof(lifecycle));
         }
         if (demandTimeline.Count != recording.Frames.Count
-            || demandTimeline.Count == 0
             || demandTimeline[0].LogicalStep != recording.InitialLogicalStep
             || demandTimeline[^1].LogicalStep != recording.FinalLogicalStep)
         {
             throw new ArgumentException("Demand evidence must cover the same contiguous recording frame span.", nameof(demandTimeline));
         }
 
+        return ProjectCore(pack, lifecycle, demandTimeline);
+    }
+
+    /// <summary>
+    /// M10.9.7.3 live-read overload. It consumes the same authored M10.9.6 score-evidence rules as replay projection but
+    /// does not require materializing a ScenarioRecording on every presentation refresh. The supplied demand timeline must
+    /// be deterministic, strictly increasing and end at the lifecycle evidence step.
+    /// </summary>
+    public static IReadOnlyList<ChallengeScoreDimensionEvidence> ProjectLive(
+        OperationalChallengePackDefinition pack,
+        ChallengeLifecycleSnapshot lifecycle,
+        IReadOnlyList<ExternalEnergyDemandEvidenceSnapshot> demandTimeline)
+    {
+        ValidateCommon(pack, lifecycle, demandTimeline);
+        if (demandTimeline[^1].LogicalStep != lifecycle.LogicalStep)
+        {
+            throw new ArgumentException("Live score projection requires demand evidence ending at the lifecycle logical step.", nameof(demandTimeline));
+        }
+        for (var index = 1; index < demandTimeline.Count; index++)
+        {
+            if (demandTimeline[index].LogicalStep <= demandTimeline[index - 1].LogicalStep)
+            {
+                throw new ArgumentException("Live demand evidence logical steps must be strictly increasing.", nameof(demandTimeline));
+            }
+        }
+
+        return ProjectCore(pack, lifecycle, demandTimeline);
+    }
+
+    private static void ValidateCommon(
+        OperationalChallengePackDefinition pack,
+        ChallengeLifecycleSnapshot lifecycle,
+        IReadOnlyList<ExternalEnergyDemandEvidenceSnapshot> demandTimeline)
+    {
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(lifecycle);
+        ArgumentNullException.ThrowIfNull(demandTimeline);
+        if (demandTimeline.Count == 0)
+        {
+            throw new ArgumentException("Score projection requires at least one demand-evidence sample.", nameof(demandTimeline));
+        }
+        if (!string.Equals(pack.Challenge.ExactId, lifecycle.ChallengeExactId, StringComparison.Ordinal))
+        {
+            throw new ArgumentException("Challenge pack and lifecycle exact identities must match.", nameof(lifecycle));
+        }
+    }
+
+    private static IReadOnlyList<ChallengeScoreDimensionEvidence> ProjectCore(
+        OperationalChallengePackDefinition pack,
+        ChallengeLifecycleSnapshot lifecycle,
+        IReadOnlyList<ExternalEnergyDemandEvidenceSnapshot> demandTimeline)
+    {
         var unclassifiedFailureIds = pack.Challenge.FailureConditions
             .Select(static condition => condition.ConditionId)
             .Where(id => !CriticalSafetyFailureConditionIds.Contains(id) && !CriticalProcedureFailureConditionIds.Contains(id))

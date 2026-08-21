@@ -4,42 +4,43 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1 and M10.9.7.2 Hotfix 2 REV1 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.2 Hotfix 2 REV1 passed build, complete ordinary tests and `scripts\run-m10972-ten-ms-hot-path-hardening-audit.cmd` on 2026-08-21. The pre-live 10 ms hot-path hardening is therefore qualified: challenge observation version tracking, indexed immutable plant registries reused by `PlantState`, and cached compressible-steam critical ratio are validated. Option A remains frozen: future dedicated `MISSION` / `Mission & Performance`, contextual navigation from COMPUTER, unchanged F1-F8, no F9, no plant-command authority and `UiRouteActivated=False`.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1, M10.9.7.2 Hotfix 2 REV1 and M10.9.7.2 Hotfix 3 REV1 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.2 Hotfix 3 REV1 passed build, complete ordinary tests and `scripts\run-m10972-persistence-payload-integrity-audit.cmd` on 2026-08-21. Schema-v1 command numeric payloads, adapter enum/error boundaries and post-incident DTO ownership are therefore qualified before live MISSION activation.
 
-Authoritative desktop production is:
+Authoritative desktop production remains:
 
 `integrated-operations-desktop-stable@4 | CorrelationConsistentInverseDomain | FourNodeBranchContinuityCorrectedCommitOptIn | 10 ms`
 
-Historical exact-version identities remain immutable; no Phase-I numerical contract is reopened by M10.9.7.
+Historical exact-version identities remain immutable; no M10.9.7 presentation work reopens Phase-I numerical ownership.
 
 ## Active candidate
 
-**M10.9.7.2 Hotfix 3 REV1 — JsonDocument Parse Exception-Type Test Alignment — CANDIDATE.**
+**M10.9.7.3 Hotfix 1 REV2 — Live Mission / Performance Historical Shell Contract Alignment — CANDIDATE.**
 
-The distributed **Docs1 documentation-alignment rebuild** changes documentation only; `src/`, `tests/`, validation scripts and the Hotfix 3 REV1 runtime/test contract remain unchanged. Local validation is therefore still the Hotfix 3 REV1 gate below.
+The candidate is rebuilt exclusively on M10.9.7.2 Hotfix 3 REV1 VALIDATED plus the Docs3 planning alignment. The original M10.9.7.3 package is SUPERSEDED / NOT VALIDATED after two compile-contract defects. The first Hotfix 1 fixed those compile contracts and built, but ordinary tests exposed stale batch-presentation ordering plus an over-broad M10.9.1 shell assertion. Hotfix 1 REV1 fixed the runtime ordering and correctly scoped the historical `GRID DEMAND` absence check; Application.Tests then passed, proving the live-source fix, while App.Tests exposed one remaining stale expectation: the top runtime block publishes current step through `RuntimeProgressText` (`STEP n`), not a direct `LogicalStepText` binding. Hotfix 1 REV2 changes only that historical test contract plus candidate metadata; the REV1 runtime fix and all 7.3 presentation semantics remain unchanged.
 
-Hotfix 3 REV1 is stacked exclusively on M10.9.7.2 Hotfix 2 REV1 VALIDATED. The original Hotfix 3 package is SUPERSEDED / NOT VALIDATED after one Infrastructure regression assertion required the exact `JsonException` runtime type. REV1 keeps the persistence runtime byte-identical to that package and changes only the malformed-scenario exception assertion to accept the public `JsonException` contract. No local build/test result has yet been reported for REV1.
+The live presentation path:
 
-The candidate closes persistence defects before any live workstation route is activated:
+- accumulates external-demand/scoring evidence on every deterministic step;
+- publishes immutable MISSION snapshots at presentation cadence and relevant same-step context changes;
+- uses explicit structural change detection instead of generated record equality over `IReadOnlyList<>`;
+- keeps `GRID DEMAND`, `REQUESTED LOAD` and `ACTUAL OUTPUT` separate;
+- copies score/classification from the existing M10.9.6 owner and gives safety/protection evidence visual priority;
+- exposes contextual `OPEN MISSION` navigation from COMPUTER as workspace selection only;
+- gives the normal desktop startup a truthful unbound `NO ACTIVE MISSION` state rather than inferring a challenge;
+- allows an exact authored pack to be bound explicitly for live/manual validation via `--mission-pack=<exact-id>`;
+- adds no challenge definition, scoring arithmetic, protection authority, plant command authority or physics change.
 
-- schema-v1 session archives persist `ControlRoomCommand.NumericValue` in operator actions and recorder events;
-- a real turbine-control-valve manual-demand sequence is verified through serialize → deserialize → full replay;
-- incomplete manual-demand payloads and undefined persisted command/target/event enum values fail at the archive boundary;
-- post-incident JSON owns a private command DTO rather than persisting the Application record directly;
-- malformed/structurally invalid scenario, checkpoint, post-incident and session-archive data follow the same `InvalidDataException` boundary contract, while future schema versions remain `NotSupportedException`;
-- session archive schema remains v1 and numeric enum ordinals are frozen by executable tests.
+Archive-restored mission binding and deterministic timeline/drill-down equivalence remain explicitly deferred to M10.9.7.4. A user-facing challenge launcher is not part of 7.3.
 
-String-enum schema migration and stream-based persistence APIs are explicitly deferred. Replay authority, scenario semantics, hot-path optimization, F1-F8, `UiRouteActivated=false`, scoring, challenge definitions, protection, physics and plant command authority remain unchanged.
-
-## Local validation for M10.9.7.2 Hotfix 3 REV1
+## Local validation for M10.9.7.3 Hotfix 1 REV2
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m10972-persistence-payload-integrity-audit.cmd
+scripts\run-m10973-mission-performance-live-workspace-audit.cmd
 ```
 
-Promotion requires all three gates green. After validation, M10.9.7.3 may begin live Mission/Performance wiring with explicit presentation change detection.
+Automated promotion evidence must then be followed by `docs\M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md`. Only after both automated and manual HMI gates are green may M10.9.7.3 Hotfix 1 REV2 be promoted and M10.9.7.4 begin.
 
 ## Evidence and package policy
 
@@ -60,7 +61,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.7.2 Hotfix 2 REV1 VALIDATED → active M10.9.7.2 Hotfix 3 REV1 persistence payload/error-contract closure (validation pending) → M10.9.7.3 live workstation implementation. Do not promote the superseded pre-Hotfix-3 7.2 package or reopen numerical Phase-I/command-consequence work without direct evidence against a validated contract.
+Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: M10.9.7.2 Hotfix 3 REV1 VALIDATED → active M10.9.7.3 Hotfix 1 REV2 live Mission/Performance workspace wiring → M10.9.7.4 deterministic timeline/drill-down. Do not promote the superseded pre-Hotfix-3 7.2 package or reopen numerical Phase-I/command-consequence work without direct evidence against a validated contract.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

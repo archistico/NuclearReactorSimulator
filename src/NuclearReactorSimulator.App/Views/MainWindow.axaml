@@ -179,10 +179,17 @@
       <Border Grid.Column="1" ClipToBounds="True">
         <Grid>
           <Grid IsVisible="{Binding IsOperatorComputerWorkspaceSelected}" Margin="20" RowDefinitions="Auto,*" RowSpacing="18">
-            <StackPanel Spacing="7">
-              <TextBlock FontSize="25" FontWeight="SemiBold" Text="{Binding SelectedWorkspaceTitle}" />
-              <TextBlock MaxWidth="900" FontSize="15" Opacity="0.74" TextWrapping="Wrap" Text="{Binding SelectedWorkspaceDescription}" />
-            </StackPanel>
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+              <StackPanel Spacing="7">
+                <TextBlock FontSize="25" FontWeight="SemiBold" Text="{Binding SelectedWorkspaceTitle}" />
+                <TextBlock MaxWidth="900" FontSize="15" Opacity="0.74" TextWrapping="Wrap" Text="{Binding SelectedWorkspaceDescription}" />
+              </StackPanel>
+              <Button Grid.Column="1"
+                      Classes="shellCommand"
+                      Command="{Binding OpenMissionPerformanceWorkspaceCommand}"
+                      Content="OPEN MISSION"
+                      ToolTip.Tip="Open the dedicated Mission &amp; Performance workspace. This navigation does not dispatch a plant command." />
+            </Grid>
             <controls:ControlRoomComputerControl Grid.Row="1" DataContext="{Binding OperatorComputer}" />
           </Grid>
 
@@ -198,6 +205,118 @@
             <TextBlock MaxWidth="900" FontSize="15" Opacity="0.74" TextWrapping="Wrap" Text="{Binding SelectedWorkspaceDescription}" />
           </StackPanel>
 
+
+          <StackPanel IsVisible="{Binding IsMissionPerformanceWorkspaceSelected}" Spacing="16">
+            <StackPanel DataContext="{Binding MissionPerformance}" Spacing="16">
+            <Border Padding="18" Background="#101D25" CornerRadius="6" BorderThickness="1,1,1,3" BorderBrush="#46717E">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+                <StackPanel Spacing="5">
+                  <TextBlock Classes="sectionHeading" Text="MISSION / OBJECTIVE" />
+                  <TextBlock FontSize="22" FontWeight="SemiBold" Text="{Binding ObjectiveTitle}" TextWrapping="Wrap" />
+                  <TextBlock MaxWidth="900" Opacity="0.78" Text="{Binding ObjectiveDescription}" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" MinWidth="190" HorizontalAlignment="Right" Spacing="5">
+                  <TextBlock Classes="sectionHeading" HorizontalAlignment="Right" Text="LIFECYCLE" />
+                  <TextBlock FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" Text="{Binding LifecycleText}" />
+                  <TextBlock FontFamily="{StaticResource DataFont}" HorizontalAlignment="Right" Text="{Binding LogicalStepText}" />
+                  <TextBlock FontFamily="{StaticResource DataFont}" HorizontalAlignment="Right" Text="{Binding ElapsedText}" />
+                  <TextBlock FontFamily="{StaticResource DataFont}" HorizontalAlignment="Right" Text="{Binding TargetWindowText}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <Border Padding="16" Background="#171C24" CornerRadius="6" BorderThickness="1,1,1,3" BorderBrush="#6B5151">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+                <StackPanel Spacing="4">
+                  <TextBlock Classes="sectionHeading" Text="SAFETY / PROTECTION SIGNIFICANCE" />
+                  <TextBlock FontSize="16" FontWeight="Bold" Text="{Binding SafetyStatusText}" TextWrapping="Wrap" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Spacing="3">
+                  <TextBlock FontSize="10" Opacity="0.7" HorizontalAlignment="Right" Text="ASSISTANCE" />
+                  <TextBlock FontWeight="SemiBold" HorizontalAlignment="Right" Text="{Binding AssistanceModeText}" />
+                  <TextBlock FontSize="10" Opacity="0.7" HorizontalAlignment="Right" Text="CONTROL AUTHORITY" />
+                  <TextBlock FontWeight="SemiBold" HorizontalAlignment="Right" Text="{Binding ControlAuthorityText}" />
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+              <Border Grid.Column="0" Padding="16" Background="#111820" CornerRadius="6" BorderThickness="1" BorderBrush="#365864">
+                <StackPanel Spacing="6">
+                  <TextBlock Classes="sectionHeading" Text="GRID DEMAND" />
+                  <TextBlock Classes="metricValue" FontFamily="{StaticResource DataFont}" Text="{Binding ExternalDemandText}" />
+                  <TextBlock FontSize="10" Opacity="0.68" Text="External training reference · never a generator command" TextWrapping="Wrap" />
+                  <TextBlock FontFamily="{StaticResource DataFont}" FontSize="10" Text="{Binding NextDemandText}" />
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="1" Padding="16" Background="#111820" CornerRadius="6" BorderThickness="1" BorderBrush="#365864">
+                <StackPanel Spacing="6">
+                  <TextBlock Classes="sectionHeading" Text="REQUESTED LOAD" />
+                  <TextBlock Classes="metricValue" FontFamily="{StaticResource DataFont}" Text="{Binding RequestedLoadText}" />
+                  <TextBlock FontSize="10" Opacity="0.68" Text="Canonical generator request" />
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="2" Padding="16" Background="#111820" CornerRadius="6" BorderThickness="1" BorderBrush="#365864">
+                <StackPanel Spacing="6">
+                  <TextBlock Classes="sectionHeading" Text="ACTUAL OUTPUT" />
+                  <TextBlock Classes="metricValue" FontFamily="{StaticResource DataFont}" Text="{Binding ActualOutputText}" />
+                  <TextBlock FontSize="10" Opacity="0.68" Text="Measured gross electrical output" />
+                  <TextBlock FontFamily="{StaticResource DataFont}" FontSize="10" Text="{Binding DemandErrorText}" />
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="0.9*,1.1*" ColumnSpacing="12">
+              <Border Padding="16" Background="#11161D" CornerRadius="6">
+                <StackPanel Spacing="10">
+                  <TextBlock Classes="sectionHeading" Text="SCORE / CLASSIFICATION" />
+                  <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                    <TextBlock FontSize="30" FontWeight="Bold" FontFamily="{StaticResource DataFont}" Text="{Binding ScoreText}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="2">
+                      <TextBlock FontSize="15" FontWeight="SemiBold" Text="{Binding GradeText}" />
+                      <TextBlock FontSize="10" Opacity="0.72" Text="{Binding ScoreEvidenceText}" />
+                    </StackPanel>
+                  </Grid>
+                  <ItemsControl ItemsSource="{Binding ScoreDimensions}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:MissionPerformanceScoreDimensionRow">
+                        <Border Margin="0,2" Padding="9" Background="#0B1218" CornerRadius="3">
+                          <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="10">
+                            <TextBlock FontWeight="SemiBold" Text="{Binding Title}" />
+                            <TextBlock Grid.Column="1" FontFamily="{StaticResource DataFont}" Text="{Binding PointsText}" />
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" FontSize="10" Opacity="0.68" Text="{Binding EvidenceText}" TextWrapping="Wrap" />
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+
+              <Border Grid.Column="1" Padding="16" Background="#11161D" CornerRadius="6">
+                <StackPanel Spacing="10">
+                  <TextBlock Classes="sectionHeading" Text="RECENT DETERMINISTIC EVIDENCE" />
+                  <TextBlock FontSize="10" Opacity="0.68" Text="Objective, protection and scoring evidence · latest first · bounded presentation surface" TextWrapping="Wrap" />
+                  <TextBlock IsVisible="{Binding HasNoMission}" Opacity="0.72" Text="No mission evidence is available for the current session." />
+                  <ItemsControl ItemsSource="{Binding RecentEvents}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:MissionPerformanceEventRow">
+                        <Border Margin="0,2" Padding="9" Background="#0B1218" CornerRadius="3">
+                          <Grid ColumnDefinitions="Auto,Auto,*" RowDefinitions="Auto,Auto" ColumnSpacing="10">
+                            <TextBlock FontFamily="{StaticResource DataFont}" FontSize="10" Text="{Binding StepText}" />
+                            <TextBlock Grid.Column="1" FontSize="10" FontWeight="SemiBold" Text="{Binding KindText}" />
+                            <TextBlock Grid.Column="2" FontSize="10" Opacity="0.72" Text="{Binding SourceText}" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding DetailText}" TextWrapping="Wrap" />
+                          </Grid>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+              </Border>
+            </Grid>
+            </StackPanel>
+          </StackPanel>
 
           <Border IsVisible="{Binding IsShellHostWorkspaceSelected}" Padding="24" Background="#171C24" CornerRadius="8" BorderThickness="1" BorderBrush="#303846">
             <Grid RowDefinitions="Auto,Auto,Auto" RowSpacing="16">

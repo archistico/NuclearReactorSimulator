@@ -82,23 +82,30 @@ public sealed class M10972MissionPerformanceNavigationDecisionTests
     }
 
     [Fact]
-    public void Decision_IsFrozenBeforeUiActivationAndDoesNotPartiallyRegisterTheWorkspace()
+    public void Decision_IsFulfilledByM10973WithoutChangingTheHistoricalF1ToF8Decision()
     {
         var decision = MissionPerformanceNavigationDecision.Current;
+        var activation = MissionPerformanceWorkspaceActivation.Current;
         Assert.False(decision.UiRouteActivated);
+        Assert.True(activation.UiRouteActivated);
+        Assert.Equal("M10.9.7.3", activation.ActivationMilestone);
+        Assert.False(activation.OperatorComputerFunctionKeyContractChanged);
+        Assert.Null(activation.AddedOperatorComputerFunctionKey);
+        Assert.False(activation.NavigationHasPlantCommandAuthority);
 
-        Assert.DoesNotContain(
+        var workspace = Assert.Single(
             ControlRoomWorkspaceCatalog.Default,
-            descriptor => string.Equals(descriptor.ShortTitle, decision.WorkspaceLabel, StringComparison.Ordinal));
-        Assert.DoesNotContain(
+            descriptor => descriptor.Id == ControlRoomWorkspaceId.MissionPerformance);
+        Assert.Equal(decision.WorkspaceLabel, workspace.ShortTitle);
+        Assert.Contains(
             Enum.GetNames<ControlRoomWorkspaceId>(),
             static name => string.Equals(name, "MissionPerformance", StringComparison.Ordinal));
 
         var mainWindow = LoadMainWindow();
-        Assert.DoesNotContain(
+        _ = Assert.Single(
             mainWindow.Descendants(),
-            element => string.Equals((string?)element.Attribute("Text"), decision.WorkspaceTitle, StringComparison.Ordinal)
-                || string.Equals((string?)element.Attribute("Content"), decision.WorkspaceTitle, StringComparison.Ordinal));
+            element => element.Name.LocalName == "Button"
+                && (string?)element.Attribute("Content") == "OPEN MISSION");
     }
 
     [Fact]

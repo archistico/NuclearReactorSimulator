@@ -13,6 +13,8 @@ If two historical documents disagree with `PROJECT.md`, `PROJECT.md` is the curr
 
 ## Forward execution plans
 
+- **`FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`** — detailed execution sequence, implementation slices, gates and deferred-item ownership from the active M10.9.7 Mission/Performance work through M15.
+
 The approved post-Phase-I implementation sequence is documented in `ROADMAP.md`. Detailed milestone contracts are:
 
 - `milestones/M10.9.5.md` — Contextual Command Consequence Model;
@@ -41,7 +43,7 @@ The remaining top-level technical documents describe model areas rather than pro
 
 ### HMI and operator computer
 
-`OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`, `HMI_VISUAL_DESIGN_SYSTEM.md`, `INTERACTIVE_FULL_PLANT_MIMIC.md`, `SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `OPERATOR_COMPUTER_INTEGRATED_UI.md`, `OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`, `MISSION_PERFORMANCE_PRESENTATION_CONTRACT.md`, `MISSION_PERFORMANCE_WORKSTATION_NAVIGATION.md`.
+`OPERATOR_EXPERIENCE_HMI_ARCHITECTURE.md`, `HMI_VISUAL_DESIGN_SYSTEM.md`, `INTERACTIVE_FULL_PLANT_MIMIC.md`, `SUBSYSTEM_ENGINEERING_SCHEMATICS.md`, `OPERATOR_COMPUTER_INTEGRATED_UI.md`, `OPERATOR_CONTROL_STATE_SYNCHRONIZATION_USABILITY.md`, `MISSION_PERFORMANCE_PRESENTATION_CONTRACT.md`, `MISSION_PERFORMANCE_WORKSTATION_NAVIGATION.md`, `MISSION_PERFORMANCE_LIVE_WORKSPACE.md`.
 
 ## Structured collections
 
@@ -68,3 +70,5 @@ Do not create another status/handoff/restart/candidate-summary file when the inf
 - `M10_9_5_3_MANUAL_VALIDATION_CHECKLIST.md` — focused manual HMI acceptance for M10.9.5.3 COMMANDS context-inspector/schematic integration.
 
 - `M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md` — final manual HMI acceptance for M10.9.5 contextual command-consequence closure.
+
+- `M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md` — manual HMI acceptance for the live MISSION workspace, including unbound and explicit-pack startup modes.

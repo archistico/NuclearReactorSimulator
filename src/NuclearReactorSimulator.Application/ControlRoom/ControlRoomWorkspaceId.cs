@@ -9,4 +9,5 @@ public enum ControlRoomWorkspaceId
     Electrical = 4,
     AlarmsEvents = 5,
     OperatorComputer = 6,
+    MissionPerformance = 7,
 }

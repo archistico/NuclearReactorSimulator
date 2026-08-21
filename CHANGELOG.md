@@ -1,3 +1,50 @@
+# Changelog
+
+## M10.9.7.3 Hotfix 1 REV2 — Live Mission / Performance Historical Shell Contract Alignment — CANDIDATE
+
+- Rebuilt over M10.9.7.2 Hotfix 3 REV1 VALIDATED plus Docs3, retaining the Hotfix 1 REV1 live-source runtime fix unchanged.
+- Records Hotfix 1 REV1 as SUPERSEDED / NOT VALIDATED after Application.Tests passed but the correctly scoped historical shell regression still expected `{Binding LogicalStepText}` in the top shell.
+- Aligns that historical test to the actual validated top runtime-step presentation `{Binding RuntimeProgressText}` (`STEP n`), matching `HMI_VISUAL_DESIGN_SYSTEM.md` and avoiding a duplicate current-step field in the situation strip.
+- No runtime behavior change from Hotfix 1 REV1; only the historical App test and candidate descriptor/gate/documentation metadata change.
+- Automated promotion still requires build, complete ordinary tests and `scripts/run-m10973-mission-performance-live-workspace-audit.cmd`, followed by the manual HMI checklist.
+
+## M10.9.7.3 Hotfix 1 REV1 — Live Mission / Performance Batch-Publication & HMI Regression Alignment — SUPERSEDED / NOT VALIDATED
+
+- Rebuilt over M10.9.7.2 Hotfix 3 REV1 VALIDATED plus Docs3. The original M10.9.7.3 candidate is SUPERSEDED / NOT VALIDATED after two compile-contract failures; the first Hotfix 1 is also SUPERSEDED / NOT VALIDATED after ordinary tests exposed two regressions.
+- Retains Hotfix 1's score-dimension field-wise test comparison and MainWindow mission DataContext separation unchanged.
+- Fixes live batch ordering: `ControlRoomRuntimeCoordinator.AdvanceRunning` publishes all deterministic-step evidence before presentation snapshots, so intermediate presentation snapshots may arrive stale. `MissionPerformanceLiveSnapshotSource` now ignores presentation snapshots older than the latest deterministic evidence and fails closed if presentation ever leads deterministic evidence; it never rewinds demand/scoring history.
+- Fixes the historical M10.9.1 situation-strip regression test by scoping its `GRID DEMAND` absence assertion to the actual top situation strip instead of the entire MainWindow. GRID DEMAND remains intentionally present only in the dedicated MISSION workspace.
+- Extends the focused gate to execute that historical situation-strip regression explicitly.
+- No Domain, Simulation or Infrastructure runtime change; no challenge/scoring/protection/plant-command/physics authority change.
+
+- Application.Tests passed after the stale-batch fix, but App.Tests had one remaining failure because the newly scoped historical shell test retained an obsolete direct `LogicalStepText` expectation instead of the actual `RuntimeProgressText` binding.
+- Replaced by Hotfix 1 REV2.
+
+## M10.9.7.3 Hotfix 1 — Live Mission / Performance Compile Contract Alignment — SUPERSEDED / NOT VALIDATED
+
+- Fixed the original candidate's score-dimension assertion type mismatch and Avalonia DataContext binding compile errors.
+- Build then succeeded, but ordinary tests exposed a stale batch-presentation ordering defect in `MissionPerformanceLiveSnapshotSource` and an obsolete situation-strip test that scanned the entire MainWindow for `GRID DEMAND`.
+- Replaced by Hotfix 1 REV1.
+
+## M10.9.7.3 — Live Mission / Performance Workspace Wiring — SUPERSEDED / NOT VALIDATED
+
+- Promotes M10.9.7.2 Hotfix 3 REV1 to VALIDATED after build, complete ordinary tests and `scripts/run-m10972-persistence-payload-integrity-audit.cmd` passed on 2026-08-21; ADR-0181 becomes Accepted.
+- Activates the dedicated `MISSION` / `Mission & Performance` main-HMI workspace chosen by M10.9.7.2 while preserving COMPUTER F1–F8 and adding no F9.
+- Adds a read-only live Mission/Performance source that accumulates demand/scoring evidence at every deterministic step but publishes immutable UI snapshots at presentation cadence and relevant same-step context changes.
+- Adds explicit structural presentation comparison so recreated `IReadOnlyList<>` instances do not trigger redundant UI publications.
+- Adds a presentation-only ViewModel/XAML hierarchy for objective/lifecycle, safety/protection significance, separate grid-demand/requested-load/actual-output evidence, score dimensions and bounded recent deterministic evidence.
+- Adds contextual `OPEN MISSION` navigation from COMPUTER with zero plant-command authority.
+- Keeps normal desktop startup mission-unbound and adds exact fail-closed `--mission-pack=<exact-id>` startup binding for live/manual validation; no scenario-to-pack inference or user-facing challenge launcher is introduced.
+- Leaves archive-restored mission binding/timeline equivalence to M10.9.7.4 and adds no challenge definition, scoring arithmetic, protection authority or physics change.
+- Adds ADR-0182, `docs/MISSION_PERFORMANCE_LIVE_WORKSPACE.md`, manual HMI checklist and `scripts/run-m10973-mission-performance-live-workspace-audit.cmd`.
+
+## Documentation planning pass — Docs3 Detailed Forward Execution Plan — CANDIDATE
+
+- Adds `docs/FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md` as a long-lived future-work execution map; `PROJECT.md` remains the sole current-state authority.
+- Carries forward Docs2's explicit post-M11 Epic mapping (M12 foundations, M13 control-room experience, M14 spatial reactor, M15 accident progression) and expands the entire post-persistence path into concrete implementation slices for M10.9.7.3 live MISSION activation, M10.9.7.4 timeline/drill-down, M10.9.7.5 closure, M10.9.8 integrated M10 validation, M11 release hardening and M12-M15 strategic epics.
+- Records per-slice owners, non-scope, focused evidence, replay/checkpoint expectations, manual HMI gates and explicit deferred-item ownership.
+- Keeps M10.9.7.2 Hotfix 3 REV1 runtime/tests/scripts unchanged; this planning pass is documentation-only and does not change the pending validation commands.
+
 ## M10.9.7.2 Hotfix 3 REV1 — JsonDocument Parse Exception-Type Test Alignment — CANDIDATE
 
 - Documentation alignment pass (`Docs1`) reasserts `PROJECT.md` as the only current-state authority, removes duplicated live status from README/ROADMAP, updates ADR-0179/0180 to their validated states, keeps ADR-0181 proposed pending Hotfix 3 REV1 validation, and assigns deferred schema-v2/string-enum work to M11.2 and measured stream-persistence work to M11.3. No `src/`, test or validation-script behavior changes belong to Docs1.

@@ -17,16 +17,14 @@ The project therefore retains these priorities:
 
 ## 1.1 Sequencing after M11
 
-After release hardening, future physical/gameplay expansion should proceed in this order so that consequences are built on explicit causal prerequisites rather than on scripted severity:
+The approved post-release milestone order is now explicit and dependency-driven:
 
-1. **Extreme-envelope support and directionality audit** — classify every flow-owning component as bidirectional, one-way by physics, one-way by check/isolation device, or unsupported outside the validated envelope.
-2. **Persistent integrity/stress primitives** — introduce definition-owned exposure/stress accumulation and separate operational state from physical integrity.
-3. **Component-damage families one at a time** — pressure-boundary damage/leak growth, rotating-equipment degradation/failure, then electrical damage/fire only where a modeled ignition mechanism exists. Each family receives its own deterministic/replay gate before the next begins.
-4. **Post-trip/core-damage prerequisites** — strengthen residual/decay-heat and thermal-state evidence before any fuel/channel/core-damage progression is claimed.
-5. **Incident severity and persistence** — derive severity from modeled physical consequence, preserve damage through replay/checkpoint/session state, and keep alarm priority separate from incident severity.
-6. **Later fidelity/UI extensions** — spatial-core refinement, Instructor/Fault presentation, industrial-control visual upgrades and other non-critical control-room extensions.
+1. **M12 — Extreme Operations Foundations** — directionality/support inventory, extreme-state matrix, full-plant post-trip decay heat, persistent integrity/stress primitives and physical `IncidentSeverity` scaffolding. M12 deliberately stops before broad leak/rupture/fire/core-damage authority.
+2. **M13 — Control-Room Experience** — industrial presentation boundary, maintained operator handles/selectors, first-class mimic viewport, versioned layouts, presentation presets, real procedures and a visually distinct Instructor/Fault mode. This improves operator/training surfaces while owning no new consequence physics.
+3. **M14 — Spatial Reactor** — deterministic multi-zone/equivalent-channel-group reference core, multiple rods/groups and selectable local power/flow/void/temperature/xenon/rod evidence. M14 provides the quasi-spatial evidence needed before localized core-damage claims.
+4. **M15 — Accident Progression & Consequence Models** — pressure-boundary damage/leak/rupture, rotating-equipment damage, electrical damage/fire and, only after a dedicated prerequisite gate, bounded core-damage progression.
 
-This order is not a calendar commitment. It is a dependency rule: a later item cannot be pulled forward merely because it is visually/gameplay attractive.
+This order is not a calendar commitment. It is a dependency rule. M13 and M14 are intentionally placed before M15 because M15 consumes both the improved Instructor/operator presentation shell and the quasi-spatial evidence needed for credible localized consequence presentation. The detailed executable plans live in `milestones/M12.md` through `milestones/M15.md`; the cross-milestone map is `FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`.
 
 ## 2. Extreme operation and out-of-envelope robustness
 

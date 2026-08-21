@@ -2,7 +2,9 @@ using NuclearReactorSimulator.App.ViewModels;
 using NuclearReactorSimulator.Application;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.OperatorComputer;
+using NuclearReactorSimulator.Application.ControlRoom.MissionPerformance;
 using NuclearReactorSimulator.Application.Scenarios;
+using NuclearReactorSimulator.Application.Scenarios.Challenges.Packs;
 using NuclearReactorSimulator.Application.Scenarios.Criticality;
 using NuclearReactorSimulator.Application.Scenarios.Faults.SecondaryTransients;
 using NuclearReactorSimulator.Application.Scenarios.Operations;
@@ -38,7 +40,47 @@ internal static class CompositionRoot
             session,
             trainingTracker,
             recorder,
-            sessionWorkspace);
+            sessionWorkspace,
+            missionPerformanceSource: null);
+
+        return new ApplicationRoot(mainWindowViewModel, session.Coordinator);
+    }
+
+    /// <summary>
+    /// Explicit M10.9.7.3 challenge composition path. Selecting a pack is an external session decision; the MISSION UI
+    /// never invents or infers one from an ambiguous scenario identity.
+    /// </summary>
+    public static ApplicationRoot CreateMissionChallenge(
+        OperationalChallengePackDefinition missionPack,
+        bool enableSessionRecording = false)
+    {
+        ArgumentNullException.ThrowIfNull(missionPack);
+        var descriptor = ApplicationDescriptor.Current;
+        var sessionFactory = CreateSessionFactory();
+        var session = sessionFactory.Load(missionPack.Scenario);
+        var recorder = enableSessionRecording ? new ScenarioRecorder(session) : null;
+        var missionPerformanceSource = new MissionPerformanceLiveSnapshotSource(
+            session,
+            missionPack,
+            TrainingGuidanceMode.Guided,
+            recorder);
+        var archiveSerializer = new JsonScenarioSessionArchiveSerializer();
+        var replayRunner = new ScenarioFullReplayRunner(sessionFactory);
+        var sessionWorkspace = new OperatorComputerSessionWorkspaceController(
+            session,
+            recorder,
+            replayRunner,
+            archiveSerializer);
+        var mainWindowViewModel = new MainWindowViewModel(
+            descriptor,
+            session.SnapshotSource,
+            session.CommandDispatcher,
+            scenarioRecorder: recorder,
+            plantControlAuthorityDispatcher: session.PlantControlAuthority,
+            sessionWorkspace: sessionWorkspace,
+            missionPerformanceSource: missionPerformanceSource);
+        mainWindowViewModel.SelectedWorkspace = mainWindowViewModel.Workspaces.Single(
+            static workspace => workspace.Id == ControlRoomWorkspaceId.MissionPerformance);
 
         return new ApplicationRoot(mainWindowViewModel, session.Coordinator);
     }
@@ -74,7 +116,8 @@ internal static class CompositionRoot
             replay.Session,
             trainingTracker,
             recorder,
-            sessionWorkspace);
+            sessionWorkspace,
+            missionPerformanceSource: null);
 
         return new ApplicationRoot(mainWindowViewModel, replay.Session.Coordinator);
     }
@@ -110,7 +153,8 @@ internal static class CompositionRoot
         ScenarioSession session,
         ScenarioTrainingTracker? trainingTracker,
         ScenarioRecorder? recorder,
-        OperatorComputerSessionWorkspaceController sessionWorkspace)
+        OperatorComputerSessionWorkspaceController sessionWorkspace,
+        IMissionPerformanceSnapshotSource? missionPerformanceSource)
     {
         var isDesktopTraining = DesktopIntegratedOperationsProductionProgram.IsDesktopTrainingScenario(
             session.Scenario.ScenarioId);
@@ -122,7 +166,8 @@ internal static class CompositionRoot
             trainingTracker: trainingTracker,
             scenarioRecorder: recorder,
             plantControlAuthorityDispatcher: session.PlantControlAuthority,
-            sessionWorkspace: sessionWorkspace);
+            sessionWorkspace: sessionWorkspace,
+            missionPerformanceSource: missionPerformanceSource);
     }
 }
 

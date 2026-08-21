@@ -14,5 +14,6 @@ public static class ControlRoomWorkspaceCatalog
             new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.Electrical, "Generator & Grid", "GRID", "Generator synchronization, breaker state, signed grid exchange and grid-facing controls."),
             new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.AlarmsEvents, "Alarms & Events", "ALARMS", "Annunciator, first-out state and deterministic logical-step event review."),
             new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.OperatorComputer, "Operator Computer", "COMPUTER", "Unified fixed-page utility workstation for guidance, diagnostics, commands, modes, log and session tools."),
+            new ControlRoomWorkspaceDescriptor(ControlRoomWorkspaceId.MissionPerformance, "Mission & Performance", "MISSION", "Read-only mission objective, external demand, requested load, actual output, score and deterministic recent evidence."),
         });
 }

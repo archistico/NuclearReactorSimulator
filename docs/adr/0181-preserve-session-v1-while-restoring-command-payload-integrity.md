@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed — implemented in M10.9.7.2 Hotfix 3 REV1 candidate; local validation pending. The original Hotfix 3 package is superseded/not validated after a test-only exact `JsonException` type assertion failure; REV1 leaves the persistence runtime unchanged.
+Accepted — M10.9.7.2 Hotfix 3 REV1 validated on 2026-08-21 after build, complete ordinary tests and the focused persistence payload/error-contract audit passed. The original Hotfix 3 package remains superseded/not validated after a test-only exact `JsonException` type assertion failure; REV1 left the persistence runtime unchanged.
 
 ## Context
 
@@ -33,4 +33,4 @@ A pre-Hotfix-3 v1 archive that already contains a manual-demand command without 
 - existing v1 archives without numeric-value commands remain readable;
 - incomplete historical v1 manual-demand archives fail at load with `InvalidDataException`;
 - numeric enum ordinals become an explicitly tested persistence contract until a future schema version replaces them;
-- live M10.9.7.3 wiring remains blocked until this persistence closure validates.
+- live M10.9.7.3 wiring is unblocked; the persistence closure is now a validated prerequisite.
