@@ -1,3 +1,13 @@
+# M10.9.8.5 — Manual Integrated HMI Acceptance & M10.9.8 Closure (CANDIDATE)
+
+- Promotes **M10.9.8.4 Hotfix 1 to VALIDATED** after build, complete ordinary suite and `scripts\run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd` passed.
+- Stacks exclusively on that baseline and changes no `src/` or `tests/` file; M10.9.8.5 is manual/docs closure-only.
+- Freezes the 1,286-file `src/` + `tests/` baseline surface in `eng/m10985-baseline-compiled-test-surface.sha256`; the standalone 8.5 validator compares exact SHA-256/path identity instead of relying on milestone-string scans, while `-HistoricalReuse` allows later final-M10 gates to reuse the contract after legitimate future changes.
+- Adds the versioned twelve-route manual acceptance contract `eng/m10985-manual-integrated-hmi-acceptance-contract.json`, the integrated preflight `scripts/run-m1098-integrated-human-automation-hmi-audit.cmd`, the manual checklist and explicit M10.9.8 closure document.
+- Revalidates the frozen M10.9.8.1/8.2/8.3/8.4 matrices plus representative HMI/session/authority/list-stability owners before manual acceptance.
+- Aligns the user manual/current project status and retires the stale limitation text saying the fingerprint-v1 golden anchor still had to be added.
+- Explicitly keeps **M10 OPEN after M10.9.8 closure**; M11 remains blocked until the mandatory final cumulative M10 gate and separate approximately one-hour operational long validation pass.
+
 # M10.9.8.4 Hotfix 1 — Protection/Authority Observation Boundary Alignment (CANDIDATE)
 
 - Supersedes the original M10.9.8.4 candidate, which compiled but failed one ordinary test because `RunProtection` asserted `SuspendedByProtection` one deterministic tick too early after `ReactorScram`.

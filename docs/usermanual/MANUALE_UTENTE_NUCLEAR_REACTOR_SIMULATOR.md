@@ -1,11 +1,11 @@
 # Nuclear Reactor Simulator — Manuale utente educativo e operativo
 
-**Edizione di riferimento:** funzionalità utente validate fino a M10.9.7 CLOSED — baseline M10.9.7.5 Hotfix 1 VALIDATED
+**Edizione di riferimento:** funzionalità utente validate fino a M10.9.8.4 Hotfix 1 VALIDATED — M10.9.8.5 manual integrated HMI acceptance CANDIDATE
 **Lingua:** Italiano
 **Destinazione:** formazione, comprensione del ciclo d'impianto, uso del simulatore e addestramento operativo
 
 > **Stato del manuale**
-> Questa edizione descrive il comportamento utente già validato fino a M10.9.7: workspace `MISSION`, challenge operativi, domanda elettrica esterna, punteggio multidimensionale, timeline deterministica, drill-down e ricostruzione replay/checkpoint. M10.9.8.1 REV1 Docs1 ha congelato la matrice di validazione integrata senza aggiungere nuove funzioni operative; M10.9.8.2 Hotfix 1 è la candidate corrente per esecuzione automatica della matrice healthy e robustezza della missione/F4.
+> La baseline funzionale resta quella delle **funzionalità utente validate fino a M10.9.7 CLOSED**; M10.9.8.1–8.4 ne hanno eseguito la validazione integrata senza introdurre nuova autorità o fisica. Questa edizione descrive il comportamento utente già validato fino a M10.9.7: workspace `MISSION`, challenge operativi, domanda elettrica esterna, punteggio multidimensionale, timeline deterministica, drill-down e ricostruzione replay/checkpoint. M10.9.8.1 REV1 Docs1 ha congelato la matrice di validazione integrata senza aggiungere nuove funzioni operative; M10.9.8.2 Hotfix 1 REV5, M10.9.8.3 e M10.9.8.4 Hotfix 1 sono ora validate; M10.9.8.5 è il gate manuale integrato finale e non aggiunge nuove funzioni operative.
 
 > **Importante**
 > Nuclear Reactor Simulator è un simulatore **educativo**. Riproduce in forma deterministica e semplificata molti fenomeni di un impianto nucleare ad acqua con circuito di ricircolo, separazione vapore, turbina, condensatore e generatore. Non è un simulatore di progetto, autorizzazione o sicurezza nucleare e non deve essere usato come riferimento per la conduzione di un impianto reale.

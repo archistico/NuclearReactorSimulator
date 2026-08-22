@@ -64,7 +64,7 @@ Still simplified or omitted:
 ## Recorder / replay evidence
 
 - Full-step M9.1 recording intentionally retains one fingerprinted frame per logical step and can grow substantially during hour-scale sessions. Current v1 has no silent decimation/truncation contract; M11.3 owns measured memory/streaming/chunking work and M11.2 owns any versioned retention-format change.
-- `ControlRoomSnapshotFingerprint` v1 is JSON-shape-derived deterministic evidence. M10.9.7.4 must add a populated golden anchor before expanding archive/timeline equivalence; a future fingerprint v2 requires explicit multi-algorithm compatibility rather than redefining v1.
+- `ControlRoomSnapshotFingerprint` v1 is JSON-shape-derived deterministic evidence. M10.9.7.4 added the populated golden anchor and subsequent replay/checkpoint gates preserve it; a future fingerprint v2 requires explicit multi-algorithm compatibility rather than redefining v1.
 - `ScenarioRecorder` is observational with respect to plant state/authority but executes synchronously. Its long-term evidence-failure/continue policy is not yet generalized; M11.3 owns that robustness decision.
 - `ScenarioChallengeTracker.LifecycleChanged` currently preserves per-step observation-refresh semantics while a challenge is active; M10.9.7.3 suppresses redundant UI work independently through presentation cadence and structural change detection. Any outcome-only notification split is future measured Application hardening.
 
@@ -85,6 +85,8 @@ A green regression gate means the current reduced-order contract is internally c
 
 ## Desktop host / session-save integrity
 
-The validated pre-Hotfix-2 desktop baseline does not yet carry the new host/session-integrity evidence: expected arithmetic/numerical step failures need an explicit PAUSE + diagnostic boundary, and destructive truncate-first session overwrite must be retired before timeline expansion. The dedicated pre-7.4 gate owns proof of those corrections; current candidate/validation status belongs only in [`PROJECT.md`](PROJECT.md).
+The M10.9.7.3 Hotfix 2 REV2 host/session-integrity corrections and subsequent timeline/archive gates are validated: expected archive/step failures cross an explicit desktop boundary, session replacement avoids destructive truncate-first semantics, and M10.9.7.4/8.4 replay/checkpoint evidence is green. Current candidate/validation status belongs only in [`PROJECT.md`](PROJECT.md).
 
-These items are not reasons to change physics, challenge/scoring semantics or archive schema. UI-thread responsiveness, notification fan-out, stable-ID command-target selection and MainWindowViewModel decomposition remain M11.3/M13 work as described in [`DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md`](DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md).
+These validated boundaries are not reasons to change physics, challenge/scoring semantics or archive schema. UI-thread responsiveness, notification fan-out, long-session memory/recorder cost, stable-ID command-target selection and `MainWindowViewModel` decomposition remain M11.3/M13 work as described in [`DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md`](DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md).
+
+- M10.9.8 manual acceptance intentionally adds no general challenge launcher or manual-only fault injector; injected instrumentation/fault combinations remain deterministic validation compositions owned by automated M10.9.8.3/8.4 evidence until a separately justified user-facing launcher is designed.
