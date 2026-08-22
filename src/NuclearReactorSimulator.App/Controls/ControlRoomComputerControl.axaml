@@ -149,10 +149,8 @@
             </Border>
 
             <ListBox Grid.Row="1" MinHeight="260" MaxHeight="420" ItemsSource="{Binding CommandEntries}" SelectedItem="{Binding SelectedCommand, Mode=TwoWay}"
+                     KeyDown="CommandCatalog_KeyDown"
                      Background="#071014" BorderBrush="#2B6170" BorderThickness="1" FontFamily="{StaticResource InterfaceFont}">
-              <ListBox.KeyBindings>
-                <KeyBinding Gesture="Enter" Command="{Binding ExecuteSelectedCommandCommand}" />
-              </ListBox.KeyBindings>
               <ListBox.ItemTemplate>
                 <DataTemplate x:DataType="computer:OperatorComputerCommandSnapshot">
                   <Grid ColumnDefinitions="88,82,*,120" ColumnSpacing="8" Margin="4,3">

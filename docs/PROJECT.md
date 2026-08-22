@@ -4,49 +4,46 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7.1 Hotfix 3, M10.9.7.2 REV1, M10.9.7.2 Hotfix 1 REV1, M10.9.7.2 Hotfix 2 REV1, M10.9.7.2 Hotfix 3 REV1, M10.9.7.3 Hotfix 1 REV2, M10.9.7.3 Hotfix 2 REV2 and M10.9.7.4 Hotfix 1 are VALIDATED.** M10.9.6 remains CLOSED. M10.9.7.4 Hotfix 1 passed build, the complete ordinary suite, `scripts\run-m10974-mission-performance-timeline-audit.cmd` and its manual timeline/drill-down/archive checklist on 2026-08-22. The validated baseline therefore includes the live read-only `MISSION` workspace, deterministic logical-step timeline, presentation-only drill-down and verified archive/checkpoint mission reconstruction.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6 and M10.9.7 are VALIDATED / CLOSED.** M10.9.7.5 Hotfix 1 passed build, the complete ordinary suite, `scripts\run-m1097-mission-performance-closure-audit.cmd` and explicit manual closure acceptance on 2026-08-22. It remains the authoritative production/runtime baseline for M10.9.8; validated M10.9.8 contract slices may then become the direct stacking baseline for the next validation slice without changing that production runtime identity.
+
+The validated M10.9.7 baseline includes the live read-only MISSION workspace, deterministic logical-step timeline, presentation-only drill-down, exact mission/archive binding, replay/checkpoint reconstruction, closure coverage for active/completed/failed mission states, assistance changes and requested/effective authority divergence. F1–F8 remain preserved, F9 remains absent and MISSION has no plant-command authority.
 
 Authoritative desktop production remains:
 
 `integrated-operations-desktop-stable@4 | CorrelationConsistentInverseDomain | FourNodeBranchContinuityCorrectedCommitOptIn | 10 ms`
 
-Historical exact-version identities remain immutable; no M10.9.7 presentation/closure work reopens Phase-I numerical ownership.
+Historical exact-version identities remain immutable; M10.9.8 validation work does not reopen Phase-I numerical ownership without direct contradictory evidence.
 
 ## Active candidate
 
-**M10.9.7.5 Hotfix 1 — Mission/Performance Closure Audit Wrapper Repair — CANDIDATE.**
+**M10.9.8.2 Hotfix 1 REV5 — Automated Healthy Assistance × Authority Matrix / Production Mission / F4 + Interactive List Robustness — CANDIDATE.**
 
-M10.9.7.5 Hotfix 1 is stacked **exclusively on the original M10.9.7.5 closure candidate**, itself stacked on M10.9.7.4 Hotfix 1 VALIDATED. The original candidate compiled and passed the complete ordinary suite, but its focused Windows `.cmd` aborted on the `run_app_class` batch subroutine lookup and is therefore SUPERSEDED / NOT VALIDATED. Hotfix 1 repairs only that audit wrapper and adds source-level regression coverage. It remains a closure gate, not feature work. Production XAML/runtime semantics, Simulation physics, challenge/scoring/protection ownership, archive schema, fingerprint algorithm and plant-command authority remain unchanged.
+M10.9.8.1 REV1 Docs1 is **VALIDATED** after build, complete ordinary suite, `scripts\run-m10981-integrated-validation-matrix-audit.cmd` and explicit user acceptance of the frozen matrix on 2026-08-22. It is the sole baseline for M10.9.8.2. The accepted v1 matrix remains `eng\m1098-integrated-human-automation-hmi-matrix.json`: 19 rows total, including the exact 3×3 healthy HAA matrix and eleven cross-cutting invariants. The Docs1 user-manual alignment is part of that validated baseline.
 
-The closure candidate adds cumulative executable evidence for the frozen M10.9.7 matrix:
+M10.9.8.2 Hotfix 1 REV5 retains the REV4 PowerShell-compatible validator and adds a presentation-only interactive-list stability repair after residual F4 dependency-chain flicker was observed during RUN. REV5 caches the dependency-chain projection for the selected typed command, preserves equivalent F8 checkpoint list/selection identity, prevents the five programmatic target selectors from resetting `ComboBox.ItemsSource` on unrelated visual-state refresh, and suppresses unchanged MISSION timeline/list replacement notifications. REV4 preserved the REV3 matrix/mission implementation. REV3 passed build and the complete ordinary suite; its focused gate then stopped in the matrix-v2 validator because the local Windows PowerShell host does not expose `Get-FileHash`. REV4 replaces only that validator hash mechanism with the .NET `System.Security.Cryptography.SHA256` API while retaining the exact frozen-v1 digest. REV3 had already superseded REV2 after ordinary-suite evidence disproved REV2's interpretation of the challenge window. HAA-01 through HAA-09 execute on the production-safe exact `bounded-demand-following-5-10-5@2` mission pack / `integrated-operations-desktop-stable@4`; the accepted M10.9.8.1 v1 matrix remains immutable and the versioned execution revision remains `eng/m1098-integrated-human-automation-hmi-matrix-v2.json`. Historical @1 remains exact/replayable. The hotfix also closes F4 COMMANDS refresh/ENTER robustness without Simulation coefficient changes. The challenge activates canonically when `demand:stable-low-load-start` is satisfied; `Window(4_000, 8_000)` is a target-completion window offset from activation, not an activation boundary. Every HAA row verifies active demand evidence, full replay and checkpoint-prefix/live-continuation equivalence.
 
-- no active mission remains explicit/unbound and never fabricates mission state;
-- active missions with no external-demand profile keep requested and actual output visible while external demand/error remain unavailable;
-- bounded demand-following keeps GRID DEMAND, REQUESTED LOAD and ACTUAL OUTPUT semantically distinct;
-- Active, Completed and Failed lifecycle states remain presentable;
-- terminal lifecycle boundaries remain frozen while plant logical time may continue;
-- generator trip remains required evidence for the dedicated load-rejection challenge but an explicit authored failure for normal-operation challenges where unexpected;
-- assistance-mode changes and requested/effective control-authority divergence remain observational presentation state;
-- checkpoint/full-archive replay and continuation reuse the already validated deterministic M10.9.6/M10.9.7.4 evidence path;
-- F1–F8 remain preserved, F9 remains absent, MISSION plant-command authority remains false and score remains copied from the M10.9.6 owner.
+The nine rows vary only:
 
-See `MISSION_PERFORMANCE_CLOSURE.md`.
+- assistance: `Hidden | ChecklistOnly | Guided`;
+- requested authority: `Manual | Assisted | SupervisoryAutomatic`.
 
-## Validation required for M10.9.7.5 Hotfix 1
+Every healthy supervisory row explicitly configures `HoldCurrentOperatingPoint` before requesting `SupervisoryAutomatic`. The automated test records canonical final fingerprints, requested/effective authority, active lifecycle/demand/score context, alarms/protection, accepted actions, a full-replay fingerprint and a checkpoint-prefix/live-continuation fingerprint. It requires the exact `bounded-demand-5-10-5@1` demand evidence to be available after canonical activation and freezes the target window as +4000..+8000 logical steps from `ActivatedLogicalStep`; M10.9.6.1 is rerun as the logical-time owner and M10.9.6.2 remains the owner of demand/request/output separation. At fixed authority, changing assistance must leave the physical/replay fingerprint and other canonical outcomes unchanged.
+
+M10.9.8.2 Hotfix 1 REV5 has a deliberately narrow production App/Application diff: additive exact-v2 mission composition/startup resolution plus F4 COMMANDS presentation/input/error-boundary robustness. It does **not** change Simulation physics/coefficient calibration, protection or scoring ownership, archive schema, fingerprint algorithm or plant-command authority. The demand/score/authority/replay owners are rerun explicitly.
+
+See `M10_9_8_2_AUTOMATED_HEALTHY_ASSISTANCE_AUTHORITY_MATRIX.md`.
+
+## Validation required for M10.9.8.2
 
 Run:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m1097-mission-performance-closure-audit.cmd
+scripts\run-m10982-healthy-assistance-authority-matrix-audit.cmd
 ```
 
-Then complete:
-
-`docs\M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md`
-
-Only after automatic + manual closure gates are green may **M10.9.7 be declared VALIDATED/CLOSED** and M10.9.8 begin.
+Because Hotfix 1 repairs the live mission binding plus F4 ENTER and interactive-list refresh defects, it adds a narrow manual smoke gate in `M10_9_8_2_HOTFIX1_MANUAL_SMOKE_CHECKLIST.md`. M10.9.8.5 still owns the broader end-to-end HMI/keyboard acceptance. Promotion requires the focused artifact summary to contain `m10982-automated-healthy-assistance-authority-matrix-passes=True` plus the Hotfix 1 manual smoke acceptance.
 
 ## Evidence and package policy
 
@@ -70,7 +67,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I, M10.9.5 and M10.9.6 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.4 Hotfix 1 VALIDATED → active M10.9.7.5 Hotfix 1 closure → M10.9.8 integrated validation**. Do not begin M10.9.8 until M10.9.7.5 Hotfix 1 has passed build, ordinary tests, the focused closure gate and explicit manual closure acceptance.
+Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.5 Hotfix 1 VALIDATED → M10.9.8.1 REV1 Docs1 VALIDATED → active M10.9.8.2 healthy 3×3 execution → M10.9.8.3 degraded/fault/protection/takeover → M10.9.8.4 replay/checkpoint integrity → M10.9.8.5 manual HMI acceptance/M10 closure**.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

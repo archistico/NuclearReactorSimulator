@@ -32,6 +32,18 @@ public sealed class M10973MissionPerformanceWorkspaceUiTests
     }
 
     [Fact]
+    public void StartupSelection_ResolvesProductionBoundedDemandV2WithoutReinterpretingHistoricalV1()
+    {
+        var historical = MissionChallengeStartupSelection.ResolveExactId("bounded-demand-following-5-10-5@1");
+        var production = MissionChallengeStartupSelection.ResolveExactId("bounded-demand-following-5-10-5@2");
+
+        Assert.Same(InitialOperationalChallengePack.BoundedDemandFollowing, historical);
+        Assert.Same(ProductionOperationalChallengePack.BoundedDemandFollowing, production);
+        Assert.NotEqual(historical.Scenario.InitialCondition, production.Scenario.InitialCondition);
+        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 4), production.Scenario.InitialCondition);
+    }
+
+    [Fact]
     public void Workspace_IsLiveRegisteredAndComputerContextNavigationDoesNotDispatchPlantCommands()
     {
         var session = CreateFactory().Load(InitialOperationalChallengePack.BoundedDemandFollowing.Scenario);

@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using Avalonia.Input;
 using Avalonia.Platform.Storage;
 using NuclearReactorSimulator.App.Composition;
 using NuclearReactorSimulator.App.Persistence;
@@ -22,6 +23,17 @@ public sealed partial class ControlRoomComputerControl : UserControl
     public ControlRoomComputerControl()
     {
         InitializeComponent();
+    }
+
+    private void CommandCatalog_KeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key != Key.Enter || DataContext is not OperatorComputerViewModel viewModel)
+        {
+            return;
+        }
+
+        viewModel.ExecuteSelectedCommandCommand.Execute(null);
+        e.Handled = true;
     }
 
     private void StartRecordedSession_Click(object? sender, RoutedEventArgs e)

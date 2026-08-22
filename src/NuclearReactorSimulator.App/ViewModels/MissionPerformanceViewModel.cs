@@ -174,50 +174,86 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
             return false;
         }
 
-        Apply(snapshot);
-        OnAllPropertiesChanged();
+        var listChanges = Apply(snapshot);
+        OnAllPropertiesChanged(listChanges);
         return true;
     }
 
-    private void Apply(MissionPerformanceSnapshot? snapshot)
+    private MissionPerformanceListChanges Apply(MissionPerformanceSnapshot? snapshot)
     {
+        var previous = _snapshot;
+        var scoreDimensionsChanged = !SequenceEquivalent(
+            previous?.Score.Dimensions,
+            snapshot?.Score.Dimensions);
+        var recentEventsChanged = !SequenceEquivalent(
+            previous?.RecentEvents,
+            snapshot?.RecentEvents);
+        var timelineChanged = !SequenceEquivalent(
+            previous?.Timeline,
+            snapshot?.Timeline);
+
         _snapshot = snapshot;
-        _scoreDimensions = snapshot?.Score.Dimensions
-            .Select(static item => new MissionPerformanceScoreDimensionRow(
-                DisplayDimension(item.Kind),
-                string.Create(CultureInfo.InvariantCulture, $"{item.AwardedPoints:0.##} / {item.MaximumPoints:0.##}"),
-                item.IsEvidenceAvailable ? item.EvidenceSummary : "Evidence unavailable.",
-                item.IsCriticalFailure))
-            .ToArray()
-            ?? Array.Empty<MissionPerformanceScoreDimensionRow>();
-        _recentEvents = snapshot?.RecentEvents
-            .OrderByDescending(static item => item.LogicalStep)
-            .ThenByDescending(static item => item.SourceSequence ?? long.MinValue)
-            .Select(static item => new MissionPerformanceEventRow(
-                string.Create(CultureInfo.InvariantCulture, $"STEP {item.LogicalStep}"),
-                item.Kind.ToString().ToUpperInvariant(),
-                item.SourceId,
-                item.Summary,
-                item.IsCritical))
-            .ToArray()
-            ?? Array.Empty<MissionPerformanceEventRow>();
-        _timeline = snapshot?.Timeline
-            .OrderByDescending(static item => item.LogicalStep)
-            .ThenByDescending(static item => item.SourceSequence ?? long.MinValue)
-            .Select(item => new MissionPerformanceTimelineRow(
-                string.Create(CultureInfo.InvariantCulture, $"STEP {item.LogicalStep}"),
-                item.Kind.ToString().ToUpperInvariant(),
-                item.SourceId,
-                item.Summary,
-                item.IsCritical,
-                item.DrillDownTarget,
-                () => RequestDrillDown(item.DrillDownTarget)))
-            .ToArray()
-            ?? Array.Empty<MissionPerformanceTimelineRow>();
+        if (scoreDimensionsChanged)
+        {
+            _scoreDimensions = snapshot?.Score.Dimensions
+                .Select(static item => new MissionPerformanceScoreDimensionRow(
+                    DisplayDimension(item.Kind),
+                    string.Create(CultureInfo.InvariantCulture, $"{item.AwardedPoints:0.##} / {item.MaximumPoints:0.##}"),
+                    item.IsEvidenceAvailable ? item.EvidenceSummary : "Evidence unavailable.",
+                    item.IsCriticalFailure))
+                .ToArray()
+                ?? Array.Empty<MissionPerformanceScoreDimensionRow>();
+        }
+        if (recentEventsChanged)
+        {
+            _recentEvents = snapshot?.RecentEvents
+                .OrderByDescending(static item => item.LogicalStep)
+                .ThenByDescending(static item => item.SourceSequence ?? long.MinValue)
+                .Select(static item => new MissionPerformanceEventRow(
+                    string.Create(CultureInfo.InvariantCulture, $"STEP {item.LogicalStep}"),
+                    item.Kind.ToString().ToUpperInvariant(),
+                    item.SourceId,
+                    item.Summary,
+                    item.IsCritical))
+                .ToArray()
+                ?? Array.Empty<MissionPerformanceEventRow>();
+        }
+        if (timelineChanged)
+        {
+            _timeline = snapshot?.Timeline
+                .OrderByDescending(static item => item.LogicalStep)
+                .ThenByDescending(static item => item.SourceSequence ?? long.MinValue)
+                .Select(item => new MissionPerformanceTimelineRow(
+                    string.Create(CultureInfo.InvariantCulture, $"STEP {item.LogicalStep}"),
+                    item.Kind.ToString().ToUpperInvariant(),
+                    item.SourceId,
+                    item.Summary,
+                    item.IsCritical,
+                    item.DrillDownTarget,
+                    () => RequestDrillDown(item.DrillDownTarget)))
+                .ToArray()
+                ?? Array.Empty<MissionPerformanceTimelineRow>();
+        }
         _presentationRevision++;
+        return new MissionPerformanceListChanges(scoreDimensionsChanged, recentEventsChanged, timelineChanged);
     }
 
-    private void OnAllPropertiesChanged()
+    private static bool SequenceEquivalent<T>(IReadOnlyList<T>? left, IReadOnlyList<T>? right)
+    {
+        if (ReferenceEquals(left, right))
+        {
+            return true;
+        }
+
+        if (left is null || right is null)
+        {
+            return left is null && right is null;
+        }
+
+        return left.Count == right.Count && left.SequenceEqual(right);
+    }
+
+    private void OnAllPropertiesChanged(MissionPerformanceListChanges listChanges)
     {
         OnPropertyChanged(nameof(PresentationRevision));
         OnPropertyChanged(nameof(HasMission));
@@ -237,11 +273,20 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
         OnPropertyChanged(nameof(ScoreText));
         OnPropertyChanged(nameof(GradeText));
         OnPropertyChanged(nameof(ScoreEvidenceText));
-        OnPropertyChanged(nameof(ScoreDimensions));
-        OnPropertyChanged(nameof(RecentEvents));
-        OnPropertyChanged(nameof(HasRecentEvents));
-        OnPropertyChanged(nameof(Timeline));
-        OnPropertyChanged(nameof(HasTimeline));
+        if (listChanges.ScoreDimensionsChanged)
+        {
+            OnPropertyChanged(nameof(ScoreDimensions));
+        }
+        if (listChanges.RecentEventsChanged)
+        {
+            OnPropertyChanged(nameof(RecentEvents));
+            OnPropertyChanged(nameof(HasRecentEvents));
+        }
+        if (listChanges.TimelineChanged)
+        {
+            OnPropertyChanged(nameof(Timeline));
+            OnPropertyChanged(nameof(HasTimeline));
+        }
         OnPropertyChanged(nameof(TimelineRetentionText));
         OnPropertyChanged(nameof(SafetyAlertActive));
         OnPropertyChanged(nameof(SafetyStatusText));
@@ -278,6 +323,12 @@ public sealed class MissionPerformanceViewModel : INotifyPropertyChanged
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }
+
+internal readonly record struct MissionPerformanceListChanges(
+    bool ScoreDimensionsChanged,
+    bool RecentEventsChanged,
+    bool TimelineChanged);
+
 
 public sealed record MissionPerformanceScoreDimensionRow(
     string Title,

@@ -41,7 +41,7 @@ public sealed class OperatorComputerM104CommandConsoleTests
     [Fact]
     public void RuntimeRejection_RemainsAuthoritativeAndIsShownWithoutDirectStateMutation()
     {
-        var dispatcher = new RecordingDispatcher("scenario command denied");
+        var dispatcher = new RecordingDispatcher(new InvalidOperationException("scenario command denied"));
         var viewModel = CreatePausedViewModel(dispatcher);
         viewModel.SelectPage(OperatorComputerPageId.Commands);
         viewModel.SelectedCommand = viewModel.CommandEntries.Single(static command => command.Command.Kind == ControlRoomCommandKind.Run);
@@ -52,6 +52,74 @@ public sealed class OperatorComputerM104CommandConsoleTests
         Assert.Contains("BLOCKED BY RUNTIME/SCENARIO", viewModel.CommandConsoleStatus);
         Assert.Contains("scenario command denied", viewModel.CommandConsoleStatus);
     }
+
+    [Fact]
+    public void ExpectedCanonicalCommandRejections_AreShownWithoutEscapingTheViewModel()
+    {
+        Exception[] expectedRejections =
+        {
+            new InvalidOperationException("invalid operation"),
+            new ArgumentException("invalid target"),
+            new ArgumentOutOfRangeException("command", "unsupported command"),
+            new KeyNotFoundException("missing target"),
+            new OverflowException("numeric rejection"),
+        };
+
+        foreach (var exception in expectedRejections)
+        {
+            var dispatcher = new RecordingDispatcher(exception);
+            var viewModel = CreatePausedViewModel(dispatcher);
+            viewModel.SelectPage(OperatorComputerPageId.Commands);
+            viewModel.SelectedCommand = viewModel.CommandEntries.Single(static command => command.Command.Kind == ControlRoomCommandKind.Run);
+
+            var escaped = Record.Exception(() => viewModel.ExecuteSelectedCommandCommand.Execute(null));
+
+            Assert.Null(escaped);
+            Assert.Single(dispatcher.Commands);
+            Assert.Contains("BLOCKED BY RUNTIME/SCENARIO", viewModel.CommandConsoleStatus);
+            Assert.Contains(exception.Message, viewModel.CommandConsoleStatus);
+        }
+    }
+
+    [Fact]
+    public void SnapshotRefresh_WithEquivalentVisibleCatalog_PreservesCollectionAndSelectionReferences()
+    {
+        var viewModel = CreatePausedViewModel(new RecordingDispatcher());
+        viewModel.SelectPage(OperatorComputerPageId.Commands);
+        viewModel.SelectedCommand = viewModel.CommandEntries.Single(static command => command.Command.Kind == ControlRoomCommandKind.SingleStep);
+        var commands = viewModel.CommandEntries;
+        var selected = viewModel.SelectedCommand;
+        var commandNotifications = 0;
+        var selectionNotifications = 0;
+        viewModel.PropertyChanged += (_, args) =>
+        {
+            if (args.PropertyName == nameof(OperatorComputerViewModel.CommandEntries))
+            {
+                commandNotifications++;
+            }
+            if (args.PropertyName == nameof(OperatorComputerViewModel.SelectedCommand))
+            {
+                selectionNotifications++;
+            }
+        };
+
+        viewModel.UpdateSnapshot(OperatorComputerSnapshotProjector.Project(new ControlRoomSnapshot(
+            logicalStep: 1,
+            runState: ControlRoomRunState.Paused,
+            totalMeasuredSignalCount: 0,
+            invalidMeasuredSignalCount: 0,
+            annunciatedAlarmCount: 0,
+            unacknowledgedAlarmCount: 0,
+            reactorScramActive: false,
+            turbineTripActive: false,
+            generatorTripActive: false)));
+
+        Assert.Same(commands, viewModel.CommandEntries);
+        Assert.Same(selected, viewModel.SelectedCommand);
+        Assert.Equal(0, commandNotifications);
+        Assert.Equal(0, selectionNotifications);
+    }
+
 
     [Fact]
     public void SnapshotRefresh_PreservesStableCommandSelectionByEntryId()
@@ -95,9 +163,9 @@ public sealed class OperatorComputerM104CommandConsoleTests
 
     private sealed class RecordingDispatcher : IControlRoomCommandDispatcher
     {
-        private readonly string? _failure;
+        private readonly Exception? _failure;
 
-        public RecordingDispatcher(string? failure = null)
+        public RecordingDispatcher(Exception? failure = null)
         {
             _failure = failure;
         }
@@ -109,7 +177,7 @@ public sealed class OperatorComputerM104CommandConsoleTests
             Commands.Add(command);
             if (_failure is not null)
             {
-                throw new InvalidOperationException(_failure);
+                throw _failure;
             }
         }
     }

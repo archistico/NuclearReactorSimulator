@@ -63,6 +63,11 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_3_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.3 Hotfix 1 REV2 manual HMI validation checklist | Acceptance / validation |
 | [`M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.4 manual timeline / drill-down / replay-equivalence checklist | Acceptance / validation |
 | [`M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.5 Hotfix 1 manual Mission / Performance closure checklist | Acceptance / validation |
+| [`M10_9_8_1_MATRIX_ACCEPTANCE_CHECKLIST.md`](M10_9_8_1_MATRIX_ACCEPTANCE_CHECKLIST.md) | M10.9.8.1 manual validation-matrix acceptance checklist | Acceptance / validation |
+| [`M10_9_8_1_VALIDATION_MATRIX.md`](M10_9_8_1_VALIDATION_MATRIX.md) | M10.9.8.1 Integrated Human / Automation / HMI validation matrix freeze | Planning / engineering review |
+| [`M10_9_8_2_AUTOMATED_HEALTHY_ASSISTANCE_AUTHORITY_MATRIX.md`](M10_9_8_2_AUTOMATED_HEALTHY_ASSISTANCE_AUTHORITY_MATRIX.md) | M10.9.8.2 Automated Healthy Assistance × Authority Matrix | Evidence / qualification |
+| [`M10_9_8_2_HOTFIX1_MANUAL_SMOKE_CHECKLIST.md`](M10_9_8_2_HOTFIX1_MANUAL_SMOKE_CHECKLIST.md) | M10.9.8.2 Hotfix 1 mission/F4 manual smoke checklist | Acceptance / validation |
+| [`M10_9_8_2_REV5_INTERACTIVE_LIST_STABILITY_AUDIT.md`](M10_9_8_2_REV5_INTERACTIVE_LIST_STABILITY_AUDIT.md) | M10.9.8.2 Hotfix 1 REV5 interactive list refresh stability audit | Evidence / HMI quality |
 | [`M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md`](M9_ADVANCED_FIDELITY_INTEGRATION_GATE.md) | M9 Advanced Fidelity Integration Gate | Acceptance / validation |
 | [`M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md`](M9_FINAL_MANUAL_VALIDATION_CHECKLIST.md) | M9 Final Manual GUI Validation Checklist | Acceptance / validation |
 | [`MAIN_CIRCULATION_SYSTEM.md`](MAIN_CIRCULATION_SYSTEM.md) | Main Circulation System | Physics / plant / controls |

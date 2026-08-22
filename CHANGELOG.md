@@ -1,4 +1,100 @@
+# M10.9.8.2 Hotfix 1 REV5 — Interactive List Refresh Stability (CANDIDATE)
+
+- Stacked on REV4 after user-observed residual flicker in F4 `DEPENDENCY CHAIN — SELECT A STEP` during RUN.
+- Audits every collection-backed UI surface that can reproduce hover/selection churn: 24 XAML `ItemsSource` controls plus five `ControlRoomSelector` instances backed by one programmatic `ComboBox` implementation.
+- Caches the selected command consequence/dependency projection and suppresses dependency-list/selection notifications on unrelated runtime snapshots; dynamic mimic/schematic state still refreshes.
+- Preserves F8 session checkpoint collection/selection identity when immutable checkpoint content is value-equivalent.
+- Stops `ControlRoomSelector` from resetting `ComboBox.ItemsSource` on unrelated state/selection visual refresh; target options are replaced only when the option sequence changes.
+- Preserves MISSION score/recent-event/timeline collection identity when only scalar mission state changes; this prevents avoidable drill-down button container recreation.
+- Adds fail-closed XAML + programmatic-selector inventory/regression tests so future collection-backed interactive surfaces require an explicit refresh-stability review.
+- Leaves the 18 read-only plant/alarm/history `ItemsControl` surfaces unchanged because their per-snapshot immutable values are intentionally dynamic and they have no selection/focus/embedded action surface; the nineteenth read-only ItemsControl, MISSION `ScoreDimensions`, receives semantic no-replacement suppression alongside the timeline/recent-event projections.
+- No change to production mission @2 identity, Simulation/Domain/Infrastructure physics or coefficients, challenge/scoring/protection ownership, archive schema, fingerprint algorithm or plant-command authority.
+
+# M10.9.8.2 Hotfix 1 REV4 — Legacy Windows PowerShell SHA-256 Compatibility (CANDIDATE)
+
+- Stacked on Hotfix 1 REV3 after build and the complete ordinary suite passed, while the focused audit stopped before M10.9.8.2 tests because the host Windows PowerShell does not provide `Get-FileHash`.
+- Replaces only the matrix-v2 validator hash implementation with `System.Security.Cryptography.SHA256` + `System.IO.File`, preserving the exact frozen matrix-v1 SHA-256 check without requiring the version-specific cmdlet.
+- No change to `src/`, `tests/`, matrix-v1/v2 bytes, production mission @2, the 1,000-step `control-out` regression, F4 COMMANDS fixes, Simulation physics, archive, fingerprint, scoring, protection or authority semantics.
+- The validator continues to require the accepted matrix-v1 hash `272e4eb2c958254c18cf19c1818006325ea0363c4f76eae7d8432fdb42d6da4e`; only the mechanism used to calculate it changes.
+
+# M10.9.8.2 Hotfix 1 REV3 — Active Demand / Logical-Time Contract Correction (CANDIDATE)
+
+- Supersedes unvalidated REV2 after the ordinary suite reached `M10982HealthyAssistanceAuthorityMatrixTests` and failed at `Assert.False(mission.Demand.ExternalDemandAvailable)`: runtime evidence was `True`.
+- Corrects the REV2 interpretation of `Window(4_000, 8_000)`. `ChallengeLogicalTimeContract` defines those values as target-completion offsets from `ActivatedLogicalStep`; they are observational and do not delay activation. `ScenarioChallengeTracker` activates when the authored condition is satisfied, and `ScenarioChallengeExternalDemandProjector` publishes demand whenever activation exists.
+- Restores HAA-01..HAA-09 to the active bounded-demand semantics already present in the accepted matrix v1, while continuing to execute the production-safe @2 / exact-v4 binding. The test now requires active `bounded-demand-5-10-5@1` evidence, non-null requested/actual electrical evidence, and explicitly freezes +4000/+8000 target-window offsets from activation.
+- Retains REV2 checkpoint-prefix/live-continuation coverage, the 1,000-step `control-out` regression, historical @1 preservation, F4 anti-flicker/ENTER fixes and HistoricalReuse validator repair. No Simulation physics/coefficient, protection, scoring, archive schema or fingerprint algorithm change.
+
+# M10.9.8.2 Hotfix 1 REV2 — Pre-Build Evidence Contract Alignment (CANDIDATE)
+
+- Supersedes Hotfix 1 REV1 before build/test after static preflight found three evidence-contract gaps, not compile errors: HAA-01..HAA-09 claimed an already-active bounded-demand challenge although the preserved activation window begins at STEP 4000; the test incorrectly expected external-demand evidence before activation even though the canonical projector returns unavailable; and the row contract required checkpoint-prefix/live-continuation equivalence while the test covered only full replay.
+- Keeps the accepted matrix v1 byte-frozen and keeps the production @2 challenge semantics/window unchanged. Matrix v2 now explicitly declares the bounded **pre-activation control-axis** HAA execution phase and routes active-window lifecycle coverage to M10.9.8.4/M10.9.8.5 rather than hiding a long audit inside the ordinary suite.
+- Extends every HAA row with a deterministic checkpoint after the first two accepted actions, exact prefix restore, identical live continuation, final physical fingerprint/authority/lifecycle/demand/score comparison, while retaining full replay verification. The pre-activation rows now assert external demand is unavailable by contract; active demand/request/output separation remains covered by the rerun M10.9.6.2 owner test.
+- Leaves the 1,000-step production @2 regression, historical @1 preservation, F4 anti-flicker/ENTER fixes and HistoricalReuse validator repair unchanged.
+
+# M10.9.8.2 Hotfix 1 REV1 — Historical Validator Scope Repair (CANDIDATE)
+
+- Stacked on the unvalidated M10.9.8.2 Hotfix 1 candidate; production mission @2 and F4 robustness implementation are unchanged.
+- Fixes the focused-gate false positive where the accepted M10.9.8.1 validator scanned all future compiled/test files for the literal `M10.9.8.1` and rejected the legitimate M10.9.8.2 artifact-summary baseline reference.
+- Adds `-HistoricalReuse` to `validate-m10981-integrated-validation-matrix.ps1`. Standalone M10.9.8.1 acceptance keeps the original compiled-surface marker check; later milestones reuse matrix/manual validation without retroactively banning references to the accepted baseline.
+- `run-m10982-healthy-assistance-authority-matrix-audit.cmd` now invokes the M10.9.8.1 validator with `-HistoricalReuse`.
+- `validate-m10982-integrated-validation-matrix-v2.ps1` freezes that invocation contract to prevent regression.
+- No `src/`, `tests/`, XAML, Simulation, challenge/scoring/protection, archive, fingerprint, mission binding or F4 production behavior changes relative to Hotfix 1.
+
+# M10.9.8.2 Hotfix 1 — Compile / Production Mission Runtime / F4 Command Console Robustness (CANDIDATE)
+
+- Supersedes the original M10.9.8.2 candidate, which did not compile because `M10982HealthyAssistanceAuthorityMatrixTests` omitted the `NuclearReactorSimulator.Application.ControlRoom.Automation` import required by `SupervisoryObjectiveRequest`.
+- Preserves `bounded-demand-following-5-10-5@1` exactly for historical replay/archive compatibility and adds `bounded-demand-following-5-10-5@2`, retaining the same demand/scoring/challenge evidence while binding to repaired production `integrated-operations-desktop-stable@4`.
+- Adds a 1,000-step production-mission regression crossing the user-reported historical `control-out` failure region around STEP 610–615 without modifying Simulation coefficients or thermodynamic/hydraulic policy.
+- Records the HAA execution correction in `eng/m1098-integrated-human-automation-hmi-matrix-v2.json`; the accepted M10.9.8.1 matrix v1 is not edited.
+- Stabilizes F4 COMMANDS by retaining command collection/selection references across refreshes when list-visible command identity/availability is unchanged; newest state/blocking details remain projected from the latest snapshot.
+- Replaces the ListBox ENTER KeyBinding with explicit `CommandCatalog_KeyDown` handling (`Handled=true`) and adds an App host policy for expected command validation/target/numeric rejections, while leaving unknown/programming exceptions unhandled.
+- Adds focused regressions for exact @1/@2 mission binding, historical failure-region crossing, command refresh stability, ENTER XAML contract and expected command-rejection containment.
+
 # Changelog
+## 2026-08-22 — M10.9.8.2 — Automated Healthy Assistance × Authority Matrix — CANDIDATE
+
+- Promotes **M10.9.8.1 REV1 Docs1 to VALIDATED** after build, complete ordinary suite, `scripts\run-m10981-integrated-validation-matrix-audit.cmd` and explicit user direction to proceed on the accepted frozen matrix.
+- Stacks exclusively on that validated contract baseline and executes frozen rows HAA-01..HAA-09: `Hidden|ChecklistOnly|Guided × Manual|Assisted|SupervisoryAutomatic`.
+- Adds `M10982HealthyAssistanceAuthorityMatrixTests`, using the same exact `bounded-demand-following-5-10-5@1` / `stable-low-load-parallel-operation@1` identity and the same accepted `GeneratorLoadRaise | ControlRodHold | GeneratorLoadLower | AlarmAcknowledgeAll` schedule in all nine rows.
+- Healthy supervisory rows explicitly configure `HoldCurrentOperatingPoint`; requested and effective authority must equal the requested mode with `Normal` health in every HAA row.
+- Compares physical and replay fingerprint, challenge lifecycle, demand/request/actual, score, alarm count and authority at fixed authority across all three assistance modes; assistance-only changes must not alter these canonical outcomes.
+- Records each row through `ScenarioRecorder` and verifies final full-replay canonical fingerprint and authority equivalence. The broader checkpoint/MISSION replay matrix remains M10.9.8.4 ownership.
+- Reuses existing M5/M10.9.6 owners in the focused gate: assistance-authority independence, authority integration, external demand, scoring and automation replay.
+- Adds `scripts/run-m10982-healthy-assistance-authority-matrix-audit.cmd` and `docs/M10_9_8_2_AUTOMATED_HEALTHY_ASSISTANCE_AUTHORITY_MATRIX.md`. No separate manual HMI gate is introduced; M10.9.8.5 owns manual acceptance.
+- No production `src/` file, XAML, Simulation physics, challenge/scoring/protection owner, archive schema, fingerprint algorithm, production scenario registration or plant-command authority change.
+
+Validation required: `dotnet build`, complete `dotnet test`, then `scripts\run-m10982-healthy-assistance-authority-matrix-audit.cmd`.
+
+## 2026-08-22 — M10.9.8.1 REV1 Docs1 — User Manual M10.9.7 Closure Alignment — CANDIDATE
+
+- Stacks documentation-only on **M10.9.8.1 REV1 Contract-Only Matrix Freeze**; all files under `src/` and `tests/` remain byte-identical to M10.9.7.5 Hotfix 1 VALIDATED.
+- Updates `docs/usermanual/MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md` from the old M10.9.4 reference to the user-facing functionality validated through **M10.9.7 CLOSED**.
+- Adds the validated `MISSION` workspace to the control-room map and documents no-active-mission/`UNBOUND`, objective/lifecycle, safety/protection hierarchy, explicit `GRID DEMAND` vs `REQUESTED LOAD` vs `ACTUAL OUTPUT`, multidimensional challenge scoring, deterministic timeline/drill-down and replay/checkpoint behavior.
+- Expands Operator Computer documentation to freeze F1–F8/no-F9 and `OPEN MISSION` as presentation-only navigation. Expands assistance/control documentation with requested-vs-effective authority, fail-closed supervisory degradation, measurement-validity discipline, protection priority and bumpless manual takeover.
+- Adds a user-facing distinction between legacy `TRAINING SCORE` and versioned multidimensional MISSION challenge scoring, including standard grade bands, incomplete-evidence behavior and safety/procedure dominance.
+- Extends the session chapter and English↔Italian glossary for MISSION, demand/request/output, requested/effective authority, drill-down and `UNBOUND`.
+- Keeps M10.9.8.1 correctly described as a validation gate in progress rather than a new user feature. The external matrix validator now also verifies the manual-alignment anchors; no C# or XAML test/runtime surface is added.
+
+Validation remains: `dotnet build`, complete `dotnet test`, `scripts\run-m10981-integrated-validation-matrix-audit.cmd`, then `docs\M10_9_8_1_MATRIX_ACCEPTANCE_CHECKLIST.md`.
+
+## 2026-08-22 — M10.9.8.1 REV1 — Integrated Human / Automation / HMI Validation Matrix Freeze — CANDIDATE
+
+- Rebuilds M10.9.8.1 **directly from M10.9.7.5 Hotfix 1 VALIDATED / M10.9.7 CLOSED** after the original M10.9.8.1 candidate was reported non-compilable and was not validated.
+- Removes the unnecessary compiled-surface changes from the original candidate: **all files under `src/` and `tests/` are byte-identical to the validated M10.9.7.5 Hotfix 1 baseline**. In particular, `ApplicationDescriptor.cs` and `ApplicationDescriptorTests.cs` remain on the validated baseline and no `M10981...cs` test is added.
+- Keeps M10.9.8.1 contract-only: no production runtime semantics, XAML, Simulation physics, challenge/scoring/protection authority, archive schema, fingerprint algorithm, plant-command authority or production scenario/fault registration change.
+- Adds `eng/m1098-integrated-human-automation-hmi-matrix.json`: schema v1 with 19 frozen rows, the healthy 3×3 `Hidden|ChecklistOnly|Guided × Manual|Assisted|SupervisoryAutomatic` product, ten integrated families and eleven cross-cutting invariants with explicit owner routing.
+- INT-12 remains explicitly validation-only and may be realized later only by composing existing exact-v4 measured-signal/M5 supervisory seams in test/audit code; it does not authorize a production scenario or fault type.
+- Adds `eng/validate-m10981-integrated-validation-matrix.ps1`, a PowerShell 5.1-compatible external matrix validator. It validates schema/axes/rows/families/invariants/INT-12 and fails if an M10.9.8.1 marker appears in compiled/runtime source or tests.
+- `scripts/run-m10981-integrated-validation-matrix-audit.cmd` reuses the already validated `TrainingAssistanceAuthorityIndependenceTests` and `PlantControlAuthorityIntegrationTests`, then runs the external JSON validator and emits the M10.9.8.1 summary artifact. The wrapper uses direct commands only and Windows CRLF.
+
+Validation required: `dotnet build`, complete `dotnet test`, `scripts\run-m10981-integrated-validation-matrix-audit.cmd`, then `docs\M10_9_8_1_MATRIX_ACCEPTANCE_CHECKLIST.md`. Only after both automated validation and explicit matrix acceptance are green may M10.9.8.2 begin.
+
+## 2026-08-22 — M10.9.8.1 — Integrated Human / Automation / HMI Validation Matrix Freeze — SUPERSEDED / NOT VALIDATED (reported non-compilable)
+
+- This original candidate attempted the same matrix freeze but unnecessarily changed `ApplicationDescriptor.cs`, `ApplicationDescriptorTests.cs` and added `M10981IntegratedValidationMatrixContractTests.cs`.
+- The candidate was reported non-compilable before validation. No compiler log was supplied, so REV1 does not claim an unverified exact compiler diagnostic.
+- REV1 supersedes it by rebuilding from the validated M10.9.7.5 Hotfix 1 baseline and moving all M10.9.8.1 validation logic outside the compiled C# surface.
+
 ## 2026-08-22 — M10.9.7.5 Hotfix 1 — Closure Audit Batch Subroutine Repair — CANDIDATE
 
 - Stacks exclusively on the original **M10.9.7.5 Mission/Performance Closure candidate**, which compiled and passed the complete ordinary suite (1423 total / 1328 passed / 95 ignored / 0 failed) but was **NOT VALIDATED** because the focused Windows audit aborted after its Application test groups with `Impossibile trovare l'etichetta batch specificata - run_app_class`.

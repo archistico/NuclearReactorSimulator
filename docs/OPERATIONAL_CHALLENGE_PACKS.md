@@ -120,3 +120,10 @@ The closure milestone must now prove, with the concrete packs:
 - assistance changes do not alter physical plant state by themselves;
 - protection remains authoritative and challenge-specific classification remains intact;
 - checkpoint continuation matches uninterrupted challenge state.
+
+## Production-safe demand-following binding after M10.9.8.2 Hotfix 1
+
+The six M10.9.6.4 `@1` packs remain immutable historical identities. Integrated live validation later exposed that the historical power-manoeuvring seed behind `bounded-demand-following-5-10-5@1` can leave the supported simplified water/steam envelope around STEP 610–615. Exact-version compatibility therefore forbids silently retargeting @1.
+
+`bounded-demand-following-5-10-5@2` preserves the authored challenge conditions, demand profile `bounded-demand-5-10-5@1`, scoring policy `demand-following@1` and observational ownership, but composes them over `integrated-normal-operations-training-i5-repaired-v4-production` / `integrated-operations-desktop-stable@4`. New live integrated validation uses @2; @1 remains replayable and may reproduce historical runtime behavior.
+

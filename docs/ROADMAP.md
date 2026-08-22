@@ -100,8 +100,8 @@ Detailed plan: [`milestones/M10.9.8.md`](milestones/M10.9.8.md).
 
 Planned sequence:
 
-1. M10.9.8.1 — freeze the validation matrix and invariants;
-2. M10.9.8.2 — automated assistance × authority matrix;
+1. M10.9.8.1 — freeze the validation matrix and invariants — **VALIDATED**;
+2. M10.9.8.2 Hotfix 1 — automated healthy matrix + production mission/F4 robustness — **ACTIVE CANDIDATE**;
 3. M10.9.8.3 — degraded measurement/fault/protection/takeover cases;
 4. M10.9.8.4 — replay/checkpoint/same-seed and scoring integrity;
 5. M10.9.8.5 — manual HMI/keyboard acceptance and M10 closure.

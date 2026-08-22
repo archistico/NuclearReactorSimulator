@@ -51,12 +51,12 @@ public sealed class ControlRoomComputerControlXamlContractTests
             document.Descendants(),
             static element => element.Name.LocalName == "ListBox" &&
                               (string?)element.Attribute("ItemsSource") == "{Binding CommandEntries}" &&
-                              (string?)element.Attribute("SelectedItem") == "{Binding SelectedCommand, Mode=TwoWay}");
-        Assert.Contains(
+                              (string?)element.Attribute("SelectedItem") == "{Binding SelectedCommand, Mode=TwoWay}" &&
+                              (string?)element.Attribute("KeyDown") == "CommandCatalog_KeyDown");
+        Assert.DoesNotContain(
             document.Descendants(),
             static element => element.Name.LocalName == "KeyBinding" &&
-                              (string?)element.Attribute("Gesture") == "Enter" &&
-                              (string?)element.Attribute("Command") == "{Binding ExecuteSelectedCommandCommand}");
+                              (string?)element.Attribute("Gesture") == "Enter");
         Assert.Contains(
             buttons,
             static element => (string?)element.Attribute("Content") == "MANUAL" &&

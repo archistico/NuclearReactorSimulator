@@ -18,6 +18,15 @@ internal static class DesktopHostFailurePolicy
         return exception is InvalidOperationException or ArgumentException or ArithmeticException;
     }
 
+    public static bool IsExpectedCommandOperationFailure(Exception exception)
+    {
+        ArgumentNullException.ThrowIfNull(exception);
+        return exception is InvalidOperationException
+            or ArgumentException
+            or KeyNotFoundException
+            or ArithmeticException;
+    }
+
     public static bool IsExpectedArchiveOperationFailure(Exception exception)
     {
         ArgumentNullException.ThrowIfNull(exception);

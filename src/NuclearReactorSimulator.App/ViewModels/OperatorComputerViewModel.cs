@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using NuclearReactorSimulator.App.Commands;
 using NuclearReactorSimulator.App.Presentation;
+using NuclearReactorSimulator.App.Runtime;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.ControlRoom.Automation;
 using NuclearReactorSimulator.Application.ControlRoom.Hmi;
@@ -20,13 +21,17 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
     private readonly IPlantControlAuthorityDispatcher? _plantControlAuthorityDispatcher;
     private readonly OperatorComputerSessionWorkspaceController? _sessionWorkspace;
     private OperatorComputerSnapshot _snapshot;
+    private IReadOnlyList<OperatorComputerCommandSnapshot> _commandEntries;
     private OperatorComputerPageSnapshot _selectedPage;
     private OperatorComputerCommandSnapshot? _selectedCommand;
+    private OperatorComputerCommandConsequenceProjection _currentConsequence;
+    private OperatorComputerCommandDependencyChainProjection _currentDependencyChain;
     private OperatorComputerCommandDependencyStep? _selectedCommandDependencyStep;
     private readonly OperatorComputerCommandObservedResponseAccumulator _observedResponse = new();
     private string _commandConsoleStatus = "Select a contextual command. Availability is advisory; runtime/scenario validation remains authoritative.";
     private string _modesStatus = "Training assistance and physical plant-control authority are independent axes.";
     private string _sessionStatus = "M10.7 session lifecycle is replay-backed. Pause before checkpoint/save/replay operations.";
+    private IReadOnlyList<OperatorComputerSessionCheckpointSnapshot> _sessionCheckpoints;
     private OperatorComputerSessionCheckpointSnapshot? _selectedSessionCheckpoint;
 
     public OperatorComputerViewModel(OperatorComputerSnapshot snapshot)
@@ -47,14 +52,17 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         OperatorComputerSessionWorkspaceController? sessionWorkspace = null)
     {
         _snapshot = snapshot ?? throw new ArgumentNullException(nameof(snapshot));
+        _commandEntries = snapshot.Commands?.Commands ?? Array.Empty<OperatorComputerCommandSnapshot>();
         _commandDispatcher = commandDispatcher;
         _trainingAssistanceDispatcher = trainingAssistanceDispatcher;
         _plantControlAuthorityDispatcher = plantControlAuthorityDispatcher;
         _sessionWorkspace = sessionWorkspace;
         _selectedPage = snapshot.Pages.Single(static page => page.Id == OperatorComputerPageId.Guidance);
-        _selectedCommand = snapshot.Commands?.Commands.FirstOrDefault(static command => command.CanDispatch)
-            ?? snapshot.Commands?.Commands.FirstOrDefault();
-        _selectedCommandDependencyStep = PreferredDependencyStep(CurrentDependencyChain);
+        _selectedCommand = _commandEntries.FirstOrDefault(static command => command.CanDispatch)
+            ?? _commandEntries.FirstOrDefault();
+        _currentConsequence = ProjectCurrentConsequence(_selectedCommand);
+        _currentDependencyChain = ProjectCurrentDependencyChain(_selectedCommand);
+        _selectedCommandDependencyStep = PreferredDependencyStep(_currentDependencyChain);
 
         SelectGuidancePageCommand = new DelegateCommand(() => SelectPage(OperatorComputerPageId.Guidance));
         SelectInfoPageCommand = new DelegateCommand(() => SelectPage(OperatorComputerPageId.Info));
@@ -74,7 +82,8 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         HoldCurrentOperatingPointCommand = new DelegateCommand(HoldCurrentOperatingPoint);
         CreateSessionCheckpointCommand = new DelegateCommand(CreateSessionCheckpoint);
         VerifySessionReplayCommand = new DelegateCommand(VerifySessionReplay);
-        _selectedSessionCheckpoint = snapshot.Session?.Checkpoints.FirstOrDefault();
+        _sessionCheckpoints = snapshot.Session?.Checkpoints ?? Array.Empty<OperatorComputerSessionCheckpointSnapshot>();
+        _selectedSessionCheckpoint = _sessionCheckpoints.FirstOrDefault();
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -120,8 +129,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
 
     public bool IsStandardContentPageSelected => !IsCommandsPageSelected && !IsModesPageSelected && !IsSessionPageSelected;
 
-    public IReadOnlyList<OperatorComputerCommandSnapshot> CommandEntries =>
-        _snapshot.Commands?.Commands ?? Array.Empty<OperatorComputerCommandSnapshot>();
+    public IReadOnlyList<OperatorComputerCommandSnapshot> CommandEntries => _commandEntries;
 
     public OperatorComputerCommandSnapshot? SelectedCommand
     {
@@ -134,30 +142,33 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
             }
 
             _selectedCommand = value;
-            _selectedCommandDependencyStep = PreferredDependencyStep(CurrentDependencyChain);
+            RefreshSelectedCommandContext(preserveDependencySelection: false);
             OnPropertyChanged();
             OnPropertyChanged(nameof(SelectedCommandDetailText));
-            RaiseCommandContextPropertiesChanged();
+            RaiseStaticCommandContextPropertiesChanged();
         }
     }
 
-    public string SelectedCommandDetailText => SelectedCommand is null
-        ? "No contextual command is available for selection."
-        : $"{SelectedCommand.GroupText} // {SelectedCommand.DisplayName}{Environment.NewLine}" +
-          $"TARGET       {SelectedCommand.TargetText}{Environment.NewLine}" +
-          $"STATE        {SelectedCommand.CurrentState}{Environment.NewLine}" +
-          $"AVAILABILITY {SelectedCommand.AvailabilityText}" +
-          (SelectedCommand.BlockReason is null ? string.Empty : $"{Environment.NewLine}BLOCKED BY   {SelectedCommand.BlockReason}");
+    public string SelectedCommandDetailText
+    {
+        get
+        {
+            var selected = CurrentSelectedCommandSnapshot();
+            return selected is null
+                ? "No contextual command is available for selection."
+                : $"{selected.GroupText} // {selected.DisplayName}{Environment.NewLine}" +
+                  $"TARGET       {selected.TargetText}{Environment.NewLine}" +
+                  $"STATE        {selected.CurrentState}{Environment.NewLine}" +
+                  $"AVAILABILITY {selected.AvailabilityText}" +
+                  (selected.BlockReason is null ? string.Empty : $"{Environment.NewLine}BLOCKED BY   {selected.BlockReason}");
+        }
+    }
 
-    public OperatorComputerCommandConsequenceProjection CurrentConsequence => SelectedCommand is null
-        ? OperatorComputerCommandConsequenceCatalog.Project(new ControlRoomCommand((ControlRoomCommandKind)int.MaxValue))
-        : OperatorComputerCommandConsequenceCatalog.Project(SelectedCommand.Command);
+    public OperatorComputerCommandConsequenceProjection CurrentConsequence => _currentConsequence;
 
-    public OperatorComputerCommandDependencyChainProjection CurrentDependencyChain => SelectedCommand is null
-        ? OperatorComputerCommandDependencyChainCatalog.Project(new ControlRoomCommand((ControlRoomCommandKind)int.MaxValue))
-        : OperatorComputerCommandDependencyChainCatalog.Project(SelectedCommand.Command);
+    public OperatorComputerCommandDependencyChainProjection CurrentDependencyChain => _currentDependencyChain;
 
-    public IReadOnlyList<OperatorComputerCommandDependencyStep> SelectedCommandDependencySteps => CurrentDependencyChain.Steps;
+    public IReadOnlyList<OperatorComputerCommandDependencyStep> SelectedCommandDependencySteps => _currentDependencyChain.Steps;
 
     public OperatorComputerCommandDependencyStep? SelectedCommandDependencyStep
     {
@@ -384,8 +395,7 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
     public ICommand CreateSessionCheckpointCommand { get; }
     public ICommand VerifySessionReplayCommand { get; }
 
-    public IReadOnlyList<OperatorComputerSessionCheckpointSnapshot> SessionCheckpoints =>
-        _snapshot.Session?.Checkpoints ?? Array.Empty<OperatorComputerSessionCheckpointSnapshot>();
+    public IReadOnlyList<OperatorComputerSessionCheckpointSnapshot> SessionCheckpoints => _sessionCheckpoints;
 
     public OperatorComputerSessionCheckpointSnapshot? SelectedSessionCheckpoint
     {
@@ -449,33 +459,62 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         ArgumentNullException.ThrowIfNull(snapshot);
 
         var selectedPageId = SelectedPage.Id;
+        var incomingCommands = snapshot.Commands?.Commands ?? Array.Empty<OperatorComputerCommandSnapshot>();
+        var commandPresentationChanged = !HasEquivalentCommandPresentation(_commandEntries, incomingCommands);
         _snapshot = snapshot;
         _selectedPage = snapshot.Pages.Single(page => page.Id == selectedPageId);
 
-        var selectedCommandId = _selectedCommand?.EntryId;
-        _selectedCommand = selectedCommandId is null
-            ? snapshot.Commands?.Commands.FirstOrDefault(static command => command.CanDispatch) ?? snapshot.Commands?.Commands.FirstOrDefault()
-            : snapshot.Commands?.Commands.FirstOrDefault(command => string.Equals(command.EntryId, selectedCommandId, StringComparison.Ordinal))
-                ?? snapshot.Commands?.Commands.FirstOrDefault(static command => command.CanDispatch)
-                ?? snapshot.Commands?.Commands.FirstOrDefault();
-        _selectedCommandDependencyStep = PreferredDependencyStep(CurrentDependencyChain);
+        var commandContextChanged = false;
+        if (commandPresentationChanged)
+        {
+            var previousCommand = _selectedCommand?.Command;
+            var selectedCommandId = _selectedCommand?.EntryId;
+            _commandEntries = incomingCommands;
+            _selectedCommand = selectedCommandId is null
+                ? _commandEntries.FirstOrDefault(static command => command.CanDispatch) ?? _commandEntries.FirstOrDefault()
+                : _commandEntries.FirstOrDefault(command => string.Equals(command.EntryId, selectedCommandId, StringComparison.Ordinal))
+                    ?? _commandEntries.FirstOrDefault(static command => command.CanDispatch)
+                    ?? _commandEntries.FirstOrDefault();
+
+            commandContextChanged = !object.Equals(previousCommand, _selectedCommand?.Command);
+            if (commandContextChanged)
+            {
+                RefreshSelectedCommandContext(preserveDependencySelection: true);
+            }
+        }
         _observedResponse.Observe(snapshot);
 
-        var selectedCheckpointId = _selectedSessionCheckpoint?.CheckpointId;
-        _selectedSessionCheckpoint = selectedCheckpointId is null
-            ? snapshot.Session?.Checkpoints.FirstOrDefault()
-            : snapshot.Session?.Checkpoints.FirstOrDefault(checkpoint => string.Equals(checkpoint.CheckpointId, selectedCheckpointId, StringComparison.Ordinal))
-                ?? snapshot.Session?.Checkpoints.FirstOrDefault();
+        var incomingCheckpoints = snapshot.Session?.Checkpoints ?? Array.Empty<OperatorComputerSessionCheckpointSnapshot>();
+        var sessionCheckpointsChanged = !HasEquivalentCheckpointPresentation(_sessionCheckpoints, incomingCheckpoints);
+        if (sessionCheckpointsChanged)
+        {
+            var selectedCheckpointId = _selectedSessionCheckpoint?.CheckpointId;
+            _sessionCheckpoints = incomingCheckpoints;
+            _selectedSessionCheckpoint = selectedCheckpointId is null
+                ? _sessionCheckpoints.FirstOrDefault()
+                : _sessionCheckpoints.FirstOrDefault(checkpoint => string.Equals(checkpoint.CheckpointId, selectedCheckpointId, StringComparison.Ordinal))
+                    ?? _sessionCheckpoints.FirstOrDefault();
+        }
 
         OnPropertyChanged(nameof(Pages));
-        OnPropertyChanged(nameof(CommandEntries));
-        OnPropertyChanged(nameof(SelectedCommand));
+        if (commandPresentationChanged)
+        {
+            OnPropertyChanged(nameof(CommandEntries));
+            OnPropertyChanged(nameof(SelectedCommand));
+        }
         OnPropertyChanged(nameof(SelectedCommandDetailText));
-        RaiseCommandContextPropertiesChanged();
+        if (commandContextChanged)
+        {
+            RaiseStaticCommandContextPropertiesChanged();
+        }
+        RaiseDynamicCommandContextPropertiesChanged();
         RaiseObservedResponsePropertiesChanged();
-        OnPropertyChanged(nameof(SessionCheckpoints));
-        OnPropertyChanged(nameof(SelectedSessionCheckpoint));
-        OnPropertyChanged(nameof(SelectedSessionCheckpointDetailText));
+        if (sessionCheckpointsChanged)
+        {
+            OnPropertyChanged(nameof(SessionCheckpoints));
+            OnPropertyChanged(nameof(SelectedSessionCheckpoint));
+            OnPropertyChanged(nameof(SelectedSessionCheckpointDetailText));
+        }
         RaisePagePropertiesChanged();
         RaiseRuntimePropertiesChanged();
     }
@@ -760,15 +799,42 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         => step.Reference?.Kind is OperatorComputerCommandConsequenceReferenceKind.PlantMimicElement
             or OperatorComputerCommandConsequenceReferenceKind.PlantMimicConnection;
 
-    private void RaiseCommandContextPropertiesChanged()
+    private void RefreshSelectedCommandContext(bool preserveDependencySelection)
+    {
+        var previousSequence = preserveDependencySelection ? _selectedCommandDependencyStep?.Sequence : null;
+        _currentConsequence = ProjectCurrentConsequence(_selectedCommand);
+        _currentDependencyChain = ProjectCurrentDependencyChain(_selectedCommand);
+        _selectedCommandDependencyStep = previousSequence is { } sequence
+            ? _currentDependencyChain.Steps.FirstOrDefault(step => step.Sequence == sequence)
+                ?? PreferredDependencyStep(_currentDependencyChain)
+            : PreferredDependencyStep(_currentDependencyChain);
+    }
+
+    private static OperatorComputerCommandConsequenceProjection ProjectCurrentConsequence(OperatorComputerCommandSnapshot? selectedCommand)
+        => selectedCommand is null
+            ? OperatorComputerCommandConsequenceCatalog.Project(new ControlRoomCommand((ControlRoomCommandKind)int.MaxValue))
+            : OperatorComputerCommandConsequenceCatalog.Project(selectedCommand.Command);
+
+    private static OperatorComputerCommandDependencyChainProjection ProjectCurrentDependencyChain(OperatorComputerCommandSnapshot? selectedCommand)
+        => selectedCommand is null
+            ? OperatorComputerCommandDependencyChainCatalog.Project(new ControlRoomCommand((ControlRoomCommandKind)int.MaxValue))
+            : OperatorComputerCommandDependencyChainCatalog.Project(selectedCommand.Command);
+
+    private void RaiseStaticCommandContextPropertiesChanged()
     {
         OnPropertyChanged(nameof(CurrentConsequence));
         OnPropertyChanged(nameof(CurrentDependencyChain));
         OnPropertyChanged(nameof(SelectedCommandDependencySteps));
         OnPropertyChanged(nameof(SelectedCommandDependencyStep));
+        OnPropertyChanged(nameof(SelectedCommandContextSummaryText));
+        OnPropertyChanged(nameof(SelectedCommandSchematicElementId));
+        OnPropertyChanged(nameof(SelectedCommandSchematicFocusText));
+    }
+
+    private void RaiseDynamicCommandContextPropertiesChanged()
+    {
         OnPropertyChanged(nameof(CommandContextPlantMimic));
         OnPropertyChanged(nameof(SelectedCommandSchematicElementId));
-        OnPropertyChanged(nameof(SelectedCommandContextSummaryText));
         OnPropertyChanged(nameof(SelectedCommandSchematicFocusText));
     }
 
@@ -831,6 +897,60 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         return string.Join(Environment.NewLine, lines);
     }
 
+    private OperatorComputerCommandSnapshot? CurrentSelectedCommandSnapshot()
+    {
+        if (_selectedCommand is null)
+        {
+            return null;
+        }
+
+        return _snapshot.Commands?.Commands.FirstOrDefault(
+                command => string.Equals(command.EntryId, _selectedCommand.EntryId, StringComparison.Ordinal))
+            ?? _selectedCommand;
+    }
+
+    private static bool HasEquivalentCommandPresentation(
+        IReadOnlyList<OperatorComputerCommandSnapshot> left,
+        IReadOnlyList<OperatorComputerCommandSnapshot> right)
+    {
+        if (ReferenceEquals(left, right))
+        {
+            return true;
+        }
+        if (left.Count != right.Count)
+        {
+            return false;
+        }
+
+        for (var index = 0; index < left.Count; index++)
+        {
+            var first = left[index];
+            var second = right[index];
+            if (!string.Equals(first.EntryId, second.EntryId, StringComparison.Ordinal)
+                || first.Group != second.Group
+                || !string.Equals(first.DisplayName, second.DisplayName, StringComparison.Ordinal)
+                || first.Command != second.Command
+                || first.Availability != second.Availability)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static bool HasEquivalentCheckpointPresentation(
+        IReadOnlyList<OperatorComputerSessionCheckpointSnapshot> left,
+        IReadOnlyList<OperatorComputerSessionCheckpointSnapshot> right)
+    {
+        if (ReferenceEquals(left, right))
+        {
+            return true;
+        }
+
+        return left.Count == right.Count && left.SequenceEqual(right);
+    }
+
     private void ExecuteSelectedCommand()
     {
         if (!IsCommandsPageSelected)
@@ -844,10 +964,14 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
             return;
         }
 
-        if (!SelectedCommand.CanDispatch)
+        var selectedCommand = _snapshot.Commands?.Commands.FirstOrDefault(
+                command => string.Equals(command.EntryId, SelectedCommand.EntryId, StringComparison.Ordinal))
+            ?? SelectedCommand;
+
+        if (!selectedCommand.CanDispatch)
         {
-            CommandConsoleStatus = $"NOT DISPATCHED — {SelectedCommand.DisplayName}: {SelectedCommand.BlockReason}";
-            _observedResponse.RecordRejected(SelectedCommand, _snapshot.RuntimeStatus, CommandConsoleStatus);
+            CommandConsoleStatus = $"NOT DISPATCHED — {selectedCommand.DisplayName}: {selectedCommand.BlockReason}";
+            _observedResponse.RecordRejected(selectedCommand, _snapshot.RuntimeStatus, CommandConsoleStatus);
             RaiseObservedResponsePropertiesChanged();
             return;
         }
@@ -855,20 +979,20 @@ public sealed class OperatorComputerViewModel : INotifyPropertyChanged
         if (_commandDispatcher is null)
         {
             CommandConsoleStatus = "NOT DISPATCHED — no IControlRoomCommandDispatcher is attached to this presentation instance.";
-            _observedResponse.RecordRejected(SelectedCommand, _snapshot.RuntimeStatus, CommandConsoleStatus);
+            _observedResponse.RecordRejected(selectedCommand, _snapshot.RuntimeStatus, CommandConsoleStatus);
             RaiseObservedResponsePropertiesChanged();
             return;
         }
 
-        _observedResponse.BeginAttempt(SelectedCommand, _snapshot.RuntimeStatus);
+        _observedResponse.BeginAttempt(selectedCommand, _snapshot.RuntimeStatus);
         RaiseObservedResponsePropertiesChanged();
         try
         {
-            _commandDispatcher.Dispatch(SelectedCommand.Command);
-            CommandConsoleStatus = $"DISPATCHED — {SelectedCommand.DisplayName} · {SelectedCommand.TargetText}. Runtime/scenario validation accepted the typed intent.";
+            _commandDispatcher.Dispatch(selectedCommand.Command);
+            CommandConsoleStatus = $"DISPATCHED — {selectedCommand.DisplayName} · {selectedCommand.TargetText}. Runtime/scenario validation accepted the typed intent.";
             _observedResponse.MarkAccepted(CommandConsoleStatus);
         }
-        catch (InvalidOperationException exception)
+        catch (Exception exception) when (DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(exception))
         {
             CommandConsoleStatus = $"BLOCKED BY RUNTIME/SCENARIO — {exception.Message}";
             _observedResponse.MarkRejected(CommandConsoleStatus);

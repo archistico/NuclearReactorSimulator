@@ -1,8 +1,11 @@
 # Nuclear Reactor Simulator — Manuale utente educativo e operativo
 
-**Edizione di riferimento:** baseline validata M10.9.4 — *Subsystem Engineering Schematics*, con hardening di leggibilità UI e stampa
+**Edizione di riferimento:** funzionalità utente validate fino a M10.9.7 CLOSED — baseline M10.9.7.5 Hotfix 1 VALIDATED
 **Lingua:** Italiano
 **Destinazione:** formazione, comprensione del ciclo d'impianto, uso del simulatore e addestramento operativo
+
+> **Stato del manuale**
+> Questa edizione descrive il comportamento utente già validato fino a M10.9.7: workspace `MISSION`, challenge operativi, domanda elettrica esterna, punteggio multidimensionale, timeline deterministica, drill-down e ricostruzione replay/checkpoint. M10.9.8.1 REV1 Docs1 ha congelato la matrice di validazione integrata senza aggiungere nuove funzioni operative; M10.9.8.2 Hotfix 1 è la candidate corrente per esecuzione automatica della matrice healthy e robustezza della missione/F4.
 
 > **Importante**
 > Nuclear Reactor Simulator è un simulatore **educativo**. Riproduce in forma deterministica e semplificata molti fenomeni di un impianto nucleare ad acqua con circuito di ricircolo, separazione vapore, turbina, condensatore e generatore. Non è un simulatore di progetto, autorizzazione o sicurezza nucleare e non deve essere usato come riferimento per la conduzione di un impianto reale.
@@ -82,6 +85,7 @@ Per ritrovare rapidamente una dicitura del software, consultare l'**Appendice A 
    - 9.11 Turbine & Secondary Cycle
    - 9.12 Generator & Grid
    - 9.13 Alarms & Events
+   - 9.14 Mission & Performance
 10. **Operator Computer — F1–F8**
 11. **Modalità di assistenza e controllo**
 12. **Modalità Gioco: obiettivi, punteggio e strategia**
@@ -2078,6 +2082,7 @@ L'interfaccia principale è organizzata come una sala controllo integrata. L'obi
 │ GRID          │                                             │ Context       │
 │ ALARMS        │                                             │ Feedback      │
 │ COMPUTER      │                                             │ HMI reading   │
+│ MISSION       │                                             │               │
 ├───────────────┴─────────────────────────────────────────────┴───────────────┤
 │ ALARMS / FIRST-OUT / LATEST EVENT / RUNTIME STATUS                         │
 └─────────────────────────────────────────────────────────────────────────────┘
@@ -2235,6 +2240,12 @@ Contiene:
 ### COMPUTER — Operator Computer
 
 Apre il computer operatore integrato con guidance, informazioni, allarmi, comandi, modalità, diagnostica, log e sessione.
+
+### MISSION — Mission & Performance
+
+Apre il workspace dedicato alla missione operativa. È una vista **sola lettura** che riunisce obiettivo e lifecycle, significato safety/protection, modalità di assistenza, autorità richiesta/effettiva, domanda elettrica esterna, carico richiesto, potenza realmente prodotta, punteggio multidimensionale e timeline deterministica.
+
+`MISSION` non contiene comandi fisici d'impianto: i pulsanti di drill-down cambiano soltanto il workspace/pagina visualizzata. Il normale avvio desktop può mostrare `NO ACTIVE MISSION / UNBOUND` finché non viene associato esplicitamente un challenge pack esatto.
 
 ## 9.5 Come leggere colori e indicatori
 
@@ -2820,6 +2831,80 @@ Raggruppa e mette in evidenza il primo evento che ha iniziato una catena di cons
 
 Mostra gli eventi in ordine deterministico con logical step e sequenza. È lo strumento migliore per capire **che cosa è successo prima**.
 
+## 9.14 Pannello MISSION — Mission & Performance
+
+`MISSION` è il quadro operativo dedicato alle missioni e ai challenge. È progettato per rispondere rapidamente a cinque domande: **qual è l'obiettivo, qual è la situazione di sicurezza, che cosa chiede la rete, che cosa sta chiedendo/erogando il generatore e come sta andando la missione**.
+
+### Missione non associata
+
+Il workspace esiste anche quando nessun challenge è associato alla sessione. In questo caso deve mostrare chiaramente `NO ACTIVE MISSION / UNBOUND` e non deve inventare obiettivi, demand profile o timeline di missione. Nella configurazione desktop corrente l'associazione della missione è esplicita; non esiste ancora un launcher grafico generale dei challenge.
+
+Per il challenge di demand-following usato nelle validazioni integrate correnti, l'identità operativa raccomandata è `bounded-demand-following-5-10-5@2`, collegata al runtime desktop produttivo `integrated-operations-desktop-stable@4`. L'identità `bounded-demand-following-5-10-5@1` resta supportata come riferimento storico/replay e **non viene reinterpretata** come @2. Per una sessione live esplicita:
+
+```bat
+dotnet run --project src\NuclearReactorSimulator.App\NuclearReactorSimulator.App.csproj -- --mission-pack=bounded-demand-following-5-10-5@2
+```
+
+### MISSION / OBJECTIVE e LIFECYCLE
+
+La prima area mostra:
+
+- titolo e descrizione dell'obiettivo corrente;
+- stato del lifecycle, per esempio attivo, completato o fallito;
+- logical step corrente e progresso logico;
+- eventuale finestra temporale deterministica prevista dal challenge.
+
+Quando una missione raggiunge uno stato terminale, il suo step terminale resta quello realmente raggiunto anche se l'impianto continua a evolvere. In questo modo il pannello distingue **fine della missione** da **fine della simulazione**.
+
+### SAFETY / PROTECTION SIGNIFICANCE
+
+Questa area ha priorità visiva rispetto al punteggio. Evidenzia la presenza di failure safety/protection critiche e mostra anche:
+
+- modalità di assistenza;
+- autorità di controllo richiesta;
+- autorità di controllo effettiva.
+
+Richiesta ed effettiva possono essere diverse. Per esempio, `SUPERVISORY` può restare la modalità richiesta mentre quella effettiva degrada a `ASSISTED` perché manca una misura valida o una protezione sospende il controllo supervisore.
+
+### GRID DEMAND, REQUESTED LOAD e ACTUAL OUTPUT
+
+Le tre grandezze sono intenzionalmente separate:
+
+| Indicatore | Significato | Cosa non è |
+|---|---|---|
+| `GRID DEMAND` | riferimento esterno del challenge | non è un comando al generatore |
+| `REQUESTED LOAD` | richiesta canonica di carico generatore | non è la potenza realmente prodotta |
+| `ACTUAL OUTPUT` | potenza elettrica lorda misurata | non è automaticamente uguale alla richiesta o alla domanda |
+
+Il demand error, quando disponibile, confronta la domanda esterna con l'output reale. Se il challenge non possiede un profilo di domanda, `GRID DEMAND` può essere `UNAVAILABLE` mentre richiesta e output restano perfettamente validi.
+
+### SCORE / CLASSIFICATION
+
+Il punteggio della missione è osservazionale: legge evidenza già prodotta dai proprietari canonici del challenge e **non impartisce comandi**. Può essere scomposto in dimensioni come safety/protection, procedura, stabilità, demand tracking e tempo logico. Le failure safety/procedure critiche hanno regole di dominanza e non possono essere compensate semplicemente ottenendo più punti altrove.
+
+### DETERMINISTIC TIMELINE / DRILL-DOWN
+
+La timeline usa logical step e sequenza canonica, non l'orologio del PC. Riunisce il lifecycle della missione con evidenza operativa recente, preservando gli eventi di attivazione/termine anche quando allarmi o scoring producono molte righe.
+
+Le righe possono offrire un drill-down contestuale verso:
+
+- `ELECTRICAL` per domanda/carico/output;
+- `ALARMS / EVENTS` per allarmi e protezioni;
+- pagine dell'Operator Computer, per esempio `COMMANDS`, quando l'evidenza riguarda un'azione operatore.
+
+Il drill-down è **solo navigazione**. Non modifica lo stato dell'impianto, non avanza il logical step e non impartisce il comando descritto dalla riga.
+
+### Replay, checkpoint e archivi
+
+Per una sessione registrata, la presentazione MISSION viene ricostruita dalla stessa evidenza deterministica usata dal replay. Dopo il ripristino di un checkpoint:
+
+- la timeline torna al prefisso coerente con quel punto;
+- le righe appartenenti a step successivi non devono sopravvivere;
+- la prosecuzione live aggiunge nuova evidenza senza duplicare il prefisso;
+- il challenge pack resta legato alla sua identità esatta quando tale binding è stato fornito esplicitamente.
+
+Un archivio non associato a una missione rimane non associato; il simulatore non deduce silenziosamente un challenge dal solo scenario.
+
 ---
 
 # 10. Operator Computer
@@ -2839,11 +2924,13 @@ L'Operator Computer è una workstation integrata che raccoglie informazioni, gui
 
 ## 10.1 Navigazione da tastiera
 
-- `F1`–`F8`: apertura diretta delle pagine;
+- `F1`–`F8`: apertura diretta delle otto pagine fisse;
 - `TAB`: elemento successivo;
 - `SHIFT+TAB`: elemento precedente;
 - frecce: navigazione nelle liste;
 - `ENTER`: attivazione/esecuzione dell'elemento selezionato.
+
+Non esiste un `F9`. `MISSION` è un workspace principale separato dal computer. Il pulsante `OPEN MISSION` presente nell'Operator Computer apre quel workspace e svolge soltanto navigazione di presentazione.
 
 ## 10.2 F1 — GUIDANCE
 
@@ -2874,7 +2961,9 @@ Mostra un catalogo di comandi contestuali disponibili.
 
 ### EXECUTE [ENTER]
 
-Esegue il comando selezionato.
+Esegue il comando selezionato. La pressione di `ENTER` viene consumata dal catalogo COMMANDS e non deve chiudere o cambiare accidentalmente il contenitore principale. Un rifiuto previsto del runtime/scenario viene mostrato come `BLOCKED BY RUNTIME/SCENARIO`; un comando accettato viene mostrato come `DISPATCHED`.
+
+Durante `RUN` il catalogo mantiene stabili selezione e puntatore quando identità e disponibilità dei comandi non cambiano. Anche `DEPENDENCY CHAIN — SELECT A STEP` conserva lista e step selezionato finché non cambia realmente il comando selezionato: l'avanzamento dei logical step non deve ricreare continuamente le righe. Stato corrente, motivazione di blocco e focus schematico possono aggiornarsi senza provocare flicker da refresh.
 
 Il computer non deve inventare effetti: l'esito viene confermato dal normale sistema di comandi e retroazione.
 
@@ -2894,7 +2983,7 @@ Gestisce due concetti distinti:
 - `ASSISTED`;
 - `SUPERVISORY`.
 
-Queste due dimensioni sono indipendenti: si può, per esempio, avere guida completa ma controllo manuale.
+Queste due dimensioni sono indipendenti: si può, per esempio, avere guida completa ma controllo manuale. L'interfaccia distingue inoltre **autorità richiesta** e **autorità effettiva**: se il controllo supervisore non può operare in sicurezza, la richiesta può restare `SUPERVISORY` mentre l'autorità effettiva degrada a `ASSISTED`.
 
 ### HOLD CURRENT OPERATING POINT
 
@@ -2938,7 +3027,7 @@ La registrazione è esplicita: non viene simulata retroattivamente.
 
 ### CREATE CHECKPOINT
 
-Crea un punto di ripristino riesecuzione deterministica-backed. In genere va eseguito mentre la simulazione è in pausa.
+Crea un punto di ripristino riesecuzione deterministica-backed. In genere va eseguito mentre la simulazione è in pausa. La lista dei checkpoint mantiene stabile la selezione durante i normali refresh della sessione e viene ricreata solo quando l'elenco dei checkpoint cambia realmente.
 
 ### VERIFY REPLAY
 
@@ -2956,7 +3045,7 @@ Ripristina il punto di ripristino selezionato mediante il meccanismo previsto.
 
 Carica un archivio precedentemente salvato.
 
-> Il sistema di riesecuzione deterministica è **fail-closed**: se la riproduzione diverge da ciò che dovrebbe essere, non finge che il ripristino sia valido.
+> Il sistema di riesecuzione deterministica è **fail-closed**: se la riproduzione diverge da ciò che dovrebbe essere, non finge che il ripristino sia valido. Quando una missione è associata esplicitamente alla sessione, replay/checkpoint ricostruiscono anche la sua presentazione MISSION; un archivio non associato resta invece `UNBOUND`, senza inferenze automatiche dal solo scenario.
 
 ---
 
@@ -3003,7 +3092,7 @@ I controller locali possono essere mantenuti in modalità coerenti con il manual
 
 ## 11.5 Plant Control Authority: Assisted
 
-L'operatore sceglie obiettivi, valore di riferimento e modalità, mentre i loop locali eseguono la regolazione prevista.
+L'operatore conserva le decisioni operative e configura modalità/setpoint dei controller locali; i loop già esistenti eseguono la regolazione prevista. `ASSISTED` non è un pilota automatico generale e non trasferisce allo strato didattico l'autorità sui componenti.
 
 ## 11.6 Plant Control Authority: Supervisory Automatic
 
@@ -3015,9 +3104,18 @@ Il coordinatore supervisore può regolare i controller esistenti verso obiettivi
 
 Non sostituisce le protezioni e non forza direttamente uno stato fisico.
 
+### Autorità richiesta ed effettiva
+
+Il simulatore conserva separatamente:
+
+- **requested authority**: ciò che è stato richiesto dall'operatore o dalla sessione;
+- **effective authority**: ciò che può realmente operare nelle condizioni correnti.
+
+Questa distinzione evita che una richiesta `SUPERVISORY` venga mostrata come pienamente attiva quando il sistema ha invece dovuto degradare.
+
 ### Degrado sicuro
 
-Se manca un segnale misurato necessario o una protezione rende l'obiettivo non valido, il supervisor può sospendere l'azione o degradare verso una modalità inferiore.
+Se manca un segnale misurato necessario, il segnale è invalido/suspect oppure una protezione rende l'obiettivo non valido, il supervisor sospende l'azione o degrada verso una modalità inferiore. Il controllo non usa il "vero stato interno" della simulazione come sostituto nascosto di una misura operativa non valida.
 
 ### Manual takeover
 
@@ -3034,7 +3132,7 @@ flowchart TD
     B --> F
 ```
 
-La protezione ha sempre priorità sull'automazione e sull'operatore.
+La protezione ha sempre priorità sull'automazione e sull'operatore. Un cambio di modalità di assistenza non cambia questa gerarchia e non modifica né fisica né protezioni.
 
 ---
 
@@ -3233,6 +3331,31 @@ flowchart TD
     F --> G[Confronta score, eventi e replay]
 ```
 
+## 12.12 Challenge operativi e punteggio MISSION
+
+Il `TRAINING SCORE` tradizionale e il punteggio di un challenge MISSION sono due presentazioni didattiche diverse. Il primo segue gli obiettivi/penalità dello scenario di training; il secondo usa una policy di valutazione multidimensionale versionata del challenge operativo.
+
+Le dimensioni disponibili sono:
+
+- **SAFETY / PROTECTION DISCIPLINE**;
+- **PROCEDURE / REQUIRED ACTIONS**;
+- **STABILITY / OPERATING QUALITY**;
+- **DEMAND TRACKING**, quando il challenge possiede una domanda esterna;
+- **LOGICAL TIME / COMPLETION EFFICIENCY**, quando prevista.
+
+Le policy standard correnti totalizzano 100 punti. La classificazione generale è:
+
+| Punteggio | Classificazione |
+|---:|---|
+| meno di 60 | `NEEDS IMPROVEMENT` |
+| da 60 a meno di 75 | `SATISFACTORY` |
+| da 75 a meno di 90 | `PROFICIENT` |
+| 90 o più | `EXCELLENT` |
+
+Se manca evidenza obbligatoria, il risultato viene indicato come `INCOMPLETE EVIDENCE` anche se il subtotale numerico sembra alto. Una failure safety critica limita il risultato a un esito `UNSAFE`; una failure procedurale critica produce `PROCEDURE FAILURE`. Il challenge decide inoltre se un evento come un trip è failure, evidenza richiesta o completamento protetto: non esiste una regola globale che classifichi ogni trip nello stesso modo.
+
+Nelle policy standard correnti, `HIDDEN`, `CHECKLIST` e `GUIDED`, così come `MANUAL`, `ASSISTED` e `SUPERVISORY`, non applicano penalità nascoste al punteggio. Cambiano la guida o l'autorità di controllo, non il valore matematico assegnato a parità di evidenza.
+
 ---
 
 # 13. Sessioni, punto di ripristino, riesecuzione deterministica e salvataggi
@@ -3305,6 +3428,20 @@ flowchart TD
     E --> F[Analisi]
     F --> G[Nuovo tentativo]
 ```
+
+## 13.7 Missione, timeline e ripristino
+
+Quando una recorded session è associata a un challenge esatto, il replay ricostruisce anche lifecycle, demand evidence, score evidence e timeline MISSION senza salvare un dump opaco della UI.
+
+Dopo un ripristino a checkpoint:
+
+1. la missione viene ricostruita fino al logical step del checkpoint;
+2. le righe future vengono eliminate;
+3. la prosecuzione live riparte da quel prefisso;
+4. una riga già appartenente al prefisso non viene duplicata;
+5. l'identità del challenge deve restare quella esplicitamente associata alla sessione.
+
+Se l'archivio non ha un binding di missione, il caricamento resta `UNBOUND`. Se viene fornito un challenge che non corrisponde allo scenario/initial condition dell'archivio, il caricamento fallisce in modo esplicito invece di reinterpretare la sessione.
 
 ---
 
@@ -4213,6 +4350,14 @@ Questa appendice permette di collegare le etichette inglesi visibili nel softwar
 | `GAME` | Gioco | Modalità con obiettivi e punteggio. |
 | `SCORE` | Punteggio | Totale dei punti ottenuti meno le penalità manuali. |
 | `OBJECTIVE` | Obiettivo | Condizione operativa da raggiungere. |
+| `MISSION` | Missione / prestazione | Workspace principale sola lettura per obiettivo, demand, output, score e timeline del challenge. |
+| `GRID DEMAND` | Domanda di rete del challenge | Riferimento esterno didattico; non comanda direttamente il generatore. |
+| `REQUESTED LOAD` | Carico richiesto | Richiesta canonica al generatore, distinta dall'output reale. |
+| `ACTUAL OUTPUT` | Potenza effettivamente prodotta | Potenza elettrica lorda misurata dal simulatore. |
+| `REQUESTED AUTHORITY` | Autorità richiesta | Modalità di controllo richiesta dall'operatore/sessione. |
+| `EFFECTIVE AUTHORITY` | Autorità effettiva | Modalità che può realmente operare dopo degradazioni e protezioni. |
+| `DRILL-DOWN` | Approfondimento contestuale | Navigazione da un'evidenza MISSION al workspace/pagina pertinente, senza impartire comandi. |
+| `UNBOUND` | Non associato | Nessun challenge esatto associato alla sessione corrente. |
 
 ## A.8 Termodinamica e grandezze fisiche
 

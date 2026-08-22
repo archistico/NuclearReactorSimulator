@@ -22,6 +22,7 @@ public sealed class ControlRoomSelector : Border
     private readonly TextBlock _label;
     private readonly ComboBox _selector;
     private readonly TextBlock _stateText;
+    private IReadOnlyList<string> _options = Array.Empty<string>();
     private bool _updatingSelection;
 
     public ControlRoomSelector()
@@ -113,6 +114,7 @@ public sealed class ControlRoomSelector : Border
 
         var options = OptionsText
             .Split('|', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        var optionsChanged = !HasEquivalentOptions(_options, options);
         var selectedIndex = options.Length == 0 ? -1 : Math.Clamp(SelectedIndex, 0, options.Length - 1);
         var accent = ControlRoomPalette.Accent(State);
 
@@ -120,8 +122,15 @@ public sealed class ControlRoomSelector : Border
         _updatingSelection = true;
         try
         {
-            _selector.ItemsSource = options;
-            _selector.SelectedIndex = selectedIndex;
+            if (optionsChanged)
+            {
+                _options = options;
+                _selector.ItemsSource = _options;
+            }
+            if (_selector.SelectedIndex != selectedIndex)
+            {
+                _selector.SelectedIndex = selectedIndex;
+            }
         }
         finally
         {
@@ -131,5 +140,21 @@ public sealed class ControlRoomSelector : Border
         _stateText.Text = ControlRoomPalette.StateText(State);
         _stateText.Foreground = accent;
         BorderBrush = accent;
+    }
+
+    private static bool HasEquivalentOptions(IReadOnlyList<string> left, IReadOnlyList<string> right)
+    {
+        if (left.Count != right.Count)
+        {
+            return false;
+        }
+        for (var index = 0; index < left.Count; index++)
+        {
+            if (!string.Equals(left[index], right[index], StringComparison.Ordinal))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

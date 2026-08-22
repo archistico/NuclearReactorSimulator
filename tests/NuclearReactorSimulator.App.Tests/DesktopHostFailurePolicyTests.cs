@@ -16,6 +16,18 @@ public sealed class DesktopHostFailurePolicyTests
     }
 
     [Fact]
+    public void CommandBoundaryPolicy_ContainsExpectedCanonicalRejectionsButNotProgrammingFailures()
+    {
+        Assert.True(DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(new InvalidOperationException("runtime rejection")));
+        Assert.True(DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(new ArgumentException("target")));
+        Assert.True(DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(new ArgumentOutOfRangeException("command")));
+        Assert.True(DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(new KeyNotFoundException("target id")));
+        Assert.True(DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(new OverflowException("numeric")));
+        Assert.False(DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(new IOException("not command validation")));
+        Assert.False(DesktopHostFailurePolicy.IsExpectedCommandOperationFailure(new NullReferenceException("programming")));
+    }
+
+    [Fact]
     public void SessionBoundaryPolicies_AlignConstructionAndArchiveFailureFamilies()
     {
         Assert.True(DesktopHostFailurePolicy.IsExpectedRuntimeConstructionFailure(new InvalidOperationException("construction")));
