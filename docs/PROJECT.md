@@ -11,7 +11,7 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6 and M10.9.7 are VALIDATED / CLOSED.** M10.9.8.1 REV1 Docs1, M10.9.8.2 Hotfix 1 REV5, M10.9.8.3 and M10.9.8.4 Hotfix 1 are VALIDATED. M10.9.8.2 REV5 remains the last **validated** production/runtime baseline because later M10.9.8.3/8.4 are test/evidence-only; M10.9.8.4 Hotfix 1 is the sole stacking baseline for M10.9.8.5. The active Diagnostic 2 candidate intentionally overlays one unvalidated Application read-side scalability correction for LR-M1; it is not promoted until its ordinary/focused gates pass.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6 and M10.9.7 are VALIDATED / CLOSED.** M10.9.8 is VALIDATED / CLOSED and the final cumulative Hotfix 1 gate is VALIDATED. Diagnostic 1 and **Diagnostic 2 / LR-M1 Hotfix 1 have passed locally**; the returned Diagnostic-2 artifacts establish constant-cost incremental MISSION live projection with semantic equivalence and exclude primary flow-controller integration as the immediate LR-H1 driver. LR-M1 Hotfix 1 is therefore the current validated overlay above the last validated M10 production/runtime composition; LR-H1 remains blocking.
 
 The validated M10.9.7 baseline includes the live read-only MISSION workspace, deterministic logical-step timeline, presentation-only drill-down, exact mission/archive binding, replay/checkpoint reconstruction, closure coverage for active/completed/failed mission states, assistance changes and requested/effective authority divergence. F1–F8 remain preserved, F9 remains absent and MISSION has no plant-command authority.
 
@@ -23,11 +23,11 @@ Historical exact-version identities remain immutable; M10.9.8 validation work do
 
 ## Active validation candidate and parallel planning overlay
 
-**Active candidate: M10 Final Long Failure Diagnostic 2 / LR-M1 Hotfix 1 — CANDIDATE.**
+**Active candidate: M10 Final Long Failure Diagnostic 3 Hotfix 1 / exact-v5 Reference Operating-Point Candidate — CANDIDATE.**
 
-The cumulative Hotfix 1 gate is validated. The long candidate changes no production `src/` file and adds only scheduled-long validation/test/contract/documentation surface. `eng/m10-final-long-validation-contract.json` freezes the approximately-one-hour-class workload before the first acceptance run.
+The cumulative Hotfix 1 gate and Diagnostic 2 / LR-M1 Hotfix 1 are locally validated. The original Diagnostic 3 candidate failed its first Debug build only because `M10FinalLongFailureDiagnostic3Tests.cs` omitted the `NuclearReactorSimulator.Domain.Plant` namespace required by `HydraulicNumericalCouplingMode`. Hotfix 1 adds that test-only import. Diagnostic 3 otherwise intentionally adds the same new exact-v5 seed seam under `src/`, but does **not** change exact-v4 or the production selector. The historical first-long contract/source manifest remains frozen; a replacement-long manifest is not authorized until LR-H1 production activation is separately qualified.
 
-The first long execution was stopped after preserving the available artifacts because LR-H1 was already blocking and LR-M1 exhibited severe superlinear wall-cost growth. Do not widen the frozen envelope, I.3 budgets or conservation ceilings. Diagnostic 1 passed locally and established two concrete findings: LR-M1 is a live MISSION prefix-scan scalability defect, while LR-H1 already contains a real outlet inventory/primary-branch drift inside the qualified 300 s window. Diagnostic 2 applies only the LR-M1 Application read-side correction and adds a second 300 s H1 owner/controller census; see `M10_FINAL_LONG_FAILURE_DIAGNOSTIC2.md`.
+The first long execution was stopped after preserving the available artifacts because LR-H1 was already blocking and LR-M1 exhibited severe superlinear wall-cost growth. Diagnostic 1 identified the MISSION full-prefix O(n^2) aggregate path and the exact-v4 outlet/primary-branch drift. Diagnostic 2 passed locally: LR-M1 Hotfix 1 is semantically equivalent with prefix-independent microsecond cost, while H1 shows `outlet dm/dt` tracking the canonical channel-return residual almost one-to-one and a manual 100% flow controller with zero integral slope. Diagnostic 3 therefore leaves exact-v4 and the production selector unchanged and probes a distinct exact-v5 hydraulically/thermally coherent reference seed for 600 s. See `M10_FINAL_LONG_FAILURE_DIAGNOSTIC3.md`.
 
 **Parallel documentation overlay:** this package also includes the reviewed pre-M11 planning set from the three book studies. It does not supersede the executable long baseline and is not promotion evidence.
 
@@ -35,9 +35,9 @@ The campaign comprises LR-H1 7,200 s healthy exact-v4, LR-M1 4,400 s production 
 
 The 19 I.3 budgets and exact-v4 conservation ceilings are unchanged. M10 closes only after the long artifact reports `m10-final-long-validation-passes=True` and a closure/promotion step records that evidence.
 
-## Validation required for active final long candidate
+## Validation required for active diagnostic candidate
 
-Diagnostic 1 is complete. Run `scripts\run-m10-final-long-failure-diagnostic2.cmd` on the current candidate. This validates the LR-M1 incremental projection hotfix and captures the remaining LR-H1 primary-flow/controller evidence. Do not start a replacement long campaign until Diagnostic 2 artifacts are reviewed and any LR-H1 production repair is separately validated. M11 remains blocked until a complete replacement long gate passes and M10 closure is recorded.
+Diagnostic 1 and Diagnostic 2 are complete and locally green. The original Diagnostic 3 package did not compile because of the isolated missing test namespace import described above; no Diagnostic-3 runtime evidence was produced. Run `scripts\run-m10-final-long-failure-diagnostic3.cmd` on the Hotfix-1 candidate. It keeps the validated LR-M1 Hotfix 1 in place, reruns its semantic-equivalence regression, and executes a 600 s exact-v5 reference operating-point census across the original exact-v4 failure interval. Return the complete Diagnostic-3 artifact folder before any production activation. Do not start a replacement long campaign yet.
 
 ## Evidence and package policy
 
@@ -61,7 +61,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.5 Hotfix 1 VALIDATED → M10.9.8.1 REV1 Docs1 VALIDATED → M10.9.8.2 Hotfix 1 REV5 VALIDATED → M10.9.8.3 VALIDATED → M10.9.8.4 Hotfix 1 VALIDATED → M10.9.8.5 VALIDATED / M10.9.8 CLOSED → M10 Final Pre-M11 Cumulative Hotfix 1 VALIDATED → failed/aborted M10 Final Pre-M11 Long Validation Hotfix 1 campaign → M10 Final Long Failure Diagnostic 1 PASS → M10 Final Long Failure Diagnostic 2 / LR-M1 Hotfix 1 → LR-H1 repair if required → replacement long <=60 min wall budget → full long PASS → explicit M10 closure → M11**.
+Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated chain: **M10.9.8.5 VALIDATED / M10.9.8 CLOSED → M10 Final Pre-M11 Cumulative Hotfix 1 VALIDATED → failed/aborted first long campaign → Diagnostic 1 PASS → Diagnostic 2 / LR-M1 Hotfix 1 PASS → Diagnostic 3 original build RED (test-only CS0103) → Diagnostic 3 Hotfix 1 exact-v5 reference-point census → separate LR-H1 production activation if qualified → replacement long <=60 min wall budget → full long PASS → explicit M10 closure → M11**.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

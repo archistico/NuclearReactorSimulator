@@ -1,3 +1,10 @@
+## M10 Final Long Failure Diagnostic 3 Hotfix 1 — Missing Domain Namespace Import — CANDIDATE
+
+- Supersedes the original Diagnostic 3 candidate, which failed the Debug build only in `M10FinalLongFailureDiagnostic3Tests.cs` with CS0103 because the new test referenced `HydraulicNumericalCouplingMode` without importing its owning `NuclearReactorSimulator.Domain.Plant` namespace.
+- Adds only the missing `using NuclearReactorSimulator.Domain.Plant;` to the Diagnostic-3 test source.
+- No production `src/` file, exact-v5 seed value, hydraulic/thermal coefficient, production selector, long manifest, LR-M1 Hotfix 1 implementation, acceptance rule or diagnostic workload is changed.
+- Diagnostic 3 remains diagnostic-only; replacement long execution remains unauthorized until the 600 s exact-v5 census is returned and interpreted.
+
 ## M10 Final Long Failure Diagnostic 2 / LR-M1 Hotfix 1 — CANDIDATE
 
 - Promotes Diagnostic 1 to accepted diagnostic evidence after the user reported build and both diagnostics passing; M10 itself remains open.

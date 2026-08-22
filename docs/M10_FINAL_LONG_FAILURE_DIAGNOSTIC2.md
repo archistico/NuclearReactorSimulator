@@ -2,9 +2,9 @@
 
 ## Status
 
-**CANDIDATE — LR-M1 production read-side scalability correction + LR-H1 diagnostic-only owner correlation.**
+**PASS / EVIDENCE ACCEPTED on 2026-08-23 — LR-M1 production read-side scalability correction validated locally; LR-H1 diagnostic owner correlation completed.**
 
-This package is stacked on **M10 Final Long Failure Diagnostic 1** after the user reported that its build and diagnostic tests passed. Diagnostic 1 is therefore accepted as evidence, not as an M10 promotion gate.
+This package was stacked on **M10 Final Long Failure Diagnostic 1**. The user reported build, complete ordinary tests and Diagnostic-2 focused execution passing and returned the complete generated artifact folder. Diagnostic 2 is therefore accepted as the validated overlay for LR-M1 and as diagnostic evidence for LR-H1; it is not M10 closure evidence.
 
 M10 remains open and M11 remains blocked.
 
@@ -103,7 +103,21 @@ B.   closed-loop bias materially driving that mismatch
 
 Only after that evidence is returned should an exact-v5 operating-point repair or a more focused physical-owner correction be designed.
 
-## 4. Validation route
+## 4. Returned validation evidence
+
+The returned artifacts establish:
+
+- LR-M1 incremental semantic equivalence is `True` through 100,000 synthetic samples;
+- at 100,000 samples score projection is about `3.350 us/call` / `2,248 B/call` and bounded timeline projection about `3.245 us/call` / `2,600 B/call`, with no prefix-length growth comparable to Diagnostic 1;
+- exact-v4 final-60 s `outlet dm/dt = -7.9140055967720722 kg/s`;
+- exact-v4 final-60 s mean `channel-return = -7.913791680400684 kg/s`;
+- primary `flow-control` integral slope is exactly `0`;
+- level-controller integral slope is about `-0.0003838679 /s`.
+
+Therefore LR-M1 Hotfix 1 is accepted, and LR-H1 proceeds as a reference operating-point / authored seed problem rather than a controller-integrator problem. The next gate is `M10_FINAL_LONG_FAILURE_DIAGNOSTIC3.md`.
+
+## 5. Historical validation route
+
 
 Run:
 
@@ -119,17 +133,11 @@ It performs:
 4. LR-M1 synthetic incremental scaling/equivalence census;
 5. LR-H1 exact-v4 300 s primary branch/controller census.
 
-Return the complete:
-
-```text
-artifacts\m10-final-long-diagnostic2
-```
-
-Do **not** start the replacement long campaign from this candidate before those artifacts are reviewed.
+The completed execution returned the complete `artifacts\m10-final-long-diagnostic2` folder. The replacement long campaign remains blocked because LR-H1 still requires a separately qualified repair/reference-point activation.
 
 The historical `eng/m10-final-long-baseline-src.sha256` manifest intentionally remains frozen to the pre-hotfix long baseline. Because LR-M1 Hotfix 1 legitimately changes Application `src/`, the old long-validation route is not the validation route for this candidate and must **not** be rebased yet. A replacement-long contract/source manifest is authorized only after Diagnostic 2 closes LR-H1 and the resulting production candidate passes its focused/ordinary gates.
 
-## 5. Hard non-scope
+## 6. Hard non-scope
 
 This candidate does not:
 

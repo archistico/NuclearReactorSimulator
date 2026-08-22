@@ -143,7 +143,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         TimeSpan? runtimeStep = null,
         bool useFourNodeBranchContinuityShadowIntegration = false,
         bool useFourNodeBranchContinuityCorrectedCommitOptIn = false,
-        WaterSteamThermodynamicClosureMode thermodynamicClosureMode = WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
+        WaterSteamThermodynamicClosureMode thermodynamicClosureMode = WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology,
+        double? initialPrimarySuctionCompressionFraction = null,
+        double? initialPrimaryPressureCompressionFraction = null,
+        double? initialPrimaryOutletSaturationPressureMegapascals = null,
+        double? initialPrimaryOutletVaporQualityFraction = null,
+        double? initialFuelTemperatureCelsiusOverride = null,
+        double? initialStructureTemperatureCelsiusOverride = null)
     {
         var effectiveRuntimeStep = runtimeStep ?? RuntimeStep;
         if (effectiveRuntimeStep <= TimeSpan.Zero)
@@ -229,7 +235,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             useHybridSemiImplicitHydraulics,
             useFourNodeBranchContinuityShadowIntegration,
             useFourNodeBranchContinuityCorrectedCommitOptIn,
-            thermodynamicClosureMode);
+            thermodynamicClosureMode,
+            initialPrimarySuctionCompressionFraction,
+            initialPrimaryPressureCompressionFraction,
+            initialPrimaryOutletSaturationPressureMegapascals,
+            initialPrimaryOutletVaporQualityFraction,
+            initialFuelTemperatureCelsiusOverride,
+            initialStructureTemperatureCelsiusOverride);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -331,7 +343,13 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         bool useHybridSemiImplicitHydraulics,
         bool useFourNodeBranchContinuityShadowIntegration,
         bool useFourNodeBranchContinuityCorrectedCommitOptIn,
-        WaterSteamThermodynamicClosureMode thermodynamicClosureMode)
+        WaterSteamThermodynamicClosureMode thermodynamicClosureMode,
+        double? initialPrimarySuctionCompressionFraction,
+        double? initialPrimaryPressureCompressionFraction,
+        double? initialPrimaryOutletSaturationPressureMegapascals,
+        double? initialPrimaryOutletVaporQualityFraction,
+        double? initialFuelTemperatureCelsiusOverride,
+        double? initialStructureTemperatureCelsiusOverride)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -373,6 +391,36 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 initialPrimaryTemperatureCelsius,
                 "Operational seed primary temperature must be finite and between 40 and 300 °C.");
         }
+        ValidateOptionalNonNegativeFinite(initialPrimarySuctionCompressionFraction, nameof(initialPrimarySuctionCompressionFraction));
+        ValidateOptionalNonNegativeFinite(initialPrimaryPressureCompressionFraction, nameof(initialPrimaryPressureCompressionFraction));
+        if (initialPrimaryOutletSaturationPressureMegapascals.HasValue
+            && (!double.IsFinite(initialPrimaryOutletSaturationPressureMegapascals.Value)
+                || initialPrimaryOutletSaturationPressureMegapascals.Value <= 0d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialPrimaryOutletSaturationPressureMegapascals),
+                initialPrimaryOutletSaturationPressureMegapascals,
+                "Optional primary outlet saturation pressure must be finite and positive.");
+        }
+        if (initialPrimaryOutletVaporQualityFraction.HasValue
+            && (!double.IsFinite(initialPrimaryOutletVaporQualityFraction.Value)
+                || initialPrimaryOutletVaporQualityFraction.Value < 0d
+                || initialPrimaryOutletVaporQualityFraction.Value > 1d))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(initialPrimaryOutletVaporQualityFraction),
+                initialPrimaryOutletVaporQualityFraction,
+                "Optional primary outlet vapor quality must be finite and between zero and one.");
+        }
+        if (initialPrimaryOutletSaturationPressureMegapascals.HasValue
+            != initialPrimaryOutletVaporQualityFraction.HasValue)
+        {
+            throw new ArgumentException(
+                "Primary outlet saturation pressure and vapor quality overrides must either both be supplied or both be omitted.");
+        }
+        ValidateOptionalTemperatureOverride(initialFuelTemperatureCelsiusOverride, nameof(initialFuelTemperatureCelsiusOverride));
+        ValidateOptionalTemperatureOverride(initialStructureTemperatureCelsiusOverride, nameof(initialStructureTemperatureCelsiusOverride));
+
         if (!double.IsFinite(initialRotorSpeedRpm) || initialRotorSpeedRpm < 0d || initialRotorSpeedRpm > 3_300d)
         {
             throw new ArgumentOutOfRangeException(
@@ -807,12 +855,16 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             Array.Empty<HeatSourceDefinition>(),
             hydraulicNumericalCoupling);
 
+        var suctionCompressionFraction = initialPrimarySuctionCompressionFraction
+            ?? initialPrimaryLiquidCompressionFraction;
+        var pressureCompressionFraction = initialPrimaryPressureCompressionFraction
+            ?? initialPrimaryLiquidCompressionFraction;
         var primaryLiquid = CreateSubcooledLiquid(
             plant,
             "suction",
             thermodynamicModel,
             initialPrimaryTemperatureCelsius,
-            initialPrimaryLiquidCompressionFraction);
+            suctionCompressionFraction);
         var primaryLiquidPressure = primaryLiquid.Pressure;
         FluidNodeState PrimaryLiquid(string id) => CreateSubcooledLiquid(
             plant,
@@ -820,6 +872,20 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             thermodynamicModel,
             initialPrimaryTemperatureCelsius,
             initialPrimaryLiquidCompressionFraction);
+        var pressureHeaderLiquid = CreateSubcooledLiquid(
+            plant,
+            "pressure",
+            thermodynamicModel,
+            initialPrimaryTemperatureCelsius,
+            pressureCompressionFraction);
+        var outletCoolant = initialPrimaryOutletSaturationPressureMegapascals.HasValue
+            ? CreateSaturatedMixtureAtPressureAndQuality(
+                plant,
+                "outlet",
+                thermodynamicModel,
+                initialPrimaryOutletSaturationPressureMegapascals.Value,
+                initialPrimaryOutletVaporQualityFraction!.Value)
+            : PrimaryLiquid("outlet");
         var steamDrumInventory = initialSteamDrumLiquidLevelFraction.HasValue
             ? CreateSaturatedSteamDrumAtLevel(
                 plant,
@@ -846,17 +912,19 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
 
         var hotwell = Condensate("hotwell");
         var initialFissionPowerMegawatts = 100d * initialNeutronPopulation.Relative;
-        var initialFuelTemperatureCelsius = initialPrimaryTemperatureCelsius
-            + (includeCoreThermalCoupling ? 0.7d * initialFissionPowerMegawatts : 0d);
-        var initialStructureTemperatureCelsius = initialPrimaryTemperatureCelsius
-            + (includeCoreThermalCoupling ? 0.1d * initialFissionPowerMegawatts / 0.5d : 0d);
+        var initialFuelTemperatureCelsius = initialFuelTemperatureCelsiusOverride
+            ?? (initialPrimaryTemperatureCelsius
+                + (includeCoreThermalCoupling ? 0.7d * initialFissionPowerMegawatts : 0d));
+        var initialStructureTemperatureCelsius = initialStructureTemperatureCelsiusOverride
+            ?? (initialPrimaryTemperatureCelsius
+                + (includeCoreThermalCoupling ? 0.1d * initialFissionPowerMegawatts / 0.5d : 0d));
         var plantState = new PlantState(
             plant,
             new[]
             {
                 primaryLiquid,
-                PrimaryLiquid("pressure"),
-                PrimaryLiquid("outlet"),
+                pressureHeaderLiquid,
+                outletCoolant,
                 steamDrumInventory,
                 SteamSpace("steam"),
                 SteamAt("header", headerSteamTemperatureCelsius),
@@ -1510,12 +1578,21 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     initialCondensatePumpPercent),
             }));
 
+        // Historical operational seeds used one common primary-liquid pressure, so preserve their exact initial
+        // measurement. A differentiated reference-point seed must initialize the canonical "pressure" channel
+        // from the steam-drum owner rather than accidentally exposing the higher suction-node pressure.
+        var usesDifferentiatedPrimaryPressureSeed = initialPrimarySuctionCompressionFraction.HasValue
+            || initialPrimaryPressureCompressionFraction.HasValue
+            || initialPrimaryOutletSaturationPressureMegapascals.HasValue;
+        var initialPressureSignal = usesDifferentiatedPrimaryPressureSeed
+            ? steamDrumInventory.Pressure
+            : primaryLiquidPressure;
         var initialMeasuredSignals = new List<MeasuredSignal>
         {
             Signal("power", "W", 0d),
             Signal("flow", "kg/s", 0d),
             Signal("speed", "rpm", initialRotorSpeedRpm),
-            Signal("pressure", "Pa", primaryLiquidPressure.Pascals),
+            Signal("pressure", "Pa", initialPressureSignal.Pascals),
             Signal("level", "fraction", initialSteamDrumLiquidLevelFraction ?? 1d),
             Signal("hotwell", "kg", hotwell.Mass.Kilograms),
             Signal("generator-output", "W", 0d),
@@ -1589,6 +1666,28 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             signalSources);
     }
 
+    private static void ValidateOptionalNonNegativeFinite(double? value, string parameterName)
+    {
+        if (value.HasValue && (!double.IsFinite(value.Value) || value.Value < 0d))
+        {
+            throw new ArgumentOutOfRangeException(
+                parameterName,
+                value,
+                "Optional operational-seed compression fraction must be finite and non-negative.");
+        }
+    }
+
+    private static void ValidateOptionalTemperatureOverride(double? value, string parameterName)
+    {
+        if (value.HasValue && (!double.IsFinite(value.Value) || value.Value < -273.15d || value.Value > 1_500d))
+        {
+            throw new ArgumentOutOfRangeException(
+                parameterName,
+                value,
+                "Optional thermal-body seed temperature must be finite and within the educational model range.");
+        }
+    }
+
     private static void ValidatePercent(double percent, string parameterName)
     {
         if (!double.IsFinite(percent) || percent < 0d || percent > 100d)
@@ -1632,6 +1731,36 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             temperature,
             FluidPhase.SubcooledLiquid,
             null);
+        var resolved = thermodynamicModel.Resolve(definition, inventory, previous);
+        return new FluidNodeState(definition, inventory, resolved);
+    }
+
+    private static FluidNodeState CreateSaturatedMixtureAtPressureAndQuality(
+        PlantDefinition plant,
+        string nodeId,
+        SimplifiedWaterSteamThermodynamicModel thermodynamicModel,
+        double pressureMegapascals,
+        double vaporQualityFraction)
+    {
+        var definition = plant.GetFluidNode(nodeId);
+        var saturation = thermodynamicModel.GetSaturationProperties(
+            Pressure.FromMegapascals(pressureMegapascals));
+        var liquidSpecificVolume = saturation.SaturatedLiquidSpecificVolumeCubicMetresPerKilogram;
+        var vaporSpecificVolume = saturation.SaturatedVaporSpecificVolumeCubicMetresPerKilogram;
+        var mixtureSpecificVolume = liquidSpecificVolume
+            + (vaporQualityFraction * (vaporSpecificVolume - liquidSpecificVolume));
+        var mixtureSpecificEnergy = SpecificEnergy.FromJoulesPerKilogram(
+            saturation.SaturatedLiquidInternalEnergy.JoulesPerKilogram
+            + (vaporQualityFraction
+                * (saturation.SaturatedVaporInternalEnergy.JoulesPerKilogram
+                    - saturation.SaturatedLiquidInternalEnergy.JoulesPerKilogram)));
+        var mass = Mass.FromKilograms(definition.Volume.CubicMetres / mixtureSpecificVolume);
+        var inventory = new FluidNodeInventory(mass, mixtureSpecificEnergy * mass);
+        var previous = new FluidThermodynamicState(
+            saturation.Pressure,
+            saturation.Temperature,
+            FluidPhase.SaturatedMixture,
+            VaporQuality.FromFraction(vaporQualityFraction));
         var resolved = thermodynamicModel.Resolve(definition, inventory, previous);
         return new FluidNodeState(definition, inventory, resolved);
     }

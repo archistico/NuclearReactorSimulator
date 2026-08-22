@@ -175,6 +175,46 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             thermodynamicClosureMode: WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain);
     }
 
+    /// <summary>
+    /// M10 final LR-H1 reference operating-point candidate. This is a distinct exact-version seed seam only:
+    /// exact v4 remains immutable and the authoritative selector is not switched here.
+    ///
+    /// The target 260 kg/s loop point is derived from the unchanged 25 Pa*s^2/kg^2 channel/return
+    /// resistances and 1 MPa rated main-circulation pump head. The outlet saturation state and solid-body
+    /// temperatures are seeded consistently with the unchanged 30 MW initial fission power.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateReferenceOperatingPointCandidateRuntimeEngine(TimeSpan runtimeStep)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Reference operating-point candidate timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false,
+            useFourNodeBranchContinuityShadowIntegration: false,
+            useFourNodeBranchContinuityCorrectedCommitOptIn: true,
+            thermodynamicClosureMode: WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain,
+            initialPrimarySuctionCompressionFraction: 0.002618181818181818d,
+            initialPrimaryPressureCompressionFraction: 0.0015363636363636363d,
+            initialPrimaryOutletSaturationPressureMegapascals: 8.106459281680372d,
+            initialPrimaryOutletVaporQualityFraction: 0.035881742881444335d,
+            initialFuelTemperatureCelsiusOverride: 316.93357730105606d,
+            initialStructureTemperatureCelsiusOverride: 301.93357730105606d);
+    }
+
     private static IControlRoomRuntimeEngine CreateRuntimeEngine(
         bool includeEvidenceDerivedElectricalProtections,
         TimeSpan? runtimeStep = null,
@@ -182,7 +222,13 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
         bool useHybridSemiImplicitHydraulics = false,
         bool useFourNodeBranchContinuityShadowIntegration = false,
         bool useFourNodeBranchContinuityCorrectedCommitOptIn = false,
-        WaterSteamThermodynamicClosureMode thermodynamicClosureMode = WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
+        WaterSteamThermodynamicClosureMode thermodynamicClosureMode = WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology,
+        double? initialPrimarySuctionCompressionFraction = null,
+        double? initialPrimaryPressureCompressionFraction = null,
+        double? initialPrimaryOutletSaturationPressureMegapascals = null,
+        double? initialPrimaryOutletVaporQualityFraction = null,
+        double? initialFuelTemperatureCelsiusOverride = null,
+        double? initialStructureTemperatureCelsiusOverride = null)
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
             GenerationReadySeed,
             mainCirculationRunning: true,
@@ -250,5 +296,11 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             runtimeStep: runtimeStep,
             useFourNodeBranchContinuityShadowIntegration: useFourNodeBranchContinuityShadowIntegration,
             useFourNodeBranchContinuityCorrectedCommitOptIn: useFourNodeBranchContinuityCorrectedCommitOptIn,
-            thermodynamicClosureMode: thermodynamicClosureMode);
+            thermodynamicClosureMode: thermodynamicClosureMode,
+            initialPrimarySuctionCompressionFraction: initialPrimarySuctionCompressionFraction,
+            initialPrimaryPressureCompressionFraction: initialPrimaryPressureCompressionFraction,
+            initialPrimaryOutletSaturationPressureMegapascals: initialPrimaryOutletSaturationPressureMegapascals,
+            initialPrimaryOutletVaporQualityFraction: initialPrimaryOutletVaporQualityFraction,
+            initialFuelTemperatureCelsiusOverride: initialFuelTemperatureCelsiusOverride,
+            initialStructureTemperatureCelsiusOverride: initialStructureTemperatureCelsiusOverride);
 }
