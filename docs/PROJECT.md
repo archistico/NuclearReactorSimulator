@@ -4,7 +4,7 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6 and M10.9.7 are VALIDATED / CLOSED.** M10.9.7.5 Hotfix 1 passed build, the complete ordinary suite, `scripts\run-m1097-mission-performance-closure-audit.cmd` and explicit manual closure acceptance on 2026-08-22. It remains the authoritative production/runtime baseline for M10.9.8; validated M10.9.8 contract slices may then become the direct stacking baseline for the next validation slice without changing that production runtime identity.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6 and M10.9.7 are VALIDATED / CLOSED.** M10.9.8.1 REV1 Docs1, M10.9.8.2 Hotfix 1 REV5 and M10.9.8.3 are also VALIDATED. M10.9.8.2 REV5 is the current production/runtime baseline because it added the exact-v2 production mission binding and validated F4/list-stability repairs; M10.9.8.3 adds test/evidence only and is the current stacking baseline for M10.9.8.4.
 
 The validated M10.9.7 baseline includes the live read-only MISSION workspace, deterministic logical-step timeline, presentation-only drill-down, exact mission/archive binding, replay/checkpoint reconstruction, closure coverage for active/completed/failed mission states, assistance changes and requested/effective authority divergence. F1–F8 remain preserved, F9 remains absent and MISSION has no plant-command authority.
 
@@ -16,9 +16,11 @@ Historical exact-version identities remain immutable; M10.9.8 validation work do
 
 ## Active candidate
 
-**M10.9.8.2 Hotfix 1 REV5 — Automated Healthy Assistance × Authority Matrix / Production Mission / F4 + Interactive List Robustness — CANDIDATE.**
+**M10.9.8.4 Hotfix 1 — Protection/Authority Observation Boundary Alignment — CANDIDATE.**
 
-M10.9.8.1 REV1 Docs1 is **VALIDATED** after build, complete ordinary suite, `scripts\run-m10981-integrated-validation-matrix-audit.cmd` and explicit user acceptance of the frozen matrix on 2026-08-22. It is the sole baseline for M10.9.8.2. The accepted v1 matrix remains `eng\m1098-integrated-human-automation-hmi-matrix.json`: 19 rows total, including the exact 3×3 healthy HAA matrix and eleven cross-cutting invariants. The Docs1 user-manual alignment is part of that validated baseline.
+M10.9.8.1 REV1 Docs1 and M10.9.8.2 Hotfix 1 REV5 are **VALIDATED**. M10.9.8.3 is also **VALIDATED** after build, complete ordinary suite and `scripts\run-m10983-degraded-fault-protection-takeover-audit.cmd` passed on 2026-08-22. M10.9.8.3 is the sole baseline for M10.9.8.4. The accepted v1 matrix and validated execution matrices remain immutable prerequisites.
+
+The original M10.9.8.4 candidate was not validated because its protection row observed authority one deterministic tick too early after SCRAM. Hotfix 1 aligns that checkpoint boundary with the validated M5/M10.9.8.3 owner contract and adds **no production runtime change**. Its four-row `RCI-01..RCI-04` matrix verifies representative healthy, degraded/recovered, protection-trip and manual-takeover states through fresh same-seed repeat, canonical full replay, replay-backed checkpoint prefix/live continuation and M10.9.6.5 challenge replay projection. Same-seed means the same exact scenario/initial-condition plus identical accepted operator-action and automation-intent trace; no RNG state or opaque checkpoint blob is introduced. See `M10_9_8_4_REPLAY_CHECKPOINT_SAME_SEED_INTEGRITY.md`.
 
 M10.9.8.2 Hotfix 1 REV5 retains the REV4 PowerShell-compatible validator and adds a presentation-only interactive-list stability repair after residual F4 dependency-chain flicker was observed during RUN. REV5 caches the dependency-chain projection for the selected typed command, preserves equivalent F8 checkpoint list/selection identity, prevents the five programmatic target selectors from resetting `ComboBox.ItemsSource` on unrelated visual-state refresh, and suppresses unchanged MISSION timeline/list replacement notifications. REV4 preserved the REV3 matrix/mission implementation. REV3 passed build and the complete ordinary suite; its focused gate then stopped in the matrix-v2 validator because the local Windows PowerShell host does not expose `Get-FileHash`. REV4 replaces only that validator hash mechanism with the .NET `System.Security.Cryptography.SHA256` API while retaining the exact frozen-v1 digest. REV3 had already superseded REV2 after ordinary-suite evidence disproved REV2's interpretation of the challenge window. HAA-01 through HAA-09 execute on the production-safe exact `bounded-demand-following-5-10-5@2` mission pack / `integrated-operations-desktop-stable@4`; the accepted M10.9.8.1 v1 matrix remains immutable and the versioned execution revision remains `eng/m1098-integrated-human-automation-hmi-matrix-v2.json`. Historical @1 remains exact/replayable. The hotfix also closes F4 COMMANDS refresh/ENTER robustness without Simulation coefficient changes. The challenge activates canonically when `demand:stable-low-load-start` is satisfied; `Window(4_000, 8_000)` is a target-completion window offset from activation, not an activation boundary. Every HAA row verifies active demand evidence, full replay and checkpoint-prefix/live-continuation equivalence.
 
@@ -33,17 +35,17 @@ M10.9.8.2 Hotfix 1 REV5 has a deliberately narrow production App/Application dif
 
 See `M10_9_8_2_AUTOMATED_HEALTHY_ASSISTANCE_AUTHORITY_MATRIX.md`.
 
-## Validation required for M10.9.8.2
+## Validation required for active M10.9.8.4
 
 Run:
 
 ```bat
 dotnet build
 dotnet test
-scripts\run-m10982-healthy-assistance-authority-matrix-audit.cmd
+scripts\run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd
 ```
 
-Because Hotfix 1 repairs the live mission binding plus F4 ENTER and interactive-list refresh defects, it adds a narrow manual smoke gate in `M10_9_8_2_HOTFIX1_MANUAL_SMOKE_CHECKLIST.md`. M10.9.8.5 still owns the broader end-to-end HMI/keyboard acceptance. Promotion requires the focused artifact summary to contain `m10982-automated-healthy-assistance-authority-matrix-passes=True` plus the Hotfix 1 manual smoke acceptance.
+Promotion requires `m10984-replay-checkpoint-same-seed-integrity-passes=True`. M10.9.8.4 adds no separate manual HMI gate; end-to-end manual HMI/keyboard/session acceptance remains M10.9.8.5.
 
 ## Evidence and package policy
 
@@ -67,11 +69,11 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.5 Hotfix 1 VALIDATED → M10.9.8.1 REV1 Docs1 VALIDATED → active M10.9.8.2 healthy 3×3 execution → M10.9.8.3 degraded/fault/protection/takeover → M10.9.8.4 replay/checkpoint integrity → M10.9.8.5 manual HMI acceptance/M10 closure**.
+Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated baseline: **M10.9.7.5 Hotfix 1 VALIDATED → M10.9.8.1 REV1 Docs1 VALIDATED → M10.9.8.2 Hotfix 1 REV5 VALIDATED → M10.9.8.3 VALIDATED → active M10.9.8.4 replay/checkpoint/same-seed integrity → M10.9.8.5 manual HMI acceptance → mandatory M10 Final Pre-M11 cumulative + long validation → M11**.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 
-The post-Phase-I execution order remains fixed: M10.9.7 mission/performance → M10.9.8 integrated M10 validation → M11 release hardening → M12–M15 approved post-release epics. Detailed future contracts live in [`ROADMAP.md`](ROADMAP.md) and the milestone plans.
+The post-Phase-I execution order remains fixed: M10.9.7 mission/performance → M10.9.8 integrated M10 validation → mandatory final pre-M11 cumulative/long M10 validation → M11 release hardening → M12–M15 approved post-release epics. The final pre-M11 contract is `M10_FINAL_PRE_M11_VALIDATION_PLAN.md`. Detailed future contracts live in [`ROADMAP.md`](ROADMAP.md) and the milestone plans.
 
 ## Documentation authority
 

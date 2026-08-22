@@ -87,7 +87,7 @@ Hotfix 2 REV2 is validated and is the required baseline for M10.9.7.4. UI-thread
 
 ### M10.9.7.5 closure
 
-M10.9.7.5 Hotfix 1 is now the active candidate, stacked exclusively on the original M10.9.7.5 candidate over M10.9.7.4 Hotfix 1 VALIDATED. Hotfix 1 repairs only the Windows focused-audit wrapper and adds regression coverage; the underlying closure evidence and production behavior are unchanged. Close against a matrix including no mission, active mission without external demand, demand-following, completed/failed mission, required trip evidence, unexpected trip failure, terminal mission with continuing plant time, checkpoint restore, assistance changes and requested/effective authority changes.
+M10.9.7.5 Hotfix 1 is VALIDATED and M10.9.7 is CLOSED. The closure was stacked exclusively on M10.9.7.4 Hotfix 1 VALIDATED; its Hotfix 1 repaired only the Windows focused-audit wrapper and added regression coverage, while the underlying closure evidence and production behavior remained unchanged. The validated closure matrix covers no mission, active mission without external demand, demand-following, completed/failed mission, required trip evidence, unexpected trip failure, terminal mission with continuing plant time, checkpoint restore, assistance changes and requested/effective authority changes.
 
 M10.9.7 must close with:
 
@@ -109,11 +109,12 @@ This is an **integration gate, not feature work**.
 
 Execution order:
 
-1. freeze machine-readable validation matrix and cross-cutting invariants;
-2. run healthy 3×3 assistance × authority matrix;
-3. run degraded measurement / fault / protection / takeover matrix;
-4. prove replay/checkpoint/same-seed operator-visible equivalence;
-5. perform full manual HMI/keyboard acceptance and close M10.
+1. freeze machine-readable validation matrix and cross-cutting invariants — **VALIDATED**;
+2. run healthy 3×3 assistance × authority matrix — **M10.9.8.2 Hotfix 1 REV5 VALIDATED**;
+3. run degraded measurement / fault / protection / takeover matrix — **M10.9.8.3 VALIDATED**;
+4. prove replay/checkpoint/same-seed operator-visible equivalence — **M10.9.8.4 ACTIVE CANDIDATE**;
+5. perform full manual HMI/keyboard acceptance;
+6. run the mandatory final pre-M11 cumulative validation plus separate approximately one-hour long operational gate; only then close M10 and begin M11.
 
 A failed row is routed to its existing owner: presentation, replay/session, challenge/scoring, M5 authority or post-M11 physical-model backlog. Phase H/I numerical tuning is reopened only with direct evidence against a validated contract.
 
@@ -279,7 +280,11 @@ These names are planning conventions, not existing scripts. They should be used 
 | M10.9.7.3 host/session integrity | `run-m10973-desktop-host-session-integrity-audit.cmd` |
 | M10.9.7.4 timeline/drill-down | `run-m10974-mission-performance-timeline-audit.cmd` |
 | M10.9.7.5 closure | `run-m1097-mission-performance-closure-audit.cmd` + manual checklist |
-| M10.9.8 integrated M10 | `run-m1098-integrated-human-automation-hmi-audit.cmd` + manual closure checklist |
+| M10.9.8.2 healthy matrix | `run-m10982-healthy-assistance-authority-matrix-audit.cmd` |
+| M10.9.8.3 degraded/fault/protection/takeover | `run-m10983-degraded-fault-protection-takeover-audit.cmd` |
+| M10.9.8.4 replay/checkpoint/same-seed integrity | `run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd` |
+| M10.9.8 integrated HMI closure | `run-m1098-integrated-human-automation-hmi-audit.cmd` + manual closure checklist |
+| M10 final pre-M11 cumulative/long gate | planned `run-m10-final-validation.cmd` + `run-m10-final-long-validation.cmd`; see `M10_FINAL_PRE_M11_VALIDATION_PLAN.md` |
 | M11 release closure | milestone-specific M11.1–M11.5 gates + `run-m11-release-candidate-closure-audit.cmd` |
 | M12 foundations | milestone-specific M12.1–M12.8 gates + `run-m12-extreme-foundations-closure-audit.cmd` |
 | M13 control-room experience | milestone-specific gates + `run-m13-control-room-experience-closure-audit.cmd` |

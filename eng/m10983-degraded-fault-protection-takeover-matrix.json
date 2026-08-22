@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M10.9.8.3",
+  "matrixId": "m10983-degraded-fault-protection-takeover-v1",
+  "baseline": "M10.9.8.2 Hotfix 1 REV5 VALIDATED",
+  "productionRuntimeChanged": false,
+  "simulationPhysicsChanged": false,
+  "newProductionScenarioRegistration": false,
+  "newFaultTypeRegistration": false,
+  "replayCheckpointOwnedByNextMilestone": "M10.9.8.4",
+  "requiredCases": [
+    "invalid-required-supervisory-measurement",
+    "suspect-unavailable-measurement-operator-truth",
+    "protection-active-before-normal-command",
+    "protection-trip-during-automated-assisted-operation",
+    "component-fault",
+    "instrumentation-fault",
+    "command-rejected-by-permissive-interlock",
+    "requested-supervisory-degrades-to-assisted",
+    "operator-manual-takeover",
+    "supported-recovery-reset-sequence",
+    "challenge-active-during-degraded-protection-state"
+  ],
+  "rows": [
+    {
+      "rowId": "DFP-01",
+      "case": "invalid-required-supervisory-measurement",
+      "sourceMatrixRows": [
+        "INT-12"
+      ],
+      "scenarioKind": "validation-only exact-v4 composition",
+      "expected": "requested SupervisoryAutomatic; effective Assisted; health Degraded; no true-state fallback",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.ValidationOnlyChallengeMeasurementFault_DegradesFailClosedAndRecovers",
+      "ownerEvidence": [
+        "PlantControlAuthorityIntegrationTests.InvalidRequiredMeasurement_DegradesFailClosedWithoutTrueStateFallback"
+      ]
+    },
+    {
+      "rowId": "DFP-02",
+      "case": "suspect-unavailable-measurement-operator-truth",
+      "sourceMatrixRows": [
+        "INT-15"
+      ],
+      "scenarioKind": "existing M8.3 fault seam",
+      "expected": "suspect remains Warning/SUSPECT; unavailable remains unavailable with null numeric value",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.InstrumentationTruth_PreservesSuspectAndUnavailablePresentation",
+      "ownerEvidence": [
+        "InstrumentationControlFaultTests.SensorBias_UsesCanonicalM51MeasuredSignalSeam",
+        "InstrumentationControlFaultTests.InvalidProtectionChannel_PropagatesThroughCommittedMeasuredFrameAndTripsFailSafe"
+      ]
+    },
+    {
+      "rowId": "DFP-03",
+      "case": "protection-active-before-normal-command",
+      "sourceMatrixRows": [
+        "INT-13"
+      ],
+      "scenarioKind": "production exact-v4 + canonical SCRAM",
+      "expected": "normal command cannot clear/bypass protection; supervisory remains suspended by protection",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.ProtectionPrecedence_RemainsAuthoritativeAcrossNormalCommandAndChallengeFailure",
+      "ownerEvidence": [
+        "PlantControlAuthorityIntegrationTests.ActiveProtection_SuspendsSupervisoryDecisionOnTheNextCommittedStepWithoutResettingProtection"
+      ]
+    },
+    {
+      "rowId": "DFP-04",
+      "case": "protection-trip-during-automated-assisted-operation",
+      "sourceMatrixRows": [
+        "INT-13"
+      ],
+      "scenarioKind": "production exact-v4 + canonical SCRAM",
+      "expected": "requested SupervisoryAutomatic remains visible; effective Assisted; SuspendedByProtection",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.ProtectionPrecedence_RemainsAuthoritativeAcrossNormalCommandAndChallengeFailure",
+      "ownerEvidence": [
+        "PlantControlAuthorityIntegrationTests.ActiveProtection_SuspendsSupervisoryDecisionOnTheNextCommittedStepWithoutResettingProtection",
+        "SafetyResponseScenarioPackTests.Pack_ReusesExactPriorFaultDeclarationsInsteadOfDuplicatingFaultPhysics"
+      ]
+    },
+    {
+      "rowId": "DFP-05",
+      "case": "component-fault",
+      "sourceMatrixRows": [
+        "INT-14"
+      ],
+      "scenarioKind": "existing M8.2 hydraulic fault seam",
+      "expected": "fault framework clamps canonical physical capability; no scenario-owned second integrator",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.HydraulicFault_RemainsFaultFrameworkOwned",
+      "ownerEvidence": [
+        "HydraulicComponentFaultTests.PumpDegradation_ClampsEffectiveSpeedWithoutSecondHydraulicIntegrator"
+      ]
+    },
+    {
+      "rowId": "DFP-06",
+      "case": "instrumentation-fault",
+      "sourceMatrixRows": [
+        "INT-15"
+      ],
+      "scenarioKind": "existing M8.3 instrumentation/control fault seam",
+      "expected": "quality/fault mode preserved; no hidden true-state substitution",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.InstrumentationTruth_PreservesSuspectAndUnavailablePresentation",
+      "ownerEvidence": [
+        "InstrumentationControlFaultTests"
+      ]
+    },
+    {
+      "rowId": "DFP-07",
+      "case": "command-rejected-by-permissive-interlock",
+      "sourceMatrixRows": [
+        "INT-11"
+      ],
+      "scenarioKind": "canonical M4.5 generator close-check owner",
+      "expected": "rejected close leaves breaker open; no synthetic M10 rejection",
+      "integrationEvidence": "focused owner rerun",
+      "ownerEvidence": [
+        "GeneratorGridSolverTests.Step_UnsynchronizedCloseIsRejectedAndAppliesNoElectricalLoadTorque",
+        "OperatorComputerM10954ObservedResponseEvidenceTests.RejectedDispatch_RecordsFeedbackButNoFictionalPlantEffectDeltas"
+      ]
+    },
+    {
+      "rowId": "DFP-08",
+      "case": "requested-supervisory-degrades-to-assisted",
+      "sourceMatrixRows": [
+        "INT-12"
+      ],
+      "scenarioKind": "validation-only exact-v4 composition",
+      "expected": "requested/effective divergence explicit and degradation reason non-empty",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.ValidationOnlyChallengeMeasurementFault_DegradesFailClosedAndRecovers",
+      "ownerEvidence": [
+        "PlantControlAuthorityIntegrationTests.InvalidRequiredMeasurement_DegradesFailClosedWithoutTrueStateFallback"
+      ]
+    },
+    {
+      "rowId": "DFP-09",
+      "case": "operator-manual-takeover",
+      "sourceMatrixRows": [
+        "INT-16"
+      ],
+      "scenarioKind": "production exact-v4",
+      "expected": "requested/effective Manual; all local controllers Manual; previous supervisory objective cleared",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.ManualTakeover_UsesExactV4AndClearsSupervisoryObjective",
+      "ownerEvidence": [
+        "PlantControlAuthorityIntegrationTests.ManualTakeover_ClearsPreviousSupervisoryObjectiveSoReentryCannotResumeStaleTarget"
+      ]
+    },
+    {
+      "rowId": "DFP-10",
+      "case": "supported-recovery-reset-sequence",
+      "sourceMatrixRows": [
+        "INT-12",
+        "INT-16"
+      ],
+      "scenarioKind": "validation-only fault activation/deactivation + canonical authority seam",
+      "expected": "fault clear restores valid measurement and requested SupervisoryAutomatic may recover only through canonical coordinator state; protection reset remains subject to canonical safe-threshold/permissive rules",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.ValidationOnlyChallengeMeasurementFault_DegradesFailClosedAndRecovers + focused protection reset owner rerun",
+      "ownerEvidence": [
+        "InstrumentationControlFaultTests.ControllerOutputFreeze_HoldsCapturedOutputUntilFaultClears",
+        "PlantControlAuthorityIntegrationTests",
+        "ProtectionSystemSolverTests.TripFunction_LatchesAndResetRequiresSafeThresholdAndPermissive",
+        "ProtectionSystemSolverTests.ManualTrip_LatchesUntilAcceptedReset"
+      ]
+    },
+    {
+      "rowId": "DFP-11",
+      "case": "challenge-active-during-degraded-protection-state",
+      "sourceMatrixRows": [
+        "INT-12",
+        "INT-13",
+        "INT-17"
+      ],
+      "scenarioKind": "validation-only exact-v4 challenge composition plus production challenge protection proof",
+      "expected": "challenge remains observational during non-protection degradation; canonical protection may fail challenge but cannot be bypassed by mission/assistance",
+      "integrationEvidence": "M10983DegradedFaultProtectionTakeoverMatrixTests.ValidationOnlyChallengeMeasurementFault_DegradesFailClosedAndRecovers + ProtectionPrecedence_RemainsAuthoritativeAcrossNormalCommandAndChallengeFailure",
+      "ownerEvidence": [
+        "M10961ChallengeLifecycleContractTests",
+        "M10962ExternalEnergyDemandProfileTests",
+        "M10963ChallengeScoringContractTests"
+      ]
+    }
+  ]
+}

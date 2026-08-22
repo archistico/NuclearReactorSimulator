@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M10.9.8.4",
+  "matrixId": "m10984-replay-checkpoint-same-seed-v1",
+  "baseline": "M10.9.8.3 VALIDATED",
+  "productionRuntimeChanged": false,
+  "simulationPhysicsChanged": false,
+  "archiveSchemaChanged": false,
+  "fingerprintAlgorithmChanged": false,
+  "opaquePhysicalCheckpointStateAdded": false,
+  "opaqueChallengeStateAdded": false,
+  "sameSeedDefinition": "same exact scenario and initial-condition identity plus identical accepted operator-action and automation-intent trace",
+  "requiredEquivalenceModes": [
+    "same-seed-fresh-session-repeat",
+    "full-replay",
+    "checkpoint-prefix-live-continuation",
+    "challenge-replay-projection"
+  ],
+  "rows": [
+    {
+      "rowId": "RCI-01",
+      "stateClass": "healthy-bounded-demand-supervisory",
+      "scenarioKind": "production bounded-demand @2 exact-v4",
+      "checkpointState": "healthy supervisory automatic after accepted generator-load raise",
+      "continuation": "control-rod hold then generator-load lower",
+      "expected": "fresh repeat, full replay and checkpoint continuation preserve every frame fingerprint, journals and challenge projection"
+    },
+    {
+      "rowId": "RCI-02",
+      "stateClass": "degraded-required-measurement-and-recovery",
+      "scenarioKind": "validation-only exact-v4 composition using existing sensor-unavailable fault",
+      "checkpointState": "requested SupervisoryAutomatic, effective Assisted, health Degraded, fault active",
+      "continuation": "advance through existing fault deactivation and canonical supervisory recovery",
+      "expected": "fresh repeat, full replay and checkpoint continuation preserve degraded state and deterministic recovery without true-state fallback"
+    },
+    {
+      "rowId": "RCI-03",
+      "stateClass": "protection-trip-suspended-authority",
+      "scenarioKind": "production bounded-demand @2 exact-v4 plus canonical ReactorScram command",
+      "checkpointState": "reactor SCRAM active, requested SupervisoryAutomatic, effective Assisted, SuspendedByProtection",
+      "continuation": "normal control-rod withdraw attempt while protection remains authoritative",
+      "expected": "fresh repeat, full replay and checkpoint continuation preserve protection precedence and failed challenge projection"
+    },
+    {
+      "rowId": "RCI-04",
+      "stateClass": "manual-takeover",
+      "scenarioKind": "production bounded-demand @2 exact-v4",
+      "checkpointState": "healthy SupervisoryAutomatic before takeover",
+      "continuation": "request Manual then accepted generator-load raise",
+      "expected": "fresh repeat, full replay and checkpoint continuation preserve Manual authority and cleared supervisory objective"
+    }
+  ]
+}

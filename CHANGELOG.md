@@ -1,3 +1,28 @@
+# M10.9.8.4 Hotfix 1 — Protection/Authority Observation Boundary Alignment (CANDIDATE)
+
+- Supersedes the original M10.9.8.4 candidate, which compiled but failed one ordinary test because `RunProtection` asserted `SuspendedByProtection` one deterministic tick too early after `ReactorScram`.
+- Aligns the replay/checkpoint protection row with the already validated M5/M10.9.8.3 owner boundary: the SCRAM step commits protection, the following deterministic tick updates effective authority to `Assisted` / health `SuspendedByProtection`, and only then is the replay checkpoint captured.
+- Adds a source-level validator anchor for `AdvanceAuthorityAfterProtectionCommit`; no production `src/` file, Simulation physics, protection logic, archive schema, fingerprint algorithm or challenge semantics change.
+
+- Promotes **M10.9.8.3 to VALIDATED** after build, complete ordinary suite and `scripts\run-m10983-degraded-fault-protection-takeover-audit.cmd` all passed.
+- Stacks exclusively on that baseline and adds no production runtime source, Simulation physics, archive schema, fingerprint algorithm, challenge/scoring/protection ownership or plant-command authority change.
+- Adds a four-row integrity matrix `RCI-01..RCI-04` covering healthy bounded-demand supervisory operation, degraded required measurement with deterministic recovery, protection-trip/suspended authority and manual takeover.
+- Defines same-seed as the existing deterministic contract: same exact scenario/initial-condition plus the same accepted operator-action and automation-intent trace; no runtime RNG/seed field is introduced.
+- Requires fresh same-seed repeat, full canonical replay, replay-backed checkpoint prefix + identical live continuation and M10.9.6.5 challenge replay projection equivalence for every representative state class.
+- Reuses archive schema v1, `sha256-control-room-snapshot-v1` and `m10965-challenge-replay-sha256-v1`; no opaque physical or challenge-state checkpoint blob is added.
+- Adds the mandatory planning contract `docs/M10_FINAL_PRE_M11_VALIDATION_PLAN.md`: after M10.9.8 manual closure, M11 remains blocked until a cumulative final M10 gate and a separate approximately one-hour explicit operational long validation both pass.
+
+# M10.9.8.3 — Degraded Measurement / Fault / Protection / Takeover Matrix (CANDIDATE)
+
+- Promotes **M10.9.8.2 Hotfix 1 REV5 to VALIDATED** after build, complete ordinary suite, focused HAA/mission/F4/list-stability audit and user acceptance to continue.
+- Stacks exclusively on that validated baseline and adds no production runtime source or Simulation/Domain/Infrastructure physics changes.
+- Adds a frozen eleven-row execution matrix `DFP-01..DFP-11` covering invalid supervisory measurement, suspect/unavailable operator truth, protection precedence, protection trip during automation, hydraulic component fault, instrumentation fault, real permissive rejection, requested/effective degradation, manual takeover, recovery and challenge-active degraded/protection integration.
+- Realizes INT-12/INT-17 through a **validation-only** exact-v4 composition using the existing M8.3 `instrumentation.sensor-unavailable` seam at logical steps 2..5; no production scenario/challenge/fault type is registered.
+- Requires requested `SupervisoryAutomatic` to degrade fail-closed to effective `Assisted` while the required measurement is unavailable, with MISSION publishing the same degradation truth and external demand remaining challenge-owned; after fault clear, canonical M5 recovery restores healthy supervisory authority.
+- Adds an exact-v4 protection-precedence integration proof: canonical SCRAM remains authoritative across a later normal rod-withdraw command, requested/effective authority diverges as `SupervisoryAutomatic`/`Assisted`, and the bounded-demand challenge fails observationally rather than owning protection.
+- Reuses M8.2/M8.3 fault owners, M4.5 synchronization permissive owner, M10.9.5 observed-response owner and M10.9.6 lifecycle/demand/scoring owners in the focused gate.
+- Explicitly leaves per-row replay/checkpoint/same-seed equivalence to M10.9.8.4.
+
 # M10.9.8.2 Hotfix 1 REV5 — Interactive List Refresh Stability (CANDIDATE)
 
 - Stacked on REV4 after user-observed residual flicker in F4 `DEPENDENCY CHAIN — SELECT A STEP` during RUN.
