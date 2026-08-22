@@ -112,7 +112,7 @@ M10 closes only after M10.9.8 is explicitly validated.
 
 **Purpose:** turn the validated M10 simulator into a release candidate without adding new gameplay or physics features.
 
-Detailed plan: [`milestones/M11.md`](milestones/M11.md).
+Detailed plan: [`milestones/M11.md`](milestones/M11.md). Review-derived assurance contract: [`M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md`](M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md).
 
 Planned sequence:
 
@@ -154,10 +154,11 @@ This order deliberately prevents visually attractive severe-accident features fr
 
 ### M12 — Extreme Operations Foundations — Epic A, foundation phase
 
-Detailed plan: [`milestones/M12.md`](milestones/M12.md).
+Detailed plan: [`milestones/M12.md`](milestones/M12.md). Operating-point foundation: [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md).
 
 Planned sequence:
 
+0. M12.0 — **Reference Operating-Point Equilibrium & Stability Qualification**: residual taxonomy, closed-loop observational inspector, domain-headroom/trend diagnostics, validation-only plant-hold seam, bounded trimmer only if evidence requires it, and perturbation/long-horizon closure; existing exact identities remain immutable.
 1. M12.1 — flow-owner directionality/support inventory (`BIDIRECTIONAL`, `ONE-WAY BY PHYSICS`, `ONE-WAY BY CHECK/ISOLATION`, `UNSUPPORTED OUTSIDE ENVELOPE`);
 2. M12.2 — **near-zero hydraulic constitutive regularity and conditioning audit**: quadratic `sqrt(|Δp|)` behavior, ideal check-valve non-smoothness, valve near-close conditioning, normalized Jacobian/pivot diagnostics and deterministic summation semantics; no production smoothing before evidence/requalification;
 3. M12.3 — near-empty inventory and extreme pressure/temperature/inventory validation matrix before expanding fault authority;
@@ -183,7 +184,8 @@ Planned sequence:
 6. M13.6 — presentation-only workspace presets;
 7. M13.7 — real operating procedures expressed over canonical commands/interlocks;
 8. M13.8 — visually distinct Instructor/Fault mode using only fault/damage authority already modeled at that point;
-9. M13.9 — integrated keyboard/minimum-window/replay/session UX closure plus staged MainWindowViewModel decomposition informed by M11.3 measurements.
+9. M13.9 — **Digital I&C Degradation & Automation Transparency**: stale/delayed/lost/inconsistent measurement evidence, delayed observed-response, automation intent/reason/result transparency, anti-keyhole persistent critical context and representative human-system part-task evaluation;
+10. M13.10 — integrated keyboard/minimum-window/replay/session UX closure plus staged MainWindowViewModel decomposition informed by M11.3 measurements.
 
 Area/subsystem workspaces remain; no giant all-controls screen and no multi-monitor/multi-computer dependency are introduced.
 

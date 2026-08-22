@@ -1,3 +1,56 @@
+## M10 Final Long Failure Diagnostic 2 / LR-M1 Hotfix 1 — CANDIDATE
+
+- Promotes Diagnostic 1 to accepted diagnostic evidence after the user reported build and both diagnostics passing; M10 itself remains open.
+- Classifies LR-M1 as an Application live-projection O(n)-per-step / O(n^2)-session scalability defect: at 100,000 synthetic samples the two historical live projectors consumed about 8.2 ms per refresh while presentation output remained bounded.
+- Replaces the live `_demandTimeline` prefix with an exact-semantics incremental accumulator: current sample, paired-count/sums for demand tracking, and at most 100 actual demand change points. Offline replay/full-prefix projectors remain unchanged.
+- Adds ordinary semantic-equivalence tests and an explicit incremental scaling census; no challenge, scoring-policy, command-authority, archive, replay-fingerprint or exact-version semantics change.
+- Classifies LR-H1 more narrowly as a real primary inventory redistribution: outlet final-60 s `dm/dt=-7.914 kg/s`, total node mass slope closes to numerical zero, and the 300 s production pressure heads imply channel-return residual about `-7.85 kg/s`.
+- Adds a second 300 s exact-v4 diagnostic for canonical pump/channel/return flows, steam-drum recirculation and flow/level-controller integrals. No physical coefficient, controller tuning, water/steam envelope, I.3 budget or conservation ceiling changes.
+
+## Pre-M11 Engineering Review Consolidation / Planning 3 — CANDIDATE
+
+- Stacked documentation/planning-only on **M10 Final Pre-M11 Long Validation Hotfix 1**; production `src/`, baseline tests, long-test implementation, frozen long workload and all M10 acceptance thresholds remain unchanged.
+- Consolidates the three book-driven review streams performed during final M10 validation: nuclear-code V&V, Digital I&C / human-system safety, and reactor operating-point self-consistency/equilibrium.
+- Imports the reviewed Digital I&C architecture invariants, human–automation function allocation, deterministic hazard catalog, HMI classic failure-mode checklist, dependency/COTS assurance plan and post-M11 Digital I&C backlog.
+- Integrates the post-M10→M15 execution master plan, change-impact/revalidation policy, M11 release-evidence plan, M13.9 Digital I&C Degradation & Automation Transparency, M13.10 integrated UX closure, and M12.0 Reference Operating-Point Equilibrium & Stability Qualification.
+- Adds source-provenance documentation and machine-readable source mapping; the three source books themselves are not bundled.
+- Records the current first long-run evidence without altering it: LR-H1 healthy exact-v4 is RED on a real `outlet` `WaterSteamStateOutOfRangeException`; the campaign remains fail-collect and must finish before diagnosis/hotfix selection.
+- No post-hoc widening of thermodynamic envelope, I.3 budgets, conservation ceilings or long workload is authorized.
+
+
+## M10 Final Pre-M11 Long Validation Hotfix 1 — Generated Build-Output Exclusion
+
+- Fixes the long-contract preflight when the repository has already been built before `scripts\run-m10-final-long-validation.cmd`.
+- `eng\validate-m10-final-long-validation-contract.ps1` now excludes only generated `bin` and `obj` directory contents while comparing `src` and `tests` against the frozen validated-baseline manifests.
+- Frozen long workload, I.3 budgets, conservation ceilings, production `src`, existing test surface, and the explicit long-validation test remain unchanged.
+- This is validator-only alignment; no physics/runtime behavior is changed.
+# M10 Final Pre-M11 Long Validation — CANDIDATE
+
+- Stacked exclusively on **M10 Final Pre-M11 Cumulative Validation Hotfix 1 VALIDATED** after `m10-final-cumulative-validation-passes=True`.
+- Adds no production `src/` changes. Adds one explicit scheduled-long Application test class plus frozen workload/validator/finalizer/orchestrator contracts.
+- Freezes a timing-calibrated approximately-one-hour-class campaign before first acceptance execution: LR-H1 7,200 s, LR-M1 4,400 s, LR-D1 1,800 s, LR-P1 900 s, LR-R1 100 s; total 14,400 simulated seconds / 1,440,000 authored 10 ms steps.
+- Timing calibration uses the already validated exact-v4 300 s cumulative evidence only to size workload duration; physics and acceptance thresholds are unchanged.
+- Reuses all 19 frozen I.3 budgets on 24 rolling 60 s healthy windows ending every 300 s through 7,200 s; exact-v4 conservation ceilings remain `1e-6 kg`, `1e-2 J`, `1e-8 kg/s`, `1e-3 W`.
+- Freezes degraded fault timing (54,000→90,000), protection/takeover timing (SCRAM 54,000; authority observation 54,001; blocked rod command 60,000; manual takeover 72,000) and replay/checkpoint sentinel timing.
+- Adds `scripts/run-m10-final-long-validation.cmd`, which executes all five explicit legs even when an earlier leg fails, then finalizes the complete artifact set.
+- Passing this gate makes M10 closure eligible; M11 remains blocked until explicit M10 closure documentation/promotion.
+
+# M10 Final Pre-M11 Cumulative Validation Hotfix 1 — Historical Focused-Route Reuse Alignment — CANDIDATE
+
+- Supersedes the original final-cumulative candidate after Release ordinary tests and all Phase-I/M10.9.5/M10.9.6 current gates passed, then the M10.9.7.2 historical focused script returned xUnit exit code 8 because its superseded exact-candidate `ApplicationDescriptorTests.Current_DescribesM10972Hotfix1Rev1DomainDefinitionInvariantClosureCandidate` method no longer exists in the current test surface.
+- Adds an explicit `--historical-reuse` mode to the M10.9.7.2 Hotfix 1, M10.9.7.3 Hotfix 2 REV2 and M10.9.7.4 focused scripts. Standalone execution remains unchanged and still requires each historical exact-candidate descriptor check; final-M10 reuse skips only that descriptor-only assertion while rerunning every functional/domain/host/timeline owner test and artifact writer.
+- Updates `run-m10-final-validation.cmd` to use historical reuse for those three routes, records per-stage progress, and adds fail-fast validator anchors so the same no-tests condition is detected before the expensive cumulative sequence.
+- Changes no file under `src/` or `tests/`, no V&V row/budget/hash, no Simulation/runtime/HMI semantics and no long-gate contract.
+
+# M10 Final Pre-M11 Cumulative Validation — CANDIDATE
+
+- Promotes **M10.9.8.5 to VALIDATED / M10.9.8 to CLOSED** after build, complete ordinary suite, automated integrated-HMI closure preflight and explicit manual acceptance `M10.9.8.5 manual integrated HMI acceptance OK`.
+- Stacks exclusively on M10.9.8.5 VALIDATED and changes **zero files under `src/` and `tests/`**.
+- Adds the frozen 27-row `eng/m10-final-vv-matrix.json`, explicit M10.9.8.5 manual-acceptance record and PowerShell-5.1-compatible matrix validator.
+- Implements the previously planned `scripts/run-m10-final-validation.cmd`: restore, Release warnings-as-errors build, complete Release ordinary suite, Debug focused build, current Phase-I exact-v4 evidence, M10.9.5/6/7/8 current closure routes and reference-plant-scale audit.
+- Historical superseded/frozen long audits are not blindly replayed by the cumulative gate. Long-horizon exposure remains a separate mandatory gate.
+- **M10 remains OPEN after this candidate passes.** M11 is blocked until `scripts/run-m10-final-long-validation.cmd` is implemented on this cumulative baseline and passes the frozen long contract.
+
 # M10.9.8.5 — Manual Integrated HMI Acceptance & M10.9.8 Closure (CANDIDATE)
 
 - Promotes **M10.9.8.4 Hotfix 1 to VALIDATED** after build, complete ordinary suite and `scripts\run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd` passed.
@@ -3377,3 +3430,13 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Mapped Epic A to M12 foundations plus M15 consequence models, Epic C to M13, and Epic B to M14.
 - Added milestone plans M12–M15 and removed stale pre-Phase-I sequencing language from the long-lived future-direction document.
 - Kept all M12–M15 work post-M11 and non-blocking for the active M10.9.7 persistence candidate.
+
+## M10 Final Long Failure Diagnostic 1 — CANDIDATE
+
+- Preserves the failed/aborted first final-long campaign as evidence; no long result is reinterpreted as passing.
+- Adds an explicit 300 s exact-v4 fluid-node residual census across the already-validated reference domain, including final-60 s node slopes and `outlet` comparison to the observed LR-H1 failure coordinates.
+- Adds a synthetic MISSION score/timeline prefix-scaling census so the LR-M1 wall-cost defect can be measured without another multi-hour plant run.
+- Records the static call-chain finding that the current live MISSION path scans the growing `_demandTimeline` multiple times on every `SingleStep` presentation, yielding O(n) work at step n and O(n^2) aggregate session work.
+- Adds `scripts/run-m10-final-long-failure-diagnostic1.cmd` and `eng/m10-final-long-diagnostic1-contract.json`.
+- Freezes the next final-long operational target at 35–45 minutes with a 60-minute maximum workstation budget; wall time remains diagnostic/job-budget semantics, not a physics tolerance.
+- No production `src/` file, physical coefficient, thermodynamic envelope, I.3 budget, conservation ceiling, archive schema, fingerprint algorithm or exact historical identity is changed.

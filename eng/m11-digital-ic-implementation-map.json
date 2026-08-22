@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "id": "pre-m11-digital-ic-implementation-map-v1",
+  "status": "PLANNING-NOT-ADOPTED",
+  "adoptionPrerequisite": "M10 final long validation PASS and explicit M10 CLOSED",
+  "sourceReviews": [
+    "pre-m11-nuclear-code-vv-review",
+    "pre-m11-digital-ic-human-system-safety-review"
+  ],
+  "m11": [
+    {
+      "milestone": "M11.1",
+      "kind": "release-assurance",
+      "items": [
+        "digital-ic-architecture-invariants",
+        "human-automation-function-allocation",
+        "release-non-claims",
+        "runtime-cots-dependency-inventory"
+      ]
+    },
+    {
+      "milestone": "M11.2",
+      "kind": "compatibility-assurance",
+      "items": [
+        "logical-step-action-ordering",
+        "authority-objective-history-consistency",
+        "protection-and-measured-state-semantics",
+        "fingerprint-schema-algorithm-identity",
+        "action-history-consistency-sentinel"
+      ]
+    },
+    {
+      "milestone": "M11.3",
+      "kind": "measurement-and-policy",
+      "items": [
+        "worst-observed-desktop-batch",
+        "ui-responsiveness",
+        "projection-notification-fanout",
+        "recorder-long-session-growth",
+        "no-silent-deterministic-time-drop",
+        "recorder-evidence-failure-policy"
+      ]
+    },
+    {
+      "milestone": "M11.4",
+      "kind": "package-assurance",
+      "items": [
+        "runtime-dependency-package-verification",
+        "supported-target-verification",
+        "optional-deterministic-sbom-export"
+      ]
+    },
+    {
+      "milestone": "M11.5",
+      "kind": "documentation-and-hmi-assurance",
+      "items": [
+        "digital-ic-hazard-catalog",
+        "hmi-classic-failure-modes-checklist",
+        "digital-ic-known-limitations",
+        "dependency-assurance-statement",
+        "hard-real-time-redundancy-licensing-non-claims"
+      ]
+    },
+    {
+      "milestone": "M11.6",
+      "kind": "release-acceptance",
+      "items": [
+        "digital-ic-hazard-closure",
+        "command-observed-response-task",
+        "authority-degradation-manual-takeover-task",
+        "protection-ack-reset-task",
+        "degraded-measurement-provenance-task",
+        "session-replay-task",
+        "keyboard-minimum-window-situation-awareness-task"
+      ]
+    }
+  ],
+  "postReleaseCommitted": [
+    {
+      "milestone": "M13.9",
+      "title": "Digital I&C Degradation & Automation Transparency",
+      "items": [
+        "signal-age-stale-value-semantics",
+        "deterministic-delayed-measurement-update-fault",
+        "lost-update-temporarily-missing-telemetry",
+        "inconsistent-redundant-indication-training",
+        "delayed-command-observed-response",
+        "automation-transparency-contract",
+        "anti-keyhole-persistent-situation-context",
+        "human-system-part-task-evaluation"
+      ],
+      "constraints": [
+        "logical-step-deterministic",
+        "reuse-existing-fault-framework",
+        "no-network-emulator",
+        "no-second-plant-owner",
+        "no-hidden-true-state-fallback",
+        "protection-remains-m5-owned",
+        "replay-checkpoint-session-equivalence-required"
+      ]
+    },
+    {
+      "milestone": "M13.10",
+      "title": "Integrated UX Closure",
+      "renumberedFrom": "M13.9"
+    }
+  ],
+  "reviewOnlyOrDeferred": [
+    {
+      "item": "protection-diversity-inventory",
+      "decision": "COMMITTED-AS-REVIEW-NOT-AS-NEW-PROTECTION-FEATURE"
+    },
+    {
+      "item": "genuinely-diverse-protection-mechanism",
+      "decision": "DEFERRED-REQUIRES-DEDICATED-M5-OWNED-DESIGN"
+    },
+    {
+      "item": "hard-real-time-scheduler-or-claim",
+      "decision": "NOT-AUTHORIZED"
+    },
+    {
+      "item": "distributed-network-fieldbus-emulator",
+      "decision": "NOT-AUTHORIZED"
+    },
+    {
+      "item": "nuclear-grade-cots-qualification",
+      "decision": "NOT-AUTHORIZED"
+    },
+    {
+      "item": "invented-software-failure-probability",
+      "decision": "FORBIDDEN-CLAIM"
+    }
+  ],
+  "executionDocuments": [
+    "docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md",
+    "docs/POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md",
+    "docs/CHANGE_IMPACT_REVALIDATION_POLICY.md",
+    "docs/M11_RELEASE_EVIDENCE_MATRIX_PLAN.md"
+  ]
+}

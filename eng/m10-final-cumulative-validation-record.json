@@ -1,0 +1,21 @@
+{
+  "schema": "m10-final-cumulative-validation-record-v1",
+  "recorded_on": "2026-08-22",
+  "baseline": "NuclearReactorSimulator_M10_Final_PreM11_CumulativeValidation_Hotfix1_HistoricalFocusedRouteReuse_CANDIDATE_FULL.zip",
+  "status": "VALIDATED",
+  "marker": "m10-final-cumulative-validation-passes=True",
+  "m10_closure_pending_long": true,
+  "user_reported_summary": {
+    "clean_restore": true,
+    "release_warnings_as_errors_build": true,
+    "complete_release_ordinary_suite": true,
+    "debug_focused_build": true,
+    "phase_i_current_evidence": true,
+    "exact_v4_300s_reference": true,
+    "m1095_closure": true,
+    "m1096_closure": true,
+    "m1097_current_closure": true,
+    "m1098_healthy_degraded_replay_hmi": true,
+    "reference_plant_scale": true
+  }
+}

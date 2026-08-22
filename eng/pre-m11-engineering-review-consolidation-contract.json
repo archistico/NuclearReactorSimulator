@@ -1,0 +1,41 @@
+{
+  "schema": "pre-m11-engineering-review-consolidation-v1",
+  "status": "PLANNING-CANDIDATE-NOT-PROMOTION-EVIDENCE",
+  "base": "M10 Final Pre-M11 Long Validation Hotfix 1 Generated Build-Output Exclusion CANDIDATE",
+  "scope": "documentation/planning/research provenance only over active long candidate",
+  "source_review_streams": 3,
+  "production_src_changed": false,
+  "tests_changed_relative_to_long_candidate": false,
+  "long_validation_contract_changed": false,
+  "long_acceptance_thresholds_changed": false,
+  "current_long_evidence": {
+    "campaign_status": "RUNNING-FAIL-COLLECT",
+    "m10_closure_eligible": false,
+    "lr_h1_status": "FAILED",
+    "exception": "WaterSteamStateOutOfRangeException",
+    "node": "outlet",
+    "specific_volume_m3_kg": 0.0026153411609661885,
+    "specific_internal_energy_J_kg": 1615124.4119888516,
+    "wall_time_observed": "~48m54s",
+    "cause_status": "UNCLASSIFIED-AWAITING-COMPLETE-ARTIFACTS"
+  },
+  "adopted_planning": {
+    "m11_feature_frozen": true,
+    "m12_0_reference_operating_point_equilibrium": true,
+    "m13_9_digital_ic_degradation_automation_transparency": true,
+    "m13_10_integrated_ux_closure": true,
+    "protection_diversity_inventory_before_claim": true,
+    "no_hard_realtime_claim": true,
+    "no_nuclear_grade_cots_claim": true,
+    "no_posthoc_tolerance_widening": true
+  },
+  "primary_documents": [
+    "docs/PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md",
+    "docs/PRE_M11_NUCLEAR_CODE_VV_REVIEW.md",
+    "docs/PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md",
+    "docs/PRE_M11_IMPLEMENTATION_DECISIONS.md",
+    "docs/POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md",
+    "docs/REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md",
+    "docs/M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md"
+  ]
+}

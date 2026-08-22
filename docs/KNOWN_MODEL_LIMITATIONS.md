@@ -30,6 +30,11 @@ Historical validated I.3 was continuously healthy over 300 s on the then-authori
 
 Exact regression values are frozen in `../eng/frozen-evidence/ordinary/I3_ValidatedAuthoritativeReferenceSlopes.csv` and `../eng/evidence-manifests/i3-validated.csv`. These values are a regression baseline, not a claim of asymptotic steady state and not calibration targets. They indicate continuing reduced-order inventory/energy redistribution over the reference window. Future work may investigate whether a longer horizon, improved initialization/trim, or a separately validated physical model should reduce those drifts; production physics must not be tuned merely to make the slopes approach zero.
 
+- The first M10 final LR-H1 healthy exact-v4 long-soak acceptance execution exposed a real fail-closed thermodynamic-domain exit at fluid node `outlet` (`v=0.0026153411609661885 m^3/kg`, `u=1615124.4119888516 J/kg`) after the 300 s checkpoint and before 600 s. Diagnostic 1 now proves a real pre-failure primary inventory redistribution inside 0..300 s: outlet mass falls from about 7,504.6 kg to 4,605.0 kg, final-60 s `dm/dt` is about -7.914 kg/s, total node mass slope closes to numerical zero, and production pressure heads imply a channel-return residual near -7.85 kg/s. The immediate owner is therefore the primary branch / reference operating-point balance, while the upstream contribution of authored seed balance versus closed-loop controller bias remains under Diagnostic 2. The envelope and frozen long tolerances must not be widened. See `M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md` and `M10_FINAL_LONG_FAILURE_DIAGNOSTIC2.md`.
+
+- The project does not yet provide a general full-plant operating-point equilibrium solver. Current operational seeds are authored/versioned initial conditions with bounded deterministic preconditioning, not automatically solved fixed points. `FullPlantSteadyStateCriteria` and supervisory `HoldCurrentOperatingPoint` must not be interpreted as proof of whole-plant equilibrium. The planned M12.0 work adds residual/stability qualification first and a bounded trimmer only if evidence justifies it.
+- Domain support is currently fail-closed rather than expressed as a general distance-to-boundary metric. A planned validation-only domain-headroom probe will use the canonical thermodynamic resolver as the support authority rather than duplicating water/steam equations.
+
 ## Reactor physics
 
 - The core model is reduced-order rather than a full 3D neutronic/thermal-hydraulic solver.
@@ -73,6 +78,15 @@ Still simplified or omitted:
 - The control room is educational rather than a one-to-one reproduction of a specific historical plant.
 - Some operator-facing values are intentionally filtered/presented differently from raw solver diagnostics.
 - Numerical diagnostics remain engineering evidence and are not automatically exposed as operator controls or predictions.
+
+## Digital I&C, timing and human-system fidelity
+
+- The desktop simulator is not a hard-real-time safety-I&C platform. Simulation semantics use deterministic 10 ms logical time; wall-clock/UI responsiveness is a release-performance property measured separately.
+- The current instrumentation fault framework models deterministic signal/component degradation but does not yet model explicit signal age, transport latency, lost updates, inconsistent redundant indications or delayed command-feedback observation. These are planned post-release M13.9 educational extensions.
+- Multiple indications or algorithms are not described as safety-grade redundant/diverse merely because they are duplicated. No protection-diversity claim is made without explicit shared-dependency and functional-diversity analysis.
+- The current desktop workspaces may still exhibit bounded keyhole/information-load tradeoffs inherent in a single-window F1–F8 architecture. Critical protection/authority/quality context is required to remain persistently understandable; deeper anti-keyhole and part-task human-system work is planned for M13.9.
+- .NET, Avalonia and other dependencies are normal commercial/open-source software dependencies. M11 applies proportional version/configuration/package assurance; the project does not claim nuclear-grade COTS qualification.
+- No quantitative software failure probability or nuclear safety reliability figure is claimed. Digital-I&C hazards are handled through deterministic contracts, tests, representative tasks and explicit limitations.
 
 ## Severe incidents
 

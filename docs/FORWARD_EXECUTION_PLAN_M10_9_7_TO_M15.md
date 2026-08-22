@@ -1,5 +1,7 @@
 # Forward Execution Plan — M10.9.7 through M15
 
+
+Operational detail: [`POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md`](POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md), [`CHANGE_IMPACT_REVALIDATION_POLICY.md`](CHANGE_IMPACT_REVALIDATION_POLICY.md), [`M11_RELEASE_EVIDENCE_MATRIX_PLAN.md`](M11_RELEASE_EVIDENCE_MATRIX_PLAN.md).
 This document is the **cross-milestone execution map**. It answers what comes next, why the order matters, which detailed plan owns each topic, and where deferred work belongs.
 
 It is deliberately not a second copy of every milestone specification:
@@ -26,24 +28,26 @@ Every future implementation slice follows the same rules:
 
 ## Immediate transition
 
-M10.9.7 is CLOSED. M10.9.8.1 REV1 Docs1, M10.9.8.2 Hotfix 1 REV5, M10.9.8.3 and M10.9.8.4 Hotfix 1 are VALIDATED. The active candidate is M10.9.8.5 manual integrated HMI acceptance; after it passes, M10.9.8 closes but M10 remains blocked on the mandatory final cumulative and approximately one-hour long pre-M11 gates.
+This Planning 2 version is adopted only **after** the final M10 long gate is green and the explicit closure-only checkpoint has declared M10 CLOSED. The detailed handoff is owned by [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md).
+
+After adoption, the authorized forward sequence is:
 
 ```text
-M10.9.7.5 Hotfix 1 M10.9.7 closure VALIDATED
+M10 CLOSED — cumulative + long + manual/V&V provenance complete
         ↓
-M10.9.8.1 matrix freeze VALIDATED
+Pre-M11 documentation/review checkpoint
         ↓
-M10.9.8.2 REV5 healthy/HMI robustness VALIDATED
+M11.1 release/support + architecture/function-allocation freeze
         ↓
-M10.9.8.3 degraded/fault/protection/takeover VALIDATED
+M11.2 compatibility hardening
         ↓
-M10.9.8.4 Hotfix 1 replay/checkpoint/same-seed VALIDATED
+M11.3 performance/memory/long-session budgets
         ↓
-M10.9.8.5 manual integrated HMI acceptance ACTIVE
+M11.4 package/supported-target assurance
         ↓
-M10 final cumulative + approximately-one-hour long validation
+M11.5 documentation + Digital-I&C/HMI hazard closure
         ↓
-M11 release hardening
+M11.6 packaged release-candidate acceptance → M11 CLOSED
         ↓
 M12 extreme-operations foundations
         ↓
@@ -53,6 +57,8 @@ M14 spatial reactor
         ↓
 M15 accident progression and consequence models
 ```
+
+If the M10 long gate is red, this forward sequence is **not yet active**; preserve evidence and follow the change-impact/revalidation policy before closure.
 
 ---
 
@@ -130,12 +136,14 @@ Detailed plan: [`milestones/M11.md`](milestones/M11.md).
 
 M11 is feature-frozen and proceeds in this order:
 
-1. **M11.1** release/support contract and version freeze;
-2. **M11.2** scenario/save/session/checkpoint compatibility and migration hardening;
-3. **M11.3** measured performance, memory, long-run and persistence-allocation budgets;
-4. **M11.4** packaging/publish/clean-target verification;
-5. **M11.5** Italian manual, README/release notes/known-limitations alignment plus automated documentation-index/ADR/link/architecture-drift checks;
-6. **M11.6** clean-state release-candidate final gate.
+1. **M11.1** release/support contract and version freeze, including Digital-I&C architecture invariants, Human–Automation Function Allocation, release non-claims and runtime/COTS dependency inventory;
+2. **M11.2** scenario/save/session/checkpoint compatibility and migration hardening, including authority/protection/logical-step/action-history consistency;
+3. **M11.3** measured performance, memory, long-run and persistence-allocation budgets, including worst observed desktop responsiveness, no silent deterministic-time dropping and explicit recorder evidence-failure policy;
+4. **M11.4** packaging/publish/clean-target verification plus frozen runtime/dependency verification;
+5. **M11.5** Italian manual, README/release notes/known-limitations alignment plus Digital-I&C hazard catalog, HMI classic-failure-mode checklist and automated documentation-index/ADR/link/architecture-drift checks;
+6. **M11.6** clean-state release-candidate final gate plus representative operator tasks and Digital-I&C hazard closure.
+
+Review-derived implementation details: [`M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md`](M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md) and [`PRE_M11_IMPLEMENTATION_DECISIONS.md`](PRE_M11_IMPLEMENTATION_DECISIONS.md).
 
 Key persistence decisions:
 
@@ -176,14 +184,15 @@ Dependency purpose: M12 must establish the physical/state foundations before M15
 
 Execution order:
 
-1. **M12.1 flow-owner directionality inventory** — every flow owner classified as bidirectional, one-way by physics, one-way by explicit device or unsupported;
-2. **M12.2 near-zero hydraulic regularity / conditioning audit** — measure the quadratic near-zero law, ideal check-valve non-smoothness, valve near-close behavior, normalized Jacobian/pivot diagnostics, summation semantics and branch-continuity interaction before any production smoothing;
-3. **M12.3 extreme-state matrix** — near-empty inventories, pressure/temperature/void/flow extremes classified supported/reduced-fidelity/fail-closed;
-4. **M12.4 pump mechanical/electrical/thermal energy ownership** — close shaft-demand and modeled inefficiency/loss-to-heat ownership before stronger conservation/consequence claims;
-5. **M12.5 full-plant post-trip decay heat** — history-dependent residual heat carried through the integrated energy chain;
-6. **M12.6 integrity/stress primitives** — persistent physical integrity separated from functional equipment state;
-7. **M12.7 IncidentSeverity** — physical consequence severity separate from alarm priority;
-8. **M12.8 closure** — directionality/numerical/extreme/pump-energy/decay/integrity/replay evidence and explicit unsupported-envelope register.
+1. **M12.0 reference operating-point equilibrium & stability qualification**;
+2. **M12.1 flow-owner directionality inventory** — every flow owner classified as bidirectional, one-way by physics, one-way by explicit device or unsupported;
+3. **M12.2 near-zero hydraulic regularity / conditioning audit** — measure the quadratic near-zero law, ideal check-valve non-smoothness, valve near-close behavior, normalized Jacobian/pivot diagnostics, summation semantics and branch-continuity interaction before any production smoothing;
+4. **M12.3 extreme-state matrix** — near-empty inventories, pressure/temperature/void/flow extremes classified supported/reduced-fidelity/fail-closed;
+5. **M12.4 pump mechanical/electrical/thermal energy ownership** — close shaft-demand and modeled inefficiency/loss-to-heat ownership before stronger conservation/consequence claims;
+6. **M12.5 full-plant post-trip decay heat** — history-dependent residual heat carried through the integrated energy chain;
+7. **M12.6 integrity/stress primitives** — persistent physical integrity separated from functional equipment state;
+8. **M12.7 IncidentSeverity** — physical consequence severity separate from alarm priority;
+9. **M12.8 closure** — directionality/numerical/extreme/pump-energy/decay/integrity/replay evidence and explicit unsupported-envelope register.
 
 M12 **does not** yet add scripted leaks, rupture, fire or severe core damage.
 
@@ -203,7 +212,10 @@ Execution order:
 6. **M13.6 workspace presets** — presentation-only context presets;
 7. **M13.7 real operating procedures** — procedures over canonical commands/evidence;
 8. **M13.8 Instructor/Fault mode** — visually distinct deterministic fault authority, never normal operator control;
-9. **M13.9 integrated UX closure**, including staged `MainWindowViewModel` decomposition informed by M11.3 measurements.
+9. **M13.9 Digital I&C Degradation & Automation Transparency** — deterministic stale/delayed/lost instrumentation evidence, inconsistent-indication training, delayed observed-response feedback, automation transparency, anti-keyhole context and part-task human-system evaluation;
+10. **M13.10 integrated UX closure**, including staged `MainWindowViewModel` decomposition informed by M11.3 measurements and rerun of Digital-I&C/HMI acceptance.
+
+M13.9 models deterministic information degradation through existing instrumentation/fault/evidence seams; it does not introduce a fieldbus/network simulator or claim safety-grade redundancy. Any genuinely diverse protection mechanism remains a separate M5-owned future design.
 
 Multi-monitor/multi-computer operation remains explicitly deferred.
 
@@ -288,7 +300,7 @@ These names are planning conventions, not existing scripts. They should be used 
 | M10.9.8.3 degraded/fault/protection/takeover | `run-m10983-degraded-fault-protection-takeover-audit.cmd` |
 | M10.9.8.4 replay/checkpoint/same-seed integrity | `run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd` |
 | M10.9.8 integrated HMI closure | `run-m1098-integrated-human-automation-hmi-audit.cmd` + `M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md` |
-| M10 final pre-M11 cumulative/long gate | planned `run-m10-final-validation.cmd` + `run-m10-final-long-validation.cmd`; see `M10_FINAL_PRE_M11_VALIDATION_PLAN.md` |
+| M10 final pre-M11 cumulative/long gate | cumulative Hotfix 1 VALIDATED; current blocking route `run-m10-final-long-validation.cmd`; see `M10_FINAL_PRE_M11_VALIDATION_PLAN.md` |
 | M11 release closure | milestone-specific M11.1–M11.5 gates + `run-m11-release-candidate-closure-audit.cmd` |
 | M12 foundations | milestone-specific M12.1–M12.8 gates + `run-m12-extreme-foundations-closure-audit.cmd` |
 | M13 control-room experience | milestone-specific gates + `run-m13-control-room-experience-closure-audit.cmd` |

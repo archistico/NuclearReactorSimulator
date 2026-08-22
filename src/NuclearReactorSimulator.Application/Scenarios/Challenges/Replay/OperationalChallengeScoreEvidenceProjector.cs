@@ -74,6 +74,46 @@ public static class OperationalChallengeScoreEvidenceProjector
         return ProjectCore(pack, lifecycle, demandTimeline);
     }
 
+
+    /// <summary>
+    /// Live incremental overload used by MISSION/PERFORMANCE after the first M10 long-run scalability diagnosis.
+    /// It is semantically equivalent to ProjectLive over the full deterministic demand prefix, but consumes only
+    /// the associative demand-tracking aggregates maintained as samples arrive.
+    /// </summary>
+    internal static IReadOnlyList<ChallengeScoreDimensionEvidence> ProjectLive(
+        OperationalChallengePackDefinition pack,
+        ChallengeLifecycleSnapshot lifecycle,
+        OperationalChallengeLiveDemandAggregate demandAggregate)
+    {
+        ArgumentNullException.ThrowIfNull(demandAggregate);
+        ArgumentNullException.ThrowIfNull(pack);
+        ArgumentNullException.ThrowIfNull(lifecycle);
+        if (!string.Equals(pack.Challenge.ExactId, lifecycle.ChallengeExactId, StringComparison.Ordinal))
+        {
+            throw new ArgumentException("Challenge pack and lifecycle exact identities must match.", nameof(lifecycle));
+        }
+        if (demandAggregate.FinalLogicalStep != lifecycle.LogicalStep)
+        {
+            throw new ArgumentException("Live score aggregate must end at the lifecycle logical step.", nameof(demandAggregate));
+        }
+
+        var unclassifiedFailureIds = pack.Challenge.FailureConditions
+            .Select(static condition => condition.ConditionId)
+            .Where(id => !CriticalSafetyFailureConditionIds.Contains(id) && !CriticalProcedureFailureConditionIds.Contains(id))
+            .ToArray();
+        if (unclassifiedFailureIds.Length != 0)
+        {
+            throw new InvalidOperationException(
+                $"Challenge pack '{pack.ExactId}' has failure conditions without an authored M10.9.6.5 score-dominance classification: {string.Join(", ", unclassifiedFailureIds)}.");
+        }
+
+        return Array.AsReadOnly(pack.ScoreEvidenceBindings
+            .Select(binding => binding.Kind == ChallengeScoreDimensionKind.DemandTracking
+                ? Demand(demandAggregate, binding)
+                : ProjectDimension(pack, lifecycle, Array.Empty<ExternalEnergyDemandEvidenceSnapshot>(), binding))
+            .ToArray());
+    }
+
     private static void ValidateCommon(
         OperationalChallengePackDefinition pack,
         ChallengeLifecycleSnapshot lifecycle,
@@ -216,6 +256,32 @@ public static class OperationalChallengeScoreEvidenceProjector
                 $"Paired demand/output samples={samples.Length}; mean-absolute-error={meanAbsoluteError:0.######} MWe; mean-demand={meanDemandMagnitude:0.######} MWe."));
     }
 
+
+    private static ChallengeScoreDimensionEvidence Demand(
+        OperationalChallengeLiveDemandAggregate aggregate,
+        OperationalChallengeScoreEvidenceBinding binding)
+    {
+        if (aggregate.PairedSampleCount == 0)
+        {
+            return Unavailable(binding, "External-demand/actual-output paired evidence is unavailable.");
+        }
+
+        var meanAbsoluteError = aggregate.SumAbsoluteErrorMegawatts / aggregate.PairedSampleCount;
+        var meanDemandMagnitude = aggregate.SumAbsoluteDemandMegawatts / aggregate.PairedSampleCount;
+        if (meanDemandMagnitude <= 0d)
+        {
+            return Unavailable(binding, "External-demand magnitude is not positive enough to normalize tracking error.");
+        }
+        var normalizedError = Math.Clamp(meanAbsoluteError / meanDemandMagnitude, 0d, 1d);
+        var fraction = (decimal)(1d - normalizedError);
+        return Available(
+            binding,
+            fraction,
+            string.Create(
+                CultureInfo.InvariantCulture,
+                $"Paired demand/output samples={aggregate.PairedSampleCount}; mean-absolute-error={meanAbsoluteError:0.######} MWe; mean-demand={meanDemandMagnitude:0.######} MWe."));
+    }
+
     private static ChallengeScoreDimensionEvidence LogicalTime(
         ChallengeLifecycleSnapshot lifecycle,
         OperationalChallengeScoreEvidenceBinding binding)
@@ -272,3 +338,10 @@ public static class OperationalChallengeScoreEvidenceProjector
         string summary)
         => new(binding.Kind, false, null, binding.EvidenceSourceId, summary);
 }
+
+
+internal sealed record OperationalChallengeLiveDemandAggregate(
+    long FinalLogicalStep,
+    int PairedSampleCount,
+    double SumAbsoluteErrorMegawatts,
+    double SumAbsoluteDemandMegawatts);

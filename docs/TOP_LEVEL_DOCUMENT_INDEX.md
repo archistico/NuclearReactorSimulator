@@ -33,6 +33,10 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`FIRST_CRITICALITY_LOW_POWER.md`](FIRST_CRITICALITY_LOW_POWER.md) | First Criticality & Low-Power Operation | Physics / plant / controls |
 | [`FLUID_NODES.md`](FLUID_NODES.md) | Fluid Node Model | Physics / plant / controls |
 | [`FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`](FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md) | Forward Execution Plan — M10.9.7 through M15 | Planning / engineering review |
+| [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md) | M10 Final Closure and M11 Bootstrap Plan | Planning / closure |
+| [`POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md`](POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md) | Post-M10 to M15 Execution Master Plan | Planning / engineering review |
+| [`CHANGE_IMPACT_REVALIDATION_POLICY.md`](CHANGE_IMPACT_REVALIDATION_POLICY.md) | Change Impact and Revalidation Policy | Governance / validation |
+| [`M11_RELEASE_EVIDENCE_MATRIX_PLAN.md`](M11_RELEASE_EVIDENCE_MATRIX_PLAN.md) | M11 Release Evidence Matrix — Plan | Planning / evidence |
 | [`FUEL_CHANNEL_GROUPS.md`](FUEL_CHANNEL_GROUPS.md) | Fuel-Channel Group Model | Physics / plant / controls |
 | [`FULL_PLANT_STEADY_STATE.md`](FULL_PLANT_STEADY_STATE.md) | Full-Plant Steady-State Baseline | Physics / plant / controls |
 | [`FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md`](FUTURE_GAMEPLAY_CONTROL_ROOM_AND_ACCIDENT_DIRECTION.md) | Future Gameplay, Control-Room and Accident-Progression Direction | Planning / engineering review |
@@ -107,6 +111,9 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`PRIMARY_CIRCUIT_BOUNDARIES.md`](PRIMARY_CIRCUIT_BOUNDARIES.md) | Primary-Circuit Feedwater & Steam Boundary Interfaces | Physics / plant / controls |
 | [`PRIMARY_CIRCUIT_MNEMONICS.md`](PRIMARY_CIRCUIT_MNEMONICS.md) | Primary-Circuit Mnemonics | Physics / plant / controls |
 | [`PRIMARY_CIRCUIT_PLAN.md`](PRIMARY_CIRCUIT_PLAN.md) | M3 Primary Circuit Integration Plan | Planning / engineering review |
+| [`M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md`](M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md) | M11 Digital I&C Release-Assurance Plan | Planning / engineering review |
+| [`M13_DIGITAL_IC_DEGRADATION_AUTOMATION_TRANSPARENCY_PLAN.md`](M13_DIGITAL_IC_DEGRADATION_AUTOMATION_TRANSPARENCY_PLAN.md) | M13.9 Digital I&C Degradation & Automation Transparency | Planning / engineering review |
+| [`PRE_M11_IMPLEMENTATION_DECISIONS.md`](PRE_M11_IMPLEMENTATION_DECISIONS.md) | Pre-M11 implementation decisions from V&V and Digital-I&C reviews | Planning / engineering review |
 | [`PROJECT.md`](PROJECT.md) | Project — current authoritative state | Governance / navigation |
 | [`PROTECTION_INTERLOCKS_TRIPS_SCRAM.md`](PROTECTION_INTERLOCKS_TRIPS_SCRAM.md) | Protection, Interlocks, Trips & SCRAM | Operations / scenarios / replay |
 | [`PUMPS.md`](PUMPS.md) | Pumps | Physics / plant / controls |
@@ -149,3 +156,24 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 - Every live top-level `docs/*.md` file must appear in this index.
 - `README.md` may remain curated and should link here instead of attempting to duplicate the complete catalog.
 - M11.5 owns an automated coverage check so new top-level documents cannot silently bypass the index.
+
+## Operating-point equilibrium planning
+
+- [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md) — residual taxonomy, closed-loop/fixed-input qualification, domain-headroom diagnostics, bounded trimmer and M12.0 roadmap.
+- [`M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md`](M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md) — evidence-first diagnostic route for the current/future long healthy-reference drift or envelope blocker before any production fix.
+
+## Pre-M11 engineering review and implementation planning
+
+- [`PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md`](PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md) — consolidated index across nuclear-code V&V, Digital I&C/human-system and operating-point equilibrium review streams.
+- [`PRE_M11_NUCLEAR_CODE_VV_REVIEW.md`](PRE_M11_NUCLEAR_CODE_VV_REVIEW.md) — reviewed nuclear-code V&V methodology and final-M10 gate rationale.
+- [`PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md`](PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md) — reviewed Digital I&C / human-system safety planning input.
+- [`DIGITAL_IC_ARCHITECTURE_INVARIANTS.md`](DIGITAL_IC_ARCHITECTURE_INVARIANTS.md) — 22 architecture invariants for M11+ review.
+- [`HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md`](HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md) — explicit current/future human–automation allocation matrix.
+- [`DIGITAL_IC_HAZARD_CATALOG.md`](DIGITAL_IC_HAZARD_CATALOG.md) — deterministic software/I&C hazard catalog.
+- [`HMI_CLASSIC_FAILURE_MODES_CHECKLIST.md`](HMI_CLASSIC_FAILURE_MODES_CHECKLIST.md) — data-overload, keyhole, mode-error and automation-transparency review checklist.
+- [`M11_COTS_DEPENDENCY_ASSURANCE_PLAN.md`](M11_COTS_DEPENDENCY_ASSURANCE_PLAN.md) — proportional dependency assurance plan.
+- [`M11_PLUS_DIGITAL_IC_BACKLOG.md`](M11_PLUS_DIGITAL_IC_BACKLOG.md) — deferred feature backlog that remains outside feature-frozen M11.
+- [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md) — M12.0 equilibrium residual/trimmer/stability plan.
+- [`M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md`](M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md) — evidence-first current long-run failure diagnostic route.
+- [`research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md`](research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md) — source bibliography and retained/non-retained consequences.
+- [`research/LAMARSH_FOLLOW_UP_CANDIDATES.md`](research/LAMARSH_FOLLOW_UP_CANDIDATES.md) — uncommitted follow-up physics/diagnostic candidates from the third review.

@@ -1,5 +1,7 @@
 @echo off
 setlocal EnableExtensions
+set "HISTORICAL_REUSE=0"
+if /I "%~1"=="--historical-reuse" set "HISTORICAL_REUSE=1"
 set "ROOT=%~dp0.."
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
@@ -86,10 +88,14 @@ dotnet test --project "%APP_PROJECT%" --no-build -- ^
   --parallel none
 if errorlevel 1 exit /b 1
 
-dotnet test --project "%APPLICATION_PROJECT%" --no-build -- ^
-  --filter-method "NuclearReactorSimulator.Application.Tests.ApplicationDescriptorTests.Current_DescribesM10973Hotfix2Rev2DesktopHostSessionIntegrityCandidate" ^
-  --parallel none
-if errorlevel 1 exit /b 1
+if "%HISTORICAL_REUSE%"=="1" (
+  echo M10.9.7.3 Hotfix 2 REV2 exact-candidate descriptor check skipped in historical-reuse mode; current host/session integrity tests still rerun.
+) else (
+  dotnet test --project "%APPLICATION_PROJECT%" --no-build -- ^
+    --filter-method "NuclearReactorSimulator.Application.Tests.ApplicationDescriptorTests.Current_DescribesM10973Hotfix2Rev2DesktopHostSessionIntegrityCandidate" ^
+    --parallel none
+  if errorlevel 1 exit /b 1
+)
 
 dotnet test --project "%APP_PROJECT%" --no-build -- ^
   --filter-class "NuclearReactorSimulator.App.Tests.ControlRoom.MissionPerformance.M10973MissionPerformanceWorkspaceUiTests" ^

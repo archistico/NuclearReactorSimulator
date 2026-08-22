@@ -26,7 +26,7 @@ scripts\run-m10-final-validation.cmd
 
 ### Stage B — explicit long operational validation
 
-A separate scheduled/explicit gate will run approximately one hour of wall-clock validation. It must not become part of routine `dotnet test`.
+A separate scheduled/explicit gate targets approximately one hour of workstation validation. Wall clock is diagnostic; the deterministic workload is frozen independently of machine speed. It must not become part of routine `dotnet test`.
 
 The long gate will include representative healthy and degraded operational trajectories and must check at minimum:
 
@@ -46,15 +46,11 @@ Planned entry point:
 scripts\run-m10-final-long-validation.cmd
 ```
 
-The exact simulated-time horizon and profile mix will be frozen only after M10.9.8.5, so the gate can use the final supported M10 product state rather than a partial candidate.
+The workload is now frozen after M10.9.8.5 and the cumulative gate: 14,400 simulated seconds / 1,440,000 authored 10 ms steps across LR-H1/LR-M1/LR-D1/LR-P1/LR-R1. The duration was timing-calibrated before the first acceptance run; no physics or acceptance tolerance was changed.
 
 ## Required final artifact
 
-Both stages will emit under:
-
-```text
-artifacts\m10-final-pre-m11-validation\
-```
+Stage A emits under `artifacts\m10-final-pre-m11-validation\`; Stage B emits under `artifacts\m10-final-long-validation\`.
 
 The final summary must include at least:
 
@@ -70,3 +66,8 @@ m10-final-pre-m11-validation-passes=True
 ```
 
 M11 may start only after this final summary is green.
+
+
+## Current execution state — 2026-08-22
+
+M10.9.8.5 manual integrated HMI acceptance is complete and M10.9.8 is CLOSED. **M10 Final Pre-M11 Cumulative Validation Hotfix 1 is VALIDATED** with `m10-final-cumulative-validation-passes=True`. The remaining blocking gate is the frozen long campaign implemented by `scripts/run-m10-final-long-validation.cmd`. M10 and M11 remain blocked until that gate is green and M10 closure is explicitly recorded.

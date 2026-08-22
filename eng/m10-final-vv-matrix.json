@@ -1,0 +1,1775 @@
+{
+  "schema": "m10-final-vv-matrix-v1",
+  "status": "FROZEN-PRE-LONG",
+  "generated_from": "M10.9.8.5 VALIDATED + Pre-M11 Nuclear Code V&V Review Draft 3",
+  "baseline_status": "M10.9.8.5 VALIDATED; M10.9.8 CLOSED; M10 remains OPEN pending final cumulative and long gates.",
+  "purpose": "Trace each major model/phenomenon to exact owner evidence, acceptance criteria, qualified range and known limitation before the final cumulative and long pre-M11 gates.",
+  "evidence_classes": {
+    "Verification": "Implemented equations/software contracts/invariants are verified; no external physical validation implied.",
+    "Model validation / assessment": "Compared with independent analytical, experimental, benchmark or accepted code reference.",
+    "Integral system qualification": "Coupled whole-plant/transient behavior qualified within an exact versioned scope.",
+    "User/HMI acceptance": "Operator-facing behavior accepted manually within educational scope."
+  },
+  "final_gate_tiers": [
+    "ordinary",
+    "current-evidence",
+    "integral",
+    "manual",
+    "scheduled-long",
+    "long"
+  ],
+  "global_non_regression_rules": [
+    "Do not widen an existing frozen tolerance after observing final-gate or long-gate results.",
+    "Do not reinterpret historical exact-version scenario/archive identities.",
+    "Historical superseded audits are provenance unless explicitly listed as a current required route.",
+    "Any unhandled exception, non-finite physical observation, unsupported envelope excursion, fingerprint mismatch, unsafe commit or fallback-commit violation is blocking.",
+    "Claims remain scoped to the declared educational/reduced-order range and must not be upgraded to licensing-grade validation without independent evidence."
+  ],
+  "authoritative_exact_v4_reference": {
+    "trajectory_id": "phase-i-production-v4-repaired-healthy-300s-rq1",
+    "initial_condition": "integrated-operations-desktop-stable@4",
+    "hydraulic_mode": "FourNodeBranchContinuityCorrectedCommitOptIn",
+    "thermodynamic_closure": "CorrelationConsistentInverseDomain",
+    "fixed_step_ms": 10,
+    "simulated_seconds": 300,
+    "instantaneous_conservation_ceilings": {
+      "mass_closure_residual_kg": 1e-06,
+      "energy_closure_residual_J": 0.01,
+      "balance_mass_rate_residual_kg_s": 1e-08,
+      "balance_power_residual_W": 0.001
+    },
+    "frozen_i3_budget_source": "eng/frozen-evidence/ordinary/I3_ValidatedAuthoritativeToleranceBudgets.csv",
+    "frozen_i3_budget_count": 19,
+    "frozen_i3_budgets": [
+      {
+        "metric_id": "gross-electrical-power",
+        "unit": "MW",
+        "target": 5.084108234158506,
+        "absolute_tolerance": 0.05,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "shaft-power",
+        "unit": "MW",
+        "target": 5.687864445405155,
+        "absolute_tolerance": 0.05,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "rotor-speed",
+        "unit": "rpm",
+        "target": 3000.0025979531392,
+        "absolute_tolerance": 1.0,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "condenser-pressure",
+        "unit": "kPa",
+        "target": 8.424328285033043,
+        "absolute_tolerance": 0.1,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "drum-level-fraction",
+        "unit": "fraction",
+        "target": 0.8843207265491398,
+        "absolute_tolerance": 0.06751411251676909,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "total-fluid-mass",
+        "unit": "kg",
+        "target": 60009.3964107606,
+        "absolute_tolerance": 0.1,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "total-fluid-internal-energy",
+        "unit": "J",
+        "target": 67897834511.679855,
+        "absolute_tolerance": 124820553.8175354,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "exhaust-mass",
+        "unit": "kg",
+        "target": 67.56665011539573,
+        "absolute_tolerance": 0.1218265069788913,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "hotwell-mass",
+        "unit": "kg",
+        "target": 9936.871260683181,
+        "absolute_tolerance": 2.050920692301588,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "feedwater-inventory-mass",
+        "unit": "kg",
+        "target": 9938.311539935263,
+        "absolute_tolerance": 2.2928623754851287,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "drum-inventory-mass",
+        "unit": "kg",
+        "target": 6743.208310541109,
+        "absolute_tolerance": 496.0622945216455,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "main-steam-header-mass",
+        "unit": "kg",
+        "target": 3038.0623826424144,
+        "absolute_tolerance": 21.34635620998688,
+        "derivation": "I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation"
+      },
+      {
+        "metric_id": "slope.total-fluid-mass",
+        "unit": "kg/s",
+        "target": 0.0,
+        "absolute_tolerance": 0.01,
+        "derivation": "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"
+      },
+      {
+        "metric_id": "slope.total-fluid-internal-energy",
+        "unit": "W",
+        "target": 0.0,
+        "absolute_tolerance": 4123605.5243297582,
+        "derivation": "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"
+      },
+      {
+        "metric_id": "slope.exhaust-mass",
+        "unit": "kg/s",
+        "target": 0.0,
+        "absolute_tolerance": 0.01,
+        "derivation": "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"
+      },
+      {
+        "metric_id": "slope.hotwell-mass",
+        "unit": "kg/s",
+        "target": 0.0,
+        "absolute_tolerance": 0.06683985552063132,
+        "derivation": "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"
+      },
+      {
+        "metric_id": "slope.feedwater-inventory-mass",
+        "unit": "kg/s",
+        "target": 0.0,
+        "absolute_tolerance": 0.0744099542760827,
+        "derivation": "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"
+      },
+      {
+        "metric_id": "slope.drum-inventory-mass",
+        "unit": "kg/s",
+        "target": 0.0,
+        "absolute_tolerance": 16.490334596924445,
+        "derivation": "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"
+      },
+      {
+        "metric_id": "slope.main-steam-header-mass",
+        "unit": "kg/s",
+        "target": 0.0,
+        "absolute_tolerance": 0.705861722471612,
+        "derivation": "I3-production-final-60s-linear-slope; target-zero; freeze-after-validation"
+      }
+    ]
+  },
+  "rows": [
+    {
+      "id": "PHY-NK-01",
+      "phenomenon": "Point kinetics and delayed-neutron response",
+      "owner": "M2.2/M2 reactor physics",
+      "evidence_class": "Verification",
+      "qualification_label": "VERIFIED",
+      "claim": "VERIFIED — reduced-order educational point kinetics.",
+      "reference_type": "Analytical/invariant + deterministic regression",
+      "exact_scope_or_range": "Configured reduced-order point-kinetics parameter sets inside the supported numerical envelope.",
+      "known_limit": "No full 3D neutron transport/diffusion solution; no plant-certified RBMK constants in the engine.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/NEUTRON_KINETICS.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/Neutronics/PointKineticsSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.Neutronics.PointKineticsSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/Neutronics/PointKineticsRuntimeIntegrationTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.Neutronics.PointKineticsRuntimeIntegrationTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": false,
+      "acceptance_criteria": [
+        "All ordinary owner tests pass.",
+        "Critical-equilibrium and signed reactivity-response invariants remain exact/deterministic."
+      ],
+      "pre_m11_action": "Rerun owner tests in cumulative gate; document as verification, not external physical validation.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "PHY-DH-01",
+      "phenomenon": "Decay-heat generation, inventory memory and shutdown decay",
+      "owner": "M2.5",
+      "evidence_class": "Verification",
+      "qualification_label": "VERIFIED",
+      "claim": "VERIFIED — deterministic reduced-order decay heat.",
+      "reference_type": "Closed-form analytical solution + invariants",
+      "exact_scope_or_range": "Configured equivalent decay-heat groups and deterministic power histories.",
+      "known_limit": "Reduced-order configured groups; not a plant-certified decay-heat standard correlation/data set.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/DECAY_HEAT.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/DecayHeat/DecayHeatSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.DecayHeat.DecayHeatSolverTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": false,
+      "acceptance_criteria": [
+        "All ordinary owner tests pass.",
+        "Closed-form/equilibrium/half-life and energy-accounting invariants remain exact within owner-test tolerances."
+      ],
+      "pre_m11_action": "Keep owner verification; add explicit external-validation gap to final matrix.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "PHY-TF-01",
+      "phenomenon": "Fuel/coolant temperature reactivity feedback",
+      "owner": "M2.3",
+      "evidence_class": "Verification",
+      "qualification_label": "VERIFIED",
+      "claim": "VERIFIED — configured linear feedback law.",
+      "reference_type": "Algebraic model/invariant",
+      "exact_scope_or_range": "Configured linear temperature-feedback coefficients around authored reference temperatures.",
+      "known_limit": "Linear reduced-order feedback; no plant-certified coefficient field or same-step high-fidelity nonlinear coupling.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/TEMPERATURE_FEEDBACK.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/Feedback/TemperatureFeedbackSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.Feedback.TemperatureFeedbackSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/Feedback/TemperatureFeedbackRuntimeIntegrationTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.Feedback.TemperatureFeedbackRuntimeIntegrationTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": false,
+      "acceptance_criteria": [
+        "All ordinary owner tests pass.",
+        "Configured signed fuel/coolant feedback remains deterministic and ownership-compatible."
+      ],
+      "pre_m11_action": "Rerun owner tests; classify coefficient calibration as model-assessment gap.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "PHY-VF-01",
+      "phenomenon": "Void fraction projection and void-reactivity feedback",
+      "owner": "M2.7/M2.7.1",
+      "evidence_class": "Verification",
+      "qualification_label": "VERIFIED",
+      "claim": "VERIFIED — reduced homogeneous-equilibrium void feedback.",
+      "reference_type": "Thermodynamic mapping + invariant",
+      "exact_scope_or_range": "Supported simplified water/steam phases and homogeneous-equilibrium saturated-mixture mapping.",
+      "known_limit": "No drift-flux/slip correlations, channel-scale boiling dynamics or plant-certified void coefficient distribution.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/VOID_FEEDBACK.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/Feedback/VoidFeedbackSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.Feedback.VoidFeedbackSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/Feedback/WaterSteamVoidFractionSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.Feedback.WaterSteamVoidFractionSolverTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": false,
+      "acceptance_criteria": [
+        "All ordinary owner tests pass.",
+        "Phase-aware void projection and signed void-reactivity mapping remain finite and deterministic over the supported simplified water/steam envelope."
+      ],
+      "pre_m11_action": "Retain verification; limitation must be explicit in final qualification table.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "PHY-XE-01",
+      "phenomenon": "I-135/Xe-135 poisoning and xenon reactivity",
+      "owner": "M2.8",
+      "evidence_class": "Verification",
+      "qualification_label": "VERIFIED",
+      "claim": "VERIFIED — reduced lumped iodine/xenon model.",
+      "reference_type": "Closed-form analytical solution + qualitative physical behavior",
+      "exact_scope_or_range": "Configured lumped I/Xe model for educational power histories.",
+      "known_limit": "No plant-specific RBMK yields/cross sections, spatial xenon oscillations, full depletion or samarium.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/IODINE_XENON_DYNAMICS.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/milestones/M2.8.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/IodineXenon/IodineXenonSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.IodineXenon.IodineXenonSolverTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": false,
+      "acceptance_criteria": [
+        "All ordinary owner tests pass.",
+        "I/Xe equilibrium, shutdown buildup, burnup/decay and deterministic finite-step contracts remain green."
+      ],
+      "pre_m11_action": "Rerun owner tests; classify as verified/qualitatively assessed rather than experimentally validated.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "TH-WSP-01",
+      "phenomenon": "Water/steam thermodynamic closure and inverse-domain behavior",
+      "owner": "M3 thermodynamics + M10.9.4.1 I.5 repair",
+      "evidence_class": "Verification + limited model assessment",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — simplified exact-v4 thermodynamic domain only.",
+      "reference_type": "Physical plausibility points + round-trip/inverse invariants + long-horizon operational evidence",
+      "exact_scope_or_range": "Declared simplified water/steam envelope of authoritative desktop exact @4.",
+      "known_limit": "Not IAPWS-grade across full envelope; no arbitrary metastable/supercritical claim; historical @2/@3 preserve older topology.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/WATER_STEAM_MODEL.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/SimplifiedWaterSteamThermodynamicModelTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.SimplifiedWaterSteamThermodynamicModelTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-water-steam-correlation-topology-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "current-evidence",
+        "integral"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-i5-water-steam-correlation-topology-audit.cmd",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Ordinary thermodynamic owner tests pass.",
+        "I.5 correlation-topology gate exits 0.",
+        "Exact-v4 300 s requalification exits 0 with all 19 frozen I.3 budgets passing and no health/reverse-flow violations."
+      ],
+      "pre_m11_action": "Mandatory final rerun of authoritative exact-v4 thermodynamic/current-evidence gate; keep external steam-table validation gap explicit.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "TH-CON-01",
+      "phenomenon": "Primary/global fluid mass and energy conservation",
+      "owner": "M3.8 + PlantNetworkOrchestrator",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — conservation closure; asymptotic steady state not claimed.",
+      "reference_type": "Conservation invariants + long-run regression",
+      "exact_scope_or_range": "Canonical integrated primary/full-plant compositions used by current exact versions.",
+      "known_limit": "Reference trajectory shows continuing inventory/energy redistribution; final 60 s are not asymptotic steady-state evidence.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/INTEGRATED_PRIMARY_CIRCUIT.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Exact-v4 300 s max |mass closure residual| <= 1e-6 kg.",
+        "Exact-v4 300 s max |energy closure residual| <= 1e-2 J.",
+        "Exact-v4 300 s max |balance mass-rate residual| <= 1e-8 kg/s.",
+        "Exact-v4 300 s max |balance power residual| <= 1e-3 W.",
+        "Long-run applies the same instantaneous closure ceilings; drift/slope limits are frozen separately before acceptance execution."
+      ],
+      "pre_m11_action": "Final cumulative gate must rerun current-v4 conservation owner; one-hour gate must freeze drift ceilings before execution.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "TH-HYD-01",
+      "phenomenon": "Pump/pipe/valve hydraulic response",
+      "owner": "M3 hydraulics + Phase H/I numerical ownership",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — reduced hydraulic network within validated profiles.",
+      "reference_type": "Component laws + cross-profile deterministic operational qualification",
+      "exact_scope_or_range": "Authoritative exact @4 corrected-commit operating domain and versioned qualified profiles.",
+      "known_limit": "0D/lumped hydraulics; no distributed elevation/acoustics/water hammer/cavitation/NPSH; near-zero reduced-law conditioning remains a documented later issue.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/PIPES_AND_FLOW.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Domain.Tests/Physics/Quantities/QuadraticHydraulicResistanceTests.cs",
+          "class": "NuclearReactorSimulator.Domain.Tests.Physics.Quantities.QuadraticHydraulicResistanceTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-four-node-post-h28-committed-long-horizon-requalification-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-thermodynamic-repair-long-horizon-cross-profile-requalification-stage2-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIThermodynamicRepairLongHorizonCrossProfileRequalificationAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairLongHorizonCrossProfileRequalificationAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Training/DesktopHydraulicProductionPolicyTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Training.DesktopHydraulicProductionPolicyTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "current-evidence",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [
+        "scripts/run-four-node-post-h28-committed-long-horizon-requalification-audit.cmd"
+      ],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Quadratic resistance owner tests pass.",
+        "Current I.5 long-horizon/cross-profile requalification exits 0.",
+        "Exact-v4 300 s has trigger activity and zero rollback, explicit fallback, fallback-commit violation, unsafe commit, and untargeted branch disagreement."
+      ],
+      "pre_m11_action": "Curated current numerical/hydraulic gate required; do not rerun every historical H experiment.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": [
+        "scripts/run-i5-thermodynamic-repair-long-horizon-cross-profile-requalification-stage2-audit.cmd"
+      ]
+    },
+    {
+      "id": "NUM-COUP-01",
+      "phenomenon": "Fixed-step multiphysics/hydraulic coupling and convergence",
+      "owner": "PlantNetworkOrchestrator + Phase H/I",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — current 10 ms production coupling domain.",
+      "reference_type": "Conservation/convergence invariants + cross-profile + replay + performance evidence",
+      "exact_scope_or_range": "Current exact @4 production composition and documented cross-profile/off-design test domain.",
+      "known_limit": "Not a general proof for arbitrary timestep/refinement or all off-design states; historical source-retained modes are not production choices.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/PLANT_NETWORK_ORCHESTRATION.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-thermodynamic-repair-requalification-stage1-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-thermodynamic-repair-long-horizon-cross-profile-requalification-stage2-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-thermodynamic-repair-replay-protection-off-design-requalification-stage3-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-thermodynamic-repair-performance-cost-operational-soak-requalification-stage4-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIThermodynamicRepairRequalificationStage1AuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairRequalificationStage1AuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIThermodynamicRepairLongHorizonCrossProfileRequalificationAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairLongHorizonCrossProfileRequalificationAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIThermodynamicRepairReplayCheckpointProtectionRequalificationAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairReplayCheckpointProtectionRequalificationAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIThermodynamicRepairOffDesignRequalificationAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairOffDesignRequalificationAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIThermodynamicRepairPerformanceCostOperationalSoakRequalificationAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairPerformanceCostOperationalSoakRequalificationAuditTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "current-evidence",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "scripts/run-i5-thermodynamic-repair-requalification-stage1-audit.cmd",
+        "scripts/run-i5-thermodynamic-repair-replay-protection-off-design-requalification-stage3-audit.cmd",
+        "scripts/run-i5-thermodynamic-repair-performance-cost-operational-soak-requalification-stage4-audit.cmd",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "I.5 stages 1-4 all exit 0.",
+        "Exact-v4 300 s telemetry: triggered > 0; eligible = triggered; authorized = triggered; corrected commits = triggered.",
+        "Rollback/fallback/fallback-commit/unsafe/untargeted-disagreement counts are zero on the authoritative healthy exact-v4 reference.",
+        "Long-run records the same counters continuously and fails closed on any nonzero unsafe/fallback-commit/untargeted-disagreement count."
+      ],
+      "pre_m11_action": "Make this a dedicated final matrix row; final long gate records trigger/commit/rollback/fallback/unsafe counters.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": [
+        "scripts/run-i5-thermodynamic-repair-long-horizon-cross-profile-requalification-stage2-audit.cmd"
+      ]
+    },
+    {
+      "id": "TH-DRM-01",
+      "phenomenon": "Steam-drum separation, recirculation and inventory",
+      "owner": "M3.6 + M10.9.4.1 B",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — lumped drum conservation/operation, not detailed drum dynamics.",
+      "reference_type": "Mass/energy invariants + operational reference trajectory",
+      "exact_scope_or_range": "Current lumped drum definitions in supported production profiles.",
+      "known_limit": "Industrial-fidelity swell/shrink, separator carryover/carryunder and detailed geometry are not modeled; 300 s reference still exhibits drum inventory redistribution.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/STEAM_DRUMS.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Reactor/PrimaryCircuit/SteamDrums/SteamDrumSeparationSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.PrimaryCircuit.SteamDrums.SteamDrumSeparationSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Steam-drum owner tests pass.",
+        "Exact-v4 300 s drum inventory and drum-level metrics remain within the 19 frozen I.3 budgets.",
+        "Long-run drum inventory/level remain finite and inside pre-frozen operational/drift limits."
+      ],
+      "pre_m11_action": "Keep conservation owner; one-hour gate tracks drum inventory slope/level and must not silently tune it away.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "TH-STM-01",
+      "phenomenon": "Main-steam transport, relief and turbine bypass",
+      "owner": "M4/M10.9.4 F",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "VERIFIED/QUALIFIED",
+      "claim": "VERIFIED/QUALIFIED — reduced relief and bypass model only.",
+      "reference_type": "Reduced choked-flow law + conservative source-term invariants",
+      "exact_scope_or_range": "Explicitly implemented reduced-order steam relief/bypass paths.",
+      "known_limit": "No general wet-steam critical-flow fidelity; relief/bypass are stateless pressure functions without blowdown/reseat hysteresis or lift dynamics.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/MAIN_STEAM_NETWORK.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-choked-steam-flow-tests.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-main-steam-relief-tests.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-turbine-bypass-tests.cmd"
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/MainSteam/CompressibleSteamFlowSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.MainSteam.CompressibleSteamFlowSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/MainSteam/MainSteamReliefBoundarySolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.MainSteam.MainSteamReliefBoundarySolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/MainSteamReliefImplementationTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.MainSteamReliefImplementationTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/TurbineBypassImplementationTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineBypassImplementationTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "current-evidence",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-choked-steam-flow-tests.cmd",
+        "scripts/run-main-steam-relief-tests.cmd",
+        "scripts/run-turbine-bypass-tests.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Compressible steam-flow, header-relief and turbine-bypass focused gates all exit 0.",
+        "No unsupported thermodynamic-envelope excursion occurs in current exact-v4 integral gates.",
+        "Long-run main-steam/header values remain finite; relief/bypass activation must match authored conditions and be classified expected vs unexpected."
+      ],
+      "pre_m11_action": "Rerun current owner tests; limitation must remain explicit.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "SEC-TUR-01",
+      "phenomenon": "Turbine expansion, valve admission, rotor dynamics and mechanical loss",
+      "owner": "M4.1/M4.2 + M10.9.4 D",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — educational turbine/rotor operating range.",
+      "reference_type": "Energy/torque invariants + operational transients",
+      "exact_scope_or_range": "Current reduced turbine train around validated 5–10 MWe production trajectories.",
+      "known_limit": "Reduced-stage thermodynamics and losses; no detailed wet-steam blade-stage/moisture-separator-reheater model.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/TURBINE_EXPANSION_AND_ROTOR.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-turbine-expansion-enthalpy-tests.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-turbine-admission-authority-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-turbine-governor-actuator-tracking-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Turbine/TurbineExpansionSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Turbine.TurbineExpansionSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/TurbineExpansionEnthalpyMigrationAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineExpansionEnthalpyMigrationAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/TurbineAdmissionAuthorityAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineAdmissionAuthorityAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/TurbineGovernorActuatorTrackingAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineGovernorActuatorTrackingAuditTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "current-evidence",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-turbine-expansion-enthalpy-tests.cmd",
+        "scripts/run-turbine-admission-authority-audit.cmd",
+        "scripts/run-turbine-governor-actuator-tracking-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Turbine expansion, admission authority and governor actuator focused gates exit 0.",
+        "Exact-v4 integral operation has finite rotor speed/shaft power and no unexpected trip.",
+        "Long-run rotor speed and shaft power remain within pre-frozen operational windows; no unclassified overspeed/reverse-power event."
+      ],
+      "pre_m11_action": "Curated turbine owner + operational transient rerun; track rotor-speed/shaft-power in one-hour gate.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "SEC-CND-01",
+      "phenomenon": "Condenser pressure, condensation, heat rejection and hotwell inventory",
+      "owner": "M4.3 + M10.9.4 C",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — reduced condenser/hotwell model.",
+      "reference_type": "Mass/energy invariants + capacity/limiter operational evidence",
+      "exact_scope_or_range": "Current production condenser model within validated load trajectories.",
+      "known_limit": "No air ingress/ejectors/non-condensable partial pressure, detailed tube bundle, circulating-water hydraulics or hotwell geometry/control.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/CONDENSER_VACUUM_HOTWELL.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Condenser/CondenserSystemSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Condenser.CondenserSystemSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-turbine-bypass-tests.cmd",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Condenser solver/bypass owners pass.",
+        "Exact-v4 300 s condenser pressure remains within frozen I.3 budget.",
+        "Long-run condenser pressure, hotwell mass and heat rejection remain finite and within pre-frozen operational/drift limits."
+      ],
+      "pre_m11_action": "One-hour gate tracks condenser pressure, heat rejection and hotwell inventory; no new tuning after run.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "SEC-FW-01",
+      "phenomenon": "Condensate/feedwater closed mass path and thermal conditioning",
+      "owner": "M4.4",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — simplified closed feedwater path.",
+      "reference_type": "Conservation invariants + integrated operating trajectory",
+      "exact_scope_or_range": "Current simplified secondary return train.",
+      "known_limit": "No detailed LP/HP heater cascades, extraction-steam drains, deaerator chemistry or makeup chemistry/inventory control.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/CONDENSATE_FEEDWATER_TRAIN.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Feedwater/CondensateFeedwaterSystemSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Feedwater.CondensateFeedwaterSystemSolverTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Feedwater owner tests pass.",
+        "Exact-v4 300 s feedwater inventory remains within frozen I.3 budget.",
+        "Long-run feedwater inventory/flow remains finite and within pre-frozen operational/drift limits."
+      ],
+      "pre_m11_action": "Retain current owner tests; one-hour gate monitors feedwater flows/inventories.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "ELE-GRID-01",
+      "phenomenon": "Generator/grid synchronization, bidirectional coupling and electrical power balance",
+      "owner": "M4.5 + M10.9.4 E",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — reduced 10 MWe infinite-bus electrical model.",
+      "reference_type": "Power/torque invariants + signed transient/protection trajectories",
+      "exact_scope_or_range": "Educational 10 MWe infinite-bus production model and validated synchronization/load trajectories.",
+      "known_limit": "No detailed synchronous-machine dq-axis/transient reactance, AVR/field dynamics, multi-machine load flow or EMT relay behavior.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/GENERATOR_GRID_SYNCHRONIZATION.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Electrical/GeneratorGridSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Electrical.GeneratorGridSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-generator-grid-bidirectional-tests.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-electrical-protection-trajectory-audit.cmd"
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "current-evidence",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-generator-grid-bidirectional-tests.cmd",
+        "scripts/run-electrical-protection-trajectory-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Generator/grid focused gate exits 0.",
+        "Electrical protection trajectory gate exits 0.",
+        "Healthy final/long segments have no unexpected breaker trip; synchronization, phase/frequency and bidirectional exchange remain within existing owner contracts."
+      ],
+      "pre_m11_action": "Final gate reruns current electrical owner and synchronization journey; long gate tracks frequency/phase/grid exchange.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "CTL-INS-01",
+      "phenomenon": "Instrumentation validity, quality, measured-state ownership",
+      "owner": "M5.1 + M8.3",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — deterministic measured-signal/fault semantics.",
+      "reference_type": "Ownership/fail-closed invariants + injected deterministic faults",
+      "exact_scope_or_range": "Versioned instrumentation channels and deterministic fault schedules represented by current M5/M8 contracts.",
+      "known_limit": "Educational signal/fault model; not a detailed sensor electronics/calibration/noise/aging simulation unless explicitly authored.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/INSTRUMENTATION_SIGNAL_MODEL.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Instrumentation/InstrumentationSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Instrumentation.InstrumentationSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Faults/InstrumentationControlFaultTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Faults.InstrumentationControlFaultTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd"
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "manual"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd",
+        "scripts/run-m1098-integrated-human-automation-hmi-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Instrumentation and fault owner tests pass.",
+        "M10.9.8.3 confirms invalid/suspect/unavailable truth and no true-state fallback.",
+        "M10.9.8.5 manual route HMI-09 accepted before M10 closure."
+      ],
+      "pre_m11_action": "Keep M10.9.8.3 owner rerun; HMI manual acceptance must confirm operator truth presentation.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "CTL-AUT-01",
+      "phenomenon": "Manual/assisted/supervisory authority and assistance independence",
+      "owner": "M5.6/M5.7 + M10.9.8.2/8.3",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — current human/automation authority contract.",
+      "reference_type": "Control ownership invariants + 3×3 matrix + degraded/takeover matrix",
+      "exact_scope_or_range": "Current authored control objectives and M5 control seams in exact-v4 production scenarios.",
+      "known_limit": "Supervisory layer is deterministic reduced automation, not an autonomous optimal controller; support depends on published measured evidence.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/DUAL_ASSISTANCE_CONTROL_AUTHORITY.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/SUPERVISORY_AUTOMATIC_OPERATION.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10982-healthy-assistance-authority-matrix-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/Automation/TrainingAssistanceAuthorityIndependenceTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.TrainingAssistanceAuthorityIndependenceTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/Automation/PlantControlAuthorityIntegrationTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.PlantControlAuthorityIntegrationTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/Automation/M10982HealthyAssistanceAuthorityMatrixTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10982HealthyAssistanceAuthorityMatrixTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/Automation/M10983DegradedFaultProtectionTakeoverMatrixTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10983DegradedFaultProtectionTakeoverMatrixTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "manual",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-m10982-healthy-assistance-authority-matrix-audit.cmd",
+        "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd",
+        "scripts/run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "M10.9.8.2 healthy 3x3 matrix passes.",
+        "M10.9.8.3 degraded/takeover matrix passes.",
+        "M10.9.8.4 same-seed/replay/checkpoint matrix passes.",
+        "Protection remains authoritative over normal control and requested/effective authority remain distinct."
+      ],
+      "pre_m11_action": "Mandatory final rerun of M10.9.8.2–8.4 current owner gates.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "SAF-PROT-01",
+      "phenomenon": "Protection, interlocks, trips, SCRAM and reset",
+      "owner": "M5.5 + current-v2 electrical protection",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — authored reduced protection logic.",
+      "reference_type": "Logic/timing invariants + operational trip trajectories",
+      "exact_scope_or_range": "Authored reduced protection set and validated trajectories.",
+      "known_limit": "Not impedance/differential/EMT relay simulation; incomplete real-plant protection coverage.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/PROTECTION_INTERLOCKS_TRIPS_SCRAM.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Control/Protection/ProtectionSystemSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Control.Protection.ProtectionSystemSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-electrical-protection-trajectory-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd"
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "manual",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-electrical-protection-trajectory-audit.cmd",
+        "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd",
+        "scripts/run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Protection solver owner tests pass.",
+        "Electrical protection trajectory and M10.9.8.3/8.4 gates pass.",
+        "Healthy long segments: unexpected protection trip count = 0.",
+        "Intentional protection segment: expected trip occurs and is classified; reset/clear follows canonical permissive contract only."
+      ],
+      "pre_m11_action": "Final gate reruns protection owners; long gate distinguishes expected vs unexpected trips.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "FLT-DET-01",
+      "phenomenon": "Deterministic component/instrumentation fault injection and degraded operation",
+      "owner": "M8.1–M8.3 + M10.9.8.3",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — deterministic authored fault families.",
+      "reference_type": "Versioned deterministic fault schedules + owner integration tests",
+      "exact_scope_or_range": "Existing M8 fault families and current versioned schedules.",
+      "known_limit": "Fault framework orchestrates existing owners; it is not structural damage mechanics or arbitrary stochastic reliability modeling.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/DETERMINISTIC_FAULT_INJECTION_FRAMEWORK.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/HYDRAULIC_COMPONENT_FAULTS.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/INSTRUMENTATION_CONTROL_FAULTS.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Faults/FaultInjectionFrameworkTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Faults.FaultInjectionFrameworkTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Faults/HydraulicComponentFaultTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Faults.HydraulicComponentFaultTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Faults/InstrumentationControlFaultTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Faults.InstrumentationControlFaultTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd",
+        "scripts/run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Fault framework, hydraulic fault and instrumentation fault owners pass.",
+        "M10.9.8.3 all 11 degraded/fault/protection/takeover cases pass.",
+        "Long campaign contains at least one intentional degraded/fault leg with deterministic activation/clear evidence and no unclassified fault."
+      ],
+      "pre_m11_action": "Rerun M10.9.8.3 and relevant M8 owners; long gate includes at least one intentional degraded segment.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "SAF-ACC-01",
+      "phenomenon": "Educational LOCA/SBO-class scenario behavior",
+      "owner": "M8.5/M8.6/M8.7",
+      "evidence_class": "Integral system qualification (educational only)",
+      "qualification_label": "EDUCATIONAL QUALIFICATION ONLY",
+      "claim": "EDUCATIONAL QUALIFICATION ONLY — not accident-analysis validation.",
+      "reference_type": "Scenario/invariant regression",
+      "exact_scope_or_range": "Educational scenario behavior explicitly authored by M8.",
+      "known_limit": "Pressure-driven break is a bounded educational source-term model, not licensing-grade critical-flow LOCA physics; SBO lacks detailed AC/DC buses, diesels, batteries, switchgear/ECCS electrical detail.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/EDUCATIONAL_LEAK_LOCA_SCENARIOS.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/ELECTRICAL_LOSS_STATION_BLACKOUT_SCENARIOS.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/SAFETY_RESPONSE_SCENARIO_PACK.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Faults/LossOfCoolantScenarioTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Faults.LossOfCoolantScenarioTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Faults/ElectricalLossScenarioTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Faults.ElectricalLossScenarioTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "scheduled-long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": false,
+      "acceptance_criteria": [
+        "LOCA/SBO scenario owner tests and operational-envelope gate pass.",
+        "Qualification label remains EDUCATIONAL QUALIFICATION ONLY; no licensing/best-estimate accident-analysis claim."
+      ],
+      "pre_m11_action": "Do not elevate to physical validation claim; retain as educational integral scenario qualification and limitation.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": [
+        "scripts/run-operational-envelope-audit.cmd"
+      ]
+    },
+    {
+      "id": "ALM-TLN-01",
+      "phenomenon": "Alarms, first-out, event ordering and operator evidence timeline",
+      "owner": "M5/M6 + M9.2/M10.9.5",
+      "evidence_class": "Verification + HMI acceptance",
+      "qualification_label": "VERIFIED/HMI-ACCEPTED",
+      "claim": "VERIFIED/HMI-ACCEPTED — deterministic operator evidence ordering.",
+      "reference_type": "Ordering/state-machine invariants + manual observation",
+      "exact_scope_or_range": "Published alarm/event signals and versioned recorder contracts.",
+      "known_limit": "Temporal ordering is evidence, not automatic physical root-cause inference.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/TRENDS_ALARMS_EVENT_TIMELINE.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/POST_INCIDENT_ANALYSIS.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/OPERATOR_COMPUTER_ALARM_LOG_INCIDENT_WORKSTATION.md"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Control/Alarms/AlarmSystemSolverTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.Control.Alarms.AlarmSystemSolverTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/AlarmTrendTimelinePresentationTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.AlarmTrendTimelinePresentationTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/OperatorComputer/OperatorComputerM103AlarmLogTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.OperatorComputer.OperatorComputerM103AlarmLogTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "manual"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd",
+        "scripts/run-m1098-integrated-human-automation-hmi-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Alarm solver/timeline owner tests pass.",
+        "M10.9.8.4 timeline/replay reruns pass.",
+        "M10.9.8.5 manual alarm/first-out route accepted.",
+        "Long campaign preserves deterministic event ordering and records expected/unexpected alarm counts."
+      ],
+      "pre_m11_action": "Final HMI/manual route plus replay/timeline owner rerun.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "REC-RPL-01",
+      "phenomenon": "Recording, replay, checkpoint, archive and same-seed determinism",
+      "owner": "M9.1/M10.7/M10.9.6.5/M10.9.8.4",
+      "evidence_class": "Verification + integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — deterministic replay/checkpoint schema-v1 domain.",
+      "reference_type": "Exact deterministic equivalence/fingerprint invariants",
+      "exact_scope_or_range": "Current schema v1 archive/checkpoint and fingerprint algorithms over authored exact versions.",
+      "known_limit": "Hour-scale recordings can grow substantially; no silent decimation/chunking contract yet; recorder is synchronous.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/RECORDER_CHECKPOINT_FULL_REPLAY.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Recording/ScenarioRecorderReplayTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Recording.ScenarioRecorderReplayTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Recording/ScenarioSessionArchiveReplayTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Recording.ScenarioSessionArchiveReplayTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Recording/ScenarioAutomationReplayTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Recording.ScenarioAutomationReplayTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/Automation/M10984ReplayCheckpointSameSeedIntegrityTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10984ReplayCheckpointSameSeedIntegrityTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Scenario recorder/archive/automation replay owners pass.",
+        "M10.9.8.4: same-seed recording trace, full replay final fingerprint, checkpoint-prefix/live-continuation and challenge projection fingerprint equivalent for all representative classes.",
+        "Long campaign includes checkpoint/replay sentinels; any fingerprint mismatch is blocking."
+      ],
+      "pre_m11_action": "Mandatory final determinism rerun; one-hour gate samples checkpoint/replay and measures evidence growth.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "MIS-CHL-01",
+      "phenomenon": "Mission/challenge lifecycle, external demand and scoring presentation",
+      "owner": "M10.9.6/M10.9.7",
+      "evidence_class": "Verification + integral system qualification + HMI acceptance",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — deterministic training/mission contract.",
+      "reference_type": "Logical-time/ownership invariants + versioned mission matrices",
+      "exact_scope_or_range": "Current versioned challenge packs, especially bounded-demand production @2.",
+      "known_limit": "Challenge/score are observational/training semantics and have no plant-command authority; not a substitute for physical validation.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/OPERATIONAL_CHALLENGE_LIFECYCLE.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/OPERATIONAL_CHALLENGE_ENERGY_DEMAND.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/OPERATIONAL_CHALLENGE_SCORING.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/MISSION_PERFORMANCE_CLOSURE.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m1097-mission-performance-closure-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Challenges/M10961ChallengeLifecycleContractTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Challenges.M10961ChallengeLifecycleContractTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Challenges/Demand/M10962ExternalEnergyDemandProfileTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Challenges.Demand.M10962ExternalEnergyDemandProfileTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Challenges/Scoring/M10963ChallengeScoringContractTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Challenges.Scoring.M10963ChallengeScoringContractTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/MissionPerformance/M10975MissionPerformanceClosureContractTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.MissionPerformance.M10975MissionPerformanceClosureContractTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "manual",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-m1097-mission-performance-closure-audit.cmd",
+        "scripts/run-m10982-healthy-assistance-authority-matrix-audit.cmd",
+        "scripts/run-m10984-replay-checkpoint-same-seed-integrity-audit.cmd",
+        "scripts/run-m1098-integrated-human-automation-hmi-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "M10.9.7 closure gate passes.",
+        "M10.9.8.2 healthy mission matrix and M10.9.8.4 replay/checkpoint matrix pass.",
+        "M10.9.8.5 manual mission routes accepted.",
+        "Long mission leg preserves exact @2 binding and demand/request/actual separation; no historical control-out envelope failure."
+      ],
+      "pre_m11_action": "Final rerun current M10.9.6/7/8 owners; manual HMI acceptance required.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "HMI-OPS-01",
+      "phenomenon": "Operator HMI, keyboard operation and interactive-list stability",
+      "owner": "M6/M10.8/M10.9.7/M10.9.8.2 REV5/M10.9.8.5",
+      "evidence_class": "User/HMI acceptance + verification",
+      "qualification_label": "ACCEPTED",
+      "claim": "ACCEPTED — automated preflight and 12-route manual integrated HMI acceptance completed.",
+      "reference_type": "UI contract tests + manual observation",
+      "exact_scope_or_range": "Current desktop HMI and documented minimum window 1340×700.",
+      "known_limit": "Educational HMI acceptance only; not control-room certification.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/OPERATOR_COMPUTER_INTEGRATED_UI.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/M10_9_8_2_REV5_INTERACTIVE_LIST_STABILITY_AUDIT.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m1098-integrated-human-automation-hmi-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.App.Tests/OperatorExperienceM1091HmiShellTests.cs",
+          "class": "NuclearReactorSimulator.App.Tests.Views.OperatorExperienceM1091HmiShellTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.App.Tests/ControlRoomComputerControlXamlContractTests.cs",
+          "class": "NuclearReactorSimulator.App.Tests.Views.ControlRoomComputerControlXamlContractTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.App.Tests/M10982Hotfix1Rev5ListRefreshStabilityTests.cs",
+          "class": "NuclearReactorSimulator.App.Tests.ViewModels.M10982Hotfix1Rev5ListRefreshStabilityTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.App.Tests/ControlRoom/MissionPerformance/M10974MissionPerformanceDrillDownUiTests.cs",
+          "class": "NuclearReactorSimulator.App.Tests.ControlRoom.MissionPerformance.M10974MissionPerformanceDrillDownUiTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "manual"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-m1098-integrated-human-automation-hmi-audit.cmd",
+        "docs/M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": false,
+      "acceptance_criteria": [
+        "Automated integrated-HMI preflight passes.",
+        "All 12 M10.9.8.5 manual routes explicitly PASS.",
+        "No F9, no plant-command authority from MISSION, keyboard navigation remains usable, and collection-backed interactive controls show no recurring refresh flicker/reset."
+      ],
+      "pre_m11_action": "Preserve accepted M10.9.8.5 manual record during final cumulative/long gates.",
+      "closure_status": "ACCEPTED-M10985",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "INT-REF-01",
+      "phenomenon": "Whole-plant healthy reference operation and reference-scale behavior",
+      "owner": "M4.7 + M10.9.4.1 Phase I exact @4",
+      "evidence_class": "Integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — healthy reference trajectory, not asymptotic equilibrium.",
+      "reference_type": "Internal reference operating point + long-horizon non-regression",
+      "exact_scope_or_range": "Authoritative exact @4 production reference trajectory and validated operating bands.",
+      "known_limit": "The final reference window is not asymptotic steady state; known drum/header/energy redistribution slopes remain regression evidence, not calibration targets.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/FULL_PLANT_STEADY_STATE.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/REFERENCE_PLANT_SCALE_EVIDENCE.md"
+        },
+        {
+          "type": "document",
+          "path": "docs/KNOWN_MODEL_LIMITATIONS.md"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Integration/FullPlantSteadyStateTests.cs",
+          "class": "NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Integration.FullPlantSteadyStateTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/PhaseIRepairedExactVersion4ReferenceRequalificationAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIRepairedExactVersion4ReferenceRequalificationAuditTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "ordinary",
+        "integral",
+        "scheduled-long",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "dotnet test",
+        "scripts/run-reference-plant-scale-audit.cmd",
+        "scripts/run-i5-repaired-v4-300s-reference-requalification-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Reference-plant-scale gate exits 0.",
+        "Exact-v4 300 s requalification passes all 19 frozen budgets, conservation ceilings, zero health/reverse-flow violations and deterministic repeat.",
+        "Final long healthy sentinels remain inside separately frozen long-run limits; existing 300 s budgets are not widened after observing the long result."
+      ],
+      "pre_m11_action": "Final cumulative rerun plus one-hour healthy soak with pre-frozen drift ceilings.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": []
+    },
+    {
+      "id": "INT-TRN-01",
+      "phenomenon": "Representative whole-plant operational transients",
+      "owner": "M4/M5/M8/M10.9.4/M10.9.8",
+      "evidence_class": "Integral system qualification",
+      "qualification_label": "QUALIFIED",
+      "claim": "QUALIFIED — representative supported operational transients.",
+      "reference_type": "Versioned scenario trajectories + protection/control invariants",
+      "exact_scope_or_range": "Versioned current production and explicitly supported scenario profiles.",
+      "known_limit": "Qualification does not imply arbitrary transients or severe-accident fidelity outside authored envelopes.",
+      "evidence_references": [
+        {
+          "type": "script",
+          "path": "scripts/run-operational-envelope-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-gameplay-long-tests.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-generator-grid-bidirectional-tests.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10982-healthy-assistance-authority-matrix-audit.cmd"
+        },
+        {
+          "type": "script",
+          "path": "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd"
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/OperationalEnvelopeExtendedAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/ElectricalProtectionTrajectoryAuditTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionTrajectoryAuditTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/Automation/M10982HealthyAssistanceAuthorityMatrixTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10982HealthyAssistanceAuthorityMatrixTests",
+          "ordinary_discovery": true
+        },
+        {
+          "type": "test-class",
+          "path": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/Automation/M10983DegradedFaultProtectionTakeoverMatrixTests.cs",
+          "class": "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10983DegradedFaultProtectionTakeoverMatrixTests",
+          "ordinary_discovery": true
+        }
+      ],
+      "final_gate_tiers": [
+        "integral",
+        "scheduled-long",
+        "long"
+      ],
+      "final_cumulative_required_routes": [
+        "scripts/run-generator-grid-bidirectional-tests.cmd",
+        "scripts/run-m10982-healthy-assistance-authority-matrix-audit.cmd",
+        "scripts/run-m10983-degraded-fault-protection-takeover-audit.cmd"
+      ],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Operational-envelope, gameplay-long, electrical and M10.9.8 healthy/degraded matrices all pass.",
+        "Only current authoritative transient gates are rerun; historical superseded audit chains remain frozen provenance.",
+        "Long campaign completes all planned legs with zero unhandled exceptions and zero unclassified trips/faults."
+      ],
+      "pre_m11_action": "Curate only current authoritative transient gates into final orchestrator.",
+      "closure_status": "EVIDENCE-PRESENT-REQUIRES-FINAL-RERUN",
+      "final_long_required_routes": [
+        "scripts/run-operational-envelope-audit.cmd",
+        "scripts/run-gameplay-long-tests.cmd"
+      ]
+    },
+    {
+      "id": "LONG-SOAK-01",
+      "phenomenon": "Hour-scale integrated stability, drift, evidence growth and deterministic sentinels",
+      "owner": "Final M10 pre-M11 gate",
+      "evidence_class": "Integral system qualification",
+      "qualification_label": "PENDING",
+      "claim": "PENDING — mandatory pre-M11 evidence gap.",
+      "reference_type": "Scheduled-long operational soak + frozen acceptance criteria",
+      "exact_scope_or_range": "Frozen in M10 Final Long Validation contract after M10.9.8.5 acceptance; execution remains pending.",
+      "known_limit": "Long acceptance run not yet executed; M10 cannot close before it passes.",
+      "evidence_references": [
+        {
+          "type": "document",
+          "path": "docs/M10_FINAL_PRE_M11_VALIDATION_PLAN.md"
+        },
+        {
+          "type": "external-review-artifact",
+          "path": "PRE_M11_NUCLEAR_CODE_VV_REVIEW_DRAFT.md"
+        }
+      ],
+      "final_gate_tiers": [
+        "long"
+      ],
+      "final_cumulative_required_routes": [],
+      "historical_frozen_not_dynamically_rerun": [],
+      "long_validation_observed": true,
+      "acceptance_criteria": [
+        "Blocking before M11.",
+        "Explicit long campaign runs the frozen workload to completion.",
+        "Unhandled exceptions = 0; non-finite observations = 0; unsupported envelope excursions = 0; healthy-segment unexpected trips = 0.",
+        "Instantaneous conservation ceilings equal current exact-v4 ceilings.",
+        "Drift/slope/operational-window ceilings must be frozen before the acceptance run and may not be widened after observing results.",
+        "Deterministic replay/checkpoint sentinels must match exactly."
+      ],
+      "pre_m11_action": "BLOCKING: execute frozen final operational long validation after cumulative gate passes.",
+      "closure_status": "PENDING-LONG-GATE",
+      "final_long_required_routes": [
+        "scripts/run-m10-final-long-validation.cmd"
+      ]
+    }
+  ]
+}

@@ -66,3 +66,25 @@ Key M2.5 takeaway: reduced-order dynamic reactor models can approximate decay-he
 - U.S. NRC glossary — Void coefficient of reactivity: https://www.nrc.gov/reading-rm/basic-ref/glossary/void-coefficient-of-reactivity
 
 M2.7 uses these only as conceptual/reference boundaries. The current homogeneous-equilibrium quality-to-void conversion and linear void-reactivity coefficient are educational approximations, not licensing or engineering-analysis models.
+
+## Pre-M11 engineering review books
+
+These three books were reviewed during final M10 / pre-M11 planning. They are engineering guidance inputs, not runtime/code dependencies and not licensing evidence.
+
+### Wang, Li, Allison, Hohorst (eds.) — Nuclear Power Plant Design and Analysis Codes
+
+Jun Wang, Xin Li, Chris Allison, Judy Hohorst (eds.), *Nuclear Power Plant Design and Analysis Codes: Development, Validation, and Application*, Woodhead Publishing / Elsevier, 2021.
+
+Project use: V&V taxonomy, phenomenon-scoped qualification, separate/integral evidence, multiphysics coupling qualification, non-regression and explicit limitations. See `../PRE_M11_NUCLEAR_CODE_VV_REVIEW.md`.
+
+### National Research Council — Digital Instrumentation and Control Systems
+
+Committee on Application of Digital Instrumentation and Control Systems to Nuclear Power Plant Operations and Safety, *Digital Instrumentation and Control Systems in Nuclear Power Plants: Safety and Reliability Issues*, National Academy Press, 1997.
+
+Project use: protection/control separation, human–automation allocation, common-mode/diversity reasoning, software assurance, HMI failure modes, deterministic timing semantics and proportional dependency/COTS assurance. Historical regulatory discussion is not treated as current regulatory authority. See `../PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md`.
+
+### Lamarsh & Baratta — Introduction to Nuclear Engineering
+
+John R. Lamarsh and Anthony J. Baratta, *Introduction to Nuclear Engineering*, 3rd ed., Prentice Hall, 2001.
+
+Project use: coupled operating-point self-consistency as the conceptual basis for the planned residual/equilibrium qualification work. Other candidate topics remain research backlog unless separately promoted. See `../REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md` and `LAMARSH_FOLLOW_UP_CANDIDATES.md`.

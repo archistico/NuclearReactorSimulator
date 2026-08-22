@@ -1,3 +1,6 @@
+
+> **Hotfix 1:** the long preflight ignores generated `bin/` and `obj/` build output when checking the frozen `src/` and `tests/` manifests, so the gate remains valid even if `dotnet build` or `dotnet test` was run before the long script.
+
 # Nuclear Reactor Simulator
 
 Educational full-plant nuclear reactor simulator built with **C# / .NET 10 / Avalonia**. The project models a reduced RBMK-like plant as a deterministic, headless-testable simulation with an operator-facing desktop control room.

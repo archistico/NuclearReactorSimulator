@@ -25,7 +25,7 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
     private readonly ScenarioChallengeTracker _tracker;
     private readonly ReplayedChallengeContinuationEvidenceSource? _replayedContinuationEvidence;
     private readonly ScenarioRecorder? _recorder;
-    private readonly List<ExternalEnergyDemandEvidenceSnapshot> _demandTimeline = new();
+    private readonly MissionPerformanceLiveDemandEvidenceAccumulator _demandEvidence = new();
     private IReadOnlyList<ScenarioRecordingEvent> _cachedRecordingEvents = Array.Empty<ScenarioRecordingEvent>();
     private int _cachedRecorderEventCount = -1;
     private TrainingGuidanceMode _assistanceMode;
@@ -74,7 +74,7 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
                 session.PlantControlAuthority.CurrentAutomation.IsAvailable
                     ? session.PlantControlAuthority.CurrentAutomation.EffectiveAuthority
                     : PlantControlAuthorityMode.Manual);
-            _demandTimeline.AddRange(replayProjection.Frames.Select(static frame => frame.ExternalDemand));
+            _demandEvidence.Seed(replayProjection.Frames.Select(static frame => frame.ExternalDemand));
 
             _replayedContinuationEvidence = new ReplayedChallengeContinuationEvidenceSource(reconstructedPrefix.Frames[0].Snapshot);
             _tracker = ScenarioChallengeTracker.AttachDeterministicEvidence(
@@ -252,8 +252,8 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
     {
         var lifecycle = ChallengeLifecycleLogicalStepAlignment.Align(_tracker.Snapshot, snapshot.LogicalStep);
         UpsertDemandSample(snapshot);
-        var demand = _demandTimeline[^1];
-        var scoreEvidence = OperationalChallengeScoreEvidenceProjector.ProjectLive(_pack, lifecycle, _demandTimeline);
+        var demand = _demandEvidence.Current;
+        var scoreEvidence = OperationalChallengeScoreEvidenceProjector.ProjectLive(_pack, lifecycle, _demandEvidence.ScoreAggregate);
         var automation = _session.PlantControlAuthority.CurrentAutomation;
         var authorityMode = automation.IsAvailable ? automation.EffectiveAuthority : PlantControlAuthorityMode.Manual;
         var score = ChallengeScoreCalculator.Evaluate(
@@ -272,23 +272,14 @@ public sealed class MissionPerformanceLiveSnapshotSource : IMissionPerformanceSn
             _assistanceMode,
             automation,
             CurrentRecordingEvents(),
-            _demandTimeline);
+            _demandEvidence.RecentDemandChanges);
     }
 
     private void UpsertDemandSample(ControlRoomSnapshot snapshot)
     {
         var lifecycle = ChallengeLifecycleLogicalStepAlignment.Align(_tracker.Snapshot, snapshot.LogicalStep);
         var sample = ScenarioChallengeExternalDemandProjector.Project(_pack.Challenge, lifecycle, snapshot);
-        if (_demandTimeline.Count != 0 && _demandTimeline[^1].LogicalStep == sample.LogicalStep)
-        {
-            _demandTimeline[^1] = sample;
-            return;
-        }
-        if (_demandTimeline.Count != 0 && _demandTimeline[^1].LogicalStep > sample.LogicalStep)
-        {
-            throw new InvalidOperationException("Mission/Performance live demand evidence cannot move backwards in logical time.");
-        }
-        _demandTimeline.Add(sample);
+        _demandEvidence.Upsert(sample);
     }
 
     private IReadOnlyList<ScenarioRecordingEvent>? CurrentRecordingEvents()

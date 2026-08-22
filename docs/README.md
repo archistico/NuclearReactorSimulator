@@ -17,6 +17,13 @@ If two historical documents disagree with `PROJECT.md`, `PROJECT.md` is the curr
 
 - **`FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`** — detailed execution sequence, implementation slices, gates and deferred-item ownership from the active M10.9.7 Mission/Performance work through M15.
 - **`M10_9_7_3_HOTFIX1_REV2_DOCS3_ALIGNMENT.md`** — documentation-only checkpoint for the post-7.3 App desktop-host/session-integrity review and its pre-7.4/M11/M13 ownership decisions.
+- **`PRE_M11_IMPLEMENTATION_DECISIONS.md`** — consolidated decisions from the nuclear-code V&V and Digital-I&C/Human-System reviews: what M11 implements as assurance, what M13 implements as product behavior and what remains explicitly non-scope.
+- **`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`** — exact PASS/FAIL handoff from the active long gate to M10 closure, planning adoption and M11.1 bootstrap.
+- **`POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md`** — detailed branch-aware execution sequence from the final M10 long gate through M11 release hardening and the M12–M15 epics.
+- **`CHANGE_IMPACT_REVALIDATION_POLICY.md`** — minimum rerun ladder for documentation, harness, HMI/Application, persistence, control/protection, physics/numerical and release/package changes.
+- **`M11_RELEASE_EVIDENCE_MATRIX_PLAN.md`** — planned 30-row release-readiness matrix complementing the 27-row M10 phenomenon V&V provenance.
+- **`M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md`** — M11.1–M11.6 Digital-I&C release-assurance deliverables and gates.
+- **`M13_DIGITAL_IC_DEGRADATION_AUTOMATION_TRANSPARENCY_PLAN.md`** — planned M13.9 deterministic information-degradation and automation-transparency implementation.
 
 The approved post-Phase-I implementation sequence is documented in `ROADMAP.md`. Detailed milestone contracts are:
 
@@ -117,3 +124,22 @@ Large generated audit payloads are not documentation and are not bundled in sour
 Do not create another status/handoff/restart/candidate-summary file when the information belongs in `PROJECT.md`. Create a new document only when it has a distinct responsibility: stable architecture, subsystem reference, limitation register, ADR, user manual, research, acceptance artifact or historical provenance.
 
 Acceptance checklists are milestone artifacts, not stable architecture references. They remain discoverable through [`TOP_LEVEL_DOCUMENT_INDEX.md`](TOP_LEVEL_DOCUMENT_INDEX.md) and their owning milestone documents rather than being appended ad hoc to this curated README.
+
+- [`M10_FINAL_VV_MATRIX.md`](M10_FINAL_VV_MATRIX.md) — frozen 27-row pre-M11 phenomenon/evidence matrix and cumulative-gate status.
+- [`PRE_M11_NUCLEAR_CODE_VV_REVIEW.md`](PRE_M11_NUCLEAR_CODE_VV_REVIEW.md) — selective nuclear-code V&V review used to design the final M10 gates.
+- [`M10_FINAL_LONG_VALIDATION_METRICS_SPEC.md`](M10_FINAL_LONG_VALIDATION_METRICS_SPEC.md) — pre-freeze workload/metrics specification for the separate long gate.
+
+## Pre-M11 engineering review consolidation
+
+- [`PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md`](PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md) — single index of the three source-driven review streams and their roadmap consequences.
+- [`PRE_M11_NUCLEAR_CODE_VV_REVIEW.md`](PRE_M11_NUCLEAR_CODE_VV_REVIEW.md) — nuclear-code development/V&V review and final-M10 qualification method.
+- [`PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md`](PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md) — Digital I&C, software-safety and human-system review.
+- [`DIGITAL_IC_ARCHITECTURE_INVARIANTS.md`](DIGITAL_IC_ARCHITECTURE_INVARIANTS.md) and [`HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md`](HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md) — review-derived architecture/function-allocation planning contracts.
+- [`DIGITAL_IC_HAZARD_CATALOG.md`](DIGITAL_IC_HAZARD_CATALOG.md) and [`HMI_CLASSIC_FAILURE_MODES_CHECKLIST.md`](HMI_CLASSIC_FAILURE_MODES_CHECKLIST.md) — deterministic software/I&C hazard and operator-interface review inputs.
+- [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md) — Lamarsh-derived self-consistency/equilibrium planning, with M12.0 as the formal implementation home.
+- [`research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md`](research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md) — bibliographic provenance, retained principles and explicit non-imports.
+
+## Operating-point equilibrium planning
+
+- [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md) — residual taxonomy, closed-loop/fixed-input qualification, domain-headroom diagnostics, bounded trimmer and M12.0 roadmap.
+- [`M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md`](M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md) — evidence-first diagnostic route for the current/future long healthy-reference drift or envelope blocker before any production fix.

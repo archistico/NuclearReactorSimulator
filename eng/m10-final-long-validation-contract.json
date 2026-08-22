@@ -1,0 +1,148 @@
+{
+  "schema": "m10-final-long-validation-contract-v2",
+  "status": "FROZEN-AWAITING-EXECUTION",
+  "baseline": "M10 Final Pre-M11 Cumulative Validation Hotfix 1 VALIDATED",
+  "prerequisite_marker": "m10-final-cumulative-validation-passes=True",
+  "fixed_step_ms": 10,
+  "total_simulated_seconds": 14400,
+  "total_logical_steps": 1440000,
+  "wall_clock_policy": "diagnostic-only; no cross-machine pass/fail threshold",
+  "global_blocking_criteria": {
+    "unhandled_exceptions": 0,
+    "nonfinite_observations": 0,
+    "unsupported_water_steam_envelope_excursions": 0,
+    "fingerprint_mismatches": 0,
+    "fallback_commit_violations": 0,
+    "unsafe_corrected_commits": 0,
+    "untargeted_branch_disagreements": 0,
+    "healthy_unexpected_trips": 0,
+    "unexpected_fault_activations": 0,
+    "exact_version_identity_drift": 0,
+    "duplicate_replay_timeline_rows": 0
+  },
+  "instantaneous_conservation_ceilings": {
+    "mass_closure_residual_kg": 1e-06,
+    "energy_closure_residual_J": 0.01,
+    "balance_mass_rate_residual_kg_s": 1e-08,
+    "balance_power_residual_W": 0.001
+  },
+  "frozen_i3_budgets": {
+    "path": "eng/frozen-evidence/ordinary/I3_ValidatedAuthoritativeToleranceBudgets.csv",
+    "count": 19,
+    "rolling_window_seconds": 60,
+    "window_end_seconds": [
+      300,
+      600,
+      900,
+      1200,
+      1500,
+      1800,
+      2100,
+      2400,
+      2700,
+      3000,
+      3300,
+      3600,
+      3900,
+      4200,
+      4500,
+      4800,
+      5100,
+      5400,
+      5700,
+      6000,
+      6300,
+      6600,
+      6900,
+      7200
+    ],
+    "retuning_allowed": false
+  },
+  "legs": [
+    {
+      "id": "LR-H1",
+      "seconds": 7200,
+      "steps": 720000,
+      "purpose": "healthy exact-v4 whole-plant stability, conservation and frozen-budget sentinels",
+      "initial_condition": "integrated-operations-desktop-stable@4",
+      "hydraulic_mode": "FourNodeBranchContinuityCorrectedCommitOptIn",
+      "thermodynamic_closure": "CorrelationConsistentInverseDomain",
+      "progress_stride_steps": 30000
+    },
+    {
+      "id": "LR-M1",
+      "seconds": 4400,
+      "steps": 440000,
+      "purpose": "production mission @2, demand/request/actual separation and post-terminal continuing-plant stability",
+      "pack_exact_id": "bounded-demand-following-5-10-5@2",
+      "initial_condition": "integrated-operations-desktop-stable@4",
+      "operator_policy": "dispatch one generator-load raise on first observed 10 MWe demand and one generator-load lower on first subsequent observed 5 MWe demand",
+      "progress_stride_steps": 30000
+    },
+    {
+      "id": "LR-D1",
+      "seconds": 1800,
+      "steps": 180000,
+      "purpose": "degraded required measurement and deterministic recovery",
+      "initial_condition": "integrated-operations-desktop-stable@4",
+      "fault_type": "instrumentation.sensor-unavailable",
+      "target": "power",
+      "activation_step": 54000,
+      "clear_step": 90000,
+      "progress_stride_steps": 30000
+    },
+    {
+      "id": "LR-P1",
+      "seconds": 900,
+      "steps": 90000,
+      "purpose": "protection precedence, suspended supervisory authority, manual takeover with protection remaining authoritative",
+      "initial_condition": "integrated-operations-desktop-stable@4",
+      "scram_commit_step": 54000,
+      "authority_observation_step": 54001,
+      "blocked_normal_command_step": 60000,
+      "manual_takeover_step": 72000,
+      "progress_stride_steps": 30000
+    },
+    {
+      "id": "LR-R1",
+      "seconds": 100,
+      "steps": 10000,
+      "purpose": "same-trace full replay and checkpoint-prefix/live-continuation sentinel",
+      "pack_exact_id": "bounded-demand-following-5-10-5@2",
+      "initial_condition": "integrated-operations-desktop-stable@4",
+      "load_raise_step": 500,
+      "checkpoint_step": 5000,
+      "rod_hold_step": 6000,
+      "load_lower_step": 3000,
+      "progress_stride_steps": 1000
+    }
+  ],
+  "evidence_growth": {
+    "lifecycle_spine_cap": 32,
+    "recent_operational_evidence_cap": 100,
+    "archive_frame_growth": "exactly one contiguous frame per deterministic logical step plus initial frame",
+    "serialized_size_diagnostic": "record half/full archive sizes; full <= 2.25 * half is a frozen superlinear-growth sentinel",
+    "full_to_half_size_ratio_ceiling": 2.25
+  },
+  "required_artifacts": [
+    "00-progress.txt",
+    "01-m10-final-long-validation.summary.txt",
+    "02-workload-contract.json",
+    "03-leg-summary.csv",
+    "04-conservation-maxima.csv",
+    "05-healthy-window-i3-budget-comparison.csv",
+    "06-numerical-coupling-telemetry.csv",
+    "07-trip-fault-protection-classification.csv",
+    "08-mission-demand-score-evidence.csv",
+    "09-replay-checkpoint-fingerprint-sentinels.csv",
+    "10-evidence-growth.csv",
+    "11-performance-diagnostics.csv"
+  ],
+  "timing_calibration": {
+    "source": "validated cumulative exact-v4 300 s reference progress timestamps",
+    "observed_reference_simulated_seconds": 300,
+    "observed_reference_wall_seconds_approx": 62,
+    "purpose": "workload-shape calibration only; no physics or acceptance threshold retuning",
+    "reason": "the earlier 3,600 simulated-second draft would likely under-run the user-requested approximately one-hour workstation validation"
+  }
+}

@@ -1,5 +1,7 @@
 @echo off
 setlocal EnableExtensions
+set "HISTORICAL_REUSE=0"
+if /I "%~1"=="--historical-reuse" set "HISTORICAL_REUSE=1"
 set "ROOT=%~dp0.."
 cd /d "%ROOT%"
 if errorlevel 1 exit /b 1
@@ -29,10 +31,14 @@ if errorlevel 1 exit /b 1
 
 set "APPLICATION_PROJECT=tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj"
 
-dotnet test --project "%APPLICATION_PROJECT%" --no-build -- ^
-  --filter-method "NuclearReactorSimulator.Application.Tests.ApplicationDescriptorTests.Current_DescribesM10972Hotfix1Rev1DomainDefinitionInvariantClosureCandidate" ^
-  --parallel none
-if errorlevel 1 exit /b 1
+if "%HISTORICAL_REUSE%"=="1" (
+  echo M10.9.7.2 Hotfix 1 REV1 exact-candidate descriptor check skipped in historical-reuse mode; functional/domain invariant tests still rerun.
+) else (
+  dotnet test --project "%APPLICATION_PROJECT%" --no-build -- ^
+    --filter-method "NuclearReactorSimulator.Application.Tests.ApplicationDescriptorTests.Current_DescribesM10972Hotfix1Rev1DomainDefinitionInvariantClosureCandidate" ^
+    --parallel none
+  if errorlevel 1 exit /b 1
+)
 
 dotnet test --project "%DOMAIN_PROJECT%" --no-build -- ^
   --filter-method "NuclearReactorSimulator.Domain.Tests.Physics.Reactor.PrimaryCircuit.SteamDrums.SteamDrumSystemDefinitionTests.SteamSourceDefinition_RejectsDefaultHydraulicResistance" ^

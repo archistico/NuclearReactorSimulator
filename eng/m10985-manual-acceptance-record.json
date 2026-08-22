@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M10.9.8.5",
+  "status": "VALIDATED",
+  "acceptedOn": "2026-08-22",
+  "acceptanceText": "M10.9.8.5 manual integrated HMI acceptance OK",
+  "automatedPreflightMarker": "m10985-integrated-hmi-closure-preflight-passes=True",
+  "m1098Status": "VALIDATED/CLOSED",
+  "m10Status": "OPEN-PENDING-FINAL-CUMULATIVE-AND-LONG"
+}
