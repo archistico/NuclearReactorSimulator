@@ -77,6 +77,32 @@ public sealed class TurbineExpansionSystemDefinitionTests
 
 
     [Fact]
+    public void StageDefinition_MoistureDrainPolicyRequiresExplicitDrainOwner()
+    {
+        Assert.Throws<ArgumentException>(() => new TurbineStageGroupDefinition(
+            "stage",
+            "boundary",
+            "exhaust",
+            "rotor",
+            SpecificEnergy.FromKilojoulesPerKilogram(500d),
+            TurbineEfficiency.FromPercent(80d),
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain));
+
+        var stage = new TurbineStageGroupDefinition(
+            "stage",
+            "boundary",
+            "exhaust",
+            "rotor",
+            SpecificEnergy.FromKilojoulesPerKilogram(500d),
+            TurbineEfficiency.FromPercent(80d),
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+            moistureDrainNodeId: "hotwell");
+
+        Assert.Equal(TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain, stage.AdmissionPhasePolicy);
+        Assert.Equal("hotwell", stage.MoistureDrainNodeId);
+    }
+
+    [Fact]
     public void StageDefinition_RejectsDefaultExpansionResistanceWhenSpecified()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => new TurbineStageGroupDefinition(
@@ -87,6 +113,60 @@ public sealed class TurbineExpansionSystemDefinitionTests
             SpecificEnergy.FromKilojoulesPerKilogram(500d),
             TurbineEfficiency.FromPercent(80d),
             expansionResistance: default(QuadraticHydraulicResistance)));
+    }
+
+    [Fact]
+    public void Definition_MoistureDrainOwnerMustBeCanonicalAndDistinctFromAdmissionAndExhaust()
+    {
+        var mainSteam = CreateMainSteamNetwork();
+        var rotor = new TurbineRotorDefinition(
+            "rotor",
+            MomentOfInertia.FromKilogramSquareMetres(1_000d),
+            AngularSpeed.FromRevolutionsPerMinute(3_000d),
+            AngularSpeed.FromRevolutionsPerMinute(3_300d));
+
+        var valid = new TurbineExpansionSystemDefinition(
+            "valid",
+            mainSteam,
+            new[] { rotor },
+            new[]
+            {
+                new TurbineStageGroupDefinition(
+                    "stage", "turbine-boundary", "exhaust", "rotor",
+                    SpecificEnergy.FromKilojoulesPerKilogram(500d),
+                    TurbineEfficiency.FromPercent(80d),
+                    admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+                    moistureDrainNodeId: "hotwell"),
+            });
+        Assert.Equal("hotwell", valid.GetStageGroup("stage").MoistureDrainNodeId);
+
+        Assert.Throws<ArgumentException>(() => new TurbineExpansionSystemDefinition(
+            "same-inlet",
+            mainSteam,
+            new[] { rotor },
+            new[]
+            {
+                new TurbineStageGroupDefinition(
+                    "stage", "turbine-boundary", "exhaust", "rotor",
+                    SpecificEnergy.FromKilojoulesPerKilogram(500d),
+                    TurbineEfficiency.FromPercent(80d),
+                    admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+                    moistureDrainNodeId: "turbine-inlet"),
+            }));
+
+        Assert.Throws<ArgumentException>(() => new TurbineExpansionSystemDefinition(
+            "same-exhaust",
+            mainSteam,
+            new[] { rotor },
+            new[]
+            {
+                new TurbineStageGroupDefinition(
+                    "stage", "turbine-boundary", "exhaust", "rotor",
+                    SpecificEnergy.FromKilojoulesPerKilogram(500d),
+                    TurbineEfficiency.FromPercent(80d),
+                    admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+                    moistureDrainNodeId: "exhaust"),
+            }));
     }
 
     [Fact]
@@ -119,7 +199,7 @@ public sealed class TurbineExpansionSystemDefinitionTests
             new[]
             {
                 Node("suction"), Node("pressure"), Node("outlet"), Node("drum"), Node("steam"),
-                Node("header"), Node("stop-out"), Node("control-out"), Node("turbine-inlet"), Node("exhaust"),
+                Node("header"), Node("stop-out"), Node("control-out"), Node("turbine-inlet"), Node("exhaust"), Node("hotwell"),
             },
             new[]
             {

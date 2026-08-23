@@ -19,7 +19,8 @@ public sealed class TurbineStageGroupDefinition
         QuadraticHydraulicResistance? expansionResistance = null,
         TurbineThermodynamicWorkDefinition? thermodynamicWork = null,
         TurbineAdmissionPhasePolicy admissionPhasePolicy = TurbineAdmissionPhasePolicy.LegacyUnrestricted,
-        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy,
+        string? moistureDrainNodeId = null)
     {
         if (string.IsNullOrWhiteSpace(id))
         {
@@ -70,6 +71,25 @@ public sealed class TurbineStageGroupDefinition
             throw new ArgumentOutOfRangeException(nameof(energyTransportMode), energyTransportMode, "Unknown turbine energy-transport mode.");
         }
 
+        var canonicalMoistureDrainNodeId = string.IsNullOrWhiteSpace(moistureDrainNodeId)
+            ? null
+            : moistureDrainNodeId.Trim();
+        if (admissionPhasePolicy == TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain)
+        {
+            if (canonicalMoistureDrainNodeId is null)
+            {
+                throw new ArgumentException(
+                    "A moisture-drain turbine admission policy requires an explicit moisture-drain node id.",
+                    nameof(moistureDrainNodeId));
+            }
+        }
+        else if (canonicalMoistureDrainNodeId is not null)
+        {
+            throw new ArgumentException(
+                "A turbine moisture-drain node may be specified only with VaporMassFractionLimitedWithMoistureDrain.",
+                nameof(moistureDrainNodeId));
+        }
+
         Id = id.Trim();
         AdmissionBoundaryId = admissionBoundaryId.Trim();
         ExhaustNodeId = exhaustNodeId.Trim();
@@ -80,6 +100,7 @@ public sealed class TurbineStageGroupDefinition
         ThermodynamicWork = thermodynamicWork;
         AdmissionPhasePolicy = admissionPhasePolicy;
         EnergyTransportMode = energyTransportMode;
+        MoistureDrainNodeId = canonicalMoistureDrainNodeId;
     }
 
     public string Id { get; }
@@ -110,6 +131,12 @@ public sealed class TurbineStageGroupDefinition
     /// vapor-mass-fraction-limited admission so liquid inventory cannot pass through the stage as a zero-work bypass.
     /// </summary>
     public TurbineAdmissionPhasePolicy AdmissionPhasePolicy { get; }
+
+    /// <summary>
+    /// Optional explicit owner for non-vapor admission mass rejected by a moisture-separating admission policy.
+    /// Null for every historical admission policy.
+    /// </summary>
+    public string? MoistureDrainNodeId { get; }
 
     /// <summary>
     /// Versioned open-control-volume energy-advection convention. Historical definitions transfer specific internal

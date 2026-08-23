@@ -127,6 +127,44 @@ public sealed class TurbineSecondaryControlSolverTests
     }
 
     [Fact]
+    public void Step_ParalleledSynchronousIntegralReferenceDoesNotIntegrateIntentionalDroopOffset()
+    {
+        static double SecondStepIntegral(TurbineGovernorIntegralReferenceMode mode)
+        {
+            var fixture = CreateFixture(
+                breakerClosed: true,
+                governorFullLoadSpeedReferenceRiseRpm: 150d,
+                speedControllerIntegralGainPerSecond: 1d,
+                governorIntegralReferenceMode: mode);
+            var solver = new TurbineSecondaryControlSolver(fixture.SecondaryDefinition);
+            var plantInputs = new IntegratedSecondaryCycleInputs(fixture.FullPlantDefinition, fixture.Physical.Inputs);
+
+            var first = solver.Step(
+                fixture.Signals,
+                fixture.FullPlantState,
+                fixture.SecondaryState,
+                fixture.SecondaryInputs,
+                plantInputs,
+                TimeSpan.FromSeconds(1d));
+            var second = solver.Step(
+                fixture.Signals,
+                fixture.FullPlantState,
+                first.CandidateState,
+                fixture.SecondaryInputs,
+                plantInputs,
+                TimeSpan.FromSeconds(1d));
+
+            return second.ControlAndActuatorStep.Snapshot.Controllers.GetDiagnostic("speed-control").IntegralTerm;
+        }
+
+        var historical = SecondStepIntegral(TurbineGovernorIntegralReferenceMode.EffectiveDroopSetpoint);
+        var repaired = SecondStepIntegral(TurbineGovernorIntegralReferenceMode.SynchronousSpeedWhenParalleled);
+
+        Assert.Equal(0d, historical, 9);
+        Assert.Equal(-0.045d, repaired, 9);
+    }
+
+    [Fact]
     public void IntegratedStep_DerivesTurbineFlowFromCommandedAdmissionPathAndKeepsValidatedM53Kinetics()
     {
         var fixture = CreateFixture();
@@ -190,7 +228,9 @@ public sealed class TurbineSecondaryControlSolverTests
         double? valveTravelRatePerSecond = null,
         double? pumpTravelRatePerSecond = null,
         bool breakerClosed = true,
-        double? governorFullLoadSpeedReferenceRiseRpm = null)
+        double? governorFullLoadSpeedReferenceRiseRpm = null,
+        double speedControllerIntegralGainPerSecond = 0d,
+        TurbineGovernorIntegralReferenceMode governorIntegralReferenceMode = TurbineGovernorIntegralReferenceMode.EffectiveDroopSetpoint)
     {
         var physical = global::NuclearReactorSimulator.Simulation.Tests.Physics.Electrical.GeneratorGridSolverTests.CreateFixture(
             3_000d,
@@ -252,7 +292,7 @@ public sealed class TurbineSecondaryControlSolverTests
 
         var secondaryControl = new ControlSystemDefinition("secondary-control", instrumentation, new[]
         {
-            Controller("speed-control", "speed", new ControllerOutputRange(0d, 100d), 1d),
+            Controller("speed-control", "speed", new ControllerOutputRange(0d, 100d), 1d, speedControllerIntegralGainPerSecond),
             Controller("pressure-control", "pressure", new ControllerOutputRange(0d, 100d), 0.0001d),
             Controller("level-control", "level", new ControllerOutputRange(0d, 100d), 100d),
             Controller("hotwell-control", "hotwell", new ControllerOutputRange(0d, 100d), 0.01d),
@@ -283,7 +323,8 @@ public sealed class TurbineSecondaryControlSolverTests
                 ? new TurbineGovernorDroopDefinition(
                     "speed-control",
                     "generator",
-                    AngularSpeed.FromRevolutionsPerMinute(governorFullLoadSpeedReferenceRiseRpm.Value))
+                    AngularSpeed.FromRevolutionsPerMinute(governorFullLoadSpeedReferenceRiseRpm.Value),
+                    governorIntegralReferenceMode)
                 : null);
 
         var reactorState = ReactorPrimaryControlState.CreateInitial(
@@ -337,8 +378,20 @@ public sealed class TurbineSecondaryControlSolverTests
     private static InstrumentChannelDefinition Channel(string id, string sourceId, string unit)
         => new(id, sourceId, unit, new SignalRange(-1e12d, 1e12d), LinearSignalScale.NormalizedZeroToOne, TimeSpan.Zero, false);
 
-    private static PidControllerDefinition Controller(string id, string channelId, ControllerOutputRange range, double kp)
-        => new(id, channelId, ControllerAlgorithmKind.Proportional, kp, 0d, 0d, range);
+    private static PidControllerDefinition Controller(
+        string id,
+        string channelId,
+        ControllerOutputRange range,
+        double kp,
+        double ki = 0d)
+        => new(
+            id,
+            channelId,
+            ki == 0d ? ControllerAlgorithmKind.Proportional : ControllerAlgorithmKind.ProportionalIntegral,
+            kp,
+            ki,
+            0d,
+            range);
 
     private static MeasuredSignal Signal(string id, string unit, double value)
         => new(id, unit, value, value, SignalValidity.Valid, SignalQuality.Good, false, SensorFaultMode.None);

@@ -245,3 +245,11 @@ exhaust transport = h_in * m_dot - P_shaft
 The fluid-node conserved quantity remains internal energy. Shaft power remains the sole explicit thermofluid-to-rotor transfer and is not embedded a second time in rotor or generator bookkeeping. `TurbineStageGroupSnapshot` exposes the selected transport mode, inlet `p/rho`, inlet enthalpy, inlet/exhaust advected specific energy, flow-work rate and ownership residual while retaining historical diagnostics for compatibility.
 
 G.4 does not retune the 500 kJ/kg design cap, 86% current-v2 efficiency, pressure/temperature work closure, governor, grid coupling or protections. Successful validation closes the staged Phase G runtime migration; numerical-coupling changes remain Phase H work.
+
+## M10 Final Long Diagnostic 10 candidate — explicit wet-steam moisture owner
+
+Diagnostic 9 closes the remaining exact-v7 turbine-inlet mass residual on the non-vapor fraction rejected by `VaporMassFractionLimited`. Diagnostic 10 therefore adds a new opt-in `VaporMassFractionLimitedWithMoistureDrain` policy without changing the historical D.1 policy.
+
+Under the candidate policy, the hydraulic commanded flow is phase-separated at the turbine admission boundary. Vapor alone is admitted to the work-producing stage and exhaust path. The rejected non-vapor fraction is transferred to an explicit `MoistureDrainNodeId`; exact-v8 uses the existing `hotwell` as the lumped drain owner. For saturated mixtures, vapor and liquid advected-energy terms are resolved from saturation properties at committed inlet pressure. The inlet source term removes both streams exactly once, shaft work is removed only from the vapor stream, and the stage ownership audit includes the drain energy explicitly.
+
+This is an educational lumped moisture-separator/drain model, not a detailed moisture-separator/reheater or erosion model. Exact-v4 remains production and no historical exact-version opts into this policy.

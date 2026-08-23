@@ -18,6 +18,7 @@ public sealed class TurbineExpansionSolver
 {
     private readonly TurbineExpansionSystemDefinition _definition;
     private readonly MainSteamNetworkSolver _mainSteamSolver;
+    private readonly IWaterSteamSaturationPropertyProvider? _saturationPropertyProvider;
 
     public TurbineExpansionSolver(
         TurbineExpansionSystemDefinition definition,
@@ -25,6 +26,16 @@ public sealed class TurbineExpansionSolver
     {
         _definition = definition ?? throw new ArgumentNullException(nameof(definition));
         ArgumentNullException.ThrowIfNull(thermodynamicModel);
+        _saturationPropertyProvider = thermodynamicModel as IWaterSteamSaturationPropertyProvider;
+        if (_definition.StageGroups.Any(static stage =>
+                stage.AdmissionPhasePolicy == TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain)
+            && _saturationPropertyProvider is null)
+        {
+            throw new ArgumentException(
+                "A moisture-drain turbine admission policy requires water/steam saturation properties.",
+                nameof(thermodynamicModel));
+        }
+
         _mainSteamSolver = new MainSteamNetworkSolver(definition.MainSteamNetwork, thermodynamicModel);
     }
 
@@ -125,6 +136,12 @@ public sealed class TurbineExpansionSolver
             var phaseLimitedFlow = MassFlowRate.FromKilogramsPerSecond(
                 stageInput.MassFlowRate.KilogramsPerSecond * admissionVaporFraction);
             var effectiveFlow = rotorInput.TripCommand ? MassFlowRate.Zero : phaseLimitedFlow;
+            var moistureDrainFlow = rotorInput.TripCommand
+                || stage.AdmissionPhasePolicy != TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain
+                    ? MassFlowRate.Zero
+                    : MassFlowRate.FromKilogramsPerSecond(Math.Max(
+                        0d,
+                        stageInput.MassFlowRate.KilogramsPerSecond - phaseLimitedFlow.KilogramsPerSecond));
             var specificWork = ResolveSpecificWork(stage, inlet, exhaust, admissionVaporFraction);
             var availableShaftPower = specificWork.EffectiveIdealSpecificWork
                 * effectiveFlow
@@ -145,6 +162,7 @@ public sealed class TurbineExpansionSolver
                     rotorInput,
                     stageInput.MassFlowRate,
                     effectiveFlow,
+                    moistureDrainFlow,
                     specificWork,
                     torque));
         }
@@ -171,7 +189,8 @@ public sealed class TurbineExpansionSolver
         // Under the current-v2 vapor-fraction-limited policy, mass flow has already been reduced to the admitted vapor
         // fraction. Work is therefore evaluated per kilogram of admitted vapor rather than applying vapor quality twice.
         // Legacy definitions preserve the historical specific-work degradation by inlet vapor mass fraction.
-        var workVaporFraction = stage.AdmissionPhasePolicy == TurbineAdmissionPhasePolicy.VaporMassFractionLimited
+        var workVaporFraction = stage.AdmissionPhasePolicy is TurbineAdmissionPhasePolicy.VaporMassFractionLimited
+                or TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain
             ? (admissionVaporFraction > 0d ? 1d : 0d)
             : inlet.Thermodynamics.VaporMassFraction ?? 0d;
         var pressureTemperatureAvailableJoulesPerKilogram = 0d;
@@ -320,6 +339,8 @@ public sealed class TurbineExpansionSolver
             var rotor = rotorWorking[stage.RotorId];
             var boundary = _definition.MainSteamNetwork.GetTurbineAdmissionBoundary(stage.AdmissionBoundaryId);
             var inlet = committedPlantState.GetFluidNode(boundary.SourceNodeId);
+            var totalTransferredMassFlowRate = working.EffectiveMassFlowRate + working.MoistureDrainMassFlowRate;
+
             SpecificEnergy inletSpecificFlowWork;
             SpecificEnergy inletSpecificEnthalpy;
             SpecificEnergy inletAdvectedSpecificEnergy;
@@ -334,9 +355,9 @@ public sealed class TurbineExpansionSolver
                     stage.EnergyTransportMode,
                     inlet);
             }
-            else if (working.EffectiveMassFlowRate == MassFlowRate.Zero)
+            else if (totalTransferredMassFlowRate == MassFlowRate.Zero)
             {
-                // Empty/zero-density inlet with zero turbine flow carries no advected energy. Preserve legacy/extreme
+                // Empty/zero-density inlet with zero turbine transfer carries no advected energy. Preserve legacy/extreme
                 // no-flow resolvability instead of requiring an undefined p/rho diagnostic.
                 inletSpecificFlowWork = SpecificEnergy.Zero;
                 inletSpecificEnthalpy = inlet.SpecificInternalEnergy;
@@ -347,7 +368,7 @@ public sealed class TurbineExpansionSolver
                 throw new InvalidOperationException(
                     $"Turbine stage group '{stage.Id}' cannot advect positive mass flow from a zero-density inlet.");
             }
-            var inletEnergyFlow = inletAdvectedSpecificEnergy * working.EffectiveMassFlowRate;
+
             var shaftPower = working.ShaftTorque.At(rotor.AverageAngularSpeed);
             var extractedSpecificWork = working.EffectiveMassFlowRate == MassFlowRate.Zero
                 ? SpecificEnergy.Zero
@@ -355,19 +376,31 @@ public sealed class TurbineExpansionSolver
                     shaftPower.Watts / working.EffectiveMassFlowRate.KilogramsPerSecond);
 
             // The current thermodynamic-work law remains deliberately unchanged in G.4 and is still bounded by the
-            // historical inlet-internal-energy extraction fraction. This guard therefore remains valid for both modes.
+            // historical inlet-internal-energy extraction fraction. This guard therefore remains valid for all modes.
             if (extractedSpecificWork > inlet.SpecificInternalEnergy)
             {
                 throw new InvalidOperationException(
                     $"Turbine stage group '{stage.Id}' would extract {extractedSpecificWork.KilojoulesPerKilogram:F3} kJ/kg from an inlet containing only {inlet.SpecificInternalEnergy.KilojoulesPerKilogram:F3} kJ/kg internal energy.");
             }
 
+            var vaporInletAdvectedSpecificEnergy = inletAdvectedSpecificEnergy;
+            var moistureDrainAdvectedSpecificEnergy = inletAdvectedSpecificEnergy;
+            if (stage.AdmissionPhasePolicy == TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain)
+            {
+                (vaporInletAdvectedSpecificEnergy, moistureDrainAdvectedSpecificEnergy) =
+                    ResolveSeparatedAdmissionAdvectedSpecificEnergies(stage, inlet, inletAdvectedSpecificEnergy);
+            }
+
+            var inletEnergyFlow =
+                (vaporInletAdvectedSpecificEnergy * working.EffectiveMassFlowRate)
+                + (moistureDrainAdvectedSpecificEnergy * working.MoistureDrainMassFlowRate);
+
             // Retain the historical diagnostic for backward-compatible snapshots. Under SpecificEnthalpy this value is
-            // not the advected exhaust term; the canonical G.4 transport term is exposed separately below.
+            // not the advected exhaust term; the canonical transport term is exposed separately below.
             var exhaustSpecificInternalEnergy = SpecificEnergy.FromJoulesPerKilogram(
                 inlet.SpecificInternalEnergy.JoulesPerKilogram - extractedSpecificWork.JoulesPerKilogram);
             var exhaustAdvectedSpecificEnergy = SpecificEnergy.FromJoulesPerKilogram(
-                inletAdvectedSpecificEnergy.JoulesPerKilogram - extractedSpecificWork.JoulesPerKilogram);
+                vaporInletAdvectedSpecificEnergy.JoulesPerKilogram - extractedSpecificWork.JoulesPerKilogram);
             if (exhaustAdvectedSpecificEnergy < SpecificEnergy.Zero)
             {
                 throw new InvalidOperationException(
@@ -375,13 +408,14 @@ public sealed class TurbineExpansionSolver
             }
 
             var exhaustEnergyFlow = exhaustAdvectedSpecificEnergy * working.EffectiveMassFlowRate;
-            if (exhaustEnergyFlow < Power.Zero)
+            var moistureDrainEnergyFlow = moistureDrainAdvectedSpecificEnergy * working.MoistureDrainMassFlowRate;
+            if (exhaustEnergyFlow < Power.Zero || moistureDrainEnergyFlow < Power.Zero)
             {
-                throw new InvalidOperationException($"Turbine stage group '{stage.Id}' produced a negative exhaust energy flow.");
+                throw new InvalidOperationException($"Turbine stage group '{stage.Id}' produced a negative downstream energy flow.");
             }
 
-            var flowWorkRate = inletSpecificFlowWork * working.EffectiveMassFlowRate;
-            var ownershipResidual = inletEnergyFlow - exhaustEnergyFlow - shaftPower;
+            var flowWorkRate = inletSpecificFlowWork * totalTransferredMassFlowRate;
+            var ownershipResidual = inletEnergyFlow - exhaustEnergyFlow - moistureDrainEnergyFlow - shaftPower;
             var snapshot = new TurbineStageGroupSnapshot(
                 stage.Id,
                 stage.AdmissionBoundaryId,
@@ -418,11 +452,44 @@ public sealed class TurbineExpansionSolver
                 ExhaustAdvectedSpecificEnergy = exhaustAdvectedSpecificEnergy,
                 FlowWorkRate = flowWorkRate,
                 TurbineEnergyOwnershipResidual = ownershipResidual,
+                MoistureDrainNodeId = stage.MoistureDrainNodeId,
+                MoistureDrainMassFlowRate = working.MoistureDrainMassFlowRate,
+                MoistureDrainEnergyFlowRate = moistureDrainEnergyFlow,
+                TotalTransferredMassFlowRate = totalTransferredMassFlowRate,
+                VaporInletAdvectedSpecificEnergy = vaporInletAdvectedSpecificEnergy,
+                MoistureDrainAdvectedSpecificEnergy = moistureDrainAdvectedSpecificEnergy,
             };
             result.Add(new StageSolution(snapshot));
         }
 
         return result;
+    }
+
+    private (SpecificEnergy Vapor, SpecificEnergy MoistureDrain) ResolveSeparatedAdmissionAdvectedSpecificEnergies(
+        TurbineStageGroupDefinition stage,
+        FluidNodeState inlet,
+        SpecificEnergy fallbackSelectedSpecificEnergy)
+    {
+        if (inlet.Phase != FluidPhase.SaturatedMixture)
+        {
+            return (fallbackSelectedSpecificEnergy, fallbackSelectedSpecificEnergy);
+        }
+
+        var saturation = _saturationPropertyProvider?.GetSaturationProperties(inlet.Pressure)
+            ?? throw new InvalidOperationException(
+                $"Turbine stage group '{stage.Id}' requires saturation properties for moisture-drain admission.");
+
+        var vapor = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+            stage.EnergyTransportMode,
+            saturation.SaturatedVaporInternalEnergy,
+            inlet.Pressure,
+            saturation.SaturatedVaporDensity);
+        var liquid = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
+            stage.EnergyTransportMode,
+            saturation.SaturatedLiquidInternalEnergy,
+            inlet.Pressure,
+            saturation.SaturatedLiquidDensity);
+        return (vapor, liquid);
     }
 
     private static PlantNetworkSourceTerms BuildSourceTerms(IEnumerable<StageSolution> stageSolutions)
@@ -436,11 +503,20 @@ public sealed class TurbineExpansionSolver
             AddBalance(
                 balances,
                 stage.InletNodeId,
-                new FluidNodeBalance(-stage.EffectiveMassFlowRate, -stage.InletEnergyFlowRate));
+                new FluidNodeBalance(-stage.TotalTransferredMassFlowRate, -stage.InletEnergyFlowRate));
             AddBalance(
                 balances,
                 stage.ExhaustNodeId,
                 new FluidNodeBalance(stage.EffectiveMassFlowRate, stage.ExhaustEnergyFlowRate));
+            if (stage.MoistureDrainNodeId is { } moistureDrainNodeId
+                && stage.MoistureDrainMassFlowRate > MassFlowRate.Zero)
+            {
+                AddBalance(
+                    balances,
+                    moistureDrainNodeId,
+                    new FluidNodeBalance(stage.MoistureDrainMassFlowRate, stage.MoistureDrainEnergyFlowRate));
+            }
+
             totalShaftPower += stage.ShaftPower;
         }
 
@@ -521,6 +597,7 @@ public sealed class TurbineExpansionSolver
         TurbineRotorInput RotorInput,
         MassFlowRate CommandedMassFlowRate,
         MassFlowRate EffectiveMassFlowRate,
+        MassFlowRate MoistureDrainMassFlowRate,
         SpecificWorkResolution SpecificWork,
         Torque ShaftTorque);
 

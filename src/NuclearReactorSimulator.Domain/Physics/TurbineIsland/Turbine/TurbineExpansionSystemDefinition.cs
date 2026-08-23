@@ -73,6 +73,23 @@ public sealed class TurbineExpansionSystemDefinition
         {
             var admissionBoundary = mainSteamNetwork.GetTurbineAdmissionBoundary(stageGroup.AdmissionBoundaryId);
             _ = mainSteamNetwork.PlantDefinition.GetFluidNode(stageGroup.ExhaustNodeId);
+            if (stageGroup.MoistureDrainNodeId is { } moistureDrainNodeId)
+            {
+                _ = mainSteamNetwork.PlantDefinition.GetFluidNode(moistureDrainNodeId);
+                if (string.Equals(admissionBoundary.SourceNodeId, moistureDrainNodeId, StringComparison.Ordinal))
+                {
+                    throw new ArgumentException(
+                        $"Turbine stage group '{stageGroup.Id}' moisture-drain node must differ from admission node '{admissionBoundary.SourceNodeId}'.",
+                        nameof(stageGroups));
+                }
+
+                if (string.Equals(stageGroup.ExhaustNodeId, moistureDrainNodeId, StringComparison.Ordinal))
+                {
+                    throw new ArgumentException(
+                        $"Turbine stage group '{stageGroup.Id}' moisture-drain node must differ from exhaust node '{stageGroup.ExhaustNodeId}'.",
+                        nameof(stageGroups));
+                }
+            }
 
             if (!rotorIds.Contains(stageGroup.RotorId))
             {

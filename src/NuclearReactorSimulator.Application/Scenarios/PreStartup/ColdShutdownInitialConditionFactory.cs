@@ -150,7 +150,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? initialPrimaryOutletVaporQualityFraction = null,
         double? initialFuelTemperatureCelsiusOverride = null,
         double? initialStructureTemperatureCelsiusOverride = null,
-        IReadOnlyCollection<OperationalFluidNodeSeed>? initialFluidNodeSeeds = null)
+        IReadOnlyCollection<OperationalFluidNodeSeed>? initialFluidNodeSeeds = null,
+        TurbineGovernorIntegralReferenceMode governorIntegralReferenceMode = TurbineGovernorIntegralReferenceMode.EffectiveDroopSetpoint,
+        TurbineAdmissionPhasePolicy? turbineAdmissionPhasePolicyOverride = null,
+        string? turbineMoistureDrainNodeId = null)
     {
         var effectiveRuntimeStep = runtimeStep ?? RuntimeStep;
         if (effectiveRuntimeStep <= TimeSpan.Zero)
@@ -243,7 +246,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             initialPrimaryOutletVaporQualityFraction,
             initialFuelTemperatureCelsiusOverride,
             initialStructureTemperatureCelsiusOverride,
-            initialFluidNodeSeeds);
+            initialFluidNodeSeeds,
+            governorIntegralReferenceMode,
+            turbineAdmissionPhasePolicyOverride,
+            turbineMoistureDrainNodeId);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -352,7 +358,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? initialPrimaryOutletVaporQualityFraction,
         double? initialFuelTemperatureCelsiusOverride,
         double? initialStructureTemperatureCelsiusOverride,
-        IReadOnlyCollection<OperationalFluidNodeSeed>? initialFluidNodeSeeds)
+        IReadOnlyCollection<OperationalFluidNodeSeed>? initialFluidNodeSeeds,
+        TurbineGovernorIntegralReferenceMode governorIntegralReferenceMode,
+        TurbineAdmissionPhasePolicy? turbineAdmissionPhasePolicyOverride,
+        string? turbineMoistureDrainNodeId)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -368,6 +377,14 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         {
             throw new ArgumentException(
                 "Legacy H.5 hybrid hydraulics, H.21 four-node shadow integration and H.22 corrected-commit integration are mutually exclusive numerical modes.");
+        }
+
+        if (!Enum.IsDefined(governorIntegralReferenceMode))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(governorIntegralReferenceMode),
+                governorIntegralReferenceMode,
+                "Unknown governor integral-reference mode.");
         }
 
         if (!double.IsFinite(initialCondenserCoolingPowerMegawatts) || initialCondenserCoolingPowerMegawatts < 0d)
@@ -1138,10 +1155,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                             heatCapacityRatio: 1.3d,
                             maximumInletInternalEnergyExtractionFraction: 0.8d)
                         : null,
-                    useVaporFractionLimitedTurbineAdmission
-                        ? TurbineAdmissionPhasePolicy.VaporMassFractionLimited
-                        : TurbineAdmissionPhasePolicy.LegacyUnrestricted,
-                    turbineEnergyTransportMode),
+                    turbineAdmissionPhasePolicyOverride
+                        ?? (useVaporFractionLimitedTurbineAdmission
+                            ? TurbineAdmissionPhasePolicy.VaporMassFractionLimited
+                            : TurbineAdmissionPhasePolicy.LegacyUnrestricted),
+                    turbineEnergyTransportMode,
+                    turbineMoistureDrainNodeId),
             });
         var condensers = new CondenserSystemDefinition(
             "condensers",
@@ -1423,7 +1442,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 ? new TurbineGovernorDroopDefinition(
                     "speed-control",
                     "generator",
-                    AngularSpeed.FromRevolutionsPerMinute(governorFullLoadSpeedReferenceRiseRpm.Value))
+                    AngularSpeed.FromRevolutionsPerMinute(governorFullLoadSpeedReferenceRiseRpm.Value),
+                    governorIntegralReferenceMode)
                 : null);
 
         var protectionFunctions = new List<ProtectionFunctionDefinition>

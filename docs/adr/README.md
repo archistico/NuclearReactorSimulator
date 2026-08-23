@@ -211,6 +211,8 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 | [0185](0185-contain-desktop-runtime-failures-and-replace-session-archives-safely.md) | Contain desktop runtime failures and replace session archives safely before timeline expansion | Accepted | Recording / replay / persistence |
 | [0186](0186-separate-stable-architecture-from-chronology-and-index-live-documentation.md) | Separate stable architecture from milestone chronology and index live documentation | Accepted | Documentation / governance |
 | [0187](0187-project-mission-timeline-from-canonical-evidence-with-explicit-archive-pack-binding.md) | Project mission timeline from canonical evidence with explicit archive pack binding | Proposed | HMI / operator experience |
+| [0188](0188-separate-grid-droop-proportional-and-integral-speed-references.md) | Separate grid-droop proportional and integral speed references | Accepted | Turbine / governor / grid |
+| [0189](0189-own-rejected-wet-steam-admission-with-explicit-moisture-drain.md) | Own rejected wet-steam admission with an explicit moisture drain | Proposed | Fluids / thermo / secondary |
 
 ## Maintenance rule
 

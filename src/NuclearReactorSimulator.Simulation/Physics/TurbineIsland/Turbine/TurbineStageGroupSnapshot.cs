@@ -45,4 +45,16 @@ public sealed record TurbineStageGroupSnapshot(
     public Power FlowWorkRate { get; init; } = Power.Zero;
 
     public Power TurbineEnergyOwnershipResidual { get; init; } = Power.Zero;
+
+    public string? MoistureDrainNodeId { get; init; }
+
+    public MassFlowRate MoistureDrainMassFlowRate { get; init; } = MassFlowRate.Zero;
+
+    public Power MoistureDrainEnergyFlowRate { get; init; } = Power.Zero;
+
+    public MassFlowRate TotalTransferredMassFlowRate { get; init; } = MassFlowRate.Zero;
+
+    public SpecificEnergy VaporInletAdvectedSpecificEnergy { get; init; } = SpecificEnergy.Zero;
+
+    public SpecificEnergy MoistureDrainAdvectedSpecificEnergy { get; init; } = SpecificEnergy.Zero;
 }

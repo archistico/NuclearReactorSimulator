@@ -11,7 +11,8 @@ public sealed class TurbineGovernorDroopDefinition
     public TurbineGovernorDroopDefinition(
         string speedControllerId,
         string generatorId,
-        AngularSpeed fullLoadSpeedReferenceRise)
+        AngularSpeed fullLoadSpeedReferenceRise,
+        TurbineGovernorIntegralReferenceMode integralReferenceMode = TurbineGovernorIntegralReferenceMode.EffectiveDroopSetpoint)
     {
         if (string.IsNullOrWhiteSpace(speedControllerId))
         {
@@ -31,9 +32,18 @@ public sealed class TurbineGovernorDroopDefinition
                 "Governor full-load droop speed-reference rise must be greater than zero.");
         }
 
+        if (!Enum.IsDefined(integralReferenceMode))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(integralReferenceMode),
+                integralReferenceMode,
+                "Unknown governor integral-reference mode.");
+        }
+
         SpeedControllerId = speedControllerId.Trim();
         GeneratorId = generatorId.Trim();
         FullLoadSpeedReferenceRise = fullLoadSpeedReferenceRise;
+        IntegralReferenceMode = integralReferenceMode;
     }
 
     public string SpeedControllerId { get; }
@@ -45,4 +55,10 @@ public sealed class TurbineGovernorDroopDefinition
     /// A 150 rpm rise on a 3000 rpm machine corresponds to 5% droop.
     /// </summary>
     public AngularSpeed FullLoadSpeedReferenceRise { get; }
+
+    /// <summary>
+    /// Determines whether integral action follows the historical droop-shifted reference or synchronous grid speed
+    /// while the generator is paralleled. Breaker-open behavior is unaffected.
+    /// </summary>
+    public TurbineGovernorIntegralReferenceMode IntegralReferenceMode { get; }
 }

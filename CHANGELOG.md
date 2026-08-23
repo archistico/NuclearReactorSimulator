@@ -1,3 +1,43 @@
+# M10 Final Long Failure Diagnostic 10 Hotfix 1 — Turbine-Inlet Canonical Net-Balance Regression Alignment (CANDIDATE)
+
+- Stacked directly on Diagnostic 10 original candidate after the user-reported ordinary-suite result: 1480 total, 1367 passed, 112 ignored, 1 failed.
+- The sole failure is `TurbineExpansionSolverTests.Step_MoistureDrainPolicy_AssignsRejectedLiquidToExplicitOwnerWithoutChangingVaporWorkFlow`. The original regression expected `turbine-inlet` mass to fall by the 1 kg/s turbine transfer alone.
+- The fixture simultaneously has a canonical pressure-driven admission-valve inflow of about 2.236067978 kg/s. Over 1 ms the correct node balance is therefore `+2.236067978 - 1.0 = +1.236067978 kg/s`, matching the observed `10000 -> 10000.001236067978 kg`.
+- Hotfix 1 changes only that regression to assert `initial mass + (admission-valve flow - total turbine transfer) * dt`; exhaust and hotwell owner assertions and the 1e-12 kg/s / 1e-6 W conservation audits remain unchanged. No tolerance is widened.
+- `src/`, exact-v8, admission/moisture-drain semantics, governor repair, production selector, historical exact-version factories and first-long manifest are unchanged.
+- Re-run the unchanged `scripts\run-m10-final-long-failure-diagnostic10.cmd`; exact-v8 remains unqualified until the ordinary suite and the 600 s Diagnostic 10 census both complete.
+
+# M10 Final Long Failure Diagnostic 10 — Exact-v8 Turbine Moisture-Drain Ownership Requalification (CANDIDATE)
+
+- Stacked on user-validated Diagnostic 9 and its returned artifacts.
+- Diagnostic 9 proves the exact-v7 turbine-inlet inventory growth is the non-vapor fraction rejected by `VaporMassFractionLimited`: late `commanded-effective` = `commanded*(1-x)` = ~0.268827 kg/s and measured turbine-inlet `dm/dt` = ~0.268782 kg/s, with ~4.55e-5 kg/s closure difference.
+- Adds versioned admission policy `VaporMassFractionLimitedWithMoistureDrain`; vapor remains the sole work-producing stage flow while rejected non-vapor mass is assigned to an explicit canonical moisture-drain node.
+- Exact-v8 binds the drain to `hotwell` and preserves the exact-v7 authored whole-cycle seed plus synchronous breaker-closed governor integral-reference repair.
+- Saturated-mixture vapor/liquid streams use phase-resolved saturation transport properties at committed inlet pressure; stage mass and energy ownership close as inlet = exhaust + drain + shaft.
+- Historical `LegacyUnrestricted` and `VaporMassFractionLimited` policies, exact-v4/@5/@6/@7 factory identities, production policy and first-long manifest remain unpromoted; exact-v4 remains production.
+- Adds domain/simulation regressions and a 600 s exact-v8 whole-cycle/moisture-owner requalification census.
+- No production activation or replacement-long authorization is included.
+
+# M10 Final Long Failure Diagnostic 9 — Exact-v7 Turbine-Admission / Closed-Cycle Mass-Owner Census (CANDIDATE)
+
+- Diagnostic 8 execution is locally PASS, but exact-v7 is engineering **NOT QUALIFIED**. The versioned synchronous integral reference reduces late governor/control-valve drift from about `+0.01474 %/s` to about `+0.000240 %/s`, yet the full plant remains materially non-stationary.
+- Returned D8 evidence: primary pump flow `100 -> 122.6975 kg/s`, electrical export `4.9986 -> 4.5644 MWe`, late net/stored energy `~+2.402 MW`, turbine-inlet mass slope `+0.22150 kg/s`; no trip/rollback and energy closure remains conservative.
+- Adds **no runtime source change and no exact-v8**. Diagnostic 9 runs exact-v7 for 180 s and records the canonical mass chain `admission valve -> stage commanded -> stage effective -> condenser -> hotwell -> condensate pump -> feedwater inventory -> feedwater pump -> drum`.
+- Separates `admission-commanded` hydraulic/stage-capacity residual from `commanded-effective` vapor-fraction residual and compares `admission-effective` directly with measured turbine-inlet `dm/dt`.
+- Also compares stage-effective-minus-condensation with exhaust `dm/dt`, condensation-minus-condensate-pump with hotwell `dm/dt`, condensate-minus-feedwater with feedwater-inventory `dm/dt`, and the corrected M4.4 drum algebraic balance with drum `dm/dt`.
+- Decision remains fail-closed: if vapor-fraction-limited stage mass ownership is confirmed, do **not** author a seed-only exact-v8; first choose the physically intended owner (total-mass turbine transport with vapor-limited work, explicit moisture drain/separator, or an already modeled path) under a separate versioned repair.
+- Production selector remains exact-v4. Production activation and replacement long remain unauthorized.
+
+# M10 Final Long Failure Diagnostic 8 — Exact-v7 Grid-Droop Integral-Reference Requalification (CANDIDATE)
+
+- Stacked on user-validated Diagnostic 7 and its returned governor/steam-path artifacts.
+- Diagnostic 7 proves the breaker-closed historical governor integrates the intentional droop offset: late mean error ~+0.738 rpm with Ki=0.02/s produces governor-integral slope ~+0.01476 %/s, matching measured governor-output/control-valve slope ~+0.01474 %/s.
+- Classifies the residual exact-v6 drift as a structural breaker-closed governor control-law mismatch, not a seed-only mismatch: a rigid grid holds rotor speed near synchronous speed, so no finite initial integral can stop integration against the 3000.75 rpm droop-shifted reference.
+- Adds optional controller `IntegralSetpoint`; null preserves historical PID behavior. Adds versioned `TurbineGovernorIntegralReferenceMode`; historical default remains `EffectiveDroopSetpoint`.
+- Adds exact-version `integrated-operations-desktop-stable@7`, preserving the exact-v6 analytical whole-cycle state while opting only into `SynchronousSpeedWhenParalleled`: P/D retain the droop-shifted reference, I uses synchronous grid speed.
+- Adds domain/simulation regressions plus a 600 s exact-v7 whole-cycle requalification census with governor late-slope evidence.
+- Exact-v4 remains production; exact-v5/exact-v6 remain retained failed diagnostic evidence. No production activation or replacement long is authorized.
+
 # M10 Final Long Failure Diagnostic 7 — Governor-Droop / Steam-Path Owner Census (CANDIDATE)
 
 - Stacked on user-validated Diagnostic 6 execution and its returned artifacts.

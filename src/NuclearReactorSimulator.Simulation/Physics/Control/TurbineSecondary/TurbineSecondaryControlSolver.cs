@@ -155,9 +155,17 @@ public sealed class TurbineSecondaryControlSolver
         var effectiveDroopSetpointRpm = synchronousMechanicalRpm
             + (governor.FullLoadSpeedReferenceRise.RevolutionsPerMinute * requestedLoadFraction);
 
+        var integralSetpointRpm = governor.IntegralReferenceMode == TurbineGovernorIntegralReferenceMode.SynchronousSpeedWhenParalleled
+            ? synchronousMechanicalRpm
+            : (double?)null;
         var effectiveInputs = requestedControllerInputs.Controllers
             .Select(input => string.Equals(input.ControllerId, governor.SpeedControllerId, StringComparison.Ordinal)
-                ? new ControllerInput(input.ControllerId, input.Mode, effectiveDroopSetpointRpm, input.ManualOutput)
+                ? new ControllerInput(
+                    input.ControllerId,
+                    input.Mode,
+                    effectiveDroopSetpointRpm,
+                    input.ManualOutput,
+                    integralSetpointRpm)
                 : input)
             .ToArray();
         return new ControllerInputs(requestedControllerInputs.Definition, effectiveInputs);

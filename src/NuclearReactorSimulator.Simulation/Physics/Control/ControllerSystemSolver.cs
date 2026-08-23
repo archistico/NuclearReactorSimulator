@@ -69,6 +69,9 @@ public sealed class ControllerSystemSolver
         var measurementAvailable = measurement.EngineeringValue.HasValue && measurement.Validity == SignalValidity.Valid;
         var measurementValue = measurement.EngineeringValue;
         var error = measurementAvailable ? input.Setpoint - measurementValue!.Value : state.PreviousError;
+        var integralError = measurementAvailable
+            ? (input.IntegralSetpoint ?? input.Setpoint) - measurementValue!.Value
+            : state.PreviousError;
         var p = 0d;
         var i = state.IntegralTerm;
         var d = 0d;
@@ -115,7 +118,7 @@ public sealed class ControllerSystemSolver
 
             var integralIncrement = bumpless
                 ? 0d
-                : definition.IntegralGainPerSecond * error * deltaTime.TotalSeconds;
+                : definition.IntegralGainPerSecond * integralError * deltaTime.TotalSeconds;
             var candidateIntegral = i + integralIncrement;
             unsaturated = p + candidateIntegral + d;
             command = definition.OutputRange.Clamp(unsaturated);

@@ -360,6 +360,58 @@ public sealed class TurbineExpansionSolverTests
     }
 
     [Fact]
+    public void Step_MoistureDrainPolicy_AssignsRejectedLiquidToExplicitOwnerWithoutChangingVaporWorkFlow()
+    {
+        var fixture = CreateFixture(
+            3_000d,
+            Torque.Zero,
+            tripCommand: false,
+            thermodynamicWork: CurrentThermodynamicWork(),
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+            inletPhase: FluidPhase.SaturatedMixture,
+            inletVaporQuality: VaporQuality.FromPercent(25d),
+            moistureDrainNodeId: "hotwell");
+        var solver = new TurbineExpansionSolver(fixture.Definition, new PreservingWaterSteamThermodynamicModel());
+
+        var inletBefore = fixture.PlantState.GetFluidNode("turbine-inlet").Mass.Kilograms;
+        var exhaustBefore = fixture.PlantState.GetFluidNode("exhaust").Mass.Kilograms;
+        var hotwellBefore = fixture.PlantState.GetFluidNode("hotwell").Mass.Kilograms;
+
+        var deltaTime = TimeSpan.FromMilliseconds(1d);
+        var result = solver.Step(
+            fixture.PlantState,
+            fixture.TurbineState,
+            fixture.Inputs,
+            deltaTime);
+        var stage = Assert.Single(result.Snapshot.StageGroups);
+
+        Assert.Equal(1d, stage.CommandedMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(0.25d, stage.EffectiveMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(0.75d, stage.MoistureDrainMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(1d, stage.TotalTransferredMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal("hotwell", stage.MoistureDrainNodeId);
+        Assert.InRange(stage.ShaftPower.Kilowatts, 99.9d, 100.1d);
+        Assert.InRange(Math.Abs(stage.TurbineEnergyOwnershipResidual.Watts), 0d, 1e-6d);
+
+        var admissionFlow = result.Snapshot.MainSteamNetwork
+            .GetAdmissionTrain("train-a")
+            .AdmissionValve
+            .MassFlowRate
+            .KilogramsPerSecond;
+        // turbine-inlet is integrated once from both the canonical admission-valve hydraulic inflow and
+        // the turbine stage source term. Assert the exact net owner composition rather than pretending
+        // that the stage transfer is the only balance applied to this node.
+        var expectedInletMass = inletBefore
+            + ((admissionFlow - stage.TotalTransferredMassFlowRate.KilogramsPerSecond) * deltaTime.TotalSeconds);
+
+        Assert.Equal(expectedInletMass, result.CandidatePlantState.GetFluidNode("turbine-inlet").Mass.Kilograms, 9);
+        Assert.Equal(exhaustBefore + 0.00025d, result.CandidatePlantState.GetFluidNode("exhaust").Mass.Kilograms, 9);
+        Assert.Equal(hotwellBefore + 0.00075d, result.CandidatePlantState.GetFluidNode("hotwell").Mass.Kilograms, 9);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalanceMassRateResidualKilogramsPerSecond), 0d, 1e-12d);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalancePowerResidualWatts), 0d, 1e-6d);
+    }
+
+    [Fact]
     public void Step_ThermodynamicWorkBoundsLowEnergyAdmissionInsteadOfThrowing()
     {
         var ratedSpeed = AngularSpeed.FromRevolutionsPerMinute(3_000d);
@@ -418,7 +470,8 @@ public sealed class TurbineExpansionSolverTests
         TurbineRotorMechanicalLossDefinition? mechanicalLoss = null,
         QuadraticHydraulicResistance? expansionResistance = null,
         ValvePosition? controlValvePosition = null,
-        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy)
+        FluidEnergyTransportMode energyTransportMode = FluidEnergyTransportMode.SpecificInternalEnergy,
+        string? moistureDrainNodeId = null)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -431,7 +484,7 @@ public sealed class TurbineExpansionSolverTests
             new[]
             {
                 Node("suction"), Node("pressure"), Node("outlet"), Node("drum"), Node("steam"),
-                Node("header"), Node("stop-out"), Node("control-out"), Node("turbine-inlet"), Node("exhaust"),
+                Node("header"), Node("stop-out"), Node("control-out"), Node("turbine-inlet"), Node("exhaust"), Node("hotwell"),
             },
             new[]
             {
@@ -498,6 +551,7 @@ public sealed class TurbineExpansionSolverTests
                     inletVaporQuality,
                     inletSpecificInternalEnergyKilojoulesPerKilogram),
                 Fluid("exhaust", exhaustPressureMegapascals, FluidPhase.SaturatedMixture, VaporQuality.FromPercent(90d)),
+                Fluid("hotwell", exhaustPressureMegapascals, FluidPhase.SubcooledLiquid),
             },
             new[]
             {
@@ -565,7 +619,8 @@ public sealed class TurbineExpansionSolverTests
                     expansionResistance: expansionResistance,
                     thermodynamicWork: thermodynamicWork,
                     admissionPhasePolicy: admissionPhasePolicy,
-                    energyTransportMode: energyTransportMode),
+                    energyTransportMode: energyTransportMode,
+                    moistureDrainNodeId: moistureDrainNodeId),
             });
 
         var primaryBoundaryInputs = new PrimaryCircuitBoundaryInputs(
@@ -600,6 +655,32 @@ public sealed class TurbineExpansionSolverTests
             SpecificHeatCapacity.FromKilojoulesPerKilogramKelvin(2.1d),
             heatCapacityRatio: 1.3d,
             maximumInletInternalEnergyExtractionFraction: 0.8d);
+
+    private sealed class PreservingWaterSteamThermodynamicModel :
+        IFluidThermodynamicModel,
+        IWaterSteamSaturationPropertyProvider
+    {
+        public FluidThermodynamicState Resolve(
+            FluidNodeDefinition definition,
+            FluidNodeInventory inventory,
+            FluidThermodynamicState previousState)
+            => previousState;
+
+        public WaterSteamSaturationProperties GetSaturationProperties(Temperature temperature)
+            => Saturation(temperature, Pressure.FromMegapascals(5d));
+
+        public WaterSteamSaturationProperties GetSaturationProperties(Pressure pressure)
+            => Saturation(Temperature.FromDegreesCelsius(280d), pressure);
+
+        private static WaterSteamSaturationProperties Saturation(Temperature temperature, Pressure pressure)
+            => new(
+                temperature,
+                pressure,
+                Density.FromKilogramsPerCubicMetre(700d),
+                Density.FromKilogramsPerCubicMetre(25d),
+                SpecificEnergy.FromKilojoulesPerKilogram(1_200d),
+                SpecificEnergy.FromKilojoulesPerKilogram(2_600d));
+    }
 
     private sealed record Fixture(
         TurbineExpansionSystemDefinition Definition,

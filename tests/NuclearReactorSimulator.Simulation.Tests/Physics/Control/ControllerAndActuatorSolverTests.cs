@@ -40,6 +40,27 @@ public sealed class ControllerAndActuatorSolverTests
     }
 
     [Fact]
+    public void PIController_OptionalIntegralSetpointSeparatesProportionalAndIntegralReferences()
+    {
+        var fixture = CreateFixture(ControllerAlgorithmKind.ProportionalIntegral, 1d, 0.5d, 0d, new ControllerOutputRange(-100d, 100d));
+        var state = new ControllerSystemState(fixture.Control, new[] { new ControllerChannelState("C", true, ControllerMode.Automatic, 10d, 5d, 15d) });
+        var inputs = new ControllerInputs(fixture.Control, new[]
+        {
+            new ControllerInput("C", ControllerMode.Automatic, setpoint: 10d, manualOutput: 0d, integralSetpoint: 4d),
+        });
+
+        var result = new ControllerSystemSolver(fixture.Control).Step(
+            SignalFrame(fixture.Instrumentation, 5d),
+            state,
+            inputs,
+            TimeSpan.FromSeconds(2d));
+
+        Assert.Equal(5d, result.Snapshot.GetDiagnostic("C").ProportionalTerm);
+        Assert.Equal(9d, result.CandidateState.GetController("C").IntegralTerm);
+        Assert.Equal(14d, result.Snapshot.Outputs.GetOutput("C").Output);
+    }
+
+    [Fact]
     public void PIDController_DerivativeUsesCommittedPreviousErrorAndFixedTimestep()
     {
         var fixture = CreateFixture(ControllerAlgorithmKind.ProportionalIntegralDerivative, 0d, 0d, 2d, new ControllerOutputRange(-100d, 100d));
