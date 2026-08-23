@@ -149,7 +149,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? initialPrimaryOutletSaturationPressureMegapascals = null,
         double? initialPrimaryOutletVaporQualityFraction = null,
         double? initialFuelTemperatureCelsiusOverride = null,
-        double? initialStructureTemperatureCelsiusOverride = null)
+        double? initialStructureTemperatureCelsiusOverride = null,
+        IReadOnlyCollection<OperationalFluidNodeSeed>? initialFluidNodeSeeds = null)
     {
         var effectiveRuntimeStep = runtimeStep ?? RuntimeStep;
         if (effectiveRuntimeStep <= TimeSpan.Zero)
@@ -241,7 +242,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             initialPrimaryOutletSaturationPressureMegapascals,
             initialPrimaryOutletVaporQualityFraction,
             initialFuelTemperatureCelsiusOverride,
-            initialStructureTemperatureCelsiusOverride);
+            initialStructureTemperatureCelsiusOverride,
+            initialFluidNodeSeeds);
         var solver = new IntegratedAutomaticOperationSolver(
             recipe.ReactorDefinition,
             recipe.SecondaryDefinition,
@@ -349,7 +351,8 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         double? initialPrimaryOutletSaturationPressureMegapascals,
         double? initialPrimaryOutletVaporQualityFraction,
         double? initialFuelTemperatureCelsiusOverride,
-        double? initialStructureTemperatureCelsiusOverride)
+        double? initialStructureTemperatureCelsiusOverride,
+        IReadOnlyCollection<OperationalFluidNodeSeed>? initialFluidNodeSeeds)
     {
         if ((iodineXenonDefinition is null) != (initialIodineXenonState is null))
         {
@@ -855,37 +858,78 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
             Array.Empty<HeatSourceDefinition>(),
             hydraulicNumericalCoupling);
 
+        var authoredFluidNodeSeeds = initialFluidNodeSeeds is null
+            ? new Dictionary<string, OperationalFluidNodeSeed>(StringComparer.Ordinal)
+            : initialFluidNodeSeeds.ToDictionary(static item => item.NodeId, StringComparer.Ordinal);
+        foreach (var nodeId in authoredFluidNodeSeeds.Keys)
+        {
+            _ = plant.GetFluidNode(nodeId);
+        }
+
+        FluidNodeState ResolveAuthoredFluidNode(string nodeId, Func<FluidNodeState> fallback)
+        {
+            if (!authoredFluidNodeSeeds.TryGetValue(nodeId, out var seed))
+            {
+                return fallback();
+            }
+
+            return seed switch
+            {
+                OperationalFluidNodeSeed.SaturatedMixture saturated => CreateSaturatedMixtureAtPressureAndQuality(
+                    plant,
+                    nodeId,
+                    thermodynamicModel,
+                    saturated.PressureMegapascals,
+                    saturated.VaporQualityFraction),
+                OperationalFluidNodeSeed.SubcooledLiquid subcooled => CreateSubcooledLiquid(
+                    plant,
+                    nodeId,
+                    thermodynamicModel,
+                    subcooled.TemperatureCelsius,
+                    subcooled.CompressionFraction),
+                _ => throw new InvalidOperationException($"Unsupported authored fluid-node seed type '{seed.GetType().Name}'."),
+            };
+        }
+
         var suctionCompressionFraction = initialPrimarySuctionCompressionFraction
             ?? initialPrimaryLiquidCompressionFraction;
         var pressureCompressionFraction = initialPrimaryPressureCompressionFraction
             ?? initialPrimaryLiquidCompressionFraction;
-        var primaryLiquid = CreateSubcooledLiquid(
-            plant,
+        var primaryLiquid = ResolveAuthoredFluidNode(
             "suction",
-            thermodynamicModel,
-            initialPrimaryTemperatureCelsius,
-            suctionCompressionFraction);
-        var primaryLiquidPressure = primaryLiquid.Pressure;
-        FluidNodeState PrimaryLiquid(string id) => CreateSubcooledLiquid(
-            plant,
-            id,
-            thermodynamicModel,
-            initialPrimaryTemperatureCelsius,
-            initialPrimaryLiquidCompressionFraction);
-        var pressureHeaderLiquid = CreateSubcooledLiquid(
-            plant,
-            "pressure",
-            thermodynamicModel,
-            initialPrimaryTemperatureCelsius,
-            pressureCompressionFraction);
-        var outletCoolant = initialPrimaryOutletSaturationPressureMegapascals.HasValue
-            ? CreateSaturatedMixtureAtPressureAndQuality(
+            () => CreateSubcooledLiquid(
                 plant,
-                "outlet",
+                "suction",
                 thermodynamicModel,
-                initialPrimaryOutletSaturationPressureMegapascals.Value,
-                initialPrimaryOutletVaporQualityFraction!.Value)
-            : PrimaryLiquid("outlet");
+                initialPrimaryTemperatureCelsius,
+                suctionCompressionFraction));
+        var primaryLiquidPressure = primaryLiquid.Pressure;
+        FluidNodeState PrimaryLiquid(string id) => ResolveAuthoredFluidNode(
+            id,
+            () => CreateSubcooledLiquid(
+                plant,
+                id,
+                thermodynamicModel,
+                initialPrimaryTemperatureCelsius,
+                initialPrimaryLiquidCompressionFraction));
+        var pressureHeaderLiquid = ResolveAuthoredFluidNode(
+            "pressure",
+            () => CreateSubcooledLiquid(
+                plant,
+                "pressure",
+                thermodynamicModel,
+                initialPrimaryTemperatureCelsius,
+                pressureCompressionFraction));
+        var outletCoolant = ResolveAuthoredFluidNode(
+            "outlet",
+            () => initialPrimaryOutletSaturationPressureMegapascals.HasValue
+                ? CreateSaturatedMixtureAtPressureAndQuality(
+                    plant,
+                    "outlet",
+                    thermodynamicModel,
+                    initialPrimaryOutletSaturationPressureMegapascals.Value,
+                    initialPrimaryOutletVaporQualityFraction!.Value)
+                : PrimaryLiquid("outlet"));
         var steamDrumInventory = initialSteamDrumLiquidLevelFraction.HasValue
             ? CreateSaturatedSteamDrumAtLevel(
                 plant,
@@ -894,8 +938,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 initialPrimaryTemperatureCelsius,
                 initialSteamDrumLiquidLevelFraction.Value)
             : PrimaryLiquid("drum");
-        FluidNodeState SteamSpace(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius);
-        FluidNodeState CondenserSteam(string id) => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, 40d);
+        FluidNodeState SteamSpace(string id) => ResolveAuthoredFluidNode(
+            id,
+            () => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius));
+        FluidNodeState CondenserSteam(string id) => ResolveAuthoredFluidNode(
+            id,
+            () => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, 40d));
         var fallbackSteamPathTemperatureCelsius = initialSteamPathTemperatureCelsius
             ?? (turbineStartupLineup ? 40d : initialPrimaryTemperatureCelsius);
         var headerSteamTemperatureCelsius = initialHeaderSteamTemperatureCelsius
@@ -907,8 +955,12 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         var turbineInletSteamTemperatureCelsius = initialTurbineInletSteamTemperatureCelsius
             ?? fallbackSteamPathTemperatureCelsius;
         FluidNodeState SteamAt(string id, double temperatureCelsius)
-            => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, temperatureCelsius);
-        FluidNodeState Condensate(string id) => CreateSubcooledLiquid(plant, id, thermodynamicModel, 40d);
+            => ResolveAuthoredFluidNode(
+                id,
+                () => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, temperatureCelsius));
+        FluidNodeState Condensate(string id) => ResolveAuthoredFluidNode(
+            id,
+            () => CreateSubcooledLiquid(plant, id, thermodynamicModel, 40d));
 
         var hotwell = Condensate("hotwell");
         var initialFissionPowerMegawatts = 100d * initialNeutronPopulation.Relative;
@@ -1583,7 +1635,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
         // from the steam-drum owner rather than accidentally exposing the higher suction-node pressure.
         var usesDifferentiatedPrimaryPressureSeed = initialPrimarySuctionCompressionFraction.HasValue
             || initialPrimaryPressureCompressionFraction.HasValue
-            || initialPrimaryOutletSaturationPressureMegapascals.HasValue;
+            || initialPrimaryOutletSaturationPressureMegapascals.HasValue
+            || authoredFluidNodeSeeds.ContainsKey("suction")
+            || authoredFluidNodeSeeds.ContainsKey("pressure")
+            || authoredFluidNodeSeeds.ContainsKey("outlet");
         var initialPressureSignal = usesDifferentiatedPrimaryPressureSeed
             ? steamDrumInventory.Pressure
             : primaryLiquidPressure;

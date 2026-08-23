@@ -2,13 +2,13 @@
 
 ## Status
 
-**HOTFIX 1 CANDIDATE — Diagnostic 2 / LR-M1 Hotfix 1 is locally validated; LR-M1 is accepted as repaired evidence, while LR-H1 remains blocking. Exact-v5 is diagnostic-only and is not the authoritative production default.**
+**HOTFIX 1 EXECUTION PASS / EXACT-V5 ENGINEERING NOT QUALIFIED — superseded for active investigation by Diagnostic 4.**
 
-The original Diagnostic 3 candidate was not executed: its Debug build stopped with CS0103 in `M10FinalLongFailureDiagnostic3Tests.cs` because `HydraulicNumericalCouplingMode` was referenced without importing `NuclearReactorSimulator.Domain.Plant`. Hotfix 1 adds only that missing test namespace import; the exact-v5 seed, production code, selector and diagnostic contract are unchanged.
+The original Diagnostic 3 candidate failed its Debug build with one test-only CS0103 because `HydraulicNumericalCouplingMode` lacked the `NuclearReactorSimulator.Domain.Plant` import. Hotfix 1 corrected only that namespace import. The user then reported the complete Diagnostic-3 script PASS and returned the full artifact folder.
 
-This package is stacked directly on **M10 Final Long Failure Diagnostic 2 / LR-M1 Hotfix 1** after the user reported that build, the complete ordinary suite and the focused diagnostics passed and returned the complete `artifacts/m10-final-long-diagnostic2` folder.
+The returned 600 s run is finite, trip-free and rollback-free, but exact-v5 does **not** satisfy the engineering qualification rule written by this document: drum inventory/level and common-mode pressure/thermal state remain materially monotonic. Exact-v5 therefore stays diagnostic-only; exact-v4 remains the authoritative production default.
 
-M10 remains open. M11 remains blocked. The replacement long campaign is still **not authorized**.
+M10 remains open. M11 remains blocked. The replacement long campaign is still **not authorized**. See `M10_FINAL_LONG_FAILURE_DIAGNOSTIC4.md` for the next evidence step.
 
 ## 1. Diagnostic 2 conclusions
 
@@ -166,11 +166,34 @@ artifacts\m10-final-long-diagnostic3
 
 before any production activation step.
 
-## 6. Decision after returned evidence
+## 6. Returned result and decision
 
-If @5 stays bounded through 600 s with no material monotonic outlet/drum/thermal-body drift, the next step is a **separate production-activation candidate**. That candidate will register/select @5 deliberately, preserve @4 replay provenance, rerun the relevant exact-version/replay/checkpoint/reference gates, and only then authorize a newly manifested replacement long campaign.
+Diagnostic 3 completed, but the exact-v5 candidate is **NOT QUALIFIED**. The 260 kg/s instantaneous pressure-grade seed evolves to a late hydraulic regime near 103 kg/s. Branch continuity improves strongly, yet the full plant remains non-stationary.
 
-If @5 still drifts, do not tune around the result. Use the returned pressure/flow/inventory/thermal slopes to identify the next missing equilibrium residual or seed degree of freedom.
+Returned final state at 600 s:
+
+```text
+outlet mass  1425.894 kg
+drum mass    7267.712 kg
+drum level   0.956714
+pump flow     103.196 kg/s
+channel flow  103.023 kg/s
+return flow   103.205 kg/s
+```
+
+Returned final-60 s slopes include:
+
+```text
+outlet mass       -0.17960 kg/s
+drum mass         +0.79872 kg/s
+drum level        +8.6082e-5 fraction/s
+outlet pressure   -1001 Pa/s
+drum pressure      -984 Pa/s
+fuel temperature  -0.01063 °C/s
+structure temp.    -0.01154 °C/s
+```
+
+The next step is Diagnostic 4, which leaves exact-v5 unchanged and exposes canonical drum, feedwater/steam-export and coupled energy-balance terms. No production activation is permitted from Diagnostic-3 survival alone.
 
 ## 7. Hard non-scope
 

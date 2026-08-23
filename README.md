@@ -1,3 +1,5 @@
+> **M10 final active investigation:** Diagnostic 5 completed PASS and supplied the whole-cycle owner census. Diagnostic 6 is now the active exact-v6 analytical whole-cycle equilibrium candidate: it closes the stationary primary loop at 100 kg/s, the 5 MWe turbine-generator/steam path, condenser and feedwater hydraulics from unchanged model equations. Exact-v4 remains production; exact-v5 remains failed diagnostic evidence; production activation and replacement long remain unauthorized. See `docs/M10_FINAL_LONG_FAILURE_DIAGNOSTIC6.md`.
+
 
 > **Hotfix 1:** the long preflight ignores generated `bin/` and `obj/` build output when checking the frozen `src/` and `tests/` manifests, so the gate remains valid even if `dotnet build` or `dotnet test` was run before the long script.
 

@@ -1,3 +1,35 @@
+# M10 Final Long Failure Diagnostic 6 — Exact-v6 Analytical Whole-Cycle Equilibrium Candidate (CANDIDATE)
+
+- Stacked on user-validated Diagnostic 5 and its returned whole-cycle owner artifacts.
+- Corrects the earlier shorthand about exact-v5: its 260 kg/s probe did not omit pump internal resistance; the non-stationary seed instead relied on an authored ~5.76 MPa suction-to-drum pressure reservoir that relaxes under drum-to-suction recirculation.
+- Adds exact-version `integrated-operations-desktop-stable@6` as candidate-only; exact-v4 remains the authoritative production selector and exact-v5 remains frozen failed diagnostic evidence.
+- Derives the stationary primary point from unchanged resistances/head with `P_suction=P_drum`: total closed-loop resistance 100 Pa·s²/kg² and 1 MPa pump head imply 100 kg/s.
+- Derives the secondary point from 5 MWe / 98% generator efficiency + 0.5 MW rotor loss and 430 kJ/kg effective turbine work: 13.0280018984 kg/s.
+- Solves the unchanged steam-path resistances, condenser UA, condensate/feedwater hydraulics and thermal balances consistently; analytical whole-cycle heat input is 32.4842538718 MW.
+- Adds a generic per-node authored thermofluid seed seam used only by exact-v6; all historical seeds retain their existing fallback path.
+- Adds ordinary exact-v6 identity/default-policy checks and a 600 s explicit whole-cycle equilibrium census.
+- No production activation, replacement-long authorization, domain widening, component coefficient retuning, controller-gain change, I.3 budget change or conservation-ceiling change.
+
+# M10 Final Long Failure Diagnostic 5 — Exact-v5 Whole-Cycle Authored-State Owner Census (CANDIDATE)
+
+- Stacked on the locally validated Diagnostic 4 candidate/results chain.
+- Diagnostic 4 execution PASS confirms exact-v5 remains engineering NOT QUALIFIED.
+- Diagnostic 4 corrected interpretation: M4.4 physical feedwater is the internal feedwater-pump flow; the legacy primary feedwater boundary remains zero by design and is not the drum feedwater owner.
+- Final-60 s drum accumulation is approximately `+0.79872 kg/s`; `return-recirculation` contributes only ~`+0.01270 kg/s`, while `internal feedwater-separated steam` contributes ~`+0.78540 kg/s`.
+- Full energy path remains conservative: late net external power and coupled stored-energy change both ~`-2.477 MW`, with microscopic closure residual.
+- Adds Diagnostic 5 only: exact-v5 is rerun unchanged for 600 s while all whole-cycle authored thermofluid node states, pump/controller states and corrected owner balances are captured.
+- `src/` remains unchanged from Diagnostic 4; exact-v4/exact-v5 and production selection remain unchanged.
+- No exact-v6, production activation or replacement long is authorized by this candidate.
+
+# M10 Final Long Failure Diagnostic 4 — Exact-v5 Full-Plant Mass / Energy Balance Census (CANDIDATE)
+
+- Stacked on user-validated Diagnostic 3 Hotfix 1. Diagnostic 3 execution passed, but returned engineering evidence marks exact-v5 **NOT QUALIFIED** for production activation.
+- Freezes the Diagnostic-3 finding that the 260 kg/s instantaneous hydraulic probe evolves toward ~103 kg/s, with outlet mass 4609.8→1425.9 kg, drum mass 3918.2→7267.7 kg and drum level 0.5000→0.9567 over 600 s.
+- Records final-60 s residuals from returned evidence: outlet `dm/dt` ~-0.1796 kg/s, mean channel-return ~-0.1784 kg/s, drum mass slope ~+0.7987 kg/s, drum-level slope ~+8.61e-5 /s, outlet/drum pressure decline ~-1.00/-0.984 kPa/s, fuel/structure cooling ~-0.0106/-0.0115 °C/s.
+- Adds a diagnostic-only 600 s census of canonical drum, primary-boundary, feedwater/condensate and full coupled energy-balance terms.
+- `src/` is unchanged from Diagnostic 3 Hotfix 1; exact-v4, exact-v5, production selector, physics, controller tuning, thermodynamic envelope, I.3 budgets and historical long manifest are unchanged.
+- Replacement long remains unauthorized; no exact-v6 or new operating-point target is authored until returned balance evidence identifies the mass/energy owners quantitatively.
+
 ## M10 Final Long Failure Diagnostic 3 Hotfix 1 — Missing Domain Namespace Import — CANDIDATE
 
 - Supersedes the original Diagnostic 3 candidate, which failed the Debug build only in `M10FinalLongFailureDiagnostic3Tests.cs` with CS0103 because the new test referenced `HydraulicNumericalCouplingMode` without importing its owning `NuclearReactorSimulator.Domain.Plant` namespace.

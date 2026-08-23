@@ -179,9 +179,10 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
     /// M10 final LR-H1 reference operating-point candidate. This is a distinct exact-version seed seam only:
     /// exact v4 remains immutable and the authoritative selector is not switched here.
     ///
-    /// The target 260 kg/s loop point is derived from the unchanged 25 Pa*s^2/kg^2 channel/return
-    /// resistances and 1 MPa rated main-circulation pump head. The outlet saturation state and solid-body
-    /// temperatures are seeded consistently with the unchanged 30 MW initial fission power.
+    /// The Diagnostic 3 target 260 kg/s loop point was an intentionally incomplete pressure-grade probe.
+    /// Diagnostic 5 plus source-level balance review later showed that the non-stationary seed relied on a
+    /// large suction-to-drum pressure separation; exact-v5 already included pump path/internal resistance.
+    /// Exact-v5 is retained unchanged as failed diagnostic evidence.
     /// </summary>
     internal static IControlRoomRuntimeEngine CreateReferenceOperatingPointCandidateRuntimeEngine(TimeSpan runtimeStep)
     {
@@ -215,6 +216,72 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialStructureTemperatureCelsiusOverride: 301.93357730105606d);
     }
 
+    /// <summary>
+    /// M10 final LR-H1 exact-v6 analytical whole-cycle equilibrium candidate. Unlike exact-v5, which was an
+    /// intentionally diagnostic 260 kg/s probe, this seed closes the actual authored hydraulic resistances,
+    /// passive enthalpy paths, turbine/generator mechanical demand, condenser UA balance and secondary-pump
+    /// balances simultaneously. Exact-v4 remains the production selector and exact-v5 remains frozen failed evidence.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateWholeCycleEquilibriumCandidateRuntimeEngine(TimeSpan runtimeStep)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Whole-cycle equilibrium candidate timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        var fluidNodeSeeds = new OperationalFluidNodeSeed[]
+        {
+            // Primary loop: 1 MPa rated pump head closes against pump path+internal+channel+return
+            // resistance = 100 Pa*s^2/kg^2, hence q = 100 kg/s. Drum/suction remain at 280 C saturation.
+            new OperationalFluidNodeSeed.SaturatedMixture("suction", 6.416459281680372d, 0d),
+            new OperationalFluidNodeSeed.SubcooledLiquid("pressure", 280.1582998275795d, 0.0002203018767873456d),
+            new OperationalFluidNodeSeed.SaturatedMixture("outlet", 6.666459281680372d, 0.21186790020483265d),
+
+            // Secondary steam path: 13.0280018984 kg/s supplies 5 MWe / 98% generator efficiency plus
+            // the unchanged 0.5 MW rotor loss at 500 kJ/kg nominal work and 86% turbine efficiency.
+            // Each passive node is seeded at the same steam-source specific enthalpy.
+            new OperationalFluidNodeSeed.SaturatedMixture("steam", 6.399486398333812d, 0.9997985062240056d),
+            new OperationalFluidNodeSeed.SaturatedMixture("header", 6.2552168898880565d, 0.9981120495093272d),
+            new OperationalFluidNodeSeed.SaturatedMixture("stop-out", 6.085488056422462d, 0.9961878030705963d),
+            new OperationalFluidNodeSeed.SaturatedMixture("control-out", 3.8101893137696408d, 0.9766316994558023d),
+            new OperationalFluidNodeSeed.SaturatedMixture("turbine-inlet", 3.6404604803040463d, 0.975662912566689d),
+
+            // Exhaust temperature is the root of q*(h_exhaust-h_condensate)=UA*(T_exhaust-T_cooling),
+            // with the turbine extracting 430 kJ/kg. Hotwell is the matching saturated-liquid state.
+            new OperationalFluidNodeSeed.SaturatedMixture("exhaust", 0.008263444140323916d, 0.857029927254011d),
+            new OperationalFluidNodeSeed.SaturatedMixture("hotwell", 0.008263444140323916d, 0d),
+
+            // The unchanged 42% condensate-pump bias lifts the 42.1258 C condensate only enough to balance
+            // its 1000 Pa*s^2/kg^2 total path resistance at the same 13.028 kg/s throughput.
+            new OperationalFluidNodeSeed.SubcooledLiquid("feedwater-inventory", 42.16659807598285d, 0.000003024302581887423d),
+        };
+
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false,
+            useFourNodeBranchContinuityShadowIntegration: false,
+            useFourNodeBranchContinuityCorrectedCommitOptIn: true,
+            thermodynamicClosureMode: WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain,
+            initialFuelTemperatureCelsiusOverride: 305.28430322032125d,
+            initialStructureTemperatureCelsiusOverride: 289.0421762844392d,
+            initialNeutronPopulationOverride: NeutronPopulation.FromRelative(0.3248425387176408d),
+            initialControlValvePercentOpenOverride: 27.312320479840385d,
+            initialCondensatePumpPercentOverride: 42d,
+            initialFeedwaterPumpPercentOverride: 96.88913771103281d,
+            initialFluidNodeSeeds: fluidNodeSeeds);
+    }
+
     private static IControlRoomRuntimeEngine CreateRuntimeEngine(
         bool includeEvidenceDerivedElectricalProtections,
         TimeSpan? runtimeStep = null,
@@ -228,9 +295,14 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
         double? initialPrimaryOutletSaturationPressureMegapascals = null,
         double? initialPrimaryOutletVaporQualityFraction = null,
         double? initialFuelTemperatureCelsiusOverride = null,
-        double? initialStructureTemperatureCelsiusOverride = null)
+        double? initialStructureTemperatureCelsiusOverride = null,
+        NeutronPopulation? initialNeutronPopulationOverride = null,
+        double? initialControlValvePercentOpenOverride = null,
+        double? initialCondensatePumpPercentOverride = null,
+        double? initialFeedwaterPumpPercentOverride = null,
+        IReadOnlyCollection<OperationalFluidNodeSeed>? initialFluidNodeSeeds = null)
         => ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
-            GenerationReadySeed,
+            initialNeutronPopulationOverride ?? GenerationReadySeed,
             mainCirculationRunning: true,
             initialRodPosition: CriticalRodPosition,
             initialPrimaryTemperatureCelsius: 280d,
@@ -240,7 +312,7 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialRequestedElectricalPowerMegawatts: 5d,
             initialCondenserCoolingPowerMegawatts: 40d,
             initialTurbineSpeedSetpointRpm: 3_000d,
-            initialControlValvePercentOpen: LoadedControlValveBiasPercent,
+            initialControlValvePercentOpen: initialControlValvePercentOpenOverride ?? LoadedControlValveBiasPercent,
             initialHeaderSteamTemperatureCelsius: 278.5d,
             initialStopOutletSteamTemperatureCelsius: LoadedStopOutletSteamTemperatureCelsius,
             initialControlOutletSteamTemperatureCelsius: 249.5d,
@@ -259,8 +331,8 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             condenserCoolingWaterTemperatureCelsius: 20d,
             usePressureResolvedCondenserCondensateEnergy: true,
             secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared: 500d,
-            initialCondensatePumpPercent: 42d,
-            initialFeedwaterPumpPercent: 97d,
+            initialCondensatePumpPercent: initialCondensatePumpPercentOverride ?? 42d,
+            initialFeedwaterPumpPercent: initialFeedwaterPumpPercentOverride ?? 97d,
             levelControllerIntegralGainPerSecond: 0.001d,
             hotwellControllerIntegralGainPerSecond: -0.000001d,
             exhaustSteamSpaceVolumeCubicMetres: 1_000d,
@@ -302,5 +374,6 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialPrimaryOutletSaturationPressureMegapascals: initialPrimaryOutletSaturationPressureMegapascals,
             initialPrimaryOutletVaporQualityFraction: initialPrimaryOutletVaporQualityFraction,
             initialFuelTemperatureCelsiusOverride: initialFuelTemperatureCelsiusOverride,
-            initialStructureTemperatureCelsiusOverride: initialStructureTemperatureCelsiusOverride);
+            initialStructureTemperatureCelsiusOverride: initialStructureTemperatureCelsiusOverride,
+            initialFluidNodeSeeds: initialFluidNodeSeeds);
 }
