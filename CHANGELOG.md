@@ -1,4 +1,16 @@
-﻿# M10 Final Replacement-Long Closure Plan 1 — P0 Hotfix 2 — Validator / PROJECT Marker Alignment (CANDIDATE)
+# M10 Final Replacement-Long Closure Plan 1 — P1 Asymptotic First-Stage Qualification (CANDIDATE)
+
+- Records P0 Hotfix 2 as locally validated from returned artifact `m10-final-replacement-long-closure-plan1-p0-passes=True`; P0 becomes the authoritative evidence/planning freeze.
+- Implements only the next authorized gate from P0: P1 asymptotic first-stage qualification. No ad hoc Diagnostic 7-style branch is introduced.
+- Adds an exact-v9 stable 5 MWe reference/noise control; stationarity slope bands are derived from measured reference subwindow slopes with predeclared floors and fail-closed ceilings.
+- Adds exact-v9 5→5.5 MWe, exact-v9 5→6 MWe and historical exact-v4 5→6 MWe holds with a 900 s primary horizon. Only exact-v9 6 MWe may consume the pre-authorized continuation to 1,800 s, and only when the 900 s tail remains monotonically convergent above the derived noise band.
+- Final probe classifications are limited to `CONVERGED`, `BIASED-STATIONARY` or `INCONCLUSIVE`; `STILL-CONVERGING` may occur only at the 900 s primary horizon as the trigger for the bounded continuation.
+- P1 does not select P3 directly. Returned artifacts must first pass through P2, which records the branch decision or planning stop.
+- Freezes the returned P0 Hotfix 2 PASS summary under `eng/frozen-evidence/ordinary/` and requires those prerequisite markers before P1 executes.
+- Adds `eng/m10-final-replacement-long-closure-plan1-p1-contract.json`, the focused explicit P1 test, Release/ordinary-first runner and P1 evidence schema.
+- Changes no production `src/`, replacement workload, authority policy, generator-load semantics, protection semantics, exact-v9 runtime or mission pack. Replacement-Long Execution 1 remains RED and a second replacement-long freeze remains unauthorized.
+
+# M10 Final Replacement-Long Closure Plan 1 — P0 Hotfix 2 — Validator / PROJECT Marker Alignment (CANDIDATE)
 
 - P0 Hotfix 1 fixed the PowerShell parser failure and then exposed one remaining validator-only contract mismatch: `docs/PROJECT.md` correctly identified the active candidate as `P0 EVIDENCE & PLANNING FREEZE HOTFIX 1 CANDIDATE`, while the validator still searched for the stale pre-hotfix marker `P0 EVIDENCE & PLANNING FREEZE CANDIDATE`.
 - Hotfix 2 aligns the validator with the actual documented candidate identity and advances the machine-readable validator marker to `P0-HOTFIX2-PROJECT-MARKER-ALIGNMENT`.

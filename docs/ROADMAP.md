@@ -112,8 +112,8 @@ M10 closes only after M10.9.8 is explicitly validated.
 
 The detailed blocking contract is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). The approved sequence is **P0 → P1 → P2 → P3-W/P3-R → P4 → P5 → P6**:
 
-- P0 freezes Diagnostic 1–6 evidence and planning;
-- P1 determines asymptotic first-stage convergence versus stationary bias;
+- P0 freezes Diagnostic 1–6 evidence and planning — **VALIDATED (Hotfix 2)**;
+- P1 determines asymptotic first-stage convergence versus stationary bias — **ACTIVE CANDIDATE**;
 - P2 selects exactly one repair branch;
 - P3-W qualifies a workload/procedure repair only if the unchanged plant converges, while P3-R localizes and minimally repairs runtime ownership only if a stationary bias is demonstrated;
 - P4 must demonstrate a real stable 5→10→5 manoeuvre;

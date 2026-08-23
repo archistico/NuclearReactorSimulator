@@ -1,14 +1,17 @@
-﻿# M10 Final Replacement-Long Closure Plan 1
+# M10 Final Replacement-Long Closure Plan 1
 
 ## Status and authority
 
-**P0 — EVIDENCE & PLANNING FREEZE CANDIDATE. M10 remains OPEN. Replacement-Long Execution 1 remains authoritative RED evidence. No second replacement-long baseline or execution is authorized.**
+**P1 — ASYMPTOTIC FIRST-STAGE QUALIFICATION CANDIDATE. P0 HOTFIX 2 is VALIDATED. M10 remains OPEN. Replacement-Long Execution 1 remains authoritative RED evidence. No second replacement-long baseline or execution is authorized.**
 
 This document replaces the previous diagnostic-by-diagnostic continuation pattern with a finite closure route from the returned Replacement-Long Failure Diagnostic 1–6 evidence to M10 closure. It is a planning and decision-governance contract only: it changes no production runtime, workload, authority policy, generator-load semantics, protection semantics, exact-v9 state, mission pack or acceptance threshold.
 
 **P0 Hotfix 1 note (23 August 2026):** the original P0 candidate's documentation audit did not start because PowerShell parsed the interpolated error string `"$Path: $Needle"` as an invalid scoped/drive-style variable reference. Hotfix 1 changes only the audit tooling, replacing that interpolation with the parser-safe format expression `-f $Path, $Needle`, and records the hotfix marker in the planning contract. The P0 evidence, roadmap, gates, branch criteria and engineering conclusions are unchanged. The original P0 audit attempt is retained as validator-red provenance, not as a P0 planning failure.
 
 **P0 Hotfix 2 note (23 August 2026):** Hotfix 1 fixed the PowerShell parser error and the validator then executed far enough to expose a second tooling-only mismatch: `docs/PROJECT.md` correctly named `P0 EVIDENCE & PLANNING FREEZE HOTFIX 1 CANDIDATE`, while the validator still required the stale pre-hotfix marker `P0 EVIDENCE & PLANNING FREEZE CANDIDATE`. Hotfix 2 updates the validator/contract identity to `P0-HOTFIX2-PROJECT-MARKER-ALIGNMENT` and requires the actual Hotfix 2 PROJECT marker. No P0 evidence, route, gate, engineering conclusion, runtime, test or authorization boundary changes. The original P0 and Hotfix 1 audit attempts remain validator-red provenance only.
+
+
+**P0 validation note (23 August 2026):** the returned Hotfix 2 artifact records `m10-final-replacement-long-closure-plan1-p0-passes=True`, `production-src-changed=False`, `production-tests-changed=False`, `second-replacement-long-authorized=False` and `next-authorized-implementation=P1-Asymptotic-First-Stage-Qualification`. P0 is therefore VALIDATED and is the authoritative evidence/planning freeze for the remaining M10 route.
 
 The current production identities remain:
 
@@ -82,13 +85,18 @@ P1 is the last planned purely exploratory dynamics gate. It must use the D6 seam
 
 The primary horizon is up to **900 s after the load command**, with early exit after a qualified convergence window. A bounded continuation inside the same P1 gate may extend the exact-v9 6 MWe probe to at most **1,800 s total** only if the 900 s tail is still monotonically converging above the measured stable-reference noise floor. This continuation is not a new diagnostic milestone.
 
-P1 must derive slope/noise floors from the stable 5 MWe reference rather than hard-coding a post-hoc tolerance. A convergence result requires a continuous qualified window with at least:
+P1 must derive slope/noise floors from the stable 5 MWe reference rather than hard-coding a post-hoc tolerance. The executable candidate is frozen by `eng/m10-final-replacement-long-closure-plan1-p1-contract.json`: 120 s stable exact-v9 reference, last 60 s calibration tail split into 10 s subwindows, reference-noise multiplier 10× with predeclared fail-closed ceilings, 900 s primary hold, 1,800 s maximum total hold only for exact-v9 6 MWe, 30 s convergence window and 60 s stationary window. The runner executes the ordinary Release CI gate before the explicit P1 test.
+
+The derived stationarity limits cover electrical output, turbine shaft power, steam flow and turbine-inlet pressure. If the stable reference produces a derived limit above its predeclared ceiling, P1 is `calibration-invalid` and fails as an evidence gate rather than widening tolerances.
+
+A convergence result requires a continuous qualified window with at least:
 
 - breaker closed, no trip/protection action;
 - `|frequency - 50 Hz| <= 0.01 Hz`;
 - electrical output within ±0.10 MWe of requested stage;
 - `|net rotor acceleration power| <= 0.05 MW`;
-- tail output/shaft/steam-path slopes inside the predeclared reference-derived stationary band.
+- `|dispatch mechanical adequacy| <= 0.10 MW`;
+- tail output/shaft/steam-flow/turbine-inlet-pressure slopes inside the reference-derived stationary band.
 
 P1 may return only one of these classifications:
 
@@ -97,7 +105,9 @@ P1 may return only one of these classifications:
 - `STILL-CONVERGING` — 900 s tail remains directional above noise and the bounded continuation rule is invoked;
 - `INCONCLUSIVE` — neither convergence nor stationary bias can be established within the fixed P1 contract.
 
-No runtime or workload change is allowed inside P1.
+A protection trip, preparation failure or other non-classifiable physical outcome is preserved explicitly in the P1 artifacts and maps to `INCONCLUSIVE` for P2 planning-stop purposes; it does not create a fifth branch class outside the validated P0 plan.
+
+No runtime or workload change is allowed inside P1. The exact-v9 6 MWe result is the primary P1 branch signal; exact-v9 5.5 MWe and exact-v4 6 MWe are supporting controls. P1 itself never authorizes P3: all returned classifications go first to P2.
 
 ### P2 — Decision Gate
 
