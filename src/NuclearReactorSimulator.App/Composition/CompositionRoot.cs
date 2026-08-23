@@ -152,6 +152,7 @@ internal static class CompositionRoot
             new DesktopSustainedGenerationInitialConditionFactory(),
             new DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory(),
             new DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory(),
+            new DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory(),
             new GridSynchronizationSustainedInitialConditionFactory(),
             new GridSynchronizationCorrectedInitialConditionFactory(),
             new SecondaryTransientInitialConditionFactory(),

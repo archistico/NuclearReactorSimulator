@@ -1,3 +1,40 @@
+# M10 Final — Exact-v9 Qualified Production Activation Candidate (CANDIDATE)
+
+- Diagnostic 11 Hotfix 2 is user-validated: build, ordinary suite and exact-v9 600 s requalification PASS.
+- Returned evidence qualifies exact-v9: final electrical export ~4.999999982 MWe, primary ~100.000001 kg/s, drum level ~0.5, late node mass slopes ~1e-8 kg/s, governor/control-valve slopes ~1e-10 %/s, net/stored power ~9.8e-8 MW, zero trips/rollbacks and conservative stage/full-cycle closure.
+- Adds `M10FinalExactV9QualifiedCandidate` as an explicit production-policy option resolving exact @9; `AuthoritativeDefaultPolicy` deliberately remains I.5 repaired exact @4.
+- Adds a replayable exact-v9 activation-candidate scenario and registers the exact-v9 factory in the desktop composition root.
+- Adds ordinary contracts plus a focused policy-path audit proving exact-v2 fail-closed kill preservation, candidate health/conservation, moisture-drain ownership and deterministic equivalence to direct exact-v9 factory construction.
+- Adds a cumulative candidate script that reruns ordinary tests, current exact-v4 evidence, Diagnostic-11 600 s exact-v9 qualification and the focused activation-candidate gate.
+- No production default switch, production mission-pack rebinding, replacement long or M10 closure is authorized by this candidate.
+
+# M10 Final Long Failure Diagnostic 11 Hotfix 2 — Post-Seed Governor PI Decomposition Regression (CANDIDATE)
+
+## Hotfix 2 — observe the controller at the actual post-preconditioning snapshot
+
+- Diagnostic 11 Hotfix 1 compiled, but the ordinary suite again stopped RED 1/1482 in `ExactV9Candidate_IsDistinctPreservesHistoricalVersionsAndDoesNotSwitchProductionDefault`.
+- The remaining assertion froze the ideal pre-step proportional contribution at `0.75 +/- 1e-9 %`. The runtime snapshot is intentionally observed after the exact-v9 factory's 20 ms deterministic seed preconditioning; rotor measurement has already moved by a few nanorpm, so the correct measured proportional term is `0.75000000640329745 %`.
+- Hotfix 2 does not widen that idealized range. The regression now verifies the production equations on the actual snapshot: `Error = Setpoint - Measurement`, `P = Error` for the unchanged `Kp=1`, `Output = UnsaturatedOutput`, and `I = UnsaturatedOutput - P - D`.
+- The authored governor/control root remains independently frozen at `29.281329697436618 %` to 6 decimal places.
+- No `src/`, exact-v9 authored state, controller gain, governor semantics, moisture-drain semantics, production selector, physics coefficient, tolerance or 600 s workload changes. Diagnostic 11 Hotfix 1 is superseded as ordinary-suite RED; exact-v9 600 s evidence is still not produced until Hotfix 2 passes the ordinary suite.
+
+# M10 Final Long Failure Diagnostic 11 Hotfix 1 — Exact-v9 Governor Integral Preload Regression Contract (CANDIDATE)
+
+## Hotfix 1 — test-contract alignment
+
+- Diagnostic 11 original compiled, but the ordinary suite stopped RED 1/1482 in `ExactV9Candidate_IsDistinctPreservesHistoricalVersionsAndDoesNotSwitchProductionDefault`.
+- The failing assertion expected `speed-control` integral preload in the historical `25..28 %` range even though exact-v9 intentionally authors a `29.2813296974 %` governor/control output.
+- With the breaker-closed droop P contribution at `0.75 %`, the correct bumpless PI preload is `29.2813296974 - 0.75 = 28.5313296974 %`, exactly matching the observed value.
+- Hotfix 1 changes only the new Diagnostic-11 regression contract: it freezes the expected output/P/I region and verifies `I = unsaturated output - P - D` to 9 decimal places.
+- No `src/`, exact-v9 authored state, governor semantics, moisture-drain semantics, production selector, physics coefficient, tolerance or long-workload rule changes.
+
+
+- Stacked directly on user-validated Diagnostic 10 Hotfix 1 and its returned 600 s artifacts.
+- Diagnostic 10 confirms the governor and moisture-drain structural repairs: primary ~99.98 kg/s, turbine-inlet late mass slope ~+8.4e-5 kg/s, control-valve late drift ~-3.8e-6 %/s, global mass closure ~0 and conservative stage/full-cycle energy closure.
+- Exact-v8 remains engineering NOT QUALIFIED because it settles near 4.8682 MWe with about +0.2553 MW late net/stored power; this is the expected pre-drain operating-point root carried into the new admission semantics.
+- Adds exact-v9 with no new runtime semantics: 13.0280018984 kg/s vapor, 13.3392371354 kg/s total admission, 0.3112352370 kg/s explicit drain, 29.2813297% control valve, 42.9665154% condensate pump, 96.9308268% feedwater pump and 32.9711765 MW fission root.
+- Exact-v4 remains production; exact-v8 remains frozen evidence. Production activation and replacement long remain unauthorized.
+
 # M10 Final Long Failure Diagnostic 10 Hotfix 1 — Turbine-Inlet Canonical Net-Balance Regression Alignment (CANDIDATE)
 
 - Stacked directly on Diagnostic 10 original candidate after the user-reported ordinary-suite result: 1480 total, 1367 passed, 112 ignored, 1 failed.

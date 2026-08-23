@@ -2,20 +2,21 @@ namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
 /// Deployment-level desktop production selection. Exact v2 remains the explicit fail-closed rollback/reference,
-/// exact v3 remains the historical H.29/H.30 corrected-commit production identity, and I.5 activates exact v4 with
-/// the validated CorrelationConsistentInverseDomain thermodynamic repair plus the same corrected-commit ownership.
+/// exact v3 remains the historical H.29/H.30 corrected-commit production identity, I.5 keeps exact v4 as the
+/// authoritative repaired production identity, and M10 Final stages the qualified exact v9 whole-cycle equilibrium as
+/// an explicit opt-in activation candidate. The default does not switch until a later activation decision gate.
 /// </summary>
 public enum DesktopHydraulicProductionPolicy
 {
     ExplicitCommittedState = 0,
     H29FourNodeCorrectedCommitCandidate = 1,
     I5RepairedFourNodeCorrectedCommit = 2,
+    M10FinalExactV9QualifiedCandidate = 3,
 }
 
 /// <summary>
 /// Immutable result of one deployment policy resolution. The explicit kill request is fail-closed and always wins over
-/// the authoritative/default corrected policy. Exact initial-condition versions are used so save/replay identity is never
-/// reinterpreted.
+/// the requested policy. Exact initial-condition versions are used so save/replay identity is never reinterpreted.
 /// </summary>
 public sealed record DesktopHydraulicProductionPolicyDecision(
     DesktopHydraulicProductionPolicy RequestedPolicy,
@@ -24,8 +25,9 @@ public sealed record DesktopHydraulicProductionPolicyDecision(
     bool ExplicitKillApplied);
 
 /// <summary>
-/// Versioned desktop production selector. H.29/H.30 retain exact-v3 as a historical corrected identity; I.5 activates
-/// exact-v4 as the authoritative repaired production identity after Stages 1-4 plus exact-v4 readiness qualification.
+/// Versioned desktop production selector. Exact v4 remains authoritative while exact v9 is exposed only as a qualified
+/// activation candidate. A separate production-activation decision must change <see cref="AuthoritativeDefaultPolicy"/>
+/// after candidate wiring, replayability, historical retention and cumulative evidence pass.
 /// </summary>
 public static class DesktopHydraulicProductionPolicySelector
 {
@@ -40,6 +42,9 @@ public static class DesktopHydraulicProductionPolicySelector
 
     public static DesktopHydraulicProductionPolicy I5RepairedProductionPolicy
         => DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit;
+
+    public static DesktopHydraulicProductionPolicy M10FinalQualifiedCandidatePolicy
+        => DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate;
 
     public static DesktopHydraulicProductionPolicyDecision Resolve(
         DesktopHydraulicProductionPolicy requestedPolicy,
@@ -61,6 +66,8 @@ public static class DesktopHydraulicProductionPolicySelector
                 => DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit
                 => DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference,
+            DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate
+                => DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.Reference,
             _ => throw new ArgumentOutOfRangeException(nameof(requestedPolicy)),
         };
 
@@ -82,6 +89,8 @@ public static class DesktopHydraulicProductionPolicySelector
                 => new DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory(),
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit
                 => new DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory(),
+            DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate
+                => new DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory(),
             _ => throw new ArgumentOutOfRangeException(nameof(decision), "Unknown effective desktop production policy."),
         };
     }

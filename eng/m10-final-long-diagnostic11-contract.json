@@ -1,0 +1,58 @@
+{
+  "id": "m10-final-long-failure-diagnostic11",
+  "status": "hotfix1-candidate",
+  "stackedOn": "M10 Final Long Failure Diagnostic 10 Hotfix 1 PASS",
+  "blockingOwner": "exact-v8 validated the moisture-drain semantics but retained the pre-drain secondary mass/energy root, settling near 4.868 MWe with about +0.255 MW late stored-energy drift",
+  "historicalSemantics": {
+    "exactV4Production": "unchanged",
+    "exactV5": "frozen failed diagnostic evidence",
+    "exactV6": "frozen failed diagnostic evidence",
+    "exactV7": "frozen failed diagnostic evidence with repaired governor integral reference",
+    "exactV8": "frozen Diagnostic 10 evidence with explicit moisture-drain ownership",
+    "admissionSemantics": "unchanged from exact-v8"
+  },
+  "candidate": {
+    "reference": "integrated-operations-desktop-stable@9",
+    "primaryFlowKilogramsPerSecond": 100.0,
+    "workProducingVaporFlowKilogramsPerSecond": 13.028001898433793,
+    "totalAdmissionFlowKilogramsPerSecond": 13.339237135405003,
+    "moistureDrainFlowKilogramsPerSecond": 0.3112352369712106,
+    "controlValvePercent": 29.281329697436618,
+    "condensatePumpPercent": 42.966515369975916,
+    "feedwaterPumpPercent": 96.93082680156915,
+    "condenserExhaustTemperatureCelsius": 42.525366131264775,
+    "condenserExhaustPressureKilopascals": 8.438344971042927,
+    "hotwellTemperatureCelsius": 47.33565943701717,
+    "initialFissionPowerMegawatts": 32.97117650655722,
+    "governorIntegralReference": "SynchronousSpeedWhenParalleled",
+    "admissionPolicy": "VaporMassFractionLimitedWithMoistureDrain",
+    "productionSelected": false,
+    "governorIntegralPreloadPercent": 28.531329697436618
+  },
+  "qualification": {
+    "simulatedSeconds": 600,
+    "fixedStepSeconds": 0.01,
+    "acceptance": "evidence review only; no new drift tolerance is frozen",
+    "required": [
+      "zero trips",
+      "zero hydraulic rollbacks",
+      "primary remains near the analytical 100 kg/s root",
+      "turbine-inlet and downstream inventories remain bounded with explicit drain ownership",
+      "governor/control-valve drift remains negligible",
+      "drum/hotwell/feedwater inventories remain bounded",
+      "electrical export remains approximately 5 MWe",
+      "late net external power and stored-energy rate approach zero together",
+      "stage and full energy-path closure remain conservative"
+    ]
+  },
+  "notAuthorized": [
+    "production activation",
+    "replacement long",
+    "M10 closure",
+    "M11 start"
+  ],
+  "validationHistory": {
+    "diagnostic11Original": "build PASS; ordinary suite RED 1/1482 on new exact-v9 test-only stale governor-integral range 25..28 percent",
+    "hotfix1": "replaces stale range with analytical PI decomposition contract; src and exact-v9 runtime unchanged"
+  }
+}

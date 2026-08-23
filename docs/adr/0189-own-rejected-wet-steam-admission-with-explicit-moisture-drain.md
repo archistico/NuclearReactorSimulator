@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed / M10 Final Long Failure Diagnostic 10 candidate.
+Accepted / Diagnostic 10 Hotfix 1 evidence PASS. Exact-v8 remains an unqualified operating point, but the moisture-drain ownership semantics are validated and retained.
 
 ## Context
 
@@ -31,4 +31,4 @@ Exact-v8 binds the moisture drain to the existing `hotwell` node. This is an edu
 
 ## Consequences
 
-The repair preserves the D.1 prohibition on liquid traversing the work-producing stage while eliminating the unowned wet-steam mass reservoir. It may expose a new hotwell/feedwater or energy operating-point mismatch; therefore exact-v8 remains candidate-only until the 600 s Diagnostic 10 evidence shows bounded whole-cycle behavior. No production activation or replacement-long authorization follows from this ADR alone.
+The repair preserves the D.1 prohibition on liquid traversing the work-producing stage while eliminating the unowned wet-steam mass reservoir. Diagnostic 10 Hotfix 1 confirmed that the ownership repair removes the structural turbine-inlet accumulation and preserves conservative stage/full-cycle energy accounting. It also exposed the expected post-repair operating-point mismatch: exact-v8 settles near 4.868 MWe with about +0.255 MW stored-energy drift. The semantics are accepted; the authored whole-cycle root is requalified separately through exact-v9. No production activation or replacement-long authorization follows from this ADR alone.

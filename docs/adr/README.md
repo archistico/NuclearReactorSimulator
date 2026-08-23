@@ -212,7 +212,10 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 | [0186](0186-separate-stable-architecture-from-chronology-and-index-live-documentation.md) | Separate stable architecture from milestone chronology and index live documentation | Accepted | Documentation / governance |
 | [0187](0187-project-mission-timeline-from-canonical-evidence-with-explicit-archive-pack-binding.md) | Project mission timeline from canonical evidence with explicit archive pack binding | Proposed | HMI / operator experience |
 | [0188](0188-separate-grid-droop-proportional-and-integral-speed-references.md) | Separate grid-droop proportional and integral speed references | Accepted | Turbine / governor / grid |
-| [0189](0189-own-rejected-wet-steam-admission-with-explicit-moisture-drain.md) | Own rejected wet-steam admission with an explicit moisture drain | Proposed | Fluids / thermo / secondary |
+| [0189](0189-own-rejected-wet-steam-admission-with-explicit-moisture-drain.md) | Own rejected wet-steam admission with an explicit moisture drain | Accepted | Fluids / thermo / secondary |
+
+| [0190](0190-recompute-post-moisture-whole-cycle-operating-point.md) | Recompute the authored whole-cycle operating point after turbine moisture separation | Accepted | Fluids / thermo / secondary |
+| [0191](0191-stage-qualified-exact-v9-as-opt-in-before-authoritative-activation.md) | Stage qualified exact-v9 as an opt-in production policy before authoritative activation | Accepted | Scenarios / production policy |
 
 ## Maintenance rule
 

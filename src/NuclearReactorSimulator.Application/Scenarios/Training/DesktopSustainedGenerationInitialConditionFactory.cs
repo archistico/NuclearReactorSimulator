@@ -408,6 +408,73 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             turbineMoistureDrainNodeId: "hotwell");
     }
 
+    /// <summary>
+    /// M10 final LR-H1 exact-v9 post-moisture whole-cycle equilibrium candidate. Diagnostic 10 Hotfix 1
+    /// validated the explicit moisture-drain ownership but showed that exact-v8 still inherited the pre-drain
+    /// secondary mass/energy root. This candidate keeps the exact-v8 governor/admission semantics unchanged and
+    /// recomputes only the authored operating point with vapor flow, drain flow, condenser UA, secondary pumps and
+    /// full external-energy closure solved together. Exact-v4 remains the production selector.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreatePostMoistureEquilibriumCandidateRuntimeEngine(TimeSpan runtimeStep)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Post-moisture equilibrium candidate timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        var fluidNodeSeeds = new OperationalFluidNodeSeed[]
+        {
+            // Primary loop stays on the already-derived 100 kg/s hydraulic root. Only the outlet quality and solid
+            // temperatures move with the revised full-cycle fission root.
+            new OperationalFluidNodeSeed.SaturatedMixture("suction", 6.416459281680372d, 0d),
+            new OperationalFluidNodeSeed.SubcooledLiquid("pressure", 280.1582998275795d, 0.0002203018767873456d),
+            new OperationalFluidNodeSeed.SaturatedMixture("outlet", 6.666459281680372d, 0.21514191259171503d),
+
+            // Post-moisture secondary root: 13.0280018984 kg/s vapor is required for 5 MWe while the phase-separated
+            // inlet quality makes total admission 13.3392371354 kg/s and explicit moisture drain 0.3112352370 kg/s.
+            // Passive steam-path nodes preserve the saturated-vapor drum-source enthalpy exactly.
+            new OperationalFluidNodeSeed.SaturatedMixture("steam", 6.398665756944915d, 0.99978878048067332d),
+            new OperationalFluidNodeSeed.SaturatedMixture("header", 6.2474207966935325d, 0.99802224982943177d),
+            new OperationalFluidNodeSeed.SaturatedMixture("stop-out", 6.0694855493389648d, 0.99600970115709719d),
+            new OperationalFluidNodeSeed.SaturatedMixture("control-out", 3.9941878857133641d, 0.97776527205630726d),
+            new OperationalFluidNodeSeed.SaturatedMixture("turbine-inlet", 3.8162526383587956d, 0.97666768842836382d),
+
+            // The condenser root is solved on vapor flow only. The hotwell temperature is then the mass-weighted
+            // enthalpy root of saturated condensate plus the explicit saturated-liquid moisture drain.
+            new OperationalFluidNodeSeed.SaturatedMixture("exhaust", 0.008438344971042927d, 0.87290510788436326d),
+            new OperationalFluidNodeSeed.SaturatedMixture("hotwell", 0.010808002980612689d, 0d),
+            new OperationalFluidNodeSeed.SubcooledLiquid("feedwater-inventory", 47.37848866583073d, 0.000003024302581887423d),
+        };
+
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false,
+            useFourNodeBranchContinuityShadowIntegration: false,
+            useFourNodeBranchContinuityCorrectedCommitOptIn: true,
+            thermodynamicClosureMode: WaterSteamThermodynamicClosureMode.CorrelationConsistentInverseDomain,
+            initialFuelTemperatureCelsiusOverride: 305.62514906467646d,
+            initialStructureTemperatureCelsiusOverride: 289.13956081139787d,
+            initialNeutronPopulationOverride: NeutronPopulation.FromRelative(0.3297117650655722d),
+            initialControlValvePercentOpenOverride: 29.281329697436618d,
+            initialCondensatePumpPercentOverride: 42.966515369975916d,
+            initialFeedwaterPumpPercentOverride: 96.930826801569154d,
+            initialFluidNodeSeeds: fluidNodeSeeds,
+            governorIntegralReferenceMode: TurbineGovernorIntegralReferenceMode.SynchronousSpeedWhenParalleled,
+            turbineAdmissionPhasePolicyOverride: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+            turbineMoistureDrainNodeId: "hotwell");
+    }
+
     private static IControlRoomRuntimeEngine CreateRuntimeEngine(
         bool includeEvidenceDerivedElectricalProtections,
         TimeSpan? runtimeStep = null,

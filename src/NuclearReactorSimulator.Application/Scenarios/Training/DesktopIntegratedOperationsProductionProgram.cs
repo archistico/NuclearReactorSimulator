@@ -3,9 +3,9 @@ using NuclearReactorSimulator.Application.Scenarios.Operations;
 namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
-/// Current production-facing desktop program selector. Historical scenario identities remain immutable: the H.30 exact-v3
-/// scenario remains replayable, while I.5 adds a distinct exact-v4 repaired production scenario and makes it authoritative.
-/// Exact-v2 remains the fail-closed rollback/reference identity.
+/// Current production-facing desktop program selector. Historical scenario identities remain immutable: H.30 exact-v3
+/// and I.5 exact-v4 remain replayable, exact-v4 stays authoritative, and M10 Final exact-v9 is exposed only as a qualified
+/// activation candidate until a later default-switch decision. Exact-v2 remains the fail-closed rollback/reference identity.
 /// </summary>
 public static class DesktopIntegratedOperationsProductionProgram
 {
@@ -58,6 +58,8 @@ public static class DesktopIntegratedOperationsProductionProgram
                 => CorrectedProductionScenario,
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit
                 => RepairedProductionScenario,
+            DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate
+                => DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario,
             _ => throw new ArgumentOutOfRangeException(nameof(requestedPolicy)),
         };
     }
@@ -69,7 +71,8 @@ public static class DesktopIntegratedOperationsProductionProgram
             || string.Equals(scenarioId, DesktopIntegratedOperationsH29ActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal)
             || string.Equals(scenarioId, CorrectedProductionScenario.ScenarioId, StringComparison.Ordinal)
             || string.Equals(scenarioId, DesktopIntegratedOperationsI5RepairedActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal)
-            || string.Equals(scenarioId, RepairedProductionScenario.ScenarioId, StringComparison.Ordinal);
+            || string.Equals(scenarioId, RepairedProductionScenario.ScenarioId, StringComparison.Ordinal)
+            || string.Equals(scenarioId, DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal);
     }
 
     public static ScenarioTrainingPlan ResolveTrainingPlan(string scenarioId)
@@ -94,6 +97,10 @@ public static class DesktopIntegratedOperationsProductionProgram
         if (string.Equals(scenarioId, RepairedProductionScenario.ScenarioId, StringComparison.Ordinal))
         {
             return RepairedProductionTrainingPlan;
+        }
+        if (string.Equals(scenarioId, DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal))
+        {
+            return DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.TrainingPlan;
         }
 
         throw new KeyNotFoundException($"Scenario '{scenarioId}' is not a registered desktop production-training identity.");
