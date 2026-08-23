@@ -1,3 +1,13 @@
+# M10 Final Replacement-Long Failure Diagnostic 5 — Measured Readiness-Gated Staged Load / Attainable Capacity
+
+- Records Diagnostic 4 as local execution PASS.
+- Freezes the key correction that its nominal `66 MWth` pre-power target was not physically reached before the load step: actual thermal power was only about 37.3 MWth and shaft power remained about 5.6 MW.
+- Adds no production `src/` change and does not alter the frozen workload, authority policy, generator-load semantics, protection, exact-v9 or mission @3.
+- Adds measured-readiness-gated +1 MWe and +0.5 MWe exact-v9 diagnostic schedules plus an exact-v4 +1 MWe historical control.
+- Requires real thermal readiness before each test-only load increment and a post-increment stable window before advancing; exports steam-flow, inlet-pressure, specific-work, valve, relief, shaft, grid and protection evidence.
+- The validation script runs `eng\ci-ordinary.cmd` in Release before the focused explicit test so local ordinary validation uses the same CI entry point.
+- Replacement-Long Execution 1 remains RED; second replacement-long freeze remains unauthorized.
+
 # M10 Final Replacement-Long Failure Diagnostic 4 — Load Ramp / Torque Coupling / Energy Support Discrimination
 
 - Diagnostic-only candidate stacked on returned Diagnostic 3 PASS evidence.
