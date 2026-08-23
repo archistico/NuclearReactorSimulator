@@ -52,10 +52,10 @@ public sealed class PhaseIKnownLimitationsLegacyRetirementReviewAuditTests
     {
         Assert.Equal(
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
 
         var production = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         Assert.Equal("integrated-operations-desktop-stable", production.InitialCondition.InitialConditionId);
         Assert.Equal(4, production.InitialCondition.Version);
         Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, production.EffectivePolicy);
@@ -67,7 +67,7 @@ public sealed class PhaseIKnownLimitationsLegacyRetirementReviewAuditTests
         Assert.Equal(DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate, historicalV3.EffectivePolicy);
 
         var rollback = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy,
             explicitKillRequested: true);
         Assert.Equal("integrated-operations-desktop-stable", rollback.InitialCondition.InitialConditionId);
         Assert.Equal(2, rollback.InitialCondition.Version);

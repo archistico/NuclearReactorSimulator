@@ -39,9 +39,9 @@ public sealed class PhaseIRepairedExactVersion4ActivationReadinessAuditTests
         Assert.Same(v4, registry.Resolve(new InitialConditionReference("integrated-operations-desktop-stable", 4)));
 
         var currentProduction = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var explicitRollback = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy,
             explicitKillRequested: true);
 
         Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, currentProduction.InitialCondition);

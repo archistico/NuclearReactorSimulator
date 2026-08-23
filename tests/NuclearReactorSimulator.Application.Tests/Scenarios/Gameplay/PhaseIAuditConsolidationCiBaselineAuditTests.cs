@@ -94,7 +94,8 @@ public sealed class PhaseIAuditConsolidationCiBaselineAuditTests
 
         Assert.Contains("run-phase-i-audit-consolidation-ci-baseline-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
         Assert.Contains("run-i5-synchronization-corrected-v3-activation-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
-        Assert.Contains("run-i5-repaired-exact-v4-production-activation-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
+        Assert.Contains("run-m10-final-v9-authoritative-production-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
+        Assert.DoesNotContain("run-i5-repaired-exact-v4-production-activation-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
         Assert.DoesNotContain("run-h30-rq1-production-policy-rereview-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
         Assert.DoesNotContain("run-phase-i-known-limitations-legacy-retirement-review-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);
         Assert.DoesNotContain("run-phase-h-closure-production-qualification-decision-audit.cmd", currentEvidenceScript, StringComparison.Ordinal);

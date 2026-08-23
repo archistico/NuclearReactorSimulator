@@ -62,10 +62,10 @@ public sealed class PhaseIRepairedExactVersion4ReferenceRequalificationAuditTest
 
         Assert.Equal(
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
 
         var production = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, production.EffectivePolicy);
         Assert.Equal("integrated-operations-desktop-stable", production.InitialCondition.InitialConditionId);
         Assert.Equal(4, production.InitialCondition.Version);
@@ -77,7 +77,7 @@ public sealed class PhaseIRepairedExactVersion4ReferenceRequalificationAuditTest
         Assert.Equal(3, historicalV3.InitialCondition.Version);
 
         var rollback = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy,
             explicitKillRequested: true);
         Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, rollback.EffectivePolicy);
         Assert.Equal(2, rollback.InitialCondition.Version);
@@ -97,9 +97,9 @@ public sealed class PhaseIRepairedExactVersion4ReferenceRequalificationAuditTest
 
         Assert.Equal(
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var decision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         Assert.False(decision.ExplicitKillApplied);
         Assert.Equal("integrated-operations-desktop-stable", decision.InitialCondition.InitialConditionId);
         Assert.Equal(4, decision.InitialCondition.Version);
@@ -461,7 +461,7 @@ public sealed class PhaseIRepairedExactVersion4ReferenceRequalificationAuditTest
     private static string DeterminismFingerprint()
     {
         var decision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
             DesktopHydraulicProductionPolicySelector.CreateFactory(decision).CreateRuntimeEngine());
         var builder = new StringBuilder();

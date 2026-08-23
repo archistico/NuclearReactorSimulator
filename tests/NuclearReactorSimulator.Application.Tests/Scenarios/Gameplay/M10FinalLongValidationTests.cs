@@ -84,7 +84,7 @@ public sealed class M10FinalLongValidationTests
         const int totalSteps = 720_000;
         var stopwatch = Stopwatch.StartNew();
         var decision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, decision.EffectivePolicy);
         Assert.Equal("integrated-operations-desktop-stable", decision.InitialCondition.InitialConditionId);
         Assert.Equal(4, decision.InitialCondition.Version);
@@ -213,7 +213,7 @@ public sealed class M10FinalLongValidationTests
     {
         const int totalSteps = 440_000;
         var stopwatch = Stopwatch.StartNew();
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         Assert.Equal("bounded-demand-following-5-10-5@2", pack.ExactId);
         Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 4), pack.Scenario.InitialCondition);
         var session = CreateExactV4Factory().Load(pack.Scenario);
@@ -573,7 +573,7 @@ public sealed class M10FinalLongValidationTests
         const int rodHoldStep = 6_000;
         const int loadLowerStep = 3_000;
         var stopwatch = Stopwatch.StartNew();
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var factory = CreateExactV4Factory();
         var session = factory.Load(pack.Scenario);
         using var recorder = new ScenarioRecorder(session);

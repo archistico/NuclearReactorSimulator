@@ -32,7 +32,7 @@ public sealed class M10982HealthyAssistanceAuthorityMatrixTests
     [Fact]
     public void FrozenHealthyMatrix_ExecutesNineRowsAndPreservesAssistanceIsolation()
     {
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         Assert.Equal("bounded-demand-following-5-10-5@2", pack.ExactId);
         Assert.Equal("integrated-normal-operations-training-i5-repaired-v4-production", pack.Scenario.ScenarioId);
         Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 4), pack.Scenario.InitialCondition);
@@ -84,7 +84,7 @@ public sealed class M10982HealthyAssistanceAuthorityMatrixTests
     [Fact]
     public void AssistanceModeChanges_ArePresentationOnlyAndCannotChangeHealthySupervisoryAuthority()
     {
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var session = CreateFactory().Load(pack.Scenario);
         ConfigureAuthority(session, PlantControlAuthorityMode.SupervisoryAutomatic);
         session.CommandDispatcher.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.SingleStep));

@@ -1,0 +1,26 @@
+{
+  "scope": "M10 Final replacement-long failure Diagnostic 1: reproduce the common RL-M1/RL-R1 exact-v9 5-to-10 MWe protection trip and identify the first pickup/latch owner",
+  "baseline": "validated exact-v9 authoritative production plus validated Replacement-Long Baseline Freeze 1; failed Replacement-Long Execution 1 is evidence only and is not used as a stacking baseline",
+  "runtime_changes": false,
+  "workload_changes": false,
+  "mission_pack_changes": false,
+  "protection_threshold_changes": false,
+  "initial_condition": "integrated-operations-desktop-stable@9",
+  "authoritative_default": "integrated-operations-desktop-stable@9",
+  "reproduction": {
+    "supervisory_objective": "HoldCurrentOperatingPoint",
+    "authority": "SupervisoryAutomatic",
+    "load_raise_step": 500,
+    "generator_load_increment_mwe": 5.0,
+    "total_steps": 1000,
+    "fixed_step_ms": 10
+  },
+  "required_artifacts": [
+    "00-progress.txt",
+    "130-load-raise-protection-trajectory.csv",
+    "131-protection-function-pickup.csv",
+    "132-load-raise-protection-owner-summary.txt"
+  ],
+  "decision_rule": "Identify the first protection function whose trigger/pickup/latch chain closes on the reproduced transient. Do not retune thresholds or exact-v9 from this evidence. Next decide whether the frozen long operator policy was under-specified relative to the existing M7.6 coordinated load-change procedure or whether a production transient defect requires a runtime repair and a new baseline freeze.",
+  "replacement_long_status": "executed-red; M10 remains open; previous authorization consumed by the failed execution; any changed workload/runtime requires a new freeze before rerun"
+}

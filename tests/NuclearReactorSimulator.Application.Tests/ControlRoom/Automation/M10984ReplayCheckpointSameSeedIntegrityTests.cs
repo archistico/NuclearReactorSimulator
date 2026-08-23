@@ -19,7 +19,7 @@ public sealed class M10984ReplayCheckpointSameSeedIntegrityTests
     [Fact]
     public void HealthyBoundedDemand_SameSeedFullReplayAndCheckpointContinuationAreEquivalent()
     {
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var first = RunHealthy(pack, "first");
         var repeat = RunHealthy(pack, "repeat");
 
@@ -81,7 +81,7 @@ public sealed class M10984ReplayCheckpointSameSeedIntegrityTests
     [Fact]
     public void ProtectionTrip_SameSeedFullReplayAndCheckpointContinuationPreserveSuspendedAuthority()
     {
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var first = RunProtection(pack, "first");
         var repeat = RunProtection(pack, "repeat");
 
@@ -112,7 +112,7 @@ public sealed class M10984ReplayCheckpointSameSeedIntegrityTests
     [Fact]
     public void ManualTakeover_SameSeedFullReplayAndCheckpointContinuationClearStaleSupervisoryObjective()
     {
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var first = RunManualTakeover(pack, "first");
         var repeat = RunManualTakeover(pack, "repeat");
 
@@ -324,7 +324,7 @@ public sealed class M10984ReplayCheckpointSameSeedIntegrityTests
 
     private static OperationalChallengePackDefinition CreateValidationOnlyDegradedChallengePack()
     {
-        var source = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var source = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var scenario = new ScenarioDefinition(
             "m10984-bounded-demand-supervisory-degraded-replay-validation",
             "M10.9.8.4 bounded-demand supervisory degraded replay validation",

@@ -1,7 +1,4 @@
-> **M10 final activation staging:** Diagnostic 11 Hotfix 2 is locally validated and its returned 600 s artifacts qualify exact-v9 as a stationary whole-cycle operating point: ~5.000000 MWe, ~100.000001 kg/s primary flow, negligible governor/inventory drift, zero trip/rollback and conservative mass/energy closure. The active candidate now stages exact-v9 as an explicit opt-in production policy while exact-v4 remains authoritative and exact-v2 remains fail-closed rollback. Run `scripts\run-m10-final-v9-production-activation-candidate.cmd`; replacement long remains unauthorized until a separate authoritative activation decision passes. See `docs/M10_FINAL_EXACT_V9_PRODUCTION_ACTIVATION_CANDIDATE.md`.
-
-
-> **Hotfix 1:** the long preflight ignores generated `bin/` and `obj/` build output when checking the frozen `src/` and `tests/` manifests, so the gate remains valid even if `dotnet build` or `dotnet test` was run before the long script.
+> **M10 Final replacement-long failure Diagnostic 4:** Diagnostic 3 is execution PASS. Direct breaker-closed SPEED authority and simple valve preload do not improve the 5→10 MWe loss-of-synchronism path, and exact-v4 reproduces the same failure family. The active evidence-only candidate now discriminates electrical request granularity from missing slow reactor/steam energy support before any production repair. Run `scripts\run-m10-final-replacement-long-failure-diagnostic4.cmd` and return the complete artifact folder.
 
 # Nuclear Reactor Simulator
 

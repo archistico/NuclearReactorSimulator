@@ -128,6 +128,10 @@ Acceptance checklists are milestone artifacts, not stable architecture reference
 - [`M10_FINAL_VV_MATRIX.md`](M10_FINAL_VV_MATRIX.md) — frozen 27-row pre-M11 phenomenon/evidence matrix and cumulative-gate status.
 - [`PRE_M11_NUCLEAR_CODE_VV_REVIEW.md`](PRE_M11_NUCLEAR_CODE_VV_REVIEW.md) — selective nuclear-code V&V review used to design the final M10 gates.
 - [`M10_FINAL_LONG_VALIDATION_METRICS_SPEC.md`](M10_FINAL_LONG_VALIDATION_METRICS_SPEC.md) — pre-freeze workload/metrics specification for the separate long gate.
+- [`M10_FINAL_REPLACEMENT_LONG_BASELINE_FREEZE.md`](M10_FINAL_REPLACEMENT_LONG_BASELINE_FREEZE.md) — current exact-v9 replacement-long manifests, information-dense 1,920 s workload and 35–45 / 60 minute workstation budget.
+- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC1.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC1.md) — returned exact-v9 5→10 MWe protection-owner diagnostic; generator loss-of-synchronism owns the shared RL-M1/RL-R1 trip.
+- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC2.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC2.md) — returned authority/rod-coordination discrimination; Assisted rod motion does not improve the step-636 loss-of-synchronism path.
+- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md) — active evidence-only breaker-closed governor, control-valve preload and historical exact-v4/exact-v9 transient discrimination.
 
 ## Pre-M11 engineering review consolidation
 

@@ -102,13 +102,13 @@ public sealed class FourNodePhaseHClosureDecisionAuditTests
     public void ClosurePolicyContract_PreservesHistoricalExactV3AndExactV2RollbackAfterI5RepairedV4Activation()
     {
         var currentDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var historicalV3Decision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var historicalExplicitDecision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicy.ExplicitCommittedState);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy,
             explicitKillRequested: true);
 
         Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, currentDecision.EffectivePolicy);

@@ -1,3 +1,63 @@
+# M10 Final Replacement-Long Failure Diagnostic 4 — Load Ramp / Torque Coupling / Energy Support Discrimination
+
+- Diagnostic-only candidate stacked on returned Diagnostic 3 PASS evidence.
+- Adds no production `src/` change and does not alter default generator-load policy, authority, protection, exact-v9, mission @3 or frozen replacement workload.
+- Adds test-only request-ramp, reactor-support, pre-power and historical exact-v4 controls plus full 10 ms evidence export.
+- Replacement-Long Execution 1 remains RED; second replacement-long freeze remains unauthorized.
+
+## M10 Final Replacement-Long Failure Diagnostic 3 — CANDIDATE
+
+- Records returned Diagnostic 2 as execution PASS: the frozen exact-v9 and every Assisted rod/load probe still latch `generator-loss-of-synchronism` at step 636; physical rod motion up to +10 percentage points increases thermal power but creates zero protection-margin improvement.
+- Preserves Replacement-Long Execution 1 as RED and changes no production `src/`, protection threshold, exact-v9 identity, mission @3 semantics or frozen replacement workload.
+- Closes the remaining M7.6 turbine-governing branch with breaker-closed raw-vs-effective speed-reference probes, then separates governor response from finite-rate physical control-valve preloading.
+- Adds bounded diagnostic valve-preload probes at 55% and 65%, a manual-100%-at-load control, and a historical exact-v4 load-only control so returned evidence can distinguish missing mechanical prepositioning, shared generator-load-order/control-granularity semantics, or an exact-v9-specific transient-capacity issue.
+- The focused test asserts only already-returned exact-v9 reference facts; all other outcomes are census evidence and non-reference diagnostic exceptions are captured rather than converted into hypothesis-driven failures.
+- No second replacement long is authorized. A separate decision/repair and new freeze remain mandatory.
+
+## M10 Final Replacement-Long Failure Diagnostic 2 — CANDIDATE
+
+- Records returned Diagnostic 1 as execution PASS and freezes the exact shared trip owner: generator loss-of-synchronism triggers at step 587 and completes its 0.5 s pickup/latch at step 636 / 6.36 s; underfrequency begins earlier but does not complete its 1 s pickup before the generator trip.
+- Preserves the failed Replacement-Long Execution 1 as authoritative RED evidence and changes no production `src/`, protection threshold, exact-v9 identity, mission @3 semantics or frozen replacement workload.
+- Adds an authority/coordination discrimination audit over eight independent 12 s exact-v9 probes: the frozen `SupervisoryAutomatic + HoldCurrentOperatingPoint + load-only` path, a supervisory rod-pulse discrimination control, an Assisted load-only control, and five bounded Assisted rod-withdraw/HOLD timings around the same step-500 5→10 MWe load request.
+- Explicitly tests the architectural hypothesis that SupervisoryAutomatic rewrites the reactor/turbine loops before each physical step and therefore suppresses the M7.6 rod coordination required by the existing operating procedure.
+- Does not authorize workload repair or a second long. Returned evidence must first show whether Assisted coordination materially delays/avoids the loss-of-synchronism path and whether any bounded probe reaches a late stable 10 MWe window.
+
+## M10 Final Replacement-Long Failure Diagnostic 1 — CANDIDATE
+
+- Records the first authorized exact-v9 replacement campaign as executed RED: 1,920 s / 192,000 authored steps completed in 35.2527 minutes, within the frozen 35–45 minute target and 60 minute cap.
+- Preserves PASS evidence for RL-H1 900 s, RL-D1, RL-P1, exact-v9 conservation/sentinels, numerical coupling, MISSION live-projection scaling (`late/early=0.969616`), replay/full-replay/checkpoint fingerprint equivalence and archive growth.
+- Narrows both failing legs to one shared owner domain: RL-M1 challenge failed at logical step 637 after the step-500 5→10 MWe demand/load raise; RL-R1 independently entered the same protection path after its load raise.
+- Adds a 10 s evidence-only exact-v9 reproduction that samples every protection function at every 10 ms step and records first trigger/pickup/latch timing together with reactor/turbine/generator/governor state.
+- Does not change `src/`, protection thresholds, exact-v9, mission-pack semantics or the frozen replacement workload. The failed long remains RED and M10 remains OPEN; any second long requires a new freeze after diagnosis.
+
+## M10 Final exact-v9 Replacement-Long Baseline Freeze 1 — CANDIDATE
+
+- Records the locally validated exact-v9 Production Activation Decision 1 Hotfix 1 as the authoritative production prerequisite: exact-v9 default, mission @3 current, exact-v4/@3 historical and exact-v2 fail-closed.
+- Freezes new exact-v9 manifests for 959 production `src/` files and 351 pre-execution test files; the failed exact-v4 long manifests remain byte-preserved and are explicitly forbidden as replacement baselines.
+- Freezes an information-dense 1,920 s / 192,000-step replacement workload: RL-H1 900 s, RL-M1 480 s, RL-D1 300 s, RL-P1 180 s and RL-R1 60 s.
+- Preserves the previously established 35–45 minute validation-workstation target and 60-minute hard job cap; Diagnostic 11 Hotfix 2 timing projects the authored workload to about 40.003 minutes before replay overhead.
+- Reuses validated exact-v9 activation envelopes, unchanged conservation ceilings, explicit moisture ownership and a real-live LR-M1 within-run scalability sentinel; historical exact-v4 I.3 absolute budgets are not reinterpreted.
+- Adds `scripts/run-m10-final-replacement-long-baseline-freeze.cmd`, the freeze validator/finalizer, contract, activation record, ADR-0193 and execution handoff.
+- This candidate does not add or execute replacement-long tests. A green freeze artifact authorizes a later execution candidate to add exactly one explicit replacement-long test file without changing frozen `src/` or pre-existing tests.
+
+# M10 Final Exact-v9 Production Activation Decision 1 Hotfix 1 — Test Type/Namespace Contract Alignment (CANDIDATE)
+
+- The original Activation Decision 1 candidate did not compile: `M10FinalExactV9ProductionActivationDecisionTests.cs` had exactly two new-test errors, CS1503 (`decimal?` mission score passed to a `double` record field) and CS0103 (missing namespace import for `ControlRoomSnapshotFingerprint`).
+- Hotfix 1 changes no runtime source. `MissionResult.FinalScore` now preserves the canonical `decimal?` type from `MissionPerformanceScoreSnapshot`, and the test imports `NuclearReactorSimulator.Application.Scenarios.Recording` for the existing fingerprint helper.
+- No cast to `double`, tolerance change, selector change, mission-pack change, exact-v9 change, physics change or activation-policy change is introduced.
+- The original Activation Decision 1 package is superseded as BUILD RED. Hotfix 1 must rerun the unchanged full activation-decision gate before any authoritative promotion or replacement-long work.
+
+# M10 Final Exact-v9 Production Activation Decision 1 — Authoritative Default + Mission V3 (CANDIDATE)
+
+- Stacked directly on the user-validated exact-v9 qualified opt-in production-activation candidate and its returned artifact folder.
+- The prerequisite opt-in gate is green: 12,000 healthy exact-v9 policy-path steps around 5 MWe / 100 kg/s, conservative mass/energy/moisture ownership, zero rollback/fallback/unsafe/untargeted events, selector/direct-factory equality and fingerprint `7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418`.
+- This candidate deliberately switches `AuthoritativeDefaultPolicy` from historical exact-v4 to qualified exact-v9; exact-v4 remains explicitly selectable, exact-v3 remains historical and exact-v2 remains fail-closed rollback.
+- Adds distinct authoritative scenario `integrated-normal-operations-training-m10-final-v9-production`; the prior exact-v9 activation-candidate scenario remains a separate replayable identity.
+- Advances current production mission `bounded-demand-following-5-10-5` to `@3` bound to exact-v9; preserves `@2` as the historical exact-v4 production binding and `@1` as the original historical pack. Challenge/demand/scoring/evaluator/evidence semantics are unchanged.
+- Pins historical Phase-I/H.30/first-long tests to their exact policies/packs instead of symbolic current-default/current-pack references, preventing retroactive reinterpretation.
+- Adds a focused 120 s authoritative exact-v9 + 1,200-step mission-v3 gate, exact-v9 600 s requalification and post-switch current-evidence routing.
+- Replacement long remains unauthorized. A green result permits only the next step: freeze a new exact-v9 baseline manifest and redesigned replacement-long contract; the failed exact-v4 long manifest is not reused.
+
 # M10 Final — Exact-v9 Qualified Production Activation Candidate (CANDIDATE)
 
 - Diagnostic 11 Hotfix 2 is user-validated: build, ordinary suite and exact-v9 600 s requalification PASS.

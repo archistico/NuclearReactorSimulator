@@ -1,41 +1,55 @@
 # Project — current authoritative state
-**M10.9.8 is VALIDATED / CLOSED.** M10.9.8.5 manual integrated HMI acceptance completed on 2026-08-22. **M10 Final Pre-M11 Cumulative Validation Hotfix 1 is VALIDATED** with the complete Release ordinary suite and curated current-authority focused gates green.
+**M10.9.8 is VALIDATED / CLOSED.** **M10 Final Pre-M11 Cumulative Validation Hotfix 1 is VALIDATED.** The exact-v9 Production Activation Decision 1 Hotfix 1 is now also **VALIDATED**: `integrated-operations-desktop-stable@9` is the authoritative desktop production default and `bounded-demand-following-5-10-5@3` is the authoritative production mission binding.
 
-The first **M10 Final Pre-M11 Long Validation Hotfix 1** campaign remains frozen as **FAILED / ABORTED** evidence. LR-H1 raised `WaterSteamStateOutOfRangeException` at `outlet`; LR-M1 exposed quadratic live MISSION projection cost. The subsequent Diagnostic 1–11 chain has now repaired LR-M1 and qualified exact-v9 as the replacement healthy operating-point candidate, but the failed first-long artifact is not rewritten or reinterpreted.
+The first M10 Final long campaign remains frozen as **FAILED / ABORTED exact-v4 evidence**. It is not rewritten. Diagnostic 1–11 repaired LR-M1 scalability, the primary/secondary whole-cycle operating point, breaker-closed governor integral ownership and wet-steam turbine-admission ownership. Exact-v9 was qualified at 600 s and then promoted through a separate opt-in staging gate and authoritative activation-decision gate.
 
-This full package additionally consolidates the three pre-M11 engineering review/planning streams (nuclear-code V&V, Digital I&C/human-system safety, and operating-point equilibrium/stability). Those documents are **planning only** and do not alter the frozen long workload, runtime physics or acceptance criteria.
+The replacement-long baseline freeze was validated and authorized Execution 1. The first exact-v9 replacement campaign then executed all 1,920 authored seconds / 192,000 steps in 35.2527 minutes but remained **RED**. RL-H1, RL-D1, RL-P1, wall budget, MISSION projection scalability and replay/checkpoint equivalence passed; RL-M1 and RL-R1 both failed because the same 5→10 MWe load-raise path entered protection. Replacement-Long Failure Diagnostic 1 executed PASS and identifies `generator-loss-of-synchronism` as the first completed protection owner: trigger begins at step 587 and the 0.5 s pickup latches at step 636 / 6.36 s. Underfrequency begins earlier but does not complete its 1 s pickup first. Replacement-Long Failure Diagnostic 2 also executed PASS: the supervisory rod pulse is suppressed, while Assisted rod withdrawals of +2.5 / +5 / +10 percentage points physically execute and raise thermal power, yet every probe still latches the same loss-of-synchronism at step 636. Rod authority therefore does not provide the missing transient margin. The active candidate is Diagnostic 3, which closes the remaining breaker-closed turbine-governing seam, probes physical control-valve preloading and compares the same transient on historical exact-v4 versus exact-v9 before any runtime repair. M10 remains OPEN.
 
-M10 remains OPEN. M11 is blocked until exact-v9 activation is explicitly validated, a new replacement-long contract is created, the full replacement long gate passes, and M10 closure is explicitly recorded.
+This full package still contains the pre-M11 engineering review/planning streams. They remain planning-only and do not weaken the executable validation contract.
+
+M11 is blocked until: replacement-long failure diagnosis → required workload/runtime repair → new freeze → replacement-long PASS → explicit M10 closure.
 
 This is the **single current-state and handoff document** for Nuclear Reactor Simulator. Do not duplicate the current checkpoint in README, roadmap, milestone files or candidate-specific notes.
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6, M10.9.7 and M10.9.8 remain VALIDATED / CLOSED.** M10 Final Diagnostic 11 Hotfix 2 is now locally validated and the returned 600 s exact-v9 artifacts qualify the post-moisture analytical whole-cycle operating point: ~5.000000 MWe, ~100.000001 kg/s primary flow, effectively zero late inventory/governor drift, zero trip/rollback and conservative mass/energy ownership. LR-M1 remains repaired. The active candidate is now the exact-v9 **production activation candidate**: @9 is staged as an explicit opt-in production policy and desktop scenario/registry identity while exact-v4 deliberately remains the authoritative default and exact-v2 remains fail-closed rollback. Replacement long and production default switching remain unauthorized until this activation-candidate gate returns green evidence.
+The authoritative production state is now:
 
-The validated M10.9.7 baseline includes the live read-only MISSION workspace, deterministic logical-step timeline, presentation-only drill-down, exact mission/archive binding, replay/checkpoint reconstruction, closure coverage for active/completed/failed mission states, assistance changes and requested/effective authority divergence. F1–F8 remain preserved, F9 remains absent and MISSION has no plant-command authority.
+- policy `M10FinalExactV9QualifiedCandidate`;
+- initial condition `integrated-operations-desktop-stable@9`;
+- production scenario `integrated-normal-operations-training-m10-final-v9-production`;
+- production mission `bounded-demand-following-5-10-5@3`;
+- deterministic selector/direct-factory fingerprint `7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418`;
+- exact-v4 retained explicitly as historical I.5 production;
+- exact-v3 retained explicitly as historical H.30 production;
+- exact-v2 retained as fail-closed rollback/reference.
 
-Authoritative desktop production remains:
+The returned activation-decision artifact recorded 12,000 healthy authoritative steps, zero trip/rollback/fallback/unsafe/untargeted disagreement, ~5 MWe, ~100 kg/s primary flow, stable drum/governor state, explicit moisture ownership and conservative mass/energy closure. `production-activation=True` and `replacement-long-authorized=False` were intentionally separate decisions.
 
-`integrated-operations-desktop-stable@4 | CorrelationConsistentInverseDomain | FourNodeBranchContinuityCorrectedCommitOptIn | 10 ms`
-
-Historical exact-version identities remain immutable; M10.9.8 validation work does not reopen Phase-I numerical ownership without direct contradictory evidence.
+The failed first-long manifests remain immutable provenance:
+`eng/m10-final-long-baseline-src.sha256` and `eng/m10-final-long-baseline-tests.sha256`.
 
 ## Active validation candidate and parallel planning overlay
 
-**Active candidate: M10 Final Exact-v9 Qualified Production Activation Candidate — CANDIDATE.**
+**Active candidate: M10 Final Replacement-Long Failure Diagnostic 4 — CANDIDATE.**
 
-The cumulative Hotfix 1 gate, Diagnostic 2 / LR-M1 Hotfix 1 and Diagnostic 3 Hotfix 1 execution are locally validated. Diagnostic 3 crossed the historical exact-v4 failure interval, but its engineering decision is negative: the 260 kg/s exact-v5 probe is not a qualified operating point. It starts near 260 kg/s but evolves toward roughly 103 kg/s while outlet inventory moves into the drum; by 600 s drum level is ~0.9567 and still increasing, while outlet/drum pressure and fuel/structure temperature continue monotonic decline.
+Diagnostic 3 returned PASS. Exact-v9 reference again latched `generator-loss-of-synchronism` at step 636. Breaker-closed SPEED commands changed the raw speed reference but not the effective droop-owned governor reference. Manual valve-at-load and 55%/65% preload did not create material shaft-power margin or delay the trip. Historical exact-v4 reproduced the same failure family at step 628, so the evidence does not support an exact-v9-only transient regression.
 
-Diagnostics 4–10 isolated and repaired the full LR-H1 ownership chain: primary operating-point imbalance, breaker-closed governor integral-reference semantics and wet-steam non-vapor ownership. Exact-v8 validated the structural repairs but remained off-root at ~4.8682 MWe / +0.2553 MW stored energy. Diagnostic 11 recomputed the authored post-moisture whole-cycle root as exact-v9; after two test-only regression Hotfixes, Hotfix 2 completed the full 600 s run. Returned evidence qualifies exact-v9 with final export 4.999999982 MWe, primary 100.000001 kg/s, drum level ~0.5, final-60 node mass slopes on the order of 1e-8 kg/s, governor/control-valve slopes on the order of 1e-10 %/s, net/stored power ~9.8e-8 MW, zero trip/rollback and conservative stage/full-cycle closure. The active milestone therefore stages exact-v9 as `M10FinalExactV9QualifiedCandidate` without changing `AuthoritativeDefaultPolicy`. See `M10_FINAL_EXACT_V9_PRODUCTION_ACTIVATION_CANDIDATE.md`, ADR-0189, ADR-0190 and ADR-0191.
+The unresolved discrimination is now electrical command granularity versus missing upstream energy support. Diagnostic 4 compares the frozen +5 MWe step with smaller/slower test-only request ramps, then repeats a slow ramp with proportional reactor-power support and a separate 66 MWth pre-power probe. Exact-v4 receives the same supported schedule as a historical control. Production command policy, workload, authority policy, protection, exact-v9 and mission @3 remain unchanged.
 
-**Parallel documentation overlay:** this package also includes the reviewed pre-M11 planning set from the three book studies. It does not supersede the executable long baseline and is not promotion evidence.
+The ordinary GitHub CI result is a separate gate: the focused diagnostic script runs Debug + one explicit test, while `eng\ci-ordinary.cmd` runs Release + the complete ordinary suite. The current pasted CI excerpt proves at least one ordinary test failed but does not include its test name/assertion; M10 closure remains blocked until that specific failure is identified and green.
 
-The historical first-long workload remains frozen. The 19 I.3 budgets and exact-v4 conservation ceilings are unchanged. M10 closes only after the owner correction is separately validated, a replacement long manifest is deliberately created, the full long artifact reports `m10-final-long-validation-passes=True`, and a closure/promotion step records that evidence.
+**Parallel documentation overlay:** the reviewed pre-M11 planning set remains planning-only and does not supersede executable validation evidence.
 
 ## Validation required for active candidate
 
-Run `scripts\run-m10-final-v9-production-activation-candidate.cmd`. It performs Debug build with warnings-as-errors, the complete ordinary suite, current exact-v4 evidence, the explicit 600 s exact-v9 Diagnostic-11 requalification on the candidate source tree, and a focused exact-v9 production-policy-path audit. Return the complete `artifacts/m10-final-v9-production-activation-candidate` folder before any authoritative-default switch, production mission rebinding or replacement-long authorization.
+Run:
+
+```bat
+scripts\run-m10-final-replacement-long-failure-diagnostic4.cmd
+```
+
+Return the complete `artifacts\m10-final-replacement-long-failure-diagnostic4` folder. No second replacement long is authorized.
 
 ## Evidence and package policy
 
@@ -47,7 +61,7 @@ Compact immutable prerequisites required by ordinary/current tests live under `e
 
 The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In particular:
 
-- Phase I is closed; repaired exact-v4 production and the final cumulative/reference chain are validated, while the final long gate is still open and its first LR-H1 healthy soak has failed;
+- Phase I is closed; exact-v4 remains validated historical production evidence, exact-v9 is now authoritative production, and the final long gate remains open pending diagnosis/repair, a new exact-v9 replacement freeze and a passing replacement campaign; the first exact-v4 LR-H1 failure remains provenance;
 - the historical exact-v3 I.3 drift observations remain regression provenance and are not evidence that exact @4 has identical long-horizon means/slopes;
 - historical H.28 remains `bounded-but-costly`; repaired Stage 4 separately demonstrated bounded-at-or-below repaired explicit relative wall cost on the validation machine;
 - branch overrides disappeared in repaired long-horizon evidence, but previous-phase hysteresis remained materially active and must not be removed without separately scoped post-Phase-I retirement evidence;
@@ -59,7 +73,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated chain: **M10.9.8.5 VALIDATED / M10.9.8 CLOSED → M10 Final Pre-M11 Cumulative Hotfix 1 VALIDATED → failed/aborted first long campaign → Diagnostic 1 PASS → Diagnostic 2 / LR-M1 Hotfix 1 PASS → Diagnostic 3 original build RED (test-only CS0103) → Diagnostic 3 Hotfix 1 execution PASS / exact-v5 NOT QUALIFIED → Diagnostic 4 PASS / mass-energy owners identified → Diagnostic 5 PASS / whole-cycle state captured → Diagnostic 6 execution PASS / exact-v6 NOT QUALIFIED → Diagnostic 7 PASS / breaker-closed governor integral-reference defect proven → Diagnostic 8 execution PASS / exact-v7 NOT QUALIFIED → Diagnostic 9 PASS / turbine-admission non-vapor owner proven → Diagnostic 10 original ordinary-suite RED (test-only inlet balance assertion) → Diagnostic 10 Hotfix 1 PASS / exact-v8 NOT QUALIFIED → Diagnostic 11 original ordinary-suite RED (test-only stale governor-integral range) → Diagnostic 11 Hotfix 1 ordinary-suite RED (test-only ideal pre-step P-term assertion) → Diagnostic 11 Hotfix 2 PASS / exact-v9 QUALIFIED → exact-v9 opt-in production activation candidate → separate authoritative exact-v9 activation decision → replacement long <=60 min wall budget → full long PASS → explicit M10 closure → M11**.
+Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated chain: **M10.9.8.5 VALIDATED / M10.9.8 CLOSED → M10 Final Pre-M11 Cumulative Hotfix 1 VALIDATED → failed/aborted first long campaign → Diagnostic 1 PASS → Diagnostic 2 / LR-M1 Hotfix 1 PASS → Diagnostic 3 original build RED (test-only CS0103) → Diagnostic 3 Hotfix 1 execution PASS / exact-v5 NOT QUALIFIED → Diagnostic 4 PASS / mass-energy owners identified → Diagnostic 5 PASS / whole-cycle state captured → Diagnostic 6 execution PASS / exact-v6 NOT QUALIFIED → Diagnostic 7 PASS / breaker-closed governor integral-reference defect proven → Diagnostic 8 execution PASS / exact-v7 NOT QUALIFIED → Diagnostic 9 PASS / turbine-admission non-vapor owner proven → Diagnostic 10 original ordinary-suite RED (test-only inlet balance assertion) → Diagnostic 10 Hotfix 1 PASS / exact-v8 NOT QUALIFIED → Diagnostic 11 original ordinary-suite RED (test-only stale governor-integral range) → Diagnostic 11 Hotfix 1 ordinary-suite RED (test-only ideal pre-step P-term assertion) → Diagnostic 11 Hotfix 2 PASS / exact-v9 QUALIFIED → exact-v9 opt-in production activation candidate PASS → authoritative exact-v9 Activation Decision 1 BUILD RED (new-test CS1503 + CS0103 only) → Activation Decision 1 Hotfix 1 PASS / exact-v9 AUTHORITATIVE → Replacement-Long Baseline Freeze 1 PASS → Replacement-Long Execution 1 RED (RL-M1/RL-R1 shared load-raise protection path; other legs/budget/scalability/replay equivalence green) → Replacement-Long Failure Diagnostic 1 PASS / loss-of-synchronism owner → Replacement-Long Failure Diagnostic 2 PASS / rod coordination no margin → Replacement-Long Failure Diagnostic 3 → repair/new freeze as evidence requires → replacement-long PASS → explicit M10 closure → M11**.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 

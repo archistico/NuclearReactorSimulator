@@ -1,0 +1,184 @@
+{
+  "schema": "m10-final-replacement-long-validation-contract-v1",
+  "status": "FROZEN-AWAITING-BASELINE-FREEZE-GATE",
+  "baseline": "M10 Final Exact-v9 Production Activation Decision 1 Hotfix 1 VALIDATED",
+  "prerequisite_record": "eng/m10-final-v9-production-activation-decision-record.json",
+  "prerequisite_marker": "productionActivation=True",
+  "fixed_step_ms": 10,
+  "authoritative_policy": "M10FinalExactV9QualifiedCandidate",
+  "authoritative_initial_condition": "integrated-operations-desktop-stable@9",
+  "authoritative_scenario": "integrated-normal-operations-training-m10-final-v9-production",
+  "production_mission_pack": "bounded-demand-following-5-10-5@3",
+  "historical_reference": {
+    "failed_long_initial_condition": "integrated-operations-desktop-stable@4",
+    "failed_long_mission_pack": "bounded-demand-following-5-10-5@2",
+    "old_src_manifest": "eng/m10-final-long-baseline-src.sha256",
+    "old_tests_manifest": "eng/m10-final-long-baseline-tests.sha256",
+    "old_src_manifest_file_sha256": "ef7983f8337bd03c15e5577b4e2ea4f9058e8717141bf3dd8018f19805798d6c",
+    "old_tests_manifest_file_sha256": "5c13e1241bd4b5076085be73ab977a8a66d7eb8fb582b30d7de1df60375e6b09",
+    "reuse_authorized": false
+  },
+  "replacement_baseline_manifests": {
+    "src": "eng/m10-final-replacement-long-v9-baseline-src.sha256",
+    "src_file_count": 959,
+    "tests": "eng/m10-final-replacement-long-v9-baseline-tests.sha256",
+    "tests_file_count": 351,
+    "execution_candidate_allowed_test_additions": 1,
+    "production_src_changes_after_freeze_allowed": false
+  },
+  "total_simulated_seconds": 1920,
+  "total_logical_steps": 192000,
+  "wall_clock_policy": {
+    "target_workstation_minutes_min": 35,
+    "target_workstation_minutes_max": 45,
+    "hard_campaign_cap_minutes": 60,
+    "hard_cap_is_validation_job_policy_not_physics_tolerance": true,
+    "calibration_source": "Diagnostic 11 Hotfix 2 exact-v9 600 s requalification user-reported test duration",
+    "calibration_simulated_seconds": 600,
+    "calibration_wall_seconds": 750.059,
+    "linear_projection_minutes_for_authored_workload": 40.003147,
+    "replay_extra_physical_steps_not_counted_in_authored_seconds": true
+  },
+  "global_blocking_criteria": {
+    "unhandled_exceptions": 0,
+    "nonfinite_observations": 0,
+    "unsupported_water_steam_envelope_excursions": 0,
+    "fingerprint_mismatches": 0,
+    "fallback_commit_violations": 0,
+    "unsafe_corrected_commits": 0,
+    "untargeted_branch_disagreements": 0,
+    "healthy_unexpected_trips": 0,
+    "unexpected_fault_activations": 0,
+    "exact_version_identity_drift": 0,
+    "duplicate_replay_timeline_rows": 0,
+    "wall_deadline_exceeded": 0
+  },
+  "instantaneous_conservation_ceilings": {
+    "mass_closure_residual_kg": 1e-06,
+    "energy_closure_residual_J": 0.01,
+    "balance_mass_rate_residual_kg_s": 1e-08,
+    "balance_power_residual_W": 0.001
+  },
+  "exact_v9_operating_point_sentinels": {
+    "source": "validated exact-v9 activation decision + Diagnostic 11 Hotfix 2",
+    "rolling_window_seconds": 60,
+    "healthy_window_end_seconds": [
+      300,
+      600,
+      900
+    ],
+    "electrical_export_mwe": [
+      4.99,
+      5.01
+    ],
+    "primary_pump_mass_flow_kg_s": [
+      99.9,
+      100.1
+    ],
+    "drum_level_fraction": [
+      0.49,
+      0.51
+    ],
+    "governor_output_percent": [
+      29.27,
+      29.3
+    ],
+    "minimum_moisture_drain_kg_s": 0.3,
+    "maximum_commanded_transfer_mismatch_kg_s": 1e-08,
+    "maximum_stage_energy_ownership_residual_w": 0.001,
+    "maximum_absolute_node_mass_slope_kg_s": 1e-05,
+    "maximum_absolute_late_net_external_power_mw": 0.0001,
+    "derivation_note": "major operating ranges reuse the validated activation-decision envelope; node-mass slope ceiling rounds upward from >100x the maximum Diagnostic-11 final-60 observed node slope; late net-power ceiling is >1000x the Diagnostic-11 final-60 residual. Frozen before replacement execution."
+  },
+  "mission_scalability_sentinel": {
+    "actual_live_samples": 48000,
+    "window_seconds": 60,
+    "window_count": 8,
+    "late_to_early_wall_ratio_ceiling": 2.0,
+    "lifecycle_spine_cap": 32,
+    "recent_operational_evidence_cap": 100,
+    "synthetic_equivalence_prerequisite_samples": 100000,
+    "reason": "real live path complements the already validated 100k synthetic prefix-independence census; ratio is within-run scalability evidence, not a cross-machine timing threshold"
+  },
+  "legs": [
+    {
+      "id": "RL-H1",
+      "seconds": 900,
+      "steps": 90000,
+      "purpose": "authoritative exact-v9 healthy whole-cycle soak; 3 rolling equilibrium windows; conservation, moisture ownership and numerical safety",
+      "initial_condition": "integrated-operations-desktop-stable@9",
+      "scenario": "integrated-normal-operations-training-m10-final-v9-production",
+      "progress_stride_steps": 10000
+    },
+    {
+      "id": "RL-M1",
+      "seconds": 480,
+      "steps": 48000,
+      "purpose": "production mission @3 plus 400+ simulated seconds post-terminal continuation; real live-projection scalability windows and bounded evidence",
+      "pack_exact_id": "bounded-demand-following-5-10-5@3",
+      "initial_condition": "integrated-operations-desktop-stable@9",
+      "operator_policy": "dispatch one generator-load raise on first observed 10 MWe demand and one generator-load lower on first subsequent observed 5 MWe demand",
+      "progress_stride_steps": 6000
+    },
+    {
+      "id": "RL-D1",
+      "seconds": 300,
+      "steps": 30000,
+      "purpose": "required-measurement degradation/recovery with long post-clear observation on exact-v9",
+      "initial_condition": "integrated-operations-desktop-stable@9",
+      "fault_type": "instrumentation.sensor-unavailable",
+      "target": "power",
+      "activation_step": 9000,
+      "clear_step": 15000,
+      "progress_stride_steps": 5000
+    },
+    {
+      "id": "RL-P1",
+      "seconds": 180,
+      "steps": 18000,
+      "purpose": "protection precedence, blocked normal command and manual takeover on exact-v9 with post-takeover observation",
+      "initial_condition": "integrated-operations-desktop-stable@9",
+      "scram_commit_step": 6000,
+      "authority_observation_step": 6001,
+      "blocked_normal_command_step": 7500,
+      "manual_takeover_step": 12000,
+      "progress_stride_steps": 3000
+    },
+    {
+      "id": "RL-R1",
+      "seconds": 60,
+      "steps": 6000,
+      "purpose": "mission @3 recording/full replay/checkpoint continuation exact equivalence with bounded archive growth",
+      "pack_exact_id": "bounded-demand-following-5-10-5@3",
+      "initial_condition": "integrated-operations-desktop-stable@9",
+      "load_raise_step": 500,
+      "load_lower_step": 3000,
+      "checkpoint_step": 3000,
+      "rod_hold_step": 4000,
+      "progress_stride_steps": 1000
+    }
+  ],
+  "evidence_growth": {
+    "lifecycle_spine_cap": 32,
+    "recent_operational_evidence_cap": 100,
+    "archive_frame_growth": "exactly one contiguous frame per authored deterministic logical step plus initial frame",
+    "full_to_half_size_ratio_ceiling": 2.25
+  },
+  "required_execution_artifacts": [
+    "00-progress.txt",
+    "01-m10-final-replacement-long-validation.summary.txt",
+    "02-workload-contract.json",
+    "03-leg-summary.csv",
+    "04-conservation-maxima.csv",
+    "05-healthy-window-v9-operating-point-sentinels.csv",
+    "06-numerical-coupling-telemetry.csv",
+    "07-trip-fault-protection-classification.csv",
+    "08-mission-demand-score-evidence.csv",
+    "09-replay-checkpoint-fingerprint-sentinels.csv",
+    "10-evidence-growth.csv",
+    "11-performance-diagnostics.csv",
+    "12-wall-budget-summary.txt"
+  ],
+  "authorization_rule": "The replacement long may be executed only after the baseline-freeze gate validates this exact contract and manifests. The execution candidate may add one explicit replacement-long test file and orchestration/finalization code, but may not change any frozen src file or pre-existing test file.",
+  "m10_closure_rule": "A passing replacement long makes M10 closure eligible; M10 still requires explicit closure documentation/promotion before M11."
+}

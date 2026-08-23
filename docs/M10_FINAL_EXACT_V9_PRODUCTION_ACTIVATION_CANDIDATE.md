@@ -2,6 +2,8 @@
 
 **CANDIDATE — exact-v9 is engineering QUALIFIED by returned Diagnostic 11 Hotfix 2 evidence; exact-v4 remains authoritative production; exact-v9 is staged only as an explicit opt-in production policy; replacement long remains unauthorized.**
 
+> **Returned result:** this opt-in activation-candidate gate is now locally validated GREEN. Its returned evidence authorizes only the separate authoritative activation-decision candidate documented in `M10_FINAL_EXACT_V9_PRODUCTION_ACTIVATION_DECISION.md`; this historical note remains the opt-in staging contract and is not rewritten as the authoritative switch.
+
 ## 1. Qualification result entering this gate
 
 The returned Diagnostic 11 Hotfix 2 artifacts complete 600 simulated seconds / 60,000 deterministic 10 ms steps on `integrated-operations-desktop-stable@9` with zero trip steps and zero hydraulic rollbacks.

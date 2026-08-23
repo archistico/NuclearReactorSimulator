@@ -9,56 +9,60 @@ namespace NuclearReactorSimulator.Application.Tests.Scenarios.Training;
 public sealed class DesktopHydraulicProductionPolicyTests
 {
     [Fact]
-    public void I5RepairedPolicy_RemainsAuthoritativeWhileQualifiedV9IsExplicitCandidateAndV2IsFailClosedKill()
+    public void ExactV9_IsAuthoritativeWhileHistoricalV4V3AndV2FailClosedRemainExplicitlySelectable()
     {
         Assert.Equal(
-            DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
+            DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate,
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
         Assert.Equal(
             DesktopHydraulicProductionPolicy.ExplicitCommittedState,
             DesktopHydraulicProductionPolicySelector.ExplicitRollbackPolicy);
         Assert.Equal(
+            DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
+        Assert.Equal(
             DesktopHydraulicProductionPolicy.H29FourNodeCorrectedCommitCandidate,
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
-        Assert.Equal(
-            DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate,
-            DesktopHydraulicProductionPolicySelector.M10FinalQualifiedCandidatePolicy);
 
-        var defaultDecision = DesktopHydraulicProductionPolicySelector.Resolve(
+        var authoritative = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
-        var candidateDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.M10FinalQualifiedCandidatePolicy);
-        var killedCandidateDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.M10FinalQualifiedCandidatePolicy,
-            explicitKillRequested: true);
-        var historicalV3Decision = DesktopHydraulicProductionPolicySelector.Resolve(
+        var historicalV4 = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
+        var historicalV3 = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
+        var killed = DesktopHydraulicProductionPolicySelector.Resolve(
+            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            explicitKillRequested: true);
 
-        Assert.Equal(DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference, defaultDecision.InitialCondition);
-        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 4), defaultDecision.InitialCondition);
-        Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, defaultDecision.EffectivePolicy);
-        Assert.False(defaultDecision.ExplicitKillApplied);
+        Assert.Equal(DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.Reference, authoritative.InitialCondition);
+        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 9), authoritative.InitialCondition);
+        Assert.Equal(DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate, authoritative.EffectivePolicy);
+        Assert.False(authoritative.ExplicitKillApplied);
 
-        Assert.Equal(DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.Reference, candidateDecision.InitialCondition);
-        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 9), candidateDecision.InitialCondition);
-        Assert.Equal(DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate, candidateDecision.EffectivePolicy);
-        Assert.False(candidateDecision.ExplicitKillApplied);
+        Assert.Equal(DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference, historicalV4.InitialCondition);
+        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 4), historicalV4.InitialCondition);
+        Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, historicalV4.EffectivePolicy);
 
-        Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, killedCandidateDecision.InitialCondition);
-        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 2), killedCandidateDecision.InitialCondition);
-        Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, killedCandidateDecision.EffectivePolicy);
-        Assert.True(killedCandidateDecision.ExplicitKillApplied);
+        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, historicalV3.InitialCondition);
+        Assert.Equal(3, historicalV3.InitialCondition.Version);
 
-        Assert.Equal(DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference, historicalV3Decision.InitialCondition);
-        Assert.Equal(3, historicalV3Decision.InitialCondition.Version);
+        Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, killed.InitialCondition);
+        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 2), killed.InitialCondition);
+        Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, killed.EffectivePolicy);
+        Assert.True(killed.ExplicitKillApplied);
 
         Assert.Equal(
-            DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario,
+            DesktopIntegratedOperationsProductionProgram.M10FinalExactV9ProductionScenario,
             DesktopIntegratedOperationsProductionProgram.Scenario);
         Assert.Equal(
-            DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario,
+            DesktopIntegratedOperationsProductionProgram.M10FinalExactV9ProductionScenario,
             DesktopIntegratedOperationsProductionProgram.ResolveScenario(
-                DesktopHydraulicProductionPolicySelector.M10FinalQualifiedCandidatePolicy));
+                DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy));
+        Assert.Equal(
+            DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario,
+            DesktopIntegratedOperationsProductionProgram.ResolveScenario(
+                DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy));
+
         Assert.Equal(
             DesktopIntegratedOperationsProductionProgram.Scenario.ScenarioId,
             DesktopIntegratedOperationsProductionProgram.ResolveTrainingPlan(
@@ -69,26 +73,23 @@ public sealed class DesktopHydraulicProductionPolicyTests
                 DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId).ScenarioId);
 
         Assert.Equal(
-            DesktopSustainedGenerationInitialConditionFactory.Reference,
-            DesktopIntegratedOperationsProgram.Scenario.InitialCondition);
-        Assert.Equal(
-            DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
-            DesktopIntegratedOperationsH29ActivationCandidateProgram.Scenario.InitialCondition);
-        Assert.Equal(
-            DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
-            DesktopIntegratedOperationsProductionProgram.CorrectedProductionScenario.InitialCondition);
-        Assert.Equal(
             DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference,
             DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario.InitialCondition);
         Assert.Equal(
             DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.Reference,
             DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.InitialCondition);
         Assert.Equal(
+            DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.Reference,
+            DesktopIntegratedOperationsProductionProgram.M10FinalExactV9ProductionScenario.InitialCondition);
+        Assert.Equal(
             "integrated-normal-operations-training-i5-repaired-v4-production",
             DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario.ScenarioId);
         Assert.Equal(
             "integrated-normal-operations-training-m10-final-v9-activation-candidate",
             DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId);
+        Assert.Equal(
+            "integrated-normal-operations-training-m10-final-v9-production",
+            DesktopIntegratedOperationsProductionProgram.M10FinalExactV9ProductionScenario.ScenarioId);
     }
 
     [Fact]
@@ -145,6 +146,7 @@ public sealed class DesktopHydraulicProductionPolicyTests
             DesktopIntegratedOperationsI5RepairedActivationCandidateProgram.Scenario.ScenarioId,
             DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario.ScenarioId,
             DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId,
+            DesktopIntegratedOperationsProductionProgram.M10FinalExactV9ProductionScenario.ScenarioId,
         };
 
         Assert.All(ids, static id => Assert.True(DesktopIntegratedOperationsProductionProgram.IsDesktopTrainingScenario(id)));

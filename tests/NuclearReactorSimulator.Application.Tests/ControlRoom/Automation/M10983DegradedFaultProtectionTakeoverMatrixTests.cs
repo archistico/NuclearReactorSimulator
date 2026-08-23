@@ -120,7 +120,7 @@ public sealed class M10983DegradedFaultProtectionTakeoverMatrixTests
     [Fact]
     public void ProtectionPrecedence_RemainsAuthoritativeAcrossNormalCommandAndChallengeFailure()
     {
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var session = CreateExactV4Factory().Load(pack.Scenario);
         using var source = new MissionPerformanceLiveSnapshotSource(session, pack, TrainingGuidanceMode.Guided);
 
@@ -193,7 +193,7 @@ public sealed class M10983DegradedFaultProtectionTakeoverMatrixTests
 
     private static OperationalChallengePackDefinition CreateValidationOnlyDegradedChallengePack()
     {
-        var source = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var source = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var scenario = new ScenarioDefinition(
             "m10983-bounded-demand-supervisory-degraded-validation",
             "M10.9.8.3 bounded-demand supervisory degraded validation",

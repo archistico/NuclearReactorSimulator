@@ -92,14 +92,14 @@ public sealed class FourNodeH30ProductionPolicyRereviewAuditTests
     }
 
     [Fact]
-    public void HistoricalH30ExactV3RemainsReplayableWhileI5ExactV4IsCurrentAndV2RemainsFailClosedRollback()
+    public void HistoricalH30AndI5ExactV4RemainReplayableWhileM10ExactV9IsCurrentAndV2RemainsFailClosedRollback()
     {
         var currentDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var historicalV3Decision = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy,
             explicitKillRequested: true);
 
         Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, currentDecision.EffectivePolicy);
@@ -116,8 +116,9 @@ public sealed class FourNodeH30ProductionPolicyRereviewAuditTests
         Assert.Equal(DesktopSustainedGenerationInitialConditionFactory.Reference, killDecision.InitialCondition);
         Assert.Equal(2, killDecision.InitialCondition.Version);
 
-        Assert.Equal(DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario, DesktopIntegratedOperationsProductionProgram.Scenario);
-        Assert.Equal(4, DesktopIntegratedOperationsProductionProgram.Scenario.InitialCondition.Version);
+        Assert.Equal(DesktopIntegratedOperationsProductionProgram.M10FinalExactV9ProductionScenario, DesktopIntegratedOperationsProductionProgram.Scenario);
+        Assert.Equal(9, DesktopIntegratedOperationsProductionProgram.Scenario.InitialCondition.Version);
+        Assert.Equal(4, DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario.InitialCondition.Version);
         Assert.Equal(3, DesktopIntegratedOperationsProductionProgram.CorrectedProductionScenario.InitialCondition.Version);
         Assert.Equal(
             DesktopIntegratedOperationsProductionProgram.Scenario.ScenarioId,
@@ -178,9 +179,9 @@ public sealed class FourNodeH30ProductionPolicyRereviewAuditTests
         Assert.Equal(H30RereviewDecision.Activate, decision);
 
         var defaultDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var killDecision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy,
             explicitKillRequested: true);
 
         const bool h9Retuned = false;

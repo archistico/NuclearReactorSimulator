@@ -48,7 +48,7 @@ public sealed class M10FinalLongFailureDiagnostic11Tests
         Assert.NotEqual(v8.Descriptor.Reference, v9.Descriptor.Reference);
 
         var production = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         Assert.Equal(DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference, production.InitialCondition);
 
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(v9.CreateRuntimeEngine());

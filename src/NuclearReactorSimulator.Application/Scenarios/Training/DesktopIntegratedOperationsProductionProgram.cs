@@ -3,14 +3,15 @@ using NuclearReactorSimulator.Application.Scenarios.Operations;
 namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
-/// Current production-facing desktop program selector. Historical scenario identities remain immutable: H.30 exact-v3
-/// and I.5 exact-v4 remain replayable, exact-v4 stays authoritative, and M10 Final exact-v9 is exposed only as a qualified
-/// activation candidate until a later default-switch decision. Exact-v2 remains the fail-closed rollback/reference identity.
+/// Current production-facing desktop program selector. Historical scenario identities remain immutable: H.30 exact-v3,
+/// I.5 exact-v4 and the M10 Final exact-v9 activation-candidate scenario remain replayable. After the separate activation
+/// decision, a distinct exact-v9 production scenario is authoritative. Exact-v2 remains fail-closed rollback/reference.
 /// </summary>
 public static class DesktopIntegratedOperationsProductionProgram
 {
     private const string H30ProductionScenarioId = "integrated-normal-operations-training-h30-rq1-production";
     private const string I5RepairedProductionScenarioId = "integrated-normal-operations-training-i5-repaired-v4-production";
+    private const string M10FinalExactV9ProductionScenarioId = "integrated-normal-operations-training-m10-final-v9-production";
 
     public static ScenarioDefinition CorrectedProductionScenario { get; } = new(
         H30ProductionScenarioId,
@@ -42,6 +43,21 @@ public static class DesktopIntegratedOperationsProductionProgram
         DesktopIntegratedOperationsProgram.TrainingPlan.Objectives,
         DesktopIntegratedOperationsProgram.TrainingPlan.Penalties);
 
+    public static ScenarioDefinition M10FinalExactV9ProductionScenario { get; } = new(
+        M10FinalExactV9ProductionScenarioId,
+        "Integrated Normal Operations Training — M10 Final Exact-v9 Production",
+        "M10 Final authoritative desktop production scenario using qualified exact initial-condition version 9 with grid-paralleled droop integral-reference separation, explicit turbine moisture-drain ownership and the post-moisture analytical whole-cycle equilibrium. Exact versions 2, 3 and 4 plus the activation-candidate scenario remain immutable and replayable.",
+        DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.Reference,
+        DesktopIntegratedOperationsProgram.Scenario.Objectives,
+        DesktopIntegratedOperationsProgram.Scenario.AllowedOperatorActions);
+
+    public static ScenarioTrainingPlan M10FinalExactV9ProductionTrainingPlan { get; } = new(
+        M10FinalExactV9ProductionScenarioId,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Checkpoints,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Criteria,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Objectives,
+        DesktopIntegratedOperationsProgram.TrainingPlan.Penalties);
+
     public static ScenarioDefinition Scenario
         => ResolveScenario(DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
 
@@ -59,7 +75,7 @@ public static class DesktopIntegratedOperationsProductionProgram
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit
                 => RepairedProductionScenario,
             DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate
-                => DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario,
+                => M10FinalExactV9ProductionScenario,
             _ => throw new ArgumentOutOfRangeException(nameof(requestedPolicy)),
         };
     }
@@ -72,7 +88,8 @@ public static class DesktopIntegratedOperationsProductionProgram
             || string.Equals(scenarioId, CorrectedProductionScenario.ScenarioId, StringComparison.Ordinal)
             || string.Equals(scenarioId, DesktopIntegratedOperationsI5RepairedActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal)
             || string.Equals(scenarioId, RepairedProductionScenario.ScenarioId, StringComparison.Ordinal)
-            || string.Equals(scenarioId, DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal);
+            || string.Equals(scenarioId, DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal)
+            || string.Equals(scenarioId, M10FinalExactV9ProductionScenario.ScenarioId, StringComparison.Ordinal);
     }
 
     public static ScenarioTrainingPlan ResolveTrainingPlan(string scenarioId)
@@ -101,6 +118,10 @@ public static class DesktopIntegratedOperationsProductionProgram
         if (string.Equals(scenarioId, DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.Scenario.ScenarioId, StringComparison.Ordinal))
         {
             return DesktopIntegratedOperationsM10FinalV9ActivationCandidateProgram.TrainingPlan;
+        }
+        if (string.Equals(scenarioId, M10FinalExactV9ProductionScenario.ScenarioId, StringComparison.Ordinal))
+        {
+            return M10FinalExactV9ProductionTrainingPlan;
         }
 
         throw new KeyNotFoundException($"Scenario '{scenarioId}' is not a registered desktop production-training identity.");

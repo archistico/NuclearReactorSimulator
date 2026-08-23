@@ -217,6 +217,8 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 | [0190](0190-recompute-post-moisture-whole-cycle-operating-point.md) | Recompute the authored whole-cycle operating point after turbine moisture separation | Accepted | Fluids / thermo / secondary |
 | [0191](0191-stage-qualified-exact-v9-as-opt-in-before-authoritative-activation.md) | Stage qualified exact-v9 as an opt-in production policy before authoritative activation | Accepted | Scenarios / production policy |
 
+| [0192](0192-activate-qualified-exact-v9-as-authoritative-production-without-reinterpreting-history.md) | Activate qualified exact-v9 as authoritative production without reinterpreting historical identities | Proposed | Scenarios / production policy |
+
 ## Maintenance rule
 
 - New ADRs use a `## Status` heading.

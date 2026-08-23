@@ -28,14 +28,14 @@ public sealed class PhaseIRepairedExactVersion4ProductionActivationAuditTests
 
         Assert.Equal(
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
 
         var current = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var historicalV3 = DesktopHydraulicProductionPolicySelector.Resolve(
             DesktopHydraulicProductionPolicySelector.H29ActivationCandidatePolicy);
         var rollback = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy,
             explicitKillRequested: true);
 
         Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, current.EffectivePolicy);
@@ -52,8 +52,10 @@ public sealed class PhaseIRepairedExactVersion4ProductionActivationAuditTests
         Assert.Equal(2, rollback.InitialCondition.Version);
         Assert.True(rollback.ExplicitKillApplied);
 
-        Assert.Equal(DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario, DesktopIntegratedOperationsProductionProgram.Scenario);
-        Assert.Equal(4, DesktopIntegratedOperationsProductionProgram.Scenario.InitialCondition.Version);
+        Assert.Equal(
+            DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario,
+            DesktopIntegratedOperationsProductionProgram.ResolveScenario(DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy));
+        Assert.Equal(4, DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario.InitialCondition.Version);
         Assert.Equal(3, DesktopIntegratedOperationsProductionProgram.CorrectedProductionScenario.InitialCondition.Version);
         Assert.NotEqual(
             DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario.ScenarioId,
@@ -164,7 +166,7 @@ public sealed class PhaseIRepairedExactVersion4ProductionActivationAuditTests
     private static string DeterminismFingerprint()
     {
         var decision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
             DesktopHydraulicProductionPolicySelector.CreateFactory(decision).CreateRuntimeEngine());
         var builder = new StringBuilder();

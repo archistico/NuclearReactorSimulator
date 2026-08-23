@@ -11,12 +11,25 @@ namespace NuclearReactorSimulator.Application.Scenarios.Challenges.Packs;
 /// </summary>
 public static class ProductionOperationalChallengePack
 {
-    public static OperationalChallengePackDefinition BoundedDemandFollowing { get; } = RebindToProductionScenario(
+    /// <summary>
+    /// Historical production pack introduced against the I.5 exact-v4 production scenario. It remains immutable and
+    /// replayable after M10 Final exact-v9 activation.
+    /// </summary>
+    public static OperationalChallengePackDefinition BoundedDemandFollowingV2 { get; } = RebindToProductionScenario(
         InitialOperationalChallengePack.BoundedDemandFollowing,
         DesktopIntegratedOperationsProductionProgram.RepairedProductionScenario);
 
+    /// <summary>
+    /// Current production pack rebound to the authoritative M10 Final exact-v9 production scenario. Version 3 changes
+    /// only the exact composed scenario identity; challenge semantics, scoring and external-demand profile are retained.
+    /// </summary>
+    public static OperationalChallengePackDefinition BoundedDemandFollowing { get; } = RebindToProductionScenario(
+        BoundedDemandFollowingV2,
+        DesktopIntegratedOperationsProductionProgram.M10FinalExactV9ProductionScenario);
+
     public static IReadOnlyList<OperationalChallengePackDefinition> All { get; } = new[]
     {
+        BoundedDemandFollowingV2,
         BoundedDemandFollowing,
     };
 

@@ -33,7 +33,7 @@ public sealed class M10FinalLongFailureDiagnostic9Tests
         Assert.Same(v7, registry.Resolve(new InitialConditionReference("integrated-operations-desktop-stable", 7)));
 
         var production = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         Assert.Equal(DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference, production.InitialCondition);
     }
 

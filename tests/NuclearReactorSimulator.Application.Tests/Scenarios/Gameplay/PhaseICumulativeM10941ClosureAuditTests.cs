@@ -59,10 +59,10 @@ public sealed class PhaseICumulativeM10941ClosureAuditTests
     {
         Assert.Equal(
             DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit,
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
 
         var production = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         Assert.Equal(DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit, production.EffectivePolicy);
         Assert.Equal("integrated-operations-desktop-stable", production.InitialCondition.InitialConditionId);
         Assert.Equal(4, production.InitialCondition.Version);
@@ -74,7 +74,7 @@ public sealed class PhaseICumulativeM10941ClosureAuditTests
         Assert.Equal(3, historicalV3.InitialCondition.Version);
 
         var rollback = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy,
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy,
             explicitKillRequested: true);
         Assert.Equal(DesktopHydraulicProductionPolicy.ExplicitCommittedState, rollback.EffectivePolicy);
         Assert.Equal(2, rollback.InitialCondition.Version);
@@ -82,7 +82,7 @@ public sealed class PhaseICumulativeM10941ClosureAuditTests
     }
 
     [Fact]
-    public void ClosureExecutionContract_CoversCurrentV4EvidenceAndFinalScheduledLongMatrix()
+    public void ClosureExecutionContract_CoversCurrentAuthoritativeEvidenceAndFinalScheduledLongMatrix()
     {
         var root = FindRepositoryRoot();
         var ordinary = File.ReadAllText(Path.Combine(root, "eng", "ci-ordinary.cmd"));
@@ -95,7 +95,8 @@ public sealed class PhaseICumulativeM10941ClosureAuditTests
 
         Assert.Contains("run-phase-i-audit-consolidation-ci-baseline-audit.cmd", current, StringComparison.Ordinal);
         Assert.Contains("run-i5-synchronization-corrected-v3-activation-audit.cmd", current, StringComparison.Ordinal);
-        Assert.Contains("run-i5-repaired-exact-v4-production-activation-audit.cmd", current, StringComparison.Ordinal);
+        Assert.Contains("run-m10-final-v9-authoritative-production-audit.cmd", current, StringComparison.Ordinal);
+        Assert.DoesNotContain("run-i5-repaired-exact-v4-production-activation-audit.cmd", current, StringComparison.Ordinal);
         Assert.DoesNotContain("run-h30-rq1-production-policy-rereview-audit.cmd", current, StringComparison.Ordinal);
         Assert.DoesNotContain("run-phase-i-known-limitations-legacy-retirement-review-audit.cmd", current, StringComparison.Ordinal);
 

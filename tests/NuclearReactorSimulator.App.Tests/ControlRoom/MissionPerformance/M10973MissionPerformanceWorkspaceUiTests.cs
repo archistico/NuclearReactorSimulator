@@ -32,15 +32,17 @@ public sealed class M10973MissionPerformanceWorkspaceUiTests
     }
 
     [Fact]
-    public void StartupSelection_ResolvesProductionBoundedDemandV2WithoutReinterpretingHistoricalV1()
+    public void StartupSelection_ResolvesHistoricalV1V2AndCurrentProductionV3WithoutReinterpretation()
     {
-        var historical = MissionChallengeStartupSelection.ResolveExactId("bounded-demand-following-5-10-5@1");
-        var production = MissionChallengeStartupSelection.ResolveExactId("bounded-demand-following-5-10-5@2");
+        var historicalV1 = MissionChallengeStartupSelection.ResolveExactId("bounded-demand-following-5-10-5@1");
+        var historicalV2 = MissionChallengeStartupSelection.ResolveExactId("bounded-demand-following-5-10-5@2");
+        var productionV3 = MissionChallengeStartupSelection.ResolveExactId("bounded-demand-following-5-10-5@3");
 
-        Assert.Same(InitialOperationalChallengePack.BoundedDemandFollowing, historical);
-        Assert.Same(ProductionOperationalChallengePack.BoundedDemandFollowing, production);
-        Assert.NotEqual(historical.Scenario.InitialCondition, production.Scenario.InitialCondition);
-        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 4), production.Scenario.InitialCondition);
+        Assert.Same(InitialOperationalChallengePack.BoundedDemandFollowing, historicalV1);
+        Assert.Same(ProductionOperationalChallengePack.BoundedDemandFollowingV2, historicalV2);
+        Assert.Same(ProductionOperationalChallengePack.BoundedDemandFollowing, productionV3);
+        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 4), historicalV2.Scenario.InitialCondition);
+        Assert.Equal(new InitialConditionReference("integrated-operations-desktop-stable", 9), productionV3.Scenario.InitialCondition);
     }
 
     [Fact]

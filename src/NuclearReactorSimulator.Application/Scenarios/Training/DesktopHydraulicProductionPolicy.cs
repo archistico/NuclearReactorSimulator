@@ -2,9 +2,9 @@ namespace NuclearReactorSimulator.Application.Scenarios.Training;
 
 /// <summary>
 /// Deployment-level desktop production selection. Exact v2 remains the explicit fail-closed rollback/reference,
-/// exact v3 remains the historical H.29/H.30 corrected-commit production identity, I.5 keeps exact v4 as the
-/// authoritative repaired production identity, and M10 Final stages the qualified exact v9 whole-cycle equilibrium as
-/// an explicit opt-in activation candidate. The default does not switch until a later activation decision gate.
+/// exact v3 remains the historical H.29/H.30 corrected-commit production identity, exact v4 remains the historical
+/// I.5 repaired production identity, and M10 Final promotes the qualified exact v9 whole-cycle equilibrium to the
+/// authoritative desktop default after the separate activation-candidate gate passed. Exact v2 remains fail-closed.
 /// </summary>
 public enum DesktopHydraulicProductionPolicy
 {
@@ -25,14 +25,14 @@ public sealed record DesktopHydraulicProductionPolicyDecision(
     bool ExplicitKillApplied);
 
 /// <summary>
-/// Versioned desktop production selector. Exact v4 remains authoritative while exact v9 is exposed only as a qualified
-/// activation candidate. A separate production-activation decision must change <see cref="AuthoritativeDefaultPolicy"/>
-/// after candidate wiring, replayability, historical retention and cumulative evidence pass.
+/// Versioned desktop production selector. M10 Final exact v9 is authoritative after its qualification and separate
+/// activation-candidate wiring gate. Exact v4 remains explicitly selectable as the historical I.5 production identity,
+/// exact v3 remains historical H.30, and exact v2 remains the fail-closed rollback/reference identity.
 /// </summary>
 public static class DesktopHydraulicProductionPolicySelector
 {
     public static DesktopHydraulicProductionPolicy AuthoritativeDefaultPolicy
-        => DesktopHydraulicProductionPolicy.I5RepairedFourNodeCorrectedCommit;
+        => DesktopHydraulicProductionPolicy.M10FinalExactV9QualifiedCandidate;
 
     public static DesktopHydraulicProductionPolicy ExplicitRollbackPolicy
         => DesktopHydraulicProductionPolicy.ExplicitCommittedState;

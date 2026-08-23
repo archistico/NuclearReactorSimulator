@@ -33,7 +33,7 @@ public sealed class M10FinalLongFailureDiagnosticTests
         RequireOptIn();
         const int totalSteps = 30_000;
         var decision = DesktopHydraulicProductionPolicySelector.Resolve(
-            DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy);
+            DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy);
         var engine = Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
             DesktopHydraulicProductionPolicySelector.CreateFactory(decision).CreateRuntimeEngine());
 
@@ -115,7 +115,7 @@ public sealed class M10FinalLongFailureDiagnosticTests
     public void LR_M1_MissionProjectionPrefixScalingCensus()
     {
         RequireOptIn();
-        var pack = ProductionOperationalChallengePack.BoundedDemandFollowing;
+        var pack = ProductionOperationalChallengePack.BoundedDemandFollowingV2;
         var sizes = new[] { 1_000, 5_000, 10_000, 25_000, 50_000, 100_000 };
         var rows = new List<string>
         {

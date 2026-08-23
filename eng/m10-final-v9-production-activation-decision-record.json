@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "gate": "M10 Final exact-v9 authoritative production activation decision",
+  "status": "VALIDATED",
+  "validatedDate": "2026-08-23",
+  "source": "returned artifacts/m10-final-v9-production-activation-decision",
+  "authoritativeDefault": "integrated-operations-desktop-stable@9",
+  "historicalV4": "integrated-operations-desktop-stable@4",
+  "historicalV3": "integrated-operations-desktop-stable@3",
+  "rollback": "integrated-operations-desktop-stable@2",
+  "productionMissionPack": "bounded-demand-following-5-10-5@3",
+  "historicalMissionPackV2": "bounded-demand-following-5-10-5@2",
+  "healthSteps": 12000,
+  "tripSteps": 0,
+  "breakerOpenSteps": 0,
+  "electricalRangeMWe": [
+    4.99999997951048,
+    4.999999999572232
+  ],
+  "primaryPumpRangeKgPerS": [
+    99.99999996896358,
+    100.00000021068621
+  ],
+  "drumLevelRange": [
+    0.4999999999319759,
+    0.500000000079901
+  ],
+  "governorOutputRangePercent": [
+    29.281329614794107,
+    29.28132997711853
+  ],
+  "minimumMoistureDrainKgPerS": 0.31123523307475764,
+  "maxCommandedTransferMismatchKgPerS": 0.0,
+  "maxStageEnergyOwnershipResidualW": 1.1175870895385742e-08,
+  "maxNetworkMassClosureKg": 2.1827872842550278e-11,
+  "maxNetworkEnergyClosureJ": 4.566235933452841e-05,
+  "maxNetworkBalanceMassRateKgPerS": 7.105427357601002e-15,
+  "maxNetworkBalancePowerW": 3.5477569326758385e-08,
+  "correctedTriggered": 0,
+  "correctedCommitted": 0,
+  "rollbacks": 0,
+  "fallbackCommitViolations": 0,
+  "unsafeCommits": 0,
+  "untargetedDisagreements": 0,
+  "determinismSteps": 128,
+  "selectorEqualsDirectFactory": true,
+  "fingerprint": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+  "missionSteps": 1200,
+  "missionFinalScore": "76.97160881456481",
+  "historicalIdentitiesReinterpreted": false,
+  "productionActivation": true,
+  "replacementLongAuthorizedByThisRecord": false
+}

@@ -21,3 +21,7 @@ The activation-candidate gate must rerun ordinary tests, current exact-v4 eviden
 ## Consequences
 
 A green activation-candidate result authorizes a separate authoritative activation decision. That later decision may switch the default to exact-v9 and rebind production scenario/mission identities, but must preserve exact historical versions. The replacement long is not authorized until authoritative exact-v9 activation itself is validated.
+
+## Returned gate status
+
+The opt-in activation-candidate gate was returned green with selector/direct-factory fingerprint equality and healthy conservative exact-v9 operation. That result satisfies this ADR's staging decision and is the prerequisite for ADR 0192. It does not itself change the authoritative default.

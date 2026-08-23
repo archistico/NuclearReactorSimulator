@@ -34,7 +34,7 @@ internal static class MissionChallengeStartupSelection
         var exactId = selections[0][Prefix.Length..];
         if (string.IsNullOrWhiteSpace(exactId))
         {
-            throw new ArgumentException("The --mission-pack option requires an exact pack id such as bounded-demand-following-5-10-5@2.", nameof(args));
+            throw new ArgumentException("The --mission-pack option requires an exact pack id such as bounded-demand-following-5-10-5@3.", nameof(args));
         }
 
         return ResolveExactId(exactId);

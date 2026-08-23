@@ -49,7 +49,7 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
     }
 
     [Fact]
-    public void ExactVersionInventory_EnumeratesFrozenI1CompatibilityWhileCurrentI5SelectionUsesDistinctV4()
+    public void ExactVersionInventory_EnumeratesFrozenI1CompatibilityWhileCurrentM10SelectionUsesV9AndI5V4RemainsHistorical()
     {
         var profiles = FrozenI1ProfileCases();
         var registry = new VersionedInitialConditionRegistry(profiles.Select(static profile => profile.Factory));
@@ -73,9 +73,13 @@ public sealed class ProfileCompatibilityLegacyRetirementInventoryAuditTests
         AssertProfile(profiles, "pre-synchronization-grid-loading", 2, "SUPPORTED-CURRENT", "RETAIN");
 
         Assert.Equal(
-            DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference,
+            DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.Reference,
             DesktopHydraulicProductionPolicySelector.Resolve(
                 DesktopHydraulicProductionPolicySelector.AuthoritativeDefaultPolicy).InitialCondition);
+        Assert.Equal(
+            DesktopSustainedGenerationI5RepairedActivationCandidateInitialConditionFactory.Reference,
+            DesktopHydraulicProductionPolicySelector.Resolve(
+                DesktopHydraulicProductionPolicySelector.I5RepairedProductionPolicy).InitialCondition);
         Assert.Equal(
             DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.Reference,
             DesktopHydraulicProductionPolicySelector.Resolve(
