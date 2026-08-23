@@ -1,5 +1,3 @@
-> **M10 Final replacement-long failure Diagnostic 5:** Diagnostic 4 is execution PASS. Fixed-time ramp/support probes did not establish stable 10 MWe, but the nominal 66 MWth pre-power target had reached only about 37.3 MWth when the load step was applied. The active evidence-only candidate now gates each test-only load increment on measured thermal readiness and post-increment stabilization. Run `scripts\run-m10-final-replacement-long-failure-diagnostic5.cmd` and return the complete artifact folder.
-
 # Nuclear Reactor Simulator
 
 Educational full-plant nuclear reactor simulator built with **C# / .NET 10 / Avalonia**. The project models a reduced RBMK-like plant as a deterministic, headless-testable simulation with an operator-facing desktop control room.

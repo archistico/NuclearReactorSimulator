@@ -108,6 +108,20 @@ Planned sequence:
 
 M10 closes only after M10.9.8 is explicitly validated.
 
+## M10 Final — replacement-long closure route before M11
+
+The detailed blocking contract is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). The approved sequence is **P0 → P1 → P2 → P3-W/P3-R → P4 → P5 → P6**:
+
+- P0 freezes Diagnostic 1–6 evidence and planning;
+- P1 determines asymptotic first-stage convergence versus stationary bias;
+- P2 selects exactly one repair branch;
+- P3-W qualifies a workload/procedure repair only if the unchanged plant converges, while P3-R localizes and minimally repairs runtime ownership only if a stationary bias is demonstrated;
+- P4 must demonstrate a real stable 5→10→5 manoeuvre;
+- P5 freezes and executes Replacement-Long Baseline 2;
+- P6 alone closes M10 and releases M11.1.
+
+An inconclusive P1 is a planning stop, not authorization for an ad hoc diagnostic. A second replacement-long freeze is forbidden before P4 PASS. exact-v9 remains immutable if any runtime repair requires exact-v10.
+
 ## M11 — Release Hardening
 
 **Purpose:** turn the validated M10 simulator into a release candidate without adding new gameplay or physics features.

@@ -1,6 +1,6 @@
 # M10 Final Replacement-Long Failure Diagnostic 5 — Measured Readiness-Gated Staged Load / Attainable Capacity
 
-**Status:** CANDIDATE — evidence only. Replacement-Long Execution 1 remains RED; no second replacement long is authorized.
+**Status:** RETURNED / EXECUTION PASS — evidence only. Replacement-Long Execution 1 remains RED; no second replacement long is authorized.
 
 ## Returned prerequisite
 

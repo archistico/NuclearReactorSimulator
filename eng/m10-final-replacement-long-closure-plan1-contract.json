@@ -1,0 +1,65 @@
+﻿{
+  "schema": "m10-final-replacement-long-closure-plan1-v1",
+  "status": "P0-PLANNING-CANDIDATE-NOT-PROMOTION-EVIDENCE",
+  "base": "M10 Final Replacement-Long Failure Diagnostic 6 RETURNED EXECUTION PASS",
+  "scope": "documentation/planning governance only",
+  "production_src_changed": false,
+  "production_tests_changed": false,
+  "replacement_workload_changed": false,
+  "authority_policy_changed": false,
+  "generator_load_semantics_changed": false,
+  "protection_semantics_changed": false,
+  "exact_v9_changed": false,
+  "mission_pack_changed": false,
+  "second_replacement_long_authorized": false,
+  "replacement_long_execution_1_status": "RED-IMMUTABLE-EVIDENCE",
+  "m10_status": "OPEN",
+  "diagnostic_campaign": {
+    "returned_execution_pass": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "current_interpretation": "D6 recovers near-synchronous frequency and near-zero rotor acceleration on small stages but does not establish strict requested-load operating-point convergence"
+  },
+  "route": [
+    "P0-EVIDENCE-PLANNING-FREEZE",
+    "P1-ASYMPTOTIC-FIRST-STAGE-QUALIFICATION",
+    "P2-DECISION-GATE",
+    "P3-W-WORKLOAD-PROCEDURE-or-P3-R-RUNTIME-OWNERSHIP",
+    "P4-SHORT-5-10-5-QUALIFICATION",
+    "P5A-REPLACEMENT-LONG-BASELINE-2-FREEZE",
+    "P5B-REPLACEMENT-LONG-EXECUTION-2",
+    "P6-M10-FINAL-CLOSURE"
+  ],
+  "p1": {
+    "primary_horizon_seconds_after_load": 900,
+    "bounded_exact_v9_6mwe_extension_max_total_seconds": 1800,
+    "stationarity_threshold_source": "measured stable 5 MWe reference noise floor",
+    "classifications": [
+      "CONVERGED",
+      "BIASED-STATIONARY",
+      "STILL-CONVERGING",
+      "INCONCLUSIVE"
+    ]
+  },
+  "hard_stops": {
+    "no_ad_hoc_diagnostic_after_p1_inconclusive": true,
+    "no_second_long_freeze_before_p4_pass": true,
+    "no_m11_before_p6": true,
+    "exact_v9_never_reinterpreted": true
+  },
+  "primary_documents": [
+    "docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md",
+    "docs/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md",
+    "docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md",
+    "docs/M10_FINAL_VV_MATRIX.md",
+    "docs/PROJECT.md",
+    "docs/ROADMAP.md",
+    "docs/README.md"
+  ],
+  "validator_hotfix": "P0-HOTFIX2-PROJECT-MARKER-ALIGNMENT"
+}

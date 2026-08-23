@@ -1,3 +1,41 @@
+﻿# M10 Final Replacement-Long Closure Plan 1 — P0 Hotfix 2 — Validator / PROJECT Marker Alignment (CANDIDATE)
+
+- P0 Hotfix 1 fixed the PowerShell parser failure and then exposed one remaining validator-only contract mismatch: `docs/PROJECT.md` correctly identified the active candidate as `P0 EVIDENCE & PLANNING FREEZE HOTFIX 1 CANDIDATE`, while the validator still searched for the stale pre-hotfix marker `P0 EVIDENCE & PLANNING FREEZE CANDIDATE`.
+- Hotfix 2 aligns the validator with the actual documented candidate identity and advances the machine-readable validator marker to `P0-HOTFIX2-PROJECT-MARKER-ALIGNMENT`.
+- The validator still checks the complete P0 document/contract marker set; only the stale PROJECT marker is corrected.
+- No `src/`, tests, replacement workload, authority policy, generator-load semantics, protection semantics, exact-v9 runtime, mission pack, P0–P6 route, engineering conclusion or authorization boundary changes.
+- Original P0 and P0 Hotfix 1 audit attempts remain validator-red provenance only.
+
+# M10 Final Replacement-Long Closure Plan 1 — P0 Hotfix 1 — PowerShell Validator Interpolation Fix (CANDIDATE)
+
+- Supersedes the original P0 candidate as validator-red only: `eng\validate-m10-final-replacement-long-closure-plan1.ps1` could not parse `"Required marker not found in $Path: $Needle"` because PowerShell interpreted `$Path:` as an invalid scoped/drive-style variable reference.
+- Replaces the ambiguous interpolation with `("Required marker not found in {0}: {1}" -f $Path, $Needle)` and audits the new `P0-HOTFIX1-POWERSHELL-PATH-COLON-INTERPOLATION` contract marker.
+- Updates the audit banner/summary and records Hotfix 1 in `PROJECT.md` and the authoritative closure-plan document.
+- Changes no P0 evidence, P0–P6 roadmap, gate criterion, `src/`, test, replacement workload, authority policy, generator-load semantics, protection semantics, exact-v9 runtime or mission pack.
+- Replacement-Long Execution 1 remains RED; P0 remains unvalidated until this corrected audit passes; no second replacement-long baseline is authorized.
+
+# M10 Final Replacement-Long Closure Plan 1 — P0 Evidence & Planning Freeze (CANDIDATE)
+
+- Records Diagnostic 6 as returned local execution PASS after the ordinary Release gate: exact-v9 5.5/6 MWe and exact-v4 6 MWe complete 180 s without protection and recover frequency near 50 Hz, but no strict requested-load synchronous operating-point window is reached.
+- Freezes Diagnostics 1–6 as one completed evidence campaign and explicitly separates phase/frequency recovery from qualified operating-point convergence.
+- Adds `docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md` with the finite P0→P6 route, branch criteria, hard stops, exact-v9 immutability rule and second-long authorization boundary.
+- Defines P1 as the last planned purely exploratory dynamics gate: asymptotic 5.5/6 MWe qualification with reference-derived stationarity/noise floors, 900 s primary horizon and only one bounded continuation inside the same gate.
+- Defines P2 as a decision-only gate, P3-W/P3-R as mutually evidence-selected repair branches, P4 as mandatory real 5→10→5 qualification, P5 as baseline-2 freeze + Execution 2, and P6 as explicit M10 closure.
+- Aligns `PROJECT.md`, `ROADMAP.md`, `M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`, `M10_FINAL_VV_MATRIX.md`, documentation index and Diagnostic 1–6 returned status.
+- Adds a machine-readable planning contract and `scripts\run-m10-final-replacement-long-closure-plan1-audit.cmd`; the audit is documentation-only and does not substitute for ordinary or long validation.
+- Changes no production `src/`, production test semantics, replacement workload, authority policy, generator-load semantics, protection semantics, exact-v9 or mission @3. Replacement-Long Execution 1 remains RED; no second replacement-long baseline is authorized.
+
+# M10 Final Replacement-Long Failure Diagnostic 6 — First-Stage Long Settling / Steam-Path Lag / Synchronous Recovery
+
+- Records Diagnostic 5 as local execution PASS after the ordinary Release CI entry point also passed.
+- Freezes that Diagnostic 5 did not trip on the readiness-gated small stages; instead its 20 s settle window expired before a stable 6 MWe stage was reached.
+- Corrects the interpretation of “thermal readiness”: at the 6 MWe load command exact-v9 had reached about 39.32 MWth, but shaft power remained about 5.60 MW, turbine flow about 13.03 kg/s and control-valve position about 29.3%, still essentially the preceding 5 MWe mechanical point.
+- Does not freeze the 5.5–6 MWe region as a hard capacity boundary and does not yet author a coupled thermal/electrical ramp.
+- Adds 180 s first-stage long-settle probes at exact-v9 5.5 MWe, exact-v9 6 MWe and historical exact-v4 6 MWe plus the frozen exact-v9 +5 MWe reference.
+- Adds strict synchronous-window evidence, signed frequency slip/phase-wrap census, turbine shaft/passive-loss/net-acceleration decomposition and explicit grid phase/frequency correction power.
+- Adds no production `src/` change and does not alter replacement workload, authority policy, generator-load semantics, protection, exact-v9 or mission @3.
+- Replacement-Long Execution 1 remains RED; second replacement-long freeze remains unauthorized.
+
 # M10 Final Replacement-Long Failure Diagnostic 5 — Measured Readiness-Gated Staged Load / Attainable Capacity
 
 - Records Diagnostic 4 as local execution PASS.

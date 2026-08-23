@@ -1,5 +1,7 @@
 # M10 Final Replacement-Long Failure Diagnostic 1
 
+**Status:** RETURNED / EXECUTION PASS — diagnostic evidence only. Replacement-Long Execution 1 remains RED.
+
 The first authorized exact-v9 replacement campaign executed all five frozen legs in 35.2527 workstation minutes, so the redesigned wall budget is validated. The campaign remains RED because RL-M1 and RL-R1 both entered protection after the same 5 -> 10 MWe generator-load raise.
 
 The failure is narrower than the aggregate summary initially suggests. RL-H1 passed 900 s with exact-v9 operating-point, conservation and numerical-coupling sentinels. RL-D1 and RL-P1 passed. MISSION live-projection scalability passed with late/early ratio 0.969616. RL-R1 produced identical authored, full-replay and checkpoint-continuation fingerprints, exact recording equivalence and bounded archive growth. Its only failing criterion was the same trip seen by RL-M1.

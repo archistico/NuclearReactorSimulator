@@ -18,7 +18,8 @@ If two historical documents disagree with `PROJECT.md`, `PROJECT.md` is the curr
 - **`FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`** — detailed execution sequence, implementation slices, gates and deferred-item ownership from the active M10.9.7 Mission/Performance work through M15.
 - **`M10_9_7_3_HOTFIX1_REV2_DOCS3_ALIGNMENT.md`** — documentation-only checkpoint for the post-7.3 App desktop-host/session-integrity review and its pre-7.4/M11/M13 ownership decisions.
 - **`PRE_M11_IMPLEMENTATION_DECISIONS.md`** — consolidated decisions from the nuclear-code V&V and Digital-I&C/Human-System reviews: what M11 implements as assurance, what M13 implements as product behavior and what remains explicitly non-scope.
-- **`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`** — exact PASS/FAIL handoff from the active long gate to M10 closure, planning adoption and M11.1 bootstrap.
+- **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`** — active P0–P6 replacement-long closure route: D1–D6 evidence freeze, asymptotic qualification, branch decision, short 5→10→5 qualification, second-long freeze/execution and M10 closure.
+- **`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`** — final green/red handoff from Replacement-Long Execution 2 through explicit M10 closure and M11.1 bootstrap.
 - **`POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md`** — detailed branch-aware execution sequence from the final M10 long gate through M11 release hardening and the M12–M15 epics.
 - **`CHANGE_IMPACT_REVALIDATION_POLICY.md`** — minimum rerun ladder for documentation, harness, HMI/Application, persistence, control/protection, physics/numerical and release/package changes.
 - **`M11_RELEASE_EVIDENCE_MATRIX_PLAN.md`** — planned 30-row release-readiness matrix complementing the 27-row M10 phenomenon V&V provenance.
@@ -131,7 +132,11 @@ Acceptance checklists are milestone artifacts, not stable architecture reference
 - [`M10_FINAL_REPLACEMENT_LONG_BASELINE_FREEZE.md`](M10_FINAL_REPLACEMENT_LONG_BASELINE_FREEZE.md) — current exact-v9 replacement-long manifests, information-dense 1,920 s workload and 35–45 / 60 minute workstation budget.
 - [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC1.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC1.md) — returned exact-v9 5→10 MWe protection-owner diagnostic; generator loss-of-synchronism owns the shared RL-M1/RL-R1 trip.
 - [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC2.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC2.md) — returned authority/rod-coordination discrimination; Assisted rod motion does not improve the step-636 loss-of-synchronism path.
-- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md) — active evidence-only breaker-closed governor, control-valve preload and historical exact-v4/exact-v9 transient discrimination.
+- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md) — returned breaker-closed governor, valve-preload and exact-v4/exact-v9 discrimination; no supported first repair.
+- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC4.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC4.md) — returned fixed-time ramp/energy-support discrimination; slower schedules delay but do not establish 10 MWe.
+- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC5.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC5.md) — returned measured-readiness staging; no trip, but 20 s does not reach a qualified 6 MWe stage.
+- [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md) — returned 180 s first-stage settling evidence; frequency recovers near 50 Hz without strict requested-load convergence.
+- [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md) — authoritative active P0–P6 closure route; no ad hoc diagnostic continuation.
 
 ## Pre-M11 engineering review consolidation
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-**CANDIDATE — evidence-only authority / coordinated-manoeuvre discrimination.** Replacement-Long Execution 1 remains authoritative **RED** evidence. Diagnostic 1 has now returned PASS and identified `generator-loss-of-synchronism` as the first protection function that completes its pickup/latch chain: trigger begins at step 587 and the 0.5 s pickup latches at step 636 / 6.36 s. Underfrequency begins earlier but does not complete its 1 s pickup before the generator trip.
+**RETURNED / EXECUTION PASS — evidence-only authority / coordinated-manoeuvre discrimination.** Replacement-Long Execution 1 remains authoritative **RED** evidence. Diagnostic 1 has now returned PASS and identified `generator-loss-of-synchronism` as the first protection function that completes its pickup/latch chain: trigger begins at step 587 and the 0.5 s pickup latches at step 636 / 6.36 s. Underfrequency begins earlier but does not complete its 1 s pickup before the generator trip.
 
 No protection threshold, exact-v9 state, runtime physics, mission @3 definition or replacement-long workload is changed here.
 

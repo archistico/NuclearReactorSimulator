@@ -2,13 +2,13 @@
 
 ## Status
 
-**PLANNING — the M10 final long validation is still the active blocking gate.**
+**PLANNING — Replacement-Long Execution 1 is RED; the P0–P6 replacement-long closure route is the active blocking path before M11.**
 
-This document defines the exact handoff from the current long-validation candidate to M11. It exists so that a successful long run cannot be followed by an improvised closure sequence.
+This document defines the final handoff from replacement-long qualification to M11. The detailed pre-closure route is authoritative in [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). That plan freezes the sequence P0 evidence/planning → P1 asymptotic qualification → P2 branch decision → P3-W/P3-R → P4 short 5→10→5 qualification → P5 replacement-long baseline/execution → P6 closure. This document retains the final long-result intake, closure-only transition and M11 bootstrap contract so that a successful replacement long cannot be followed by an improvised closure sequence.
 
-## 1. Long-run result intake
+## 1. Replacement-long result intake
 
-When `run-m10-final-long-validation.cmd` finishes, preserve the full `artifacts/m10-final-long-validation` directory before any new candidate is created.
+When P5B Replacement-Long Execution 2 finishes, preserve its complete artifact directory before any new candidate is created. The failed first long and failed Replacement-Long Execution 1 remain immutable provenance and are never overwritten.
 
 Record at minimum:
 
@@ -29,7 +29,7 @@ Closure eligibility requires all contract-defined blocking markers green, includ
 - `m10-final-long-validation-passes=True`;
 - `m10-closure-eligible=True`.
 
-The exact artifact output is authoritative; this document does not replace the executable contract.
+The exact P5B artifact output is authoritative; this document does not replace the executable contract. `LONG-SOAK-01` remains pending until that execution is green and P6 promotes the evidence.
 
 ## 2. If the long run is green
 
@@ -93,7 +93,7 @@ Only after this gate passes is **M10 CLOSED** authoritative.
 
 Do not create a closure candidate.
 
-Use `CHANGE_IMPACT_REVALIDATION_POLICY.md` to classify the correction. Preserve the failed run as evidence. For long healthy-leg drift/envelope failures, follow [`M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md`](M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md) before changing physical constants or thermodynamic bounds. The first diagnostic implementation should be test/harness-only whenever existing read-only canonical seams are sufficient.
+Use `CHANGE_IMPACT_REVALIDATION_POLICY.md` to classify the correction and preserve the failed run as evidence. Under Closure Plan 1, return to the **earliest invalidated gate in P1–P4** rather than starting an unplanned diagnostic chain. For long healthy-leg drift/envelope failures, `M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md` remains the owner-specific route before changing physical constants or thermodynamic bounds.
 
 ### Production semantic fix
 

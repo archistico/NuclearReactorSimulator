@@ -6,10 +6,8 @@ The machine-readable authority is `eng/m10-final-vv-matrix.json`. It contains 27
 
 The final cumulative gate may not widen frozen I.3 budgets or reinterpret historical exact-version identities. Historical superseded long audits remain provenance unless explicitly selected by the current gate. Passing the cumulative gate does not close M10.
 
-The curated cumulative gate has passed on the validated Hotfix 1 baseline (`m10-final-cumulative-validation-passes=True`). The only remaining blocking execution gate is now:
+The curated cumulative gate passed on the validated Hotfix 1 baseline (`m10-final-cumulative-validation-passes=True`). The first exact-v4 long remains failed provenance. Replacement-Long Execution 1 also remains **RED** because RL-M1/RL-R1 shared the protected 5→10 MWe path; its other legs and replay/scalability evidence remain preserved. Replacement-Long Failure Diagnostics 1–6 are returned diagnostic evidence, not promotion evidence.
 
-```bat
-scripts\run-m10-final-long-validation.cmd
-```
+The remaining route is governed by [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). `LONG-SOAK-01` remains pending through P0–P4 and may be promoted only after P5 Replacement-Long Execution 2 passes and P6 records exact provenance.
 
-Passing the long gate makes M10 closure **eligible**; M10 is not declared CLOSED until the long evidence is promoted into the final closure record and this matrix is updated from `FROZEN-PRE-LONG`.
+Passing P5B makes M10 closure **eligible**; M10 is not declared CLOSED until P6 promotes the long evidence into the final closure record and this matrix is updated from `FROZEN-PRE-LONG`.

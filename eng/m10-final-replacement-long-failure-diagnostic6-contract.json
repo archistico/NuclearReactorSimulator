@@ -1,0 +1,51 @@
+{
+  "schema": "m10-final-replacement-long-failure-diagnostic6-contract-v1",
+  "baseline": "M10 Final Replacement-Long Failure Diagnostic 5 (user-reported compile + ordinary Release + focused test PASS; returned artifacts reviewed)",
+  "status": "candidate-diagnostic-only",
+  "replacement_long_execution_1": "RED",
+  "second_replacement_long_freeze_authorized": false,
+  "production_changes_authorized": false,
+  "frozen_findings": {
+    "reference_exact_v9_first_trip_step": 636,
+    "reference_exact_v9_first_latch": "generator-loss-of-synchronism",
+    "diagnostic5_v9_1mwe_completion": "settle-timeout",
+    "diagnostic5_v9_1mwe_trip": null,
+    "diagnostic5_v9_0p5mwe_stages_completed": 1,
+    "diagnostic5_v9_0p5mwe_completion": "settle-timeout",
+    "diagnostic5_thermal_readiness_is_not_mechanical_readiness": true,
+    "diagnostic5_20s_timeout_is_not_a_frozen_capacity_boundary": true
+  },
+  "probe_matrix": [
+    { "id": "exact-v9-reference-5mwe-step", "exact": 9, "increment_mwe": 5.0, "target_mwe": 10.0 },
+    { "id": "exact-v9-long-settle-5p5mwe", "exact": 9, "increment_mwe": 0.5, "target_mwe": 5.5, "hold_seconds": 180 },
+    { "id": "exact-v9-long-settle-6mwe", "exact": 9, "increment_mwe": 1.0, "target_mwe": 6.0, "hold_seconds": 180 },
+    { "id": "exact-v4-long-settle-6mwe", "exact": 4, "increment_mwe": 1.0, "target_mwe": 6.0, "hold_seconds": 180 }
+  ],
+  "strict_synchronous_window": {
+    "continuous_seconds": 5,
+    "frequency_slip_abs_max_hz": 0.01,
+    "electrical_output_target_abs_max_mwe": 0.10,
+    "net_rotor_acceleration_power_abs_max_mw": 0.05
+  },
+  "forbidden_changes": [
+    "production src",
+    "replacement workload",
+    "authority policy",
+    "generator-load semantics",
+    "protection semantics or thresholds",
+    "exact-v9 runtime",
+    "mission pack",
+    "second replacement-long baseline freeze"
+  ],
+  "required_gate_order": [
+    "eng\\ci-ordinary.cmd",
+    "focused explicit Diagnostic 6"
+  ],
+  "required_artifacts": [
+    "00-progress.txt",
+    "190-long-settle-probe-summary.csv",
+    "191-long-settle-events.csv",
+    "192-long-settle-trajectories.csv",
+    "193-long-settle-decision-summary.txt"
+  ]
+}
