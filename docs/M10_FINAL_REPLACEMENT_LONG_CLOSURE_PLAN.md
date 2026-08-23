@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-**P1 — ASYMPTOTIC FIRST-STAGE QUALIFICATION CANDIDATE. P0 HOTFIX 2 is VALIDATED. M10 remains OPEN. Replacement-Long Execution 1 remains authoritative RED evidence. No second replacement-long baseline or execution is authorized.**
+**P2 — DECISION GATE 1 / PLAN-STOP-INCONCLUSIVE CANDIDATE. P0 HOTFIX 2 is VALIDATED. P1 returned execution PASS with final `INCONCLUSIVE`. Neither P3-W nor P3-R is authorized. M10 remains OPEN and Replacement-Long Execution 1 remains authoritative RED evidence.**
 
 This document replaces the previous diagnostic-by-diagnostic continuation pattern with a finite closure route from the returned Replacement-Long Failure Diagnostic 1–6 evidence to M10 closure. It is a planning and decision-governance contract only: it changes no production runtime, workload, authority policy, generator-load semantics, protection semantics, exact-v9 state, mission pack or acceptance threshold.
 
@@ -13,6 +13,10 @@ This document replaces the previous diagnostic-by-diagnostic continuation patter
 
 **P0 validation note (23 August 2026):** the returned Hotfix 2 artifact records `m10-final-replacement-long-closure-plan1-p0-passes=True`, `production-src-changed=False`, `production-tests-changed=False`, `second-replacement-long-authorized=False` and `next-authorized-implementation=P1-Asymptotic-First-Stage-Qualification`. P0 is therefore VALIDATED and is the authoritative evidence/planning freeze for the remaining M10 route.
 
+
+**P1 returned-evidence note (23 August 2026):** the complete returned P1 artifact records a valid stable-reference calibration and `m10-final-replacement-long-closure-plan1-p1-passes=True`, but the primary exact-v9 6 MWe probe remains `INCONCLUSIVE` after its full 1,800 s bounded continuation. Tail output is 5.9312649958700989 MWe, output error 0.068735004129901078 MWe, dispatch adequacy -0.070137744201449845 MW and output slope 3.0659206076729932E-05 MW/s. The trajectory is already near synchronous and inside amplitude tolerances but remains above the frozen stationarity slope band. P2 therefore records `PLAN-STOP-INCONCLUSIVE`: neither P3-W nor P3-R is evidence-authorized.
+
+**Plan Amendment 1 (P2 candidate):** insert **P1A — Asymptotic Closure Extension** before branch selection. P1A is limited to clean exact-v9 5→5.5 and 5→6 MWe probes, unchanged P1 calibration/tolerances and at most 3,600 s after the load command. It must reproduce P1 checkpoints before consuming the extension. exact-v4 is not rerun. P1A returns to **P2R — Decision Re-entry**; there is no direct jump to P3 and no automatic continuation beyond 3,600 s.
 The current production identities remain:
 
 - policy `M10FinalExactV9QualifiedCandidate`;
@@ -120,9 +124,20 @@ P2 is a documentation/engineering decision, not another exploratory simulation.
 
 P2 must record the selected branch and the evidence that makes the other branch unauthorized.
 
+**Returned P1 outcome:** `INCONCLUSIVE`; P2 Decision Gate 1 therefore records `PLAN-STOP-INCONCLUSIVE` and selects neither P3-W nor P3-R.
+
+### P1A — Asymptotic Closure Extension (Plan Amendment 1)
+
+**Entry condition:** P1 exhausted its authorized continuation without demonstrating either convergence or stationary bias, and P2 recorded the required planning stop.
+
+Run only exact-v9 5→5.5 MWe and exact-v9 5→6 MWe from clean deterministic state, preserving the P1 calibration and all tolerances. Maximum total hold is 3,600 s after each load command. The run must reproduce the existing P1 checkpoints before entering new simulated time. exact-v4 is frozen from P1 and is not rerun. Final classes remain `CONVERGED`, `BIASED-STATIONARY` or `INCONCLUSIVE`; there is no further automatic extension.
+
+P1A returns only to **P2R — Decision Re-entry**. P2R maps `CONVERGED` to P3-W, `BIASED-STATIONARY` to P3-R and `INCONCLUSIVE` to another explicit planning stop.
+
+
 ### P3-W — Workload / Procedure path
 
-**Entry condition:** P1 demonstrates that the reduced-order plant can actually converge to the requested small electrical stage under unchanged production physics.
+**Entry condition:** P1A returns `CONVERGED` and P2R explicitly authorizes P3-W, demonstrating that the reduced-order exact-v9 plant can converge to the requested small electrical stage under unchanged production physics.
 
 Build a **test-only** staged/readiness-driven 5→10→5 manoeuvre using dwell/readiness criteria derived from P1 rather than arbitrary elapsed times. The procedure must coordinate thermal and electrical evolution without redefining protection or generator-grid physics.
 
@@ -130,7 +145,7 @@ Only after this test-only manoeuvre demonstrates the full route may a revised re
 
 ### P3-R — Runtime Ownership path
 
-**Entry condition:** P1 demonstrates a stationary biased operating point under unchanged commands.
+**Entry condition:** P1A returns `BIASED-STATIONARY` and P2R explicitly authorizes P3-R, demonstrating a stationary biased exact-v9 operating point under unchanged commands.
 
 Before modifying production code, localize the contradiction along the canonical chain:
 
@@ -192,10 +207,21 @@ Only P6 authorizes M11.1.
 D1-D6 RETURNED / EVIDENCE FROZEN
               |
               v
-      P0 PLANNING FREEZE
+      P0 PLANNING FREEZE (VALIDATED)
               |
               v
    P1 ASYMPTOTIC QUALIFICATION
+              |
+        INCONCLUSIVE
+              |
+              v
+   P2 PLAN-STOP / AMENDMENT 1
+              |
+              v
+ P1A BOUNDED ASYMPTOTIC EXTENSION
+              |
+              v
+       P2R DECISION RE-ENTRY
               |
       +-------+--------+
       |                |
@@ -233,11 +259,11 @@ D1-D6 RETURNED / EVIDENCE FROZEN
 | Item | Authority before its gate |
 | --- | --- |
 | Protection thresholds/semantics | frozen through P4; no current evidence supports retuning |
-| Authority policy | frozen through P2; D2 eliminated rod authority as first owner |
+| Authority policy | frozen through P2R; D2 eliminated rod authority as first owner |
 | exact-v9 | immutable historical/production identity; never reinterpret |
 | Mission `bounded-demand-following-5-10-5@3` | frozen unless a later explicit versioning decision requires replacement |
-| Generator-load production semantics | change only under P3-R with owner/contract evidence |
-| Replacement workload | change only under P3-W after P1 `CONVERGED` |
+| Generator-load production semantics | change only after P2R authorizes P3-R with owner/contract evidence |
+| Replacement workload | change only after P1A `CONVERGED` and P2R authorizes P3-W |
 | Second replacement-long baseline | forbidden until P4 PASS |
 | New exact version | required if P3-R changes production exact semantics |
 | M11 work | forbidden until P6 closes M10 |
@@ -252,8 +278,8 @@ For any candidate that changes code or tests:
 4. preserve the full generated artifact directory before authoring the next candidate;
 5. compare GitHub CI against the same committed candidate before promotion.
 
-Planning-only/documentation-only checkpoints such as P0 use their dedicated documentation audit and do not substitute for executable validation.
+Planning-only/documentation-only checkpoints such as P0, P2 and P2R use their dedicated documentation audit and do not substitute for executable validation.
 
-## 7. Current authorization after P0
+## 7. Current authorization after P1 / P2 planning stop
 
-After P0 is validated, the **only authorized implementation step is P1 — Asymptotic First-Stage Qualification**. P0 itself does not contain P1 test code and does not authorize production changes.
+P1 has returned execution PASS but final classification `INCONCLUSIVE`. P2 therefore authorizes neither P3-W nor P3-R. After P2 Decision Gate 1 is validated, the **only authorized implementation is P1A — Asymptotic Closure Extension** under Plan Amendment 1. P1A must return to P2R before any P3 implementation. No production runtime/workload change or second replacement-long freeze is authorized.

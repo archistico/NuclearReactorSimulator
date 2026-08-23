@@ -19,6 +19,7 @@ If two historical documents disagree with `PROJECT.md`, `PROJECT.md` is the curr
 - **`M10_9_7_3_HOTFIX1_REV2_DOCS3_ALIGNMENT.md`** — documentation-only checkpoint for the post-7.3 App desktop-host/session-integrity review and its pre-7.4/M11/M13 ownership decisions.
 - **`PRE_M11_IMPLEMENTATION_DECISIONS.md`** — consolidated decisions from the nuclear-code V&V and Digital-I&C/Human-System reviews: what M11 implements as assurance, what M13 implements as product behavior and what remains explicitly non-scope.
 - **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`** — active P0–P6 replacement-long closure route: D1–D6 evidence freeze, asymptotic qualification, branch decision, short 5→10→5 qualification, second-long freeze/execution and M10 closure.
+- **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md`** — P2 Decision Gate 1: returned P1 `INCONCLUSIVE`, mandatory planning stop, no P3 authorization, and Plan Amendment 1 defining bounded P1A before P2R.
 - **`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`** — final green/red handoff from Replacement-Long Execution 2 through explicit M10 closure and M11.1 bootstrap.
 - **`POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md`** — detailed branch-aware execution sequence from the final M10 long gate through M11 release hardening and the M12–M15 epics.
 - **`CHANGE_IMPACT_REVALIDATION_POLICY.md`** — minimum rerun ladder for documentation, harness, HMI/Application, persistence, control/protection, physics/numerical and release/package changes.

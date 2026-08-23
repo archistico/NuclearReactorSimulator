@@ -1,3 +1,12 @@
+# M10 Final Replacement-Long Closure Plan 1 — P2 Decision Gate 1 / Plan Amendment 1 (CANDIDATE)
+
+- Records returned P1 execution PASS with final classification `INCONCLUSIVE` and freezes its compact decision/calibration/probe/event evidence.
+- Selects neither P3-W nor P3-R; records the validated-plan hard stop `P2-PLAN-STOP-INCONCLUSIVE`.
+- Adds Plan Amendment 1 only: P1A Asymptotic Closure Extension for exact-v9 5.5/6 MWe, unchanged P1 criteria, deterministic P1 checkpoint reproduction and hard 3,600 s total hold ceiling.
+- exact-v4 is frozen as P1 historical control and is not authorized for P1A rerun.
+- P1A must return to P2R before any workload or runtime branch is authorized; `INCONCLUSIVE` at P1A is another explicit planning stop.
+- Changes no production `src/`, pre-existing tests, replacement workload, authority policy, generator-load semantics, protection semantics, exact-v9 runtime or mission pack. Replacement-Long Execution 1 remains RED and second-long freeze remains unauthorized.
+
 # M10 Final Replacement-Long Closure Plan 1 — P1 Asymptotic First-Stage Qualification (CANDIDATE)
 
 - Records P0 Hotfix 2 as locally validated from returned artifact `m10-final-replacement-long-closure-plan1-p0-passes=True`; P0 becomes the authoritative evidence/planning freeze.
