@@ -1,3 +1,11 @@
+# M10 Final Long Failure Diagnostic 7 — Governor-Droop / Steam-Path Owner Census (CANDIDATE)
+
+- Stacked on user-validated Diagnostic 6 execution and its returned artifacts.
+- Diagnostic 6 is engineering **NOT QUALIFIED**: exact-v6 survives 600 s with zero trips/rollbacks and conservative energy closure, but late primary pressure drift remains ~-0.63 kPa/s, drum mass slope ~+0.378 kg/s, steam-path inventories remain directional, and electrical export moves 4.9986→5.2015 MWe.
+- Source review identifies a specific owner hypothesis: at a 5 MWe request the unchanged 1.5 rpm full-load governor droop produces a 3000.75 rpm effective speed setpoint, while exact-v6 authors the rotor at 3000 rpm. The automatic PI/PID loop therefore cannot be bumpless at t=0 and may move the control valve away from the analytically solved 27.3123% steam-path resistance.
+- Adds only an explicit 180 s governor/droop + steam-path owner census sampled every 0.1 s, capturing governor P/I/D, control-valve position, rotor/grid state, line/valve/stage flows, electrical output and steam-path inventories.
+- `src/` and exact-v6 are unchanged. No exact-v7, controller retune, production activation or replacement-long authorization is included.
+
 # M10 Final Long Failure Diagnostic 6 — Exact-v6 Analytical Whole-Cycle Equilibrium Candidate (CANDIDATE)
 
 - Stacked on user-validated Diagnostic 5 and its returned whole-cycle owner artifacts.

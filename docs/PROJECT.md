@@ -11,7 +11,7 @@ This is the **single current-state and handoff document** for Nuclear Reactor Si
 
 ## Current checkpoint
 
-**M10.9.4.1 / Phase I, M10.9.5, M10.9.6 and M10.9.7 are VALIDATED / CLOSED.** M10.9.8 is VALIDATED / CLOSED and the final cumulative Hotfix 1 gate is VALIDATED. Diagnostics 1–2, Diagnostic 3 Hotfix 1 execution, Diagnostic 4 and Diagnostic 5 have passed locally. LR-M1 is accepted as repaired evidence. Exact-v5 is **NOT QUALIFIED** despite surviving 600 s: it is a whole-cycle transient, not a stationary operating point. Diagnostic 5 supplies the state/owner evidence used to author exact-v6; LR-H1 remains blocking and production activation is not authorized.
+**M10.9.4.1 / Phase I, M10.9.5, M10.9.6 and M10.9.7 are VALIDATED / CLOSED.** M10.9.8 is VALIDATED / CLOSED and the final cumulative Hotfix 1 gate is VALIDATED. Diagnostics 1–2, Diagnostic 3 Hotfix 1 execution, Diagnostic 4, Diagnostic 5 and Diagnostic 6 execution have passed locally. LR-M1 is accepted as repaired evidence. Exact-v5 and exact-v6 are both **NOT QUALIFIED** operating points: exact-v6 starts analytically closed but its returned 600 s evidence still shows whole-cycle pressure/inventory drift and electrical export migration. LR-H1 remains blocking and production activation is not authorized.
 
 The validated M10.9.7 baseline includes the live read-only MISSION workspace, deterministic logical-step timeline, presentation-only drill-down, exact mission/archive binding, replay/checkpoint reconstruction, closure coverage for active/completed/failed mission states, assistance changes and requested/effective authority divergence. F1–F8 remain preserved, F9 remains absent and MISSION has no plant-command authority.
 
@@ -23,11 +23,11 @@ Historical exact-version identities remain immutable; M10.9.8 validation work do
 
 ## Active validation candidate and parallel planning overlay
 
-**Active candidate: M10 Final Long Failure Diagnostic 6 / exact-v6 Analytical Whole-Cycle Equilibrium Candidate — CANDIDATE.**
+**Active candidate: M10 Final Long Failure Diagnostic 7 / Governor-Droop + Steam-Path Owner Census — CANDIDATE.**
 
 The cumulative Hotfix 1 gate, Diagnostic 2 / LR-M1 Hotfix 1 and Diagnostic 3 Hotfix 1 execution are locally validated. Diagnostic 3 crossed the historical exact-v4 failure interval, but its engineering decision is negative: the 260 kg/s exact-v5 probe is not a qualified operating point. It starts near 260 kg/s but evolves toward roughly 103 kg/s while outlet inventory moves into the drum; by 600 s drum level is ~0.9567 and still increasing, while outlet/drum pressure and fuel/structure temperature continue monotonic decline.
 
-Diagnostic 4 completed PASS and established that the late drum accumulation is dominated by the internal M4.4 feedwater-pump minus separated-steam mismatch, while the full energy path remains conservative. Diagnostic 5 then completed PASS and returned the complete whole-cycle node/pump/controller state. That evidence shows the 600 s exact-v5 snapshot is still transient and corrects the earlier 260 kg/s interpretation: exact-v5 did not omit pump internal resistance; it relied on a non-stationary suction/drum pressure separation. Diagnostic 6 now authors exact-v6 from the unchanged closed equations: 100 kg/s primary flow with `P_suction=P_drum`, 13.028 kg/s secondary throughput for 5 MWe, matched condenser/feedwater states and 32.484 MW thermal input. Exact-v4 remains production. See `M10_FINAL_LONG_FAILURE_DIAGNOSTIC6.md`.
+Diagnostic 4 completed PASS and established that the late drum accumulation is dominated by the internal M4.4 feedwater-pump minus separated-steam mismatch, while the full energy path remains conservative. Diagnostic 5 then completed PASS and returned the complete whole-cycle node/pump/controller state. Diagnostic 6 authored exact-v6 from the unchanged closed equations: 100 kg/s primary flow, 13.028 kg/s secondary throughput and 32.484 MW thermal input. Its 600 s execution passes with zero trips/rollbacks and conservative energy closure, but exact-v6 remains engineering NOT QUALIFIED: late pressure drift is still about -0.63 kPa/s, drum mass rises ~0.378 kg/s and electrical export migrates from 4.9986 to 5.2015 MWe. Source review shows the 5 MWe droop setpoint is 3000.75 rpm while exact-v6 seeds 3000 rpm. Diagnostic 7 therefore freezes governor/droop and valve/stage-flow ownership for 180 s before any exact-v7 is authored. Exact-v4 remains production. See `M10_FINAL_LONG_FAILURE_DIAGNOSTIC7.md`.
 
 **Parallel documentation overlay:** this package also includes the reviewed pre-M11 planning set from the three book studies. It does not supersede the executable long baseline and is not promotion evidence.
 
@@ -35,7 +35,7 @@ The historical first-long workload remains frozen. The 19 I.3 budgets and exact-
 
 ## Validation required for active diagnostic candidate
 
-Run `scripts\run-m10-final-long-failure-diagnostic6.cmd`. It performs Debug build with warnings-as-errors, the complete ordinary suite, the LR-M1 Hotfix-1 semantic-equivalence regression, and the explicit 600 s exact-v6 analytical whole-cycle equilibrium census. Return the complete `artifacts/m10-final-long-diagnostic6` folder before production activation or replacement-long authorization.
+Run `scripts\run-m10-final-long-failure-diagnostic7.cmd`. It performs Debug build with warnings-as-errors, the complete ordinary suite, the LR-M1 Hotfix-1 semantic-equivalence regression, and the explicit 180 s exact-v6 governor/droop + steam-path owner census. Return the complete `artifacts/m10-final-long-diagnostic7` folder before authoring exact-v7, production activation or replacement-long authorization.
 
 ## Evidence and package policy
 
@@ -59,7 +59,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated chain: **M10.9.8.5 VALIDATED / M10.9.8 CLOSED → M10 Final Pre-M11 Cumulative Hotfix 1 VALIDATED → failed/aborted first long campaign → Diagnostic 1 PASS → Diagnostic 2 / LR-M1 Hotfix 1 PASS → Diagnostic 3 original build RED (test-only CS0103) → Diagnostic 3 Hotfix 1 execution PASS / exact-v5 NOT QUALIFIED → Diagnostic 4 PASS / mass-energy owners identified → Diagnostic 5 PASS / whole-cycle state captured → Diagnostic 6 exact-v6 analytical equilibrium candidate → separate production activation only if D6 evidence qualifies → replacement long <=60 min wall budget → full long PASS → explicit M10 closure → M11**.
+Phase I, M10.9.5, M10.9.6 and M10.9.7 are closed. Continue milestone-by-milestone from the latest validated chain: **M10.9.8.5 VALIDATED / M10.9.8 CLOSED → M10 Final Pre-M11 Cumulative Hotfix 1 VALIDATED → failed/aborted first long campaign → Diagnostic 1 PASS → Diagnostic 2 / LR-M1 Hotfix 1 PASS → Diagnostic 3 original build RED (test-only CS0103) → Diagnostic 3 Hotfix 1 execution PASS / exact-v5 NOT QUALIFIED → Diagnostic 4 PASS / mass-energy owners identified → Diagnostic 5 PASS / whole-cycle state captured → Diagnostic 6 execution PASS / exact-v6 NOT QUALIFIED → Diagnostic 7 governor/droop + steam-path owner census → exact-v7 only if D7 confirms the coupled seed owner → separate production activation only after equilibrium qualification → replacement long <=60 min wall budget → full long PASS → explicit M10 closure → M11**.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 
