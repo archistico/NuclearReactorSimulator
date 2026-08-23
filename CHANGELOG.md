@@ -1,3 +1,15 @@
+# M10 Final Replacement-Long Closure Plan 1 — P1A Asymptotic Closure Extension (CANDIDATE)
+
+- Records P2 Decision Gate 1 / Plan Amendment 1 as locally validated from returned artifact `m10-final-replacement-long-closure-plan1-p2-passes=True`.
+- Implements only the P2-authorized P1A bounded extension: exact-v9 5→5.5 MWe and 5→6 MWe; exact-v4 is not rerun.
+- Reuses the frozen P1 reference-derived stationarity calibration and all P1 amplitude/slope criteria; no post-hoc threshold widening is permitted.
+- Requires deterministic reproduction of the returned P1 checkpoints at 5.5 MWe / 900 s and 6 MWe / 900 s + 1,800 s before consuming extension time.
+- Extends each clean exact-v9 probe only to a hard 3,600 s total hold ceiling; no further automatic continuation is authorized.
+- Final probe classes remain `CONVERGED`, `BIASED-STATIONARY` or `INCONCLUSIVE`; disagreement between the two exact-v9 probes yields overall `INCONCLUSIVE`.
+- P1A never selects P3 directly. Returned artifacts must go through P2R Decision Re-entry.
+- Adds one new explicit P1A test, P1A contract, focused runner and frozen P2 prerequisite summary; changes no production `src/`, pre-existing test semantics, replacement workload, authority policy, generator-load semantics, protection semantics, exact-v9 runtime or mission pack.
+- Replacement-Long Execution 1 remains RED and a second replacement-long freeze remains unauthorized.
+
 # M10 Final Replacement-Long Closure Plan 1 — P2 Decision Gate 1 / Plan Amendment 1 (CANDIDATE)
 
 - Records returned P1 execution PASS with final classification `INCONCLUSIVE` and freezes its compact decision/calibration/probe/event evidence.

@@ -2,7 +2,7 @@
 
 ## Status
 
-**PLANNING — Replacement-Long Execution 1 is RED; P0 is VALIDATED; P1 returned INCONCLUSIVE; P2 planning stop / Plan Amendment 1 is the active blocking checkpoint before M11.**
+**PLANNING — Replacement-Long Execution 1 is RED; P0 and P2 Decision Gate 1 are VALIDATED; P1 returned INCONCLUSIVE; P1A Asymptotic Closure Extension is the active blocking executable gate before P2R and M11.**
 
 This document defines the final handoff from replacement-long qualification to M11. The detailed pre-closure route is authoritative in [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). That plan now records P0 evidence/planning → P1 asymptotic qualification → P2 planning stop → P1A bounded asymptotic closure extension → P2R branch decision → P3-W/P3-R → P4 short 5→10→5 qualification → P5 replacement-long baseline/execution → P6 closure. This document retains the final long-result intake, closure-only transition and M11 bootstrap contract so that a successful replacement long cannot be followed by an improvised closure sequence.
 

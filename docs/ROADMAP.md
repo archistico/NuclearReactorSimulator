@@ -114,8 +114,8 @@ The detailed blocking contract is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`]
 
 - P0 freezes Diagnostic 1–6 evidence and planning — **VALIDATED (Hotfix 2)**;
 - P1 determines asymptotic first-stage convergence versus stationary bias — **RETURNED EXECUTION PASS / FINAL INCONCLUSIVE**;
-- P2 Decision Gate 1 records **PLAN-STOP-INCONCLUSIVE** and selects no P3 branch — **ACTIVE CANDIDATE**;
-- Plan Amendment 1 inserts **P1A Asymptotic Closure Extension** (exact-v9 5.5/6 MWe only, unchanged criteria, hard 3,600 s ceiling), followed by P2R decision re-entry;
+- P2 Decision Gate 1 records **PLAN-STOP-INCONCLUSIVE** and selects no P3 branch — **VALIDATED**;
+- Plan Amendment 1 inserts **P1A Asymptotic Closure Extension** (exact-v9 5.5/6 MWe only, unchanged criteria, hard 3,600 s ceiling) — **ACTIVE CANDIDATE**; P1A returns to P2R decision re-entry;
 - P3-W qualifies a workload/procedure repair only if the unchanged plant converges, while P3-R localizes and minimally repairs runtime ownership only if a stationary bias is demonstrated;
 - P4 must demonstrate a real stable 5→10→5 manoeuvre;
 - P5 freezes and executes Replacement-Long Baseline 2;

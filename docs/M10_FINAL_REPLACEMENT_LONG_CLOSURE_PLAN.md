@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-**P2 — DECISION GATE 1 / PLAN-STOP-INCONCLUSIVE CANDIDATE. P0 HOTFIX 2 is VALIDATED. P1 returned execution PASS with final `INCONCLUSIVE`. Neither P3-W nor P3-R is authorized. M10 remains OPEN and Replacement-Long Execution 1 remains authoritative RED evidence.**
+**P1A — ASYMPTOTIC CLOSURE EXTENSION CANDIDATE. P0 HOTFIX 2 and P2 DECISION GATE 1 are VALIDATED. P1 returned execution PASS with final `INCONCLUSIVE`; Plan Amendment 1 authorizes only P1A before P2R. Neither P3-W nor P3-R is authorized. M10 remains OPEN and Replacement-Long Execution 1 remains authoritative RED evidence.**
 
 This document replaces the previous diagnostic-by-diagnostic continuation pattern with a finite closure route from the returned Replacement-Long Failure Diagnostic 1–6 evidence to M10 closure. It is a planning and decision-governance contract only: it changes no production runtime, workload, authority policy, generator-load semantics, protection semantics, exact-v9 state, mission pack or acceptance threshold.
 
@@ -16,7 +16,12 @@ This document replaces the previous diagnostic-by-diagnostic continuation patter
 
 **P1 returned-evidence note (23 August 2026):** the complete returned P1 artifact records a valid stable-reference calibration and `m10-final-replacement-long-closure-plan1-p1-passes=True`, but the primary exact-v9 6 MWe probe remains `INCONCLUSIVE` after its full 1,800 s bounded continuation. Tail output is 5.9312649958700989 MWe, output error 0.068735004129901078 MWe, dispatch adequacy -0.070137744201449845 MW and output slope 3.0659206076729932E-05 MW/s. The trajectory is already near synchronous and inside amplitude tolerances but remains above the frozen stationarity slope band. P2 therefore records `PLAN-STOP-INCONCLUSIVE`: neither P3-W nor P3-R is evidence-authorized.
 
-**Plan Amendment 1 (P2 candidate):** insert **P1A — Asymptotic Closure Extension** before branch selection. P1A is limited to clean exact-v9 5→5.5 and 5→6 MWe probes, unchanged P1 calibration/tolerances and at most 3,600 s after the load command. It must reproduce P1 checkpoints before consuming the extension. exact-v4 is not rerun. P1A returns to **P2R — Decision Re-entry**; there is no direct jump to P3 and no automatic continuation beyond 3,600 s.
+
+**P2 validation note (23 August 2026):** the returned Decision Gate 1 artifact records `m10-final-replacement-long-closure-plan1-p2-passes=True`, `p2-decision=PLAN-STOP-INCONCLUSIVE`, both P3 branches unauthorized, Plan Amendment 1 `P1A-ASYMPTOTIC-CLOSURE-EXTENSION`, hard 3,600 s hold ceiling, no production source/test/runtime/workload change and `next-authorized-implementation=P1A-Asymptotic-Closure-Extension`. P2 is therefore VALIDATED.
+
+**P1A executable contract:** P1A reuses the frozen P1 calibration rather than recalibrating thresholds, runs only clean exact-v9 5→5.5 and 5→6 MWe probes, and must reproduce the returned P1 checkpoints before entering extension time. The required checkpoints are 5.5 MWe at 900 s and 6 MWe at 900/1,800 s after load; checkpoint comparisons use predeclared narrow tolerances only to detect baseline drift, not to classify convergence: power/shaft/dispatch ±0.002 MW, thermal ±0.01 MW, frequency ±0.0001 Hz, steam flow ±0.01 kg/s and turbine-inlet pressure ±0.002 MPa. After checkpoint reproduction, the same P1 `CONVERGED` / `BIASED-STATIONARY` criteria remain in force through a hard 3,600 s total hold. If the two probes disagree in final class, P1A overall is `INCONCLUSIVE`. P1A never authorizes P3 directly and always returns to P2R.
+
+**Plan Amendment 1 (P2 VALIDATED):** insert **P1A — Asymptotic Closure Extension** before branch selection. P1A is limited to clean exact-v9 5→5.5 and 5→6 MWe probes, unchanged P1 calibration/tolerances and at most 3,600 s after the load command. It must reproduce P1 checkpoints before consuming the extension. exact-v4 is not rerun. P1A returns to **P2R — Decision Re-entry**; there is no direct jump to P3 and no automatic continuation beyond 3,600 s.
 The current production identities remain:
 
 - policy `M10FinalExactV9QualifiedCandidate`;
@@ -124,15 +129,17 @@ P2 is a documentation/engineering decision, not another exploratory simulation.
 
 P2 must record the selected branch and the evidence that makes the other branch unauthorized.
 
-**Returned P1 outcome:** `INCONCLUSIVE`; P2 Decision Gate 1 therefore records `PLAN-STOP-INCONCLUSIVE` and selects neither P3-W nor P3-R.
+**Returned P1 outcome:** `INCONCLUSIVE`; P2 Decision Gate 1 therefore records `PLAN-STOP-INCONCLUSIVE` and selects neither P3-W nor P3-R. **P2 Decision Gate 1 is VALIDATED.**
 
 ### P1A — Asymptotic Closure Extension (Plan Amendment 1)
 
 **Entry condition:** P1 exhausted its authorized continuation without demonstrating either convergence or stationary bias, and P2 recorded the required planning stop.
 
-Run only exact-v9 5→5.5 MWe and exact-v9 5→6 MWe from clean deterministic state, preserving the P1 calibration and all tolerances. Maximum total hold is 3,600 s after each load command. The run must reproduce the existing P1 checkpoints before entering new simulated time. exact-v4 is frozen from P1 and is not rerun. Final classes remain `CONVERGED`, `BIASED-STATIONARY` or `INCONCLUSIVE`; there is no further automatic extension.
+Run only exact-v9 5→5.5 MWe and exact-v9 5→6 MWe from clean deterministic state, preserving the frozen P1 calibration and all tolerances. Maximum total hold is 3,600 s after each load command. The run must reproduce the 5.5 MWe / 900 s and 6 MWe / 900 s + 1,800 s P1 checkpoints before entering new simulated time. exact-v4 is frozen from P1 and is not rerun. Final classes remain `CONVERGED`, `BIASED-STATIONARY` or `INCONCLUSIVE`; there is no further automatic extension. If the two exact-v9 probes do not agree on the final class, the P1A overall class is `INCONCLUSIVE`.
 
 P1A returns only to **P2R — Decision Re-entry**. P2R maps `CONVERGED` to P3-W, `BIASED-STATIONARY` to P3-R and `INCONCLUSIVE` to another explicit planning stop.
+
+Executable contract: `eng/m10-final-replacement-long-closure-plan1-p1a-contract.json`. Runner: `scripts/run-m10-final-replacement-long-closure-plan1-p1a-asymptotic-closure-extension.cmd`. Preserve and return the complete `artifacts/m10-final-replacement-long-closure-plan1-p1a` directory before P2R.
 
 
 ### P3-W — Workload / Procedure path
@@ -280,6 +287,6 @@ For any candidate that changes code or tests:
 
 Planning-only/documentation-only checkpoints such as P0, P2 and P2R use their dedicated documentation audit and do not substitute for executable validation.
 
-## 7. Current authorization after P1 / P2 planning stop
+## 7. Current authorization after validated P2 / active P1A
 
-P1 has returned execution PASS but final classification `INCONCLUSIVE`. P2 therefore authorizes neither P3-W nor P3-R. After P2 Decision Gate 1 is validated, the **only authorized implementation is P1A — Asymptotic Closure Extension** under Plan Amendment 1. P1A must return to P2R before any P3 implementation. No production runtime/workload change or second replacement-long freeze is authorized.
+P1 has returned execution PASS but final classification `INCONCLUSIVE`. P2 therefore authorizes neither P3-W nor P3-R. After validated P2 Decision Gate 1, the **only authorized implementation is P1A — Asymptotic Closure Extension** under Plan Amendment 1. P1A must return to P2R before any P3 implementation. No production runtime/workload change or second replacement-long freeze is authorized.

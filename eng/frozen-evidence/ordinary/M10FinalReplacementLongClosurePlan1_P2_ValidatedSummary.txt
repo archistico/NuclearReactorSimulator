@@ -1,0 +1,17 @@
+﻿scope=M10 Final Replacement-Long Closure Plan 1 P2 Decision Gate 1
+contract=m10-final-replacement-long-closure-plan1-p2-v1
+p1=RETURNED-EXECUTION-PASS
+p1-final-classification=INCONCLUSIVE
+p2-decision=PLAN-STOP-INCONCLUSIVE
+p3-w-authorized=False
+p3-r-authorized=False
+plan-amendment-1=P1A-ASYMPTOTIC-CLOSURE-EXTENSION
+p1a-max-total-hold-seconds=3600
+production-src-changed=False
+production-tests-changed=False
+replacement-workload-changed=False
+runtime-semantics-changed=False
+second-replacement-long-authorized=False
+m10=OPEN
+next-authorized-implementation=P1A-Asymptotic-Closure-Extension
+m10-final-replacement-long-closure-plan1-p2-passes=True
