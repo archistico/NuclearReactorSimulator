@@ -82,3 +82,8 @@ M2.3 itself does not implement:
 - plant-specific RBMK kinetic constants.
 
 M2.4 now supplies the separate neutron-to-fission-power boundary. The remaining items stay separate roadmap concerns so fidelity can increase without coupling the kinetics solver to plant UI or thermal-hydraulic implementation details.
+
+
+## M10 Final VR1 external model assessment
+
+The generic point-kinetics implementation now has an active independent-reference assessment gate: [`M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md`](M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md). VR1 compares the arbitrary-group production solver against a test-only adaptive Dormand-Prince solution of the Hébert six-group equations after qualifying that reference path against the one-group analytical solution. This assesses equation implementation only; it does not calibrate the exact-v9 reduced one-group plant parameters or create an RBMK-specific/spatial-kinetics validation claim.

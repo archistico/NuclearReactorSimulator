@@ -55,6 +55,8 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`INTEGRATED_PRIMARY_CIRCUIT.md`](INTEGRATED_PRIMARY_CIRCUIT.md) | Integrated Primary-Circuit Baseline | Physics / plant / controls |
 | [`INTERACTIVE_FULL_PLANT_MIMIC.md`](INTERACTIVE_FULL_PLANT_MIMIC.md) | Interactive Full-Plant Mimic | HMI / operator experience |
 | [`IODINE_XENON_DYNAMICS.md`](IODINE_XENON_DYNAMICS.md) | Iodine/Xenon Dynamics | Physics / plant / controls |
+| [`M10_FINAL_VR0_REFERENCE_PROVENANCE_CONTRACT.md`](M10_FINAL_VR0_REFERENCE_PROVENANCE_CONTRACT.md) | M10 Final — VR0 Reference / Provenance Contract Freeze | Evidence / qualification |
+| [`M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md`](M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md) | M10 Final — VR1 Point-Kinetics Independent Benchmark | Evidence / qualification |
 | [`KNOWN_MODEL_LIMITATIONS.md`](KNOWN_MODEL_LIMITATIONS.md) | Known model limitations | Governance / navigation |
 | [`M10_8_MANUAL_VALIDATION_CHECKLIST.md`](M10_8_MANUAL_VALIDATION_CHECKLIST.md) | M10.8 Manual Validation Checklist — Integrated Operator Computer UI | Acceptance / validation |
 | [`M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.4 Final Manual HMI / Engineering-Schematic Validation Checklist | Acceptance / validation |
@@ -114,6 +116,7 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md`](M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md) | M11 Digital I&C Release-Assurance Plan | Planning / engineering review |
 | [`M13_DIGITAL_IC_DEGRADATION_AUTOMATION_TRANSPARENCY_PLAN.md`](M13_DIGITAL_IC_DEGRADATION_AUTOMATION_TRANSPARENCY_PLAN.md) | M13.9 Digital I&C Degradation & Automation Transparency | Planning / engineering review |
 | [`PRE_M11_IMPLEMENTATION_DECISIONS.md`](PRE_M11_IMPLEMENTATION_DECISIONS.md) | Pre-M11 implementation decisions from V&V and Digital-I&C reviews | Planning / engineering review |
+| [`PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md`](PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md) | Pre-M11 Plant Dynamics, Thermal-Hydraulics & Reactor Physics Reference Review — Reviews 1–2 | Planning / engineering review |
 | [`PROJECT.md`](PROJECT.md) | Project — current authoritative state | Governance / navigation |
 | [`PROTECTION_INTERLOCKS_TRIPS_SCRAM.md`](PROTECTION_INTERLOCKS_TRIPS_SCRAM.md) | Protection, Interlocks, Trips & SCRAM | Operations / scenarios / replay |
 | [`PUMPS.md`](PUMPS.md) | Pumps | Physics / plant / controls |
@@ -164,8 +167,9 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 
 ## Pre-M11 engineering review and implementation planning
 
-- [`PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md`](PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md) — consolidated index across nuclear-code V&V, Digital I&C/human-system and operating-point equilibrium review streams.
+- [`PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md`](PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md) — consolidated index across nuclear-code V&V, Digital I&C/human-system, operating-point equilibrium and plant-dynamics/thermal-hydraulics/reactor-physics review streams.
 - [`PRE_M11_NUCLEAR_CODE_VV_REVIEW.md`](PRE_M11_NUCLEAR_CODE_VV_REVIEW.md) — reviewed nuclear-code V&V methodology and final-M10 gate rationale.
+- [`PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md`](PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md) — reviewed coordinated-load, steam/circulation and reactor-physics principles with explicit P1A/P2R non-interference.
 - [`PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md`](PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md) — reviewed Digital I&C / human-system safety planning input.
 - [`DIGITAL_IC_ARCHITECTURE_INVARIANTS.md`](DIGITAL_IC_ARCHITECTURE_INVARIANTS.md) — 22 architecture invariants for M11+ review.
 - [`HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md`](HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md) — explicit current/future human–automation allocation matrix.
@@ -176,4 +180,16 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 - [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md) — M12.0 equilibrium residual/trimmer/stability plan.
 - [`M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md`](M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md) — evidence-first current long-run failure diagnostic route.
 - [`research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md`](research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md) — source bibliography and retained/non-retained consequences.
+- [`research/PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md`](research/PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md) — detailed source-section re-read and project integration.
+- [`research/PRE_M11_DEEP_REVIEW_TRACEABILITY_2.md`](research/PRE_M11_DEEP_REVIEW_TRACEABILITY_2.md) — Review 2 source/section transferability matrix.
 - [`research/LAMARSH_FOLLOW_UP_CANDIDATES.md`](research/LAMARSH_FOLLOW_UP_CANDIDATES.md) — uncommitted follow-up physics/diagnostic candidates from the third review.
+
+- `docs/research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS1.md` — Todreas/Kazimi deep review Pass 1 before Plan Amendment 2.
+- `docs/research/PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS1.md` — traceability for the two-volume thermal-hydraulic deep review.
+
+- `M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md` — P2R1 planning stop / Plan Amendment 2; freezes P1B physical/observation scope and mandatory Deep Review Pass 2 hold.
+- `research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS2.md` — mandatory post-amendment Todreas/Kazimi audit.
+- `research/PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS2.md` — Plan Amendment 2 → literature → runtime-owner traceability.
+
+
+- [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md) — P1B executable owner-localization contract after Deep Review Pass 2.

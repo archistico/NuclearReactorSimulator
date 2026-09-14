@@ -2,9 +2,9 @@
 
 ## Status
 
-**PLANNING — Replacement-Long Execution 1 is RED; P0 and P2 Decision Gate 1 are VALIDATED; P1 returned INCONCLUSIVE; P1A Asymptotic Closure Extension is the active blocking executable gate before P2R and M11.**
+**PLANNING — Replacement-Long Execution 1 is RED; P0 and P2 Decision Gate 1 are VALIDATED; P1A returned execution PASS / overall INCONCLUSIVE; P2R1 / Plan Amendment 2 Hotfix 1 and both Todreas/Kazimi deep-review gates are locally VALIDATED. P1B returned execution PASS / `COUPLED-MULTI-DOMAIN`; P2R2 Decision Re-entry 2 is VALIDATED and selects P3-R owner localization only. Plan Amendment 3 inserts VR0–VR5 external physical-reference assessment before P3-R1. Production repair remains unauthorized.**
 
-This document defines the final handoff from replacement-long qualification to M11. The detailed pre-closure route is authoritative in [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). That plan now records P0 evidence/planning → P1 asymptotic qualification → P2 planning stop → P1A bounded asymptotic closure extension → P2R branch decision → P3-W/P3-R → P4 short 5→10→5 qualification → P5 replacement-long baseline/execution → P6 closure. This document retains the final long-result intake, closure-only transition and M11 bootstrap contract so that a successful replacement long cannot be followed by an improvised closure sequence.
+This document defines the final handoff from replacement-long qualification to M11. The detailed pre-closure route is authoritative in [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). That plan now records P0 evidence/planning → P1 asymptotic qualification → P2 planning stop → P1A bounded asymptotic closure extension → P2R1 planning stop → Plan Amendment 2 → Todreas/Kazimi Deep Review Pass 2 → P1B slow-state/owner qualification → P2R2 branch decision (VALIDATED P3-R) → Plan Amendment 3 → VR0–VR5 external physical-reference assessment → P3-R1 owner localization → P3-R2 repair/no-repair decision → P4 short 5→10→5 qualification → P5 replacement-long baseline/execution → P6 closure. This document retains the final long-result intake, closure-only transition and M11 bootstrap contract so that a successful replacement long cannot be followed by an improvised closure sequence.
 
 ## 1. Replacement-long result intake
 
@@ -158,3 +158,8 @@ Do not begin M11.2 if any of the following remains unresolved:
 - support target/package policy not frozen;
 - architecture/function-allocation contracts not adopted;
 - documentation and executable product identity disagree.
+
+## P2R1 / Plan Amendment 2 / Deep Review Pass 2 status
+
+P2R1 / Plan Amendment 2 Hotfix 1 and mandatory Todreas/Kazimi Deep Review Pass 2 are locally VALIDATED; Pass 2 disposition is `PASS-AS-AUTHORED`. P1B returned execution PASS and P2R2 is VALIDATED. P3-R owner localization is selected, but Plan Amendment 3 temporarily holds P3-R1 behind VR0–VR5 external model assessment. Production repair remains forbidden. M11 bootstrap remains blocked through the external assessment, P3/P4/P5/P6 as defined by Closure Plan 1.
+

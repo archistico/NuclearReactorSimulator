@@ -1,0 +1,86 @@
+{
+  "ContractId": "m10-final-replacement-long-closure-plan1-p1b-v1",
+  "Baseline": "P2R-PLAN-AMENDMENT2-HOTFIX1-AND-DEEP-REVIEW-PASS2-VALIDATED",
+  "Question": "When exact-v9 repeats the demonstrated 5-to-6 MWe trajectory, which represented canonical state domain remains materially dynamic in the late tail relative to a 5 MWe background reference?",
+  "StepsPerSecond": 100,
+  "BackgroundReferenceSeconds": 600,
+  "PreparationTimeoutSeconds": 60,
+  "MaximumHoldSecondsAfterLoad": 3600,
+  "TrajectorySampleSeconds": 1,
+  "LateAnalysisSeconds": 1200,
+  "LateSubwindowSeconds": 300,
+  "ThermalReadinessToleranceMegawatts": 0.25,
+  "TargetLoadMegawatts": 6.0,
+  "LoadIncrementMegawatts": 1.0,
+  "ExpectedLoadCommandLogicalStep": 2785,
+  "TrendReferenceMultiplier": 10.0,
+  "TrendRelativeMagnitudeGuardPerSecond": 1e-12,
+  "TrendMinimumConsistentLateWindows": 3,
+  "CheckpointTolerances": {
+    "PowerMegawatts": 0.002,
+    "ThermalMegawatts": 0.01,
+    "FrequencyHertz": 0.0001,
+    "FlowKilogramsPerSecond": 0.01,
+    "PressureMegapascals": 0.002
+  },
+  "RequiredCheckpoints": [
+    {
+      "HoldSeconds": 900,
+      "ExpectedLogicalStep": 92784,
+      "OutputMegawatts": 5.87105229931665,
+      "ThermalMegawatts": 39.59223679060836,
+      "ShaftMegawatts": 6.4908709368205155,
+      "FrequencyHertz": 50.000065423004514,
+      "DispatchAdequacyMegawatts": -0.13157935123719344,
+      "FlowKilogramsPerSecond": 15.09504869032984,
+      "InletPressureMegapascals": 4.994255033908174
+    },
+    {
+      "HoldSeconds": 1800,
+      "ExpectedLogicalStep": 182784,
+      "OutputMegawatts": 5.932191717552277,
+      "ThermalMegawatts": 39.55540168251264,
+      "ShaftMegawatts": 6.553257073522237,
+      "FrequencyHertz": 50.00001028322374,
+      "DispatchAdequacyMegawatts": -0.06919211173309137,
+      "FlowKilogramsPerSecond": 15.240132729111279,
+      "InletPressureMegapascals": 5.091515226367031
+    },
+    {
+      "HoldSeconds": 3600,
+      "ExpectedLogicalStep": 362784,
+      "OutputMegawatts": 6.000344232909117,
+      "ThermalMegawatts": 39.55608023549151,
+      "ShaftMegawatts": 6.622800172099048,
+      "FrequencyHertz": 50.000004483204116,
+      "DispatchAdequacyMegawatts": 0.0003511028313285536,
+      "FlowKilogramsPerSecond": 15.401860865467748,
+      "InletPressureMegapascals": 5.21841668168782
+    }
+  ],
+  "RequiredReactorPrimaryControllerIds": [
+    "flow-control"
+  ],
+  "RequiredTurbineSecondaryControllerIds": [
+    "speed-control",
+    "level-control",
+    "hotwell-control"
+  ],
+  "AllowedOwnerDomains": [
+    "NEUTRONICS-THERMAL-SOURCE",
+    "PRIMARY-INVENTORY-HYDRAULIC",
+    "STEAM-PATH-TURBINE",
+    "CONTROL-ACTUATOR-MEMORY",
+    "ELECTROMECHANICAL-GRID",
+    "COUPLED-MULTI-DOMAIN",
+    "NO-MATERIAL-LATE-DRIFT",
+    "INCONCLUSIVE"
+  ],
+  "OneSecondSamplingIsSlowStateDownsample": true,
+  "PerStepProtectionAndNumericalSentinelsRequired": true,
+  "NormalizedCrossDomainOwnerScoreEnabled": false,
+  "NewConstitutivePhysicsAuthorized": false,
+  "BlindHoldExtensionAuthorized": false,
+  "DirectP3SelectionAuthorized": false,
+  "SecondReplacementLongAuthorized": false
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "pre-m11-deep-engineering-section-review2-v1",
+  "status": "documentation-planning-only",
+  "stackedOn": "Pre-M11 Plant Dynamics / TH / Reactor Physics Review 1",
+  "activeExecutableCandidate": "P1A-Asymptotic-Closure-Extension",
+  "p1aContractChanged": false,
+  "productionSrcChanged": false,
+  "preExistingTestsChanged": false,
+  "reviewedSourceCount": 5,
+  "reviewScope": "previously-selected-deep-study-sections-only",
+  "p3BranchAuthorized": false,
+  "secondReplacementLongAuthorized": false,
+  "nextExecutableGate": "P1A-Asymptotic-Closure-Extension",
+  "nextDecisionGateAfterP1A": "P2R-Decision-Re-entry",
+  "deepReviewDocuments": [
+    "docs/research/PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md",
+    "docs/research/PRE_M11_DEEP_REVIEW_TRACEABILITY_2.md"
+  ]
+}

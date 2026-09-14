@@ -22,6 +22,32 @@ The earlier pre-M11 V&V review adds a complementary software/numerical principle
 
 For Nuclear Reactor Simulator, a reference operating point should not be called physically steady merely because a 60 s or 300 s trajectory looks calm. It should be classified against explicit residuals of the actual deterministic production evolution path.
 
+
+### 1.1 Additional reviewed-source reinforcement (23 August 2026)
+
+The later plant-dynamics/thermal-hydraulics/reactor-physics review strengthens the same self-consistency rule without changing this plan:
+
+- Basu/Debnath: transient plant energy balance must account for coordinated turbine/heat-source response and changes in stored energy;
+- Riznic: sustained steam/feedwater balance and recirculation emerge from coupled inventory, quality, hydrostatic driving head and circuit pressure-loss conditions;
+- Judd: nuclear load following couples a fast turbine/frequency response to a slower heat-source response through steam-system state;
+- Hébert: global point kinetics is only one owner in a broader coupled system and must remain distinct from spatial/full-core kinetics.
+
+**Project consequence:** M12.0 should treat the operating point as a vector of mutually compatible stationary/slow-state conditions. Frequency recovery, generator-MW agreement or one globally closed conservation residual cannot substitute for local inventory/steam/thermal/controller stationarity. No numerical values from fossil, PWR/CANDU or fast-reactor examples are imported.
+
+
+### 1.2 Deep-section Review 2 refinement (24 August 2026)
+
+The detailed re-read adds four residual classes that must remain visible when M12.0 is eventually implemented:
+
+- **demand/control trajectory:** requested target is not equivalent to a rate/limit-conditioned effective target, controller output or committed actuator state;
+- **stored-energy masking:** near-steady frequency/output can coexist with secular steam, water or thermal-body inventory change;
+- **hydraulic compatibility:** circulation must be explainable by the canonical head/loss balance, while quality and volumetric void remain distinct diagnostics;
+- **pressure-grade attribution:** a steam-pressure deficit may originate in heat-source/steam-generation state or in downstream line/valve/separator losses and must not be assigned to one owner without decomposition.
+
+For current ideal steam-drum separation, the residual inspector should also carry a model-limit flag noting that carry-under → return-density → driving-head feedback and detailed separator pressure loss are not represented. The flag documents fidelity; it must not compensate the state or loosen residual budgets.
+
+The Review 2 flexibility material adds one further qualification distinction: **headroom** and **sustainable support** are not the same as instantaneous response. Any later perturbation/stability report should therefore identify actuator/steam/thermal saturation or remaining margin where the canonical owners expose it, rather than inventing a generic headroom percentage.
+
 ## 2. Current-project audit and terminology cleanup
 
 The current tree already contains useful but distinct concepts that must not be conflated:
@@ -521,3 +547,35 @@ observe residuals
 ```
 
 A long run that remains numerically alive while stationary-required inventories drift secularly is a failure of equilibrium qualification, not a pass.
+
+
+## Todreas/Kazimi Deep Review Pass 1 — pre-Plan-Amendment-2 refinement
+
+P1A now separates **load reachability** from **whole-operating-point stationarity**: exact-v9 can essentially reach 6 MWe without trip, while the frozen stationarity slopes remain inconclusive at the 3,600 s horizon. The two-volume thermal-hydraulic review sharpens what the next residual census should eventually observe.
+
+Before any general trimmer work, a bounded owner-localization diagnostic should prioritize, where already canonical:
+
+1. per-inventory mass and internal-energy rates;
+2. declared mass/energy source-sink residuals;
+3. drum/outlet/feedwater/steam-export inventory transfer;
+4. represented pressure grade and available pressure-loss/head decomposition;
+5. loop/branch/group flow redistribution and common-boundary compatibility;
+6. steam admission, valve requested/effective/physical state and shaft balance;
+7. controller error/integral/bias/output slope and saturation state;
+8. electrical load/frequency/phase residuals;
+9. phase/quality/void branch state under the current HEM-like model;
+10. deterministic/numerical-coupling sentinels.
+
+No diagnostic layer may create slip, phasic temperatures, ONB/NVG, density-wave stability margin or new pressure-drop correlations. Missing canonical quantities are reported as unavailable.
+
+The eventual M12.0 qualification retains the three-way distinction:
+
+```text
+root / stationarity closure
+        !=
+branch identity
+        !=
+local perturbation stability
+```
+
+Plan Amendment 2 now defines the immediate M10 successor as P1B: a bounded replay of the existing exact-v9 5→6 MWe horizon with a 600 s 5 MWe background reference and canonical slow-state owner evidence. P1B adds no hold beyond 3,600 s and cannot select P3 directly. The post-amendment Todreas/Kazimi Deep Review Pass 2 must audit the exact P1B observation scope and decision rules before implementation.

@@ -1,6 +1,6 @@
 # M10 Final Replacement-Long Closure Plan 1 — P2 Decision Gate 1
 
-**Status: CANDIDATE — PLAN-STOP-INCONCLUSIVE / PLAN AMENDMENT 1.**
+**Status: VALIDATED — PLAN-STOP-INCONCLUSIVE / PLAN AMENDMENT 1.**
 
 P1 returned local execution PASS as an evidence gate, but its primary exact-v9 6 MWe result is `INCONCLUSIVE` after the complete pre-authorized 1,800 s hold. P2 therefore selects neither P3-W nor P3-R. This is the hard planning stop required by the validated P0 contract.
 

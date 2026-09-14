@@ -110,13 +110,17 @@ M10 closes only after M10.9.8 is explicitly validated.
 
 ## M10 Final — replacement-long closure route before M11
 
-The detailed blocking contract is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). The amended sequence is **P0 → P1 → P2(plan-stop) → P1A → P2R → P3-W/P3-R → P4 → P5 → P6**:
+The detailed blocking contract is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md). The amended sequence is **P0 → P1 → P2(plan-stop) → P1A → P2R1(plan-stop) → Plan Amendment 2 → Todreas/Kazimi Deep Review Pass 2 → P1B → P2R2(VALIDATED: P3-R owner localization) → Plan Amendment 3 → Physical Reference Model Assessment VR0–VR5 → P3-R1 owner localization → P3-R2 runtime decision → optional bounded repair/requalification → P4 → P5 → P6**:
 
 - P0 freezes Diagnostic 1–6 evidence and planning — **VALIDATED (Hotfix 2)**;
 - P1 determines asymptotic first-stage convergence versus stationary bias — **RETURNED EXECUTION PASS / FINAL INCONCLUSIVE**;
 - P2 Decision Gate 1 records **PLAN-STOP-INCONCLUSIVE** and selects no P3 branch — **VALIDATED**;
-- Plan Amendment 1 inserts **P1A Asymptotic Closure Extension** (exact-v9 5.5/6 MWe only, unchanged criteria, hard 3,600 s ceiling) — **ACTIVE CANDIDATE**; P1A returns to P2R decision re-entry;
-- P3-W qualifies a workload/procedure repair only if the unchanged plant converges, while P3-R localizes and minimally repairs runtime ownership only if a stationary bias is demonstrated;
+- Plan Amendment 1 inserted **P1A Asymptotic Closure Extension** — **RETURNED EXECUTION PASS / OVERALL INCONCLUSIVE**; exact-v9 5.5 MWe converged and exact-v9 6 MWe demonstrated load reachability but not full stationarity at 3,600 s;
+- **P2R1** records `PLAN-STOP-INCONCLUSIVE` and authorizes neither P3 branch; **Plan Amendment 2** defines **P1B Slow-State Closure & Phenomenon-Owner Qualification** at the existing 3,600 s horizon with a 600 s 5 MWe background reference;
+- mandatory **Todreas/Kazimi Deep Review Pass 2** validated Plan Amendment 2; **P1B has now returned execution PASS / `COUPLED-MULTI-DOMAIN`** and returns to **P2R2 Decision Re-entry 2**;
+- P2R2 is **VALIDATED** and selects **P3-R owner localization**, not P3-W: 6 MWe electrical reachability is demonstrated but represented inventory/hydraulic/steam/controller stationarity is not; production repair is still forbidden;
+- **Plan Amendment 3** now inserts a bounded **Physical Reference Model Assessment** (`VR0→VR5`) before P3-R1 so point kinetics, water/steam, iodine/xenon and decay heat obtain independent quantitative reference evidence before any runtime owner is repaired;
+- after VR5 `PROCEED-P3R1-EXACTV9`, **P3-R1** localizes the exact canonical runtime owner before any repair semantics are proposed;
 - P4 must demonstrate a real stable 5→10→5 manoeuvre;
 - P5 freezes and executes Replacement-Long Baseline 2;
 - P6 alone closes M10 and releases M11.1.
@@ -173,7 +177,7 @@ Detailed plan: [`milestones/M12.md`](milestones/M12.md). Operating-point foundat
 
 Planned sequence:
 
-0. M12.0 — **Reference Operating-Point Equilibrium & Stability Qualification**: residual taxonomy, closed-loop observational inspector, domain-headroom/trend diagnostics, validation-only plant-hold seam, bounded trimmer only if evidence requires it, and perturbation/long-horizon closure; existing exact identities remain immutable.
+0. M12.0 — **Reference Operating-Point Equilibrium & Stability Qualification**: residual taxonomy, closed-loop observational inspector, domain-headroom/trend diagnostics, validation-only plant-hold seam, bounded trimmer only if evidence requires it, and perturbation/long-horizon closure; existing exact identities remain immutable. Reviewed thermal-hydraulic/control sources reinforce that this gate must include requested/effective/control-memory state, steam/feedwater/inventory energy balance, pressure-grade attribution and canonical circulation head/loss evidence; apparent frequency/power calm or a short stored-energy response is not sufficient.
 1. M12.1 — flow-owner directionality/support inventory (`BIDIRECTIONAL`, `ONE-WAY BY PHYSICS`, `ONE-WAY BY CHECK/ISOLATION`, `UNSUPPORTED OUTSIDE ENVELOPE`);
 2. M12.2 — **near-zero hydraulic constitutive regularity and conditioning audit**: quadratic `sqrt(|Δp|)` behavior, ideal check-valve non-smoothness, valve near-close conditioning, normalized Jacobian/pivot diagnostics and deterministic summation semantics; no production smoothing before evidence/requalification;
 3. M12.3 — near-empty inventory and extreme pressure/temperature/inventory validation matrix before expanding fault authority;
@@ -212,8 +216,8 @@ Planned sequence:
 
 1. M14.1 — explicit quasi-spatial fidelity contract and limits;
 2. M14.2 — multi-zone/equivalent-channel-group reference-core composition;
-3. M14.3 — multiple rods/rod groups with explicit zone mapping and deterministic command/state ownership;
-4. M14.4 — physically justified local/quasi-spatial power, flow, void, temperature and xenon feedback/evidence;
+3. M14.3 — multiple rods/rod groups with explicit zone mapping and deterministic command/state ownership; any enhanced rod-worth claim must preserve spatial/state provenance rather than treating the global reduced worth curve as a solved local flux response;
+4. M14.4 — physically justified local/quasi-spatial power, flow, void, temperature and xenon feedback/evidence; global point kinetics remains explicitly distinct from full-core space-time kinetics, every local layer must retain solved/derived/mapped/interpolated provenance, and any homogenized/coarse reduction must declare the reaction/leakage/power quantities it is intended to preserve against its chosen reference;
 5. M14.5 — 2D core map with selectable educational layers for power, flow, void, temperature, xenon and rod influence;
 6. M14.6 — local drill-down and deterministic trends without implying unsupported full-channel neutron transport;
 7. M14.7 — replay/checkpoint/performance/manual-fidelity closure gate.
@@ -230,7 +234,7 @@ Planned sequence:
 2. M15.2 — rotating-equipment degradation/failure from modeled mechanical/thermal exposure;
 3. M15.3 — electrical damage/fire only from explicit electrical/thermal/ignition mechanisms;
 4. M15.4 — core-damage prerequisite gate proving decay-heat/cooling/local-thermal causal ownership before any core-damage implementation;
-5. M15.5 — bounded core-damage progression only if M15.4 passes;
+5. M15.5 — bounded core-damage progression only if M15.4 passes; any rapid-reactivity consequence claim remains bounded by the actual M14 spatial/neutronic fidelity and must not reinterpret global point kinetics as licensing-grade space-time analysis;
 6. M15.6 — physical incident severity plus persistent replay/checkpoint/session/post-incident integration;
 7. M15.7 — Instructor/Fault and local/spatial consequence presentation using M13/M14 surfaces without UI-owned consequence logic;
 8. M15.8 — integrated deterministic extreme-operation/accident closure gate.
@@ -255,3 +259,26 @@ Also non-blocking for M10.9.5 unless new evidence changes the risk:
 - near-zero hydraulic constitutive regularization, check-valve smoothing/leakage, Jacobian conditioning-policy changes and trajectory-changing summation changes only through M12.2 evidence/requalification;
 - pump shaft/electrical/inefficiency-to-heat ownership closure in M12.4 before stronger severe-incident/full-plant conservation claims;
 - branch-continuity retirement/unification only after dedicated M12.2/post-Phase-I evidence; current bounded previous-phase continuity may conditionally contribute to committed corrected state.
+
+
+### Todreas/Kazimi thermal-hydraulic deep-review additions
+
+- **M12.0:** distinguish conserved-inventory/root closure, branch identity and bounded perturbation stability; use canonical head/loss and inventory evidence rather than one scalar flow target.
+- **M12 extreme hydraulics:** explicitly scope mixed/natural circulation, pump coastdown, stagnation and reverse flow before claiming them.
+- **M12/M15 thermal limits:** distinguish DNB/dryout or label any simpler mechanism as an educational surrogate.
+- **M14 representative channels:** declare what hydraulic reduction preserves (for example total flow, heat, pressure drop, outlet enthalpy/inventory) and solve shared-boundary flow split when fidelity is increased.
+- Any drift-flux, nonequilibrium mixture or two-fluid upgrade is a new physical-model/V&V milestone, not an M10 closure adjustment.
+
+### Todreas/Kazimi Deep Review Pass 2 — Plan Amendment 2 literature hold
+
+P2R1 / Plan Amendment 2 Hotfix 1 and the mandatory post-amendment Todreas/Kazimi review are locally validated. P1B returned execution PASS with label `COUPLED-MULTI-DOMAIN`; P2R2 is now VALIDATED and selects P3-R owner localization only. Plan Amendment 3 inserts the external physical-reference assessment hold before P3-R1. No production repair, P4/P5, second replacement-long or M11 work is authorized.
+
+
+### P1B — Slow-State Closure / Phenomenon-Owner Qualification
+
+Todreas/Kazimi Deep Review Pass 2 is locally validated `PASS-AS-AUTHORED`; P1B returned execution PASS / `COUPLED-MULTI-DOMAIN`. It confirms 6 MWe electrical reachability while exposing persistent inventory/hydraulic/steam/controller redistribution relative to the stable 5 MWe background. **P2R2 is VALIDATED** and selects P3-R owner localization. **Plan Amendment 3 / Physical Reference Model Assessment** is the current planning hold; VR5 must authorize `PROCEED-P3R1-EXACTV9` before P3-R1 executes. No repair is yet authorized.
+
+
+### M10 Final physical-reference hold — current execution state
+
+Plan Amendment 3 is VALIDATED. **VR0 Reference/Provenance Contract Freeze is VALIDATED.** The active gate is **VR1 Point-Kinetics Independent Benchmark**, using the frozen Hébert one-group/six-group contract. VR1 is test-only model assessment and does not authorize P3-R1, production repair, exact-v9 parameter calibration, workload change or a second replacement-long baseline.

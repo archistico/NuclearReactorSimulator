@@ -1,3 +1,112 @@
+# M10 Final — VR1 Point-Kinetics Independent Benchmark candidate
+
+- Recorded the user-reported local PASS of VR0 Reference / Provenance Contract Freeze and advanced the active Plan Amendment 3 gate to VR1.
+- Added an explicit test-only independent adaptive Dormand-Prince 5(4) reference implementation for the Hébert point-kinetics equations.
+- Added the frozen Exercise 5.10 one-group analytical self-check and Exercise 5.11/Table 5.4 six-group comparison matrix.
+- Added production comparisons at 10 ms, 5 ms and 2.5 ms caller steps with deterministic-repeat, error-map and refinement evidence.
+- Frozen VR1 dispositions remain `REFERENCE-CONCORDANT`, `BOUNDED-NUMERICAL-DISCREPANCY`, `MODEL-DISCREPANCY` or `REFERENCE-HARNESS-FAIL`; the first run is observational and performs no tuning.
+- VR1 assesses the generic solver equation implementation only; exact-v9's reduced one-group plant parameterization remains uncalibrated.
+- No production source, exact-v9, workload, protection, P3 branch or second replacement-long change is authorized.
+
+# M10 Final VR0 — Reference / Provenance Contract Freeze — CANDIDATE
+
+- Records the user-reported local PASS of Plan Amendment 3 on 2026-09-14 and advances the active gate to VR0.
+- Freezes independent, non-circular external-reference contracts before VR1–VR4 inspect production comparison results.
+- VR1 freezes Hébert 3e point-kinetics equations, six-group data, ±dollar cases, independent test-only C# Dormand–Prince reference and pre-result classification ceilings.
+- VR2 freezes IAPWS R7-97(2012), a 20-point saturation/compressed/superheated matrix, independent test-only C# IF97 reference qualification and explicit educational error bands.
+- VR3 freezes a Lamarsh/Baratta U-235 I-135/Xe-135 equilibrium-to-shutdown case with published yields/decay constants, 5e13 n/cm2/s pre-shutdown flux and closed-form reference trajectory.
+- VR4 records an important applicability gap: the generic decay-heat solver has no canonical production `DecayHeatDefinition` active in exact-v9 and the sustained-generation path carries zero decay heat; no ANS-fitted production coefficients are invented in this observational gate.
+- Adds an impact-aware VR5 materiality rule so inactive VR3/VR4 gaps constrain claims/future work without automatically blocking P3-R1.
+- Adds `eng/m10-final-physical-reference-vr0-contract.json`, a documentation/reference validator and `scripts/run-m10-final-physical-reference-vr0-audit.cmd`.
+- No production source or pre-existing test file changes; no P3-R1, P3-W, repair, exact-v9 change, workload change or second replacement-long authorization.
+
+# M10 Final P2R2 DocsPlanning6 — Plan Amendment 3 / Physical Reference Assessment Detailed Closure Plan
+
+- Records returned P2R2 as VALIDATED (`P3-R-OWNER-LOCALIZATION`) while keeping production repair unauthorized.
+- Inserts Plan Amendment 3: P3-R1 is temporarily held behind VR0–VR5 independent external physical-reference assessment.
+- Adds detailed VR1 point-kinetics, VR2 IAPWS-IF97, VR3 iodine/xenon and VR4 ANS-5.1 assessment plans plus VR5 synthesis/impact decision.
+- Adds explicit TEST PASS / VERIFIED / MODEL-ASSESSED / QUALIFIED / PHYSICALLY VALIDATED claim policy.
+- Adds detailed P3-R1→P6 gate matrix, repair invalidation rules and post-M10 repository/release/playable-slice priorities.
+- Documentation/planning only: no production `src/` or pre-existing `tests/` change; exact-v9/workload/protection/mission/second-long remain frozen.
+
+## M10 Final Replacement-Long Closure Plan 1 — P2R2 Decision Re-entry 2 / P3-R Owner-Localization Selection — CANDIDATE
+
+- Records returned P1B execution PASS with exact 900/1,800/3,600 s P1A checkpoint reproduction, zero protection/numerical sentinel failures and engineering label `COUPLED-MULTI-DOMAIN`.
+- Distinguishes 6 MWe electrical load reachability from whole-plant stationarity: the stable 5 MWe background is contrasted with persistent 6 MWe inventory/hydraulic/steam/controller motion.
+- Freezes compact P1B summary, late-window, checkpoint and sentinel evidence plus a P2R2 derived-evidence note; the full returned artifact remains external validation provenance.
+- P2R2 proposes `P3-R-OWNER-LOCALIZATION`; P3-W remains unauthorized.
+- P2R2 does **not** authorize production repair. If the documentation audit passes, only P3-R1 `Primary Inventory / Hydraulic Slow-State Owner Localization & Contract Audit` becomes authorized.
+- P3-R1 is constrained to existing canonical plant-network, main-circulation, drum, condensate/feedwater, controller, turbine and generator diagnostics; no new constitutive physics, second hydraulic solve, workload/protection change or exact-v9 semantic change is authorized.
+- Documentation/planning-only: no production `src/` change and no pre-existing/new test change relative to the returned P1B candidate. `LONG-SOAK-01` remains pending and no second replacement-long baseline is authorized.
+
+
+## M10 Final Replacement-Long Closure Plan 1 — P1B Slow-State / Phenomenon-Owner Qualification candidate
+
+- Records Todreas/Kazimi Deep Review Pass 2 as locally PASS / `PASS-AS-AUTHORED` from the returned console gate.
+- Adds one explicit P1B test-only owner-localization gate plus frozen executable contract and runner.
+- Adds no production `src/` change and modifies no pre-existing test.
+- Replays exact-v9 5→6 MWe only to the already executed 3,600 s horizon, adds a 600 s 5 MWe background reference, reproduces P1A 900/1,800/3,600 s checkpoints and emits canonical inventory/hydraulic/controller/turbine/generator evidence.
+- P1B cannot select P3 or authorize a second replacement-long baseline; it returns to P2R2.
+
+## M10 Final P1A P2R DocsPlanning5 — Todreas/Kazimi Deep Review Pass 2 / PASS-AS-AUTHORED — CANDIDATE
+
+- Records returned local PASS for Deep Review Pass 1 and P2R / Plan Amendment 2 Hotfix 1; freezes their compact validation summaries as prerequisite evidence.
+- Performs the mandatory post-amendment audit of all ten Plan Amendment 2 questions against Todreas/Kazimi Volume I/II and the actual runtime ownership surface.
+- Disposition is `PASS-AS-AUTHORED`: no Plan Amendment 2 engineering hotfix is required.
+- Confirms Tier A observability from canonical plant/network/drum/loop/controller/turbine/generator/audit owners and preserves Tier C as explicitly unavailable rather than synthesized.
+- Freezes 1 s output as slow-state downsampling only; canonical-step/event protection and numerical sentinels remain required.
+- Disables a single scalar cross-domain owner score for P1B v1; raw physical-unit and same-observable background/load evidence remain authoritative.
+- Requires existing network/secondary-cycle conservation ledgers and forbids a diagnostic-owned second hydraulic or energy solve.
+- Does not implement P1B, change production `src/`, modify pre-existing tests, change exact-v9/workload/authority/generator/protection/mission semantics, select P3 or authorize a second replacement-long.
+- If this Pass 2 documentation audit passes locally, P1B implementation becomes the only next authorized activity and must return to P2R2.
+
+## M10 Final P1A P2R DocsPlanning4 Hotfix 1 — Deep Review Pass 1 Validator State/Encoding Hardening — CANDIDATE
+
+- Records the first DocsPlanning4 audit attempt as **validator-red only**: the prerequisite Deep Review Pass 1 validator searched `docs/PROJECT.md` for the exact pre-amendment heading after `PROJECT.md` had correctly advanced to the Plan Amendment 2 current state.
+- Hardens `validate-pre-m11-todreas-kazimi-deep-review-pass1.ps1` to use explicit UTF-8 document reads and durable ASCII-only provenance markers instead of a superseded state heading/non-ASCII marker literal.
+- Proactively hardens the Plan Amendment 2 validator the same way so Windows PowerShell encoding does not turn em-dash literals into fragile mojibake comparisons and future hotfix identity changes do not stale the marker.
+- Tightens the P2R evidence marker to require the explicit negative status `6 MWe WHOLE-OPERATING-POINT STATIONARITY = NOT DEMONSTRATED`, avoiding a substring check that could also match a positive qualification sentence.
+- Updates the two documentation-only runners to identify Hotfix 1 provenance.
+- No P1A evidence, P2R1 decision, Plan Amendment 2 engineering content, P1B scope, production `src/`, pre-existing tests, exact-v9, workload, authority, generator-load, protection, mission, P3 authorization or second-long authorization changes.
+
+## M10 Final P1A P2R DocsPlanning4 — Plan Amendment 2 / Slow-State Closure Owner Qualification — CANDIDATE
+
+- Records returned P1A execution PASS / overall `INCONCLUSIVE`: exact-v9 5.5 MWe `CONVERGED`; exact-v9 6 MWe reaches essentially 6 MWe without trip but remains above frozen whole-operating-point stationarity slope ceilings at 3,600 s.
+- Records **P2R1 `PLAN-STOP-INCONCLUSIVE`**; neither P3-W nor P3-R is authorized and no second replacement-long baseline may be frozen.
+- Adds Plan Amendment 2 only: **P1B Slow-State Closure & Phenomenon-Owner Qualification**. P1B replays exact-v9 5→6 MWe to the existing 3,600 s horizon, adds a 600 s exact-v9 5 MWe background reference, one-second canonical owner evidence and four 300 s late-analysis windows; it does not add a blind longer hold.
+- Requires canonical conserved-inventory, primary/drum/hydraulic, steam/turbine, controller/actuator and electromechanical evidence; explicitly forbids synthesizing slip, phasic temperatures, ONB/NVG, density-wave margins, new natural-circulation/CHF correlations or prototype RBMK time scales.
+- Inserts a mandatory **Todreas/Kazimi Deep Review Pass 2** hold before P1B implementation. Pass 2 must audit the exact amendment; P1B then returns only to P2R2 Decision Re-entry 2.
+- Freezes compact returned P1A calibration/probe/event/decision evidence under `eng/frozen-evidence/ordinary/`.
+- Documentation/planning-only: no production `src/`, pre-existing test, P1A executable contract, exact-v9, replacement workload, authority, generator-load, protection or mission semantics change.
+
+## M10 Final P1A DocsPlanning3 — Todreas/Kazimi Thermal-Hydraulic Deep Review Pass 1 — CANDIDATE
+
+- Records P1A as execution PASS / overall `INCONCLUSIVE`: 5.5 MWe `CONVERGED`, 6 MWe `INCONCLUSIVE` at the frozen 3,600 s horizon, with 6 MWe load reachability nevertheless demonstrated and no P3 branch authorized.
+- Adds a first detailed-section review of Todreas/Kazimi *Nuclear Systems* Volume I and Todreas/Kazimi/Massoud Volume II before Plan Amendment 2.
+- Refines post-P1A planning toward conserved mass/energy inventory rates, canonical hydraulic/head-loss compatibility, branch/group redistribution, steam-path state, controller memory and numerical/model-fidelity sentinels.
+- Freezes no Plan Amendment 2 duration, threshold or executable contract; requires a second Todreas/Kazimi deep review after the amendment is authored and before its diagnostic is run.
+- Adds explicit HEM-like, no-slip/no-nonequilibrium/no-ONB-NVG/no-density-wave-claim and no-full-scale-RBMK-scaling limitations.
+- No production source, pre-existing test, exact-v9 semantics, replacement workload, authority, generator-load semantics, protection, mission pack or second replacement-long authorization changes.
+
+# Pre-M11 Deep Engineering Section Review 2 — CANDIDATE
+
+- Documentation/planning-only second pass over the exact high-value sections previously selected from Basu/Debnath, Riznic, Badescu/Lazaroiu/Barelli, Judd and Hébert; no new source book is added.
+- Adds source-by-source re-evaluation and a traceability matrix separating direct concepts, analogical transfer, future-only topics and non-transferable numerical content.
+- Refines coordinated-load planning into requested/effective/rate-limited/actuator/physical-response layers; strengthens headroom and sustainable-support vocabulary; records separator carry-under/pressure-loss feedback; treats thermal storage as dynamic filtering; and adds spatial/state-dependent rod-worth as future M14 fidelity.
+- Refines M14 planning around nuclear-data/lattice/homogenization/full-core layers and requires any coarse reduction to declare what reaction/leakage/power quantities it preserves; GPT remains a future adjoint sensitivity technique and is not conflated with Phase-H hydraulic Jacobians.
+- Updates source provenance, known limitations, equilibrium planning, replacement-long P2R interpretation, roadmap/M14 planning and documentation indexes.
+- P1A remains the next executable gate, P2R remains the next decision gate, P3 remains unauthorized and no second replacement-long is authorized. `src/` and all pre-existing tests are unchanged.
+
+# Pre-M11 Plant Dynamics / Thermal-Hydraulics / Reactor Physics Reference Review 1 — DocsPlanning1 (CANDIDATE)
+
+- Stacked documentation-only on the active P1A candidate; no production `src/` or pre-existing test behavior changes.
+- Records five additional reviewed books covering coordinated unit control/energy balance, power-plant flexibility, nuclear load-following control, nuclear steam-generation circulation/separation and modern reactor physics/space-time fidelity limits.
+- Adds `PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md` and extends bibliographic provenance in `docs/research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md`.
+- Freezes the key M10 governance consequence: P1A remains unchanged and source-derived hypotheses are used only to interpret returned P1A evidence at P2R.
+- Adds a P2R owner-chain checklist without changing the already frozen P2R branch rule.
+- Reinforces M12.0 mass/energy/inventory/circulation equilibrium evidence, current ideal separator limitations, M14 global-point-kinetics versus space-time fidelity boundaries and M15 bounded reactivity-accident claims.
+- Adds a documentation-only audit script; it does not execute P1A, ordinary tests, repair runtime behavior or authorize P3/second replacement-long freeze.
+
 # M10 Final Replacement-Long Closure Plan 1 — P1A Asymptotic Closure Extension (CANDIDATE)
 
 - Records P2 Decision Gate 1 / Plan Amendment 1 as locally validated from returned artifact `m10-final-replacement-long-closure-plan1-p2-passes=True`.

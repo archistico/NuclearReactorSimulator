@@ -1,0 +1,14 @@
+﻿pre-m11-todreas-kazimi-deep-review-pass1-passes=True
+documentation-planning-only=True
+review-phase=pre-plan-amendment-2
+new-source-volume-count=2
+p1a-final-classification=INCONCLUSIVE
+six-mwe-load-reachability-demonstrated=True
+six-mwe-stationarity-demonstrated=False
+plan-amendment-2-frozen=False
+second-deep-pass-required=True
+production-src-changed=False
+pre-existing-tests-changed=False
+p3-branch-authorized=False
+second-replacement-long-authorized=False
+next-planning-action=Plan-Amendment-2-authoring

@@ -1,0 +1,44 @@
+{
+  "schema": "m10-final-plan-amendment3-physical-reference-assessment-v1",
+  "status": "PLANNING-CANDIDATE",
+  "planning_only": true,
+  "baseline": "P2R2-VALIDATED",
+  "p2r2_decision": "P3-R-OWNER-LOCALIZATION",
+  "p3r1_temporarily_held": true,
+  "production_src_change_authorized": false,
+  "production_repair_authorized": false,
+  "p3_w_authorized": false,
+  "exact_v9_change_authorized": false,
+  "replacement_workload_change_authorized": false,
+  "second_replacement_long_authorized": false,
+  "next_authorized_gate": "VR0-Reference-Provenance-Contract-Freeze",
+  "assessment_sequence": [
+    "VR0-Reference-Provenance-Contract-Freeze",
+    "VR1-Point-Kinetics-Independent-Benchmark",
+    "VR2-IAPWS-IF97-Water-Steam-Error-Map",
+    "VR3-I135-Xe135-Shutdown-Reference-Trajectory",
+    "VR4-ANS5.1-Decay-Heat-Model-Assessment",
+    "VR5-Consolidated-Physical-Reference-Decision",
+    "P3-R1-Primary-Inventory-Hydraulic-Slow-State-Owner-Localization"
+  ],
+  "vr5_decisions": [
+    "PROCEED-P3R1-EXACTV9",
+    "BLOCK-P3R1-MODEL-REPAIR",
+    "PLAN-STOP-REFERENCE-GAP"
+  ],
+  "claim_terms": [
+    "TEST-PASS",
+    "VERIFIED",
+    "MODEL-ASSESSED",
+    "QUALIFIED",
+    "PHYSICALLY-VALIDATED"
+  ],
+  "mandatory_documents": [
+    "docs/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md",
+    "docs/M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md",
+    "docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_PLAN_AMENDMENT3_EXTERNAL_MODEL_ASSESSMENT.md",
+    "docs/M10_FINAL_MODEL_ASSESSMENT_CLAIM_POLICY.md",
+    "docs/M10_FINAL_P3R1_TO_P6_DETAILED_GATE_MATRIX.md",
+    "docs/POST_M10_REPOSITORY_RELEASE_PLAYABLE_SLICE_PLAN.md"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "schema": "pre-m11-plant-dynamics-reference-review1-v1",
+  "status": "documentation-planning-only",
+  "activeExecutableCandidate": "P1A-Asymptotic-Closure-Extension",
+  "p1aContractChanged": false,
+  "productionSrcChanged": false,
+  "preExistingTestsChanged": false,
+  "p3BranchAuthorized": false,
+  "secondReplacementLongAuthorized": false,
+  "reviewedSources": [
+    "Basu-Debnath-2019",
+    "Badescu-Lazaroiu-Barelli-2018",
+    "Judd-2014",
+    "Riznic-2017",
+    "Hebert-2020"
+  ],
+  "nextExecutableGate": "P1A-Asymptotic-Closure-Extension",
+  "nextDecisionGateAfterP1A": "P2R-Decision-Re-entry"
+}

@@ -1,0 +1,42 @@
+# Pre-M11 Deep Engineering Section Review 2 — Traceability Matrix
+
+## Status
+
+**Planning traceability only.** This matrix maps the previously selected high-value book sections to project consequences. It is not a validation matrix and does not authorize implementation.
+
+| ID | Source / section | Re-evaluated finding | Transferability | Project consequence | Earliest owner/home |
+|---|---|---|---|---|---|
+| `BD-CCS-01` | Basu/Debnath Ch.10 | Heat source, turbine and generator require coordinated energy balance for sustained load. | `DIRECT_CONCEPT` / `ANALOGICAL` heat-source mapping | Interpret P1A/P2R across the whole owner chain; do not equate MW request with sustainable energy. | P2R interpretation; future P3-W |
+| `BD-CCS-02` | Basu/Debnath Ch.10 demand processing | Unit demand is limited, ramp-shaped and may be directionally held/blocked by plant condition. | `DIRECT_CONCEPT` | Future workload/control must distinguish requested vs effective demand and expose hold/inhibit reason. | P3-W if authorized; M13 transparency |
+| `BD-EHG-01` | Basu/Debnath Ch.9 §2 | Governor mode/ownership changes across startup, synchronization, grid loading and pressure-control conditions. | `DIRECT_CONCEPT` | Preserve speed-vs-load mode distinction and supervisory-vs-actuator ownership. | Existing M5; future control review |
+| `BD-ACT-01` | Basu/Debnath valve/actuator sections | Position demand and position feedback are distinct; actuator dynamics shape realized valve state. | `DIRECT_CONCEPT` | Keep controller output, requested valve position and physical position separately observable. | Existing M5/M4; M13 |
+| `BD-ALM-01` | Basu/Debnath Ch.14 | Useful alarms are relevant, unique, timely, prioritized and actionable; flood/chatter/stale alarms are failure modes. | `ANALOGICAL` | Reinforces existing alarm/HMI checklist only; no regulatory import. | M13 |
+| `RZ-CIRC-01` | Riznic Ch.2/4 | Recirculation is the iterative balance of hydrostatic driving head and total loop pressure loss. | `DIRECT_CONCEPT` / `ANALOGICAL` geometry | M12.0 should qualify head/loss compatibility rather than a target scalar flow. | M12.0 |
+| `RZ-PHASE-01` | Riznic Ch.2/4 | Mass quality, volumetric void and circulation are distinct even when related. | `DIRECT_CONCEPT` | Preserve quality/void type separation; do not infer local spatial state from one mean. | Existing M1/M2; M14 |
+| `RZ-SEP-01` | Riznic Ch.2/4 | Carry-under changes return density/driving head; separator pressure loss participates in circulation. | `DIRECT_CONCEPT` | Strengthen ideal-separator limitation; no hidden M10 tuning. | Known limits; future physical milestone |
+| `RZ-PDROP-01` | Riznic Ch.12 | Downstream separator/nozzle/piping losses can influence observed steam pressure and inferred performance. | `DIRECT_CONCEPT` | Pressure-grade diagnostics must decompose source vs path loss. | P2R/M12.0 diagnostics |
+| `RZ-FOUL-01` | Riznic Ch.12 | Heat-transfer degradation and hydraulic-loss effects need distinct attribution. | `ANALOGICAL` / `FUTURE_ONLY` | If degradation is modeled later, change the correct physical owner. | M15+ if scoped |
+| `RZ-VIB-01` | Riznic Ch.13 | Two-phase flow can drive structural vibration; resolved geometry/structure is needed for credible vibration claims. | `FUTURE_ONLY` | No current vibration threshold; possible integrity research only. | M12.6/M15 research |
+| `BA-FLEX-01` | Badescu et al. flexibility chapter | Flexibility has separate dimensions: ramp, MSG, frequency response, commitment, part-load behavior. | `DIRECT_CONCEPT` | Future qualification must report dimensions separately. | P3-W/P4 |
+| `BA-HEAD-01` | Badescu et al. frequency response | Frequency response requires available headroom and is physically bounded. | `DIRECT_CONCEPT` | Derive headroom from actual steam/thermal/shaft/protection/controller owners. | P3-W/P4 |
+| `BA-STORE-01` | Badescu et al. turbine/steam flexibility | Fast stored-energy support is finite and does not prove sustainable new load. | `DIRECT_CONCEPT` | Require inventory recovery/final stationarity after fast response. | P2R/P4/M12.0 |
+| `BA-MSG-01` | Badescu et al. MSG | Stable minimum generation is plant-specific, not a universal fraction. | `NON_TRANSFERABLE_NUMERIC` | Establish any reference-plant minimum only by simulator-specific evidence. | Future operating envelope |
+| `BA-EFF-01` | Badescu et al. part-load efficiency | Efficiency and stability are different axes. | `DIRECT_CONCEPT` | Keep audited heat-rate/efficiency evidence separate from stationarity classification. | M12+ diagnostics |
+| `JU-CTRL-01` | Judd Ch.4.4 | Load following couples fast turbine/frequency response to slower heat-source response via steam pressure. | `ANALOGICAL` | Use steam pressure/inventory as coupling evidence in P2R owner chain. | P2R |
+| `JU-STORE-01` | Judd Ch.4.4 | Water/metal thermal mass smooths demand changes and delays steam-pressure response. | `ANALOGICAL` | Expect multi-time-scale settling; require whole residual-vector closure. | P2R/M12.0 |
+| `JU-PROT-01` | Judd Ch.4.4/5.2 | Normal control, protective shutdown and decay-heat removal are distinct functions. | `DIRECT_CONCEPT` | Preserve M5 protection priority and M12.5 decay-heat ownership. | Existing M5; M12.5 |
+| `JU-ROD-01` | Judd Ch.1.5 | Rod worth varies nonlinearly with insertion and spatial flux/importance; insertion also perturbs flux. | `ANALOGICAL` / `FUTURE_ONLY` | Current smooth/linear curves remain reduced; M14 rod influence needs spatial provenance if enhanced. | M14.3–M14.4 |
+| `JU-COEF-01` | Judd Ch.1.6 | Reactivity coefficients depend on reactor design/material/spectrum. | `DIRECT_CONCEPT`; numbers non-transferable | Never copy fast-reactor coefficient sign/magnitude into RBMK-like model. | M14 calibration/V&V |
+| `HE-PK-01` | Hébert §5.4 | Point kinetics assumes unchanged flux shape / no independent spatial evolution. | `DIRECT_CONCEPT` | Keep current global point-kinetics claim explicitly reduced-order. | Existing M2; M14.1 |
+| `HE-PK-02` | Hébert §5.4 derivation | Effective kinetic parameters are weighted by spatial/energy behavior and may change as flux shape changes. | `FUTURE_ONLY` | Do not imply fixed global parameters are full space-time equivalence. | M14+ |
+| `HE-DOP-01` | Hébert §2.6 | Temperature broadens resonances; current linear temperature feedback is a macroscopic surrogate, not Doppler calculation. | `DIRECT_CONCEPT` | Strengthen feedback-model limitation; no cross-section import. | Known limits; M14 physics |
+| `HE-THERM-01` | Hébert §2.6 | Thermal motion and molecular/metallic binding alter moderator scattering at thermal energy. | `DIRECT_CONCEPT` | Water/graphite high-fidelity feedback needs material/energy data; current coefficient remains reduced. | M14 physics |
+| `HE-LAT-01` | Hébert Ch.4 | Spatial physics is a hierarchy: data → self-shielding → transport/leakage → homogenization → full core. | `FUTURE_ONLY` | M14 cannot claim high fidelity merely by adding more zones. | M14.1–M14.4 |
+| `HE-SPH-01` | Hébert §4.4 | Direct homogenization need not preserve reaction/leakage rates; equivalence methods preserve declared reference quantities. | `FUTURE_ONLY` | Any M14 reduction must declare and test what it preserves; SPH itself is optional. | M14 V&V |
+| `HE-DEP-01` | Hébert §4.5 | Depletion is history-dependent material evolution that changes cross sections/flux. | `FUTURE_ONLY` | Spatial xenon/burnup requires local history ownership; current lumped Xe is not general depletion. | M14.4+ |
+| `HE-GPT-01` | Hébert §5.3 | GPT computes adjoint/functional sensitivities for defined reactor characteristics; it is not generic numerical differentiation. | `FUTURE_ONLY` | Do not conflate with Phase-H hydraulic Jacobians; use only if a spatial neutronics sensitivity objective exists. | M14+ research |
+| `HE-TIME-01` | Hébert §5.4 | Multiple temporal schemes exist for time-dependent neutron equations and can form verification comparisons. | `FUTURE_ONLY` | No M10 RK4 change; future spatial solver should have independent temporal/refinement V&V. | M14 V&V |
+
+## Non-import rule
+
+Every row that originates in a fossil, CCGT, PWR/CANDU/WWER or fast-reactor context retains its technology boundary. Numerical values, component geometry, vendor tuning, circulation ratios, protection limits, reactivity coefficients and performance percentages are excluded unless a later project-specific calibration/validation decision independently justifies them.

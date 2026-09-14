@@ -2,7 +2,7 @@
 
 ## Status and authority
 
-**P1A — ASYMPTOTIC CLOSURE EXTENSION CANDIDATE. P0 HOTFIX 2 and P2 DECISION GATE 1 are VALIDATED. P1 returned execution PASS with final `INCONCLUSIVE`; Plan Amendment 1 authorizes only P1A before P2R. Neither P3-W nor P3-R is authorized. M10 remains OPEN and Replacement-Long Execution 1 remains authoritative RED evidence.**
+**P2R2 DECISION RE-ENTRY 2 is VALIDATED. P1B returned execution PASS with exact P1A checkpoint reproduction, green protection/numerical sentinels and engineering label `COUPLED-MULTI-DOMAIN`. 6 MWe electrical reachability is demonstrated, but the 6 MWe whole-plant state retains material inventory/hydraulic/steam/controller drift while the 5 MWe background is stable. P2R2 selects P3-R for owner localization only. Plan Amendment 3 is now the active planning candidate and temporarily holds P3-R1 behind VR0–VR5 independent physical-reference model assessment. P3-W, production repair and the second replacement-long baseline remain unauthorized. M10 remains OPEN and Replacement-Long Execution 1 remains authoritative RED evidence.**
 
 This document replaces the previous diagnostic-by-diagnostic continuation pattern with a finite closure route from the returned Replacement-Long Failure Diagnostic 1–6 evidence to M10 closure. It is a planning and decision-governance contract only: it changes no production runtime, workload, authority policy, generator-load semantics, protection semantics, exact-v9 state, mission pack or acceptance threshold.
 
@@ -142,9 +142,16 @@ P1A returns only to **P2R — Decision Re-entry**. P2R maps `CONVERGED` to P3-W,
 Executable contract: `eng/m10-final-replacement-long-closure-plan1-p1a-contract.json`. Runner: `scripts/run-m10-final-replacement-long-closure-plan1-p1a-asymptotic-closure-extension.cmd`. Preserve and return the complete `artifacts/m10-final-replacement-long-closure-plan1-p1a` directory before P2R.
 
 
+
+### Parallel literature-review constraint for P1A / P2R
+
+The five-source plant-dynamics/thermal-hydraulics/reactor-physics review, including detailed-section Review 2, is **interpretation-only** for this closure route. It does not change P1A thresholds, checkpoints, hold ceilings or classes. After P1A returns, P2R should inspect which canonical owner remains dynamic in the late tail: requested/effective control reference and controller memory, actuator state, steam pressure grade and inventories, primary circulation/head-loss state, neutronics/thermal source, shaft balance and grid coupling. The review supports distinguishing fast frequency/governor response and finite stored-energy support from slower sustainable energy-balance/operating-point convergence; it does not preselect P3-W or P3-R.
+
+References: [`PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md`](PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md) and [`research/PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md`](research/PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md).
+
 ### P3-W — Workload / Procedure path
 
-**Entry condition:** P1A returns `CONVERGED` and P2R explicitly authorizes P3-W, demonstrating that the reduced-order exact-v9 plant can converge to the requested small electrical stage under unchanged production physics.
+**P2R2 candidate disposition:** P3-W is **not authorized** from returned P1B. Although unchanged exact-v9 reaches 6 MWe electrically, represented inventory/hydraulic/steam/controller states remain materially dynamic. A workload-only route may be reconsidered later only if P3-R1 proves the runtime contracts coherent and establishes bounded readiness/stationarity evidence.
 
 Build a **test-only** staged/readiness-driven 5→10→5 manoeuvre using dwell/readiness criteria derived from P1 rather than arbitrary elapsed times. The procedure must coordinate thermal and electrical evolution without redefining protection or generator-grid physics.
 
@@ -152,11 +159,9 @@ Only after this test-only manoeuvre demonstrates the full route may a revised re
 
 ### P3-R — Runtime Ownership path
 
-**Entry condition:** P1A returns `BIASED-STATIONARY` and P2R explicitly authorizes P3-R, demonstrating a stationary biased exact-v9 operating point under unchanged commands.
+**P2R2 candidate disposition:** authorize P3-R **for owner localization only**. Returned P1B shows persistent load-specific represented slow-state motion despite 6 MWe electrical reachability and green numerical/conservation sentinels. This is sufficient to investigate runtime ownership before changing workload, but it is not yet sufficient to authorize a production repair.
 
-Before modifying production code, localize the contradiction along the canonical chain:
-
-`requested electrical load -> requested mechanical dispatch -> droop/governor reference -> valve/steam flow -> shaft power -> electromagnetic load -> phase/frequency correction -> actual electrical output`.
+Before modifying production code, execute **P3-R1 — Primary Inventory / Hydraulic Slow-State Owner Localization & Contract Audit**. P3-R1 starts from the causal evidence ordering established by P1B: canonical node mass/energy derivatives and transfer terms → main-circulation pump/pipe/head-loss diagnostics → channel/return/outlet storage identity → drum return/recirculation/steam/feedwater balance → condensate/feedwater pump flows and inventory transfer → controller memory/actuator state → steam/turbine/grid downstream consequences. The previous generator/governor chain remains a downstream cross-check rather than the first assumed owner.
 
 A production repair is authorized only when one owner violates an existing physical/control contract or the desired command semantics can be stated unambiguously and tested before implementation.
 
@@ -227,15 +232,42 @@ D1-D6 RETURNED / EVIDENCE FROZEN
               v
  P1A BOUNDED ASYMPTOTIC EXTENSION
               |
+        PASS / INCONCLUSIVE
+              |
               v
-       P2R DECISION RE-ENTRY
+      P2R1 PLAN-STOP
+              |
+              v
+        PLAN AMENDMENT 2
+              |
+              v
+ TODREAS/KAZIMI DEEP REVIEW PASS 2
+              |
+              v
+ P1B SLOW-STATE / OWNER QUALIFICATION
+              |
+              v
+      P2R2 DECISION RE-ENTRY
+          VALIDATED: P3-R
+              |
+              v
+        PLAN AMENDMENT 3
+              |
+              v
+      VR0 -> VR1 -> VR2 -> VR3 -> VR4 -> VR5
+              |
+       PROCEED-P3R1
+              |
+              v
+        P3-R1 OWNER LOCALIZATION
+              |
+              v
+        P3-R2 RUNTIME DECISION
               |
       +-------+--------+
       |                |
-  CONVERGED      BIASED-STATIONARY
-      |                |
       v                v
- P3-W WORKLOAD     P3-R RUNTIME OWNER
+ NO REPAIR         REPAIR IF PROVEN
       |                |
       +-------+--------+
               |
@@ -259,18 +291,18 @@ D1-D6 RETURNED / EVIDENCE FROZEN
              M11.1
 ```
 
-`INCONCLUSIVE` at P1 is a hard planning stop. It requires an explicit revision of this plan rather than an improvised new diagnostic.
+Any `INCONCLUSIVE` result at a decision gate is a hard planning stop. It requires an explicit revision of this plan rather than an improvised new diagnostic.
 
 ## 5. Frozen change-authority matrix
 
 | Item | Authority before its gate |
 | --- | --- |
 | Protection thresholds/semantics | frozen through P4; no current evidence supports retuning |
-| Authority policy | frozen through P2R; D2 eliminated rod authority as first owner |
+| Authority policy | frozen through P2R2/P4; D2 eliminated rod authority as first owner |
 | exact-v9 | immutable historical/production identity; never reinterpret |
 | Mission `bounded-demand-following-5-10-5@3` | frozen unless a later explicit versioning decision requires replacement |
-| Generator-load production semantics | change only after P2R authorizes P3-R with owner/contract evidence |
-| Replacement workload | change only after P1A `CONVERGED` and P2R authorizes P3-W |
+| Generator-load production semantics | P2R2 selected P3-R owner localization, but production change remains forbidden through VR0–VR5 and P3-R1; change only after P3-R2 proves and authorizes a repair |
+| Replacement workload | P2R2 did not authorize P3-W; remains frozen through VR0–VR5/P3-R1/P3-R2 unless a later explicit branch reconsideration authorizes it |
 | Second replacement-long baseline | forbidden until P4 PASS |
 | New exact version | required if P3-R changes production exact semantics |
 | M11 work | forbidden until P6 closes M10 |
@@ -287,6 +319,101 @@ For any candidate that changes code or tests:
 
 Planning-only/documentation-only checkpoints such as P0, P2 and P2R use their dedicated documentation audit and do not substitute for executable validation.
 
-## 7. Current authorization after validated P2 / active P1A
+## 7. Current authorization at P2R1 / Plan Amendment 2
 
-P1 has returned execution PASS but final classification `INCONCLUSIVE`. P2 therefore authorizes neither P3-W nor P3-R. After validated P2 Decision Gate 1, the **only authorized implementation is P1A — Asymptotic Closure Extension** under Plan Amendment 1. P1A must return to P2R before any P3 implementation. No production runtime/workload change or second replacement-long freeze is authorized.
+P1A returned execution PASS / overall `INCONCLUSIVE`, P2R1 recorded `PLAN-STOP-INCONCLUSIVE`, Plan Amendment 2 defined P1B, and Deep Review Pass 2 returned local PASS / `PASS-AS-AUTHORED`. **P1B has now returned execution PASS / `COUPLED-MULTI-DOMAIN`; P2R2 is the active branch-authority candidate.** No production runtime/workload change or second replacement-long freeze is authorized. If P2R2 passes, only P3-R1 owner localization becomes authorized.
+
+
+## P1A returned evidence and pre-Plan-Amendment-2 literature checkpoint
+
+P1A has now completed execution PASS with overall classification `INCONCLUSIVE`: exact-v9 5.5 MWe classified `CONVERGED`; exact-v9 6 MWe remained `INCONCLUSIVE` at the frozen 3,600 s hard horizon. The 6 MWe late tail nevertheless demonstrates load reachability essentially at the requested electrical output and with no trip. The unresolved claim is whole-operating-point stationarity, not simple 6 MWe capacity.
+
+Therefore P2R currently remains a **planning stop**:
+
+- `P3-W authorized = False`;
+- `P3-R authorized = False`;
+- second replacement-long baseline authorization = `False`;
+- exact-v9, workload, authority, generator-load semantics, protection and mission binding remain frozen.
+
+Before Plan Amendment 2 is authored, the Todreas/Kazimi Volume I/II Deep Review Pass 1 is recorded as interpretation/planning evidence. It supports a next bounded diagnostic centered on conserved-inventory closure, canonical hydraulic compatibility/head-loss evidence, steam-path state and controller memory rather than a blind longer hold.
+
+**This review is not Plan Amendment 2.** Exact durations, observation windows, acceptance/decision ceilings and executable contract are intentionally not frozen here.
+
+After Plan Amendment 2 is authored, a mandatory Todreas/Kazimi **Deep Review Pass 2** must audit the exact amendment observables and decision rules before its new executable diagnostic is run.
+
+References:
+
+- `research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS1.md`;
+- `research/PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS1.md`.
+
+
+## Plan Amendment 2 — P1B Slow-State Closure & Phenomenon-Owner Qualification
+
+P1A has returned execution PASS / overall `INCONCLUSIVE`. exact-v9 5.5 MWe is `CONVERGED`; exact-v9 6 MWe reaches essentially the requested electrical output with near-zero dispatch/net-acceleration error and no trip, but the frozen whole-operating-point stationarity slope ceilings remain exceeded. P2R1 therefore records `PLAN-STOP-INCONCLUSIVE` and selects neither P3-W nor P3-R.
+
+Plan Amendment 2 does **not** extend the 6 MWe hold beyond 3,600 s. Instead it defines P1B as an observational replay of the same exact-v9 5→6 MWe path with a 600 s exact-v9 5 MWe background reference, one-second canonical state sampling, exact reproduction of the P1A 900/1,800/3,600 s checkpoints and a final 1,200 s analysis interval split into 4×300 s windows. P1B must expose represented conserved inventory, primary/drum/hydraulic, steam/turbine, controller/actuator and electromechanical state without synthesizing slip, phasic temperatures, ONB/NVG, density-wave margins, new natural-circulation/CHF correlations or prototype RBMK time scales.
+
+The exact amendment is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md). Mandatory **Todreas/Kazimi Deep Review Pass 2** has now audited the actual amendment and returned local PASS / `PASS-AS-AUTHORED`; P1B code may therefore be authored from the frozen amendment. P1B always returns to **P2R2 Decision Re-entry 2**; it cannot select P3 directly.
+
+Current amended route:
+
+`P0 → P1 → P2(plan-stop) → P1A → P2R1(plan-stop) → Plan Amendment 2 → Todreas/Kazimi Deep Review Pass 2 → P1B(returned PASS) → P2R2(decision candidate) → P3-R1 owner localization if P2R2 PASS → later repair/branch decision → P4 → P5 → P6`.
+
+## Todreas/Kazimi Deep Review Pass 2 — post-Plan-Amendment-2 audit
+
+Returned artifact evidence validates Deep Review Pass 1 and P2R1 / Plan Amendment 2 Hotfix 1. The mandatory post-amendment literature/runtime ownership audit now has candidate disposition **`PASS-AS-AUTHORED`**. No Plan Amendment 2 engineering hotfix is required.
+
+The disposition is conditional on binding P1B implementation constraints: canonical/exact-derived evidence only; 1 s as slow-state downsampling with per-step/canonical-event protection/numerical sentinels retained; conserved inventory/transfer evidence before downstream owner inference; no second hydraulic solve; controller memory separate from command/physical actuator state; raw physical units first; and **no single scalar cross-domain owner score in P1B v1**. `NO-MATERIAL-LATE-DRIFT` is not a stationarity promotion.
+
+Deep Review Pass 2 validated locally and P1B has now returned execution PASS. P2R2 is therefore the current branch-authority gate. No P3 repair is authorized until P2R2 validates and P3-R1 subsequently identifies a specific runtime ownership/contract contradiction.
+
+References:
+
+- `research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS2.md`;
+- `research/PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS2.md`.
+
+
+## P1B executable implementation
+
+Deep Review Pass 2 returned local PASS / `PASS-AS-AUTHORED`, and P1B has now returned execution PASS. The executable P1B contract is [`../eng/m10-final-replacement-long-closure-plan1-p1b-contract.json`](../eng/m10-final-replacement-long-closure-plan1-p1b-contract.json), the implementation note is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md), and the branch decision is now staged in [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md).
+
+
+## P1B returned evidence / P2R2 candidate decision
+
+Returned P1B completed the 600 s 5 MWe background and 3,600 s exact-v9 5→6 MWe probe, reproduced all three P1A checkpoints, and recorded zero trip/nonconverged/nonfinite/rollback/line-search/untargeted/shadow sentinel failures. Its engineering label is `COUPLED-MULTI-DOMAIN`.
+
+The decisive distinction is now **electrical reachability versus whole-plant stationarity**. At 3,600 s output/frequency/dispatch are essentially on request, but the final 300 s still records approximately +1.317 MW thermofluid stored-energy rate, falling drum mass/level, increasing primary channel/return flow, rising turbine-inlet pressure and continuing controller-memory motion. The 5 MWe reference does not show comparable drift. Total plant mass and numerical mass/energy closure remain green, so the evidence is represented internal redistribution rather than a numerical/conservation failure.
+
+P2R2 therefore proposes:
+
+- `P3-W-authorized=False`;
+- `P3-R-owner-localization-authorized=True` **only after the P2R2 audit passes**;
+- `production-repair-authorized=False`;
+- next implementation: `P3-R1-Primary-Inventory-Hydraulic-Slow-State-Owner-Localization`.
+
+P3-R1 remains observation/contract-audit work. It may use existing canonical main-circulation pump snapshots, feedwater/condensate pump snapshots, plant-network balances and controller diagnostics, but may not add constitutive physics, a second hydraulic solve, protection/workload changes or exact-v9 semantic changes.
+
+
+## Plan Amendment 3 — external physical-reference assessment before P3-R1
+
+P2R2 has now returned PASS and is authoritative for the branch choice: `P3-R-OWNER-LOCALIZATION`. This does **not** authorize a production repair. Before P3-R1 executes, Plan Amendment 3 inserts a bounded external-reference model-assessment sequence because the current V&V matrix intentionally distinguishes software/model verification from independent physical model assessment.
+
+The amendment does not reopen P2R2 and does not select P3-W. It temporarily holds execution of P3-R1 while the following sequence is completed:
+
+`VR0 reference/provenance freeze → VR1 point kinetics → VR2 IAPWS-IF97 water/steam error map → VR3 I-135/Xe-135 shutdown reference → VR4 ANS-5.1 decay-heat assessment → VR5 consolidated impact decision`.
+
+VR5 may emit only:
+
+- `PROCEED-P3R1-EXACTV9`;
+- `BLOCK-P3R1-MODEL-REPAIR`;
+- `PLAN-STOP-REFERENCE-GAP`.
+
+Only `PROCEED-P3R1-EXACTV9` directly resumes the P3-R1 owner-localization gate. Any production semantic repair keeps exact-v9 immutable and requires a new exact version plus impact-based requalification.
+
+Authoritative detailed planning documents:
+
+- [`M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md`](M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md);
+- [`M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md`](M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md);
+- [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_PLAN_AMENDMENT3_EXTERNAL_MODEL_ASSESSMENT.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_PLAN_AMENDMENT3_EXTERNAL_MODEL_ASSESSMENT.md);
+- [`M10_FINAL_MODEL_ASSESSMENT_CLAIM_POLICY.md`](M10_FINAL_MODEL_ASSESSMENT_CLAIM_POLICY.md);
+- [`M10_FINAL_P3R1_TO_P6_DETAILED_GATE_MATRIX.md`](M10_FINAL_P3R1_TO_P6_DETAILED_GATE_MATRIX.md).

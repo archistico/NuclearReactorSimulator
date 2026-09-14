@@ -17,7 +17,7 @@ This register contains **current** limitations only. Resolved investigations and
 - Generic `SimulationRuntime.Advance(elapsed)` has no intrinsic per-call catch-up ceiling. The desktop production path is separately bounded through fixed cooperative step batches; M11.3 owns the supported generic-API/catch-up policy audit.
 - General wet-steam/two-phase critical-flow and choking fidelity remains limited to explicitly implemented reduced-order paths.
 - Cavitation/NPSH, detailed non-condensable gases and full circulating-water dynamics are not modeled.
-- Drum swell/shrink and detailed separator carryover/carryunder are not modeled at industrial fidelity.
+- Drum swell/shrink and detailed separator carryover/carryunder are not modeled at industrial fidelity. The reviewed nuclear steam-generator literature reinforces that separator efficiency, separator pressure loss, moisture carryover and steam carry-under can alter steam quality and recirculation. Review 2 sharpens the omitted feedback: carry-under can lower returning-liquid density and therefore reduce hydrostatic driving head, while separator pressure loss belongs to total loop loss. The current deterministic ideal separation remains an explicit reduced-order approximation rather than an implicit tuning seam.
 - Main-steam relief and turbine-bypass opening are stateless pressure functions. They do not model safety-valve blowdown/reseat hysteresis, lift dynamics or actuator memory; reopening and reclosing therefore use the same pressure threshold family. This is a deliberate reduced-order limitation, not a hidden state elsewhere.
 
 ## Validated reference drift / inventory redistribution
@@ -38,8 +38,10 @@ Exact regression values are frozen in `../eng/frozen-evidence/ordinary/I3_Valida
 ## Reactor physics
 
 - The core model is reduced-order rather than a full 3D neutronic/thermal-hydraulic solver.
-- Point kinetics and quasi-spatial/group behaviour are educational approximations; they are not a licensing transient-analysis model.
-- Xenon, feedback and decay-heat behaviour are deterministic reduced-order models with configured coefficients rather than plant-certified data.
+- Point kinetics and quasi-spatial/group behaviour are educational approximations; they are not a licensing transient-analysis model. `Applied Reactor Physics` reinforces that global point kinetics assumes no independently solved changing flux shape and is distinct from full-core space-time kinetics; effective kinetic parameters may themselves depend on the spatial/energy weighting in higher-fidelity treatments. M14 must not present derived/mapped local layers as solved space-time neutron transport.
+- Xenon, feedback and decay-heat behaviour are deterministic reduced-order models with configured coefficients rather than plant-certified data. Fuel/moderator/coolant/void feedback coefficients are reduced surrogates for spectral/material effects such as Doppler broadening and moderator scattering, not plant-specific RBMK coefficient fields.
+- External quantitative model assessment is not yet complete for point kinetics, simplified water/steam properties, I-135/Xe-135 shutdown response or decay heat. Plan Amendment 3 therefore inserts VR0–VR5 independent-reference assessment before P3-R1; until VR5, these owners retain their current VERIFIED/QUALIFIED reduced-order claims and must not be described as blanket physically validated models.
+- Current control-rod worth curves are reduced global mappings. They do not solve the spatial flux/importance redistribution that makes physical rod worth nonlinear and state-dependent; any stronger local rod-influence claim belongs to M14 with explicit spatial provenance.
 - No detailed fuel failure, channel rupture propagation, graphite damage or severe core-damage mechanics are currently authoritative.
 
 ## Turbine / electrical system
@@ -47,6 +49,9 @@ Exact regression values are frozen in `../eng/frozen-evidence/ordinary/I3_Valida
 - Turbine expansion, losses and valve capacity are reduced-order thermodynamic/mechanical models.
 - The grid is an educational infinite-bus/reduced coupling model, not a full electromagnetic transient or multi-machine load-flow solver.
 - Electrical protection is reduced-order supervised/delayed logic, not impedance/differential/EMT relay simulation.
+- The current plant does not claim an industrial coordinated unit-load/direct-energy-balance controller. Reactor-power control, turbine governing, steam inventories and generator/grid demand are separate canonical owners whose coupled behavior is qualified by explicit trajectories; a future P3-W path may coordinate them only if P2R authorizes that branch.
+- Review 2 also makes explicit that an industrial-style unit-load master would normally distinguish raw request, rate/limit-conditioned effective demand, controller/actuator demand and committed physical actuator state, with directional hold/inhibit reasoning. The current simulator does not claim this complete plant-wide demand-shaping layer.
+- No qualified 5→10 MWe ramp-rate/stable-range claim exists until the Closure Plan reaches P4 PASS; frequency recovery or a transient load response alone is not equivalent to a qualified sustained operating point.
 
 ## Numerical coupling
 
@@ -104,3 +109,15 @@ The M10.9.7.3 Hotfix 2 REV2 host/session-integrity corrections and subsequent ti
 These validated boundaries are not reasons to change physics, challenge/scoring semantics or archive schema. UI-thread responsiveness, notification fan-out, long-session memory/recorder cost, stable-ID command-target selection and `MainWindowViewModel` decomposition remain M11.3/M13 work as described in [`DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md`](DESKTOP_HOST_FAILURE_AND_SESSION_SAVE_INTEGRITY_REVIEW.md).
 
 - M10.9.8 manual acceptance intentionally adds no general challenge launcher or manual-only fault injector; injected instrumentation/fault combinations remain deterministic validation compositions owned by automated M10.9.8.3/8.4 evidence until a separately justified user-facing launcher is designed.
+
+
+## Two-phase thermal-hydraulic fidelity — Todreas/Kazimi deep-review clarification
+
+- The current water/steam mixture treatment is **reduced HEM-like fidelity**: it does not own independent liquid/vapor velocities, interfacial momentum exchange or independent phasic temperatures.
+- Current quality/void evidence therefore must not be interpreted as a measurement of phase slip, drift-flux state or a two-fluid interfacial state.
+- The model does not explicitly own ONB, net vapor generation, onset of saturated boiling or local flow-regime history. A diagnostic may record canonical phase/quality/void but may not synthesize those missing boiling-history quantities.
+- Current aggregate channel/loop behavior is not qualified as a physical density-wave-instability model. Time-domain oscillations, if observed, require separate physical-versus-numerical classification and later model assessment before such a label is used.
+- The 10 MWe reference plant is a **reduced-order RBMK-like educational plant**, not a geometrically or dynamically scaled RBMK prototype. Simulator time constants and component dimensions are not full-scale RBMK predictions unless a future explicit scaling analysis establishes that claim.
+- Parallel representative channel-group flows are currently reduced-model quantities. A future higher-fidelity split should close total flow and shared hydraulic boundaries; no claim is made that current groups reproduce individual RBMK pressure-channel flow redistribution.
+- Low-flow gravity-dominated circulation, stagnation/reversal and detailed natural-circulation takeover are not qualified merely because the current network contains pumps, density and elevation-like pressure effects. Such claims require a dedicated physical milestone.
+- DNB and dryout are distinct physical mechanisms. No current generic simulator thermal limit should be described as a validated representation of either unless a dedicated future model/assessment establishes it.

@@ -20,6 +20,14 @@ If two historical documents disagree with `PROJECT.md`, `PROJECT.md` is the curr
 - **`PRE_M11_IMPLEMENTATION_DECISIONS.md`** — consolidated decisions from the nuclear-code V&V and Digital-I&C/Human-System reviews: what M11 implements as assurance, what M13 implements as product behavior and what remains explicitly non-scope.
 - **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`** — active P0–P6 replacement-long closure route: D1–D6 evidence freeze, asymptotic qualification, branch decision, short 5→10→5 qualification, second-long freeze/execution and M10 closure.
 - **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md`** — P2 Decision Gate 1: returned P1 `INCONCLUSIVE`, mandatory planning stop, no P3 authorization, and Plan Amendment 1 defining bounded P1A before P2R.
+- **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md`** — P2R1 planning stop after returned P1A `INCONCLUSIVE`; Plan Amendment 2 freezes bounded P1B slow-state/owner observation scope and requires Todreas/Kazimi Deep Review Pass 2 before implementation.
+- **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md`** — returned P1B PASS review; selects P3-R owner localization only, keeps P3-W/production repair/second-long unauthorized, and defines the bounded P3-R1 owner-localization question.
+- **`M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md`** — detailed P2R2→VR0–VR5→P3-R1/P3-R2→P4→P5→P6 execution route with branch/stop rules.
+- **`M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md`** — independent point-kinetics, IAPWS-IF97, iodine/xenon and ANS-5.1 model-assessment program.
+- **`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_PLAN_AMENDMENT3_EXTERNAL_MODEL_ASSESSMENT.md`** — formal Plan Amendment 3 holding P3-R1 until VR5.
+- **`M10_FINAL_MODEL_ASSESSMENT_CLAIM_POLICY.md`** — TEST PASS / VERIFIED / MODEL-ASSESSED / QUALIFIED / PHYSICALLY VALIDATED terminology policy.
+- **`M10_FINAL_P3R1_TO_P6_DETAILED_GATE_MATRIX.md`** — compact gate-by-gate authority, outputs and successor matrix.
+- **`POST_M10_REPOSITORY_RELEASE_PLAYABLE_SLICE_PLAN.md`** — post-M10 Git/version/script/ADR cleanup and playable control-room vertical-slice priorities.
 - **`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`** — final green/red handoff from Replacement-Long Execution 2 through explicit M10 closure and M11.1 bootstrap.
 - **`POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md`** — detailed branch-aware execution sequence from the final M10 long gate through M11 release hardening and the M12–M15 epics.
 - **`CHANGE_IMPACT_REVALIDATION_POLICY.md`** — minimum rerun ladder for documentation, harness, HMI/Application, persistence, control/protection, physics/numerical and release/package changes.
@@ -141,9 +149,12 @@ Acceptance checklists are milestone artifacts, not stable architecture reference
 
 ## Pre-M11 engineering review consolidation
 
-- [`PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md`](PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md) — single index of the three source-driven review streams and their roadmap consequences.
+- [`PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md`](PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md) — single index of the source-driven review streams and their roadmap consequences.
 - [`PRE_M11_NUCLEAR_CODE_VV_REVIEW.md`](PRE_M11_NUCLEAR_CODE_VV_REVIEW.md) — nuclear-code development/V&V review and final-M10 qualification method.
 - [`PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md`](PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md) — Digital I&C, software-safety and human-system review.
+- [`PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md`](PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md) — five-source Reviews 1–2 covering coordinated load/energy balance, flexibility, nuclear load following, steam/water circulation/separation and reactor-physics/spatial-fidelity limits; interpretation-only for P1A/P2R.
+- [`research/PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md`](research/PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md) — source-by-source detailed re-read of the previously selected “study deeply” sections, with corrections, transferability boundaries and roadmap consequences.
+- [`research/PRE_M11_DEEP_REVIEW_TRACEABILITY_2.md`](research/PRE_M11_DEEP_REVIEW_TRACEABILITY_2.md) — compact section → finding → transferability → project-owner traceability matrix.
 - [`DIGITAL_IC_ARCHITECTURE_INVARIANTS.md`](DIGITAL_IC_ARCHITECTURE_INVARIANTS.md) and [`HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md`](HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md) — review-derived architecture/function-allocation planning contracts.
 - [`DIGITAL_IC_HAZARD_CATALOG.md`](DIGITAL_IC_HAZARD_CATALOG.md) and [`HMI_CLASSIC_FAILURE_MODES_CHECKLIST.md`](HMI_CLASSIC_FAILURE_MODES_CHECKLIST.md) — deterministic software/I&C hazard and operator-interface review inputs.
 - [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md) — Lamarsh-derived self-consistency/equilibrium planning, with M12.0 as the formal implementation home.
@@ -153,3 +164,17 @@ Acceptance checklists are milestone artifacts, not stable architecture reference
 
 - [`REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md`](REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md) — residual taxonomy, closed-loop/fixed-input qualification, domain-headroom diagnostics, bounded trimmer and M12.0 roadmap.
 - [`M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md`](M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md) — evidence-first diagnostic route for the current/future long healthy-reference drift or envelope blocker before any production fix.
+
+- [`research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS1.md`](research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS1.md) — pre-Plan-Amendment-2 deep review of Todreas/Kazimi Volumes I–II.
+- [`research/PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS1.md`](research/PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS1.md) — source-section to project-consequence traceability for that pass.
+- [`research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS2.md`](research/PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS2.md) — post-Plan-Amendment-2 audit; candidate disposition `PASS-AS-AUTHORED`.
+
+- [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md) — returned P1B slow-state/owner evidence gate; execution PASS, `COUPLED-MULTI-DOMAIN`, now frozen for P2R2.
+
+
+## M10 Final external physical-reference assessment
+
+- [`M10_FINAL_VR0_REFERENCE_PROVENANCE_CONTRACT.md`](M10_FINAL_VR0_REFERENCE_PROVENANCE_CONTRACT.md) — frozen VR0 non-circular reference/tolerance/applicability contract.
+- [`M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md`](M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md) — active VR1 independent Hébert point-kinetics benchmark and error/refinement contract.
+- [`research/M10_FINAL_VR0_EXTERNAL_REFERENCE_REGISTER.md`](research/M10_FINAL_VR0_EXTERNAL_REFERENCE_REGISTER.md) — authoritative bibliographic/source provenance for VR1–VR4.
+- [`research/M10_FINAL_VR0_RUNTIME_APPLICABILITY_AUDIT.md`](research/M10_FINAL_VR0_RUNTIME_APPLICABILITY_AUDIT.md) — static audit of whether each assessed owner is active in exact-v9/P1B.

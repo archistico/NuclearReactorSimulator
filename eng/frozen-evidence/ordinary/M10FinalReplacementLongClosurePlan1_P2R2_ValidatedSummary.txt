@@ -1,0 +1,16 @@
+﻿m10-final-replacement-long-closure-plan1-p2r2-passes=True
+documentation-planning-only=True
+p1b-execution-pass=True
+p1b-owner-evidence-label=COUPLED-MULTI-DOMAIN
+p1b-checkpoints-reproduced=3/3
+p1b-trip-count=0
+six-mwe-load-reachability-demonstrated=True
+six-mwe-whole-operating-point-stationarity-demonstrated=False
+p2r2-decision=P3-R-OWNER-LOCALIZATION
+p3-w-authorized=False
+p3-r-owner-localization-authorized=True
+production-repair-authorized=False
+replacement-workload-change-authorized=False
+exact-v9-change-authorized=False
+second-replacement-long-authorized=False
+next-authorized-implementation=P3-R1-Primary-Inventory-Hydraulic-Slow-State-Owner-Localization
