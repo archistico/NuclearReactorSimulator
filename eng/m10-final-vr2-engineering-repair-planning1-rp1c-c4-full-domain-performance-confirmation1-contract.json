@@ -1,0 +1,101 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation1-v1",
+  "status": "CANDIDATE",
+  "gate": "RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION1",
+  "prerequisite": {
+    "rp1c_planning1_returned_adjudication": "PASS",
+    "planning1_status": "PASS-AS-AUTHORED",
+    "c4_returned_classification": "C4-QUALIFIED-ALLOCATION-TAIL-CLOSED",
+    "selection_ready_count_before_confirmation": 0
+  },
+  "candidate": {
+    "candidate_id": "C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE",
+    "source": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/Rp1bC4AllocationNeutralShadowThermodynamicCandidate.cs",
+    "source_mutation_allowed": false,
+    "corpus_regeneration_allowed": false,
+    "threshold_change_allowed": false
+  },
+  "protocol": {
+    "fresh_process_count": 5,
+    "run_index_environment_variable": "NRS_M10_FINAL_VR2_REPAIR_PLANNING1_RP1C_C4_PERF_RUN_INDEX",
+    "run_index_values": [1, 2, 3, 4, 5],
+    "opt_in_environment_variable": "NRS_M10_FINAL_VR2_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERF1",
+    "exact_v9_rows": 360,
+    "exact_v9_warmup_passes": 16,
+    "exact_v9_measured_passes": 64,
+    "exact_v9_measured_calls_per_process": 23040,
+    "seam_rows": 1280,
+    "seam_warmup_passes": 4,
+    "seam_measured_passes": 16,
+    "seam_measured_calls_per_process": 20480,
+    "measured_calls_per_process": 43520,
+    "total_measured_calls": 217600,
+    "rotation_stride": 37,
+    "allocation_neutral_harness_required": true,
+    "negative_performance_result_is_harness_failure": false
+  },
+  "corrected_performance_predicate": {
+    "exact_v9_resolve_median_us_max": 94.8,
+    "exact_v9_resolve_p95_us_max": 158.80666666666667,
+    "exact_v9_single_call_max_us_max": 409.30666666666673,
+    "all_seam_sides_single_call_max_us_max": 409.30666666666673,
+    "exact_v9_median_candidate_allocation_bytes_max": 2816,
+    "all_exact_v9_calls_resolved": true,
+    "all_seam_calls_resolved": true,
+    "all_five_processes_must_pass": true,
+    "r1_zero_allocation_evidence_preserved_not_generalized": true,
+    "fallback_zero_required_full_domain": false
+  },
+  "test": {
+    "file": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2EngineeringRepairPlanning1Rp1cC4FullDomainPerformanceConfirmation1Tests.cs",
+    "class": "M10FinalVr2EngineeringRepairPlanning1Rp1cC4FullDomainPerformanceConfirmation1Tests",
+    "method": "Rp1cC4FullDomainPerformanceConfirmation1_MeasuresOneFreshProcess",
+    "explicit": true,
+    "parallel": "none",
+    "configuration": "Release"
+  },
+  "runner": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation1.cmd",
+  "artifact_root": "artifacts/m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation1",
+  "evidence": {
+    "process_directory_count": 5,
+    "files_per_process": 5,
+    "aggregate_file_count": 5,
+    "total_required_files": 30,
+    "process_files": [
+      "01-process-contract.txt",
+      "02-exact-v9-call-timing.csv",
+      "03-seam-call-timing.csv",
+      "04-runtime-context.txt",
+      "05-process-summary.txt"
+    ],
+    "aggregate_files": [
+      "01-contract-and-provenance.txt",
+      "02-cross-process-run-summary.csv",
+      "03-cross-process-seam-side-summary.csv",
+      "04-confirmation-evidence-adjudication.txt",
+      "05-rp1c-c4-full-domain-performance-confirmation1-summary.txt"
+    ]
+  },
+  "authority": {
+    "confirmation_implementation_authorized": true,
+    "rp1c_selection_authorized": false,
+    "production_repair_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false,
+    "next_action_after_run": "RETURN-COMPLETE-CONFIRMATION-ARTIFACT-FOLDER-FOR-ADJUDICATION"
+  },
+  "normalized_lf_sha256": {
+    "planning_01": "9A93B80B211002AEC9390F957B3A00F8643D60FA38191DEBB772E22492E11ACA",
+    "planning_02": "A96E66F4A7CE4F376547E454288BF5FCEBA1831FED39B66005B897BD64133BEB",
+    "planning_03": "64AA0BA7378430AD5381A8C80A22C8D6AE6A8F93DB5B25C11EE1A5A271B044AD",
+    "planning_04": "0FF168162E6050DC246D69E9B1FD80AA6CB027B4CB722E478E3FF954C18EA2CE",
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "rp1a_exact_v9_corpus": "6EB6AEA3BF45621BD9BB890E3449E9BB010E02C3CF5A81AFDAFF67809DE4B50E",
+    "rp1a_seam_corpus": "9035396FDB5A1F6AD89F0B9D28A26992D577906812DE412EFA2AABA98FEBE47D",
+    "rp1a_performance_baseline": "91776709A34142E9312A092F3B19EAFCF0FCA576D561F296CC9272FCDC4F7DEB",
+    "hash_mode": "UTF8-TEXT-NORMALIZED-LF"
+  }
+}

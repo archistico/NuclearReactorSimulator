@@ -1,3 +1,6 @@
+
+> **Hotfix 3:** if the five confirmation processes already completed and the original run failed only in `[4/4]` with the PowerShell `$runIndex:` parser error, do **not** rerun the focused evidence. Use `./scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation1-adjudication-only.cmd` from the repository root after applying Hotfix 3.
+
 # Nuclear Reactor Simulator
 
 Educational full-plant nuclear reactor simulator built with **C# / .NET 10 / Avalonia**. The project models a reduced RBMK-like plant as a deterministic, headless-testable simulation with an operator-facing desktop control room.

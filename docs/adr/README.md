@@ -223,6 +223,9 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 | [0195](0195-separate-c3-algorithmic-performance-from-managed-runtime-wall-clock-tail-before-repair-selection.md) | Separate C3 algorithmic performance from managed-runtime wall-clock tail before repair selection | Accepted | Fluids / thermo / validation |
 | [0196](0196-c4-must-remove-resolve-time-allocation-without-changing-c3-thermodynamic-semantics.md) | C4 must remove resolve-time allocation without changing C3 thermodynamic semantics | Proposed | Fluids / thermo / validation |
 
+| [0197](0197-rp1c-selection-uses-corrected-full-performance-predicate-and-preserves-no-selection.md) | RP1C selection uses corrected full performance predicate and preserves no-selection | Accepted | Fluids / thermo / validation |
+| [0198](0198-require-immutable-c4-full-domain-performance-confirmation-before-rp1c-selection.md) | Require immutable C4 full-domain performance confirmation before RP1C selection | Accepted | Fluids / thermo / validation |
+
 ## Maintenance rule
 
 - New ADRs use a `## Status` heading.

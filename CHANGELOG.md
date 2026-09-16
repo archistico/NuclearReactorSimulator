@@ -1,3 +1,32 @@
+
+## M10 Final VR2 RP1C C4 Full-Domain Performance Confirmation 1 Hotfix 3
+
+- Repairs a Windows PowerShell parser error in the evidence adjudicator caused by a colon immediately following `$runIndex` inside a double-quoted string.
+- Changes only the interpolation to `${runIndex}:`; performance logic, thresholds, C4, corpora and per-process evidence remain unchanged.
+- Adds an adjudication-only runner that reuses the already-completed 5 x 5 per-process artifacts and does not rerun build or the 217,600 focused measurements.
+- No RP1C selection or production/runtime authority is granted.
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1C C4 Full-Domain Performance Confirmation 1 — Hotfix 2 — CANDIDATE
+
+## 2026-09-16 — Focused-test CSV helper type-contract compile repair
+
+- Repairs the ordinary Release build RED after Hotfix 1: `ReadCsvLines` returned a concrete `string[]` but was declared as `IReadOnlyList<string>`, while both CSV loaders correctly used array `.Length`.
+- Changes only the helper return type to `string[]`; method body, row ordering, corpus parsing and timing semantics remain unchanged.
+- Confirms the four reported `CS1061` errors are all manifestations of this single declaration mismatch; remaining `.Length` usages are on concrete arrays.
+- Leaves C4, frozen corpora, runner, adjudicator, thresholds, 5-process/217,600-call protocol and 30-file evidence contract unchanged.
+- The failed second attempt remains compile/infrastructure RED only and grants no RP1C selection or production authority.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1C C4 Full-Domain Performance Confirmation 1 — CANDIDATE
+
+## 2026-09-16 — Immutable-C4 full-domain timing confirmation
+
+- Adjudicates the returned RP1C Planning 1 four-file artifact set PASS and authorizes only the separately versioned C4 full-domain performance confirmation gate.
+- Keeps C4 source, frozen RP1A exact-v9/seam corpora and all performance thresholds immutable.
+- Adds one explicit focused test executed in five fresh processes; each process measures 23,040 exact-v9 calls and 20,480 seam calls, for 43,520 calls/process and 217,600 total calls.
+- Preserves the historical Refinement-3 predicate: exact-v9 median/p95/max, all-seam-sides max and exact-v9 median allocation; the R1 zero-allocation result is preserved but not generalized to full-domain fallback paths.
+- Uses preallocated value-type timing storage and requires zero whole-region harness allocation; engineering-negative performance outcomes remain evidence rather than xUnit REDs.
+- Adds a 30-file evidence contract: five process directories × five files plus five aggregate/adjudication files.
+- RP1C selection, production repair, threshold changes, exact-v9 changes, VR3, P3-R1 and second replacement-long authorization remain blocked pending complete returned confirmation adjudication.
+
 # M10 Final — VR2 Engineering Repair Planning 1 — RP1C Planning 1 — CANDIDATE
 
 ## 2026-09-16 — Corrected selection predicate and final C4 performance-evidence gap
@@ -4139,3 +4168,9 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 
 ### M10 Final VR2 RP1B C4 Test-Only Implementation 1 — final pre-execution hardening
 - Corrected the C4 static validator to verify `future-required-file-count=59` against the immutable returned `01-contract-and-provenance.txt`, where that marker actually resides, rather than the returned planning summary. Returned planning artifacts remain byte-for-byte unchanged.
+
+### M10 Final VR2 RP1C C4 Full-Domain Performance Confirmation 1 Hotfix 1 — Windows PowerShell String.Contains Compatibility
+- Fixes only the static validator for the confirmation gate after the first local run failed before evidence collection on Windows PowerShell because `String.Contains(string, StringComparison)` is not available on the .NET Framework runtime used by Windows PowerShell 5.1.
+- Replaces the two-argument `Contains` check and the `Require-Contains` `IndexOf(..., StringComparison.Ordinal)` helper with the single-argument `String.Contains(string)` API, preserving case-sensitive ordinal marker semantics while removing the runtime-overload dependency.
+- Does not modify C4, frozen corpora, focused test logic, runner protocol, adjudicator, thresholds, evidence contract, RP1C selection authority or production/runtime code.
+- The failed first attempt produced no focused evidence and grants no new authority.
