@@ -1,0 +1,12 @@
+lane=A
+run-index=5
+process-id=8876
+stopwatch-frequency-hz=10000000
+processor-count=32
+runtime-version=10.0.5
+whole-measured-region-allocated-bytes=0
+candidate-call-allocated-bytes-sum=0
+harness-allocated-bytes=0
+gc-gen0-collections=0
+gc-gen1-collections=0
+gc-gen2-collections=0

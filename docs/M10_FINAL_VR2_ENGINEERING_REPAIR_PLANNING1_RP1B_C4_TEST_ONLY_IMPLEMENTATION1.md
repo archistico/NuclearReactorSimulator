@@ -174,3 +174,24 @@ future evidence contract           = 9 aggregate + (10 * 5 process files) = 59
 The candidate resolve-time sections and measured timing recorder contain no `List` creation, LINQ ordering/projection, `foreach`, direct IF97 calls, string formatting or reference-type sample allocation. Initialization remains intentionally outside the measured region.
 
 A real .NET 10 build cannot be performed in the packaging environment because the required SDK is not installed there and the environment has no network access. Therefore the authoritative compile, ordinary-suite and focused evidence decision remains the local Windows runner execution described above.
+
+## 8. Returned execution and engineering adjudication
+
+The complete returned 59-file C4 artifact tree has now been independently reviewed and accepted.
+
+Returned classification:
+
+```text
+C4-QUALIFIED-ALLOCATION-TAIL-CLOSED
+```
+
+The returned evidence confirms 1,967/1,967 semantic comparisons bit-equivalent to frozen C3, 204,800/204,800 timing calls resolved, zero candidate and harness allocation, zero immutable-C2 fallback calls, zero GC activity in measured regions and zero strict-ceiling exceedances.
+
+The worst returned call is 329.9 us against the unchanged 409.30666666666673 us strict maximum ceiling. All ten independent lane/run distributions satisfy the frozen median and p95 ceilings.
+
+The authoritative engineering review is:
+
+`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_C4_RETURNED_EVIDENCE_ADJUDICATION.md`
+
+This closes C4 Test-Only Implementation 1 as qualified returned evidence. It authorizes only a separately versioned RP1C planning gate. RP1C selection and every production/runtime change remain unauthorized.
+

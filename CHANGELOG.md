@@ -1,3 +1,29 @@
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1C Planning 1 — CANDIDATE
+
+## 2026-09-16 — Corrected selection predicate and final C4 performance-evidence gap
+
+- Adds a planning-only RP1C gate on the returned/adjudicated C4 baseline; no RP1C selection or production change is contained in the package.
+- Preserves Refinement-2 D3 `rp1c_selection_eligible=True` as historical provenance but applies the corrected full predicate already required by Refinement 3: D3 `seam_max=16504.9 us` exceeds the unchanged `409.30666666666673 us` strict maximum and is therefore not current selection-ready.
+- Confirms C4 is bit-equivalent to physically/seam-complete C3 and closes the R1 problem with 204,800 measured calls, zero allocation/fallback/exceedance and worst max `329.9 us`.
+- Identifies a remaining evidence gap before selection: C4 itself has not yet been timed over the complete 360-row exact-v9 corpus plus all 1,280 seam probes. Historical C3 timing cannot be silently promoted to C4 timing because C4 introduces allocation-neutral mixture/liquid prefixes.
+- Keeps current RP1C selection-ready count at zero and freezes the next evidence gate as `RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION1`.
+- Freezes that confirmation to five fresh processes, each measuring 23,040 exact-v9 + 20,480 seam calls = 43,520 calls/process, 217,600 total calls, with immutable C4/corpus/thresholds, an allocation-neutral harness and the original 2816 B median candidate-allocation ceiling. The R1 zero-allocation result is preserved but not generalized to unrelated fallback paths.
+- Preserves the later decision space `SELECT-C4 | SELECT-NONE`; `SELECT-C4` is impossible unless the returned full-domain confirmation passes in all five processes.
+- Keeps post-selection authority conservative: returned selection adjudication is still required before `R1-IMPLEMENTATION-PLANNING-ONLY`.
+- Adds ADR-0197, machine contract, ASCII Windows PowerShell validator, runner and a four-file returned-planning artifact contract.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B C4 Returned-Evidence Adjudication / Documentation Handoff 1 — CANDIDATE
+
+## 2026-09-16 — C4 returned evidence qualified; RP1C planning-only authority
+
+- Freezes the complete returned 59-file C4 evidence tree under `eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_C4_Artifacts/`.
+- Accepts the returned classification `C4-QUALIFIED-ALLOCATION-TAIL-CLOSED` after independent reconciliation of raw semantic, timing, allocation, fallback, GC and boundary-summary evidence.
+- Confirms 1,679 thermodynamic state comparisons + 288 hydraulic comparisons = 1,967 total semantic observations with zero bit or deterministic-repeat mismatch.
+- Confirms 10 fresh timing processes / 204,800 measured R1 calls with zero unresolved calls, zero candidate allocation, zero whole-region harness allocation, zero immutable-C2 fallback and zero GC activity in measured regions.
+- Confirms all ten lane/run distributions remain under unchanged 94.8 us median, 158.80666666666667 us p95 and 409.30666666666673 us max ceilings; worst returned call is 329.9 us.
+- Advances authority only to a separately versioned RP1C planning gate. RP1C selection, production repair, threshold/tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+- Updates `PROJECT.md`, Planning 1, the C4 implementation note, documentation navigation and the top-level index. No production `src/`, historical test, C4 source/test/runner or threshold is changed.
+
 # M10 Final — VR2 Engineering Repair Planning 1 — RP1B C4 Test-Only Implementation 1 — CANDIDATE
 
 ## 2026-09-16 — Separately versioned allocation-neutral C4 implementation/evidence gate

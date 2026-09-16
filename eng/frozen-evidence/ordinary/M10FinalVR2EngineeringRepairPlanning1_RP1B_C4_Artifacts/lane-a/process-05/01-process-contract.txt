@@ -1,0 +1,16 @@
+gate=VR2-ENGINEERING-REPAIR-PLANNING1-RP1B-C4
+scope=C4-TEST-ONLY-ALLOCATION-TAIL-EVIDENCE
+candidate=C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE
+lane=A
+run-index=5
+warmup-passes=16
+measured-passes=64
+measured-calls=20480
+r1-boundary-count=320
+resolve-median-ceiling-us=94.8
+resolve-p95-ceiling-us=158.80666666666667
+resolve-max-ceiling-us=409.30666666666673
+required-bytes-per-call=0
+required-fallback-calls=0
+rp1c-selection-authorized=False
+production-repair-authorized=False
