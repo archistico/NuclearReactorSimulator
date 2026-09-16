@@ -1,0 +1,16 @@
+M10 Final VR2 Engineering Repair Planning 1 RP1B C4 Planning 1 REV2
+User-returned planning evidence adjudication
+
+returned-planning-audit=PASS-AS-AUTHORED
+returned-planning-adjudication=PASS
+planning-classification=C4-PLANNING-CONTRACT-FROZEN
+c4-test-only-implementation-authorized=True
+c4-implementation-scope=SEPARATELY-VERSIONED-TEST-ONLY-CANDIDATE-DEFINED-BY-REV2
+rp1c-selection-authorized=False
+production-repair-authorized=False
+threshold-change-authorized=False
+exact-v9-change-authorized=False
+vr3-authorized=False
+p3-r1-authorized=False
+second-replacement-long-authorized=False
+next-action=IMPLEMENT-AND-GENERATE-C4-TEST-ONLY-EVIDENCE-THEN-RETURN-COMPLETE-C4-ARTIFACT-FOLDER

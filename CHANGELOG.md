@@ -1,3 +1,15 @@
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B C4 Test-Only Implementation 1 — CANDIDATE
+
+## 2026-09-16 — Separately versioned allocation-neutral C4 implementation/evidence gate
+
+- Freezes the returned C4 Planning 1 REV2 4/4 artifact set and records the separate returned-planning adjudication PASS that authorizes only this test-only C4 implementation/evidence candidate.
+- Adds `Rp1bAllocationNeutralVaporSeamCompleteTabulatedSurrogateCandidate` without modifying historical C2/C3/D3: C3 vapor precedence first, allocation-neutral C2 `MIXTURE + LIQUID-TABLE + NEAR-BOUNDARY-LIQUID` prefix, immutable C2 fallback, then historical C3 saturated-side fallback.
+- Replaces the resolve-time reachability-boundary temporary list/LINQ ordering with two local fraction slots while preserving historical crossing order and stable ascending evaluation; all measured prefix scans are indexed and resolution-path telemetry is a value-type enum.
+- Adds one explicit semantic process comparing 1,679 state observations plus 288 hydraulic observations bit-for-bit against frozen C3 Refinement-2 evidence, with two deterministic C4 repeats per observation.
+- Adds ten fresh timing processes (Lane A x5, Lane B x5), each with 16 warm-up + 64 measured passes over 320 R1 boundaries, preallocated value-type samples, per-call allocation/GC telemetry, whole-region allocation reconciliation and zero-fallback evidence.
+- Adds the 59-file aggregate/per-process evidence contract, static validator, PowerShell adjudicator and runner. Engineering-negative C4 outcomes remain evidence rather than intentional xUnit REDs; only harness/evidence-integrity failures fail execution.
+- RP1C selection, production repair, threshold/tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized until complete returned C4 evidence is adjudicated.
+
 # M10 Final — VR2 Engineering Repair Planning 1 — RP1B C4 Planning 1 REV2 — Second pre-execution hardening — CANDIDATE
 
 ## 2026-09-16 — Feasibility and measurement-harness correction
@@ -4098,3 +4110,6 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Keeps the RP1A 40/360/288/1280 corpus, seam coordinates, 25% VR2 ceiling, 10% planning target and machine-local performance ceilings unchanged.
 - Tightens later selection eligibility: all 1,280 seam probes must resolve and seam phase mismatch count must be zero.
 - Production `src/`, `CorrelationConsistentInverseDomain`, exact-v9, VR3, P3-R1 and second replacement-long authority remain unchanged/not authorized.
+
+### M10 Final VR2 RP1B C4 Test-Only Implementation 1 — final pre-execution hardening
+- Corrected the C4 static validator to verify `future-required-file-count=59` against the immutable returned `01-contract-and-provenance.txt`, where that marker actually resides, rather than the returned planning summary. Returned planning artifacts remain byte-for-byte unchanged.
