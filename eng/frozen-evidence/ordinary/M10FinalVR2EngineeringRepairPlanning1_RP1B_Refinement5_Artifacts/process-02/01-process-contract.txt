@@ -1,0 +1,15 @@
+gate=VR2-ENGINEERING-REPAIR-PLANNING1-RP1B-REFINEMENT5
+scope=C3-CROSS-PROCESS-WALL-CLOCK-TAIL-REPRODUCIBILITY
+candidate=C3-VAPOR-SEAM-COMPLETE-SURROGATE
+candidate-source-changed=False
+process-run-index=2
+independent-process-run-count=5
+r1-boundary-count=320
+warmup-passes=16
+measured-passes=64
+measured-calls=20480
+resolve-max-ceiling-us=409.30666666666673
+strict-single-call-max-preserved=True
+c4-created=False
+rp1c-selection-authorized=False
+production-src-change-authorized=False

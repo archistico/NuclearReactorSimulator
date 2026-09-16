@@ -14,7 +14,7 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 
 - **Layering / determinism:** ADR 0001, 0002, 0005, 0006, 0008.
 - **Plant/network ownership:** ADR 0025, 0027, 0028, 0179, 0180.
-- **Hydraulic/thermodynamic correction policy:** ADR 0159, 0183.
+- **Hydraulic/thermodynamic correction policy:** ADR 0159, 0183, 0194.
 - **Scenario / replay / persistence:** ADR 0053, 0068, 0176, 0181, 0184.
 - **Mission / operator experience:** ADR 0177, 0178, 0182.
 - **Desktop host / save integrity planning:** ADR 0185.
@@ -218,6 +218,10 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 | [0191](0191-stage-qualified-exact-v9-as-opt-in-before-authoritative-activation.md) | Stage qualified exact-v9 as an opt-in production policy before authoritative activation | Accepted | Scenarios / production policy |
 
 | [0192](0192-activate-qualified-exact-v9-as-authoritative-production-without-reinterpreting-history.md) | Activate qualified exact-v9 as authoritative production without reinterpreting historical identities | Proposed | Scenarios / production policy |
+
+| [0194](0194-preserve-exact-v9-and-stage-reference-consistent-thermodynamic-repair-behind-new-closure-mode.md) | Preserve exact-v9 and stage physical-reference thermodynamic repair behind a new closure mode | Accepted | Fluids / thermo / secondary |
+| [0195](0195-separate-c3-algorithmic-performance-from-managed-runtime-wall-clock-tail-before-repair-selection.md) | Separate C3 algorithmic performance from managed-runtime wall-clock tail before repair selection | Accepted | Fluids / thermo / validation |
+| [0196](0196-c4-must-remove-resolve-time-allocation-without-changing-c3-thermodynamic-semantics.md) | C4 must remove resolve-time allocation without changing C3 thermodynamic semantics | Proposed | Fluids / thermo / validation |
 
 ## Maintenance rule
 

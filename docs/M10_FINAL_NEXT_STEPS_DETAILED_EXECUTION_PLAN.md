@@ -1,6 +1,6 @@
 # M10 Final — Detailed Next-Steps Execution Plan
 
-**Status: PLANNING CANDIDATE — P2R2 is validated; P3-R1 is deliberately held behind Plan Amendment 3 physical-reference assessment.**
+**Status: RP1B REFINEMENT 1 EXECUTION CANDIDATE — VR2 Materiality Diagnostic 1 is adjudicated `HYDRAULIC-MATERIALITY-CONFIRMED`; Engineering Repair Planning 1, RP1A REV1 and the first-generation RP1B B1/C1/D1 evidence matrix are VALIDATED. C2/D2 test-only refinement is the only authorized next gate before RP1C, repair or VR3.**
 
 This document is the detailed execution map from the validated P2R2 decision to M10 closure. It does not change production physics, exact-v9, the replacement workload, protection semantics, authority policy or the mission pack. It refines *when* the already-authorized P3-R1 investigation may begin and inserts an external-reference model-assessment program before any production repair is considered.
 
@@ -44,6 +44,16 @@ VR1 Point-Kinetics Independent Benchmark
     |
     v
 VR2 IAPWS-IF97 Water/Steam Error Map
+    |
+    v
+VR2 Materiality Diagnostic + Returned-Evidence Adjudication
+    | HYDRAULIC-MATERIALITY-CONFIRMED
+    v
+VR2 Engineering Repair Planning 1
+    |
+    +--> RP1A corpus/seam freeze -> RP1B B1/C1/D1 matrix -> RP1B Refinement 2 C3/D3 -> RP1C selection
+    |
+    +--> selected repair must pass versioned requalification and VR2 re-entry
     |
     v
 VR3 I-135/Xe-135 Shutdown Reference Trajectory
@@ -466,6 +476,16 @@ M11 must not become an indefinite backend expansion. The first release-hardening
 These are post-M10 priorities; they do not weaken the current M10 closure gates.
 
 
-## Current execution checkpoint — 2026-09-14
+## Current execution checkpoint — 2026-09-15
 
-Plan Amendment 3 and VR0 Reference / Provenance Contract Freeze both returned local PASS and are VALIDATED. **VR1 POINT-KINETICS INDEPENDENT BENCHMARK** is now the only authorized execution gate. The frozen VR0 reference/tolerance contract remains binding; VR1 may authorize only VR2 on PASS and cannot calibrate exact-v9 plant parameters or execute P3-R1.
+Plan Amendment 3 and VR0 are VALIDATED; VR1 is VALIDATED; VR2 is `MODEL-DISCREPANCY-BLOCKING`. Materiality Diagnostic 1 and its returned-evidence adjudication are complete with `HYDRAULIC-MATERIALITY-CONFIRMED`. RP1A REV1 is now VALIDATED. The first-generation RP1B matrix is complete and frozen; the active and only authorized next gate is **RP1B Refinement 1 — C2/D2 Test-Only Shadow Matrix**. Production repair, RP1C selection before returned Refinement 1 review, thermodynamic tolerance changes, exact-v9 modification, VR3, P3-R1 and a second replacement-long baseline remain unauthorized.
+
+## VR2 Materiality returned-evidence adjudication re-entry
+
+Attempt 5 completed the full materiality trajectory and returned a complete evidence set, but the focused test ended RED after evidence generation because the harness required `1e-9 kg/s` equality between the committed H.22 flow iterate and the instantaneous quadratic-map flow. The observed maximum difference, `0.009952798974779853 kg/s`, is below the authoritative exact-v9 H.22 absolute fixed-point flow residual ceiling of `0.01 kg/s`. The returned-evidence adjudication has now completed PASS and confirms that `HYDRAULIC-MATERIALITY-CONFIRMED` survives conservative subtraction of the full H.22 numerical residual bound. The historical RED and original materiality thresholds remain provenance. Planning 1 and RP1A REV1 are now validated. Returned RP1B review found no first-generation selectable candidate and authorizes only the versioned C2/D2 refinement; production repair, RP1C and VR3 remain unauthorized until returned Refinement 1 review.
+
+## VR2 Engineering Repair Planning 1 stop
+
+The returned VR2 materiality adjudication closes the evidence question as `HYDRAULIC-MATERIALITY-CONFIRMED`; it does not authorize production work. The active successor is [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md).
+
+The mandatory order is RP1A reference-domain/seam freeze -> RP1B test-only shadow candidate matrix -> RP1C engineering selection. A local coefficient-only retune cannot advance standalone. Exact-v9 and the existing `CorrelationConsistentInverseDomain` mode remain immutable, and any later repair/activation requires a new opt-in closure mode plus a new exact-version identity after requalification. VR3 remains blocked until the repaired VR2 path is explicitly closed nonblocking.

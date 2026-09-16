@@ -1,0 +1,3 @@
+candidate_id,initialization_us,initialization_allocated_bytes,measured_resolve_calls,measured_seam_calls,resolve_median_us,resolve_p95_us,resolve_max_us,seam_max_us,resolve_median_allocated_bytes,median_ceiling_us,p95_ceiling_us,max_ceiling_us,median_allocation_ceiling_bytes,all_timing_values_finite,within_frozen_ceilings
+C3-VAPOR-SEAM-COMPLETE-SURROGATE,211682.5,9284976,2880,1280,7.2,124.6,823.4,175.1,0,94.8,158.80666666666667,409.30666666666673,2816,true,false
+D3-VAPOR-SEAM-COMPLETE-IF97-COMPARATOR,178153.4,14188808,2880,1280,14.7,15.3,208.5,16504.9,0,94.8,158.80666666666667,409.30666666666673,2816,true,true

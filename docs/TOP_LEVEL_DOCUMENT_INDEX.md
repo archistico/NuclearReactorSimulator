@@ -57,6 +57,7 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`IODINE_XENON_DYNAMICS.md`](IODINE_XENON_DYNAMICS.md) | Iodine/Xenon Dynamics | Physics / plant / controls |
 | [`M10_FINAL_VR0_REFERENCE_PROVENANCE_CONTRACT.md`](M10_FINAL_VR0_REFERENCE_PROVENANCE_CONTRACT.md) | M10 Final — VR0 Reference / Provenance Contract Freeze | Evidence / qualification |
 | [`M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md`](M10_FINAL_VR1_POINT_KINETICS_INDEPENDENT_BENCHMARK.md) | M10 Final — VR1 Point-Kinetics Independent Benchmark | Evidence / qualification |
+| [`M10_FINAL_VR2_IAPWS_IF97_WATER_STEAM_ERROR_MAP.md`](M10_FINAL_VR2_IAPWS_IF97_WATER_STEAM_ERROR_MAP.md) | M10 Final — VR2 IAPWS-IF97 Water/Steam Error Map | Evidence / qualification |
 | [`KNOWN_MODEL_LIMITATIONS.md`](KNOWN_MODEL_LIMITATIONS.md) | Known model limitations | Governance / navigation |
 | [`M10_8_MANUAL_VALIDATION_CHECKLIST.md`](M10_8_MANUAL_VALIDATION_CHECKLIST.md) | M10.8 Manual Validation Checklist — Integrated Operator Computer UI | Acceptance / validation |
 | [`M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_4_FINAL_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.4 Final Manual HMI / Engineering-Schematic Validation Checklist | Acceptance / validation |
@@ -153,6 +154,65 @@ This is the exhaustive index of live top-level `docs/*.md` files. `docs/README.m
 | [`VALVES.md`](VALVES.md) | Valves | Physics / plant / controls |
 | [`VOID_FEEDBACK.md`](VOID_FEEDBACK.md) | Void Feedback | Physics / plant / controls |
 | [`WATER_STEAM_MODEL.md`](WATER_STEAM_MODEL.md) | Simplified Water/Steam Model | Physics / plant / controls |
+
+## Coverage additions — live M10 Final / VR2 documents
+
+These rows close top-level index drift discovered during the 2026-09-16 documentation handoff consolidation. They are navigation entries only; `PROJECT.md` remains the sole current-state authority.
+
+| File | Title | Class |
+| --- | --- | --- |
+| [`M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md`](M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md) | M10.9.8.5 — Manual Integrated HMI Acceptance Checklist | Planning / engineering review |
+| [`M10_9_8_CLOSURE.md`](M10_9_8_CLOSURE.md) | M10.9.8 — Integrated Human / Automation / HMI Closure | Planning / engineering review |
+| [`M10_FINAL_EXACT_V9_PRODUCTION_ACTIVATION_CANDIDATE.md`](M10_FINAL_EXACT_V9_PRODUCTION_ACTIVATION_CANDIDATE.md) | M10 Final — Exact-v9 Qualified Production Activation Candidate | Planning / engineering review |
+| [`M10_FINAL_EXACT_V9_PRODUCTION_ACTIVATION_DECISION.md`](M10_FINAL_EXACT_V9_PRODUCTION_ACTIVATION_DECISION.md) | M10 Final — Exact-v9 Authoritative Production Activation Decision 1 | Planning / engineering review |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC1.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC1.md) | M10 Final Long Failure Diagnostic 1 | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC10.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC10.md) | M10 Final Long Failure Diagnostic 10 — Exact-v8 Turbine Moisture-Drain Ownership Requalification | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC11.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC11.md) | M10 Final Long Failure Diagnostic 11 — Exact-v9 Post-Moisture Analytical Whole-Cycle Equilibrium | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC2.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC2.md) | M10 Final Long Failure Diagnostic 2 / LR-M1 Hotfix 1 | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC3.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC3.md) | M10 Final Long Failure Diagnostic 3 — Exact-v5 Reference Operating-Point Candidate | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC4.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC4.md) | M10 Final Long Failure Diagnostic 4 — Exact-v5 Full-Plant Mass / Energy Balance Census | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC5.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC5.md) | M10 Final Long Failure Diagnostic 5 — Exact-v5 Whole-Cycle Authored-State Owner Census | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC6.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC6.md) | M10 Final Long Failure Diagnostic 6 — Exact-v6 Analytical Whole-Cycle Equilibrium Candidate | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC7.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC7.md) | M10 Final Long Failure Diagnostic 7 — Governor-Droop / Steam-Path Owner Census | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC8.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC8.md) | M10 Final Long Failure Diagnostic 8 — Exact-v7 Grid-Droop Integral-Reference Requalification | Evidence / qualification |
+| [`M10_FINAL_LONG_FAILURE_DIAGNOSTIC9.md`](M10_FINAL_LONG_FAILURE_DIAGNOSTIC9.md) | M10 Final Long Failure Diagnostic 9 — Exact-v7 Turbine-Admission / Closed-Cycle Mass-Owner Census | Evidence / qualification |
+| [`M10_FINAL_LONG_VALIDATION_EXECUTION.md`](M10_FINAL_LONG_VALIDATION_EXECUTION.md) | M10 Final Pre-M11 Long Validation — Execution Handoff | Evidence / qualification |
+| [`M10_FINAL_LONG_VALIDATION_METRICS_SPEC.md`](M10_FINAL_LONG_VALIDATION_METRICS_SPEC.md) | M10 Final Long Validation — Frozen Workload & Acceptance Specification v2 | Evidence / qualification |
+| [`M10_FINAL_MODEL_ASSESSMENT_CLAIM_POLICY.md`](M10_FINAL_MODEL_ASSESSMENT_CLAIM_POLICY.md) | M10 Final — Model Assessment and Claim Policy | Planning / engineering review |
+| [`M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md`](M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md) | M10 Final — Detailed Next-Steps Execution Plan | Planning / engineering review |
+| [`M10_FINAL_P3R1_TO_P6_DETAILED_GATE_MATRIX.md`](M10_FINAL_P3R1_TO_P6_DETAILED_GATE_MATRIX.md) | M10 Final — P3-R1 to P6 Detailed Gate Matrix | Planning / engineering review |
+| [`M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md`](M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md) | M10 Final — Physical Reference Model Assessment Plan 1 | Planning / engineering review |
+| [`M10_FINAL_REPLACEMENT_LONG_BASELINE_FREEZE.md`](M10_FINAL_REPLACEMENT_LONG_BASELINE_FREEZE.md) | M10 Final — Exact-v9 Replacement-Long Baseline Freeze | Planning / engineering review |
+| [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md) | M10 Final Replacement-Long Closure Plan 1 | Planning / engineering review |
+| [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md) | M10 Final Replacement-Long Closure Plan 1 — P2R2 Decision Re-entry 2 | Planning / engineering review |
+| [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md) | M10 Final Replacement-Long Closure Plan 1 — P2R Decision Re-entry 1 / Plan Amendment 2 | Planning / engineering review |
+| [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md) | M10 Final Replacement-Long Closure Plan 1 — P2 Decision Gate 1 | Planning / engineering review |
+| [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_PLAN_AMENDMENT3_EXTERNAL_MODEL_ASSESSMENT.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_PLAN_AMENDMENT3_EXTERNAL_MODEL_ASSESSMENT.md) | M10 Final Replacement-Long Closure Plan 1 — Plan Amendment 3 | Planning / engineering review |
+| [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC1.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC1.md) | M10 Final Replacement-Long Failure Diagnostic 1 | Evidence / qualification |
+| [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC2.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC2.md) | M10 Final Replacement-Long Failure Diagnostic 2 | Evidence / qualification |
+| [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC3.md) | M10 Final Replacement-Long Failure Diagnostic 3 — Paralleled Governor / Mechanical Preload / Historical Version Discrimination | Evidence / qualification |
+| [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC4.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC4.md) | M10 Final Replacement-Long Failure Diagnostic 4 — Load Ramp / Torque Coupling / Energy Support Discrimination | Evidence / qualification |
+| [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC5.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC5.md) | M10 Final Replacement-Long Failure Diagnostic 5 — Measured Readiness-Gated Staged Load / Attainable Capacity | Evidence / qualification |
+| [`M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md`](M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md) | M10 Final Replacement-Long Failure Diagnostic 6 — First-Stage Long Settling / Steam-Path Lag / Synchronous Recovery | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md) | M10 Final — VR2 Engineering Repair Planning 1 — Thermodynamic Inverse Closure & Phase-Boundary Repair | Planning / engineering review |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1A_REFERENCE_DOMAIN_CORPUS_SEAM_MAP_FREEZE.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1A_REFERENCE_DOMAIN_CORPUS_SEAM_MAP_FREEZE.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1A Reference Domain Corpus & Seam Map Freeze | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_PERFORMANCE_REPLANNING1.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_PERFORMANCE_REPLANNING1.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Performance Measurement Replanning 1 | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT1_C2_D2.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT1_C2_D2.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 1 C2/D2 | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT1_HOTFIX1_PREEXECUTION_REVIEW.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT1_HOTFIX1_PREEXECUTION_REVIEW.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 1 Hotfix 1 Pre-Execution Review | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT2_C3_D3.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT2_C3_D3.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 2 C3/D3 | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT2_PREEXECUTION_REVIEW.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT2_PREEXECUTION_REVIEW.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 2 Pre-Execution Review | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT3_C3_PERFORMANCE_TAIL.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT3_C3_PERFORMANCE_TAIL.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 3 C3 Performance-Tail Attribution | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT3_PREEXECUTION_REVIEW.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT3_PREEXECUTION_REVIEW.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 3 Pre-Execution Review | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT4_C3_R1_SEAM_LOCALIZATION.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT4_C3_R1_SEAM_LOCALIZATION.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 4 C3 R1-Seam Worst-Case Localization | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT4_PREEXECUTION_REVIEW.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT4_PREEXECUTION_REVIEW.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 4 Pre-Execution Review | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_C3_CROSS_PROCESS_TAIL.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_C3_CROSS_PROCESS_TAIL.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 5 — C3 Cross-Process Wall-Clock Tail Reproducibility | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_PREEXECUTION_REVIEW.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_PREEXECUTION_REVIEW.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 5 — Pre-Execution Review | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_RETURNED_EVIDENCE_ADJUDICATION.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_RETURNED_EVIDENCE_ADJUDICATION.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 5 — Returned-Evidence Adjudication | Evidence / qualification |
+| [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_TEST_ONLY_SHADOW_CANDIDATE_MATRIX.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_TEST_ONLY_SHADOW_CANDIDATE_MATRIX.md) | M10 Final — VR2 Engineering Repair Planning 1 — RP1B Test-Only Shadow Candidate Matrix | Evidence / qualification |
+| [`M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md`](M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md) | M10 Final — VR2 Materiality Diagnostic 1 Returned-Evidence Adjudication | Evidence / qualification |
+| [`M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md`](M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md) | M10 Final — VR2 Replanning / Materiality Diagnostic 1 | Evidence / qualification |
+| [`M10_FINAL_VV_MATRIX.md`](M10_FINAL_VV_MATRIX.md) | M10 Final V&V Matrix | Evidence / qualification |
+| [`POST_M10_REPOSITORY_RELEASE_PLAYABLE_SLICE_PLAN.md`](POST_M10_REPOSITORY_RELEASE_PLAYABLE_SLICE_PLAN.md) | Post-M10 — Repository, Release Identity and Playable Vertical Slice Plan | Planning / engineering review |
 
 ## Maintenance rule
 

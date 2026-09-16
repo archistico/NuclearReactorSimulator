@@ -35,4 +35,4 @@ A successful script execution alone does not upgrade a row. The row may be propo
 
 ## External physical-reference hold status
 
-Plan Amendment 3 is VALIDATED. The **VR0 reference/provenance contract is VALIDATED** and binding. **VR1 Point-Kinetics Independent Benchmark is the active gate.** It may promote only the generic point-kinetics implementation to `MODEL-ASSESSED` if the frozen external-reference contract passes; exact-v9 one-group plant parameterization remains reduced and uncalibrated.
+Plan Amendment 3 is VALIDATED. The **VR0 reference/provenance contract and VR1 Point-Kinetics Independent Benchmark are VALIDATED**. VR2 returned `MODEL-DISCREPANCY-BLOCKING`, and its later returned-evidence adjudication established `HYDRAULIC-MATERIALITY-CONFIRMED`; the project is therefore held in the VR2 engineering-repair planning/requalification route before VR3. The current executable checkpoint is maintained only in `PROJECT.md`; this frozen matrix is not rewritten by each RP1B refinement and no machine-readable row is promoted by planning evidence alone.

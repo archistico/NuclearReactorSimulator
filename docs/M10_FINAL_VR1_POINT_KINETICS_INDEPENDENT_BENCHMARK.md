@@ -1,6 +1,6 @@
 # M10 Final — VR1 Point-Kinetics Independent Benchmark
 
-**Status: ACTIVE CANDIDATE — explicit test-only model assessment.**
+**Status: VALIDATED — returned artifact review confirmed the independent point-kinetics benchmark.**
 
 **Validated prerequisite:** VR0 Reference / Provenance Contract Freeze.
 

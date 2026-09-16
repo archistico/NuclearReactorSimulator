@@ -19,6 +19,8 @@ The project documentation is large enough that discoverability and authority rul
 
 A document must not duplicate the current validation checkpoint merely for convenience. If current state is needed, link to `PROJECT.md`.
 
+For conversation/session handoff, restart instructions also belong in `PROJECT.md`; do not create a parallel `CURRENT_STATUS`, `CHAT_HANDOFF` or `RESTART` document that can drift from the authoritative checkpoint.
+
 ## Stable architecture versus chronology
 
 `ARCHITECTURE.md` is organized by **what owns a concern**, not by when a milestone introduced it. Milestone-led architecture prose is preserved under `history/ARCHITECTURE_MILESTONE_LEDGER.md`.

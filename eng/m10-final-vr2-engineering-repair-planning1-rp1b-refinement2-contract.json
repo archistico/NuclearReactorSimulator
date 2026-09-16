@@ -1,0 +1,117 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1b-refinement2-v1",
+  "status": "CANDIDATE",
+  "prerequisite": {
+    "rp1a_status": "VALIDATED",
+    "rp1b_status": "VALIDATED-EVIDENCE-MATRIX",
+    "rp1b_refinement1_status": "VALIDATED-EVIDENCE-MATRIX",
+    "rp1b_refinement1_returned_artifact_set": "COMPLETE-9-OF-9",
+    "refinement1_selection_result": "NO-CANDIDATE-SELECTABLE",
+    "engineering_review": "VAPOR-SIDE-SEAM-COMPLETION-REQUIRED",
+    "next_gate": "RP1B-REFINEMENT2-C3-D3-VAPOR-SIDE-SEAM-COMPLETION"
+  },
+  "frozen_corpus": {
+    "vr2_rows": 40,
+    "vr2_inverse_applicable_rows": 39,
+    "vr2_boundary_only_rows": 1,
+    "exact_v9_node_rows": 360,
+    "hydraulic_rows": 288,
+    "seam_rows": 1280,
+    "seam_boundary_count": 320,
+    "seam_pressure_relative_offset": 1.0e-05,
+    "seam_quality_offset": 1.0e-06,
+    "seam_offsets_changed": false,
+    "rp1a_regenerated": false
+  },
+  "frozen_refinement1": {
+    "c2_id": "C2-EXTENDED-TABULATED-SURROGATE",
+    "c2_vr2_unresolved": 0,
+    "c2_exact_v9_unresolved": 0,
+    "c2_exact_v9_phase_agreement_percent": 100.0,
+    "c2_seam_unresolved": 260,
+    "c2_seam_phase_mismatch": 55,
+    "c2_r4_vapor_side_unresolved": 2,
+    "c2_r2_side_unresolved": 258,
+    "c2_r2_side_phase_mismatch": 55,
+    "c2_planning_target_met": true,
+    "c2_performance_ceiling_met": true,
+    "c2_selection_eligible": false,
+    "d2_id": "D2-SEAM-COMPLETE-IF97-COMPARATOR",
+    "d2_vr2_unresolved": 0,
+    "d2_exact_v9_unresolved": 0,
+    "d2_exact_v9_phase_agreement_percent": 100.0,
+    "d2_seam_unresolved": 310,
+    "d2_seam_phase_mismatch": 0,
+    "d2_r4_vapor_side_unresolved": 310,
+    "d2_r2_side_unresolved": 0,
+    "d2_planning_target_met": true,
+    "d2_performance_ceiling_met": true,
+    "d2_selection_eligible": false,
+    "retuning_in_place_allowed": false
+  },
+  "candidates": [
+    {
+      "id": "C3-VAPOR-SEAM-COMPLETE-SURROGATE",
+      "family": "C-BOUNDED-IF97-DERIVED-TABLE-SURROGATE",
+      "implementation_scope": "TEST-ONLY",
+      "purpose": "preserve immutable C2 core behavior while completing R4-vapor/R2 near-saturation ownership with a dense saturation-boundary discriminator",
+      "uses_direct_if97_at_resolve_time": false,
+      "retunes_c2_in_place": false
+    },
+    {
+      "id": "D3-VAPOR-SEAM-COMPLETE-IF97-COMPARATOR",
+      "family": "D-BOUNDED-PRODUCTION-IF97-SUBSET-COMPARATOR",
+      "implementation_scope": "TEST-ONLY",
+      "purpose": "preserve immutable D2 as the primary comparator path and add only bounded near-vapor Region-4 refinement/fallback for D2-unresolved states",
+      "uses_direct_if97_at_resolve_time": true,
+      "retunes_d2_in_place": false
+    }
+  ],
+  "comparison": {
+    "existing_vr2_blocking_ceiling_fraction": 0.25,
+    "planning_target_fraction": 0.1,
+    "planning_target_is_not_a_replacement_vr2_tolerance": true,
+    "exact_v9_phase_agreement_target_percent": 100.0,
+    "candidate_warmup_passes": 2,
+    "candidate_measured_passes": 8,
+    "candidate_qualification_is_evidence_not_refinement_pass_criterion": true,
+    "deterministic_repeat_required_for_evidence_completion": true,
+    "all_1280_seam_probes_must_resolve_for_selection_eligibility": true,
+    "zero_seam_phase_mismatch_required_for_selection_eligibility": true,
+    "hydraulic_replay_uses_frozen_attempt5_path_rows": true,
+    "seam_coordinates_and_offsets_are_immutable": true,
+    "vr2_boundary_only_rows_are_preserved_but_not_scored_as_inverse_closure": true,
+    "hydraulic_replay_frozen_law_self_check_tolerance_kg_s": 1.0e-09,
+    "first_generation_and_refinement1_results_are_frozen_not_recomputed": true
+  },
+  "performance_ceilings": {
+    "resolve_median_us": 94.8,
+    "resolve_p95_us": 158.80666666666667,
+    "resolve_max_us": 409.30666666666673,
+    "resolve_median_allocated_bytes": 2816.0,
+    "source": "RP1A-returned-machine-local-freeze"
+  },
+  "outputs": [
+    "01-contract-and-provenance.txt",
+    "02-candidate-vr2-error-map.csv",
+    "03-candidate-exact-v9-node-map.csv",
+    "04-candidate-seam-map.csv",
+    "05-candidate-hydraulic-replay.csv",
+    "06-candidate-performance.csv",
+    "07-candidate-complexity.csv",
+    "08-candidate-summary.csv",
+    "09-rp1b-refinement2-summary.txt"
+  ],
+  "authority": {
+    "rp1c_selection_authorized_before_returned_refinement2_review": false,
+    "production_src_change_authorized": false,
+    "thermodynamic_repair_authorized": false,
+    "thermodynamic_tolerance_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "existing_closure_mode_reinterpretation_authorized": false,
+    "new_exact_version_activation_authorized": false,
+    "vr3_execution_authorized": false,
+    "p3_r1_execution_authorized": false,
+    "second_replacement_long_authorized": false
+  }
+}

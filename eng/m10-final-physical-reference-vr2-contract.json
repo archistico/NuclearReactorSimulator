@@ -1,0 +1,72 @@
+{
+  "schema": "m10-final-physical-reference-vr2-v1",
+  "status": "CANDIDATE",
+  "gate": "VR2-IAPWS-IF97-Water-Steam-Error-Map",
+  "prerequisite": "VR1-POINT-KINETICS-INDEPENDENT-BENCHMARK-VALIDATED",
+  "production_src_change_authorized": false,
+  "production_repair_authorized": false,
+  "exact_v9_change_authorized": false,
+  "p3_r1_execution_authorized": false,
+  "second_replacement_long_authorized": false,
+  "reference": {
+    "authority": "IAPWS R7-97(2012) Revised Release on the IAPWS Industrial Formulation 1997",
+    "official_release_page": "https://www.iapws.org/relguide/IF97-Rev.html",
+    "official_pdf": "https://www.iapws.org/relguide/IF97-Rev.pdf",
+    "regions": [1, 2, 4],
+    "helper": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/IapwsIf97Reference.cs",
+    "calls_production_model": false,
+    "third_party_runtime_library": false,
+    "selfcheck_maximum_relative_error": 1e-8,
+    "official_verification_tables": [5, 15, 35, 36]
+  },
+  "production": {
+    "model": "SimplifiedWaterSteamThermodynamicModel",
+    "closure_mode": "CorrelationConsistentInverseDomain"
+  },
+  "matrix": {
+    "saturation_full_property_temperatures_celsius": [100, 125, 150, 175, 200, 225, 250, 280, 300, 340],
+    "saturation_pressure_only_temperatures_celsius": [360],
+    "compressed_liquid": [
+      { "temperature_celsius": 100, "pressure_megapascals": 0.5 },
+      { "temperature_celsius": 150, "pressure_megapascals": 1.0 },
+      { "temperature_celsius": 200, "pressure_megapascals": 2.0 },
+      { "temperature_celsius": 250, "pressure_megapascals": 7.0 },
+      { "temperature_celsius": 280, "pressure_megapascals": 10.0 }
+    ],
+    "superheated_vapor": [
+      { "temperature_celsius": 200, "pressure_megapascals": 0.2 },
+      { "temperature_celsius": 250, "pressure_megapascals": 0.5 },
+      { "temperature_celsius": 300, "pressure_megapascals": 1.0 },
+      { "temperature_celsius": 400, "pressure_megapascals": 5.0 }
+    ]
+  },
+  "m10_core": {
+    "minimum_temperature_celsius": 200,
+    "maximum_temperature_celsius": 300
+  },
+  "claim_bands": {
+    "quantitative_educational_maximum_relative_error": 0.02,
+    "bounded_educational_maximum_relative_error": 0.10,
+    "qualitative_only_maximum_relative_error": 0.25
+  },
+  "blocking_conditions": [
+    "REFERENCE-SELFCHECK-GREATER-THAN-1E-8",
+    "UNRESOLVED-IN-PRODUCTION-DOCUMENTED-ENVELOPE",
+    "NONFINITE-IN-PRODUCTION-DOCUMENTED-ENVELOPE",
+    "M10-CORE-PHASE-MISMATCH",
+    "M10-CORE-RELATIVE-ERROR-GREATER-THAN-25-PERCENT",
+    "DETERMINISTIC-REPEAT-MISMATCH"
+  ],
+  "artifacts": [
+    "01-source-provenance-manifest.txt",
+    "02-frozen-point-matrix.csv",
+    "03-reference-selfcheck.csv",
+    "04-numerical-error-map.csv",
+    "05-inverse-state-comparison.csv",
+    "06-property-domain-summary.csv",
+    "07-vr2-assessment-summary.txt",
+    "08-impact-known-limitations.txt",
+    "09-deterministic-repeat.txt"
+  ],
+  "next_authorized_gate_on_pass": "VR3-I135-Xe135-Shutdown-Reference-Trajectory"
+}

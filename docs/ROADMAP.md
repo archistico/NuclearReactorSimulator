@@ -281,4 +281,4 @@ Todreas/Kazimi Deep Review Pass 2 is locally validated `PASS-AS-AUTHORED`; P1B r
 
 ### M10 Final physical-reference hold — current execution state
 
-Plan Amendment 3 is VALIDATED. **VR0 Reference/Provenance Contract Freeze is VALIDATED.** The active gate is **VR1 Point-Kinetics Independent Benchmark**, using the frozen Hébert one-group/six-group contract. VR1 is test-only model assessment and does not authorize P3-R1, production repair, exact-v9 parameter calibration, workload change or a second replacement-long baseline.
+The external physical-reference route remains a prerequisite before P3-R1. Current execution status is intentionally not duplicated here; use `PROJECT.md`. Future progression remains VR2 repair/requalification closure -> VR3 iodine/xenon -> VR4 decay heat -> VR5 consolidated decision -> P3-R1 only if explicitly authorized. No roadmap item by itself authorizes production repair, exact-version reinterpretation or a second replacement-long baseline.

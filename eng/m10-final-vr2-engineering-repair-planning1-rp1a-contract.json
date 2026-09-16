@@ -1,0 +1,104 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1a-v1",
+  "status": "VALIDATED",
+  "prerequisite": {
+    "planning_gate": "VR2-ENGINEERING-REPAIR-PLANNING1",
+    "returned_planning_status": "PASS-AS-AUTHORED",
+    "next_gate": "RP1A-REFERENCE-DOMAIN-CORPUS-AND-SEAM-MAP-FREEZE",
+    "engineering_classification": "HYDRAULIC-MATERIALITY-CONFIRMED"
+  },
+  "corpus": {
+    "vr2_full_saturation_temperatures_c": [
+      100,
+      125,
+      150,
+      175,
+      200,
+      225,
+      250,
+      280,
+      300,
+      340
+    ],
+    "vr2_pressure_only_saturation_temperatures_c": [
+      360
+    ],
+    "vr2_compressed_liquid_point_count": 5,
+    "vr2_superheated_vapor_point_count": 4,
+    "frozen_exact_v9_node_rows": 360,
+    "frozen_exact_v9_reference_region4_rows": 348,
+    "frozen_exact_v9_reference_region1_rows": 12,
+    "frozen_hydraulic_context_rows": 288,
+    "expected_vr2_reference_corpus_rows": 40
+  },
+  "seam_map": {
+    "maximum_region1_region2_boundary_temperature_k": 623.15,
+    "pressure_relative_offset": 0.000010,
+    "quality_offset": 0.0000010,
+    "probe_sides": [
+      "R1-SIDE",
+      "R4-LIQUID-SIDE",
+      "R4-VAPOR-SIDE",
+      "R2-SIDE"
+    ],
+    "production_unresolved_rows_are_evidence_not_auto_failure": true,
+    "production_phase_mismatch_rows_are_evidence_not_auto_failure": true,
+    "deterministic_repeat_required": true,
+    "expected_boundary_count": 320,
+    "expected_probe_rows": 1280
+  },
+  "performance": {
+    "resolve_warmup_passes": 8,
+    "resolve_measured_passes": 64,
+    "whole_step_warmup_steps": 128,
+    "whole_step_measured_steps": 512,
+    "fixed_numerical_step_microseconds": 10000,
+    "historical_h28_median_wall_ratio_limit": 8.0,
+    "historical_h28_p95_wall_ratio_limit": 12.0,
+    "historical_h28_median_allocation_ratio_limit": 16.0,
+    "candidate_resolve_median_ceiling_formula": "rp1a-baseline-median-us * 8",
+    "candidate_resolve_p95_ceiling_formula": "rp1a-baseline-p95-us * 12",
+    "candidate_resolve_max_ceiling_formula": "rp1a-baseline-max-us * 12",
+    "candidate_resolve_median_allocation_ceiling_formula": "rp1a-baseline-median-allocated-bytes * 16",
+    "whole_step_baseline_is_context_not_rp1b_runtime_qualification": true,
+    "candidate_timing_must_not_be_inspected_before_rp1a_ceiling_freeze": true
+  },
+  "outputs": [
+    "01-contract-and-provenance.txt",
+    "02-vr2-reference-point-corpus.csv",
+    "03-exact-v9-node-corpus.csv",
+    "04-hydraulic-context.csv",
+    "05-seam-probe-map.csv",
+    "06-performance-baseline.csv",
+    "07-rp1a-summary.txt"
+  ],
+  "authority": {
+    "production_src_change_authorized": false,
+    "thermodynamic_repair_authorized": false,
+    "thermodynamic_tolerance_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "rp1b_implementation_authorized_before_returned_rp1a_review": false,
+    "vr3_execution_authorized": false,
+    "p3_r1_execution_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "pre_execution_review": {
+    "revision": 1,
+    "status": "STATIC-HARDENED",
+    "original_candidate_executed": false,
+    "fixed_blocker": "frozen-node-csv-reference-resolved-column-index",
+    "reference_resolved_zero_based_column_index": 10,
+    "reference_region_zero_based_column_index": 11,
+    "windows_powershell_51_validator_ascii_only": true
+  },
+  "returned_review": {
+    "status": "VALIDATED",
+    "returned_artifact_set": "COMPLETE-7-OF-7",
+    "rp1b_test_only_shadow_candidate_matrix_authorized": true,
+    "rp1c_selection_authorized": false,
+    "production_src_change_authorized": false,
+    "thermodynamic_repair_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_execution_authorized": false
+  }
+}

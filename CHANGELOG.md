@@ -1,3 +1,278 @@
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B C4 Planning 1 REV2 — Second pre-execution hardening — CANDIDATE
+
+## 2026-09-16 — Feasibility and measurement-harness correction
+
+- Finds a blocking REV1 design defect before execution: frozen C3 evidence shows all 320 R1 timing rows are `SubcooledLiquid` (310 near-boundary C2 + 10 table C2), so a mixture-only pre-resolver would fall through to immutable C2 and preserve its allocating mixture search.
+- Replaces the topology with C3 vapor precedence plus an allocation-neutral C2 `MIXTURE + LIQUID-TABLE + NEAR-BOUNDARY-LIQUID` prefix, then immutable C2 fallback; C2 vapor logic remains uncloned and R1 timing requires zero fallback calls.
+- Records a second historical-harness limitation without rewriting R5: the per-call 416-byte measurement and GC correlation remain valid, but the R5 recorder allocated a sample list/record objects after the full-GC baseline, so candidate-only causality for the exact Gen0 position is not proven.
+- Requires the future C4 measured region to use preallocated value-type storage and zero harness allocation, verified by whole-region allocation reconciliation.
+- Separates one semantic focused process from ten fresh timing processes (11 focused invocations total), freezes measured-pass restart `0..63`, and makes the runner the sole artifact-root reset owner.
+- Hardens source identity pins against CRLF/LF-only checkout changes by hashing normalized UTF-8 text, freezes value-type resolution-path telemetry and complete-evidence continuation after negative semantic results, and fixes aggregate-file ownership.
+- Freezes two separate xUnit-v3 explicit C4 methods (semantic vs timing), exact focused filters, `--parallel none`, `--no-build`, and an ordinary gate with C4 environment variables unset, preventing accidental long-test execution or mixed-process evidence.
+- Corrects semantic evidence typing: 1,679 thermodynamic state rows and 288 derived hydraulic rows now use separate CSV schemas; total evidence becomes 59 files rather than forcing hydraulic results into state columns.
+- Adds the REV2 pre-execution review document and upgrades the machine contract/validator to schema v4. No C4 implementation, `src/` change, historical test/source mutation, RP1C selection or production authority is introduced.
+- Conclusive review fixes two certain pre-run REDs: validator schema v3/v4 drift and a stale authority-property name that no longer existed in the contract.
+- Makes C2/C3/R5 normalized-text SHA pins validator-authoritative rather than self-validating through editable JSON values.
+- Freezes the exact median/p95/max algorithm in the machine contract, including nearest-rank p95 `ceil(0.95*N)-1`, and validates the 20,480-call lane/run and 64-call boundary distributions explicitly.
+- Strengthens frozen R5 prerequisite validation from marker presence to exact values and exact artifact-tree shape, including the single confirmed boundary-3 aggregate row and `c4-planning-justified=True`.
+- Corrects planning authority so local `PASS-AS-AUTHORED` requires complete artifact return and returned-evidence adjudication before any separately versioned test-only C4 implementation can be authorized.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B C4 Planning 1 REV1 — Pre-execution hardening — CANDIDATE
+
+## 2026-09-16 — Deep pre-execution review / structural hardening
+
+- Confirms the original Planning 1 static validator already avoided the recurring marker, floating-point equality, Unicode/Windows PowerShell and `bin/obj` scan failures seen in earlier VR2 gates.
+- Closes a deeper implementation ambiguity: `Rp1bRefinementSaturationTable.TryBuildReachabilityBoundary` is private inside frozen C2 and C2 is sealed, so C4 is now frozen as a narrow allocation-neutral mixture pre-resolver followed by immutable C2 fallback rather than an impossible private-method override or a broad C2 clone.
+- Pins historical C2/C3 source by SHA-256 and freezes the future C4 source file/type name before implementation.
+- Freezes the complete C4 interface metadata contract, including `FamilyId`, iterative-solve metadata, direct-IF97 flag and the initialization-reference count formula, so implementation cannot choose these after timing evidence.
+- Defines semantic bit-equivalence mechanically through ordinal strings and `BitConverter.DoubleToInt64Bits`, including nullable vapor-quality presence and deterministic repeats.
+- Separates Lane A and Lane B into five fresh runtime processes each (10 focused process invocations total), eliminating GC/tiered-runtime carry-over between lanes.
+- Freezes Lane B's exact affine permutations now, before any C4 timing exists, and requires pre-timing 320/320 coverage validation.
+- Freezes the future C4 test file, runner, artifact root, lane/run environment tokens and exact 58-file evidence-tree shape before implementation.
+- Makes the evidence/qualification split fail-closed: semantic mismatch, nonzero allocation or wall-clock exceedance are valid negative engineering evidence and must not create an xUnit RED after complete evidence generation.
+- Leaves C4 implementation, RP1C, production repair, thresholds/tolerances, exact-v9, VR3, P3-R1 and second replacement-long unauthorized.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B C4 Planning 1 — CANDIDATE
+
+## 2026-09-16 — C4 allocation-neutral planning gate
+
+- Advances only to a C4 planning/static-audit gate after validated Refinement 5 returned `C3-SAME-BOUNDARY-SLOW-PATH-CONFIRMED`; no C4 implementation is included.
+- Freezes planned candidate identity `C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE` as test/reference/shadow only, while C3/C2/D3 historical source remains immutable.
+- Records the concrete source hypothesis in `Rp1bRefinementSaturationTable.TryBuildReachabilityBoundary`: a temporary `List<double>` plus LINQ `OrderBy` is consistent with the returned uniform 416 B/call allocation, without claiming that static review alone proves the exact byte total.
+- Requires C4 to remove transient resolve-time allocation without special-casing boundary 3 and to remain bit-equivalent to C3 over 39 VR2 inverse rows, 360 exact-v9 rows, 1,280 seam probes and 288 hydraulic-context rows before performance results are interpreted.
+- Freezes C4-specific zero-byte measured R1 allocation, preserves the existing RP1A median/p95/max ceilings unchanged, and adds five fresh processes with both historical stride-37 order and a pre-frozen decorrelated deterministic ordering lane.
+- Adds ADR-0196, machine-readable C4 Planning 1 contract, ASCII-stable PowerShell validator and planning-only runner. A returned planning PASS can authorize only a separately versioned test-only C4 implementation/evidence candidate; RP1C, production repair, tolerance/threshold changes, exact-v9, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 5 Returned-Evidence Adjudication / Documentation Handoff 2 — CANDIDATE
+
+## 2026-09-16 — Refinement 5 returned-evidence adjudication / documentation handoff 2
+
+- Freezes the complete 30-file returned Refinement 5 artifact set under `eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_Refinement5_Artifacts/`.
+- Accepts the frozen machine outcome `C3-SAME-BOUNDARY-SLOW-PATH-CONFIRMED`: boundary 3 exceeds the unchanged `409.30666666666673 us` ceiling in all 5 independent processes; same-boundary confirmed count is 1.
+- Records 102,400 measured calls total and 8 strict-ceiling exceedances. Boundary 3 owns five repeated exceedances; process 4 also contains three isolated non-GC exceedances that do not reproduce cross-process.
+- Adds the returned-review attribution that every measured C3 call allocates exactly 416 bytes, each process performs exactly one Gen0 collection during the measured region, and all five repeated boundary-3 exceedances coincide with that Gen0 collection at pass 58. Boundary-3 median/p95 remain ordinary.
+- Preserves the contractual classification while narrowing its engineering meaning: the evidence confirms a reproducible C3 allocation/managed-runtime wall-clock tail, not a proven intrinsically slow thermodynamic branch specific to boundary 3.
+- Advances authority only to C4 planning. C4 implementation, RP1C, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized. No `src/`, test, runner, contract, threshold or C3/D3 mathematics are changed.
+
+
+## 2026-09-16 — M10 Final VR2 / RP1B Refinement 5 documentation handoff consolidation
+
+- Documentation-only consolidation while Refinement 5 is executing; no `src/`, test, runner, contract, C3/D3 or threshold changes.
+- Aligns `docs/PROJECT.md` so Refinement 5 is the single active gate and its PowerShell command/artifact return path are current.
+- Adds an in-place new-chat restart section to `PROJECT.md` instead of creating a duplicate handoff/status file, preserving the documentation-authority rule.
+- Marks VR1 documentation as VALIDATED, removes stale VR1-active wording from the frozen V&V matrix, removes current-checkpoint duplication from `ROADMAP.md`, and aligns ADR-0195 index status to Accepted.
+- Refreshes documentation navigation and exhaustive top-level index coverage for previously omitted live M10 Final / VR2 files.
+- Refinement 5 result remains PENDING until its complete returned artifact folder is reviewed; C4, RP1C, production repair, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+
+- Promotes RP1B Performance Measurement Replanning 1 to VALIDATED / CLOSED from returned `PASS-AS-AUTHORED` audit evidence and freezes that returned audit under `eng/frozen-evidence/ordinary/`.
+- Keeps `C3-VAPOR-SEAM-COMPLETE-SURROGATE` byte-identical and preserves the strict RP1A single-call maximum ceiling `409.30666666666673 us`; no C4 is created and no historical Refinement 3/4 exceedance is erased.
+- Adds a test-only Refinement 5 focused diagnostic that measures the immutable 320-boundary R1 seam corpus in one fresh process invocation: 16 warm-up passes plus 64 measured passes / 20,480 measured calls, with per-call boundary identity, allocation and GC collection-count deltas.
+- Adds a runner-owned five-process protocol. The runner launches five separate `dotnet test` processes with frozen run indices and only then invokes a PowerShell cross-process adjudicator.
+- Freezes the candidate-specific slow-path rule exactly as `SAME-BOUNDARY-EXCEEDS-IN-AT-LEAST-2-INDEPENDENT-PROCESS-RUNS`. Same-boundary reproduction in at least two processes can justify later C4 planning only; it does not authorize C4 implementation or RP1C.
+- Adds per-process and aggregate artifacts, machine-readable contract, ASCII-stable validator/adjudicator, and PowerShell-oriented runner. Production `src/`, exact-v9, C3/D3 mathematics, thermodynamic thresholds and authority flags remain unchanged.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B Performance Measurement Replanning 1 Hotfix 1 — Human-Doc Marker Alignment — CANDIDATE
+
+- Freezes Performance Measurement Replanning 1 Attempt 1 as `STATIC-PREFLIGHT-RED`: the `[1/1]` validator stopped before writing a planning PASS artifact and before any Refinement 5 implementation because it required a machine-token marker that the human planning document expressed only as prose.
+- Confirms that the exact machine rule already existed in the JSON contract as `SAME-BOUNDARY-EXCEEDS-IN-AT-LEAST-2-INDEPENDENT-PROCESS-RUNS` and that the Markdown already stated the same engineering rule semantically; there was no planning or authority disagreement.
+- Replaces the fragile human-document exact-token requirement with the stable semantic phrase `same boundary identity exceeds the unchanged maximum ceiling in at least two independent process runs`, while keeping the exact machine token enforced by the JSON contract and emitted artifact.
+- Full marker review confirms every other `Require-Text` dependency in the validator resolves against the current frozen evidence, plan, ADR and C3 source.
+- Hardens the production-source path exclusion to a Windows/Unix separator-safe `[\\/](bin|obj)[\\/]` regex so generated `.cs` under `obj` cannot enter the semantic production scan in a dirty working tree.
+- C3, C4/RP1C authority, strict `409.30666666666673 us` ceiling, Refinement 5 design, production `src/`, exact-v9 and all returned R4 evidence remain unchanged.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B Performance Measurement Replanning 1 — CANDIDATE
+
+- Freezes returned Refinement 4 as validated localization evidence: one R1 screen exceedance at boundary 3 (`2620.6 us`) with Gen0 activity and one targeted exceedance at boundary 191 (`853.5 us`) without GC activity; the same boundary did not reproduce and both boundaries retain ordinary median/p95 timing.
+- Records the engineering decision that C4 is **not justified now** and RP1C remains unauthorized. C3 stays byte-for-byte immutable; the strict `409.30666666666673 us` single-call ceiling and all historical exceedances are preserved rather than relaxed or erased.
+- Freezes the next diagnostic before new timing data is collected: five independent focused-test process runs over the same 320 R1 boundaries, 16 warm-up passes and 64 measured passes (`20480` C3 calls per process), with per-call boundary identity and GC context.
+- Defines the candidate-specific C4 trigger in advance: the **same boundary** must exceed the unchanged ceiling in at least **two independent process runs**. If no such stable owner is confirmed, C4 remains unjustified and the project returns to a separate performance-contract adjudication before RP1C.
+- Adds ADR-0195, the machine-readable replanning contract, ASCII-stable static validator, PowerShell-oriented runner and frozen 7/7 returned Refinement 4 artifact set. No production `src/`, C3/D3, tolerance, exact-v9 or runtime-physics change is made.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Refinement 4 Hotfix 1 — xUnit2012 Assert.Contains Alignment — CANDIDATE
+
+- Freezes Refinement 4 Attempt 1 as `ORDINARY-BUILD-RED`: static preflight PASS, ordinary Release build started, focused R1-seam localization did not start, and no Refinement 4 timing evidence was produced.
+- Corrects the single xUnit analyzer violation at `M10FinalVr2EngineeringRepairPlanning1Rp1bRefinement4Tests.cs:186`: `Assert.True(seamLines.Any(predicate))` is replaced by the analyzer-approved `Assert.Contains(seamLines, predicate)` without changing the asserted historical Refinement-3 seam row.
+- Full analyzer-oriented review found no second `Assert.True(...Any(...))` or `Assert.Single(...Where(...))` pattern in the Refinement 4 test; existing boolean assertions remain unchanged.
+- Hardens the static validator to reject reintroduction of the xUnit2012-prone pattern and require the `Assert.Contains(seamLines, predicate)` form before build.
+- Immutable C3, R1 localization/repeat protocol, performance ceilings, JSON contract, runner, production `src/`, exact-v9 and all prior frozen evidence remain unchanged.
+- RP1C, C4, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Refinement 4 — C3 R1-Seam Worst-Case Localization & Reproducibility — CANDIDATE
+
+- Freezes returned Refinement 3 as VALIDATED performance-attribution evidence: C3 exact-v9 max `150.5 us`, targeted max `162.7 us`, but one R1-side seam call reached `3667.1 us` across 5,120 R1 measurements.
+- Keeps C3 byte-identical and introduces no C4. The new test-only gate localizes every R1 call by boundary/pass identity, records GC collection-count context outside the timed region, and performs bounded targeted repeats on all exceeders plus top-p95/top-max boundaries.
+- Preserves the RP1A single-call maximum `409.30666666666673 us`; a clean rerun does not erase the historical Refinement-3 exceedance, and a reproduced exceedance does not automatically authorize C4.
+- Adds a seven-artifact evidence contract, fail-closed Windows-PowerShell-safe validator and focused runner. RP1C, C4, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized until returned Refinement 4 review.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Refinement 3 Hotfix 2 — TailRepeat Member Alignment — CANDIDATE
+
+- Freezes Refinement 3 Attempt 2 as `ORDINARY-BUILD-RED`: static preflight PASS, ordinary Release build started, focused timing did not start, and no C3 performance evidence was produced.
+- Corrects the single test-only CS1061 at `M10FinalVr2EngineeringRepairPlanning1Rp1bRefinement3Tests.cs:119`: `TailRepeat.P95Microseconds` -> `TailRepeat.TargetP95Microseconds`.
+- Full record/member review found no additional member-name drift across `StateTiming`, `TailRepeat` or `SeamSideTiming`; xUnit2031 scan remains clean.
+- C3, C3/D3 reference code, performance protocol, ceilings, Refinement 3 contract, runner, production `src/`, exact-v9 and all prior frozen evidence remain unchanged.
+- RP1C, C4, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Refinement 3 Hotfix 1 — Generated-Output-Safe Production Source Scan — CANDIDATE
+
+- Freezes Refinement 3 Attempt 1 as `STATIC-PREFLIGHT-RED`: the validator stopped before ordinary build and before any C3 timing evidence because its production-source identity scan admitted generated files below `src/**/bin` in a dirty working tree.
+- Records the observed false-positive path `src/NuclearReactorSimulator.App/bin/Release/net10.0/runtimes/osx/native/libSkiaSharp.dylib`; this is generated native runtime output, not C# production source.
+- Replaces the Windows-PowerShell-fragile `Get-ChildItem -LiteralPath src -Recurse -File -Include *.cs` filter with explicit `.cs` extension selection and structural exclusion of `bin`/`obj` path segments before any UTF-8 content read.
+- Adds a fail-closed invariant that zero production C# files is invalid and that no generated/non-C# path may enter the identity scan.
+- Leaves immutable C3, the Refinement-3 focused test, timing protocol, performance ceilings, JSON contract, runner, frozen RP1A/Refinement-2 evidence and every production `src/` file unchanged.
+- RP1C, C4, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Refinement 3 — C3 Performance-Tail Attribution & Full Worst-Case Qualification — CANDIDATE
+
+- Records returned RP1B Refinement 2 C3/D3 as `PASS-EVIDENCE-MATRIX-COMPLETE`: both candidates resolve all frozen VR2/exact-v9/seam states with 100% exact-v9 phase agreement, zero seam unresolved and zero seam phase mismatch.
+- Freezes the complete returned Refinement 2 artifact set 9/9 and its engineering review without rewriting the historical result.
+- Keeps `C3-VAPOR-SEAM-COMPLETE-SURROGATE` byte-identical to Refinement 2 and does not create C4.
+- Attributes the historical C3 `823.4 us` exact-v9 max with 16 warm-up full-corpus passes, 64 measured passes over the immutable 360-state corpus, deterministic rotated ordering and bounded targeted repeat blocks for all observed max-ceiling exceeders plus top-p95 states.
+- Repeats all 1,280 immutable seam probes for 16 measured passes and reports timing independently for R1, R4-liquid, R4-vapor, R2 and all seams.
+- Corrects the engineering performance predicate prospectively: the unchanged `409.30666666666673 us` max ceiling applies to exact-v9 calls, targeted-repeat calls and seam worst-case calls; targeted labels explain the tail but every targeted measured call remains subject to the same single-call max.
+- Preserves D3 as frozen comparator evidence. Its historical `rp1c-selection-eligible=True` is not rewritten even though the returned `seam_max=16504.9 us` demonstrates that the Refinement-2 predicate omitted boundary worst-case cost.
+- Adds six performance-attribution artifacts, contract, fail-closed validator and PowerShell runner. RP1C, C4, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized until returned Refinement 3 review.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Refinement 1 Hotfix 1 — PowerShell Numeric Comparison & Preflight Hardening — CANDIDATE
+
+- Freezes Refinement 1 Attempt 1 as `STATIC-PREFLIGHT-RED`: the validator stopped before ordinary build and before any C2/D2 focused evidence because Windows PowerShell numeric deserialization was compared with exact `-ne` floating literals; the first observed false drift was the frozen p95 ceiling `158.80666666666667 us`.
+- Replaces every floating contract equality in the Refinement 1 validator with explicit finite `double` conversion plus bounded absolute comparison, reusing the tolerance pattern already proven by the validated first-generation RP1B validator.
+- Restores preflight protections that had regressed in the Refinement 1 fork: output-list order, RP1A CSV headers, boundary-only identity, reference-resolved counts, compound-key uniqueness, deterministic/evidence flags, hydraulic replay tolerance, B23 domain guard and the complete no-authority flag set.
+- Restores null-safe UTF-8 reads and adds a fail-closed guard against reintroducing the xUnit2031 `Assert.Single(...Where(...))` pattern.
+- Leaves C2/D2 mathematics, focused test, runner, immutable RP1A corpus, frozen first-generation RP1B evidence, thresholds, performance ceilings and every production `src/` file unchanged.
+- RP1C, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Refinement 1 — C2/D2 Test-Only Shadow Matrix — CANDIDATE
+
+- Freezes the complete returned RP1B B1/C1/D1 9/9 artifact set as validated first-generation engineering evidence; no first-generation candidate is RP1C-selection-eligible and no B1/C1/D1 identity is retuned in place.
+- Adds `C2-EXTENDED-TABULATED-SURROGATE` exclusively under `Simulation.Tests`: denser Region-1/Region-2 initialization tables, low-pressure feedwater support, deterministic near-saturation pressure nodes, reachability-aware Region-4 inversion and bounded near-boundary fallbacks derived at initialization; direct IF97 remains absent from C2 resolve-time execution.
+- Adds `D2-SEAM-COMPLETE-IF97-COMPARATOR` exclusively under `Simulation.Tests`: C2 supplies only the phase-aware initial seed, followed by bounded direct IF97 Region-1/2/4 refinement. D2 remains a fidelity/cost comparator rather than a production recommendation.
+- Reuses the immutable RP1A 40-row VR2, 360-node exact-v9, 288-row hydraulic and 1,280-probe seam corpus without changing seam coordinates, offsets, the 25% VR2 blocking ceiling, the 10% planning target or the RP1A machine-local performance ceilings.
+- Reuses the already-qualified frozen hydraulic replay law and deterministic-repeat machinery; candidate quality remains evidence rather than the Refinement 1 PASS criterion.
+- Adds a dedicated machine-readable refinement contract, ASCII-only fail-closed validator, explicit focused C2/D2 test and PowerShell-oriented runner.
+- Keeps RP1C selection, production thermodynamic changes, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long execution unauthorized until the complete C2/D2 artifact set is returned and reviewed.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Hotfix 2 — xUnit2031 Assert.Single Predicate Alignment — CANDIDATE
+
+- Freezes RP1B Attempt 2 as `ORDINARY-BUILD-RED`: Hotfix 1 static preflight passed, Release build started, but `NuclearReactorSimulator.Simulation.Tests` failed on one warnings-as-errors analyzer finding before the focused B1/C1/D1 matrix could start.
+- Fixes only the test assertion shape required by xUnit2031: `Assert.Single(vr2Rows.Where(predicate))` becomes the predicate overload `Assert.Single(vr2Rows, predicate)` with identical semantics for the single boundary-only VR2 row.
+- Adds a fail-closed validator marker for the corrected predicate overload and preserves candidate mathematics, frozen RP1A corpus, RP1B contract, runner, thresholds, performance ceilings and all production `src/` files unchanged.
+- Records that no candidate evidence or engineering candidate classification exists for Attempt 2; RP1C and every production authorization remain blocked.
+
+## M10 Final VR2 Engineering Repair Planning 1 — RP1B Hotfix 1 — Null-Safe Validator Text Reads — CANDIDATE
+
+- Freezes RP1B Attempt 1 as `STATIC-PREFLIGHT-RED`; ordinary build and focused B1/C1/D1 execution never started and no candidate evidence was produced.
+- Fixes only the RP1B validator/provenance/documentation path: validator text reads now use fail-closed `System.IO.File.ReadAllText(..., UTF8)` semantics instead of null-unsafe `Get-Content -Raw` plus `.Contains(...)`.
+- Applies the same null-safe read path to required-marker checks, the production-source candidate-identity scan and the production closure-mode guard.
+- Preserves B1/C1/D1 mathematics, frozen RP1A corpus, focused RP1B test, runner, thresholds, performance ceilings and all production `src/` files unchanged.
+- RP1C, production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1B Test-Only Shadow Candidate Matrix
+
+- Records returned RP1A REV1 as VALIDATED and freezes its complete 7/7 artifact set as the immutable comparison corpus for RP1B.
+- Adds three versioned test-only candidate families: B1 piecewise reduced/reference-consistent closure, C1 bounded IF97-derived table surrogate, and D1 bounded direct-IF97 fidelity/cost comparator. No candidate identity appears under `src/`.
+- Preserves all 40 RP1A VR2 reference rows while explicitly treating `VR2-SAT-360C-PONLY` as the single boundary-only/non-inverse row; the remaining 39 rows are inverse-applicable `(v,u)` comparisons.
+- Evaluates every candidate over the frozen 360 exact-v9 node rows, 1,280 seam probes and 288 hydraulic-context rows; records phase ownership, pressure/temperature error, seam continuity, hydraulic replay, deterministic repeat, steady-state cost, initialization cost and complexity evidence.
+- Adds a fail-closed frozen-law replay self-check before candidate evaluation: the 288 RP1A IF97 counterfactual flow rows must be reproduced from the frozen reference pressures, resistances, pump boost and feedwater check-valve rule within `1e-9 kg/s`; independent pre-execution review reproduces them with maximum error `0`.
+- Bounds Region-2 reference generation for C1/D1 by the official IF97 B23 Region-2/3 pressure boundary between 623.15 K and 863.15 K instead of applying the generic 20 MPa candidate cap outside the Region-2 domain. Complexity reporting is conservative: C1 records its 32-step Region-4 bisection ceiling and D1 records a conservative 1200-step worst-path scan/refinement/fallback ceiling rather than understating iterative work.
+- Keeps the existing 25% VR2 blocking ceiling unchanged and uses the stricter authored hot/compressed-liquid pressure `<=10%` plus 100% exact-v9 phase-agreement target only as RP1C selection evidence, not as a replacement tolerance.
+- Uses the machine-local RP1A performance ceilings frozen before candidate timing was inspected: median 94.8 us, p95 158.80666666666667 us, max 409.30666666666673 us and median allocation 2816 B.
+- Separates RP1B evidence-completion PASS from candidate qualification: poor/unresolved/slow candidates remain reportable findings; RP1B selects no winner and does not authorize RP1C before returned evidence review.
+- Adds the RP1B machine-readable contract, ASCII-stable preflight validator, focused explicit test, runner and nine-artifact output contract. Production repair, tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long execution remain unauthorized.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1A REV1 Pre-Execution Static Hardening
+
+- Performs a deep pre-execution review before the first RP1A local run; the original RP1A candidate was **not executed** and is superseded by this REV1 package.
+- Fixes a definite frozen-node CSV parser defect in the RP1A focused test: `reference_resolved` is column index 10 and `reference_region` is index 11; the original candidate incorrectly attempted `bool.Parse(parts[11])`, which would have failed immediately on `REGION-4-MIXTURE` with `FormatException`.
+- Freezes the exact 17-column node header and 16-column hydraulic header in both the test and ASCII-stable preflight validator, and validates the returned corpus as 360 rows, 348 Region-4 rows, 12 Region-1 rows and 288 hydraulic rows before the ordinary build.
+- Freezes the derived RP1A corpus shape before execution: 40 VR2 inverse/reference rows, 320 distinct seam boundaries and 1,280 seam probes. Adds fail-closed finite timing checks without introducing any timing acceptance threshold beyond the already authored measurement-count/trip contract.
+- Derives the seam topology independently from the returned corpus in the preflight validator: 348 Region-4 rows collapse to 310 distinct Region-4 reference temperatures; together with the ten fixed VR2 saturation temperatures they must produce exactly 320 boundaries. The focused test also requires exactly 320 `R1-SIDE`, 320 `R4-LIQUID-SIDE`, 320 `R4-VAPOR-SIDE` and 320 `R2-SIDE` rows, all at or below the frozen 623.15 K Region-1/2 ceiling.
+- Adds runtime exact-v9 identity assertions (`integrated-operations-desktop-stable@9`) before the bounded whole-step performance measurement and removes an unused test using directive to reduce warnings-as-errors risk.
+- Rechecks runner/filter/output-name alignment, Windows PowerShell 5.1 ASCII safety, JSON parseability, exact-v9/closure API visibility and byte-for-byte `src/` identity against the validated Planning 1 package.
+- No production source, thermodynamic equation, tolerance, exact-v9 semantic, RP1B authority, VR3 authority, P3-R1 authority or replacement-long authority changes.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1A Reference Domain Corpus & Seam Map Freeze
+
+- Records the user-returned Planning 1 static audit as `PASS-AS-AUTHORED` and closes Planning 1 as VALIDATED / CLOSED; RP1A becomes the only authorized next execution gate.
+- Adds a focused observation/test-only RP1A that freezes the complete VR2 reference matrix, all 360 frozen exact-v9/P1B Attempt-5 node rows and all 288 frozen hydraulic-context rows without replaying the 3,600 s materiality trajectory.
+- Generates deterministic Region-1/4 and Region-4/2 seam probes at every supported saturation-boundary temperature encountered by the corpus, recording both independent-reference coordinates and current production ownership.
+- Measures the current `CorrelationConsistentInverseDomain` resolve cost over the frozen exact-v9 inventories plus a bounded exact-v9 whole-step baseline before any RP1B candidate exists.
+- Freezes absolute machine-local RP1B candidate resolve ceilings using the already validated H.28 8x median wall / 12x p95 wall / 16x median allocation relative-cost policy. The whole-step timing remains context only and is not runtime qualification.
+- Keeps exact-v9 and the existing closure mode immutable. RP1B candidate implementation, production repair, thermodynamic tolerance changes, VR3, P3-R1 and second replacement-long execution remain unauthorized until the complete RP1A artifacts are returned and reviewed.
+- Adds the RP1A machine-readable contract, ASCII-stable validator, PowerShell-oriented runner command, documentation, and the returned Planning 1 audit as frozen prerequisite evidence. No file under `src/` is changed.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — Thermodynamic Inverse Closure & Phase-Boundary Repair
+
+- Records the returned VR2 Materiality Diagnostic 1 adjudication as completed with engineering classification `HYDRAULIC-MATERIALITY-CONFIRMED`; no repair or VR3 authority is inherited from that result.
+- Freezes the returned adjudication summary as the prerequisite for repair planning, including 3/3 P1B checkpoints, 360/360 resolved node rows, 288/288 resolved hydraulic-path rows and the 72/72 `pressure` plus 55/72 `suction` production-subcooled / IF97 Region-4-mixture reinterpretation counts.
+- Defines the repair problem as the complete inverse closure `(v,u) -> phase,T,p,quality`, not merely a compressed-liquid pressure coefficient retune.
+- Rejects a local constant/one-dimensional coefficient retune as a sufficient standalone repair family; advances a piecewise reference-consistent reduced closure and an IF97-derived bounded table surrogate to future test-only shadow study, while retaining a bounded production IF97 subset as the reference-fidelity/cost comparator.
+- Freezes RP1A Reference Domain Corpus & Seam Map Freeze -> RP1B Test-Only Shadow Candidate Matrix -> RP1C Engineering Repair Selection Gate before any production implementation.
+- Requires a new opt-in thermodynamic closure mode and a new exact-version identity for any later authorized repair/activation; exact-v9 and `CorrelationConsistentInverseDomain` semantics remain immutable provenance.
+- Adds ADR-0194, a machine-readable Planning 1 contract, ASCII-stable static validator and a planning-only audit runner. No file under `src/` is changed by this candidate.
+- Keeps production repair, thermodynamic tolerance changes, exact-v9 changes, VR3, P3-R1 and second replacement-long execution unauthorized.
+
+# M10 Final — VR2 Materiality Diagnostic 1 Hotfix 5 — Returned-Evidence Fixed-Point Adjudication
+
+- Freezes the complete user-returned Attempt-5 materiality artifact set after the 38m38s focused exact-v9/P1B execution.
+- Records the historical focused RED as post-evidence only: the seven artifacts were fully written and their own summary reports `execution-pass=True` / `HYDRAULIC-MATERIALITY-CONFIRMED` before the final self-consistency assertion failed.
+- Identifies the harness defect: the historical `1e-9 kg/s` equality requirement compared an H.22 committed fixed-point iterate with its instantaneous quadratic map, while exact-v9 authoritatively permits `1e-2 kg/s` absolute fixed-point flow residual. The returned maximum difference is `0.009952798974779853 kg/s`, inside the production numerical contract.
+- Preserves the original long diagnostic, its `1e-9` assertion and its RED result as immutable provenance; Hotfix 5 does not silently rewrite that contract and does not rerun the 3,600 s trajectory.
+- Adds a short explicit C# returned-evidence adjudication that independently checks all seven frozen artifacts, P1B 3/3 checkpoint reproduction, 360/360 resolved node rows, 288/288 resolved path rows, zero sentinels, deterministic analysis, and the authoritative H.22 residual bound.
+- Re-evaluates materiality conservatively by subtracting the full `0.01 kg/s` fixed-point residual bound from each late-window IF97 counterfactual shift. The original 1.0 / 0.1 materiality thresholds and 3/4 persistence rule are unchanged.
+- Freezes the newly exposed phase-boundary evidence: production `pressure` is `SubcooledLiquid` while the same `(v,u)` resolves to IF97 Region 4 mixture in 72/72 samples; the same reinterpretation occurs for `suction` in 55/72 samples.
+- Adds an ASCII-stable PowerShell validator and a dedicated adjudication runner. No production source, thermodynamic tolerance, exact-v9, protection, workload, P3-R1, VR3 or second-long authority changes.
+
+# M10 Final — VR2 Replanning / Materiality Diagnostic 1 Hotfix 4 — Region-1 Reachability-Boundary Bracketing
+
+- Fixes the fourth local attempt, which reached the focused explicit diagnostic but failed before exact-v9/P1B trajectory execution inside `ValidateInverseReferenceHelper()`. The artifact folder remained empty and no materiality evidence or engineering classification was produced.
+- Local numeric reproduction isolated the failure to the Region-1 `(v,u)` inverse self-check at 200 °C / 2 MPa: the 400-segment temperature scan advances by 0.875 K, while the target specific volume first becomes Region-1-reachable near 472.859 K and the energy root is 473.150 K. The first reachable grid sample was 473.525 K, already on the positive-residual side, so the original sign-change scan missed the root.
+- Keeps the frozen 400-segment scan and adds an adaptive Region-1 reachability-boundary bracket: when the scan transitions from unreachable to reachable at fixed specific volume, a bounded bisection locates the first reachable temperature and seeds the energy sign bracket from that boundary.
+- The independent IF97 forward equations, Region-4 mixture inverse, materiality thresholds, exact-v9/P1B trajectory, hydraulic counterfactual, runner and production sources remain unchanged.
+- No file under `src/`, no thermodynamic repair/tolerance change, exact-v9 change, VR3, P3-R1 or second replacement-long authorization is introduced.
+
+# M10 Final — VR2 Replanning / Materiality Diagnostic 1 Hotfix 3 — Application Internal Evidence-Seam Access Alignment
+
+- Fixes the third local pre-diagnostic RED: the ordinary Release build reached `NuclearReactorSimulator.Simulation.Tests` and failed with five CS1061 errors because the diagnostic test directly referenced `IntegratedAutomaticOperationRuntimeEngine.LatestCanonicalSnapshot` and `.FixedDeltaTime` from `Simulation.Tests`, while those evidence seams are intentionally `internal` to `NuclearReactorSimulator.Application` and are exposed only to `NuclearReactorSimulator.Application.Tests` through `InternalsVisibleTo`.
+- Keeps the diagnostic in `Simulation.Tests` and changes only its test-only observation plumbing: the five direct member accesses now use bounded reflection helpers `ReadLatestCanonicalSnapshot(...)` and `ReadFixedDeltaTime(...)`. This is consistent with the same diagnostic's pre-existing test-only reflection access to the private `_solver` field and does not widen production visibility.
+- Adds validator markers for the reflection accessors and records the attempt as **BUILD RED / focused diagnostic not executed**. No materiality evidence or engineering classification was produced.
+- No file under `src/`, no IF97 equation/inverse logic, materiality threshold, exact-v9 state, hydraulic law, workload, protection semantic, runner behavior, VR3 authority or repair authority changes.
+
+# M10 Final — VR2 Replanning / Materiality Diagnostic 1 Hotfix 2 — ASCII-Stable PowerShell Validator Marker
+
+- Fixes the second local preflight-only RED: the CMD runner launches Windows PowerShell 5.1 (`powershell.exe`), which can decode UTF-8 source without BOM through the active legacy code page; the validator's literal em dash in `VR2 returned RED — materiality re-entry` was therefore parsed as mojibake (`â€”`) while the Markdown target was read correctly with `-Encoding UTF8`.
+- Replaces that Unicode-sensitive literal with two ASCII-stable state markers: `VR2 returned MODEL-DISCREPANCY-BLOCKING` and `VR2 Replanning / Materiality Diagnostic 1 is the active execution candidate.`
+- Adds a fail-closed invariant that this validator source itself must remain ASCII-only while the runner intentionally continues to use Windows PowerShell 5.1.
+- No runner behavior, production source, test physics, IF97 implementation, materiality threshold, exact-v9 state, workload, protection semantic, VR3 authority or repair authority changes.
+- The first and second Materiality Diagnostic 1 attempts remain **static-validator RED only**; ordinary/focused diagnostic execution did not start, so neither attempt produced engineering evidence or a materiality classification.
+
+# M10 Final — VR2 Replanning / Materiality Diagnostic 1 Hotfix 1 — Frozen Summary Marker Alignment
+
+- Fixes the static preflight validator-only mismatch exposed by the first local execution: the returned VR2 frozen summary records `production-repair-authorized=False`, while the validator incorrectly required the nonexistent marker `thermodynamic-repair-authorized=False`.
+- The validator now checks the authoritative frozen marker `production-repair-authorized=False`; the machine-readable materiality contract independently continues to require `authority.thermodynamic_repair_authorized=false`.
+- No production source, test physics, IF97 implementation, materiality threshold, exact-v9 state, workload, protection semantic, VR3 authority or repair authority changes.
+- The first Materiality Diagnostic 1 attempt is a **static-validator RED only**; no focused diagnostic evidence was produced or interpreted.
+
+# M10 Final — VR2 Replanning / Materiality Diagnostic 1 candidate
+
+- Records the returned VR2 execution as `MODEL-DISCREPANCY-BLOCKING`, with the independent IF97 helper qualified and the blocking owner localized to `INVERSE-COMPRESSED-LIQUID/resolved-pressure`; VR3 remains unauthorized.
+- Adds an observation-only exact-v9/P1B materiality diagnostic: the validated 600 s 5 MWe background and 5→6 MWe path are re-observed with the frozen load-command step and 900/1,800/3,600 s checkpoint reproduction.
+- Extends the test-only IF97 helper with bounded inverse interpretation from committed `(v,u)` inventories for Region 1 and saturated Region 4 mixtures; the inverse helper is independently round-trip self-checked before trajectory evidence is interpreted.
+- Samples the canonical `suction`, `pressure`, `outlet`, `drum` and `feedwater-inventory` nodes and evaluates offline pressure-only counterfactuals for MCP, channel, return and feedwater-pump paths through the existing quadratic resistance/pump laws.
+- The counterfactual does not alter runtime state, resistance, pump speed/boost law, topology or energy transport. It must reproduce the production hydraulic law to `1e-9 kg/s` before IF97 pressure substitution is interpreted.
+- Freezes four 300 s windows over the final 1,200 s and compares the mean counterfactual flow shift with the actual P1B load-specific flow shift / within-window drift. Persistent 3/4-window classifications are `HYDRAULIC-MATERIALITY-CONFIRMED`, `HYDRAULIC-MATERIALITY-NOT-EXCLUDED`, `HYDRAULIC-MATERIALITY-NOT-DEMONSTRATED` or `REFERENCE-INVERSION-GAP`.
+- The diagnostic is evidence collection only. No production thermodynamic repair/tolerance change, exact-v9 change, VR3, P3-R1 or second replacement-long execution is authorized without returned-artifact review and a separate engineering decision.
+
+# M10 Final — VR2 IAPWS-IF97 Water/Steam Error Map candidate
+
+- Records the user-confirmed artifact review of VR1 as VALIDATED and advances the Plan Amendment 3 sequence to VR2.
+- Adds a test-only C# implementation of the official IAPWS R7-97(2012) Region 1, Region 2 and Region 4 equations needed by the frozen VR0 matrix; no third-party IF97 runtime package is introduced.
+- Qualifies the reference helper fail-closed against official IAPWS verification Tables 5, 15, 35 and 36 at a maximum relative-error ceiling of `1e-8` before any production result is interpreted.
+- Adds the frozen 10+1 saturation, 5 compressed-liquid and 4 superheated-vapor assessment matrix, including independent `(rho,u)` to one-kilogram inverse-state inputs for the production `CorrelationConsistentInverseDomain` closure.
+- Adds per-row absolute/relative error evidence, property/domain max/median/p95 summaries, phase checks, M10-core claim bands and exact deterministic repeat across independent model instances.
+- Frozen blocking conditions remain unresolved/non-finite in-envelope behavior, M10-core phase mismatch, material M10-core property error above 25%, reference-harness failure or deterministic-repeat mismatch.
+- A nonblocking PASS can authorize only VR3 I-135/Xe-135 shutdown reference assessment. No production source, thermodynamic repair/tolerance change, exact-v9 change, P3-R1 or second replacement-long authorization is created by VR2.
+
 # M10 Final — VR1 Point-Kinetics Independent Benchmark candidate
 
 - Recorded the user-reported local PASS of VR0 Reference / Provenance Contract Freeze and advanced the active Plan Amendment 3 gate to VR1.
@@ -3814,3 +4089,12 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Adds `scripts/run-m10-final-long-failure-diagnostic1.cmd` and `eng/m10-final-long-diagnostic1-contract.json`.
 - Freezes the next final-long operational target at 35–45 minutes with a 60-minute maximum workstation budget; wall time remains diagnostic/job-budget semantics, not a physics tolerance.
 - No production `src/` file, physical coefficient, thermodynamic envelope, I.3 budget, conservation ceiling, archive schema, fingerprint algorithm or exact historical identity is changed.
+
+### M10 Final — VR2 Engineering Repair Planning 1 — RP1B Refinement 2 C3/D3 candidate
+
+- Returned RP1B Refinement 1 C2/D2 evidence is frozen as `VALIDATED-EVIDENCE-MATRIX`; neither candidate was selection-eligible.
+- Adds test-only `C3-VAPOR-SEAM-COMPLETE-SURROGATE`, preserving C2 as the primary resolver and adding only dense saturation-boundary vapor-side discrimination without direct IF97 during resolve.
+- Adds test-only `D3-VAPOR-SEAM-COMPLETE-IF97-COMPARATOR`, preserving D2 as the primary comparator and adding only bounded near-vapor Region-4 refinement/fallback.
+- Keeps the RP1A 40/360/288/1280 corpus, seam coordinates, 25% VR2 ceiling, 10% planning target and machine-local performance ceilings unchanged.
+- Tightens later selection eligibility: all 1,280 seam probes must resolve and seam phase mismatch count must be zero.
+- Production `src/`, `CorrelationConsistentInverseDomain`, exact-v9, VR3, P3-R1 and second replacement-long authority remain unchanged/not authorized.

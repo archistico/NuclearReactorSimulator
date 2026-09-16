@@ -121,3 +121,11 @@ These validated boundaries are not reasons to change physics, challenge/scoring 
 - Parallel representative channel-group flows are currently reduced-model quantities. A future higher-fidelity split should close total flow and shared hydraulic boundaries; no claim is made that current groups reproduce individual RBMK pressure-channel flow redistribution.
 - Low-flow gravity-dominated circulation, stagnation/reversal and detailed natural-circulation takeover are not qualified merely because the current network contains pumps, density and elevation-like pressure effects. Such claims require a dedicated physical milestone.
 - DNB and dryout are distinct physical mechanisms. No current generic simulator thermal limit should be described as a validated representation of either unless a dedicated future model/assessment establishes it.
+
+## VR2 physical-reference thermodynamic inverse-closure limitation
+
+Independent IAPWS-IF97 assessment of the authoritative exact-v9 water/steam closure is `MODEL-DISCREPANCY-BLOCKING`, and the returned Materiality Diagnostic 1 adjudication classifies the discrepancy `HYDRAULIC-MATERIALITY-CONFIRMED` on the exact-v9/P1B path.
+
+The limitation is not confined to absolute compressed-liquid pressure magnitude. The same conserved `(v,u)` inventories are classified differently at the hot primary boundary: all 72 sampled `pressure` states are production `SubcooledLiquid` but IF97 Region-4 `SaturatedMixture`, with the same reinterpretation in 55 of 72 `suction` samples. Current exact-v9 thermodynamic pressure/phase outputs in this domain therefore remain educational reduced-model behavior and must not be described as IF97-qualified.
+
+Repair is not yet authorized. `CorrelationConsistentInverseDomain` and exact-v9 remain immutable until VR2 Engineering Repair Planning 1 and its later selection/requalification gates explicitly authorize a new versioned repair path.
