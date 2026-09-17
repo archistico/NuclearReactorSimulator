@@ -1,0 +1,12 @@
+status=PASS-RUNTIME-CONTEXT-CAPTURED
+run-index=2
+framework=.NET 10.0.5
+os=Microsoft Windows 10.0.19045
+process-architecture=X64
+stopwatch-frequency=10000000
+whole-measured-region-allocated-bytes=14592
+candidate-call-allocated-bytes-sum=14592
+harness-allocated-bytes=0
+gc-gen0-collections-during-measured-region=0
+gc-gen1-collections-during-measured-region=0
+gc-gen2-collections-during-measured-region=0

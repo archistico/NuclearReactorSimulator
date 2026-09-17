@@ -1,3 +1,30 @@
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1C C4 Exact-v9 Wall-Clock Tail Attribution Planning 1 — CANDIDATE
+
+## 2026-09-17 — Evidence-only runtime/tiering attribution protocol freeze
+
+- Starts only from the returned/adjudicated Full-Domain Performance Confirmation 1 classification `C4-FULL-DOMAIN-PERFORMANCE-NOT-CONFIRMED`.
+- Freezes the returned rare-tail signature: five exact-v9 calls above `100 us` at measured passes `15,17,17,18,18`, all on `C2-MIXTURE-PREFIX`; two exceed the unchanged `409.30666666666673 us` ceiling, with zero per-call allocation and no measured-region GC collections.
+- Does not claim tiered compilation, Dynamic PGO, ReadyToRun, OS scheduling or a thermodynamic slow path as proven cause.
+- Plans a separately versioned exact-v9-only attribution gate using four runtime modes × five fresh processes = 20 processes and 460,800 measured calls, while preserving C4, C2/C3, exact-v9, thresholds and production source.
+- Adds a fail-closed caller-environment preflight for `DOTNET_TieredCompilation`, `DOTNET_TieredPGO`, `DOTNET_TC_QuickJit`, `DOTNET_TC_QuickJitForLoops` and `DOTNET_ReadyToRun`; inherited settings must not be silently cleared.
+- Keeps `100 us` diagnostic-only; it does not replace or relax the strict performance ceiling.
+- Freezes an 86-file future evidence tree and forbids automatic causal promotion or RP1C selection from the runner.
+- Adds ADR-0199, machine contract, Windows PowerShell-compatible static validator, planning runner and four planning artifacts.
+- RP1C selection, production repair, threshold/exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1C C4 Full-Domain Performance Confirmation 1 — Returned-Evidence Adjudication / Documentation Handoff 1 — CANDIDATE
+
+## 2026-09-17 — Complete 30-file returned evidence adjudicated
+
+- Freezes the complete returned Full-Domain Performance Confirmation 1 evidence tree under `eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_FullDomainPerformanceConfirmation1_Artifacts/`.
+- Accepts all 30 artifacts as structurally and numerically coherent engineering evidence.
+- Independently reconstructs 217,600 measured calls, zero unresolved calls, zero harness allocation and zero seam exceedances.
+- Freezes classification `C4-FULL-DOMAIN-PERFORMANCE-NOT-CONFIRMED` because runs 4 and 5 contain one exact-v9 single-call max exceedance each (`1027.1 us`, `796.1 us`) against the unchanged `409.30666666666673 us` ceiling.
+- Records that both strict misses occur on `C2-MIXTURE-PREFIX`, allocate `0 B` on the measured call and occur with no measured-region GC collections.
+- Records the broader >100 us exact-v9 tail pattern at measured passes `15,17,17,18,18` as motivation for a future bounded runtime/tiering attribution plan, without declaring runtime/tiering causality proven.
+- Keeps RP1C selection, production repair, threshold changes, exact-v9 changes, VR3, P3-R1 and second replacement-long authorization blocked.
+- Authorizes only planning for bounded exact-v9 wall-clock-tail attribution/refinement; C4, C2/C3, corpora and thresholds remain immutable.
+
 
 ## M10 Final VR2 RP1C C4 Full-Domain Performance Confirmation 1 Hotfix 3
 

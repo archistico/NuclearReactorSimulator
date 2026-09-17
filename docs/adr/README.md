@@ -15,6 +15,7 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 - **Layering / determinism:** ADR 0001, 0002, 0005, 0006, 0008.
 - **Plant/network ownership:** ADR 0025, 0027, 0028, 0179, 0180.
 - **Hydraulic/thermodynamic correction policy:** ADR 0159, 0183, 0194.
+- **VR2/RP1C performance attribution:** ADR 0195, 0196, 0197, 0198, 0199.
 - **Scenario / replay / persistence:** ADR 0053, 0068, 0176, 0181, 0184.
 - **Mission / operator experience:** ADR 0177, 0178, 0182.
 - **Desktop host / save integrity planning:** ADR 0185.
@@ -225,6 +226,7 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 
 | [0197](0197-rp1c-selection-uses-corrected-full-performance-predicate-and-preserves-no-selection.md) | RP1C selection uses corrected full performance predicate and preserves no-selection | Accepted | Fluids / thermo / validation |
 | [0198](0198-require-immutable-c4-full-domain-performance-confirmation-before-rp1c-selection.md) | Require immutable C4 full-domain performance confirmation before RP1C selection | Accepted | Fluids / thermo / validation |
+| [0199](0199-attribute-rare-exact-v9-wall-clock-tail-before-rp1c-selection-or-candidate-mutation.md) | Attribute rare exact-v9 wall-clock tail before RP1C selection or candidate mutation | Accepted | Validation / performance |
 
 ## Maintenance rule
 

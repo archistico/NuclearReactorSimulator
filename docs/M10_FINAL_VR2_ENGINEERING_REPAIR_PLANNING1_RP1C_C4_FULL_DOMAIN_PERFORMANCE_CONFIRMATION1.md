@@ -106,5 +106,29 @@ SECOND-REPLACEMENT-LONG-AUTHORIZED=False
 
 - **Hotfix 1:** Windows PowerShell 5.1 compatibility; removes the unsupported two-argument `String.Contains` overload from the static validator.
 - **Hotfix 2:** ordinary Release compile repair; aligns `ReadCsvLines` declaration with its actual `string[]` return value so the existing array `.Length` usages compile.
+- **Hotfix 3:** fixes Windows PowerShell variable interpolation in the adjudicator (`${runIndex}:`) and adds adjudication-only completion over already-produced per-process evidence.
 
 Neither hotfix changes C4 semantics, the frozen corpora, thresholds, timing protocol, evidence classification or authority boundary.
+
+
+## Returned evidence adjudication
+
+The complete 30-file evidence tree has been returned and independently reconciled against all 25 per-process files.
+
+Final classification:
+
+```text
+C4-FULL-DOMAIN-PERFORMANCE-NOT-CONFIRMED
+```
+
+Runs 1–3 satisfy the complete corrected predicate. Runs 4–5 fail only the exact-v9 single-call maximum:
+
+```text
+run 4 exact-v9 max = 1027.1 us
+run 5 exact-v9 max = 796.1 us
+strict ceiling     = 409.30666666666673 us
+```
+
+Both misses are `C2-MIXTURE-PREFIX`, allocate `0 B` on the measured call and occur without measured-region GC collections. Every seam side remains below the strict maximum; exact-v9 median/p95 and median candidate allocation are green in all five processes.
+
+The negative classification is therefore accepted engineering evidence, not a runner failure. RP1C selection remains blocked. See `M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION1_RETURNED_EVIDENCE_ADJUDICATION.md`.

@@ -274,3 +274,20 @@ A local Planning 1 PASS means only that:
 ## 12. Next permitted action
 
 Return the complete RP1C Planning 1 artifact folder. Only after returned-planning adjudication may `RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION1` be implemented.
+
+
+## 13. Returned Full-Domain Confirmation outcome
+
+The separately authorized immutable-C4 Full-Domain Performance Confirmation 1 has now returned a complete 30-file evidence tree and is adjudicated valid evidence.
+
+Frozen outcome:
+
+```text
+C4-FULL-DOMAIN-PERFORMANCE-NOT-CONFIRMED
+```
+
+Three of five fresh processes meet the corrected full-domain predicate. Runs 4 and 5 each contain one exact-v9 single-call maximum above the unchanged `409.30666666666673 us` ceiling. All exact-v9 median/p95/allocation criteria and all seam-side maxima remain green.
+
+Therefore the planned `SELECT-C4 | SELECT-NONE` decision gate is **not opened**. C4 remains physically/R1 qualified but is not selection-ready under the frozen corrected full-domain predicate.
+
+The next permitted activity is planning-only for bounded attribution/reproducibility of the rare exact-v9 wall-clock tail. No candidate mutation, threshold change or production repair is authorized by this result.
