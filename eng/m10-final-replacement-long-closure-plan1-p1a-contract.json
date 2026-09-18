@@ -1,0 +1,91 @@
+{
+  "ContractId": "m10-final-replacement-long-closure-plan1-p1a-v1",
+  "Baseline": "P2-DECISION-GATE1-VALIDATED",
+  "Question": "After reproducing the returned P1 exact-v9 checkpoints under unchanged production physics, do the 5.5 and 6 MWe first-stage holds converge, become biased-stationary, or remain inconclusive by 3,600 s after load?",
+  "StepsPerSecond": 100,
+  "NoiseTailSeconds": 60,
+  "PreparationTimeoutSeconds": 60,
+  "MaxTotalHoldSeconds": 3600,
+  "FivePointFiveMinimumCheckpointHoldSeconds": 900,
+  "SixPointZeroMinimumCheckpointHoldSeconds": 1800,
+  "ConvergenceWindowSeconds": 30,
+  "StationaryWindowSeconds": 60,
+  "ThermalReadinessToleranceMegawatts": 0.25,
+  "FrequencyToleranceHertz": 0.01,
+  "OutputToleranceMegawatts": 0.1,
+  "NetAccelerationToleranceMegawatts": 0.05,
+  "DispatchAdequacyToleranceMegawatts": 0.1,
+  "TrajectorySampleIntervalSteps": 10,
+  "FrozenP1Calibration": {
+    "ReferenceOutputNoiseSlope": 2.489326749149929e-10,
+    "ReferenceShaftNoiseSlope": 2.4643388247696883e-10,
+    "ReferenceSteamFlowNoiseSlope": 5.728597683809152e-10,
+    "ReferenceInletPressureNoiseSlope": 2.1349611727595348e-11,
+    "OutputSlopeLimit": 2e-05,
+    "ShaftSlopeLimit": 2e-05,
+    "SteamFlowSlopeLimit": 5e-05,
+    "InletPressureSlopeLimit": 2e-05,
+    "ReferenceMeanOutputMegawatts": 4.999999991196854,
+    "ReferenceMeanShaftMegawatts": 5.602040807344629,
+    "ReferenceMeanSteamFlowKilogramsPerSecond": 13.028001877554868,
+    "ReferenceMeanFrequencyHertz": 49.99999999999368
+  },
+  "CheckpointTolerances": {
+    "PowerMegawatts": 0.002,
+    "ThermalMegawatts": 0.01,
+    "FrequencyHertz": 0.0001,
+    "FlowKilogramsPerSecond": 0.01,
+    "PressureMegapascals": 0.002
+  },
+  "RequiredCheckpoints": [
+    {
+      "ProbeId": "exact-v9-asymptotic-5p5mwe",
+      "HoldSeconds": 900,
+      "ExpectedLoadCommandStep": 1330,
+      "ExpectedLogicalStep": 91329,
+      "OutputMegawatts": 5.339139220900058,
+      "ThermalMegawatts": 36.2457202412898,
+      "ShaftMegawatts": 5.948101529282688,
+      "FrequencyHertz": 50.000014623538235,
+      "DispatchAdequacyMegawatts": -0.1641436611479871,
+      "FlowKilogramsPerSecond": 13.832794254152098,
+      "InletPressureMegapascals": 4.262438637455648
+    },
+    {
+      "ProbeId": "exact-v9-asymptotic-6mwe",
+      "HoldSeconds": 900,
+      "ExpectedLoadCommandStep": 2785,
+      "ExpectedLogicalStep": 92784,
+      "OutputMegawatts": 5.871052299316649,
+      "ThermalMegawatts": 39.59223679060836,
+      "ShaftMegawatts": 6.490870936820516,
+      "FrequencyHertz": 50.000065423004514,
+      "DispatchAdequacyMegawatts": -0.1315793512371934,
+      "FlowKilogramsPerSecond": 15.09504869032984,
+      "InletPressureMegapascals": 4.994255033908174
+    },
+    {
+      "ProbeId": "exact-v9-asymptotic-6mwe",
+      "HoldSeconds": 1800,
+      "ExpectedLoadCommandStep": 2785,
+      "ExpectedLogicalStep": 182784,
+      "OutputMegawatts": 5.932191717552277,
+      "ThermalMegawatts": 39.55540168251264,
+      "ShaftMegawatts": 6.553257073522237,
+      "FrequencyHertz": 50.00001028322374,
+      "DispatchAdequacyMegawatts": -0.0691921117330913,
+      "FlowKilogramsPerSecond": 15.24013272911128,
+      "InletPressureMegapascals": 5.091515226367031
+    }
+  ],
+  "AllowedFinalClassifications": [
+    "CONVERGED",
+    "BIASED-STATIONARY",
+    "INCONCLUSIVE"
+  ],
+  "RuntimeChangesAuthorized": false,
+  "ReplacementWorkloadChangesAuthorized": false,
+  "ExactV4RerunAuthorized": false,
+  "FurtherAutomaticContinuationAuthorized": false,
+  "SecondReplacementLongAuthorized": false
+}

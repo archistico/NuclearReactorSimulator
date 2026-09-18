@@ -1,0 +1,228 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation1-v1",
+  "status": "CANDIDATE-EVIDENCE-ONLY",
+  "gate": "RP1C-C4-EXACT-V9-RUNTIME-FACTOR-ISOLATION1",
+  "prerequisite": {
+    "planning1_returned_adjudication": "PASS",
+    "planning1_status": "PASS-AS-AUTHORED",
+    "attribution1_returned_adjudication": "PASS",
+    "runtime_configuration_sensitivity_confirmed": true,
+    "tiering_off_repair_direction_rejected": true,
+    "dynamic_pgo_causality_proven": false,
+    "c4_candidate_immutable": true,
+    "exact_v9_corpus_immutable": true,
+    "caller_runtime_environment_must_be_clean": true,
+    "rp1c_selection_authorized": false
+  },
+  "protocol": {
+    "evidence_only": true,
+    "exact_v9_only": true,
+    "mode_count": 4,
+    "fresh_processes_per_mode": 5,
+    "total_fresh_processes": 20,
+    "rows": 360,
+    "warmup_passes": 16,
+    "measured_passes": 64,
+    "rotation_stride": 37,
+    "measured_calls_per_process": 23040,
+    "total_measured_calls": 460800,
+    "strict_max_us": 409.30666666666673,
+    "diagnostic_tail_floor_us": 100.0,
+    "diagnostic_tail_floor_is_qualification_threshold": false,
+    "allocation_neutral_harness_required": true,
+    "candidate_allocation_recorded": true,
+    "gc_collection_deltas_recorded": true,
+    "negative_or_inconclusive_result_is_harness_failure": false,
+    "engineering_negative_or_inconclusive_is_infrastructure_red": false,
+    "automatic_causal_promotion": false,
+    "automatic_selection_authorized": false,
+    "execution_order_strategy": "COUNTERBALANCED-BLOCKED-BY-RUN",
+    "execution_schedule": [
+      "A1",
+      "B1",
+      "C1",
+      "D1",
+      "B2",
+      "C2",
+      "D2",
+      "A2",
+      "C3",
+      "D3",
+      "A3",
+      "B3",
+      "D4",
+      "A4",
+      "B4",
+      "C4",
+      "A5",
+      "C5",
+      "B5",
+      "D5"
+    ],
+    "full_exact_matrix_identity_verified_by_adjudicator": true,
+    "frozen_performance_baseline_pinned": true
+  },
+  "runtime_modes": [
+    {
+      "id": "TIERING-OFF-QJ-OFF-QJFL-OFF",
+      "letter": "A",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "0",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "0",
+        "DOTNET_TC_QuickJitForLoops": "0",
+        "DOTNET_ReadyToRun": "1"
+      }
+    },
+    {
+      "id": "TIERING-ON-QJ-OFF-QJFL-OFF",
+      "letter": "B",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "0",
+        "DOTNET_TC_QuickJitForLoops": "0",
+        "DOTNET_ReadyToRun": "1"
+      }
+    },
+    {
+      "id": "TIERING-ON-QJ-ON-QJFL-OFF",
+      "letter": "C",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "1",
+        "DOTNET_TC_QuickJitForLoops": "0",
+        "DOTNET_ReadyToRun": "1"
+      }
+    },
+    {
+      "id": "TIERING-ON-QJ-ON-QJFL-ON",
+      "letter": "D",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "1",
+        "DOTNET_TC_QuickJitForLoops": "1",
+        "DOTNET_ReadyToRun": "1"
+      }
+    }
+  ],
+  "contrasts": [
+    {
+      "id": "A-B",
+      "left": "TIERING-OFF-QJ-OFF-QJFL-OFF",
+      "right": "TIERING-ON-QJ-OFF-QJFL-OFF",
+      "changed_factor": "DOTNET_TieredCompilation"
+    },
+    {
+      "id": "B-C",
+      "left": "TIERING-ON-QJ-OFF-QJFL-OFF",
+      "right": "TIERING-ON-QJ-ON-QJFL-OFF",
+      "changed_factor": "DOTNET_TC_QuickJit"
+    },
+    {
+      "id": "C-D",
+      "left": "TIERING-ON-QJ-ON-QJFL-OFF",
+      "right": "TIERING-ON-QJ-ON-QJFL-ON",
+      "changed_factor": "DOTNET_TC_QuickJitForLoops"
+    }
+  ],
+  "pgo_follow_up": {
+    "included_in_this_gate": false,
+    "requires_separate_planning_if_still_material": true,
+    "required_fixed_environment": {
+      "DOTNET_TieredCompilation": "1",
+      "DOTNET_TC_QuickJit": "1",
+      "DOTNET_TC_QuickJitForLoops": "1",
+      "DOTNET_ReadyToRun": "1"
+    },
+    "future_changed_factor": "DOTNET_TieredPGO"
+  },
+  "caller_environment_preflight": {
+    "required_unset": [
+      "DOTNET_TieredCompilation",
+      "DOTNET_TieredPGO",
+      "DOTNET_TC_QuickJit",
+      "DOTNET_TC_QuickJitForLoops",
+      "DOTNET_ReadyToRun"
+    ],
+    "failure_classification": "CALLER-RUNTIME-CONFIGURATION-NOT-CLEAN",
+    "must_not_silently_clear_parent_environment": true
+  },
+  "evidence": {
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation1",
+    "process_directory_count": 20,
+    "files_per_process": 4,
+    "aggregate_file_count": 6,
+    "total_required_files": 86,
+    "process_files": [
+      "01-process-contract.txt",
+      "02-exact-v9-call-timing.csv",
+      "03-runtime-context.txt",
+      "04-process-summary.txt"
+    ],
+    "aggregate_files": [
+      "01-contract-and-provenance.txt",
+      "02-runtime-factor-run-summary.csv",
+      "03-single-factor-contrast-summary.csv",
+      "04-tail-row-path-summary.csv",
+      "05-runtime-factor-evidence-summary.txt",
+      "06-runtime-factor-isolation1-summary.txt"
+    ],
+    "run_summary_includes_sequence_index": true,
+    "contrast_summary_count": 3,
+    "per_mode_aggregate_in_evidence_summary": true,
+    "tail_row_summary_includes_run_and_run_pass_pairs": true
+  },
+  "execution": {
+    "test_file": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2EngineeringRepairPlanning1Rp1cC4RuntimeFactorIsolation1Tests.cs",
+    "test_class": "M10FinalVr2EngineeringRepairPlanning1Rp1cC4RuntimeFactorIsolation1Tests",
+    "test_method": "Rp1cC4RuntimeFactorIsolation1_MeasuresOneFreshSingleFactorModeProcess",
+    "explicit": true,
+    "parallel": "none",
+    "configuration": "Release",
+    "main_runner": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation1.cmd",
+    "adjudicator": "eng/adjudicate-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation1.ps1"
+  },
+  "interpretation_limits": {
+    "single_factor_contrasts_are_observational_until_returned_adjudication": true,
+    "runtime_mode_difference_proves_single_cause": false,
+    "pgo_causality_inferred_from_this_gate": false,
+    "low_level_jit_event_trace_collected": false,
+    "result_requires_returned_evidence_adjudication": true
+  },
+  "authority": {
+    "runtime_factor_isolation_gate_implementation_authorized": true,
+    "runtime_factor_isolation_result_is_evidence_only": true,
+    "returned_evidence_adjudication_required": true,
+    "pgo_comparator_implementation_authorized": false,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "candidate_mutation_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false,
+    "next_action_after_local_completion": "RETURN-COMPLETE-RUNTIME-FACTOR-ISOLATION1-ARTIFACTS-FOR-ADJUDICATION"
+  },
+  "normalized_lf_sha256": {
+    "planning_artifact_01": "BCAE4A1170AB442C54248669374893CDE07730EF4354F41997FE81BF05EE59BB",
+    "planning_artifact_02": "3E03AF2415524C547DB70F7324409278ED15DC81DA143CA498A60AFB1298367F",
+    "planning_artifact_03": "B618418EF13840C1548FB151D00F150ADF903F8630FA5EF705BBD667B671054E",
+    "planning_artifact_04": "1DDA64D0A141E86F960EF47771A1F148B016CF23EB3BFDB8B36A1D98D0B8C178",
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "rp1a_exact_v9_corpus": "6EB6AEA3BF45621BD9BB890E3449E9BB010E02C3CF5A81AFDAFF67809DE4B50E",
+    "rp1a_performance_baseline": "91776709A34142E9312A092F3B19EAFCF0FCA576D561F296CC9272FCDC4F7DEB",
+    "focused_test": "7B3560EFA247A21618179DC26A8A7B8A40770D27C77C356E5CB99040CE3EC9A5",
+    "runner": "25E3CC1FB96492F62F4F3B745606E17E19C51817BDF599D25E1CDAB08FC81992",
+    "adjudicator": "F8DE6CCC9C9D45ECE36231434144CF01C7BE59E361E40A7D72BFD386101D2A6C",
+    "hash_mode": "UTF8-TEXT-NORMALIZED-LF"
+  }
+}

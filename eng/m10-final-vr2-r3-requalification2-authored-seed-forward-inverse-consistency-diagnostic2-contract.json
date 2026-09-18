@@ -1,0 +1,103 @@
+{
+  "schema": "m10-final-vr2-r3-requalification2-authored-seed-forward-inverse-consistency-diagnostic2-v1",
+  "status": "DIAGNOSTIC-CANDIDATE",
+  "predecessor": {
+    "diagnostic1_classification": "SEED-INVENTORY-DIVERGENCE",
+    "diagnostic1_refinement": "LOGICAL-STEP0-IS-AFTER-TWO-DETERMINISTIC-SEED-PRECONDITIONING-STEPS",
+    "returned_diagnostic1_artifacts": {
+      "01-initial-node-closure-comparison.csv": {
+        "sha256": "1E540023F25B137B595406FA306C883400D57D9E90C25B178D070A35A0C1CD81",
+        "bytes": 5995
+      },
+      "02-initial-hydraulic-head-comparison.csv": {
+        "sha256": "FEA5690A1F8CAE2C2A3FF766DF52F320A8E4AB32BD26239EEA7A8855EA090110",
+        "bytes": 799
+      },
+      "03-first-second-dynamic-comparison.csv": {
+        "sha256": "2C7CE0D53444287925F7DF1762D90F2CBE99EE7C0F75157E685522B465F64AED",
+        "bytes": 31197
+      },
+      "04-diagnostic-summary.txt": {
+        "sha256": "EF6FBD13A2CB3DBD6663AFCD7D87D3F5EF6290B58B997F18AB7163E4A8DCC954",
+        "bytes": 694
+      },
+      "05-pre-repair-review.txt": {
+        "sha256": "8301354BE255C0923F6BD50E6D8483A229CA1DD42352D49F68D2B037EB33D9D8",
+        "bytes": 547
+      }
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "871C630D5173CF8E5261E882586836BCB8F28A021EEE2B2F0E14FC45FE1D7EE4",
+    "historical_tests_file_count": 391,
+    "historical_tests_tree_sha256": "F69D213CADA8F468C6C0DB8B6DEF7BE3BA26F13345A5DEBA8D502103767927AC",
+    "diagnostic1_test": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3Requalification2InitialClosureOperatingPointDisplacementDiagnostic1Tests.cs",
+    "diagnostic1_test_normalized_sha256": "CA6BE3BFEE665F4074D5D63320E42F20D8A67C486E9506FDF0A1736ADE568C02"
+  },
+  "diagnostic": {
+    "test_file": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3Requalification2AuthoredSeedForwardInverseConsistencyDiagnostic2Tests.cs",
+    "test_normalized_sha256": "5E960742D1AA7C65794571E06C86A8639E8E53223460B769EB136708C96AE14F",
+    "test_project": "tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj",
+    "dynamic_steps": 0,
+    "deterministic_seed_preconditioning_included": false,
+    "raw_seed_node_count": 12,
+    "hydraulic_head_count": 8,
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-r3-requalification2-authored-seed-forward-inverse-consistency-diagnostic2",
+    "required_files": [
+      "01-raw-authored-seed-closure-comparison.csv",
+      "02-raw-authored-seed-hydraulic-head-comparison.csv",
+      "03-diagnostic-summary.txt",
+      "04-pre-repair-review.txt"
+    ],
+    "allowed_classifications": [
+      "LEGACY-FORWARD-MODE2-INVERSE-SEED-CONSISTENCY-GAP",
+      "FORWARD-PROPERTY-PROVIDER-DIVERGENCE",
+      "NO-RAW-SEED-CLOSURE-DIVERGENCE"
+    ]
+  },
+  "authority": {
+    "production_repair_authorized": false,
+    "seed_repair_authorized": false,
+    "new_exact_version_identity_authorized": false,
+    "threshold_change_authorized": false,
+    "r3_passed": false,
+    "r4_planning_authorized": false
+  },
+  "documentation_files": {
+    "diagnostic1_returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_INITIAL_CLOSURE_OPERATING_POINT_DISPLACEMENT_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "F9C161693B95593407C3836DBBE65B419BB4C786FD94C7942B816E6F1345C6CD"
+    },
+    "diagnostic2_main": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_AUTHORED_SEED_FORWARD_INVERSE_CONSISTENCY_DIAGNOSTIC2.md",
+      "normalized_sha256": "2AB22148F1C74F67B56039E34C8C64D748F389733EDAA26F6385215C1066C1E6"
+    },
+    "diagnostic2_preexecution": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_AUTHORED_SEED_FORWARD_INVERSE_CONSISTENCY_DIAGNOSTIC2_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "089307F22A3BA8125A96E0EF99956B52061C6E33011B8712F78DFBBEB0315944"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "161C1C705F1577DD1DAC2FF8792358C1E05698F9B49D83356109EE53B6977CCC"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "E743474DF6E4DC334661FD10DC9A9D2AD770AC1959EE2E4CDDF0FB3A8C155485"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-requalification2-authored-seed-forward-inverse-consistency-diagnostic2.ps1",
+      "normalized_sha256": "2C880307D275CCD2F3106CD1D51A25367977587C5558C91EC1BDEB0342BA85BE"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-r3-requalification2-authored-seed-forward-inverse-consistency-diagnostic2.ps1",
+      "normalized_sha256": "DF96ADA6A32E37CF4887A23A48B15026213BD96667EB2177CF3CB802BE85E91E"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-requalification2-authored-seed-forward-inverse-consistency-diagnostic2.cmd",
+      "normalized_sha256": "71C8A3334D1861AA1688C02344DBDBEFE3C15C0B8579FABA14B8E21BD79CBA88"
+    }
+  }
+}

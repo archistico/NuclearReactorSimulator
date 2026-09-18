@@ -1,0 +1,194 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-dynamic-pgo-comparator-planning1-v1",
+  "status": "CANDIDATE-PLANNING-ONLY",
+  "gate": "RP1C-C4-DYNAMIC-PGO-COMPARATOR-PLANNING1",
+  "prerequisite": {
+    "runtime_factor_isolation1_returned_adjudication": "PASS",
+    "branch": "A-RUNTIME-SENSITIVE",
+    "tiered_compilation_material_single_factor_effect": true,
+    "quickjit_rare_tail_causality_promoted": false,
+    "quickjit_for_loops_material_tail_benefit": false,
+    "dynamic_pgo_qjfl_on_resolved": false,
+    "dynamic_pgo_comparator_material": true,
+    "c4_candidate_immutable": true,
+    "exact_v9_corpus_immutable": true,
+    "strict_max_us": 409.30666666666673,
+    "rp1c_selection_authorized": false
+  },
+  "frozen_returned_observation": {
+    "runtime_modes": 4,
+    "fresh_processes": 20,
+    "total_measured_calls": 460800,
+    "tiering_off_qj_off_qjfl_off": {
+      "calls": 115200,
+      "calls_over_100us": 92203,
+      "strict_exceedances": 20,
+      "max_us": 729.5,
+      "median_of_process_medians_us": 108.8,
+      "median_of_process_p95_us": 115.9
+    },
+    "tiering_on_qj_off_qjfl_off": {
+      "calls": 115200,
+      "calls_over_100us": 36,
+      "strict_exceedances": 1,
+      "max_us": 457.8,
+      "median_of_process_medians_us": 4.6,
+      "median_of_process_p95_us": 5.1
+    },
+    "tiering_on_qj_on_qjfl_off": {
+      "calls": 115200,
+      "calls_over_100us": 21,
+      "strict_exceedances": 0,
+      "max_us": 181.3,
+      "median_of_process_medians_us": 4.5,
+      "median_of_process_p95_us": 5.0
+    },
+    "tiering_on_qj_on_qjfl_on": {
+      "calls": 115200,
+      "calls_over_100us": 21,
+      "strict_exceedances": 0,
+      "max_us": 232.0,
+      "median_of_process_medians_us": 4.7,
+      "median_of_process_p95_us": 5.1
+    },
+    "candidate_allocated_bytes": 0,
+    "harness_allocated_bytes": 0,
+    "gc_collections": 0
+  },
+  "future_gate": {
+    "id": "RP1C-C4-EXACT-V9-DYNAMIC-PGO-COMPARATOR1",
+    "evidence_only": true,
+    "automatic_causal_promotion": false,
+    "automatic_selection_authorized": false,
+    "exact_v9_only": true,
+    "fresh_processes_per_mode": 5,
+    "mode_count": 2,
+    "total_fresh_processes": 10,
+    "exact_v9_rows": 360,
+    "warmup_passes": 16,
+    "measured_passes": 64,
+    "rotation_stride": 37,
+    "measured_calls_per_process": 23040,
+    "total_measured_calls": 230400,
+    "strict_max_us": 409.30666666666673,
+    "diagnostic_tail_floor_us": 100.0,
+    "diagnostic_tail_floor_changes_qualification_threshold": false,
+    "allocation_neutral_harness_required": true,
+    "counterbalanced_blocked_by_run": true,
+    "returned_evidence_adjudication_required": true
+  },
+  "runtime_modes": [
+    {
+      "id": "PGO-OFF-QJFL-ON",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "1",
+        "DOTNET_TC_QuickJitForLoops": "1",
+        "DOTNET_ReadyToRun": "1"
+      }
+    },
+    {
+      "id": "PGO-ON-QJFL-ON",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "1",
+        "DOTNET_TC_QuickJit": "1",
+        "DOTNET_TC_QuickJitForLoops": "1",
+        "DOTNET_ReadyToRun": "1"
+      }
+    }
+  ],
+  "contrast": {
+    "left": "PGO-OFF-QJFL-ON",
+    "right": "PGO-ON-QJFL-ON",
+    "changed_factor": "DOTNET_TieredPGO"
+  },
+  "execution_schedule": [
+    "OFF1",
+    "ON1",
+    "ON2",
+    "OFF2",
+    "OFF3",
+    "ON3",
+    "ON4",
+    "OFF4",
+    "OFF5",
+    "ON5"
+  ],
+  "deferred_questions": {
+    "ambient_unset_included": false,
+    "effective_default_equivalence_deferred_to": "BRANCH-A2-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT",
+    "production_runtime_setting_selection_performed": false
+  },
+  "caller_environment_preflight": {
+    "required_unset": [
+      "DOTNET_TieredCompilation",
+      "DOTNET_TieredPGO",
+      "DOTNET_TC_QuickJit",
+      "DOTNET_TC_QuickJitForLoops",
+      "DOTNET_ReadyToRun"
+    ],
+    "failure_classification": "CALLER-RUNTIME-CONFIGURATION-NOT-CLEAN",
+    "must_not_silently_clear_parent_environment": true
+  },
+  "planned_evidence": {
+    "process_directory_count": 10,
+    "files_per_process": 4,
+    "aggregate_file_count": 6,
+    "total_required_files": 46,
+    "process_files": [
+      "01-process-contract.txt",
+      "02-exact-v9-call-timing.csv",
+      "03-runtime-context.txt",
+      "04-process-summary.txt"
+    ],
+    "aggregate_files": [
+      "01-contract-and-provenance.txt",
+      "02-pgo-run-summary.csv",
+      "03-pgo-contrast-summary.csv",
+      "04-tail-row-path-summary.csv",
+      "05-pgo-evidence-summary.txt",
+      "06-dynamic-pgo-comparator1-summary.txt"
+    ]
+  },
+  "future_test_contract": {
+    "file": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2EngineeringRepairPlanning1Rp1cC4DynamicPgoComparator1Tests.cs",
+    "class": "M10FinalVr2EngineeringRepairPlanning1Rp1cC4DynamicPgoComparator1Tests",
+    "method": "Rp1cC4DynamicPgoComparator1_MeasuresOneFreshPgoModeProcess",
+    "explicit": true,
+    "parallel": "none",
+    "configuration": "Release",
+    "runner": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-dynamic-pgo-comparator1.cmd"
+  },
+  "authority": {
+    "dynamic_pgo_comparator_implementation_authorized_now": false,
+    "dynamic_pgo_comparator_implementation_authorizable_after_returned_planning_adjudication": true,
+    "runtime_configuration_impact_assessment_authorized": false,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "candidate_mutation_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false,
+    "next_action_after_local_planning_pass": "RETURN-COMPLETE-DYNAMIC-PGO-COMPARATOR-PLANNING-ARTIFACTS-FOR-ADJUDICATION"
+  },
+  "normalized_lf_sha256": {
+    "runtime_factor_isolation1_returned_adjudication_doc": "8BBE6C666DAD47E2D60CAD26F4AE78EC061B4A8309A1A22915C82B7C3D5CA282",
+    "rfi1_contract_and_provenance": "870A1E5A36CD9D7CFA86856E6AC1425896D884B7C5E11A9AF965F17242842C93",
+    "rfi1_run_summary": "AECE89D3E8401C3B7177E575FA7B45D8C0E8532560F7631AFAF58AE60257ADA4",
+    "rfi1_contrast_summary": "36D5FC4B6BBF1F6B38FC27509A21B8C3BFEE231D458CBFB4B66D563C02B76375",
+    "rfi1_evidence_summary": "FFEABEFC4EDD8264C9E8B6440B308A0F46624E8AF7658C96FB34353C0DE46BC5",
+    "rfi1_gate_summary": "EEE4B352BEAF04DBF2B89B54163A76292065F8333AB72A185BC86937C2B61D49",
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "rp1a_exact_v9_corpus": "6EB6AEA3BF45621BD9BB890E3449E9BB010E02C3CF5A81AFDAFF67809DE4B50E",
+    "rp1a_performance_baseline": "91776709A34142E9312A092F3B19EAFCF0FCA576D561F296CC9272FCDC4F7DEB",
+    "hash_mode": "UTF8-TEXT-NORMALIZED-LF"
+  },
+  "returned_evidence_tree_byte_manifest_sha256": "B249BCFB06C69535819B1FB5A39BA679D9BCE227F790CB7151C4C7A86ADF01E8"
+}

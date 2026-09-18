@@ -1,0 +1,29 @@
+{
+  "schema": "m10-final-long-diagnostic1-contract-v1",
+  "status": "DIAGNOSTIC-ONLY",
+  "baseline": "M10 Final Pre-M11 Long Validation Hotfix 1 + DocsPlanning1 consolidation",
+  "production_runtime_changed": false,
+  "acceptance_limits_changed": false,
+  "historical_exact_versions_reinterpreted": false,
+  "physical_replay": {
+    "initial_condition": "integrated-operations-desktop-stable@4",
+    "seconds": 300,
+    "steps": 30000,
+    "purpose": "characterize pre-failure node residuals inside the already-validated exact-v4 300 s domain"
+  },
+  "mission_scaling_probe": {
+    "physical_long_run": false,
+    "sample_counts": [1000, 5000, 10000, 25000, 50000, 100000],
+    "purpose": "measure current score/timeline projector prefix-scan cost independently from plant physics"
+  },
+  "observed_lr_h1_failure": {
+    "node": "outlet",
+    "specific_volume_m3_kg": 0.0026153411609661885,
+    "specific_internal_energy_j_kg": 1615124.4119888516
+  },
+  "future_long_wall_clock_policy": {
+    "target_minutes": "35-45",
+    "maximum_minutes": 60,
+    "note": "wall-clock remains machine-local validation-job budget, not a physical acceptance tolerance"
+  }
+}

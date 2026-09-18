@@ -1,0 +1,277 @@
+{
+  "schema": "m10-final-vr2-r3-reference-consistent-seed-integration-planning1-v1",
+  "status": "PLANNING-CANDIDATE",
+  "predecessor": {
+    "candidate_construction_classification": "PASS-CANDIDATE-CONSTRUCTION-EVIDENCE-COMPLETE",
+    "returned_candidate_construction_artifacts": {
+      "01-candidate-conserved-inventory-vector.csv": {
+        "sha256": "BBA072BA589038D3E1AF764F00A5BE60AE124F1A374C673054C245C054989123",
+        "bytes": 1789
+      },
+      "02-candidate-target-roundtrip.csv": {
+        "sha256": "9BA7D068C8E7C36AAE4A50DBCD0B00EF83590FFDE66AA45A87595EA858764685",
+        "bytes": 3191
+      },
+      "03-candidate-hydraulic-head-comparison.csv": {
+        "sha256": "50025900DC5948347C64646B81106465C2CA6A181A928CB1E5EB565A2056F4D8",
+        "bytes": 803
+      },
+      "04-candidate-construction-summary.txt": {
+        "sha256": "3C64334E6BB9F8AC4DE64B5FAC0F40161C2D36C552D400965D3E77D584D2D9F1",
+        "bytes": 626
+      },
+      "05-pre-integration-review.txt": {
+        "sha256": "CF8AC41AE4568C015138864E23FEEA7B7068B677897D49C4BA084B3769E93D08",
+        "bytes": 613
+      }
+    },
+    "measured_residuals": {
+      "resolved_node_count": 12,
+      "phase_match_node_count": 12,
+      "max_abs_pressure_residual_pa": 1.2218476684593043,
+      "max_abs_temperature_residual_k": 0.0004007105181926818,
+      "max_abs_quality_residual": 1.7415402453480056e-10,
+      "max_abs_hydraulic_head_residual_pa": 0.11230209190398455
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "871C630D5173CF8E5261E882586836BCB8F28A021EEE2B2F0E14FC45FE1D7EE4",
+    "tests_file_count": 393,
+    "tests_tree_sha256": "2396DBB31AB16E7F5AA404887F19B85F00C471871974A841C3EAB1E17CA65946",
+    "production_files": {
+      "operational_fluid_node_seed": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/OperationalFluidNodeSeed.cs",
+        "sha256": "C76AE653B31AE9A20CE0B793046FF1BD3BE1F58B4A6AA8BF780E1DE533633D86"
+      },
+      "cold_shutdown_factory": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+        "sha256": "AC615B5B4F58EA5A18BAA827E0567951BC8CC70D035E33BFE274608649EEB443"
+      },
+      "desktop_sustained_factory": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs",
+        "sha256": "D5DB8BDE1CF086969C20005D5FC45D455B7A3BD454E74A8550E59E83847FA397"
+      }
+    },
+    "canonical_exact_v9_test": {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationCandidateTests.cs",
+      "normalized_sha256": "15998ABD9167EA61F0DD0BD937354CF2733B36F1BBEAC547BF3D9592D7FC14F2"
+    }
+  },
+  "frozen_candidate_vector": {
+    "node_count": 12,
+    "source_artifact": "01-candidate-conserved-inventory-vector.csv",
+    "nodes": [
+      {
+        "node": "control-out",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.04877141825211464,
+        "specific_energy_j_kg": 2568017.4627047763,
+        "mass_kg": 2050.381218833311,
+        "internal_energy_j": 5265414775.165846,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "drum",
+        "construction_method": "c4-prefix-by-target-temperature",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0025526343760920505,
+        "specific_energy_j_kg": 1285602.623855127,
+        "mass_kg": 3917.5214804203474,
+        "internal_energy_j": 5036375894.23722,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "exhaust",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 1000.0,
+        "specific_volume_m3_kg": 15.025726993387746,
+        "specific_energy_j_kg": 2146238.1344336863,
+        "mass_kg": 66.55252025010584,
+        "internal_energy_j": 142837556.9034473,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "feedwater-inventory",
+        "construction_method": "c4-near-boundary-liquid-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.001010945775925426,
+        "specific_energy_j_kg": 198367.30625410698,
+        "mass_kg": 9891.727368706732,
+        "internal_energy_j": 1962195312.33038,
+        "resolution_path": "C2NearBoundaryLiquidPrefix"
+      },
+      {
+        "node": "header",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.030991725804371446,
+        "specific_energy_j_kg": 2585103.4593897555,
+        "mass_kg": 3226.6676799875017,
+        "internal_energy_j": 8341269781.836807,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "hotwell",
+        "construction_method": "c4-near-boundary-liquid-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0010109297707227903,
+        "specific_energy_j_kg": 198188.3150499235,
+        "mass_kg": 9891.883976124516,
+        "internal_energy_j": 1960455817.8974555,
+        "resolution_path": "C2NearBoundaryLiquidPrefix"
+      },
+      {
+        "node": "outlet",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.007271949685349985,
+        "specific_energy_j_kg": 1530028.5087290858,
+        "mass_kg": 1375.1470283335327,
+        "internal_energy_j": 2104014157.044389,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "pressure",
+        "construction_method": "c4-liquid-table-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0013319150046541043,
+        "specific_energy_j_kg": 1228014.8530602187,
+        "mass_kg": 7507.98659453272,
+        "internal_energy_j": 9219919054.66319,
+        "resolution_path": "C2LiquidTablePrefix"
+      },
+      {
+        "node": "steam",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.030240469279038222,
+        "specific_energy_j_kg": 2586212.0180637483,
+        "mass_kg": 3306.8269899275992,
+        "internal_energy_j": 8552155703.008327,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "stop-out",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.03192268317071505,
+        "specific_energy_j_kg": 2583796.617763556,
+        "mass_kg": 3132.5687588735377,
+        "internal_energy_j": 8093920564.089228,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "suction",
+        "construction_method": "c4-near-boundary-liquid-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0013328453387345543,
+        "specific_energy_j_kg": 1228118.852856549,
+        "mass_kg": 7502.7459746337245,
+        "internal_energy_j": 9214263779.64126,
+        "resolution_path": "C2LiquidTablePrefix"
+      },
+      {
+        "node": "turbine-inlet",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.05104968638343995,
+        "specific_energy_j_kg": 2566581.2821789444,
+        "mass_kg": 1958.8758929660944,
+        "internal_energy_j": 5027614200.998343,
+        "resolution_path": "C2MixturePrefix"
+      }
+    ]
+  },
+  "selected_integration_design": {
+    "id": "OPT-IN-CONSERVED-INVENTORY-SEED-SEAM",
+    "authorized_production_files": [
+      "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/OperationalFluidNodeSeed.cs",
+      "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+      "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs"
+    ],
+    "new_seed_subtype": "OperationalFluidNodeSeed.ConservedInventory",
+    "canonical_exact_v9_method": "CreatePostMoistureEquilibriumCandidateRuntimeEngine",
+    "canonical_exact_v9_method_body_change_allowed": false,
+    "new_opt_in_candidate_factory_required": true,
+    "candidate_closure_mode": "ReferenceConsistentTabulatedInverseDomain",
+    "candidate_seed_preconditioning_duration_ms": 20,
+    "candidate_fast_running_steps": 100,
+    "candidate_runtime_step_ms": 10,
+    "fast_health_envelope": {
+      "electrical_mwe_min": 4.99,
+      "electrical_mwe_max": 5.01,
+      "primary_pump_kg_s_min": 99.9,
+      "primary_pump_kg_s_max": 100.1,
+      "drum_level_min": 0.49,
+      "drum_level_max": 0.51,
+      "governor_percent_min": 29.27,
+      "governor_percent_max": 29.3,
+      "trip_steps_max": 0,
+      "breaker_open_steps_max": 0,
+      "rollback_steps_max": 0
+    },
+    "c4_resolver_change_allowed": false,
+    "c4_payload_change_allowed": false,
+    "threshold_change_allowed": false,
+    "default_closure_change_allowed": false
+  },
+  "sequencing": {
+    "planning_successor": "R3-REFERENCE-CONSISTENT-SEED-INTEGRATION-IMPLEMENTATION1",
+    "after_implementation_pass": "R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION3",
+    "r4_requires_requalification3_pass": true
+  },
+  "authority": {
+    "production_seed_integration_authorized_now": false,
+    "canonical_exact_v9_change_authorized": false,
+    "new_exact_version_identity_authorized": false,
+    "r3_passed": false,
+    "r4_planning_authorized": false
+  },
+  "planning_artifacts": {
+    "root": "artifacts/m10-final-physical-reference-vr2-r3-reference-consistent-seed-integration-planning1",
+    "required_files": [
+      "01-contract-and-provenance.txt",
+      "02-integration-seam-and-fast-gate-contract.txt",
+      "03-planning-summary.txt",
+      "04-preexecution-review.txt"
+    ]
+  },
+  "documentation_files": {
+    "candidate_construction_returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_RAW_SEED_CANDIDATE_CONSTRUCTION1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "F8007ECD3B5690D04465166035A95EA791D9D483BC9B20FE4AA8794A0C2CA800"
+    },
+    "main": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_PLANNING1.md",
+      "normalized_sha256": "B21AF40AFF38947FF3DCFD50A048BCA79452AFFEC77B486C9DDC45E7DF2C1249"
+    },
+    "preexecution": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_PLANNING1_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "F36ECD69B4ED17DECE9DD4D1463268E14E2187F10473BDDF5EF8096B472A02E1"
+    },
+    "returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "859ADFC1096C1D84C504B4F0AC0F735EF99C5507D0F362025EDB3728F82897C0"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "161C1C705F1577DD1DAC2FF8792358C1E05698F9B49D83356109EE53B6977CCC"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "87B3572652B0C8E0F9492F253B2F67469B03480EA02F53306DC77840AB9AC3B2"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-reference-consistent-seed-integration-planning1.ps1",
+      "normalized_sha256": "359E01A4DEBAC6DCF4CA7D4485C232CBA775224DE3D04084BF2F5D863F7A879F"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-reference-consistent-seed-integration-planning1-audit.cmd",
+      "normalized_sha256": "FD8B59064F4CD4943F18EBEA313684FAE8204B8860EFD98DA3F516FEE85083AD"
+    }
+  }
+}

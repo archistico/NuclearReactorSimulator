@@ -668,6 +668,6 @@ R3 Requalification 1 returned `R3-SHADOW-COMPOSITION-BLOCKING`. Diagnostic 1 con
 
 Future sequence:
 
-`R3-2 Authored-Seed Forward/Inverse Consistency Diagnostic 2 -> bounded repair/replanning -> R3 short requalification -> R4 Planning 1`
+`Seed Integration Planning 1 -> Seed Integration Implementation 1 -> R3 Short Requalification 3 -> R4 Planning 1`
 
 Repair Implementation 1 is returned/adjudicated PASS. R4 remains blocked until R3 Short Requalification 2 returns/adjudicates PASS.

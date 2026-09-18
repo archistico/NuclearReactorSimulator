@@ -1,0 +1,44 @@
+{
+  "schema": "m10-final-long-diagnostic2-contract-v1",
+  "status": "CANDIDATE",
+  "baseline": "M10 Final Long Failure Diagnostic 1 (user-reported build + diagnostics PASS)",
+  "lr_m1": {
+    "classification": "APPLICATION-MISSION-LIVE-PROJECTION-SCALABILITY-DEFECT",
+    "production_runtime_changed": true,
+    "change_layer": "Application read-side MISSION/PERFORMANCE projection only",
+    "physics_changed": false,
+    "challenge_or_scoring_policy_changed": false,
+    "replay_offline_projectors_changed": false,
+    "full_prefix_live_retention_removed": true,
+    "score_aggregate": [
+      "paired_sample_count",
+      "sum_absolute_error_megawatts",
+      "sum_absolute_demand_megawatts"
+    ],
+    "recent_demand_change_retention_max": 100,
+    "expected_aggregate_complexity": "O(n) session / O(1) demand-prefix maintenance per step"
+  },
+  "lr_h1": {
+    "production_physics_changed": false,
+    "diagnostic_seconds": 300,
+    "diagnostic_steps": 30000,
+    "diagnostic_focus": [
+      "outlet mass",
+      "pressure/outlet/drum pressures",
+      "pump/channel/return flows",
+      "channel-return continuity residual",
+      "steam-drum return/recirculation/separated-steam flows",
+      "flow-control error/integral/output",
+      "level-control error/integral/output"
+    ],
+    "diagnostic1_outlet_mass_slope_kg_s": -7.914005596772072,
+    "diagnostic1_total_node_mass_slope_sum_kg_s": 2.4735012215532093e-12,
+    "diagnostic1_300s_estimated_channel_flow_kg_s": 253.22525019220964,
+    "diagnostic1_300s_estimated_return_flow_kg_s": 261.07415393470495,
+    "diagnostic1_300s_estimated_channel_return_residual_kg_s": -7.84890374249531
+  },
+  "acceptance_limits_changed": false,
+  "thermodynamic_envelope_changed": false,
+  "historical_exact_versions_reinterpreted": false,
+  "replacement_long_authorized": false
+}

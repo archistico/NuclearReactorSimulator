@@ -1,0 +1,87 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1b-v1",
+  "status": "CANDIDATE",
+  "prerequisite": {
+    "rp1a_gate": "VR2-ENGINEERING-REPAIR-PLANNING1-RP1A",
+    "returned_status": "VALIDATED",
+    "returned_artifact_set": "COMPLETE-7-OF-7",
+    "next_gate": "RP1B-TEST-ONLY-SHADOW-CANDIDATE-MATRIX"
+  },
+  "frozen_corpus": {
+    "vr2_rows": 40,
+    "exact_v9_node_rows": 360,
+    "hydraulic_rows": 288,
+    "seam_rows": 1280,
+    "seam_boundary_count": 320,
+    "rp1a_seam_unresolved_rows": 4,
+    "rp1a_seam_phase_mismatch_rows": 638,
+    "vr2_inverse_applicable_rows": 39,
+    "vr2_boundary_only_rows": 1
+  },
+  "candidates": [
+    {
+      "id": "B1-PIECEWISE-REDUCED",
+      "family": "B-PIECEWISE-REFERENCE-CONSISTENT-REDUCED-CLOSURE",
+      "implementation_scope": "TEST-ONLY",
+      "final_result_retuning_in_place_allowed": false
+    },
+    {
+      "id": "C1-TABULATED-SURROGATE",
+      "family": "C-BOUNDED-IF97-DERIVED-TABLE-SURROGATE",
+      "implementation_scope": "TEST-ONLY",
+      "final_result_retuning_in_place_allowed": false
+    },
+    {
+      "id": "D1-BOUNDED-IF97-SUBSET",
+      "family": "D-BOUNDED-PRODUCTION-IF97-SUBSET-COMPARATOR",
+      "implementation_scope": "TEST-ONLY",
+      "final_result_retuning_in_place_allowed": false
+    }
+  ],
+  "comparison": {
+    "existing_vr2_blocking_ceiling_fraction": 0.25,
+    "planning_target_fraction": 0.1,
+    "planning_target_is_not_a_replacement_vr2_tolerance": true,
+    "exact_v9_phase_agreement_target_percent": 100.0,
+    "candidate_warmup_passes": 2,
+    "candidate_measured_passes": 8,
+    "candidate_qualification_is_evidence_not_rp1b_pass_criterion": true,
+    "deterministic_repeat_required_for_evidence_completion": true,
+    "hydraulic_replay_uses_frozen_attempt5_path_rows": true,
+    "seam_continuity_uses_all_1280_frozen_probes": true,
+    "vr2_boundary_only_rows_are_preserved_but_not_scored_as_inverse_closure": true,
+    "hydraulic_replay_frozen_law_self_check_tolerance_kg_s": 1.0e-09,
+    "region2_reference_domain_respects_b23_boundary": true,
+    "complexity_iteration_count_is_conservative_ceiling": true
+  },
+  "performance_ceilings": {
+    "resolve_median_us": 94.8,
+    "resolve_p95_us": 158.80666666666667,
+    "resolve_max_us": 409.30666666666673,
+    "resolve_median_allocated_bytes": 2816.0,
+    "source": "RP1A-returned-machine-local-freeze"
+  },
+  "outputs": [
+    "01-contract-and-provenance.txt",
+    "02-candidate-vr2-error-map.csv",
+    "03-candidate-exact-v9-node-map.csv",
+    "04-candidate-seam-map.csv",
+    "05-candidate-hydraulic-replay.csv",
+    "06-candidate-performance.csv",
+    "07-candidate-complexity.csv",
+    "08-candidate-summary.csv",
+    "09-rp1b-summary.txt"
+  ],
+  "authority": {
+    "rp1c_selection_authorized_before_returned_rp1b_review": false,
+    "production_src_change_authorized": false,
+    "thermodynamic_repair_authorized": false,
+    "thermodynamic_tolerance_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "existing_closure_mode_reinterpretation_authorized": false,
+    "new_exact_version_activation_authorized": false,
+    "vr3_execution_authorized": false,
+    "p3_r1_execution_authorized": false,
+    "second_replacement_long_authorized": false
+  }
+}

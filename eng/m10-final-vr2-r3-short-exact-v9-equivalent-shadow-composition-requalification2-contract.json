@@ -1,0 +1,199 @@
+{
+  "schema": "m10-final-vr2-r3-short-exact-v9-equivalent-shadow-composition-requalification2-v1",
+  "status": "EXECUTION-CANDIDATE",
+  "prerequisite": {
+    "r2_returned_adjudication": "PASS",
+    "r3_planning_gate": "R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION-PLANNING1",
+    "planning_returned_adjudication": "PASS",
+    "planning_contract_sha256": "9C3D51298D2755785444C9BABF6CE3F46C22E59B944485ECCB9E458929944456",
+    "planning_returned_audit": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_ShortExactV9EquivalentShadowCompositionRequalificationPlanning1_ReturnedAudit.txt",
+    "planning_returned_audit_sha256": "C460A2DE167DCB450941855AEED0A13E2E413B9FA604FABFB4C26849CB1C0471",
+    "canonical_exact_v9": "integrated-operations-desktop-stable@9",
+    "canonical_closure_mode": "CorrelationConsistentInverseDomain",
+    "shadow_candidate_closure_mode": "ReferenceConsistentTabulatedInverseDomain",
+    "r3_requalification1_classification": "R3-SHADOW-COMPOSITION-BLOCKING",
+    "repair_implementation1_returned_adjudication": "PASS",
+    "repair_implementation1_classification": "PASS-R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-IMPLEMENTATION1"
+  },
+  "planning_returned_artifacts": {
+    "root": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_ShortExactV9EquivalentShadowCompositionRequalificationPlanning1_Artifacts",
+    "required_files": 4,
+    "sha256": {
+      "01-contract-and-provenance.txt": "99932DF75719C4484D2158713BF84CEF3303E9DF396CF475857C7E3854A3AF7D",
+      "02-shadow-composition-matrix.csv": "ED42EBEAEE52FAD09FEB3F02FF7F45D41006A984CB9FA47B5B1B1ACDCC657522",
+      "03-acceptance-and-successor-summary.txt": "3E9168C5112D0866077E2F83531EAB187C8F1C623FB6EC784D8D6191A7B661CB",
+      "04-preexecution-review.txt": "4C20106D8E5AC01ABDB5986905B4453635258B3108207A22C1B30E4899588CBF"
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "871C630D5173CF8E5261E882586836BCB8F28A021EEE2B2F0E14FC45FE1D7EE4",
+    "tests_file_count": 389,
+    "tests_tree_sha256": "285531FD2E6B921B45B9A9A09A0D19A7A3663BFB6BD3A8DD93318E510039EF1A",
+    "exact_v9_provenance_files_sha256": {
+      "exact_v9_factory": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs",
+        "sha256": "D5DB8BDE1CF086969C20005D5FC45D455B7A3BD454E74A8550E59E83847FA397"
+      },
+      "exact_v9_descriptor": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory.cs",
+        "sha256": "D9E2D5980658F56F55FBA3BCFDA5E082E8889A7C295AA057B71C7DB00D89D0F9"
+      },
+      "operational_seed_factory": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+        "sha256": "AC615B5B4F58EA5A18BAA827E0567951BC8CC70D035E33BFE274608649EEB443"
+      },
+      "production_policy": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopHydraulicProductionPolicy.cs",
+        "sha256": "C7E48B9FC2B0F31A7E547778DE2F184F327683C26C1C2173A58AB6D9DBB0A93C"
+      },
+      "historical_activation_test": {
+        "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationCandidateTests.cs",
+        "sha256": "15998ABD9167EA61F0DD0BD937354CF2733B36F1BBEAC547BF3D9592D7FC14F2"
+      },
+      "historical_activation_contract": {
+        "path": "eng/m10-final-v9-production-activation-candidate-contract.json",
+        "sha256": "1387F1263ED3E4E4B37205B401EB86079C691054ECE599A803B31BF10D53D47B"
+      },
+      "r2_focused_test": {
+        "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2R2FocusedThermodynamicReferenceTopologyQualificationTests.cs",
+        "sha256": "97C4C2D666C0399E0E79B2E580660EBF8DC36E14F1F2A46B12CED5955CC27469"
+      }
+    },
+    "repaired_production_normalized_sha256": {
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs": "44EA256839872EAB330132BA8AB536ABC7B38BB5522671BA7AB33E27BF6C4B1A",
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ThermodynamicBranchContinuityModel.cs": "8A1D929CF5EAF9FAD4E7483333EA6CE29EB03893870676D89922E6E9AF0AB7B3"
+    },
+    "repair_implementation_test_normalized_sha256": "107B7A9EE9AC3C394203A7B1CBC5B4F96F64350BBD4FEB8244976971E332F333"
+  },
+  "execution": {
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-r3-short-exact-v9-equivalent-shadow-composition-requalification2",
+    "new_test_file": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3ShortExactV9EquivalentShadowCompositionRequalification2Tests.cs",
+    "new_test_normalized_sha256": "2D8A64401DD55ED514B6911F9E391587B36EA0F6954E364AB0BDBBABB6F3D92B",
+    "test_project": "tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj",
+    "ordinary_release_suite_required": true,
+    "forced_focused_rebuild_required": true,
+    "single_factor_change": "thermodynamicClosureMode:1->2",
+    "baseline_equivalence_steps": 128,
+    "baseline_fingerprint_mismatches_allowed": 0,
+    "simulated_seconds": 120.0,
+    "mode2_shadow_steps": 12000,
+    "fixed_timestep_ms": 10.0,
+    "trajectory_stride_steps": 100,
+    "mode2_deterministic_repeat_steps": 128,
+    "inherited_exact_v9_health_envelope": {
+      "electrical_export_mwe": {
+        "minimum": 4.99,
+        "maximum": 5.01
+      },
+      "primary_pump_mass_flow_kg_s": {
+        "minimum": 99.9,
+        "maximum": 100.1
+      },
+      "drum_level_fraction": {
+        "minimum": 0.49,
+        "maximum": 0.51
+      },
+      "governor_output_percent": {
+        "minimum": 29.27,
+        "maximum": 29.3
+      },
+      "maximum_mass_closure_residual_kg": 1e-06,
+      "maximum_full_energy_closure_residual_j": 0.01,
+      "maximum_balance_mass_rate_residual_kg_s": 1e-08,
+      "maximum_balance_power_residual_w": 0.001,
+      "maximum_stage_energy_ownership_residual_w": 0.001,
+      "maximum_commanded_transfer_mismatch_kg_s": 1e-08,
+      "minimum_moisture_drain_kg_s_exclusive": 0.0,
+      "trip_steps": 0,
+      "breaker_open_steps": 0,
+      "rollbacks": 0,
+      "fallback_commit_violations": 0,
+      "unsafe_commit_violations": 0,
+      "untargeted_branch_disagreements": 0
+    },
+    "r4_long_materiality_execution_allowed": false,
+    "canonical_exact_v9_change_allowed": false,
+    "default_mode2_activation_allowed": false,
+    "new_exact_version_allowed": false,
+    "required_files": 7,
+    "outputs": [
+      "01-contract-and-provenance.txt",
+      "02-shadow-baseline-equivalence.csv",
+      "03-mode2-shadow-health-trajectory.csv",
+      "04-ownership-conservation-summary.txt",
+      "05-deterministic-repeat.txt",
+      "06-r3-requalification-summary.txt",
+      "07-prequalification-review.txt"
+    ],
+    "classification_on_pass": "PASS-R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION2",
+    "classification_on_failure": "R3-SHADOW-COMPOSITION-BLOCKING",
+    "returned_adjudication_required_before_r4_planning": true,
+    "post_successor": "R4-P1B-EQUIVALENT-LONG-MATERIALITY-RECHECK-PLANNING1",
+    "forced_preordinary_full_rebuild_required": true
+  },
+  "authority": {
+    "r3_execution_authorized_now": true,
+    "production_default_switch_authorized": false,
+    "production_runtime_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "new_exact_version_authorized": false,
+    "threshold_change_authorized": false,
+    "r4_planning_authorized_now": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "documentation_files": {
+    "main": {
+      "path": "docs/M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION2.md",
+      "normalized_sha256": "BB54F769674DE68B2002FD9F628C797ED014F52DE885B3BC0993C3769EE738E4"
+    },
+    "prequalification": {
+      "path": "docs/M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION2_PREQUALIFICATION_REVIEW.md",
+      "normalized_sha256": "900CEB8851B9C53C3CE7CAF04B6478853742746065DBF2D8966D969223AB6DFD"
+    },
+    "returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION2_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "7416707076059A5DAD3688FE2F97E46F23603C816EF8FDEBF1924D449D875BB6"
+    },
+    "repair_implementation_returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_MODE2_BRANCH_CONTINUITY_FUSION_REPAIR_IMPLEMENTATION1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "69A23E223E6A86BC56B4DA55953C616EC90D5D3C6507CCCF4BDC43E360C63316"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "161C1C705F1577DD1DAC2FF8792358C1E05698F9B49D83356109EE53B6977CCC"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "BECCCC09AC6AC3C6388B42EE71777A432512FD0017A411D34FEFF753A145FD30"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-short-exact-v9-equivalent-shadow-composition-requalification2.ps1",
+      "normalized_sha256": "77E8CEAC41BA24E36FC18C9EB6F681FA419456196C08DB43565ABB004C56626C"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-r3-short-exact-v9-equivalent-shadow-composition-requalification2.ps1",
+      "normalized_sha256": "20594F68B8FA0D4D179A6BAB898AF197DD588EE436793D99555E08A7FB732B03"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-short-exact-v9-equivalent-shadow-composition-requalification2.cmd",
+      "normalized_sha256": "4792D047C499F1D0E938B946D7214DD86D4A0A0BBB02502DDF9D063869B5009E"
+    }
+  },
+  "repair_implementation1_returned_artifacts": {
+    "root": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_Mode2BranchContinuityFusionRepair_Implementation1_ReturnedArtifacts",
+    "required_files": 6,
+    "sha256": {
+      "01-contract-and-provenance.txt": "5462CD8C99A0D72FED82422995CE5B4F56B5A687904640A863FE45D944257E33",
+      "02-production-change-manifest.csv": "D5D067076A06FCB52BBBDF8A2F044F3BD340F11A28EAD8FFBFBB68E3F4788873",
+      "03-returned-state-repair-regression.txt": "AC5CAB5F11B1E0554E4955E22421AB6B4785C2874419ED636AA45969CBFD378B",
+      "04-historical-fusion-regression.txt": "6061481E40FB587AD2A671DDD1364198131337C801752D3C5C9AE89848A613AE",
+      "05-implementation-summary.txt": "BD59F23FE05190D0F02616D01F182B0A0BAFB518D2AC7391E02BF2CFB7D0DF68",
+      "06-pre-requalification-review.txt": "85C1A1064A9A5D4698C1BA611E69AB6A502A8B644E7E3964C04E51FD3FD0C219"
+    }
+  }
+}

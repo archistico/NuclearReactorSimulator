@@ -1,0 +1,165 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment-planning1-amendment1-host-provenance-v1",
+  "status": "CANDIDATE-PLANNING-AMENDMENT-ONLY",
+  "gate": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1-AMENDMENT1-HOST-PROVENANCE",
+  "reason": {
+    "new_information": "TESTS-MAY-RUN-ON-MULTIPLE-PHYSICAL-HOSTS-WITH-MATERIALLY-DIFFERENT-PERFORMANCE",
+    "base_planning1_status": "PASS-AS-AUTHORED",
+    "base_planning1_host_constraint_complete": false,
+    "amendment_required_before_a2_implementation": true
+  },
+  "prerequisite": {
+    "base_planning_gate": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1",
+    "base_planning_returned_status": "PASS-AS-AUTHORED",
+    "future_gate": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1",
+    "future_runtime_profiles": 2,
+    "future_exact_v9_processes": 10,
+    "future_exact_v9_measured_calls": 230400,
+    "future_required_files": 78,
+    "strict_max_us": 409.30666666666673,
+    "diagnostic_tail_floor_us": 100.0,
+    "diagnostic_tail_floor_is_threshold": false
+  },
+  "normalized_lf_sha256": {
+    "returned_contract": "84182DB08803567ACE08470171773458A5EBE66CC26E8F69FCF49FDFB0DD3756",
+    "returned_matrix": "0DDE8F35629CB5FA7DE18683A903012C12B7BC65F94EA68C10BAC05928C92E11",
+    "returned_summary": "90873594BF18F1BA7CD4482299F21187D28F9016E33E6F9D8DD75AB60ECFFAA8",
+    "returned_review": "19033E69C87412E8B28233561162F14CBA2CD8375F5EAC72FBFA3DD918CB440E",
+    "base_planning_contract": "A9D2F63604563B750EC6BC1E06508EE0C71DE1887B45F40AB2A818BD1C3ACFBF",
+    "base_planning_doc": "175DAD50877E52CE47212B5B84BFFA47EA8617A085FF194DCCB482EC9F8A64DA",
+    "base_planning_preexecution_review": "4F6E37F67E55D08FAAE45F0B80C710EF983585E44C60726CC988DC4D9CA00EB3",
+    "base_planning_validator": "F9CAAC5EA7F51F769B2EDE06C5F46157D7BFDCE30F3D5F560A311D0896101345",
+    "base_planning_runner": "3BD51C724AD8FA77098B3BB83ED024F3A8F66EC37F3C2321E31CCB7FF521F3D9",
+    "adr0203": "6C95B326BE6D1F102785344A9B82DD8818CB67EB1113D006D354C5B6FAB102CC"
+  },
+  "future_gate_unchanged": {
+    "id": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1",
+    "profiles": [
+      "AMBIENT-UNSET",
+      "EXPLICIT-REFERENCE-ALL-ON"
+    ],
+    "exact_v9_processes_per_profile": 5,
+    "ordinary_release_suite_runs_per_profile": 1,
+    "replay_determinism_runs_per_profile": 1,
+    "non_vr2_performance_runs_per_profile": 3,
+    "total_required_files": 78,
+    "c4_immutable": true,
+    "exact_v9_immutable": true,
+    "strict_max_us": 409.30666666666673,
+    "threshold_change_authorized": false
+  },
+  "execution_host_policy": {
+    "scope": "ENTIRE-A2-GATE",
+    "single_physical_host_required": true,
+    "all_profiles_same_host_required": true,
+    "all_assessment_families_same_host_required": true,
+    "cross_host_evidence_mixing_authorized": false,
+    "gate_start_host_capture_required": true,
+    "gate_end_host_capture_required": true,
+    "stable_host_fingerprint_match_required": true,
+    "active_power_scheme_capture_required": true,
+    "active_power_scheme_must_not_change_during_gate": true,
+    "machine_name_written_to_evidence": false,
+    "user_name_written_to_evidence": false,
+    "raw_system_uuid_written_to_evidence": false,
+    "system_uuid_may_contribute_only_to_sha256_fingerprint": true,
+    "fingerprint_algorithm": "SHA256",
+    "fingerprint_inputs": [
+      "Win32_ComputerSystemProduct.UUID",
+      "Win32_Processor.Name",
+      "Win32_ComputerSystem.Manufacturer",
+      "Win32_ComputerSystem.Model",
+      "Win32_ComputerSystem.NumberOfLogicalProcessors",
+      "Win32_ComputerSystem.TotalPhysicalMemory",
+      "Win32_OperatingSystem.Version",
+      "Win32_OperatingSystem.BuildNumber"
+    ],
+    "recorded_nonsecret_context": [
+      "host-fingerprint-sha256",
+      "cpu-name",
+      "computer-manufacturer",
+      "computer-model",
+      "logical-processor-count",
+      "total-physical-memory-bytes",
+      "os-version",
+      "os-build",
+      "process-architecture",
+      "dotnet-framework-description",
+      "dotnet-sdk-version",
+      "stopwatch-frequency",
+      "active-power-scheme",
+      "hypervisor-present"
+    ],
+    "child_run_contracts_must_include_host_fingerprint": true,
+    "exact_v9_runtime_context_must_include_host_fingerprint": true,
+    "mismatch_classification": "INFRASTRUCTURE-RED-HOST-PROVENANCE-MISMATCH"
+  },
+  "performance_interpretation_policy": {
+    "same_host_profile_contrast_is_primary": true,
+    "strict_max_us_unchanged": 409.30666666666673,
+    "absolute_threshold_observation_is_host_scoped": true,
+    "cross_host_absolute_timing_comparison_authorized": false,
+    "cross_host_threshold_extrapolation_authorized": false,
+    "host_difference_may_not_be_used_to_relax_threshold": true,
+    "host_difference_may_not_be_used_to_mutate_c4": true,
+    "host_difference_may_not_be_used_to_mutate_exact_v9": true,
+    "cross_host_replication_in_a2": false,
+    "separate_cross_host_replication_planning_required_if_material": true,
+    "production_minimum_hardware_scope_defined": false
+  },
+  "evidence_tree_amendment": {
+    "total_required_files_remains": 78,
+    "new_files_do_not_increase_total": true,
+    "host_provenance_uses_existing_aggregate_slots": true,
+    "aggregate_files": [
+      "01-contract-and-provenance.txt",
+      "02-execution-host-provenance.txt",
+      "03-host-consistency-audit.txt",
+      "04-exact-v9-profile-summary.csv",
+      "05-ordinary-suite-impact-summary.csv",
+      "06-replay-determinism-impact-summary.csv",
+      "07-non-vr2-performance-impact-summary.csv",
+      "08-runtime-configuration-impact-assessment1-summary.txt"
+    ]
+  },
+  "retroactive_evidence": {
+    "runtime_factor_isolation1_minimal_context": {
+      "framework": ".NET 10.0.7",
+      "os": "Microsoft Windows 10.0.22631",
+      "process_architecture": "X64",
+      "processor_count": 20,
+      "stopwatch_frequency": 10000000
+    },
+    "dynamic_pgo_comparator1_minimal_context": {
+      "framework": ".NET 10.0.7",
+      "os": "Microsoft Windows 10.0.22631",
+      "process_architecture": "X64",
+      "processor_count": 20,
+      "stopwatch_frequency": 10000000
+    },
+    "contexts_consistent": true,
+    "same_physical_host_proven_retroactively": false,
+    "reason_not_proven": "NO-STABLE-HOST-FINGERPRINT-OR-CPU-MODEL-WAS-RECORDED"
+  },
+  "authority": {
+    "base_planning1_adjudicated_pass": true,
+    "base_planning1_alone_sufficient_for_a2_implementation": false,
+    "amendment1_required_before_a2_implementation": true,
+    "a2_implementation_authorized_now": false,
+    "a2_implementation_authorizable_after_returned_amendment_adjudication": true,
+    "full_domain_performance_confirmation2_authorized": false,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "candidate_mutation_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "future_implementation_absence": {
+    "test_file": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/M10FinalVR2Rp1cC4RuntimeConfigurationImpactAssessment1Tests.cs",
+    "runner_file": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1.cmd"
+  }
+}

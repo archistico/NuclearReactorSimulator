@@ -1,0 +1,88 @@
+{
+  "schema": "m10-final-physical-reference-vr1-v1",
+  "status": "CANDIDATE",
+  "gate": "VR1-Point-Kinetics-Independent-Benchmark",
+  "baseline": "VR0-REFERENCE-PROVENANCE-CONTRACT-FREEZE-VALIDATED",
+  "execution_kind": "explicit-test-only-model-assessment",
+  "production_src_change_authorized": false,
+  "production_repair_authorized": false,
+  "exact_v9_change_authorized": false,
+  "replacement_workload_change_authorized": false,
+  "p3_w_authorized": false,
+  "p3_r1_execution_authorized": false,
+  "second_replacement_long_authorized": false,
+  "primary_source": "Hebert-Applied-Reactor-Physics-3e-2020-section-5.4.1-exercises-5.10-5.11",
+  "reference_method": "independent-adaptive-Dormand-Prince-5-4-CSharp-test-only",
+  "reference_calls_production_solver": false,
+  "production_generates_reference": false,
+  "reference_relative_tolerance": 1e-10,
+  "reference_absolute_tolerance": 1e-12,
+  "reference_maximum_step_seconds": 0.001,
+  "reference_minimum_step_seconds": 1e-10,
+  "one_group_selfcheck": {
+    "beta": 0.0065,
+    "prompt_neutron_generation_time_seconds": 0.0001,
+    "reactivity_delta_k_over_k": 0.0025,
+    "lambda_per_second": 0.0766,
+    "normalized_n0": 1.0,
+    "sample_seconds": [0.01, 0.1, 0.5, 1.0, 10.0],
+    "maximum_relative_neutron_error": 1e-8
+  },
+  "six_group": {
+    "prompt_neutron_generation_time_seconds": 0.00002,
+    "normalized_n0": 1.0,
+    "groups": [
+      { "id": "1", "lambda_per_second": 0.0127, "beta": 0.000266 },
+      { "id": "2", "lambda_per_second": 0.0317, "beta": 0.001491 },
+      { "id": "3", "lambda_per_second": 0.115, "beta": 0.001316 },
+      { "id": "4", "lambda_per_second": 0.311, "beta": 0.002849 },
+      { "id": "5", "lambda_per_second": 1.4, "beta": 0.000896 },
+      { "id": "6", "lambda_per_second": 3.87, "beta": 0.000182 }
+    ],
+    "beta_total": 0.007,
+    "cases": [
+      { "id": "VR1-K0", "dollars": 0.0, "rho_delta_k_over_k": 0.0 },
+      { "id": "VR1-KP25", "dollars": 0.25, "rho_delta_k_over_k": 0.00175 },
+      { "id": "VR1-KP50", "dollars": 0.5, "rho_delta_k_over_k": 0.0035 },
+      { "id": "VR1-KN50", "dollars": -0.5, "rho_delta_k_over_k": -0.0035 },
+      { "id": "VR1-KN100", "dollars": -1.0, "rho_delta_k_over_k": -0.007 }
+    ],
+    "sample_seconds": [0.0, 0.01, 0.1, 0.5, 1.0, 5.0, 20.0, 60.0]
+  },
+  "production_caller_steps_seconds": [0.01, 0.005, 0.0025],
+  "classification": {
+    "reference_concordant": {
+      "zero_reactivity_neutron_max_relative_drift": 1e-10,
+      "neutron_max_relative_error": 0.0025,
+      "precursor_max_relative_error": 0.005,
+      "deterministic_repeat_required": true
+    },
+    "bounded_numerical_discrepancy": {
+      "neutron_max_relative_error": 0.01,
+      "precursor_max_relative_error": 0.02,
+      "refinement_nondivergence_factor": 1.05,
+      "refinement_material_reduction_factor": 0.8
+    },
+    "dispositions": [
+      "REFERENCE-CONCORDANT",
+      "BOUNDED-NUMERICAL-DISCREPANCY",
+      "MODEL-DISCREPANCY",
+      "REFERENCE-HARNESS-FAIL"
+    ]
+  },
+  "artifact_files": [
+    "01-source-provenance-manifest.txt",
+    "02-frozen-parameter-inputs.csv",
+    "03-reference-selfcheck.csv",
+    "04-reference-trajectory.csv",
+    "05-production-trajectory.csv",
+    "06-error-map.csv",
+    "07-refinement-summary.csv",
+    "08-deterministic-repeat.txt",
+    "09-vr1-assessment-summary.txt",
+    "10-impact-known-limitations.txt"
+  ],
+  "claim_boundary": "generic-point-kinetics-equation-implementation-only",
+  "exact_v9_parameterization_physical_calibration_claim": false,
+  "next_authorized_gate_on_pass": "VR2-IAPWS-IF97-Water-Steam-Error-Map"
+}

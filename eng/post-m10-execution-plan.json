@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 2,
+  "id": "post-m10-to-m15-execution-master-plan-v2",
+  "status": "PLANNING-NOT-ADOPTED",
+  "adoptionPrerequisite": "M10 final long validation PASS and explicit M10 CLOSED",
+  "immediateTransition": {
+    "onLongPass": [
+      "preserve-long-artifacts",
+      "m10-closure-docs-only-candidate",
+      "promote-long-soak-row-to-validated",
+      "record-m10985-manual-acceptance",
+      "close-m10",
+      "apply-pre-m11-documentation-checkpoint",
+      "start-m11.1"
+    ],
+    "onLongFail": {
+      "productionSemanticChange": "rerun-affected-owners-plus-final-cumulative-plus-full-long",
+      "longHarnessOnly": "preserve-frozen-workload-and-criteria-and-rerun-full-long",
+      "documentationOnly": "documentation-validator-only-unless-executable-contract-changed",
+      "healthyReferenceDriftOrEnvelopeFailure": "follow-m10-lr-h1-equilibrium-diagnostic-plan-before-production-fix"
+    }
+  },
+  "m11": [
+    {
+      "milestone": "M11.1",
+      "title": "Release/support contract and architecture freeze",
+      "kind": "release-assurance"
+    },
+    {
+      "milestone": "M11.2",
+      "title": "Compatibility and migration hardening",
+      "kind": "compatibility-assurance"
+    },
+    {
+      "milestone": "M11.3",
+      "title": "Performance, memory and long-session budgets",
+      "kind": "measurement-and-policy"
+    },
+    {
+      "milestone": "M11.4",
+      "title": "Packaging and supported-target assurance",
+      "kind": "package-assurance"
+    },
+    {
+      "milestone": "M11.5",
+      "title": "Documentation, hazard and HMI assurance closure",
+      "kind": "documentation-and-human-system-assurance"
+    },
+    {
+      "milestone": "M11.6",
+      "title": "Release-candidate acceptance and closure",
+      "kind": "release-acceptance"
+    }
+  ],
+  "m12": [
+    "M12.0",
+    "M12.1",
+    "M12.2",
+    "M12.3",
+    "M12.4",
+    "M12.5",
+    "M12.6",
+    "M12.7",
+    "M12.8"
+  ],
+  "m13": [
+    "M13.1",
+    "M13.2",
+    "M13.3",
+    "M13.4",
+    "M13.5",
+    "M13.6",
+    "M13.7",
+    "M13.8",
+    "M13.9",
+    "M13.10"
+  ],
+  "m14": [
+    "M14.1",
+    "M14.2",
+    "M14.3",
+    "M14.4",
+    "M14.5",
+    "M14.6",
+    "M14.7"
+  ],
+  "m15": [
+    "M15.1",
+    "M15.2",
+    "M15.3",
+    "M15.4",
+    "M15.5",
+    "M15.6",
+    "M15.7",
+    "M15.8"
+  ],
+  "globalRules": [
+    "single-latest-validated-baseline",
+    "plan-and-freeze-acceptance-before-implementation",
+    "no-post-hoc-tolerance-widening",
+    "historical-exact-identities-immutable",
+    "claims-bounded-by-evidence-and-domain",
+    "revalidation-proportional-to-change-class",
+    "equilibrium-is-explicit-evidence-not-synonym-for-short-bounded-run",
+    "production-seed-repair-requires-new-exact-version"
+  ]
+}

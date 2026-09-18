@@ -1,0 +1,813 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M10.9.8.1",
+  "matrixId": "m1098-integrated-human-automation-hmi-v1",
+  "baseline": "M10.9.7.5 Hotfix 1 VALIDATED",
+  "matrixFrozen": true,
+  "repairsBeforeAcceptanceAllowed": false,
+  "productionRuntimeChanged": false,
+  "authoritativeDesktop": {
+    "scenarioId": "integrated-normal-operations-training-i5-repaired-v4-production",
+    "profileExactId": "integrated-operations-desktop-stable@4",
+    "thermodynamicClosure": "CorrelationConsistentInverseDomain",
+    "hydraulicPolicy": "FourNodeBranchContinuityCorrectedCommitOptIn",
+    "fixedStepMilliseconds": 10
+  },
+  "axes": {
+    "trainingAssistance": [
+      "Hidden",
+      "ChecklistOnly",
+      "Guided"
+    ],
+    "plantControlAuthority": [
+      "Manual",
+      "Assisted",
+      "SupervisoryAutomatic"
+    ]
+  },
+  "deterministicSeedPolicy": "The selected M10.9.8.1 rows use deterministic non-RNG owners, so deterministicSeed is null. A future matrix revision may add a seed only through explicit versioned acceptance.",
+  "crossCuttingInvariants": [
+    {
+      "id": "assistance-does-not-change-physics",
+      "contract": "Changing training assistance alone must not change plant physics or control authority.",
+      "owner": "M10 training assistance presentation / M5 authority boundary"
+    },
+    {
+      "id": "protection-overrides-normal-control",
+      "contract": "Canonical protection always overrides normal control in every assistance/authority combination.",
+      "owner": "M5 protection"
+    },
+    {
+      "id": "requested-effective-authority-distinct",
+      "contract": "Requested and effective plant control authority remain separately visible and semantically distinct.",
+      "owner": "M5 authority + HMI presentation"
+    },
+    {
+      "id": "supervisory-degradation-fail-closed",
+      "contract": "Supervisory degradation is fail-closed, evidence-based and cannot silently retain automatic authority.",
+      "owner": "M5 supervisory authority"
+    },
+    {
+      "id": "expected-observed-command-evidence-distinct",
+      "contract": "Expected command influence remains separate from observed response evidence.",
+      "owner": "M10.9.5 command consequence"
+    },
+    {
+      "id": "demand-request-actual-distinct",
+      "contract": "External grid demand remains separate from requested generator load and actual electrical output.",
+      "owner": "M10.9.6 demand + canonical electrical presentation"
+    },
+    {
+      "id": "scoring-observational-only",
+      "contract": "Challenge scoring remains observational and never acquires plant-command authority.",
+      "owner": "M10.9.6 scoring"
+    },
+    {
+      "id": "measurement-quality-preserved",
+      "contract": "Unavailable or suspect measurements remain unavailable or suspect; no true-state substitution is permitted.",
+      "owner": "M5 instrumentation + HMI presentation"
+    },
+    {
+      "id": "mission-has-no-plant-command-authority",
+      "contract": "MISSION remains presentation-only and never dispatches plant commands.",
+      "owner": "M10.9.7 Mission/Performance"
+    },
+    {
+      "id": "replay-checkpoint-operator-state-equivalent",
+      "contract": "Replay/checkpoint reconstruction must reproduce equivalent operator-visible canonical state without opaque workstation dumps.",
+      "owner": "M9.1 recorder + M10.7 session + M10.9.7 projection"
+    },
+    {
+      "id": "keyboard-only-critical-operation-viable",
+      "contract": "Keyboard-only operation remains viable for critical operator workspaces and actions.",
+      "owner": "Avalonia HMI/App"
+    }
+  ],
+  "rows": [
+    {
+      "rowId": "HAA-01",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Hidden",
+      "requestedAuthority": "Manual",
+      "expectedEffectiveAuthority": "Manual",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-02",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Hidden",
+      "requestedAuthority": "Assisted",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-03",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Hidden",
+      "requestedAuthority": "SupervisoryAutomatic",
+      "expectedEffectiveAuthority": "SupervisoryAutomatic",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule",
+        "HoldOperatingPoint supervisory objective configured"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-04",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "ChecklistOnly",
+      "requestedAuthority": "Manual",
+      "expectedEffectiveAuthority": "Manual",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-05",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "ChecklistOnly",
+      "requestedAuthority": "Assisted",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-06",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "ChecklistOnly",
+      "requestedAuthority": "SupervisoryAutomatic",
+      "expectedEffectiveAuthority": "SupervisoryAutomatic",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule",
+        "HoldOperatingPoint supervisory objective configured"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-07",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "Manual",
+      "expectedEffectiveAuthority": "Manual",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-08",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "Assisted",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "HAA-09",
+      "family": "healthy-bounded-load",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "SupervisoryAutomatic",
+      "expectedEffectiveAuthority": "SupervisoryAutomatic",
+      "preconditions": [
+        "healthy canonical measured signals",
+        "no active protection trip",
+        "bounded 5→10→5 challenge active",
+        "same deterministic command schedule",
+        "HoldOperatingPoint supervisory objective configured"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "ControlRodHold",
+        "GeneratorLoadLower",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected; canonical protection remains armed and authoritative",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + live continuation equivalence",
+      "expectedOperatorEvidence": [
+        "MISSION lifecycle/objective/demand/score visible",
+        "COMPUTER requested/effective authority visible",
+        "ALARMS/EVENTS remains canonical",
+        "GRID DEMAND / REQUESTED LOAD / ACTUAL OUTPUT remain distinct"
+      ],
+      "manualHmiObservations": [
+        "keyboard-only workspace navigation remains viable",
+        "protection/safety is visually dominant over score",
+        "requested/effective authority distinction is obvious"
+      ],
+      "ownerIfFails": "classify by invariant: HMI/Application, M5 authority/protection, M10.9.6 challenge/scoring or M9.1/M10.7 replay/session",
+      "notes": "Healthy 3×3 matrix row. Assistance-only differences are presentation differences; authority semantics use established M5 seams only."
+    },
+    {
+      "rowId": "INT-10",
+      "family": "synchronization-loading",
+      "scenarioIdentityKind": "built-in-scenario-with-exact-profile",
+      "scenarioId": "grid-synchronization-initial-loading",
+      "scenarioExactId": "grid-synchronization-initial-loading",
+      "profileExactId": "pre-synchronization-grid-loading@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "Manual",
+      "expectedEffectiveAuthority": "Manual",
+      "preconditions": [
+        "validated M7.5 pre-synchronization handoff",
+        "canonical synchronization indication available",
+        "protection clear"
+      ],
+      "commandsActionsExercised": [
+        "TurbineSpeedRaise",
+        "GeneratorBreakerClose",
+        "GeneratorLoadRaise",
+        "ControlRodHold"
+      ],
+      "expectedChallengeDemandProfile": "synchronization-initial-loading@1; no external energy-demand profile",
+      "expectedProtectionFaultInvolvement": "none expected; close-check permissive remains canonical M4.5 ownership",
+      "replayCheckpointRequirement": "representative full replay equivalence",
+      "expectedOperatorEvidence": [
+        "synchronization permissive visible",
+        "breaker state visible",
+        "requested load and actual output remain distinct",
+        "guidance does not bypass close-check"
+      ],
+      "manualHmiObservations": [
+        "keyboard close/load workflow viable",
+        "close-check feedback explicit",
+        "no hidden authority change"
+      ],
+      "ownerIfFails": "M4.5 electrical synchronization/permissive owner or HMI presentation owner",
+      "notes": "Uses the existing M7.5 built-in scenario identity and its exact declared initial-condition version."
+    },
+    {
+      "rowId": "INT-11",
+      "family": "blocked-permissive-interlock",
+      "scenarioIdentityKind": "built-in-scenario-with-exact-profile",
+      "scenarioId": "grid-synchronization-initial-loading",
+      "scenarioExactId": "grid-synchronization-initial-loading",
+      "profileExactId": "pre-synchronization-grid-loading@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "ChecklistOnly",
+      "requestedAuthority": "Manual",
+      "expectedEffectiveAuthority": "Manual",
+      "preconditions": [
+        "generator breaker open",
+        "intentionally outside canonical synchronization close window",
+        "protection clear"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorBreakerClose"
+      ],
+      "expectedChallengeDemandProfile": "none",
+      "expectedProtectionFaultInvolvement": "real synchronization permissive/interlock must reject the command; no synthetic M10 rejection",
+      "replayCheckpointRequirement": "accepted/rejected command evidence must replay equivalently",
+      "expectedOperatorEvidence": [
+        "command rejection reason visible",
+        "expected consequence remains separate from observed response",
+        "breaker remains open"
+      ],
+      "manualHmiObservations": [
+        "rejection feedback visible without mouse",
+        "no checklist/guidance bypass path"
+      ],
+      "ownerIfFails": "M4.5 electrical permissive/interlock owner; presentation defects route to M10.9.5/HMI",
+      "notes": "Acceptance requires a real canonical rejection, not a validation-only forced result."
+    },
+    {
+      "rowId": "INT-12",
+      "family": "degraded-supervisory-measurement",
+      "scenarioIdentityKind": "validation-only-versioned-composition",
+      "scenarioId": "m1098-supervisory-required-measurement-unavailable",
+      "scenarioExactId": "m1098-supervisory-required-measurement-unavailable@1",
+      "profileExactId": "integrated-operations-desktop-stable@4",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "SupervisoryAutomatic",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "HoldOperatingPoint supervisory objective configured",
+        "invalidate one canonical measurement required by an active supervisory controller through the existing measured-signal/fault seam",
+        "no protection trip initially active"
+      ],
+      "commandsActionsExercised": [
+        "RequestAuthority:SupervisoryAutomatic",
+        "SetObjective:HoldOperatingPoint"
+      ],
+      "expectedChallengeDemandProfile": "none required for authority-degradation proof",
+      "expectedProtectionFaultInvolvement": "required supervisory measurement invalid/unavailable; authority degrades fail-closed without writing plant state",
+      "replayCheckpointRequirement": "authority intent and degraded requested/effective state must replay equivalently",
+      "expectedOperatorEvidence": [
+        "requested SupervisoryAutomatic remains visible",
+        "effective Assisted visible",
+        "degradation reason names required unavailable/invalid measurement",
+        "measurement quality remains unavailable/invalid"
+      ],
+      "manualHmiObservations": [
+        "degraded measurement visually obvious",
+        "requested/effective divergence obvious",
+        "no hidden true-state substitution"
+      ],
+      "ownerIfFails": "M5 supervisory authority / M5 instrumentation; HMI owner only for presentation defects",
+      "notes": "Validation-only composition. It does not register a new production scenario or fault type."
+    },
+    {
+      "rowId": "INT-13",
+      "family": "canonical-protection-trip",
+      "scenarioIdentityKind": "built-in-scenario-with-exact-profile",
+      "scenarioId": "m87-protection-fail-safe-response",
+      "scenarioExactId": "m87-protection-fail-safe-response",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "SupervisoryAutomatic",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "request SupervisoryAutomatic before the protection initiator",
+        "m83-pressure-unavailable-diagnostic activates at its declared logical step"
+      ],
+      "commandsActionsExercised": [
+        "RequestAuthority:SupervisoryAutomatic",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "none",
+      "expectedProtectionFaultInvolvement": "canonical fail-safe reactor SCRAM; supervisory authority suspended by protection",
+      "replayCheckpointRequirement": "trip/first-out/alarm/authority suspension state must replay equivalently",
+      "expectedOperatorEvidence": [
+        "SCRAM/first-out visible",
+        "requested SupervisoryAutomatic distinct from effective Assisted",
+        "protection suspension reason explicit",
+        "MISSION/COMPUTER/ALARMS agree"
+      ],
+      "manualHmiObservations": [
+        "protection dominates score/guidance",
+        "first-out obvious",
+        "no assistance control bypass"
+      ],
+      "ownerIfFails": "M5 protection or M5 authority; HMI owner for presentation mismatch",
+      "notes": "Uses the already-supported M8.7 fail-safe protection exercise."
+    },
+    {
+      "rowId": "INT-14",
+      "family": "equipment-fault",
+      "scenarioIdentityKind": "built-in-scenario-with-exact-profile",
+      "scenarioId": "hydraulic-component-fault-demonstration",
+      "scenarioExactId": "hydraulic-component-fault-demonstration",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "ChecklistOnly",
+      "requestedAuthority": "Assisted",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "m82-pump-degradation then m82-pump-trip occur at declared logical steps"
+      ],
+      "commandsActionsExercised": [
+        "MainCirculationPumpStart",
+        "MainCirculationPumpStop",
+        "AlarmAcknowledgeAll"
+      ],
+      "expectedChallengeDemandProfile": "none",
+      "expectedProtectionFaultInvolvement": "supported hydraulic component fault framework owns degradation/trip; protection remains superior if triggered",
+      "replayCheckpointRequirement": "fault activation/deactivation and operator evidence must replay equivalently",
+      "expectedOperatorEvidence": [
+        "commanded versus actual equipment capability remains distinct",
+        "fault evidence visible",
+        "no UI writes faulted plant state"
+      ],
+      "manualHmiObservations": [
+        "fault/degraded equipment state obvious",
+        "command feedback remains explicit"
+      ],
+      "ownerIfFails": "M8.2 fault framework / underlying hydraulic physical owner; HMI owner for presentation defect",
+      "notes": "No new fault semantics are introduced by M10.9.8."
+    },
+    {
+      "rowId": "INT-15",
+      "family": "instrumentation-fault",
+      "scenarioIdentityKind": "built-in-scenario-with-exact-profile",
+      "scenarioId": "instrumentation-control-fault-demonstration",
+      "scenarioExactId": "instrumentation-control-fault-demonstration",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "Assisted",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "exercise sensor bias/freeze/failed/unavailable cases at declared logical steps"
+      ],
+      "commandsActionsExercised": [
+        "AlarmAcknowledgeAll",
+        "ControlRodHold"
+      ],
+      "expectedChallengeDemandProfile": "none",
+      "expectedProtectionFaultInvolvement": "instrumentation/control fault framework owns quality/effect; no true-state substitution",
+      "replayCheckpointRequirement": "measurement quality and fault timeline must replay equivalently",
+      "expectedOperatorEvidence": [
+        "biased/frozen/failed/unavailable quality explicit",
+        "true state never substituted into failed indication",
+        "COMPUTER and schematic agree on degraded truth"
+      ],
+      "manualHmiObservations": [
+        "unavailable/suspect values visually obvious",
+        "fault context reachable by keyboard"
+      ],
+      "ownerIfFails": "M8.3 instrumentation/control fault framework or M5 instrumentation; HMI owner for presentation defect",
+      "notes": "Covers supported instrumentation-fault presentation independently from supervisory-degradation row INT-12."
+    },
+    {
+      "rowId": "INT-16",
+      "family": "manual-takeover",
+      "scenarioIdentityKind": "production-scenario-with-exact-profile",
+      "scenarioId": "integrated-normal-operations-training-i5-repaired-v4-production",
+      "scenarioExactId": "integrated-normal-operations-training-i5-repaired-v4-production",
+      "profileExactId": "integrated-operations-desktop-stable@4",
+      "deterministicSeed": null,
+      "requestedAssistance": "Hidden",
+      "requestedAuthority": "SupervisoryAutomatic",
+      "expectedEffectiveAuthority": "Manual",
+      "preconditions": [
+        "healthy measured signals",
+        "HoldOperatingPoint objective active",
+        "SupervisoryAutomatic effective before takeover"
+      ],
+      "commandsActionsExercised": [
+        "RequestAuthority:SupervisoryAutomatic",
+        "SetObjective:HoldOperatingPoint",
+        "RequestAuthority:Manual"
+      ],
+      "expectedChallengeDemandProfile": "none required",
+      "expectedProtectionFaultInvolvement": "none expected during healthy takeover; protection remains superior",
+      "replayCheckpointRequirement": "authority intent sequence and post-takeover state must replay equivalently",
+      "expectedOperatorEvidence": [
+        "manual takeover transition visible",
+        "controllers return bumpless through established M5 contract",
+        "requested/effective authority converge to Manual"
+      ],
+      "manualHmiObservations": [
+        "takeover feedback immediate and obvious",
+        "no transient hidden by assistance mode"
+      ],
+      "ownerIfFails": "M5 plant control authority; HMI owner only for presentation defects",
+      "notes": "Uses the authoritative repaired exact-v4 desktop production identity."
+    },
+    {
+      "rowId": "INT-17",
+      "family": "challenge-demand-following",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Guided",
+      "requestedAuthority": "Assisted",
+      "expectedEffectiveAuthority": "Assisted",
+      "preconditions": [
+        "bounded challenge active",
+        "external demand profile scheduled at canonical logical steps"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "GeneratorLoadLower"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "unexpected canonical trip is authored challenge failure evidence, not a demand controller",
+      "replayCheckpointRequirement": "challenge lifecycle/demand/score/timeline equivalence required",
+      "expectedOperatorEvidence": [
+        "GRID DEMAND distinct from REQUESTED LOAD",
+        "REQUESTED LOAD distinct from ACTUAL OUTPUT",
+        "score remains observational",
+        "MISSION timeline shows deterministic demand changes/actions"
+      ],
+      "manualHmiObservations": [
+        "three quantities visually unambiguous",
+        "score cannot overshadow protection"
+      ],
+      "ownerIfFails": "M10.9.6 challenge/demand/scoring or M10.9.7 presentation",
+      "notes": "Dedicated cross-owner row even though the same pack is used by the healthy 3×3 matrix."
+    },
+    {
+      "rowId": "INT-18",
+      "family": "checkpoint-replay-continuation",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "ChecklistOnly",
+      "requestedAuthority": "SupervisoryAutomatic",
+      "expectedEffectiveAuthority": "SupervisoryAutomatic",
+      "preconditions": [
+        "healthy measured signals",
+        "HoldOperatingPoint objective configured",
+        "recorded session bound explicitly to exact challenge pack"
+      ],
+      "commandsActionsExercised": [
+        "RequestAuthority:SupervisoryAutomatic",
+        "SetObjective:HoldOperatingPoint",
+        "GeneratorLoadRaise",
+        "CreateCheckpoint",
+        "RestoreCheckpoint",
+        "ContinueLive"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "none expected in representative healthy replay row",
+      "replayCheckpointRequirement": "full replay + checkpoint prefix + replay-prefix-then-live continuation; no duplicate timeline rows",
+      "expectedOperatorEvidence": [
+        "canonical fingerprint equivalence",
+        "authority transition equivalence",
+        "challenge lifecycle/demand/score equivalence",
+        "MISSION timeline equivalence",
+        "command observed-response equivalence"
+      ],
+      "manualHmiObservations": [
+        "restored exact pack binding visible",
+        "no stale post-checkpoint rows",
+        "continuation has no duplicate rows"
+      ],
+      "ownerIfFails": "M9.1 recorder / M10.7 session / M10.9.6 replay projection / M10.9.7 presentation",
+      "notes": "No selected row depends on RNG; same-seed proof is therefore not applicable unless a future accepted matrix revision adds a seeded owner."
+    },
+    {
+      "rowId": "INT-19",
+      "family": "terminal-mission-continuing-plant",
+      "scenarioIdentityKind": "challenge-pack-versioned",
+      "scenarioId": "power-manoeuvring-normal-shutdown",
+      "scenarioExactId": "bounded-demand-following-5-10-5@1",
+      "profileExactId": "stable-low-load-parallel-operation@1",
+      "deterministicSeed": null,
+      "requestedAssistance": "Hidden",
+      "requestedAuthority": "Manual",
+      "expectedEffectiveAuthority": "Manual",
+      "preconditions": [
+        "exercise both Completed and Failed terminal lifecycle variants",
+        "continue plant logical time after terminal step"
+      ],
+      "commandsActionsExercised": [
+        "GeneratorLoadRaise",
+        "GeneratorLoadLower",
+        "ContinuePlantAfterMissionTerminal"
+      ],
+      "expectedChallengeDemandProfile": "bounded-demand-5-10-5@1",
+      "expectedProtectionFaultInvolvement": "Completed variant remains healthy; Failed variant may use authored unexpected-trip failure evidence but terminal boundary must remain frozen",
+      "replayCheckpointRequirement": "terminal lifecycle state and continuing plant prefix/continuation must reconstruct equivalently",
+      "expectedOperatorEvidence": [
+        "terminal logical step remains frozen",
+        "plant logical step continues",
+        "Completed/Failed state remains explicit",
+        "no new mission rows fabricated after terminal boundary except continuing canonical operational evidence"
+      ],
+      "manualHmiObservations": [
+        "terminal state remains obvious while plant continues",
+        "safety state remains current and dominant"
+      ],
+      "ownerIfFails": "M10.9.6 lifecycle or M10.9.7 Mission/Performance presentation; plant defect routes to its canonical owner",
+      "notes": "One frozen row owns two terminal variants because scenario/profile/authority contract is identical; execution evidence must report both."
+    }
+  ]
+}

@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M10.9.8.5",
+  "contractId": "m10985-manual-integrated-hmi-acceptance-v1",
+  "baseline": "M10.9.8.4 Hotfix 1 VALIDATED",
+  "productionRuntimeChanged": false,
+  "compiledSurfaceChanged": false,
+  "testSurfaceChanged": false,
+  "simulationPhysicsChanged": false,
+  "archiveSchemaChanged": false,
+  "fingerprintAlgorithmChanged": false,
+  "manualAcceptanceRequired": true,
+  "m1098ClosureAfterManualAcceptance": true,
+  "m10ClosureRequiresFinalPreM11Validation": true,
+  "requiredAcceptanceText": "M10.9.8.5 manual integrated HMI acceptance OK",
+  "automatedPrerequisites": [
+    "M10.9.8.1 REV1 Docs1 matrix/manual contract accepted",
+    "M10.9.8.2 Hotfix 1 REV5 automated healthy matrix/mission/F4/list-stability passed",
+    "M10.9.8.3 degraded/fault/protection/takeover matrix passed",
+    "M10.9.8.4 Hotfix 1 replay/checkpoint/same-seed integrity passed"
+  ],
+  "manualRoutes": [
+    {
+      "routeId": "HMI-01",
+      "name": "startup-unbound-keyboard-minimum-window",
+      "required": true,
+      "checks": [
+        "normal startup shows NO ACTIVE MISSION / UNBOUND",
+        "keyboard focus remains visible",
+        "all primary workspaces remain reachable",
+        "1340x700 keeps critical content reachable"
+      ]
+    },
+    {
+      "routeId": "HMI-02",
+      "name": "computer-f1-f8-assistance-authority",
+      "required": true,
+      "checks": [
+        "COMPUTER exposes F1-F8 and no F9",
+        "NONE/CHECKLIST/GUIDED changes presentation only",
+        "MANUAL/ASSISTED/SUPERVISORY requested/effective truth is visible",
+        "HOLD CURRENT OPERATING POINT is explicit before healthy supervisory request"
+      ]
+    },
+    {
+      "routeId": "HMI-03",
+      "name": "healthy-production-mission-demand-request-actual",
+      "required": true,
+      "startup": "--mission-pack=bounded-demand-following-5-10-5@2",
+      "checks": [
+        "exact @2 binding is visible",
+        "session runs beyond STEP 1000 without historical control-out envelope failure",
+        "GRID DEMAND, REQUESTED LOAD and ACTUAL OUTPUT are visually distinct",
+        "SAFETY / PROTECTION visually dominates score"
+      ]
+    },
+    {
+      "routeId": "HMI-04",
+      "name": "f4-command-console-dependency-enter-stability",
+      "required": true,
+      "checks": [
+        "command catalog hover/selection does not flicker during RUN",
+        "DEPENDENCY CHAIN hover/selection does not flicker during RUN",
+        "ENTER dispatch does not close the application",
+        "blocked runtime/scenario command remains operator-visible"
+      ]
+    },
+    {
+      "routeId": "HMI-05",
+      "name": "target-selector-refresh-stability",
+      "required": true,
+      "checks": [
+        "PUMP target selector remains stable",
+        "ADMISSION TRAIN target selector remains stable",
+        "GENERATOR target selector remains stable",
+        "ROD target selector remains stable",
+        "ALARM target selector remains stable"
+      ]
+    },
+    {
+      "routeId": "HMI-06",
+      "name": "session-checkpoint-replay-visible-integrity",
+      "required": true,
+      "checks": [
+        "F8 checkpoint list/selection remains stable",
+        "save/restore preserves exact mission binding",
+        "checkpoint restore removes stale post-checkpoint mission rows",
+        "live continuation does not duplicate timeline rows"
+      ]
+    },
+    {
+      "routeId": "HMI-07",
+      "name": "protection-alarm-first-out",
+      "required": true,
+      "checks": [
+        "SCRAM/protection indication is visually dominant",
+        "first-out/alarm context remains reachable",
+        "normal commands remain subordinate to protection",
+        "ACK/RESET does not fabricate protection clearance"
+      ]
+    },
+    {
+      "routeId": "HMI-08",
+      "name": "mission-timeline-drilldown",
+      "required": true,
+      "checks": [
+        "timeline hover and drill-down controls remain stable during RUN",
+        "drill-down is presentation-only",
+        "returning to MISSION preserves context",
+        "no F9 or hidden plant-command authority appears"
+      ]
+    },
+    {
+      "routeId": "HMI-09",
+      "name": "degraded-unavailable-measurement-truth",
+      "required": true,
+      "manualScope": "No manual-only fault injector is added. Inspect naturally unavailable/suspect presentation where exposed; forced instrumentation degradation remains owned by validated M10.9.8.3/8.4 evidence.",
+      "checks": [
+        "UNAVAILABLE/SUSPECT is never rendered as fabricated zero",
+        "MODEL and MEASURED provenance remain distinguishable",
+        "requested/effective divergence wording remains understandable when degraded evidence is present"
+      ]
+    },
+    {
+      "routeId": "HMI-10",
+      "name": "manual-takeover-feedback",
+      "required": true,
+      "checks": [
+        "MANUAL takeover feedback is immediate",
+        "requested/effective authority converges correctly",
+        "stale supervisory objective is not presented as still owning control",
+        "assistance mode does not hide takeover state"
+      ]
+    },
+    {
+      "routeId": "HMI-11",
+      "name": "terminal-mission-continuing-plant",
+      "required": true,
+      "manualScope": "If a terminal challenge state is reached naturally during the manual route, inspect it directly; otherwise the terminal-state transition is covered by validated M10.9.7.5/M10.9.8 automated evidence and the manual gate verifies that current plant/safety state remains independently visible.",
+      "checks": [
+        "terminal mission state cannot hide current plant state",
+        "plant logical time/current safety remain readable",
+        "score cannot obscure protection"
+      ]
+    },
+    {
+      "routeId": "HMI-12",
+      "name": "operator-language-feedback-cleanliness",
+      "required": true,
+      "checks": [
+        "no internal milestone/hotfix labels leak into operator UI",
+        "critical actions have clear accepted/blocked feedback",
+        "no new blank/overlapping/clipped critical surfaces are observed"
+      ]
+    }
+  ],
+  "compiledTestSurfaceManifest": "eng/m10985-baseline-compiled-test-surface.sha256",
+  "compiledTestSurfaceManifestEntries": 1286,
+  "compiledTestSurfaceManifestSha256": "a568dacb03842dcdd826f9070f56360159c09326b586274446347c0ecec28100"
+}

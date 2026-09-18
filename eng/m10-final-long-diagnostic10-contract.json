@@ -1,0 +1,46 @@
+{
+  "id": "m10-final-long-failure-diagnostic10",
+  "status": "candidate",
+  "stackedOn": "M10 Final Long Failure Diagnostic 9 PASS",
+  "blockingOwner": "VaporMassFractionLimited rejects non-vapor turbine admission mass without assigning a downstream owner; Diagnostic 9 closes that residual against turbine-inlet dm/dt",
+  "historicalSemantics": {
+    "exactV4Production": "unchanged",
+    "exactV5": "frozen failed diagnostic evidence",
+    "exactV6": "frozen failed diagnostic evidence",
+    "exactV7": "frozen failed diagnostic evidence with repaired governor integral reference",
+    "legacyAdmissionPolicies": "unchanged"
+  },
+  "candidate": {
+    "reference": "integrated-operations-desktop-stable@8",
+    "admissionPolicy": "VaporMassFractionLimitedWithMoistureDrain",
+    "workProducingFlow": "commanded * committed inlet vapor mass fraction",
+    "moistureDrainOwner": "hotwell",
+    "moistureDrainFlow": "commanded - effective vapor flow",
+    "phaseEnergyOwnership": "saturated vapor/liquid selected transport energies at committed inlet pressure",
+    "governorIntegralReference": "SynchronousSpeedWhenParalleled",
+    "authoredWholeCycleState": "same authored state as exact-v7",
+    "productionSelected": false
+  },
+  "qualification": {
+    "simulatedSeconds": 600,
+    "fixedStepSeconds": 0.01,
+    "acceptance": "evidence review only; no new drift tolerance is frozen",
+    "required": [
+      "zero trips",
+      "zero hydraulic rollbacks",
+      "rejected non-vapor admission mass fully owned by explicit moisture drain",
+      "near-zero turbine stage energy ownership residual",
+      "turbine-inlet accumulation removed rather than displaced to another unbounded inventory",
+      "governor repair remains effective",
+      "bounded whole-cycle mass/pressure/thermal slopes",
+      "approximately stable 5 MWe electrical operation",
+      "conservative full energy-path closure"
+    ]
+  },
+  "notAuthorized": [
+    "production activation",
+    "replacement long",
+    "M10 closure",
+    "M11 start"
+  ]
+}

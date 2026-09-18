@@ -1,0 +1,277 @@
+{
+  "schema": "digital-ic-hazard-catalog-draft1",
+  "source": "National Research Council 1997 Digital I&C Safety and Reliability Issues, mapped to current project",
+  "status": "PLANNING-NOT-PROMOTION-EVIDENCE",
+  "hazards": [
+    {
+      "id": "DIC-H01",
+      "category": "Measurement / provenance",
+      "hazard": "Required supervisory measurement becomes unavailable/invalid but automation continues using hidden true state.",
+      "source_theme": "Ch.3 systems allocation; Ch.7 human-system information",
+      "current_coverage": "Covered",
+      "evidence": "M10.9.8.3 degraded measurement matrix; measured-state discipline",
+      "release_disposition": "BLOCK if regression",
+      "m11_action": "Retain fail-closed tests and manual presentation checks."
+    },
+    {
+      "id": "DIC-H02",
+      "category": "Measurement / provenance",
+      "hazard": "UI presents model truth as though it were a measured instrument value.",
+      "source_theme": "Ch.7 information presentation / operator model",
+      "current_coverage": "Covered/partial",
+      "evidence": "Measured / Model Diagnostic / Unavailable provenance contracts",
+      "release_disposition": "BLOCK if silent provenance loss",
+      "m11_action": "Documentation/HMI regression check in M11.5/M11.6."
+    },
+    {
+      "id": "DIC-H03",
+      "category": "Measurement / timing",
+      "hazard": "Stale measurement is syntactically valid but operationally too old for the decision using it.",
+      "source_theme": "Appendix F timing and data consistency",
+      "current_coverage": "Partial",
+      "evidence": "Logical-step measurements; fault framework has unavailable/suspect cases but no general communication-age model",
+      "release_disposition": "Document limitation",
+      "m11_action": "No feature work; backlog explicit signal-age/delay modeling post-M11."
+    },
+    {
+      "id": "DIC-H04",
+      "category": "Authority / mode",
+      "hazard": "Requested SupervisoryAutomatic is mistaken for effective SupervisoryAutomatic while system has degraded to Assisted/hold.",
+      "source_theme": "Ch.7 mode errors / automation awareness",
+      "current_coverage": "Covered",
+      "evidence": "Requested vs effective authority and degradation reason",
+      "release_disposition": "BLOCK if conflated",
+      "m11_action": "Keep persistent/visible distinction in final acceptance."
+    },
+    {
+      "id": "DIC-H05",
+      "category": "Authority / mode",
+      "hazard": "Training guidance mode changes physical control authority or controller behavior.",
+      "source_theme": "Ch.7 function allocation",
+      "current_coverage": "Covered",
+      "evidence": "Dual-axis assistance × authority contract",
+      "release_disposition": "BLOCK",
+      "m11_action": "Freeze in architecture/support contract."
+    },
+    {
+      "id": "DIC-H06",
+      "category": "Authority / takeover",
+      "hazard": "Manual takeover leaves supervisory automation still issuing new decisions, causing fighting controllers or mode confusion.",
+      "source_theme": "Ch.3 systems allocation; Ch.7 mode/workload",
+      "current_coverage": "Covered",
+      "evidence": "M10.9.8.3 takeover matrix and replay integrity",
+      "release_disposition": "BLOCK",
+      "m11_action": "Representative M11.6 task."
+    },
+    {
+      "id": "DIC-H07",
+      "category": "Protection",
+      "hazard": "Normal/supervisory command bypasses, clears or outranks active protection.",
+      "source_theme": "Ch.3 protection/control independence",
+      "current_coverage": "Covered",
+      "evidence": "M5 protection priority + M10.9.8.3/8.4",
+      "release_disposition": "BLOCK",
+      "m11_action": "Mandatory release regression."
+    },
+    {
+      "id": "DIC-H08",
+      "category": "Protection",
+      "hazard": "Alarm ACK/RESET is confused with physical protection reset.",
+      "source_theme": "Ch.7 HMI mode/action clarity",
+      "current_coverage": "Covered",
+      "evidence": "Separate canonical alarm/protection commands",
+      "release_disposition": "BLOCK if conflated",
+      "m11_action": "Manual and documentation check."
+    },
+    {
+      "id": "DIC-H09",
+      "category": "Protection / diversity",
+      "hazard": "Duplicated software logic is described as independent/diverse although it shares the same functional requirement and failure-prone input space.",
+      "source_theme": "Ch.5 common-mode software failure",
+      "current_coverage": "Avoided by architecture; no diversity claim",
+      "evidence": "Single canonical protection owners",
+      "release_disposition": "No false claim",
+      "m11_action": "Add non-claim; future diversity inventory post-M11 if needed."
+    },
+    {
+      "id": "DIC-H10",
+      "category": "Command / feedback",
+      "hazard": "Command appears accepted but no committed plant effect occurs and operator receives no clear observed-response evidence.",
+      "source_theme": "Ch.7 strong/silent automation and control feedback",
+      "current_coverage": "Covered",
+      "evidence": "M10.9.5.4 observed response evidence",
+      "release_disposition": "BLOCK if feedback silently disappears",
+      "m11_action": "M11.6 representative command task."
+    },
+    {
+      "id": "DIC-H11",
+      "category": "Command / permissive",
+      "hazard": "HMI availability/catalog is treated as final permissive authority and diverges from canonical runtime validation.",
+      "source_theme": "Ch.3 interface/allocation rigor",
+      "current_coverage": "Covered",
+      "evidence": "Contextual catalog explicitly advisory; runtime fail-closed",
+      "release_disposition": "BLOCK",
+      "m11_action": "Architecture invariant."
+    },
+    {
+      "id": "DIC-H12",
+      "category": "HMI / situation awareness",
+      "hazard": "Keyhole effect forces operator to mentally integrate critical state scattered across pages.",
+      "source_theme": "Ch.7 classic HMI deficiency",
+      "current_coverage": "Partial/managed",
+      "evidence": "Persistent situation/protection/quality shell; F1–F8 workspaces",
+      "release_disposition": "Accept within declared HMI scope if persistent critical context remains visible",
+      "m11_action": "Use checklist; no feature expansion in M11."
+    },
+    {
+      "id": "DIC-H13",
+      "category": "HMI / workload",
+      "hazard": "Clumsy automation reduces workload in easy conditions but increases operator burden during degraded/protection states.",
+      "source_theme": "Ch.7 clumsy automation",
+      "current_coverage": "Partial",
+      "evidence": "Degradation reason, takeover, protection state; no formal workload study",
+      "release_disposition": "Document scope",
+      "m11_action": "Representative degraded/takeover task in M11.6; deeper study post-M11."
+    },
+    {
+      "id": "DIC-H14",
+      "category": "HMI / mode awareness",
+      "hazard": "Operator cannot tell which automation/controller mode is currently active or why it changed.",
+      "source_theme": "Ch.7 mode errors",
+      "current_coverage": "Covered",
+      "evidence": "Requested/effective/health + per-loop modes",
+      "release_disposition": "BLOCK",
+      "m11_action": "Persistent visibility check."
+    },
+    {
+      "id": "DIC-H15",
+      "category": "HMI / information load",
+      "hazard": "Dense alarms/events/mission data obscure the small set of safety-relevant changes requiring attention.",
+      "source_theme": "Ch.7 data overload",
+      "current_coverage": "Partial/managed",
+      "evidence": "Alarm strip, first-out, bounded recent events, mission lifecycle spine",
+      "release_disposition": "No release regression",
+      "m11_action": "Manual task/checklist; performance not visual redesign."
+    },
+    {
+      "id": "DIC-H16",
+      "category": "HMI / automation transparency",
+      "hazard": "Automation acts correctly but is 'strong and silent': intent, inhibit, reason or result is not observable.",
+      "source_theme": "Ch.7 automation team behavior",
+      "current_coverage": "Mostly covered",
+      "evidence": "MODES state/reason, command observed response, LOG provenance",
+      "release_disposition": "BLOCK for critical authority changes",
+      "m11_action": "Traceability/manual acceptance."
+    },
+    {
+      "id": "DIC-H17",
+      "category": "Timing / host",
+      "hazard": "UI-thread work stalls long enough that operator-visible state/input becomes unacceptably delayed even though logical simulation remains correct.",
+      "source_theme": "Appendix F timing failures",
+      "current_coverage": "Known gap",
+      "evidence": "M11.3 planned measurement; current serialized DispatcherTimer ownership",
+      "release_disposition": "Measure before release",
+      "m11_action": "Freeze responsiveness metrics/budgets in M11.3."
+    },
+    {
+      "id": "DIC-H18",
+      "category": "Timing / simulation",
+      "hazard": "Catch-up/backlog policy silently skips deterministic simulation time to maintain wall-clock pace.",
+      "source_theme": "Appendix F real-time/scheduling predictability",
+      "current_coverage": "Current desktop path bounded without drop; generic API policy pending",
+      "evidence": "Fixed-step deterministic runtime",
+      "release_disposition": "BLOCK if silent drop introduced",
+      "m11_action": "M11.3 supported-caller inventory and explicit policy."
+    },
+    {
+      "id": "DIC-H19",
+      "category": "State consistency",
+      "hazard": "Concurrent/mutable consumers observe different versions of plant/session state.",
+      "source_theme": "Appendix F memory sharing consistency",
+      "current_coverage": "Strongly covered",
+      "evidence": "Immutable committed snapshots, single-owner runtime",
+      "release_disposition": "BLOCK if worker redesign weakens it",
+      "m11_action": "Worker proposal requires immutable handoff contract."
+    },
+    {
+      "id": "DIC-H20",
+      "category": "Replay / persistence",
+      "hazard": "Replay/checkpoint restores a state inconsistent with the exact scenario/action/authority history.",
+      "source_theme": "Appendix F rollback/orphan-message analogy; Ch.4 configuration management",
+      "current_coverage": "Covered",
+      "evidence": "Replay-backed checkpoint + fingerprint fail-closed",
+      "release_disposition": "BLOCK",
+      "m11_action": "Compatibility matrix in M11.2."
+    },
+    {
+      "id": "DIC-H21",
+      "category": "Replay / compatibility",
+      "hazard": "Historical fingerprint/schema/version is silently reinterpreted by a newer implementation.",
+      "source_theme": "Ch.4 rigorous configuration management",
+      "current_coverage": "Covered by policy",
+      "evidence": "Exact version IDs, fingerprint v1 anchor, schema v1",
+      "release_disposition": "BLOCK",
+      "m11_action": "M11.2 explicit version selection/migration tests."
+    },
+    {
+      "id": "DIC-H22",
+      "category": "Evidence / recorder",
+      "hazard": "Recorder/evidence production fails but session is still presented as complete/authoritative.",
+      "source_theme": "Ch.4 assurance; Appendix F information consistency",
+      "current_coverage": "Policy decision pending",
+      "evidence": "Current fail-closed evidence path; M11.3 planned failure-policy decision",
+      "release_disposition": "Must be explicit before release claim",
+      "m11_action": "Define compromised-recorder vs host-fault policy; never silent partial evidence."
+    },
+    {
+      "id": "DIC-H23",
+      "category": "Persistence / file integrity",
+      "hazard": "Failed save destroys a previously valid session archive.",
+      "source_theme": "Ch.4 configuration/change assurance",
+      "current_coverage": "Covered",
+      "evidence": "Temp sibling + replace/move + preservation tests",
+      "release_disposition": "BLOCK",
+      "m11_action": "Packaging/session representative test."
+    },
+    {
+      "id": "DIC-H24",
+      "category": "Configuration",
+      "hazard": "Runtime, manual, dependency versions, persisted formats and release statement describe different product configurations.",
+      "source_theme": "Ch.4 configuration management",
+      "current_coverage": "Partial until M11 release freeze",
+      "evidence": "Current baseline/version docs",
+      "release_disposition": "BLOCK release",
+      "m11_action": "M11.1/M11.5/M11.6 support and documentation consistency."
+    },
+    {
+      "id": "DIC-H25",
+      "category": "COTS / dependency",
+      "hazard": "Runtime dependency update changes behavior or packaging requirements without corresponding release verification.",
+      "source_theme": "Ch.8 COTS commensurate assurance",
+      "current_coverage": "Partial",
+      "evidence": "Central package versions and deterministic tests",
+      "release_disposition": "Block unsupported drift",
+      "m11_action": "Freeze dependency matrix + clean-target publish tests."
+    },
+    {
+      "id": "DIC-H26",
+      "category": "COTS / test infrastructure",
+      "hazard": "Test-runner/tool change causes 'no tests executed' or coverage gaps to be mistaken for a green gate.",
+      "source_theme": "Ch.4 product/process assurance; Ch.8 COTS role",
+      "current_coverage": "Known class encountered historically",
+      "evidence": "Focused-script class/method resolution hardening",
+      "release_disposition": "BLOCK",
+      "m11_action": "Gate must assert nonzero expected discovery/route resolution."
+    },
+    {
+      "id": "DIC-H27",
+      "category": "Assessment",
+      "hazard": "Project publishes invented numerical software reliability/safety probability unsupported by evidence.",
+      "source_theme": "Ch.6 quantitative assessment uncertainty",
+      "current_coverage": "No such claim",
+      "evidence": "Current educational/qualification language",
+      "release_disposition": "Forbidden claim",
+      "m11_action": "Known-limit/support wording review."
+    }
+  ]
+}

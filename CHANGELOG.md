@@ -1,3 +1,26 @@
+## M10 Final VR2 R3 — Reference-Consistent Seed Integration Planning 1
+
+- Returned Raw-Seed Candidate Construction 1 is frozen/adjudicated PASS with 12/12 resolved nodes, 12/12 phase matches, max pressure residual ~1.22 Pa, max temperature residual ~0.000401 K, and max hydraulic-head residual ~0.112 Pa.
+- Selects a three-file opt-in production seam: generic `OperationalFluidNodeSeed.ConservedInventory`, active-closure resolution in `ColdShutdownInitialConditionFactory`, and a new internal reference-consistent exact-v9-equivalent candidate factory.
+- Canonical exact-v9 method body remains frozen and unchanged.
+- Future Implementation 1 must pass a 20 ms seed-preconditioning + 100-step fast health gate with zero health violations and zero rollbacks before any 120 s R3 rerun.
+- Planning only: no production source or tests changed.
+
+## M10 Final VR2 R3 — Reference-Consistent Raw-Seed Candidate Construction 1
+
+- Returned Reference-Consistent Operating-Point Seed Replanning 1 is frozen/adjudicated PASS-AS-AUTHORED.
+- Adds one test-only Simulation.Tests gate that reads the immutable C4 payload, constructs 12 conserved-inventory candidates, re-resolves every candidate through the production mode-2 resolver, and emits target-state plus 8 hydraulic-head residual evidence.
+- Construction uses zero runtime preconditioning and zero dynamic simulation steps.
+- No residual acceptance threshold is introduced; the returned evidence will determine Seed Integration Planning 1.
+- No production source, C4 payload/resolver, canonical exact-v9, exact-version identity, threshold or R4 authority changes.
+
+## M10 Final VR2 R3 Requalification 2 — Reference-Consistent Operating-Point Seed Replanning 1
+
+- Returned Diagnostic 2 is frozen and adjudicated PASS with root cause `LEGACY-FORWARD-MODE2-INVERSE-SEED-CONSISTENCY-GAP`.
+- Freezes the 12-node exact-v9 target thermodynamic state vector from the mode-1 resolved raw-seed states.
+- Selects a test-only next gate that constructs explicit C4/reference-consistent conserved-inventory candidates and measures target-state/hydraulic-head roundtrip residuals.
+- No production source, C4 resolver/payload, canonical exact-v9, exact-version identity, threshold or R4 authority changes.
+
 ## M10 Final VR2 R3 Requalification 2 — Authored-Seed Forward / Inverse Consistency Diagnostic 2
 
 - Returned Diagnostic 1 is frozen/adjudicated PASS, with an important refinement: logical STEP 0 follows two deterministic seed-preconditioning steps.

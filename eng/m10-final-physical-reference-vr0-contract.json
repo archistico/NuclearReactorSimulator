@@ -1,0 +1,138 @@
+{
+  "schema": "m10-final-physical-reference-vr0-v1",
+  "status": "CANDIDATE",
+  "gate": "VR0-Reference-Provenance-Contract-Freeze",
+  "documentation_reference_only": true,
+  "baseline": "M10-Final-Plan-Amendment3-VALIDATED",
+  "production_src_change_authorized": false,
+  "production_repair_authorized": false,
+  "exact_v9_change_authorized": false,
+  "replacement_workload_change_authorized": false,
+  "p3_w_authorized": false,
+  "p3_r1_execution_authorized": false,
+  "second_replacement_long_authorized": false,
+  "reference_implementation_language": "CSharp-test-only",
+  "orchestration": "PowerShell-CMD",
+  "python_project_tooling_authorized": false,
+  "new_runtime_dependency_authorized": false,
+  "noncircularity": {
+    "production_may_generate_reference_values": false,
+    "reference_may_call_production_solver": false,
+    "tolerances_frozen_before_results": true,
+    "first_run_observational_no_tuning": true
+  },
+  "vr0_dispositions": [
+    "VR0-REFERENCE-CONTRACT-PASS",
+    "VR0-REFERENCE-GAP",
+    "VR0-NONCIRCULARITY-FAIL"
+  ],
+  "vr1": {
+    "id": "VR1-Point-Kinetics-Independent-Benchmark",
+    "primary_source": "Hebert-Applied-Reactor-Physics-3e-2020-5.4.1-Ex5.10-Ex5.11",
+    "reference_method": "independent-adaptive-Dormand-Prince-5-4-CSharp",
+    "reference_relative_tolerance": 1e-10,
+    "reference_absolute_tolerance": 1e-12,
+    "reference_maximum_step_seconds": 0.001,
+    "one_group_reference_selfcheck_max_relative_error": 1e-8,
+    "six_group": {
+      "prompt_neutron_generation_time_seconds": 2e-5,
+      "n0": 1.0,
+      "groups": [
+        { "id": "1", "lambda_per_second": 0.0127, "beta": 0.000266 },
+        { "id": "2", "lambda_per_second": 0.0317, "beta": 0.001491 },
+        { "id": "3", "lambda_per_second": 0.115, "beta": 0.001316 },
+        { "id": "4", "lambda_per_second": 0.311, "beta": 0.002849 },
+        { "id": "5", "lambda_per_second": 1.4, "beta": 0.000896 },
+        { "id": "6", "lambda_per_second": 3.87, "beta": 0.000182 }
+      ],
+      "beta_total": 0.007,
+      "reactivity_cases_delta_k_over_k": [0.0, 0.00175, 0.0035, -0.0035, -0.007],
+      "sample_seconds": [0.0, 0.01, 0.1, 0.5, 1.0, 5.0, 20.0, 60.0]
+    },
+    "production_caller_steps_seconds": [0.01, 0.005, 0.0025],
+    "reference_concordant_neutron_max_relative_error": 0.0025,
+    "reference_concordant_precursor_max_relative_error": 0.005,
+    "bounded_neutron_max_relative_error": 0.01,
+    "bounded_precursor_max_relative_error": 0.02,
+    "exact_v9_materiality": "ACTIVE-SOLVER-BUT-REDUCED-ONE-GROUP-PARAMETERIZATION"
+  },
+  "vr2": {
+    "id": "VR2-IAPWS-IF97-Water-Steam-Error-Map",
+    "primary_source": "IAPWS-R7-97-2012",
+    "reference_method": "test-only-CSharp-minimum-IF97-regions-1-2-4",
+    "reference_selfcheck_max_relative_error": 1e-8,
+    "saturation_full_property_temperatures_celsius": [100, 125, 150, 175, 200, 225, 250, 280, 300, 340],
+    "saturation_pressure_only_temperatures_celsius": [360],
+    "compressed_liquid_points": [
+      { "temperature_celsius": 100, "pressure_megapascals": 0.5 },
+      { "temperature_celsius": 150, "pressure_megapascals": 1.0 },
+      { "temperature_celsius": 200, "pressure_megapascals": 2.0 },
+      { "temperature_celsius": 250, "pressure_megapascals": 7.0 },
+      { "temperature_celsius": 280, "pressure_megapascals": 10.0 }
+    ],
+    "superheated_vapor_points": [
+      { "temperature_celsius": 200, "pressure_megapascals": 0.2 },
+      { "temperature_celsius": 250, "pressure_megapascals": 0.5 },
+      { "temperature_celsius": 300, "pressure_megapascals": 1.0 },
+      { "temperature_celsius": 400, "pressure_megapascals": 5.0 }
+    ],
+    "m10_core_temperature_celsius_min": 200,
+    "m10_core_temperature_celsius_max": 300,
+    "claim_bands_max_relative_error": {
+      "QUANTITATIVE-EDUCATIONAL": 0.02,
+      "BOUNDED-EDUCATIONAL": 0.10,
+      "QUALITATIVE-ONLY": 0.25
+    },
+    "blocking_conditions": [
+      "nonfinite-or-unresolvable-inside-production-envelope",
+      "wrong-phase-in-M10-core-envelope",
+      "material-M10-core-property-relative-error-greater-than-0.25"
+    ],
+    "exact_v9_materiality": "ACTIVE-HIGH"
+  },
+  "vr3": {
+    "id": "VR3-I135-Xe135-Shutdown-Reference-Trajectory",
+    "primary_source": "Lamarsh-Baratta-Introduction-to-Nuclear-Engineering-3e-7.5",
+    "reference_method": "closed-form-post-shutdown-I-Xe-equations",
+    "u235_iodine135_yield_atoms_per_fission": 0.0639,
+    "u235_xenon135_direct_yield_atoms_per_fission": 0.00237,
+    "iodine135_decay_constant_per_second": 2.87e-5,
+    "xenon135_decay_constant_per_second": 2.09e-5,
+    "xenon135_absorption_cross_section_barns": 2650000.0,
+    "pre_shutdown_thermal_flux_per_cm2_second": 5e13,
+    "xenon_absorption_removal_per_second": 0.0001325,
+    "normalized_fission_rate_scale": 1.0,
+    "sample_seconds": [0, 900, 3600, 14400, 28800, 32400, 36000, 43200, 57600, 86400, 129600, 172800],
+    "reference_peak_time_uncertainty_seconds": 1,
+    "reference_concordant_state_max_relative_error": 1e-5,
+    "reference_concordant_peak_time_error_seconds": 60,
+    "reference_concordant_peak_magnitude_relative_error": 1e-5,
+    "bounded_state_max_relative_error": 0.001,
+    "bounded_peak_time_error_seconds": 300,
+    "exact_v9_materiality": "INACTIVE-IN-SUSTAINED-GENERATION-PATH",
+    "builtin_m93_configuration_physical_calibration_claim": false
+  },
+  "vr4": {
+    "id": "VR4-ANS5.1-Decay-Heat-Reference-Readiness",
+    "current_scope_source": "ANSI-ANS-5.1-2014-R2023",
+    "supporting_source": "Todreas-Kazimi-Nuclear-Systems-Vol1-3.9",
+    "canonical_production_decay_heat_definition_exists": false,
+    "exact_v9_total_decay_heat_active": false,
+    "exact_v9_materiality": "INACTIVE",
+    "allowed_gap_classification": "REFERENCE-GAP-NO-CANONICAL-PRODUCTION-CONFIG",
+    "gap_blocks_p3r1_when_inactive": false,
+    "gap_blocks_quantitative_ans_claim": true,
+    "future_owner": "M12.5",
+    "production_fit_or_tuning_authorized": false
+  },
+  "vr5_materiality": {
+    "proceed_requires_no_material_blocking_discrepancy_in_active_owners": true,
+    "inactive_reference_gap_may_be_nonblocking_when_explicitly_carried_forward": true,
+    "decisions": [
+      "PROCEED-P3R1-EXACTV9",
+      "BLOCK-P3R1-MODEL-REPAIR",
+      "PLAN-STOP-REFERENCE-GAP"
+    ]
+  },
+  "next_authorized_gate_on_pass": "VR1-Point-Kinetics-Independent-Benchmark"
+}

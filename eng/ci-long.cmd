@@ -1,0 +1,24 @@
+@echo off
+setlocal EnableExtensions
+set "ROOT=%~dp0.."
+cd /d "%ROOT%"
+if errorlevel 1 exit /b 1
+
+echo [CI LONG] Clean restore/build first...
+dotnet restore || exit /b 1
+dotnet build --no-restore || exit /b 1
+
+echo [CI LONG] Long-running gameplay/reference journey gate...
+call scripts\run-gameplay-long-tests.cmd || exit /b 1
+
+echo [CI LONG] Operational-envelope gate...
+call scripts\run-operational-envelope-audit.cmd || exit /b 1
+
+echo [CI LONG] Reference-plant scale gate...
+call scripts\run-reference-plant-scale-audit.cmd || exit /b 1
+
+echo [CI LONG] I.5 repaired exact-v4 300 s production-reference requalification...
+call scripts\run-i5-repaired-v4-300s-reference-requalification-audit.cmd || exit /b 1
+
+echo [CI LONG] PASSED.
+exit /b 0

@@ -1,0 +1,234 @@
+{
+  "schema": "m10-final-vr2-r3-requalification2-reference-consistent-operating-point-seed-replanning1-v1",
+  "status": "PLANNING-CANDIDATE",
+  "predecessor": {
+    "diagnostic2_classification": "LEGACY-FORWARD-MODE2-INVERSE-SEED-CONSISTENCY-GAP",
+    "returned_diagnostic2_artifacts": {
+      "01-raw-authored-seed-closure-comparison.csv": {
+        "sha256": "D38CBF41556BA89FE901F32F2941A747792376B15EA5833CFFE0369C27F97481",
+        "bytes": 3936
+      },
+      "02-raw-authored-seed-hydraulic-head-comparison.csv": {
+        "sha256": "C923CB8FC11088290C710A338EE7FB08F3AB64EF19AD1493C6C6D6B329305EC6",
+        "bytes": 768
+      },
+      "03-diagnostic-summary.txt": {
+        "sha256": "26BFFBFD396E602ED6351F42DDC792601C7A35480931181CA84BD751590A40F4",
+        "bytes": 589
+      },
+      "04-pre-repair-review.txt": {
+        "sha256": "ED9D5289C7BB95148199A56A17556236F835569CBB2C4893D3EC324CD09258EF",
+        "bytes": 557
+      }
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "871C630D5173CF8E5261E882586836BCB8F28A021EEE2B2F0E14FC45FE1D7EE4",
+    "tests_file_count": 392,
+    "tests_tree_sha256": "27F602F75074937B2117FD7E1DB50FB58F414AE374DCCD757595CF783D437FC5"
+  },
+  "target_state_vector": {
+    "source": "returned Diagnostic 2 mode1 resolved raw-seed states",
+    "node_count": 12,
+    "nodes": [
+      {
+        "node": "control-out",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 3994187.8856824953,
+        "target_temperature_k": 523.4213085893939,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9777652720483322,
+        "legacy_raw_mass_kg": 2050.466049852245,
+        "legacy_raw_internal_energy_j": 5110896780.948232
+      },
+      {
+        "node": "drum",
+        "seed_kind": "SteamDrumAtLevel",
+        "target_pressure_pa": 6416459.280654079,
+        "target_temperature_k": 553.149999989397,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.042322749720366454,
+        "legacy_raw_mass_kg": 3918.0095385504724,
+        "legacy_raw_internal_energy_j": 4825952448.9694395
+      },
+      {
+        "node": "exhaust",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 8438.344970819902,
+        "target_temperature_k": 315.67536613075987,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.8729051078626365,
+        "legacy_raw_mass_kg": 66.56335861027966,
+        "legacy_raw_internal_energy_j": 144430627.0640083
+      },
+      {
+        "node": "feedwater-inventory",
+        "seed_kind": "SubcooledLiquid",
+        "target_pressure_pa": 17484.899929958774,
+        "target_temperature_k": 320.5284886658307,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 9891.562750380897,
+        "legacy_raw_internal_energy_j": 1967903187.7208362
+      },
+      {
+        "node": "header",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6247420.79633744,
+        "target_temperature_k": 551.3857140089044,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9980222497643916,
+        "legacy_raw_mass_kg": 3226.7940664391003,
+        "legacy_raw_internal_energy_j": 8046776078.465472
+      },
+      {
+        "node": "hotwell",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 10808.002981101188,
+        "target_temperature_k": 320.48565943701715,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 9891.718932438995,
+        "legacy_raw_internal_energy_j": 1966154910.0618703
+      },
+      {
+        "node": "outlet",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6666459.282132472,
+        "target_temperature_k": 555.6953255146227,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.21514191260824764,
+        "legacy_raw_mass_kg": 1375.2501573397371,
+        "legacy_raw_internal_energy_j": 2017599371.9177291
+      },
+      {
+        "node": "pressure",
+        "seed_kind": "SubcooledLiquid",
+        "target_pressure_pa": 6916459.281680611,
+        "target_temperature_k": 553.3082998275795,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 7503.222372684405,
+        "legacy_raw_internal_energy_j": 8828462961.93033
+      },
+      {
+        "node": "steam",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6398665.756830846,
+        "target_temperature_k": 552.9659692384483,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9997887804601804,
+        "legacy_raw_mass_kg": 3306.9753003716223,
+        "legacy_raw_internal_energy_j": 8247126450.58239
+      },
+      {
+        "node": "stop-out",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6069485.550324526,
+        "target_temperature_k": 549.4887377389139,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9960097013407739,
+        "legacy_raw_mass_kg": 3132.6645561930072,
+        "legacy_raw_internal_energy_j": 7811610864.431434
+      },
+      {
+        "node": "suction",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6416459.281680332,
+        "target_temperature_k": 553.1499999999999,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 7504.377202844439,
+        "legacy_raw_internal_energy_j": 8824832406.702536
+      },
+      {
+        "node": "turbine-inlet",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 3816252.638393859,
+        "target_temperature_k": 520.7342832023278,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9766676884377713,
+        "legacy_raw_mass_kg": 1958.9547542837688,
+        "legacy_raw_internal_energy_j": 4882767620.548656
+      }
+    ]
+  },
+  "selected_next_gate": {
+    "id": "R3-REFERENCE-CONSISTENT-RAW-SEED-CANDIDATE-CONSTRUCTION1",
+    "scope": "TEST-ONLY-EVIDENCE-CONSTRUCTION",
+    "language": "C#",
+    "runtime_dynamic_steps": 0,
+    "production_source_changes_allowed": false,
+    "c4_resolver_change_allowed": false,
+    "c4_payload_change_allowed": false,
+    "canonical_exact_v9_change_allowed": false,
+    "new_exact_version_identity_allowed": false,
+    "threshold_change_allowed": false,
+    "required_candidate_nodes": 12,
+    "required_hydraulic_heads": 8,
+    "required_outputs": [
+      "01-candidate-conserved-inventory-vector.csv",
+      "02-candidate-target-roundtrip.csv",
+      "03-candidate-hydraulic-head-comparison.csv",
+      "04-candidate-construction-summary.txt",
+      "05-pre-integration-review.txt"
+    ]
+  },
+  "sequencing": {
+    "after_candidate_construction_returned_evidence": "R3-REFERENCE-CONSISTENT-SEED-INTEGRATION-PLANNING1",
+    "r3_requalification_still_required": true,
+    "r4_requires_r3_pass": true
+  },
+  "authority": {
+    "production_seed_repair_authorized": false,
+    "new_exact_version_identity_authorized": false,
+    "r3_passed": false,
+    "r4_planning_authorized": false
+  },
+  "planning_artifacts": {
+    "root": "artifacts/m10-final-physical-reference-vr2-r3-requalification2-reference-consistent-operating-point-seed-replanning1",
+    "required_files": [
+      "01-contract-and-provenance.txt",
+      "02-target-state-and-candidate-construction-contract.txt",
+      "03-replanning-summary.txt",
+      "04-preexecution-review.txt"
+    ]
+  },
+  "documentation_files": {
+    "diagnostic2_returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_AUTHORED_SEED_FORWARD_INVERSE_CONSISTENCY_DIAGNOSTIC2_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "60D4DDE7C13F66EABD15AEFF2DCC73C3F029AD0FBDBFE4A647E071A8C6A3A2CB"
+    },
+    "main": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_REFERENCE_CONSISTENT_OPERATING_POINT_SEED_REPLANNING1.md",
+      "normalized_sha256": "A1AA98C02A56E95399F8C1FE4AA3FADC7EC8CB1897F5C1B9CB5A73D5CEC147F0"
+    },
+    "preexecution": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_REFERENCE_CONSISTENT_OPERATING_POINT_SEED_REPLANNING1_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "51F4FD9DBDD20762EC2EFE0F5A87AF5CECD4F53DA77003CF0C230F46296DFB40"
+    },
+    "returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_REFERENCE_CONSISTENT_OPERATING_POINT_SEED_REPLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "BD5686777217FB022136A863698DFC8DC0ACC46FCD5653C23F917C4FB2874710"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "161C1C705F1577DD1DAC2FF8792358C1E05698F9B49D83356109EE53B6977CCC"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "4442E827AA198219E1D204BBF756E7B92080F3FCD2121F5EAE48B7AA9A6CF5DF"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-requalification2-reference-consistent-operating-point-seed-replanning1.ps1",
+      "normalized_sha256": "E40C030147C8BCD171B2EDF1E87211F1945736F247BFD64FC84750846BD13C97"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-requalification2-reference-consistent-operating-point-seed-replanning1-audit.cmd",
+      "normalized_sha256": "5B09995FFF49E965D2E3EFF97EB62076827C2404DBB0F851DFF827F36FC981AE"
+    }
+  }
+}

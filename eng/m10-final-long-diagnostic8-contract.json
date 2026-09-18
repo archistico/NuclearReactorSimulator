@@ -1,0 +1,39 @@
+{
+  "id": "m10-final-long-failure-diagnostic8",
+  "status": "candidate",
+  "stackedOn": "M10 Final Long Failure Diagnostic 7 PASS",
+  "blockingOwner": "breaker-closed governor integral action integrates intentional droop offset against rigid-grid synchronous speed",
+  "historicalSemantics": {
+    "exactV4Production": "unchanged",
+    "exactV5": "frozen failed diagnostic evidence",
+    "exactV6": "frozen failed diagnostic evidence",
+    "legacyGovernorIntegralReference": "EffectiveDroopSetpoint"
+  },
+  "candidate": {
+    "reference": "integrated-operations-desktop-stable@7",
+    "governorIntegralReference": "SynchronousSpeedWhenParalleled",
+    "proportionalDerivativeReference": "effective droop-shifted speed setpoint",
+    "integralReference": "synchronous grid mechanical speed",
+    "authoredWholeCycleState": "same analytical state as exact-v6",
+    "productionSelected": false
+  },
+  "qualification": {
+    "simulatedSeconds": 600,
+    "fixedStepSeconds": 0.01,
+    "acceptance": "evidence review only; no new drift tolerance is frozen",
+    "required": [
+      "zero trips",
+      "zero hydraulic rollbacks",
+      "governor integral/output/control-valve late slopes materially bounded relative to Diagnostic 7",
+      "bounded whole-cycle inventories and node pressure/temperature slopes",
+      "approximately stable 5 MWe electrical operation",
+      "conservative full energy-path closure"
+    ]
+  },
+  "notAuthorized": [
+    "production activation",
+    "replacement long",
+    "M10 closure",
+    "M11 start"
+  ]
+}

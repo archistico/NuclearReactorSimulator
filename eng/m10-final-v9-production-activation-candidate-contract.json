@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "gate": "M10 Final exact-v9 production activation candidate",
+  "status": "CANDIDATE",
+  "qualifiedEvidence": {
+    "source": "Diagnostic 11 Hotfix 2 returned artifacts",
+    "exactInitialCondition": "integrated-operations-desktop-stable@9",
+    "simulatedSeconds": 600,
+    "finalElectricalExportMWe": 4.999999982116509,
+    "finalPrimaryPumpMassFlowKgPerS": 100.00000097387097,
+    "finalDrumLevelFraction": 0.4999999996725085,
+    "lateNetExternalPowerMW": 9.78180159190593e-08,
+    "lateStoredEnergyChangeMW": 9.783135085809427e-08,
+    "lateDrumMassSlopeKgPerS": -1.0621424696814158e-08,
+    "lateGovernorOutputSlopePercentPerS": -3.8877246532823216e-10,
+    "lateControlValveSlopePercentPerS": -3.8877247171597753e-10,
+    "meanAbsFullEnergyClosureResidualJ": 1.1216069459075443e-05,
+    "meanAbsStageEnergyOwnershipResidualW": 3.053516638083536e-09,
+    "tripSteps": 0,
+    "rollbacks": 0,
+    "engineeringDecision": "QUALIFIED"
+  },
+  "activationCandidate": {
+    "policy": "M10FinalExactV9QualifiedCandidate",
+    "initialCondition": "integrated-operations-desktop-stable@9",
+    "scenarioId": "integrated-normal-operations-training-m10-final-v9-activation-candidate",
+    "authoritativeDefaultRemains": "integrated-operations-desktop-stable@4",
+    "failClosedKillRemains": "integrated-operations-desktop-stable@2"
+  },
+  "focusedPolicyPathEnvelope": {
+    "simulatedSeconds": 120,
+    "electricalExportMWe": {
+      "minimum": 4.99,
+      "maximum": 5.01
+    },
+    "primaryPumpMassFlowKgPerS": {
+      "minimum": 99.9,
+      "maximum": 100.1
+    },
+    "drumLevelFraction": {
+      "minimum": 0.49,
+      "maximum": 0.51
+    },
+    "governorOutputPercent": {
+      "minimum": 29.27,
+      "maximum": 29.3
+    },
+    "maximumMassClosureResidualKg": 1e-06,
+    "maximumFullEnergyClosureResidualJ": 0.01,
+    "maximumBalanceMassRateResidualKgPerS": 1e-08,
+    "maximumBalancePowerResidualW": 0.001,
+    "maximumStageEnergyOwnershipResidualW": 0.001,
+    "maximumCommandedTransferMismatchKgPerS": 1e-08,
+    "tripSteps": 0,
+    "breakerOpenSteps": 0,
+    "rollbacks": 0,
+    "fallbackCommitViolations": 0,
+    "unsafeCommitViolations": 0,
+    "untargetedBranchDisagreements": 0
+  },
+  "requiredPrerequisites": [
+    "complete ordinary suite PASS",
+    "LR-M1 Hotfix 1 semantic-equivalence regression PASS",
+    "current exact-v4 production evidence PASS while default remains v4",
+    "Diagnostic 11 exact-v9 600 s requalification PASS",
+    "selector-path fingerprint equals direct exact-v9 factory fingerprint"
+  ],
+  "explicitlyNotAuthorized": [
+    "authoritative default switch to exact-v9",
+    "production mission-pack rebinding to exact-v9",
+    "replacement long campaign",
+    "M10 closure"
+  ]
+}

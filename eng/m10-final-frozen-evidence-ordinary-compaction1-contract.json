@@ -1,0 +1,92 @@
+{
+  "schema": "m10-final-frozen-evidence-ordinary-compaction1-v1",
+  "status": "CANDIDATE-MAINTENANCE-ONLY",
+  "gate": "M10-FINAL-FROZEN-EVIDENCE-ORDINARY-COMPACTION1",
+  "date": "2026-09-17",
+  "purpose": {
+    "ordinary_store_is_compact": true,
+    "large_payload_identity_preserved": true,
+    "historical_payload_rehydration_supported": true,
+    "physics_or_runtime_change": false,
+    "a2_implementation_contained": false
+  },
+  "prerequisite": {
+    "host_provenance_amendment_returned_status": "PASS-AS-AUTHORED",
+    "host_provenance_amendment_artifact_count": 4,
+    "future_a2_gate": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1",
+    "future_a2_implementation_authorized_by_this_gate": false
+  },
+  "compaction": {
+    "ordinary_max_bundled_payload_bytes": 1048576,
+    "externalized_payload_count": 76,
+    "externalized_uncompressed_bytes": 167307127,
+    "archive_pack_count": 7,
+    "archive_total_bytes": 10938420,
+    "compact_ordinary_file_count": 499,
+    "compact_ordinary_total_bytes": 9247351,
+    "compact_ordinary_max_file_bytes": 724772,
+    "large_payload_manifest_total_rows": 79,
+    "preexisting_external_manifest_rows_preserved": 3,
+    "bundled_archive_manifest_rows": 76
+  },
+  "tree_identity": {
+    "src_files": 959,
+    "src_tree_sha256": "4A8904F573157AC1D5B58E4CBD58E94FAB09C28CA9A73D2E2330147BBCF9AF9E",
+    "tests_files": 381,
+    "tests_tree_sha256": "6DD38EC9C89D55691420D65E39BB3C3E74966ED484CD5090211E4263201DDBAE"
+  },
+  "returned_amendment_normalized_lf_sha256": {
+    "01-contract-and-provenance.txt": "5E50F1A9F0D742FD84B5EC0290C0FBAF8C72A0E1D01DFA00F1F2D5AB60B9985F",
+    "02-host-provenance-policy.txt": "65ED1C851FFB5AE42B3AF10B529E59FDEAFBF1EE2531B4B19B2EAC644CE09582",
+    "03-planning-amendment-summary.txt": "DAAE97E3A8E6AA55C4C04706DF1864990C9C869CC33F5ACA87FE0940157864F7",
+    "04-preexecution-review.txt": "A0EABE2889EF25D73F5247B959BB2F6B43E7E1DE42EA4CD5A6D0CE531C902A06"
+  },
+  "archive_packs": [
+    {
+      "path": "eng/frozen-evidence/archive/rp1b-c4-large-payloads.zip",
+      "sha256": "BB5376BDAC8218F170CA97DE6D570103084E2963A2392367666E441151DCA534",
+      "bytes": 1905062
+    },
+    {
+      "path": "eng/frozen-evidence/archive/rp1b-refinement4-large-payloads.zip",
+      "sha256": "FF4B2A096D68AE96A38B10F119A5772D234F97FADA6772D371F3D73AA5639E0F",
+      "bytes": 139558
+    },
+    {
+      "path": "eng/frozen-evidence/archive/rp1b-refinement5-large-payloads.zip",
+      "sha256": "E015147647B3036CF10C7C01842A9739011C390C5E7B80E8E94EB7A8D9EEDBC0",
+      "bytes": 681787
+    },
+    {
+      "path": "eng/frozen-evidence/archive/rp1c-c4-dynamicpgocomparator1-large-payloads.zip",
+      "sha256": "0E712D6BC16F1990777171F6AC554DF880F6C3952BFD98E7783F09C227776792",
+      "bytes": 1390035
+    },
+    {
+      "path": "eng/frozen-evidence/archive/rp1c-c4-exactv9tailattribution1-large-payloads.zip",
+      "sha256": "47DDE6E6C205990456B247D26A81C5CC84B652866AF7FBA1DA03570A4443B4E3",
+      "bytes": 2757514
+    },
+    {
+      "path": "eng/frozen-evidence/archive/rp1c-c4-fulldomainperformanceconfirmation1-large-payloads.zip",
+      "sha256": "EB9008710B6354B5AD51ED1FE96F21C0177D4D5BCC7726C500789DA3710CA65E",
+      "bytes": 1062451
+    },
+    {
+      "path": "eng/frozen-evidence/archive/rp1c-c4-runtimefactorisolation1-large-payloads.zip",
+      "sha256": "8366EA60387FB6623F934E60B10C203954FC87CBECF1B25E5744E0BED88F79BF",
+      "bytes": 3002013
+    }
+  ],
+  "authority": {
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "full_domain_performance_confirmation2_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  }
+}

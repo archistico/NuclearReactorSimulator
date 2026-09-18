@@ -1,0 +1,91 @@
+{
+  "schema": "m10-final-physical-reference-vr2-materiality-diagnostic1-v1",
+  "status": "CANDIDATE",
+  "prerequisite": {
+    "vr1_status": "VALIDATED",
+    "vr2_execution": "COMPLETE",
+    "vr2_classification": "MODEL-DISCREPANCY-BLOCKING",
+    "vr2_reference_selfcheck_max_relative_error": 2.8096211618213283e-9,
+    "vr2_reference_selfcheck_ceiling": 1e-8,
+    "vr2_m10_core_max_relative_error": 7.472383651819435,
+    "vr2_blocking_owner": "INVERSE-COMPRESSED-LIQUID/resolved-pressure"
+  },
+  "question": "On the actual exact-v9 P1B 5 MWe background and 5-to-6 MWe path, does reinterpreting the same canonical node inventories with independent IAPWS-IF97 pressures materially change the hydraulic driving heads and quadratic flow-law outputs that participate in the observed slow-state motion?",
+  "reference": {
+    "authority": "IAPWS R7-97(2012)",
+    "regions": [1, 2, 4],
+    "runtime_substitution": false,
+    "production_model_called_by_reference": false,
+    "inverse_selfcheck_maximum_relative_error": 1e-7
+  },
+  "execution": {
+    "baseline": "integrated-operations-desktop-stable@9",
+    "background_seconds": 600,
+    "load_probe": "5-to-6-MWe",
+    "maximum_hold_seconds_after_load": 3600,
+    "sample_seconds": 60,
+    "late_analysis_seconds": 1200,
+    "late_window_seconds": 300,
+    "late_window_count": 4,
+    "required_persistent_windows": 3,
+    "p1b_checkpoint_reproduction_required": true,
+    "per_step_protection_and_numerical_sentinels_required": true
+  },
+  "nodes": [
+    "suction",
+    "pressure",
+    "outlet",
+    "drum",
+    "feedwater-inventory"
+  ],
+  "hydraulic_paths": [
+    "MCP",
+    "CHANNEL",
+    "RETURN",
+    "FEEDWATER-PUMP"
+  ],
+  "counterfactual": {
+    "changes_runtime_state": false,
+    "changes_resistance": false,
+    "changes_pump_speed": false,
+    "changes_pump_boost_law": false,
+    "changes_topology": false,
+    "changes_energy_transport": false,
+    "changes_only_pressure_inputs_to_existing_quadratic_flow_law": true,
+    "flow_reproduction_tolerance_kg_s": 1e-9
+  },
+  "materiality_policy": {
+    "phenomenon_scale": "max(abs(load-window production mean - final-300s 5-MWe background mean), abs(window-end production flow - window-start production flow), flow comparison floor)",
+    "flow_comparison_floor_kg_s": 0.01,
+    "confirmed_impact_ratio": 1.0,
+    "not_excluded_impact_ratio": 0.1,
+    "window_confirmed_if_driving_pressure_sign_changes": true,
+    "overall_confirmed_requires_windows_in_same_path": 3,
+    "overall_not_excluded_requires_windows_in_same_path": 3,
+    "allowed_classifications": [
+      "HYDRAULIC-MATERIALITY-CONFIRMED",
+      "HYDRAULIC-MATERIALITY-NOT-EXCLUDED",
+      "HYDRAULIC-MATERIALITY-NOT-DEMONSTRATED",
+      "REFERENCE-INVERSION-GAP"
+    ]
+  },
+  "authority": {
+    "production_src_change_authorized": false,
+    "thermodynamic_repair_authorized": false,
+    "thermodynamic_tolerance_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_execution_authorized": false,
+    "p3_r1_execution_authorized": false,
+    "second_replacement_long_authorized": false,
+    "separate_engineering_decision_required_after_artifact_review": true
+  },
+  "artifacts": [
+    "01-contract-and-provenance.txt",
+    "02-p1b-checkpoint-reproduction.csv",
+    "03-node-if97-inverse-map.csv",
+    "04-hydraulic-path-counterfactual.csv",
+    "05-late-window-materiality.csv",
+    "06-materiality-summary.txt",
+    "07-sentinels.txt"
+  ]
+}

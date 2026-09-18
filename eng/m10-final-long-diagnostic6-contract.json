@@ -1,0 +1,98 @@
+{
+  "schema": "m10-final-long-diagnostic6-contract-v1",
+  "status": "CANDIDATE",
+  "baseline": "M10 Final Long Failure Diagnostic 5 (user-reported complete script PASS; returned artifacts reviewed)",
+  "diagnostic5_execution": {
+    "script_passed": true,
+    "exact_v5_reference": "integrated-operations-desktop-stable@5",
+    "seconds": 600,
+    "steps": 60000,
+    "trip_steps": 0,
+    "rollbacks": 0
+  },
+  "diagnostic5_findings": {
+    "exact_v5_qualified": false,
+    "final_primary_pump_flow_kg_s": 103.19646,
+    "final_primary_channel_flow_kg_s": 103.02271,
+    "final_primary_return_flow_kg_s": 103.20526,
+    "final_drum_level_fraction": 0.9567142451,
+    "final_feedwater_flow_kg_s": 12.9768268,
+    "final_separated_steam_flow_kg_s": 12.24058,
+    "final_condensate_flow_kg_s": 12.9725,
+    "final_condensation_flow_kg_s": 12.97,
+    "interpretation": "exact-v5 is a long transient, not a stationary state; copying its 600 s snapshot would freeze drift"
+  },
+  "exact_v5_derivation_correction": {
+    "previous_probe_flow_kg_s": 260.0,
+    "correction": "exact-v5 did not omit pump internal resistance; its non-stationary authored pressure grade instead kept suction about 5.76 MPa above drum, providing a finite pressure reservoir that relaxed during the run",
+    "stationary_primary_condition": "suction and drum must share the recirculated-liquid operating pressure in the authored steady state",
+    "pump_path_resistance_pa_s2_kg2": 25.0,
+    "pump_internal_resistance_pa_s2_kg2": 25.0,
+    "channel_resistance_pa_s2_kg2": 25.0,
+    "return_resistance_pa_s2_kg2": 25.0,
+    "rated_pump_head_pa": 1000000.0,
+    "closed_primary_flow_kg_s": 100.0
+  },
+  "exact_v6_analytical_seed": {
+    "reference": "integrated-operations-desktop-stable@6",
+    "production_selector_changed": false,
+    "fixed_step_ms": 10.0,
+    "primary": {
+      "flow_kg_s": 100.0,
+      "suction_pressure_mpa": 6.416459281680372,
+      "pressure_header_mpa": 6.916459281680372,
+      "outlet_pressure_mpa": 6.666459281680372,
+      "drum_pressure_mpa": 6.416459281680372,
+      "pressure_header_temperature_c": 280.1582998275795,
+      "outlet_temperature_c": 282.5453255100864,
+      "outlet_quality": 0.21186790020483265
+    },
+    "secondary": {
+      "requested_electrical_power_mw": 5.0,
+      "generator_efficiency": 0.98,
+      "rotor_loss_mw": 0.5,
+      "turbine_effective_work_j_kg": 430000.0,
+      "mass_flow_kg_s": 13.028001898433793,
+      "steam_pressure_mpa": 6.399486398333812,
+      "header_pressure_mpa": 6.2552168898880565,
+      "stop_out_pressure_mpa": 6.085488056422462,
+      "control_out_pressure_mpa": 3.8101893137696408,
+      "turbine_inlet_pressure_mpa": 3.6404604803040463,
+      "exhaust_pressure_pa": 8263.444140323916,
+      "exhaust_temperature_c": 42.125833517020126,
+      "control_valve_percent": 27.312320479840385,
+      "condensate_pump_percent": 42.0,
+      "feedwater_pump_percent": 96.88913771103281
+    },
+    "thermal": {
+      "fission_power_mw": 32.48425387176408,
+      "neutron_population_relative": 0.3248425387176408,
+      "fuel_temperature_c": 305.28430322032125,
+      "structure_temperature_c": 289.0421762844392
+    },
+    "condenser": {
+      "ua_mw_k": 1.225,
+      "cooling_water_temperature_c": 20.0,
+      "predicted_rejection_mw": 27.10414605835
+    }
+  },
+  "diagnostic6": {
+    "seconds": 600,
+    "steps": 60000,
+    "sample_period_seconds": 1,
+    "final_window_seconds": 60,
+    "new_acceptance_thresholds_frozen": false,
+    "required_execution_properties": [
+      "build warnings-as-errors passes",
+      "complete ordinary suite passes",
+      "LR-M1 semantic-equivalence regression passes",
+      "finite samples",
+      "zero active-trip steps",
+      "zero corrected-commit rollbacks"
+    ],
+    "engineering_decision_requires_returned_artifacts": true
+  },
+  "production_activation_authorized": false,
+  "replacement_long_authorized": false,
+  "m10_closed": false
+}

@@ -1,0 +1,94 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1b-c4-v1",
+  "status": "CANDIDATE",
+  "scope": "SEPARATELY-VERSIONED-TEST-ONLY-C4-IMPLEMENTATION-AND-EVIDENCE",
+  "authority": {
+    "returned_planning_adjudication": "PASS",
+    "c4_test_only_implementation_authorized": true,
+    "rp1c_selection_authorized": false,
+    "production_repair_authorized": false,
+    "performance_threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "candidate": {
+    "candidate_id": "C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE",
+    "family_id": "C-BOUNDED-IF97-DERIVED-TABLE-SURROGATE",
+    "source_file": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/Rp1bC4AllocationNeutralShadowThermodynamicCandidate.cs",
+    "type_name": "Rp1bAllocationNeutralVaporSeamCompleteTabulatedSurrogateCandidate",
+    "implementation_topology": "ALLOCATION-NEUTRAL-C3-VAPOR-PRECEDENCE-C2-MIXTURE-LIQUID-PREFIX-THEN-IMMUTABLE-C2-FALLBACK",
+    "maximum_iterative_solve_iterations": 48,
+    "uses_direct_if97_at_resolve_time": false,
+    "boundary3_special_case_allowed": false,
+    "historical_c2_c3_d3_edit_allowed": false,
+    "complete_c2_clone_allowed": false,
+    "c2_vapor_path_clone_allowed": false,
+    "new_output_region_or_phase_labels_allowed": false,
+    "r1_fallback_invocations_required": 0,
+    "resolution_path_telemetry": "VALUE-TYPE-ENUM"
+  },
+  "semantic_gate": {
+    "test_method": "Rp1bC4_EstablishesBitEquivalentSemanticsAcrossFrozenCorpus",
+    "state_observations": 1679,
+    "hydraulic_observations": 288,
+    "total_observations": 1967,
+    "c4_repeats_per_observation": 2,
+    "double_comparison": "BITCONVERTER-DOUBLETOINT64BITS",
+    "string_comparison": "ORDINAL",
+    "negative_outcome_is_xunit_failure": false,
+    "source_of_c3_expected_semantics": "FROZEN-REFINEMENT2-C3-EVIDENCE"
+  },
+  "timing_gate": {
+    "test_method": "Rp1bC4_MeasuresOneIndependentR1LaneRun",
+    "lanes": 2,
+    "runs_per_lane": 5,
+    "fresh_timing_processes": 10,
+    "warmup_passes_per_run": 16,
+    "measured_passes_per_run": 64,
+    "boundaries": 320,
+    "measured_calls_per_run": 20480,
+    "total_measured_calls": 204800,
+    "required_bytes_per_call": 0,
+    "required_harness_allocated_bytes": 0,
+    "required_fallback_calls": 0,
+    "median_ceiling_us": 94.8,
+    "p95_ceiling_us": 158.80666666666667,
+    "max_ceiling_us": 409.30666666666673,
+    "negative_outcome_is_xunit_failure": false
+  },
+  "evidence": {
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-engineering-repair-planning1-rp1b-c4",
+    "aggregate_file_count": 9,
+    "process_directory_count": 10,
+    "process_files_per_directory": 5,
+    "total_required_files": 59,
+    "classification_precedence": [
+      "C4-EVIDENCE-INCOMPLETE",
+      "C4-SEMANTIC-EQUIVALENCE-FAILED",
+      "C4-ALLOCATION-NOT-CLOSED",
+      "C4-WALL-CLOCK-TAIL-REMAINS",
+      "C4-QUALIFIED-ALLOCATION-TAIL-CLOSED"
+    ]
+  },
+  "runner": {
+    "path": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1b-c4.cmd",
+    "ordinary_gate": "eng\\ci-ordinary.cmd",
+    "configuration": "Release",
+    "focused_no_build": true,
+    "parallel_none": true,
+    "explicit_only": true,
+    "focused_process_invocations": 11,
+    "root_reset_owner": "RUNNER-ONCE"
+  },
+  "historical_normalized_lf_sha256": {
+    "c2": "3731100664621D2E7E396BC12790C36EF4667F1526E5AEF0186F3DD6260274C8",
+    "c3": "B92302DB5B19213407C6B8A2F3A9CD33212FF55109E3087972928B4121A87064",
+    "refinement5_test": "7B3CFEA0464051D1E658978BA2ED6F7BB0B5B057D6B64F94884C800911F6A207"
+  },
+  "implementation_normalized_lf_sha256": {
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "c4_tests": "1DE6B1F977A4307FFB06A5FA3CBB5B942FDA849B633425DDFCB0061C1806C24C"
+  }
+}

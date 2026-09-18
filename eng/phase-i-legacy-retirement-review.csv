@@ -1,0 +1,5 @@
+mode,current_role,production_selectable,exact_version_dependency,current_ci_dependency,source_cs_files,test_cs_files,i4_decision
+ExplicitCommittedState,rollback-reference,True,True,True,NA,NA,RETAIN
+FourNodeBranchContinuityCorrectedCommitOptIn,authoritative-production,True,True,True,NA,NA,RETAIN
+DeterministicHybridSemiImplicit,historical-audit-only,False,False,False,4,4,DEFER-SOURCE-REMOVAL
+FourNodeBranchContinuityShadowIntegrated,historical-audit-only,False,False,False,4,4,DEFER-SOURCE-REMOVAL

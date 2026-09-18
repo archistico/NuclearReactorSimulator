@@ -1,0 +1,130 @@
+{
+  "schema": "m10-final-vr2-r3-mode2-branch-continuity-fusion-repair-implementation1-v1",
+  "status": "IMPLEMENTATION-EVIDENCE-GATE",
+  "prerequisite": {
+    "planning_status": "PASS-AS-AUTHORED",
+    "planning_artifacts": {
+      "01-contract-and-provenance.txt": {
+        "sha256": "8FE7B4B8857E9E3D5735C6CC5D4048C095E3A19102F7DDBC4111A09ABFE2842A",
+        "bytes": 337
+      },
+      "02-repair-scope-and-regression-matrix.txt": {
+        "sha256": "08D877E7A77CEF809C17AFBE4F4429703CDEE67925BED9BBA8946E2FA5D304A0",
+        "bytes": 389
+      },
+      "03-planning-summary.txt": {
+        "sha256": "6FFE4864F158CEF92508FE9DFE0C766B89AFAD4C0ABC765069E6EF7063BA3CA9",
+        "bytes": 287
+      },
+      "04-preexecution-review.txt": {
+        "sha256": "D78FC6FBF53A1081B6EC82DF184234516F64DC43D85B2601FB4283F2CBF98621",
+        "bytes": 286
+      }
+    }
+  },
+  "implementation": {
+    "gate": "R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-IMPLEMENTATION1",
+    "repair": "MODE2-FUSION-ELIGIBILITY-GUARD",
+    "authorized_production_files": [
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ThermodynamicBranchContinuityModel.cs"
+    ],
+    "new_test": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2R3Mode2BranchContinuityFusionRepairImplementation1Tests.cs",
+    "mode0_fusion_eligible": true,
+    "mode1_fusion_eligible": true,
+    "mode2_fusion_eligible": false,
+    "evaluate_branch_continuity_change_allowed": false,
+    "resolver_change_allowed": false,
+    "payload_change_allowed": false,
+    "enum_default_change_allowed": false,
+    "ordinary_release_suite_required": true,
+    "focused_rebuild": "FORCED-NO-INCREMENTAL",
+    "r3_requalification_required_after_pass": true,
+    "preordinary_build_policy": "FULL-SOLUTION-RESTORE-PLUS-NO-INCREMENTAL-RELEASE-BUILD"
+  },
+  "baseline": {
+    "model_normalized_sha256": "79B5F4B99047C5F52E94CAC33AE08987D4EE82EBE09D09FBB114BFA6F7E69376",
+    "wrapper_normalized_sha256": "D3D29C86460999ECDC54AE0BA0B9DB3E3C636FC698C2EB8DE5EE28D791CD09F1",
+    "resolver_sha256": "59772C4044FA19C67BAAF463B3314D143E2C1CFCFFA8A64D4D611DBF63663922",
+    "payload_sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267",
+    "closure_mode_sha256": "0228EEFFB1FEC97229AF9F60F024768A019503CC918F099C2BAC8AF6B5F079B8",
+    "src_excluding_authorized_count": 959,
+    "src_excluding_authorized_tree_sha256": "DD10382BE752DCCD342CCD44611CECDFE2749DDD04F70C635380F4FC4D54AF7C",
+    "tests_before_new_count": 388,
+    "tests_before_new_tree_sha256": "C279F5E6BC20F2A6A595D519D68EAE265AFFF17A5DC205D9539136C6E6327110"
+  },
+  "implementation_files": {
+    "model": {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "normalized_sha256": "44EA256839872EAB330132BA8AB536ABC7B38BB5522671BA7AB33E27BF6C4B1A"
+    },
+    "wrapper": {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ThermodynamicBranchContinuityModel.cs",
+      "normalized_sha256": "8A1D929CF5EAF9FAD4E7483333EA6CE29EB03893870676D89922E6E9AF0AB7B3"
+    },
+    "focused_test": {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2R3Mode2BranchContinuityFusionRepairImplementation1Tests.cs",
+      "normalized_sha256": "107B7A9EE9AC3C394203A7B1CBC5B4F96F64350BBD4FEB8244976971E332F333"
+    }
+  },
+  "evidence": {
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-r3-mode2-branch-continuity-fusion-repair-implementation1",
+    "required_files": [
+      "01-contract-and-provenance.txt",
+      "02-production-change-manifest.csv",
+      "03-returned-state-repair-regression.txt",
+      "04-historical-fusion-regression.txt",
+      "05-implementation-summary.txt",
+      "06-pre-requalification-review.txt"
+    ]
+  },
+  "authority": {
+    "r3_passed": false,
+    "r4_planning_authorized": false,
+    "default_mode2_activation_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "new_exact_version_identity_authorized": false,
+    "threshold_change_authorized": false
+  },
+  "post_successor": "R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION2",
+  "documentation_files": {
+    "main": {
+      "path": "docs/M10_FINAL_VR2_R3_MODE2_BRANCH_CONTINUITY_FUSION_REPAIR_IMPLEMENTATION1.md",
+      "normalized_sha256": "CC00A851B8A4EDAE959407855925A8388765F4E0854255AB3544E5DA89937710"
+    },
+    "preexecution": {
+      "path": "docs/M10_FINAL_VR2_R3_MODE2_BRANCH_CONTINUITY_FUSION_REPAIR_IMPLEMENTATION1_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "FBF9386BA1ABA50E460DF8E96F469A8CD3A50F924D26E9B55229F818AD666B97"
+    },
+    "returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_MODE2_BRANCH_CONTINUITY_FUSION_REPAIR_IMPLEMENTATION1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "A8373460844AD3CCC89EFF047E6792B93AB71CC37F24F336B0F71C4519AB9F76"
+    },
+    "planning_returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_MODE2_BRANCH_CONTINUITY_FUSION_REPAIR_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "E037227FDAA1D3B821AB491EF0F1A498F60092ADD459CEA25A3F0D5BBA5E15C1"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "61F805D93D02B1624C18BF99DF9571955D6C441038F29EC9A4BAC84F17C4E442"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "C352EA28329F8F89DC71D7BBD6246DDEBD1E81550B1922ECE4F05249D6CCF753"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-mode2-branch-continuity-fusion-repair-implementation1.ps1",
+      "normalized_sha256": "66C93CF646F80FECAFBE0ABAE4BEA215C9CA8C7CAA8F591DB8EA4B158515AC6A"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-r3-mode2-branch-continuity-fusion-repair-implementation1.ps1",
+      "normalized_sha256": "BC35CD742F1774083A64BF4224070E8740054B087AB0E5A55C7A47C6BF88DBA2"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-mode2-branch-continuity-fusion-repair-implementation1.cmd",
+      "normalized_sha256": "776469E91A930DF6F37A712CEBE8B1C0E453FD3369FE73F1FA8868CF38B57D6E"
+    }
+  }
+}

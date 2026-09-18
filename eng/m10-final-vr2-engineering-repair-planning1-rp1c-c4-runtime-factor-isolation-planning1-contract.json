@@ -1,0 +1,194 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation-planning1-v1",
+  "status": "CANDIDATE-PLANNING-ONLY",
+  "gate": "RP1C-C4-RUNTIME-FACTOR-ISOLATION-PLANNING1",
+  "prerequisite": {
+    "attribution1_returned_adjudication": "PASS",
+    "runtime_configuration_sensitivity_confirmed": true,
+    "tiering_off_repair_direction_rejected": true,
+    "dynamic_pgo_causality_proven": false,
+    "c4_candidate_immutable": true,
+    "exact_v9_corpus_immutable": true,
+    "strict_max_us": 409.30666666666673,
+    "rp1c_selection_authorized": false
+  },
+  "frozen_returned_observation": {
+    "runtime_modes": 4,
+    "fresh_processes": 20,
+    "total_measured_calls": 460800,
+    "ambient_calls_over_100us": 16,
+    "ambient_strict_exceedances": 2,
+    "ambient_max_us": 724.2,
+    "tiering_off_calls_over_100us": 91283,
+    "tiering_off_strict_exceedances": 64,
+    "tiering_off_max_us": 15497.2,
+    "tiering_on_pgo_off_calls_over_100us": 18,
+    "tiering_on_pgo_off_strict_exceedances": 0,
+    "tiering_on_pgo_off_max_us": 273.9,
+    "tiering_on_pgo_on_calls_over_100us": 28,
+    "tiering_on_pgo_on_strict_exceedances": 0,
+    "tiering_on_pgo_on_max_us": 330.4,
+    "candidate_allocated_bytes": 0,
+    "harness_allocated_bytes": 0,
+    "gc_collections": 0
+  },
+  "future_gate": {
+    "id": "RP1C-C4-EXACT-V9-RUNTIME-FACTOR-ISOLATION1",
+    "evidence_only": true,
+    "automatic_causal_promotion": false,
+    "automatic_selection_authorized": false,
+    "exact_v9_only": true,
+    "fresh_processes_per_mode": 5,
+    "mode_count": 4,
+    "total_fresh_processes": 20,
+    "exact_v9_rows": 360,
+    "warmup_passes": 16,
+    "measured_passes": 64,
+    "rotation_stride": 37,
+    "measured_calls_per_process": 23040,
+    "total_measured_calls": 460800,
+    "strict_max_us": 409.30666666666673,
+    "diagnostic_tail_floor_us": 100.0,
+    "diagnostic_tail_floor_changes_qualification_threshold": false,
+    "allocation_neutral_harness_required": true,
+    "counterbalanced_blocked_by_run": true,
+    "returned_evidence_adjudication_required": true
+  },
+  "single_factor_chain": [
+    {
+      "id": "TIERING-OFF-QJ-OFF-QJFL-OFF",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "0",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "0",
+        "DOTNET_TC_QuickJitForLoops": "0",
+        "DOTNET_ReadyToRun": "1"
+      }
+    },
+    {
+      "id": "TIERING-ON-QJ-OFF-QJFL-OFF",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "0",
+        "DOTNET_TC_QuickJitForLoops": "0",
+        "DOTNET_ReadyToRun": "1"
+      }
+    },
+    {
+      "id": "TIERING-ON-QJ-ON-QJFL-OFF",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "1",
+        "DOTNET_TC_QuickJitForLoops": "0",
+        "DOTNET_ReadyToRun": "1"
+      }
+    },
+    {
+      "id": "TIERING-ON-QJ-ON-QJFL-ON",
+      "processes": 5,
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "0",
+        "DOTNET_TC_QuickJit": "1",
+        "DOTNET_TC_QuickJitForLoops": "1",
+        "DOTNET_ReadyToRun": "1"
+      }
+    }
+  ],
+  "contrasts": [
+    {
+      "left": "TIERING-OFF-QJ-OFF-QJFL-OFF",
+      "right": "TIERING-ON-QJ-OFF-QJFL-OFF",
+      "changed_factor": "DOTNET_TieredCompilation"
+    },
+    {
+      "left": "TIERING-ON-QJ-OFF-QJFL-OFF",
+      "right": "TIERING-ON-QJ-ON-QJFL-OFF",
+      "changed_factor": "DOTNET_TC_QuickJit"
+    },
+    {
+      "left": "TIERING-ON-QJ-ON-QJFL-OFF",
+      "right": "TIERING-ON-QJ-ON-QJFL-ON",
+      "changed_factor": "DOTNET_TC_QuickJitForLoops"
+    }
+  ],
+  "pgo_follow_up": {
+    "included_in_this_gate": false,
+    "requires_separate_planning_if_still_material": true,
+    "required_fixed_environment": {
+      "DOTNET_TieredCompilation": "1",
+      "DOTNET_TC_QuickJit": "1",
+      "DOTNET_TC_QuickJitForLoops": "1",
+      "DOTNET_ReadyToRun": "1"
+    },
+    "future_changed_factor": "DOTNET_TieredPGO"
+  },
+  "caller_environment_preflight": {
+    "required_unset": [
+      "DOTNET_TieredCompilation",
+      "DOTNET_TieredPGO",
+      "DOTNET_TC_QuickJit",
+      "DOTNET_TC_QuickJitForLoops",
+      "DOTNET_ReadyToRun"
+    ],
+    "failure_classification": "CALLER-RUNTIME-CONFIGURATION-NOT-CLEAN",
+    "must_not_silently_clear_parent_environment": true
+  },
+  "planned_evidence": {
+    "process_directory_count": 20,
+    "files_per_process": 4,
+    "aggregate_file_count": 6,
+    "total_required_files": 86,
+    "process_files": [
+      "01-process-contract.txt",
+      "02-exact-v9-call-timing.csv",
+      "03-runtime-context.txt",
+      "04-process-summary.txt"
+    ],
+    "aggregate_files": [
+      "01-contract-and-provenance.txt",
+      "02-runtime-factor-run-summary.csv",
+      "03-single-factor-contrast-summary.csv",
+      "04-tail-row-path-summary.csv",
+      "05-runtime-factor-evidence-summary.txt",
+      "06-runtime-factor-isolation1-summary.txt"
+    ]
+  },
+  "future_test_contract": {
+    "file": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2EngineeringRepairPlanning1Rp1cC4RuntimeFactorIsolation1Tests.cs",
+    "class": "M10FinalVr2EngineeringRepairPlanning1Rp1cC4RuntimeFactorIsolation1Tests",
+    "method": "Rp1cC4RuntimeFactorIsolation1_MeasuresOneFreshSingleFactorModeProcess",
+    "explicit": true,
+    "parallel": "none",
+    "configuration": "Release",
+    "runner": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation1.cmd"
+  },
+  "authority": {
+    "runtime_factor_isolation_implementation_authorized_now": false,
+    "runtime_factor_isolation_implementation_authorizable_after_returned_planning_adjudication": true,
+    "pgo_comparator_implementation_authorized": false,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "candidate_mutation_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false,
+    "next_action_after_local_planning_pass": "RETURN-COMPLETE-RUNTIME-FACTOR-ISOLATION-PLANNING-ARTIFACTS-FOR-ADJUDICATION"
+  },
+  "normalized_lf_sha256": {
+    "attribution1_returned_adjudication_doc": "EF00AF32658216F301C205C9C06EC474C72B19A4B1E49490A5C8043A94DA0F78",
+    "attribution1_runtime_mode_run_summary": "1BEEDF801287CBF1386155DCAD6FE35F93FBA41BB4366CBE59EBE307BC1B4CD7",
+    "attribution1_evidence_summary": "10DD9D81B700200EC74391DCF22BF63D4BD77E97B5A28CABCC76A98A1783E7A2",
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "rp1a_exact_v9_corpus": "6EB6AEA3BF45621BD9BB890E3449E9BB010E02C3CF5A81AFDAFF67809DE4B50E",
+    "hash_mode": "UTF8-TEXT-NORMALIZED-LF"
+  }
+}

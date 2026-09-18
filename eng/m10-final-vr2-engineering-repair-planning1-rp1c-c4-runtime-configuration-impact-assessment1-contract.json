@@ -1,0 +1,173 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1-v1",
+  "status": "CANDIDATE-EVIDENCE-ONLY",
+  "gate": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1",
+  "prerequisite": {
+    "planning1_returned": "PASS-AS-AUTHORED",
+    "host_provenance_amendment1_returned": "PASS-AS-AUTHORED",
+    "frozen_evidence_ordinary_compaction1_returned": "PASS-AS-AUTHORED",
+    "branch": "A-RUNTIME-SENSITIVE",
+    "dynamic_pgo_central_distribution_causal": true,
+    "dynamic_pgo_rare_strict_tail_causal": false,
+    "c4_candidate_immutable": true,
+    "exact_v9_corpus_immutable": true,
+    "strict_max_us": 409.30666666666673
+  },
+  "protocol": {
+    "evidence_only": true,
+    "profile_count": 2,
+    "profiles": [
+      "AMBIENT-UNSET",
+      "EXPLICIT-REFERENCE-ALL-ON"
+    ],
+    "exact_v9_processes_per_profile": 5,
+    "exact_v9_total_processes": 10,
+    "exact_v9_rows": 360,
+    "warmup_passes": 16,
+    "measured_passes": 64,
+    "rotation_stride": 37,
+    "measured_calls_per_process": 23040,
+    "total_exact_v9_measured_calls": 230400,
+    "strict_max_us": 409.30666666666673,
+    "diagnostic_tail_floor_us": 100.0,
+    "diagnostic_tail_floor_is_threshold": false,
+    "same_boundary_strict_repro_processes": 2,
+    "ordinary_release_suite_logical_runs_per_profile": 1,
+    "replay_determinism_logical_runs_per_profile": 1,
+    "non_vr2_performance_processes_per_profile": 3,
+    "engineering_negative_is_infrastructure_red": false,
+    "automatic_engineering_adjudication": false,
+    "mtp_minimum_expected_tests_per_invocation": 1,
+    "xunit_executed_formula": "passed+failed+skipped",
+    "xunit_reported_total_accounting": "ACCEPT-EXECUTED-OR-EXECUTED-PLUS-NOT-RUN",
+    "xunit_execution_cardinality_source": "executed",
+    "xunit_observed_schema3_behavior": "TOTAL-INCLUDES-NOT-RUN",
+    "source_tree_identity_scope": "CANONICAL-SOURCE-EXCLUDING-BIN-OBJ",
+    "runtime_transient_directory_policy": "ALLOW-LOCAL-GENERATED-OUTPUT-NOT-IN-TREE-IDENTITY",
+    "preexisting_a2_artifact_policy": "ORCHESTRATOR-DELETE-AND-RECREATE-BEFORE-EVIDENCE"
+  },
+  "runtime_profiles": {
+    "AMBIENT-UNSET": {
+      "DOTNET_TieredCompilation": null,
+      "DOTNET_TieredPGO": null,
+      "DOTNET_TC_QuickJit": null,
+      "DOTNET_TC_QuickJitForLoops": null,
+      "DOTNET_ReadyToRun": null
+    },
+    "EXPLICIT-REFERENCE-ALL-ON": {
+      "DOTNET_TieredCompilation": "1",
+      "DOTNET_TieredPGO": "1",
+      "DOTNET_TC_QuickJit": "1",
+      "DOTNET_TC_QuickJitForLoops": "1",
+      "DOTNET_ReadyToRun": "1"
+    }
+  },
+  "host_policy": {
+    "scope": "ENTIRE-A2-GATE",
+    "single_physical_host_required": true,
+    "all_profiles_same_host_required": true,
+    "all_assessment_families_same_host_required": true,
+    "cross_host_evidence_mixing_authorized": false,
+    "privacy_preserving_sha256_fingerprint_required": true,
+    "start_end_fingerprint_match_required": true,
+    "active_power_scheme_capture_required": true,
+    "active_power_scheme_stability_required": true,
+    "absolute_threshold_observation_host_scoped": true,
+    "cross_host_absolute_timing_comparison_authorized": false,
+    "cross_host_threshold_extrapolation_authorized": false
+  },
+  "assessment_families": {
+    "ordinary_release_suite": {
+      "profiles": 2,
+      "projects_per_profile": 5,
+      "logical_runs_per_profile": 1,
+      "structured_result_source": "XUNIT-XML-V2PLUS",
+      "console_language_independent": true
+    },
+    "replay_determinism": {
+      "profiles": 2,
+      "classes_per_profile": 4,
+      "logical_runs_per_profile": 1,
+      "classes": [
+        "NuclearReactorSimulator.Simulation.Tests.Runtime.SimulationReplayTests",
+        "NuclearReactorSimulator.Simulation.Tests.Runtime.SimulationLongRunDeterminismTests",
+        "NuclearReactorSimulator.Application.Tests.Scenarios.Challenges.Replay.M10965ChallengeReplayCheckpointClosureTests",
+        "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10984ReplayCheckpointSameSeedIntegrityTests"
+      ],
+      "structured_result_source": "XUNIT-XML-V2PLUS",
+      "console_language_independent": true
+    },
+    "non_vr2_performance": {
+      "class": "NuclearReactorSimulator.Application.Tests.Milestones.M10972Hotfix2TenMillisecondHotPathHardeningTests",
+      "fresh_processes_per_profile": 3,
+      "total_processes": 6,
+      "structured_result_source": "XUNIT-XML-V2PLUS"
+    }
+  },
+  "evidence": {
+    "total_required_files": 78,
+    "exact_v9_files": 40,
+    "ordinary_files": 6,
+    "replay_files": 6,
+    "non_vr2_files": 18,
+    "aggregate_files": 8,
+    "aggregate_names": [
+      "01-contract-and-provenance.txt",
+      "02-execution-host-provenance.txt",
+      "03-host-consistency-audit.txt",
+      "04-exact-v9-profile-summary.csv",
+      "05-ordinary-suite-impact-summary.csv",
+      "06-replay-determinism-impact-summary.csv",
+      "07-non-vr2-performance-impact-summary.csv",
+      "08-runtime-configuration-impact-assessment1-summary.txt"
+    ]
+  },
+  "normalized_lf_sha256": {
+    "planning_returned": {
+      "01-contract-and-provenance.txt": "84182DB08803567ACE08470171773458A5EBE66CC26E8F69FCF49FDFB0DD3756",
+      "02-impact-assessment-matrix.csv": "0DDE8F35629CB5FA7DE18683A903012C12B7BC65F94EA68C10BAC05928C92E11",
+      "03-planning-summary.txt": "90873594BF18F1BA7CD4482299F21187D28F9016E33E6F9D8DD75AB60ECFFAA8",
+      "04-preexecution-review.txt": "19033E69C87412E8B28233561162F14CBA2CD8375F5EAC72FBFA3DD918CB440E"
+    },
+    "host_amendment_returned": {
+      "01-contract-and-provenance.txt": "5E50F1A9F0D742FD84B5EC0290C0FBAF8C72A0E1D01DFA00F1F2D5AB60B9985F",
+      "02-host-provenance-policy.txt": "65ED1C851FFB5AE42B3AF10B529E59FDEAFBF1EE2531B4B19B2EAC644CE09582",
+      "03-planning-amendment-summary.txt": "DAAE97E3A8E6AA55C4C04706DF1864990C9C869CC33F5ACA87FE0940157864F7",
+      "04-preexecution-review.txt": "A0EABE2889EF25D73F5247B959BB2F6B43E7E1DE42EA4CD5A6D0CE531C902A06"
+    },
+    "compaction_returned": {
+      "01-contract-and-provenance.txt": "FB3922EDEFB3DAD3CD4945CD4978DA99268A888A16B360EDFECEB3997E100F5B",
+      "02-archive-pack-inventory.csv": "318D3D25C90D4B28F19AEF861113D4971B0735487BDE1DFBF75D4C8B148ED6DF",
+      "03-compaction-summary.txt": "1BB00DF5ED799D470279F242A4943383B7FBD0CC9E862EFFE2882D9E25CF369D",
+      "04-preexecution-review.txt": "4252EED49046ED660F9D622448C7FA5668ED0C2A5E28DE2A774DCD6317DE78C9"
+    },
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "exact_v9_corpus": "6EB6AEA3BF45621BD9BB890E3449E9BB010E02C3CF5A81AFDAFF67809DE4B50E",
+    "performance_baseline": "91776709A34142E9312A092F3B19EAFCF0FCA576D561F296CC9272FCDC4F7DEB",
+    "implementation": {
+      "focused_test": "E6267D5C3509E390BFDD83D43D1BF7FF5B58D45DF9A79E7363A9B01E6CFE2231",
+      "runner": "A5D4245A23463D6CA705B23D58045E515B570DED627B408AF50A663D4A222C9F",
+      "orchestrator": "18F366192BB884C8011BC30F22867D824524FF6168A8A7DA1991D1033672B2BF",
+      "adjudicator": "C25EB83A3E386E2B8FEE24BD68262CF97BC61DA20514F152C85CCC964C74B0DC",
+      "main_doc": "6BD42A03320BFCC440DB3ACA3D641241B0E8FD870E1C77C0C502367B474B2EA2",
+      "preexecution_review": "776B8A4AA4C830AF71027C5B657BEA938C851F3388629834D3CFB92B1B4559F8",
+      "adr0206": "A88CFBC6FD1FAF785DE3814107F121F3B1C8626CBE6A1E7CD744693B4752A57B",
+      "returned_evidence_adjudication": "426C268BFEB932FEBD77112A2CA6F3C0A0A3750A5B7E31E77BDDA220ADA06984"
+    }
+  },
+  "authority": {
+    "runtime_configuration_impact_assessment1_execution_authorized": true,
+    "runtime_configuration_impact_assessment1_evidence_only": true,
+    "full_domain_performance_confirmation2_authorized": false,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "candidate_mutation_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "next_action": "EXECUTE-A2-AND-RETURN-COMPLETE-78-FILE-EVIDENCE-TREE-FOR-ADJUDICATION"
+}

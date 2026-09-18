@@ -1,0 +1,105 @@
+{
+  "schema": "m10-final-vr2-r3-requalification2-initial-closure-operating-point-displacement-diagnostic1-v1",
+  "status": "DIAGNOSTIC-CANDIDATE",
+  "returned_r3_requalification2": {
+    "classification": "R3-SHADOW-COMPOSITION-BLOCKING",
+    "failure_assert_line": 60,
+    "health_envelope_violation_steps": 12000,
+    "non_finite_steps": 0,
+    "trip_steps": 0,
+    "breaker_open_steps": 0,
+    "rollbacks": 3005,
+    "deterministic_repeat_pass": true,
+    "returned_artifacts": {
+      "02-shadow-baseline-equivalence.csv": {
+        "sha256": "9EE97661577AAFEE16C08437E614E6CB43B1BE0388807AA7CD6C5B63AF72B03F",
+        "bytes": 17874
+      },
+      "03-mode2-shadow-health-trajectory.csv": {
+        "sha256": "2DE08E6FCC9C5A72782E7B0BE9EF7A9BF4AC6E20C9B09BFFF1170085AB3CDE73",
+        "bytes": 28412
+      },
+      "04-ownership-conservation-summary.txt": {
+        "sha256": "66C426DF1DFC1955C72DE382773E826839D589E84B3DCDC5690C1AC842F9698C",
+        "bytes": 1347
+      },
+      "05-deterministic-repeat.txt": {
+        "sha256": "7D7B379D8BECA1FD7E0E68B101BC6C00A5257BF1937CC28850ABBE815007EB33",
+        "bytes": 319
+      }
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "871C630D5173CF8E5261E882586836BCB8F28A021EEE2B2F0E14FC45FE1D7EE4",
+    "historical_tests_file_count": 390,
+    "historical_tests_tree_sha256": "FDE3B66C6BDD6865FC0946E9DD08423DEFD28494AE772888F3FE363D89773DE0",
+    "r3_requalification2_test": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3ShortExactV9EquivalentShadowCompositionRequalification2Tests.cs",
+    "r3_requalification2_test_normalized_sha256": "2D8A64401DD55ED514B6911F9E391587B36EA0F6954E364AB0BDBBABB6F3D92B"
+  },
+  "diagnostic": {
+    "test_file": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3Requalification2InitialClosureOperatingPointDisplacementDiagnostic1Tests.cs",
+    "test_normalized_sha256": "CA6BE3BFEE665F4074D5D63320E42F20D8A67C486E9506FDF0A1736ADE568C02",
+    "test_project": "tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj",
+    "dynamic_steps": 100,
+    "simulated_seconds": 1.0,
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-r3-requalification2-initial-closure-operating-point-displacement-diagnostic1",
+    "required_files": [
+      "01-initial-node-closure-comparison.csv",
+      "02-initial-hydraulic-head-comparison.csv",
+      "03-first-second-dynamic-comparison.csv",
+      "04-diagnostic-summary.txt",
+      "05-pre-repair-review.txt"
+    ],
+    "allowed_classifications": [
+      "SEED-INVENTORY-DIVERGENCE",
+      "IDENTICAL-INVENTORY-CLOSURE-MAPPING-DISPLACEMENT",
+      "POST-SEED-INTEGRATION-DIVERGENCE",
+      "UNRESOLVED-DIAGNOSTIC1"
+    ]
+  },
+  "authority": {
+    "production_repair_authorized": false,
+    "threshold_change_authorized": false,
+    "r3_passed": false,
+    "r4_planning_authorized": false,
+    "default_mode2_activation_authorized": false,
+    "canonical_exact_v9_change_authorized": false
+  },
+  "documentation_files": {
+    "r3r2_returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION2_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "A4FDFA115F1F301D720EA42699402DFD599865C291371665BFF426A2CFEC739F"
+    },
+    "diagnostic_main": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_INITIAL_CLOSURE_OPERATING_POINT_DISPLACEMENT_DIAGNOSTIC1.md",
+      "normalized_sha256": "E1630E34B29ADA63C29693B0979716997FA9A0AA2BF67EFE823096821F878B45"
+    },
+    "diagnostic_preexecution": {
+      "path": "docs/M10_FINAL_VR2_R3_REQUALIFICATION2_INITIAL_CLOSURE_OPERATING_POINT_DISPLACEMENT_DIAGNOSTIC1_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "76AB0BC7AB630A2CDBD16EEA3A8226BFF5950C21F4DD33BDDF5045042946C5CB"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "161C1C705F1577DD1DAC2FF8792358C1E05698F9B49D83356109EE53B6977CCC"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "478872FE5D36BFCECD7C703B9C0892E34D2D049129D5019A6A1B6ED5D369B181"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-requalification2-initial-closure-operating-point-displacement-diagnostic1.ps1",
+      "normalized_sha256": "0CF707490574C7A7162280EC129FF1BC05728A567C7DEB7392A7A15D482EBF64"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-r3-requalification2-initial-closure-operating-point-displacement-diagnostic1.ps1",
+      "normalized_sha256": "85A97A29EA04BE25DBB4FE84AA9BA80165CC738480A0F3866FE05C681C1F8744"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-requalification2-initial-closure-operating-point-displacement-diagnostic1.cmd",
+      "normalized_sha256": "1841D2AD5C400BB5EBA727BFEBF9CE599EDCF4FFE3245DEFDFDB39B594DB2C8D"
+    }
+  }
+}

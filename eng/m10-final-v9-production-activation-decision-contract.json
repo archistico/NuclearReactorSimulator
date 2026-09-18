@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "gate": "M10 Final exact-v9 authoritative production activation decision",
+  "status": "CANDIDATE",
+  "qualifiedPrerequisites": {
+    "diagnostic11": {
+      "source": "Diagnostic 11 Hotfix 2 returned artifacts",
+      "initialCondition": "integrated-operations-desktop-stable@9",
+      "simulatedSeconds": 600,
+      "finalElectricalExportMWe": 4.999999982116509,
+      "finalPrimaryPumpMassFlowKgPerS": 100.00000097387097,
+      "finalDrumLevelFraction": 0.4999999996725085,
+      "lateNetExternalPowerMW": 9.78180159190593e-08,
+      "lateStoredEnergyChangeMW": 9.783135085809427e-08,
+      "tripSteps": 0,
+      "rollbacks": 0,
+      "engineeringDecision": "QUALIFIED"
+    },
+    "activationCandidate": {
+      "source": "M10 Final exact-v9 qualified production-activation candidate returned artifacts",
+      "authoritativeDefaultBeforeDecision": "integrated-operations-desktop-stable@4",
+      "candidate": "integrated-operations-desktop-stable@9",
+      "rollback": "integrated-operations-desktop-stable@2",
+      "healthSteps": 12000,
+      "electricalRangeMWe": [
+        4.99999997951048,
+        4.999999999572232
+      ],
+      "primaryPumpRangeKgPerS": [
+        99.99999996896358,
+        100.00000021068621
+      ],
+      "drumLevelRange": [
+        0.4999999999319759,
+        0.500000000079901
+      ],
+      "governorOutputRangePercent": [
+        29.281329614794107,
+        29.28132997711853
+      ],
+      "minimumMoistureDrainKgPerS": 0.31123523307475764,
+      "maxCommandedTransferMismatchKgPerS": 0.0,
+      "maxStageEnergyOwnershipResidualW": 1.1175870895385742e-08,
+      "maxNetworkMassClosureKg": 2.1827872842550278e-11,
+      "maxNetworkEnergyClosureJ": 4.566235933452841e-05,
+      "maxNetworkBalanceMassRateKgPerS": 7.105427357601002e-15,
+      "maxNetworkBalancePowerW": 3.5477569326758385e-08,
+      "selectorEqualsDirectFactory": true,
+      "fingerprint": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+      "tripSteps": 0,
+      "rollbacks": 0,
+      "fallbackCommitViolations": 0,
+      "unsafeCommits": 0,
+      "untargetedDisagreements": 0,
+      "gatePassed": true
+    }
+  },
+  "activationDecision": {
+    "authoritativePolicy": "M10FinalExactV9QualifiedCandidate",
+    "authoritativeInitialCondition": "integrated-operations-desktop-stable@9",
+    "authoritativeScenario": "integrated-normal-operations-training-m10-final-v9-production",
+    "historicalI5Policy": "I5RepairedFourNodeCorrectedCommit",
+    "historicalI5InitialCondition": "integrated-operations-desktop-stable@4",
+    "historicalH30InitialCondition": "integrated-operations-desktop-stable@3",
+    "failClosedRollbackInitialCondition": "integrated-operations-desktop-stable@2",
+    "productionMissionPack": "bounded-demand-following-5-10-5@3",
+    "historicalProductionMissionPack": "bounded-demand-following-5-10-5@2",
+    "historicalOriginalMissionPack": "bounded-demand-following-5-10-5@1"
+  },
+  "focusedEnvelope": {
+    "simulatedSeconds": 120,
+    "electricalExportMWe": {
+      "minimum": 4.99,
+      "maximum": 5.01
+    },
+    "primaryPumpMassFlowKgPerS": {
+      "minimum": 99.9,
+      "maximum": 100.1
+    },
+    "drumLevelFraction": {
+      "minimum": 0.49,
+      "maximum": 0.51
+    },
+    "governorOutputPercent": {
+      "minimum": 29.27,
+      "maximum": 29.3
+    },
+    "maximumMassClosureResidualKg": 1e-06,
+    "maximumFullEnergyClosureResidualJ": 0.01,
+    "maximumBalanceMassRateResidualKgPerS": 1e-08,
+    "maximumBalancePowerResidualW": 0.001,
+    "maximumStageEnergyOwnershipResidualW": 0.001,
+    "maximumCommandedTransferMismatchKgPerS": 1e-08,
+    "expectedDeterminismFingerprint": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "tripSteps": 0,
+    "breakerOpenSteps": 0,
+    "rollbacks": 0,
+    "fallbackCommitViolations": 0,
+    "unsafeCommitViolations": 0,
+    "untargetedBranchDisagreements": 0
+  },
+  "missionRebinding": {
+    "currentExactPack": "bounded-demand-following-5-10-5@3",
+    "currentScenario": "integrated-normal-operations-training-m10-final-v9-production",
+    "currentInitialCondition": "integrated-operations-desktop-stable@9",
+    "historicalV2Preserved": true,
+    "historicalV1Preserved": true,
+    "challengeSemanticsChanged": false,
+    "scoringChanged": false,
+    "externalDemandProfileChanged": false
+  },
+  "requiredGateOrder": [
+    "Debug restore/build warnings-as-errors PASS",
+    "complete ordinary suite PASS after default switch",
+    "LR-M1 Hotfix 1 semantic-equivalence regression PASS",
+    "Diagnostic 11 exact-v9 600 s requalification PASS on switched source tree",
+    "authoritative selector/scenario + mission @3 focused gate PASS",
+    "post-switch current-evidence routing PASS"
+  ],
+  "explicitlyNotAuthorized": [
+    "reuse of the failed exact-v4 long baseline manifest",
+    "replacement long campaign before a new exact-v9 baseline manifest/workload candidate",
+    "M10 closure"
+  ]
+}

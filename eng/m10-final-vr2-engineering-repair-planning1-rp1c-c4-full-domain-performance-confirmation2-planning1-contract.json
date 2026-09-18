@@ -1,0 +1,102 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation2-planning1-v1",
+  "status": "CANDIDATE-PLANNING-ONLY",
+  "gate": "RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2-PLANNING1",
+  "prerequisite": {
+    "a2_returned_evidence_integrity": "PASS",
+    "a2_returned_adjudication": "PASS",
+    "a2_classification": "AMBIENT-UNSET-PROJECT-QUALIFICATION-SUFFICIENT-ON-A2-HOST",
+    "historical_fdpc1_classification": "C4-FULL-DOMAIN-PERFORMANCE-NOT-CONFIRMED"
+  },
+  "adjudication": {
+    "ambient_profile_project_impact_neutral": true,
+    "explicit_reference_project_impact_neutral": true,
+    "ambient_operationally_sufficient_on_a2_host": true,
+    "ambient_internal_runtime_equivalence_to_explicit_proven": false,
+    "explicit_reference_required_for_production": false,
+    "explicit_reference_is_production_recommendation": false,
+    "fdpc2_planning_authorized": true
+  },
+  "future_gate": {
+    "gate": "RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2",
+    "implementation_authorized_now": false,
+    "candidate_id": "C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE",
+    "runtime_profile": "AMBIENT-UNSET",
+    "same_physical_host_as_a2_required": true,
+    "required_host_fingerprint_sha256": "931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336",
+    "required_active_power_scheme_guid": "8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c",
+    "caller_dotnet_controlled_variables_must_be_unset": true,
+    "caller_complus_aliases_must_be_unset": true,
+    "fresh_process_count": 5,
+    "exact_v9_rows": 360,
+    "exact_v9_warmup_passes": 16,
+    "exact_v9_measured_passes": 64,
+    "exact_v9_measured_calls_per_process": 23040,
+    "seam_rows": 1280,
+    "seam_warmup_passes": 4,
+    "seam_measured_passes": 16,
+    "seam_measured_calls_per_process": 20480,
+    "measured_calls_per_process": 43520,
+    "total_measured_calls": 217600,
+    "process_directory_count": 5,
+    "files_per_process": 5,
+    "aggregate_file_count": 7,
+    "total_required_files": 32,
+    "engineering_negative_is_infrastructure_red": false
+  },
+  "corrected_performance_predicate": {
+    "exact_v9_resolve_median_us_max": 94.8,
+    "exact_v9_resolve_p95_us_max": 158.80666666666667,
+    "single_call_max_us_max": 409.30666666666673,
+    "exact_v9_median_candidate_allocation_bytes_max": 2816,
+    "all_exact_v9_calls_resolved": true,
+    "all_seam_calls_resolved": true,
+    "all_five_processes_must_pass": true,
+    "threshold_change_allowed": false
+  },
+  "evidence_retention": {
+    "a2_returned_files": 78,
+    "a2_direct_frozen_files": 68,
+    "a2_archived_large_payloads": 10,
+    "a2_archive_pack": "eng/frozen-evidence/archive/rp1c-c4-runtimeconfigurationimpactassessment1-large-payloads.zip",
+    "a2_returned_tree_manifest": "eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_RuntimeConfigurationImpactAssessment1_Artifacts/09-returned-tree-manifest.csv"
+  },
+  "authority": {
+    "fdpc2_planning_authorized": true,
+    "fdpc2_implementation_authorized": false,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false,
+    "next_action_after_planning_run": "RETURN-COMPLETE-FDPC2-PLANNING1-ARTIFACTS-FOR-ADJUDICATION"
+  },
+  "normalized_lf_sha256": {
+    "a2_01": "E3703784EAEF582E90E2FE8D36B462C664587D8671C620547A8F8BA4329684AF",
+    "a2_02": "05631B2383C1E8DA146221B984AAA8900D6594830823FE5D080E73BE74684FEB",
+    "a2_03": "24591955F2D0771BBB206AD7999A34809C21FD5D64CC565E8175A2059E84703F",
+    "a2_04": "D1C13EF366912C590425C96F8BFA1E4ADA0DE85BF5D70956FD95D7026D5A79AB",
+    "a2_05": "273E5F13A08F6009FED6C876CD89FF913470CEFA09A63C36FB5A9350F5F42774",
+    "a2_06": "6D46AB9CBF5B8A201FDC047A62EF3097A070DD1869E0297C2530CC623034D591",
+    "a2_07": "8BBE70D7EE2D8B18186D60632D246A3E6FA9DC7C067F9F93AF91C795804B3E40",
+    "a2_08": "8667A7BBAC574984C27BA0B4581165AE80AA5281A19154883EBC62077CF06C7D",
+    "a2_tree_manifest": "E618F2113E68440F44D431838A2EE351CE57EEB6670E7005312E72D12A0B7CF0",
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "rp1a_exact_v9_corpus": "6EB6AEA3BF45621BD9BB890E3449E9BB010E02C3CF5A81AFDAFF67809DE4B50E",
+    "rp1a_seam_corpus": "9035396FDB5A1F6AD89F0B9D28A26992D577906812DE412EFA2AABA98FEBE47D",
+    "rp1a_performance_baseline": "91776709A34142E9312A092F3B19EAFCF0FCA576D561F296CC9272FCDC4F7DEB",
+    "hash_mode": "UTF8-TEXT-NORMALIZED-LF",
+    "planning_main": "F812766E98CEE2A5D93556761412872EEEF26A335EF3B6B560C6633A8577F637",
+    "planning_preexecution": "921F4FB55F7921100A0803074C0A3F8237A80C70493810FD33B4CAAF32F90AEE",
+    "planning_returned_slot": "4F6E9C000E97C7CCA3D6ABC169888189779AA569458CFE8D470D1680A9354193",
+    "a2_returned_adjudication": "81816A9306E75CFEC4CED892C87AB5AEAF014541BF399C419708B3E7E9480D32",
+    "adr_0207": "D2324C2EC5AA4FA1C69B3813EC0F282C18CBCF2ADCEBDB57A7DD30E9F2C2B7D0",
+    "large_payload_manifest": "F6578E28A3A84E4EE497117CA31B030D8FF4F9604820C87CF103E22DBD1FD29F"
+  },
+  "byte_sha256": {
+    "a2_archive_pack": "C7A6D767665D30AE5DFA24D5858DFA1FC7001D92142DB0A07046AF1457298409"
+  }
+}

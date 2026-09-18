@@ -1,0 +1,70 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-selection-planning1-v1",
+  "status": "PLANNING-ONLY",
+  "prerequisite": {
+    "fdpc2_gate": "RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2",
+    "fdpc2_classification": "C4-FULL-DOMAIN-PERFORMANCE-CONFIRMED",
+    "fdpc2_all_five_processes_pass": true,
+    "fdpc2_total_measured_calls": 217600,
+    "runtime_profile": "AMBIENT-UNSET",
+    "host_fingerprint_sha256": "931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336",
+    "strict_max_us": 409.30666666666673
+  },
+  "readiness": {
+    "c4_candidate": "C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE",
+    "c4_selection_ready": true,
+    "c4_runtime_profile": "AMBIENT-UNSET",
+    "c4_fdpc1_negative_history_preserved": true,
+    "c4_fdpc2_confirmed": true,
+    "d3_candidate": "D3-VAPOR-SEAM-COMPLETE-IF97-COMPARATOR",
+    "d3_selection_ready": false,
+    "d3_blocker": "SEAM-MAX-16504.9-US-EXCEEDS-409.30666666666673-US",
+    "selection_ready_count": 1
+  },
+  "future_selection_gate": {
+    "id": "RP1C-ENGINEERING-REPAIR-SELECTION1",
+    "decision_space": [
+      "SELECT-C4",
+      "SELECT-NONE"
+    ],
+    "new_measurement_allowed": false,
+    "candidate_mutation_allowed": false,
+    "threshold_change_allowed": false,
+    "runtime_change_allowed": false,
+    "automatic_selection_allowed": false,
+    "select_c4_requires_selection_ready_true": true,
+    "select_none_mandatory_option": true,
+    "d3_selectable_under_current_evidence": false,
+    "post_select_c4": "R1-IMPLEMENTATION-PLANNING-ONLY",
+    "post_select_none": "PLANNING-STOP-OR-NEW-REPAIR-PLANNING-ONLY",
+    "required_files": 4,
+    "contract": "eng/m10-final-vr2-engineering-repair-planning1-rp1c-selection1-contract.json",
+    "validator": "eng/validate-m10-final-vr2-engineering-repair-planning1-rp1c-selection1.ps1",
+    "runner": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-selection1.cmd",
+    "selection_decision_frozen_by_planning": false,
+    "returned_selection_adjudication_required_before_r1_planning": true,
+    "outputs": [
+      "01-selection-decision-and-provenance.txt",
+      "02-selection-readiness-matrix.csv",
+      "03-selection-decision-summary.txt",
+      "04-preexecution-review.txt"
+    ]
+  },
+  "authority": {
+    "rp1c_selection_authorized_now": false,
+    "selection_gate_implementation_authorized_now": false,
+    "production_repair_authorized": false,
+    "production_runtime_change_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "planning_outputs": [
+    "01-contract-and-provenance.txt",
+    "02-selection-readiness-matrix.csv",
+    "03-selection-policy-summary.txt",
+    "04-preexecution-review.txt"
+  ]
+}

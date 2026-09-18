@@ -1,0 +1,42 @@
+{
+  "schema": "m10-final-replacement-long-closure-plan1-p2-v1",
+  "status": "P2-DECISION-CANDIDATE-PLAN-STOP-INCONCLUSIVE",
+  "base": "P1-RETURNED-EXECUTION-PASS",
+  "p1_final_classification": "INCONCLUSIVE",
+  "p1_primary_classification": "STILL-CONVERGING",
+  "p1_primary_probe": "exact-v9-asymptotic-6mwe",
+  "bounded_continuation_invoked": true,
+  "p2_decision": "PLAN-STOP-INCONCLUSIVE",
+  "p3_w_authorized": false,
+  "p3_r_authorized": false,
+  "production_src_changed": false,
+  "production_tests_changed": false,
+  "replacement_workload_changed": false,
+  "authority_policy_changed": false,
+  "generator_load_semantics_changed": false,
+  "protection_semantics_changed": false,
+  "exact_v9_changed": false,
+  "mission_pack_changed": false,
+  "second_replacement_long_authorized": false,
+  "m10_status": "OPEN",
+  "plan_amendment_1": {
+    "id": "P1A-ASYMPTOTIC-CLOSURE-EXTENSION",
+    "authorized": true,
+    "probes": [
+      "exact-v9-asymptotic-5p5mwe",
+      "exact-v9-asymptotic-6mwe"
+    ],
+    "max_total_hold_seconds_after_load": 3600,
+    "reuse_p1_calibration_and_threshold_contract": true,
+    "exact_v4_rerun_authorized": false,
+    "reproduce_p1_checkpoints_before_extension": true,
+    "allowed_final_classifications": [
+      "CONVERGED",
+      "BIASED-STATIONARY",
+      "INCONCLUSIVE"
+    ],
+    "further_automatic_continuation_authorized": false
+  },
+  "next_authorized_implementation": "P1A-Asymptotic-Closure-Extension",
+  "return_gate_after_p1a": "P2R-Decision-Reentry"
+}

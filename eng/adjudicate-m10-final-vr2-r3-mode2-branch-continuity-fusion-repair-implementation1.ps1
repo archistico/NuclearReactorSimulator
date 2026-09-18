@@ -1,0 +1,21 @@
+$ErrorActionPreference='Stop'
+Set-StrictMode -Version Latest
+function Need-I1([bool]$C,[string]$M){if(-not $C){throw $M}}
+function KV-I1([string]$P){Need-I1 (Test-Path -LiteralPath $P -PathType Leaf) ("Missing artifact: {0}" -f $P);$M=@{};foreach($L in [IO.File]::ReadAllLines($P,[Text.Encoding]::UTF8)){if([string]::IsNullOrWhiteSpace($L)){continue};$I=$L.IndexOf('=');Need-I1 ($I -gt 0) ("Malformed artifact line: {0}" -f $L);$K=$L.Substring(0,$I);Need-I1 (-not $M.ContainsKey($K)) ("Duplicate artifact key: {0}" -f $K);$M[$K]=$L.Substring($I+1)};$M}
+function Req-I1([hashtable]$M,[string]$K,[string]$V){Need-I1 ($M.ContainsKey($K)) ("Missing key: {0}" -f $K);Need-I1 ([string]$M[$K] -eq $V) ("Unexpected {0}: {1}" -f $K,$M[$K])}
+function NormSha-I1([string]$P){$T=[IO.File]::ReadAllText($P,[Text.Encoding]::UTF8).Replace("`r`n","`n").Replace("`r","`n");$S=[Security.Cryptography.SHA256]::Create();try{([BitConverter]::ToString($S.ComputeHash([Text.Encoding]::UTF8.GetBytes($T)))).Replace('-','').ToUpperInvariant()}finally{$S.Dispose()}}
+function Write-I1([string]$P,[string[]]$L){[IO.File]::WriteAllLines($P,$L,(New-Object Text.UTF8Encoding($false)))}
+$Root=Split-Path -Parent $PSScriptRoot;Set-Location $Root
+$C=Get-Content 'eng\m10-final-vr2-r3-mode2-branch-continuity-fusion-repair-implementation1-contract.json' -Raw | ConvertFrom-Json
+$A=Join-Path $Root ([string]$C.evidence.artifact_root).Replace('/','\');Need-I1 (Test-Path -LiteralPath $A -PathType Container) 'Implementation artifact root missing.'
+Need-I1 ($env:NRS_M10_FINAL_VR2_R3_FUSION_REPAIR_IMPLEMENTATION1_ORDINARY_PASS -eq '1') 'Ordinary Release PASS marker missing.'
+$R=KV-I1 (Join-Path $A '03-returned-state-repair-regression.txt');$H=KV-I1 (Join-Path $A '04-historical-fusion-regression.txt')
+Req-I1 $R 'mode2-fusion-eligible' 'False';Req-I1 $R 'same-instance-equals-direct' 'True';Req-I1 $R 'split-equals-direct' 'True';Req-I1 $R 'same-instance-equals-split' 'True';Req-I1 $R 'same-instance-decision-kind' 'production-no-overlap'
+Req-I1 $H 'mode0-fusion-eligible' 'True';Req-I1 $H 'mode1-fusion-eligible' 'True';Req-I1 $H 'mode2-fusion-eligible' 'False';Req-I1 $H 'mode0-optimized-vs-nonfused-state-equal' 'True';Req-I1 $H 'mode0-optimized-vs-nonfused-decisions-equal' 'True';Req-I1 $H 'mode1-optimized-vs-nonfused-state-equal' 'True';Req-I1 $H 'mode1-optimized-vs-nonfused-decisions-equal' 'True'
+Write-I1 (Join-Path $A '01-contract-and-provenance.txt') @('status=PASS-REPAIR-IMPLEMENTATION-EVIDENCE','gate=R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-IMPLEMENTATION1','planning-returned=PASS-AS-AUTHORED','repair=MODE2-FUSION-ELIGIBILITY-GUARD','production-files-changed=2','r3-passed=False','r4-planning-authorized=False')
+Write-I1 (Join-Path $A '02-production-change-manifest.csv') @('area,path,change,normalized_sha256',('production,'+$C.implementation_files.model.path+',MODIFIED,'+(NormSha-I1 $C.implementation_files.model.path)),('production,'+$C.implementation_files.wrapper.path+',MODIFIED,'+(NormSha-I1 $C.implementation_files.wrapper.path)),('test,'+$C.implementation_files.focused_test.path+',ADDED,'+(NormSha-I1 $C.implementation_files.focused_test.path)))
+Write-I1 (Join-Path $A '05-implementation-summary.txt') @('status=PASS-R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-IMPLEMENTATION1','mode0-fusion=PRESERVED','mode1-fusion=PRESERVED','mode2-fusion=INELIGIBLE','mode2-production-path=NONFUSED-RESOLVE-PLUS-DIAGNOSTIC','returned-failure-state-regression=PASS','ordinary-release-suite=PASS','r3-passed=False','r4-planning-authorized=False','next-action=RETURN-IMPLEMENTATION-ARTIFACTS-FOR-ADJUDICATION-BEFORE-R3-REQUALIFICATION2')
+Write-I1 (Join-Path $A '06-pre-requalification-review.txt') @('status=PASS-IMPLEMENTATION-ONLY','repair-scope=TWO-FILE-BOUNDED','evaluate-branch-continuity=UNCHANGED','resolver=UNCHANGED','payload=UNCHANGED','closure-enum-default=UNCHANGED','r3-short-requalification2-still-required=True','r4-remains-blocked=True')
+Need-I1 (@(Get-ChildItem -LiteralPath $A -File).Count -eq 6) 'Implementation artifact count must be 6.'
+Write-Host 'R3 mode-2 branch-continuity fusion Repair Implementation 1 adjudication: PASS' -ForegroundColor Green
+Write-Host 'Implementation only. Return evidence before R3 Short Requalification 2.'

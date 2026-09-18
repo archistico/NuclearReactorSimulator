@@ -1,0 +1,217 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-r1-selected-c4-opt-in-closure-implementation1-v1",
+  "status": "IMPLEMENTATION-EVIDENCE-GATE",
+  "prerequisite": {
+    "planning_gate": "R1-IMPLEMENTATION-PLANNING1",
+    "planning_returned_status": "PASS-AS-AUTHORED",
+    "selection_result": "SELECT-C4",
+    "selected_candidate": "C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE",
+    "selected_runtime_profile": "AMBIENT-UNSET"
+  },
+  "implementation": {
+    "gate": "R1-SELECTED-C4-OPT-IN-CLOSURE-IMPLEMENTATION1",
+    "closure_mode_name": "ReferenceConsistentTabulatedInverseDomain",
+    "closure_mode_value": 2,
+    "existing_mode_0": "HistoricalCorrelationTopology",
+    "existing_mode_1": "CorrelationConsistentInverseDomain",
+    "default_activation": false,
+    "exact_v9_activation": false,
+    "new_exact_version": false,
+    "direct_if97_production_runtime": false,
+    "production_runtime_override": false,
+    "mode2_dedicated_dispatch": true,
+    "mode2_fallthrough_allowed": false,
+    "reference_payload_logical_name": "NuclearReactorSimulator.Simulation.Physics.Fluids.ReferenceData.NRSVR2C4.v1.bin",
+    "reference_payload_magic": "NRSVR2C4",
+    "reference_payload_schema": 1,
+    "reference_payload_size_bytes": 1531264,
+    "reference_payload_sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267",
+    "payload_cache": "STATIC-PROCESS-WIDE-IMMUTABLE",
+    "payload_load_point": "FIRST-MODE2-RESOLVER-CONSTRUCTION",
+    "resolve_time_resource_io_allowed": false,
+    "resolve_time_payload_decode_allowed": false,
+    "resolve_time_allocation_bytes_allowed": 0,
+    "state_comparisons": 1679,
+    "hydraulic_comparisons": 288,
+    "total_comparisons": 1967,
+    "state_bit_mismatches_allowed": 0,
+    "hydraulic_bit_mismatches_allowed": 0,
+    "repeat_mismatches_allowed": 0,
+    "resolve_mismatches_allowed": 0,
+    "resolution_path_mismatches_allowed": 0,
+    "model_integration_mismatches_allowed": 0,
+    "historical_mode_0_regression_required": true,
+    "historical_mode_1_regression_required": true,
+    "ordinary_release_suite_required": true,
+    "payload_regeneration_twice_required": true,
+    "model_integration_comparison_basis": "DOMAIN-CANONICAL-STORAGE-BITS",
+    "model_integration_temperature_unit": "KELVINS",
+    "model_integration_pressure_unit": "PASCALS",
+    "focused_test_rebuild_policy": "FORCED-NO-INCREMENTAL-AFTER-ORDINARY-BEFORE-FOCUSED",
+    "historical_mode_1_regression_basis": "LEGACY-SOURCE-PROJECTION-SHA256+ORDINARY-RELEASE-SUITE",
+    "historical_mode_1_baseline_production_model_sha256": "93C5212C09D5D7362531398DE1CED105589D93DF9A892A3E6BE6BF401446D55E",
+    "historical_mode_1_density_derived_frozen_output_comparison_authoritative": false,
+    "historical_mode_1_density_derived_frozen_output_limitation": "FROZEN-CORPUS-STORES-DENSITY-NOT-ORIGINAL-SPECIFIC-VOLUME"
+  },
+  "scope": {
+    "existing_modified": [
+      "src/NuclearReactorSimulator.Simulation/NuclearReactorSimulator.Simulation.csproj",
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/WaterSteamThermodynamicClosureMode.cs",
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs"
+    ],
+    "new_production": [
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs",
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceData/NRSVR2C4.v1.bin"
+    ],
+    "new_tests": [
+      "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/NrsVr2C4ReferencePayloadGenerator.cs",
+      "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/R1SelectedC4OptInClosureImplementationTests.cs"
+    ],
+    "application_change_allowed": false,
+    "domain_change_allowed": false,
+    "infrastructure_change_allowed": false,
+    "solution_change_allowed": false,
+    "production_file_deletion_allowed": false
+  },
+  "frozen_corpus": {
+    "state_path": "eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_C4_Artifacts/02-state-semantic-equivalence.csv",
+    "state_sha256": "590D9A5BD2CAF93B09C0B48FD39749A2A27D1FC1684582DEA7ABAADCC99D4C19",
+    "state_rows": 1679,
+    "hydraulic_path": "eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_C4_Artifacts/03-hydraulic-semantic-equivalence.csv",
+    "hydraulic_sha256": "A37128281A56720501F542A2C874DC151F04C46810C4A28D464CB31D289CE2FE",
+    "hydraulic_rows": 288,
+    "c4_source_path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/Rp1bC4AllocationNeutralShadowThermodynamicCandidate.cs",
+    "c4_source_sha256": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6"
+  },
+  "planning_artifacts_sha256": {
+    "01-contract-and-provenance.txt": "142A80E56ADFE80A895BAD33EDF352940FB407A3A47697AF771CEDD52236D1D4",
+    "02-production-integration-map.csv": "3766FC87C653561796747E647C772AF908DF6475B1738620A8AC4C676D58AA6A",
+    "03-implementation-and-requalification-summary.txt": "AD035D3869806AE9FBC7DDF8A377CB797D24D8BCB9D31FDF93DFA87638FEE380",
+    "04-preimplementation-review.txt": "3661D5184BE216383E9B7ADC305D99D8206A483B13D4945F4858F1D4BFADBCBB"
+  },
+  "implementation_files": {
+    "simulation_project": {
+      "path": "src/NuclearReactorSimulator.Simulation/NuclearReactorSimulator.Simulation.csproj",
+      "sha256": "D4A7D87B83E7BF9A9D03A7BC5824E961EABD8FD820A3BDC0260EE7D7116E2978",
+      "normalized_sha256": "D4A7D87B83E7BF9A9D03A7BC5824E961EABD8FD820A3BDC0260EE7D7116E2978"
+    },
+    "closure_mode": {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/WaterSteamThermodynamicClosureMode.cs",
+      "sha256": "62E0567D74CD821E6909D094F4CF9410D424D8245B23D83C04453A1C816A673F",
+      "normalized_sha256": "62E0567D74CD821E6909D094F4CF9410D424D8245B23D83C04453A1C816A673F"
+    },
+    "production_model": {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "sha256": "79B5F4B99047C5F52E94CAC33AE08987D4EE82EBE09D09FBB114BFA6F7E69376",
+      "normalized_sha256": "79B5F4B99047C5F52E94CAC33AE08987D4EE82EBE09D09FBB114BFA6F7E69376"
+    },
+    "resolver": {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs",
+      "sha256": "59772C4044FA19C67BAAF463B3314D143E2C1CFCFFA8A64D4D611DBF63663922",
+      "normalized_sha256": "59772C4044FA19C67BAAF463B3314D143E2C1CFCFFA8A64D4D611DBF63663922"
+    },
+    "payload": {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceData/NRSVR2C4.v1.bin",
+      "sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267",
+      "normalized_sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267"
+    },
+    "generator": {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/NrsVr2C4ReferencePayloadGenerator.cs",
+      "sha256": "FAC13FACC6C6418B556814032678ECCB76A34D76328A3B86C45681962BBC1FA3",
+      "normalized_sha256": "FAC13FACC6C6418B556814032678ECCB76A34D76328A3B86C45681962BBC1FA3"
+    },
+    "focused_test": {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/R1SelectedC4OptInClosureImplementationTests.cs",
+      "sha256": "E3EF81B4A2580A69FEFEE6D2282DA5A7AAEFA2C0CDE0876CE26256597C7814E1",
+      "normalized_sha256": "E3EF81B4A2580A69FEFEE6D2282DA5A7AAEFA2C0CDE0876CE26256597C7814E1"
+    }
+  },
+  "unchanged_scope": {
+    "src_excluding_allowed_file_count": 956,
+    "src_excluding_allowed_tree_sha256": "C602885F209B25158898EC7E691359E0273C7C30B6D84485852AF51DE6567AF8",
+    "tests_excluding_new_file_count": 383,
+    "tests_excluding_new_tree_sha256": "225EA1EE56E1F44DE444845B8188E3D52E6D50D127CC93CAEC705A7BCE8840ED"
+  },
+  "evidence": {
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-engineering-repair-planning1-r1-selected-c4-opt-in-closure-implementation1",
+    "required_files": 7,
+    "outputs": [
+      "01-contract-and-provenance.txt",
+      "02-production-change-manifest.csv",
+      "03-reference-data-provenance.txt",
+      "04-c4-production-equivalence-summary.txt",
+      "05-historical-mode-regression-summary.txt",
+      "06-r1-implementation-summary.txt",
+      "07-prequalification-review.txt"
+    ]
+  },
+  "authority": {
+    "r1_implementation_gate_authorized": true,
+    "production_default_switch_authorized": false,
+    "production_runtime_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "new_exact_version_authorized": false,
+    "threshold_change_authorized": false,
+    "r2_planning_authorized_now": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "post_successor": "R2-FOCUSED-THERMODYNAMIC-REFERENCE-TOPOLOGY-QUALIFICATION-PLANNING-ONLY",
+  "documentation_files": {
+    "main": {
+      "path": "docs/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1.md",
+      "normalized_sha256": "069934CD3F6259C21E2AD986FE2EDE303AE8D99371005403A58BD789881841B6"
+    },
+    "preexecution": {
+      "path": "docs/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "6CA39DCB201750BB370BD5CE55F34996BB0A81D1F635A1D21A4B6CC8BF8CE93E"
+    },
+    "returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "60EDA25FC6CF71F275A404F2C23D2EF896D196BD490D88579F74AE356DB3B166"
+    },
+    "adr": {
+      "path": "docs/adr/0212-implement-selected-c4-as-opt-in-mode2-with-hash-anchored-embedded-reference-payload.md",
+      "normalized_sha256": "98D4868C67E1919F48BD894D5334FE27340A8C1CA82F8C681556DB7AC94B913B"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "7CFB3124B6ED5EF6F642FCC49C59E41B975CE287144C1861DAAC6B3BC599FF97"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "F09BCB1402DE87930B57A26E60E9543B26364ACAB5CC6C1EFC75102C01D97279"
+    },
+    "docs_readme": {
+      "path": "docs/README.md",
+      "normalized_sha256": "F79608B4B2338ADF39D1F9DE95B24C7CA33D64EE52EE307BB3D4E0D09B34A1B4"
+    },
+    "detailed_plan": {
+      "path": "docs/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md",
+      "normalized_sha256": "807CC4121DCB476A1F3F773F25095C1003168FFB906AC32924F25495349D9D70"
+    },
+    "top_level_index": {
+      "path": "docs/TOP_LEVEL_DOCUMENT_INDEX.md",
+      "normalized_sha256": "26476C20C2D8B75F7C25677AB55C0EA870E3A55CCF76FC6BA4B1C3ED906633A6"
+    },
+    "adr_index": {
+      "path": "docs/adr/README.md",
+      "normalized_sha256": "E753B9073F097AE445EB878793DA1DCA23364098CB7DBE27BA7FF253CCE2C864"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-engineering-repair-planning1-r1-selected-c4-opt-in-closure-implementation1.ps1",
+      "normalized_sha256": "6071AC4F4B0437724DD3474E5E271A88CA1501BD40D431B7DAD3A4C67DD908E2"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-engineering-repair-planning1-r1-selected-c4-opt-in-closure-implementation1.ps1",
+      "normalized_sha256": "4C63084B22CC25DF256AAFCC36028FA57CEA45213056EE75EE18F40C42F82B09"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-engineering-repair-planning1-r1-selected-c4-opt-in-closure-implementation1.cmd",
+      "normalized_sha256": "39597D3696C3E94254A1774B2822F1EC3769BB48A203CEA40E19A7CFDEF50597"
+    }
+  }
+}

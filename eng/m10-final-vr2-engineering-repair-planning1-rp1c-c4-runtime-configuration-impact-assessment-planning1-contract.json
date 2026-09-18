@@ -1,0 +1,111 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment-planning1-v1",
+  "status": "CANDIDATE-PLANNING-ONLY",
+  "gate": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1",
+  "prerequisite": {
+    "dynamic_pgo_comparator1_returned_adjudication": "PASS",
+    "returned_evidence_files": 46,
+    "returned_processes": 10,
+    "returned_measured_calls": 230400,
+    "branch": "A-RUNTIME-SENSITIVE",
+    "tiered_compilation_gross_slowdown_causal": true,
+    "dynamic_pgo_central_distribution_causal": true,
+    "dynamic_pgo_rare_strict_tail_causal": false,
+    "c4_candidate_immutable": true,
+    "exact_v9_corpus_immutable": true,
+    "strict_max_us": 409.30666666666673
+  },
+  "returned_evidence_tree_byte_manifest_sha256": "CABEA5DF557967517A58E72801AB5BB0C356B2462F01D2D113F2BB592BE9F5BF",
+  "normalized_lf_sha256": {
+    "pgo_contract": "331A7537687796A22259E725BC0A78C12211B5ABC1C3D6CEA3055CAF3D73F434",
+    "pgo_run_summary": "C53A7EE59DA39771D327133F9747434ABC68ECB0DBB97461A34DCF5996A6B3E0",
+    "pgo_contrast_summary": "E67768D7CD3F4F783F5C513EA5C1314040386ACE2CBD463418BC3F45C6EDF3F2",
+    "pgo_tail_summary": "9341423544E8FE19D5FAF6E9D2B1BB63A9D162573A05349C02E7ECA894932277",
+    "pgo_evidence_summary": "64883DDEB6352F5E261C37EC905461A8BBD1BA25E45A86CF8F2D38C34E48B06B",
+    "pgo_gate_summary": "579411A899EE8340FF04259EBE9E3A1C1914EB31DEA772BF1734677B59A5A53F",
+    "c4_candidate": "6D4C8EDD53906ACD7B13C004B05A24890D8736FB8469DB20E5AACE1E307645D6",
+    "exact_v9_corpus": "6EB6AEA3BF45621BD9BB890E3449E9BB010E02C3CF5A81AFDAFF67809DE4B50E",
+    "performance_baseline": "91776709A34142E9312A092F3B19EAFCF0FCA576D561F296CC9272FCDC4F7DEB"
+  },
+  "future_gate": {
+    "id": "RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1",
+    "evidence_only": true,
+    "profile_count": 2,
+    "exact_v9_processes_per_profile": 5,
+    "exact_v9_total_processes": 10,
+    "exact_v9_rows": 360,
+    "warmup_passes": 16,
+    "measured_passes": 64,
+    "rotation_stride": 37,
+    "measured_calls_per_process": 23040,
+    "total_exact_v9_measured_calls": 230400,
+    "strict_max_us": 409.30666666666673,
+    "diagnostic_tail_floor_us": 100.0,
+    "diagnostic_tail_floor_changes_qualification_threshold": false,
+    "same_boundary_strict_repro_processes": 2,
+    "ordinary_release_suite_runs_per_profile": 1,
+    "replay_determinism_runs_per_profile": 1,
+    "non_vr2_performance_runs_per_profile": 3,
+    "total_required_files": 78,
+    "automatic_selection_authorized": false,
+    "engineering_negative_is_infrastructure_red": false
+  },
+  "profiles": [
+    {
+      "id": "AMBIENT-UNSET",
+      "environment": {
+        "DOTNET_TieredCompilation": null,
+        "DOTNET_TieredPGO": null,
+        "DOTNET_TC_QuickJit": null,
+        "DOTNET_TC_QuickJitForLoops": null,
+        "DOTNET_ReadyToRun": null
+      }
+    },
+    {
+      "id": "EXPLICIT-REFERENCE-ALL-ON",
+      "environment": {
+        "DOTNET_TieredCompilation": "1",
+        "DOTNET_TieredPGO": "1",
+        "DOTNET_TC_QuickJit": "1",
+        "DOTNET_TC_QuickJitForLoops": "1",
+        "DOTNET_ReadyToRun": "1"
+      }
+    }
+  ],
+  "focused_replay_determinism_classes": [
+    "NuclearReactorSimulator.Simulation.Tests.Runtime.SimulationReplayTests",
+    "NuclearReactorSimulator.Simulation.Tests.Runtime.SimulationLongRunDeterminismTests",
+    "NuclearReactorSimulator.Application.Tests.Scenarios.Challenges.Replay.M10965ChallengeReplayCheckpointClosureTests",
+    "NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10984ReplayCheckpointSameSeedIntegrityTests"
+  ],
+  "non_vr2_performance_class": "NuclearReactorSimulator.Application.Tests.Milestones.M10972Hotfix2TenMillisecondHotPathHardeningTests",
+  "caller_environment_preflight": {
+    "required_unset": [
+      "DOTNET_TieredCompilation",
+      "DOTNET_TieredPGO",
+      "DOTNET_TC_QuickJit",
+      "DOTNET_TC_QuickJitForLoops",
+      "DOTNET_ReadyToRun"
+    ],
+    "failure_classification": "CALLER-RUNTIME-CONFIGURATION-NOT-CLEAN",
+    "must_not_silently_clear_parent_environment": true
+  },
+  "authority": {
+    "runtime_configuration_impact_assessment_implementation_authorized_now": false,
+    "runtime_configuration_impact_assessment_implementation_authorizable_after_returned_planning_adjudication": true,
+    "rp1c_selection_authorized": false,
+    "production_runtime_change_authorized": false,
+    "production_repair_authorized": false,
+    "candidate_mutation_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "full_domain_performance_confirmation2_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "future_implementation_absence": {
+    "test_file": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/Reference/M10FinalVR2Rp1cC4RuntimeConfigurationImpactAssessment1Tests.cs",
+    "runner_file": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1.cmd"
+  }
+}

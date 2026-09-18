@@ -1,0 +1,116 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-rp1c-selection1-v1",
+  "status": "DECISION-ONLY",
+  "prerequisite": {
+    "selection_planning1_gate": "RP1C-ENGINEERING-REPAIR-SELECTION-PLANNING1",
+    "selection_planning1_returned_status": "PASS-AS-AUTHORED",
+    "selection_planning1_artifacts": {
+      "01-contract-and-provenance.txt": {
+        "sha256": "551428C11B33D0C93A4CABDC99B7BEA4589734C353DBB3633557D5D30D2B16B8",
+        "bytes": 427
+      },
+      "02-selection-readiness-matrix.csv": {
+        "sha256": "5A48583A50F6669324A6B5791CB8091720ECCCF5EDD062D1AFC5E0084C059E75",
+        "bytes": 282
+      },
+      "03-selection-policy-summary.txt": {
+        "sha256": "6B8D20D562FAD106FD20D244E0378EC08AB72DD1AF006E8A8FC0E5D725C5E727",
+        "bytes": 456
+      },
+      "04-preexecution-review.txt": {
+        "sha256": "C6FFECC880169F66BA885502205C3CCE5CF9BC3CBF49CD81926C7721005C8801",
+        "bytes": 404
+      }
+    },
+    "fdpc2_classification": "C4-FULL-DOMAIN-PERFORMANCE-CONFIRMED",
+    "fdpc2_total_measured_calls": 217600,
+    "fdpc1_negative_history_preserved": true
+  },
+  "readiness": {
+    "c4_candidate": "C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE",
+    "c4_runtime_profile": "AMBIENT-UNSET",
+    "c4_selection_ready": true,
+    "d3_candidate": "D3-VAPOR-SEAM-COMPLETE-IF97-COMPARATOR",
+    "d3_selection_ready": false,
+    "d3_blocker": "SEAM-MAX-16504.9-US-EXCEEDS-409.30666666666673-US",
+    "selection_ready_count": 1
+  },
+  "decision_space": [
+    "SELECT-C4",
+    "SELECT-NONE"
+  ],
+  "decision": {
+    "selection_result": "SELECT-C4",
+    "selection_mode": "AUTHORED-ENGINEERING-DECISION",
+    "automatic_selection": false,
+    "select_none_preserved": true,
+    "select_none_considered": true,
+    "select_none_selected": false,
+    "selected_candidate": "C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE",
+    "selected_runtime_profile": "AMBIENT-UNSET",
+    "decision_basis": "C4-ONLY-SELECTION-READY-AFTER-GREEN-FDPC2-D3-BLOCKED"
+  },
+  "execution": {
+    "new_measurement_allowed": false,
+    "candidate_mutation_allowed": false,
+    "runtime_change_allowed": false,
+    "threshold_change_allowed": false,
+    "exact_v9_change_allowed": false,
+    "seam_corpus_change_allowed": false,
+    "required_files": 4,
+    "outputs": [
+      "01-selection-decision-and-provenance.txt",
+      "02-selection-readiness-matrix.csv",
+      "03-selection-decision-summary.txt",
+      "04-preexecution-review.txt"
+    ]
+  },
+  "post_selection": {
+    "select_c4_successor": "R1-IMPLEMENTATION-PLANNING-ONLY",
+    "select_none_successor": "PLANNING-STOP-OR-NEW-REPAIR-PLANNING-ONLY",
+    "returned_selection_adjudication_required": true,
+    "r1_implementation_planning_authorized_now": false
+  },
+  "authority": {
+    "production_repair_authorized": false,
+    "production_runtime_change_authorized": false,
+    "threshold_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false,
+    "second_replacement_long_authorized": false
+  },
+  "implementation_hashes": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-engineering-repair-planning1-rp1c-selection1.ps1",
+      "normalized_sha256": "59D746F0630BE4B055519426AD902FB8CC47C0550D1DCE7975D4A31CCBD77B76"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-engineering-repair-planning1-rp1c-selection1.cmd",
+      "normalized_sha256": "9C298CA31C7FA1A3ABDAD0B95ED2836BEE043890548CD2166C2508DCC82AA3FC"
+    },
+    "main_doc": {
+      "path": "docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1.md",
+      "normalized_sha256": "49FFF3D3C62975A7DC638FEAD0639A93D3EED6B0DA1D3F30B7D8EF68C2A66A1D"
+    },
+    "preexecution_review": {
+      "path": "docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "7C6D98ED19FD0C4CA1D5E29E3ECC6DD9470F146028EED0D880E90D1A3464E577"
+    },
+    "returned_evidence_adjudication": {
+      "path": "docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "E1ECF02CB2436248F2FB4BA331D1493443602079AD6E81652CDAD7E02EDFAED4"
+    },
+    "adr_0210": {
+      "path": "docs/adr/0210-select-c4-for-r1-planning-after-green-fdpc2-without-production-activation.md",
+      "normalized_sha256": "46FBBF5BA437A30670770453CF100F8616B31D73C354D0858B4749614C4E1E4D"
+    }
+  },
+  "repository_identity": {
+    "scope": "CANONICAL-TREES-EXCLUDING-BIN-OBJ",
+    "src_count": 959,
+    "src_tree_sha256": "4A8904F573157AC1D5B58E4CBD58E94FAB09C28CA9A73D2E2330147BBCF9AF9E",
+    "tests_count": 383,
+    "tests_tree_sha256": "3999DFB4EC17DC1F66EDCE390308EE292307E5B4E7C2E8D02C53065B2158C202"
+  }
+}

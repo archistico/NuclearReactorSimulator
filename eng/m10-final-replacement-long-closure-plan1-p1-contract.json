@@ -1,0 +1,56 @@
+{
+  "ContractId": "m10-final-replacement-long-closure-plan1-p1-v1",
+  "Baseline": "P0-HOTFIX2-VALIDATED",
+  "Question": "Do the small 5->5.5/6 MWe stages converge to the requested stationary operating point or approach a biased phase-locked equilibrium?",
+  "StepsPerSecond": 100,
+  "NoiseControlSeconds": 120,
+  "NoiseTailSeconds": 60,
+  "NoiseSubwindowSeconds": 10,
+  "NoiseMultiplier": 10.0,
+  "PreparationTimeoutSeconds": 60,
+  "PrimaryHoldSeconds": 900,
+  "ContinuationMaxTotalHoldSeconds": 1800,
+  "ContinuationProbeId": "exact-v9-asymptotic-6mwe",
+  "ConvergenceWindowSeconds": 30,
+  "StationaryWindowSeconds": 60,
+  "MinimumStationaryAssessmentSeconds": 300,
+  "ThermalReadinessToleranceMegawatts": 0.25,
+  "FrequencyToleranceHertz": 0.01,
+  "OutputToleranceMegawatts": 0.1,
+  "NetAccelerationToleranceMegawatts": 0.05,
+  "DispatchAdequacyToleranceMegawatts": 0.1,
+  "TrajectorySampleIntervalSteps": 10,
+  "SlopeBands": {
+    "OutputMegawattsPerSecond": {
+      "Floor": 2e-05,
+      "Ceiling": 0.0001
+    },
+    "ShaftMegawattsPerSecond": {
+      "Floor": 2e-05,
+      "Ceiling": 0.0001
+    },
+    "SteamFlowKilogramsPerSecondSquared": {
+      "Floor": 5e-05,
+      "Ceiling": 0.00025
+    },
+    "InletPressureMegapascalsPerSecond": {
+      "Floor": 2e-05,
+      "Ceiling": 0.0001
+    }
+  },
+  "AllowedFinalClassifications": [
+    "CONVERGED",
+    "BIASED-STATIONARY",
+    "INCONCLUSIVE"
+  ],
+  "PrimaryContinuationClassification": "STILL-CONVERGING",
+  "RuntimeChangesAuthorized": false,
+  "ReplacementWorkloadChangesAuthorized": false,
+  "SecondReplacementLongAuthorized": false,
+  "AllowedPrimaryClassifications": [
+    "CONVERGED",
+    "BIASED-STATIONARY",
+    "STILL-CONVERGING",
+    "INCONCLUSIVE"
+  ]
+}

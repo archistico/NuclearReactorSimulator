@@ -1,0 +1,80 @@
+{
+  "schema": "m10-final-vr2-engineering-repair-planning1-v1",
+  "status": "VALIDATED",
+  "prerequisite": {
+    "gate": "VR2-MATERIALITY-DIAGNOSTIC1-RETURNED-EVIDENCE-ADJUDICATION",
+    "engineering_classification": "HYDRAULIC-MATERIALITY-CONFIRMED",
+    "p1b_checkpoints_matched": "3/3",
+    "node_row_count": 360,
+    "unresolved_node_row_count": 0,
+    "path_row_count": 288,
+    "unresolved_path_row_count": 0,
+    "pressure_production_subcooled_reference_region4_mixture_count": 72,
+    "suction_production_subcooled_reference_region4_mixture_count": 55
+  },
+  "problem_scope": {
+    "mapping": "(v,u)->phase,T,p,quality",
+    "not_just_compressed_liquid_coefficient_tuning": true,
+    "hydraulic_materiality_confirmed": true,
+    "phase_boundary_ownership_is_in_scope": true
+  },
+  "historical_semantics": {
+    "correlation_consistent_inverse_domain_must_remain_immutable": true,
+    "exact_v9_must_remain_immutable": true,
+    "new_opt_in_closure_mode_required_for_any_authorized_repair": true,
+    "new_exact_version_required_before_any_repaired_production_activation": true
+  },
+  "repair_families": [
+    {
+      "id": "A-LOCAL-COEFFICIENT-RETUNE",
+      "planning_status": "DO-NOT-ADVANCE-AS-STANDALONE"
+    },
+    {
+      "id": "B-PIECEWISE-REFERENCE-CONSISTENT-REDUCED-CLOSURE",
+      "planning_status": "ADVANCE-TO-TEST-ONLY-SHADOW-STUDY"
+    },
+    {
+      "id": "C-BOUNDED-IF97-DERIVED-TABLE-SURROGATE",
+      "planning_status": "ADVANCE-TO-TEST-ONLY-SHADOW-STUDY"
+    },
+    {
+      "id": "D-BOUNDED-PRODUCTION-IF97-SUBSET",
+      "planning_status": "ADVANCE-AS-REFERENCE-FIDELITY-COST-COMPARATOR"
+    }
+  ],
+  "selection_policy": {
+    "existing_vr2_blocking_ceiling_percent": 25.0,
+    "planning_target_m10_core_percent": 10.0,
+    "planning_target_is_not_a_replacement_vr2_tolerance": true,
+    "phase_agreement_target_on_reference_classifiable_exact_v9_corpus_percent": 100.0,
+    "inventory_clamping_allowed": false,
+    "node_id_special_cases_allowed": false,
+    "fail_closed_required": true,
+    "deterministic_repeat_required": true,
+    "performance_ceiling_must_be_frozen_in_rp1a_before_rp1b_timing_results": true
+  },
+  "sequence": [
+    "RP1A-REFERENCE-DOMAIN-CORPUS-AND-SEAM-MAP-FREEZE",
+    "RP1B-TEST-ONLY-SHADOW-CANDIDATE-MATRIX",
+    "RP1C-ENGINEERING-REPAIR-SELECTION-GATE"
+  ],
+  "rp1c_allowed_results": [
+    "NO-REPAIR-CANDIDATE-QUALIFIED",
+    "SELECT-PIECEWISE-REDUCED-CLOSURE",
+    "SELECT-TABULATED-REFERENCE-SURROGATE",
+    "SELECT-BOUNDED-IF97-SUBSET"
+  ],
+  "authority": {
+    "production_src_change_authorized": false,
+    "thermodynamic_repair_authorized": false,
+    "thermodynamic_tolerance_change_authorized": false,
+    "exact_v9_change_authorized": false,
+    "existing_closure_mode_reinterpretation_authorized": false,
+    "new_exact_version_activation_authorized": false,
+    "vr3_execution_authorized": false,
+    "p3_r1_execution_authorized": false,
+    "second_replacement_long_authorized": false,
+    "rp1a_implementation_authorized_before_returned_planning_audit_review": false
+  },
+  "output_artifact": "01-planning-audit.txt"
+}

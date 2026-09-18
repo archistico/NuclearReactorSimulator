@@ -1,0 +1,82 @@
+{
+  "schema": 1,
+  "id": "pre-m11-engineering-review-source-map-v1",
+  "status": "PLANNING-NOT-PROMOTION-EVIDENCE",
+  "sources": [
+    {
+      "id": "nuclear-code-vv-2021",
+      "title": "Nuclear Power Plant Design and Analysis Codes: Development, Validation, and Application",
+      "editors": [
+        "Jun Wang",
+        "Xin Li",
+        "Chris Allison",
+        "Judy Hohorst"
+      ],
+      "year": 2021,
+      "retainedThemes": [
+        "verification-validation-separation",
+        "phenomenon-scoped-qualification",
+        "integral-testing",
+        "coupling-qualification",
+        "non-regression",
+        "explicit-limitations"
+      ],
+      "projectArtifacts": [
+        "docs/PRE_M11_NUCLEAR_CODE_VV_REVIEW.md",
+        "eng/m10-final-vv-matrix.json",
+        "docs/CHANGE_IMPACT_REVALIDATION_POLICY.md"
+      ]
+    },
+    {
+      "id": "digital-ic-human-system-1997",
+      "title": "Digital Instrumentation and Control Systems in Nuclear Power Plants: Safety and Reliability Issues",
+      "authoringBody": "Committee on Application of Digital Instrumentation and Control Systems to Nuclear Power Plant Operations and Safety",
+      "year": 1997,
+      "retainedThemes": [
+        "control-protection-separation",
+        "human-automation-allocation",
+        "common-mode-failure",
+        "functional-diversity",
+        "timing-correctness",
+        "hmi-failure-modes",
+        "graded-cots-assurance"
+      ],
+      "projectArtifacts": [
+        "docs/PRE_M11_DIGITAL_IC_HUMAN_SYSTEM_SAFETY_REVIEW.md",
+        "docs/DIGITAL_IC_ARCHITECTURE_INVARIANTS.md",
+        "docs/HUMAN_AUTOMATION_FUNCTION_ALLOCATION.md",
+        "docs/DIGITAL_IC_HAZARD_CATALOG.md",
+        "docs/HMI_CLASSIC_FAILURE_MODES_CHECKLIST.md",
+        "docs/M11_DIGITAL_IC_RELEASE_ASSURANCE_PLAN.md",
+        "docs/M13_DIGITAL_IC_DEGRADATION_AUTOMATION_TRANSPARENCY_PLAN.md"
+      ]
+    },
+    {
+      "id": "lamarsh-baratta-intro-ne-3e",
+      "title": "Introduction to Nuclear Engineering",
+      "authors": [
+        "John R. Lamarsh",
+        "Anthony J. Baratta"
+      ],
+      "edition": 3,
+      "year": 2001,
+      "retainedThemes": [
+        "coupled-operating-point-self-consistency",
+        "reactor-feedback-awareness",
+        "heat-removal-follow-up-candidates"
+      ],
+      "projectArtifacts": [
+        "docs/REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md",
+        "docs/M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md",
+        "eng/reference-operating-point-equilibrium-plan.json",
+        "docs/research/LAMARSH_FOLLOW_UP_CANDIDATES.md"
+      ]
+    }
+  ],
+  "governance": {
+    "booksAreGuidanceNotAuthority": true,
+    "noDirectPlantSpecificConstantImport": true,
+    "noLicensingGradeClaim": true,
+    "changesRequireOwnerAcceptanceAndRevalidation": true
+  }
+}

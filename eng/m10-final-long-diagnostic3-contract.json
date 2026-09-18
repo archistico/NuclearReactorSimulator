@@ -1,0 +1,72 @@
+{
+  "schema": "m10-final-long-diagnostic3-contract-v1",
+  "status": "CANDIDATE",
+  "baseline": "M10 Final Long Failure Diagnostic 2 / LR-M1 Hotfix 1 (user-reported complete script PASS; returned artifacts reviewed)",
+  "lr_m1": {
+    "hotfix1_accepted": true,
+    "semantic_equivalence_through_samples": 100000,
+    "100000_sample_score_projection_us_per_call": 3.35,
+    "100000_sample_score_allocation_bytes_per_call": 2248,
+    "100000_sample_timeline_projection_us_per_call": 3.245,
+    "100000_sample_timeline_allocation_bytes_per_call": 2600,
+    "live_prefix_complexity": "O(1) per refresh with respect to elapsed demand sample count",
+    "replay_offline_full_prefix_semantics_changed": false
+  },
+  "lr_h1_diagnostic2": {
+    "exact_version": "integrated-operations-desktop-stable@4",
+    "outlet_mass_final60_slope_kg_s": -7.914005596772072,
+    "channel_return_final60_mean_kg_s": -7.913791680400684,
+    "channel_return_final60_slope_kg_s2": 0.0020291415480056195,
+    "flow_controller_integral_slope_per_s": 0.0,
+    "level_controller_integral_slope_per_s": -0.00038386790345448785,
+    "classification": "REFERENCE-OPERATING-POINT-AUTHORED-SEED-IMBALANCE; PRIMARY-FLOW-CONTROLLER-NOT-IMMEDIATE-DRIVER"
+  },
+  "exact_v5_probe": {
+    "reference": "integrated-operations-desktop-stable@5",
+    "production_selector_changed": false,
+    "exact_v4_changed": false,
+    "reference_flow_kg_s": 260.0,
+    "reference_flow_is_validated_equilibrium_target": false,
+    "channel_resistance_pa_s2_kg2": 25.0,
+    "return_resistance_pa_s2_kg2": 25.0,
+    "pump_effective_resistance_pa_s2_kg2": 50.0,
+    "rated_pump_head_pa": 1000000.0,
+    "pressure_grade_mpa": {
+      "suction": 12.176459281680371,
+      "pressure_header": 9.796459281680372,
+      "outlet": 8.106459281680372,
+      "drum": 6.416459281680372
+    },
+    "outlet": {
+      "state": "saturated-mixture",
+      "vapor_quality_fraction": 0.035881742881444335,
+      "temperature_c": 295.93357730105606
+    },
+    "thermal_body_seed_c": {
+      "fuel": 316.93357730105606,
+      "structure": 301.93357730105606
+    },
+    "unchanged_initial_fission_power_mw": 30.0
+  },
+  "diagnostic": {
+    "seconds": 600,
+    "steps": 60000,
+    "sample_period_seconds": 1,
+    "final_slope_window_seconds": 60,
+    "new_drift_thresholds_frozen": false,
+    "required_execution_properties": [
+      "finite samples",
+      "zero active-trip steps",
+      "zero corrected-commit rollbacks"
+    ],
+    "promotion_requires_returned_artifact_review": true
+  },
+  "acceptance_limits_changed": false,
+  "thermodynamic_envelope_changed": false,
+  "hydraulic_coefficients_changed": false,
+  "controller_tuning_changed": false,
+  "historical_exact_versions_reinterpreted": false,
+  "historical_long_manifest_rebased": false,
+  "replacement_long_authorized": false,
+  "m10_closed": false
+}

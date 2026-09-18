@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "reference-operating-point-equilibrium-plan-v1",
+  "status": "PLANNING-NOT-ADOPTED",
+  "sourceRationale": [
+    "Lamarsh-Baratta-Introduction-to-Nuclear-Engineering-3e-section-8.6-coupled-iterative-self-consistency",
+    "pre-m11-nuclear-code-vv-review-black-box-coupling-and-non-regression"
+  ],
+  "currentM10Use": {
+    "allowed": "test-or-harness-first diagnostic subset if M10 long gate remains red",
+    "forbidden": [
+      "runtime hidden state correction",
+      "post-hoc tolerance widening",
+      "silent exact-v4 seed rewrite"
+    ],
+    "productionFixRule": "new exact version required when authored production semantics change"
+  },
+  "participationClasses": [
+    "STATIONARY_REQUIRED",
+    "BOUNDED_PERIODIC",
+    "SLOW_EVOLUTION",
+    "CYCLIC_COORDINATE",
+    "BOOKKEEPING_EXCLUDED"
+  ],
+  "formalMilestone": {
+    "id": "M12.0",
+    "title": "Reference Operating-Point Equilibrium & Stability Qualification",
+    "slices": [
+      "M12.0.1-residual-taxonomy-participation-registry",
+      "M12.0.2-closed-loop-equilibrium-residual-inspector",
+      "M12.0.3-domain-headroom-and-window-trends",
+      "M12.0.4-fixed-input-plant-hold-seam",
+      "M12.0.5-bounded-reference-operating-point-trimmer-if-needed",
+      "M12.0.6-perturbation-stability-and-closure"
+    ]
+  },
+  "architecture": {
+    "preferredNamespace": "NuclearReactorSimulator.Application.Validation.Equilibrium",
+    "physicalIntegratorCount": 1,
+    "inspectorStepsPlant": false,
+    "archiveStateAdded": false,
+    "hmiFeature": false
+  },
+  "trimmer": {
+    "authorizedOnlyAfterInspector": true,
+    "mayTrim": [
+      "allow-listed initial fluid inventories",
+      "allow-listed initial internal energies/temperatures",
+      "allow-listed initial actuator/pump biases",
+      "allow-listed controller integral/bias memory",
+      "allow-listed initial rod position when target constraints require"
+    ],
+    "mustNotTrim": [
+      "hydraulic resistances",
+      "heat-transfer coefficients",
+      "controller gains",
+      "thermodynamic correlations or support limits",
+      "protection thresholds or delays",
+      "V&V budgets or tolerances"
+    ]
+  }
+}

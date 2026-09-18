@@ -1,0 +1,38 @@
+{
+  "schema": "m10-final-replacement-long-failure-diagnostic2-contract-v1",
+  "scope": "M10 Final replacement-long failure Diagnostic 2: discriminate SupervisoryAutomatic authority suppression from M7.6-style Assisted coordinated 5-to-10 MWe manoeuvres on authoritative exact-v9",
+  "prerequisite": {
+    "replacement_long_execution_1": "RED",
+    "diagnostic_1_execution": "PASS",
+    "diagnostic_1_first_trip_step": 636,
+    "diagnostic_1_first_latched_function": "generator-loss-of-synchronism"
+  },
+  "authoritative_policy": "M10FinalExactV9QualifiedCandidate",
+  "authoritative_initial_condition": "integrated-operations-desktop-stable@9",
+  "load_raise_step": 500,
+  "total_steps_per_probe": 1200,
+  "fixed_step_ms": 10,
+  "production_source_changes": 0,
+  "protection_semantic_changes": 0,
+  "exact_v9_changes": 0,
+  "mission_pack_changes": 0,
+  "replacement_workload_changes": 0,
+  "probes": [
+    { "id": "frozen-supervisory-load-only", "authority": "SupervisoryAutomatic", "hold_current_operating_point": true },
+    { "id": "supervisory-withdraw-500ms-spanning-load", "authority": "SupervisoryAutomatic", "hold_current_operating_point": true, "rod_withdraw_step": 450, "rod_hold_step": 550 },
+    { "id": "assisted-load-only", "authority": "Assisted" },
+    { "id": "assisted-withdraw-250ms-at-load", "authority": "Assisted", "rod_withdraw_step": 500, "rod_hold_step": 525 },
+    { "id": "assisted-withdraw-500ms-at-load", "authority": "Assisted", "rod_withdraw_step": 500, "rod_hold_step": 550 },
+    { "id": "assisted-withdraw-1000ms-at-load", "authority": "Assisted", "rod_withdraw_step": 500, "rod_hold_step": 600 },
+    { "id": "assisted-prewithdraw-500ms", "authority": "Assisted", "rod_withdraw_step": 450, "rod_hold_step": 500 },
+    { "id": "assisted-withdraw-1000ms-spanning-load", "authority": "Assisted", "rod_withdraw_step": 450, "rod_hold_step": 550 }
+  ],
+  "required_artifacts": [
+    "00-progress.txt",
+    "140-authority-coordination-probe-summary.csv",
+    "141-authority-coordination-trajectories.csv",
+    "142-authority-coordination-decision-summary.txt"
+  ],
+  "decision_rule": "Compare the SupervisoryAutomatic rod probe against the frozen load-only reference instead of assuming suppression. If its rod command has no material physical effect and it reproduces the frozen loss-of-synchronism path while one or more Assisted coordinated probes materially delay or avoid the trip, classify the frozen replacement operator/authority policy as under-specified relative to M7.6. If a bounded Assisted probe reaches a late stable 10 MWe window, use it only as evidence for a separate revised workload/operator-policy candidate and new replacement-long freeze. If no Assisted coordinated probe improves margin, retain the workload and continue production transient/control-granularity diagnosis. Protection retuning is not authorized by this diagnostic.",
+  "second_replacement_long_authorized": false
+}

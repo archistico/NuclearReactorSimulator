@@ -1,0 +1,16 @@
+﻿source_location,source_topic,source_supported_principle_paraphrase,project_consequence,planned_owner
+Chapter 3,Multilayer architecture / function allocation,"Local control, supervisory coordination and plant-level functions should have explicit allocation/interfaces.",Freeze owner layering and typed seams.,M11.1
+Chapter 3,Protection vs control independence,Protection/control separation and independent manual paths are system-level features.,Freeze protection priority and manual takeover invariants.,M11.1/M11.6
+Chapter 4,Testing limits,Testing cannot exhaustively prove practical software correct.,"Combine tests with requirements review, hazard catalog and configuration management.",M11.1-M11.6
+Chapter 4,Requirements / hazard analysis,Requirements inspections and system-level hazard analysis should address software contribution to hazards.,Create Digital I&C hazard catalog and review support requirements as requirements artifacts.,M11.1/M11.5
+Chapter 4,Configuration management,Changes and related artifacts must be controlled and kept consistent.,Freeze versions/schemas/dependencies; docs/manual/release package must match.,M11.1/M11.2/M11.5
+Chapter 5,Common-mode failure,Separately developed software with same requirements may have correlated failures.,Forbid automatic independence claims for duplicated/design-diverse logic.,M11 docs / post-M11
+Chapter 5,Functional diversity,True functional diversity requires different component-level requirements/principles.,Future protection-diversity inventory before implementation.,Post-M11
+Chapter 6,Deterministic + probabilistic assessment,Digital failure modes should be included in safety reasoning; probability estimates carry major uncertainty.,Use deterministic hazard/coverage evidence; no invented software reliability percentages.,M11.5
+Chapter 7,Classic HMI deficiencies,"Data overload, keyhole effect, mode error, workload imbalance and clumsy automation recur in safety-critical systems.",Permanent HMI checklist and representative task evaluation.,M11.6/M13
+Chapter 7,Operator role,Human functions should be explicitly designed rather than left as automation leftovers.,Human–Automation Function Allocation matrix.,M11.1
+Chapter 7,Performance-based HMI evaluation,Changes to operator-visible information or control response should be empirically evaluated with representative tasks/dynamics.,Use compact operator task suite in release-candidate acceptance.,M11.6
+Chapter 8,COTS assurance proportionality,Verification effort should be commensurate with significance and complexity.,Dependency matrix for .NET/Avalonia/test stack; verify supported combination rather than attempting vendor internals qualification.,M11.1/M11.4
+Appendix F,Real-time processing,Correctness includes timing; critical analysis considers worst-case delays and predictable execution.,Treat logical-step timing as contract and measure worst-observed desktop responsiveness.,M11.3
+Appendix F,Data communications,"Lost, late, misdirected and rollback-inconsistent messages are characteristic distributed failure modes.",Use as post-M11 fault backlog; preserve replay/history consistency now.,M11.2/post-M11
+Appendix F,Memory sharing,Shared data must remain valid and consistent to multiple consumers.,Preserve immutable committed snapshot handoff and single-owner runtime.,M11.3
