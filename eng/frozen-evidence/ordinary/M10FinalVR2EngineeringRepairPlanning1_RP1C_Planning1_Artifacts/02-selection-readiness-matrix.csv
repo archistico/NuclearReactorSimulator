@@ -1,3 +1,0 @@
-﻿candidate_id,family_id,role,physical_complete,planning_target_met,seam_complete,deterministic_repeat,r1_performance_closed,full_domain_candidate_performance_confirmed,selection_ready,selection_blocker
-C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE,C-BOUNDED-IF97-DERIVED-TABLE-SURROGATE,ACTIVE-SELECTION-CANDIDATE,True,True,True,True,True,False,False,FULL-DOMAIN-C4-PERFORMANCE-CONFIRMATION-REQUIRED
-D3-VAPOR-SEAM-COMPLETE-IF97-COMPARATOR,D-BOUNDED-PRODUCTION-IF97-SUBSET-COMPARATOR,ACTIVE-COMPARATOR,True,True,True,True,False,True,False,SEAM-MAX-EXCEEDS-STRICT-CEILING

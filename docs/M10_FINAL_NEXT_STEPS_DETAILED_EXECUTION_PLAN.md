@@ -476,7 +476,7 @@ M11 must not become an indefinite backend expansion. The first release-hardening
 These are post-M10 priorities; they do not weaken the current M10 closure gates.
 
 
-## Current execution checkpoint — 2026-09-15
+## Historical execution checkpoint — 2026-09-15
 
 Plan Amendment 3 and VR0 are VALIDATED; VR1 is VALIDATED; VR2 is `MODEL-DISCREPANCY-BLOCKING`. Materiality Diagnostic 1 and its returned-evidence adjudication are complete with `HYDRAULIC-MATERIALITY-CONFIRMED`. RP1A REV1 is now VALIDATED. The first-generation RP1B matrix is complete and frozen; the active and only authorized next gate is **RP1B Refinement 1 — C2/D2 Test-Only Shadow Matrix**. Production repair, RP1C selection before returned Refinement 1 review, thermodynamic tolerance changes, exact-v9 modification, VR3, P3-R1 and a second replacement-long baseline remain unauthorized.
 
@@ -486,6 +486,80 @@ Attempt 5 completed the full materiality trajectory and returned a complete evid
 
 ## VR2 Engineering Repair Planning 1 stop
 
-The returned VR2 materiality adjudication closes the evidence question as `HYDRAULIC-MATERIALITY-CONFIRMED`; it does not authorize production work. The active successor is [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md).
+The returned VR2 materiality adjudication closes the evidence question as `HYDRAULIC-MATERIALITY-CONFIRMED`; it does not authorize production work. Historical checkpoint — the successor at that stage was [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md).
 
 The mandatory order is RP1A reference-domain/seam freeze -> RP1B test-only shadow candidate matrix -> RP1C engineering selection. A local coefficient-only retune cannot advance standalone. Exact-v9 and the existing `CorrelationConsistentInverseDomain` mode remain immutable, and any later repair/activation requires a new opt-in closure mode plus a new exact-version identity after requalification. VR3 remains blocked until the repaired VR2 path is explicitly closed nonblocking.
+
+## Historical execution checkpoint — 2026-09-17 — Runtime Factor Isolation 1
+
+Attribution 1 returned evidence is adjudicated and establishes material runtime-configuration sensitivity without a single-factor causal owner. `TIERING-OFF` remains rejected as a repair direction. Runtime Factor Isolation Planning 1 is returned and `PASS-AS-AUTHORED`; at that historical checkpoint the execution candidate was `RP1C-C4-EXACT-V9-RUNTIME-FACTOR-ISOLATION1`, which isolates TieredCompilation, QuickJit and QuickJitForLoops through three adjacent contrasts while keeping Dynamic PGO OFF and ReadyToRun ON. The gate is evidence-only, retains immutable C4/exact-v9/thresholds, and requires returned-evidence adjudication before any causal promotion or RP1C selection. Dynamic PGO, if still material afterward, requires a separate planning gate. Production runtime change, production repair, threshold change, exact-v9 change, VR3, P3-R1 and a second replacement-long baseline remain unauthorized.
+
+## Historical execution checkpoint — 2026-09-17 — Dynamic PGO Comparator Planning 1
+
+Runtime Factor Isolation 1 is returned and adjudicated PASS from the complete 86-file / 20-process / 460,800-call evidence set. Its frozen single-factor A↔B contrast establishes TieredCompilation as materially causal for the gross slowdown, while the B↔C QuickJit contrast does not provide sufficient repeated strict-tail evidence for causal promotion and the C↔D QuickJitForLoops contrast provides no material tail benefit. Dynamic PGO remains the one bounded runtime factor still worth isolating with QuickJitForLoops enabled because the earlier PGO OFF/ON evidence used QJFL disabled.
+
+The active and only authorized next gate is planning-only `RP1C-C4-DYNAMIC-PGO-COMPARATOR-PLANNING1`. It may freeze a future two-mode PGO OFF↔ON comparator with TieredCompilation=1, QuickJit=1, QuickJitForLoops=1 and ReadyToRun=1, but it does not authorize that future evidence gate until the returned planning artifacts are adjudicated. Branch A2 Runtime Configuration Impact Assessment, effective-default equivalence, RP1C selection, production runtime change, production repair, threshold change, exact-v9 change, VR3, P3-R1 and a second replacement-long baseline remain unauthorized.
+
+
+
+## Historical execution checkpoint — 2026-09-17 — Dynamic PGO Comparator 1
+
+Dynamic PGO Comparator Planning 1 is returned `PASS-AS-AUTHORED` and adjudicated. Historical checkpoint — the evidence-only gate at that stage was `RP1C-C4-EXACT-V9-DYNAMIC-PGO-COMPARATOR1`. It holds TieredCompilation, QuickJit, QuickJitForLoops and ReadyToRun at `1` and changes only `DOTNET_TieredPGO` between `0` and `1`. The frozen protocol is 2 modes × 5 fresh processes, 360 exact-v9 rows, 16 warm-up passes, 64 measured passes, 23,040 measured calls per process and 230,400 calls total. The strict max remains `409.30666666666673 us`; `100 us` remains diagnostic-only. The final evidence tree must contain exactly 46 files and returned evidence must be adjudicated before any PGO causal promotion or Branch A2 planning. Runtime Configuration Impact Assessment, effective-default equivalence, RP1C selection, production runtime change/repair, exact-v9/threshold changes, VR3, P3-R1 and a second replacement-long baseline remain unauthorized.
+
+
+## Historical execution checkpoint — 2026-09-17 — Runtime Configuration Impact Assessment Planning 1
+
+Dynamic PGO Comparator 1 is returned and adjudicated PASS as complete evidence: 46 files, 10 fresh processes and 230,400 exact-v9 calls. Dynamic PGO ON has a repeated causal effect on the central timing distribution (process-median aggregate 4.7→2.1 us; process-p95 aggregate 5.4→2.5 us; 360/360 row medians improve), but rare strict-tail causality is not promoted from the sparse 1→0 strict-exceedance contrast. Historical checkpoint — the only authorized successor at that stage was planning-only `RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1`. It may freeze a future two-profile Branch A2 assessment comparing ambient/unset against an explicit TieredCompilation/PGO/QuickJit/QuickJitForLoops/ReadyToRun all-ON qualification reference across exact-v9, ordinary Release, M10 replay/determinism and representative non-VR2 performance. A2 implementation, effective-default conclusion, RP1C selection, production runtime change/repair, Full-Domain Performance Confirmation 2, exact-v9/threshold changes, VR3, P3-R1 and a second replacement-long baseline remain unauthorized.
+
+## Historical checkpoint — Branch A2 Runtime Configuration Impact Assessment 1
+
+The Dynamic PGO Comparator and Runtime Configuration Impact Assessment Planning paragraphs above are retained as historical decision trace. They are superseded as live instructions by the returned `PASS-AS-AUTHORED` Planning 1, Host-Provenance Amendment 1 and Frozen Evidence Ordinary Compaction 1 checkpoints.
+
+At that checkpoint the only executable successor was `RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1`. It must execute the complete 78-file assessment on one physical host. Functional evidence uses native .NET 10 MTP argument placement, `--minimum-expected-tests 1`, and schema-aware xUnit XML accounting: `executed = passed + failed + skipped`; reporter `total` must equal either `executed` or `executed + not-run`, and all execution-cardinality decisions use `executed`. No FDPC2 planning, RP1C selection, production runtime change/repair, threshold change, exact-v9 change, VR3, P3-R1 or second replacement-long authority opens until the returned A2 tree is adjudicated.
+
+## Historical checkpoint override -- A2 returned / Full-Domain Performance Confirmation 2 Planning 1 (superseded)
+
+A2 returned complete same-host evidence and is adjudicated green for Branch A progression. Both runtime profiles preserve 1,371/1,371 ordinary Release tests, 17/17 replay/determinism checks and three-per-profile validated M10.9.7.2 hot-path runs. Exact-v9 aggregate timing is 2.1/2.5 us median/p95 for ambient and 2.0/2.3 us for explicit all-ON; ambient records 0 strict exceedances and explicit records one isolated 416.2 us exceedance with no reproducible strict owner.
+
+The next authorized activity is planning-only `RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2-PLANNING1`. The future gate must use `AMBIENT-UNSET`, the same A2 physical host fingerprint and stable high-performance power scheme, immutable C4 and frozen exact-v9/seam corpora, five fresh processes and 217,600 measured calls. FDPC1 remains negative historical truth and is not reinterpreted. A different host requires a separately adjudicated amendment. FDPC2 implementation and all RP1C/production authority remain false until returned planning artifacts are adjudicated.
+
+### 2026-09-18 -- FDPC2 Planning 1 returned / FDPC2 executable gate
+
+`RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2-PLANNING1` returned `PASS-AS-AUTHORED`. The live Branch A gate is now evidence-only `RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2`, under `AMBIENT-UNSET` on the frozen A2 host and active power scheme. Five fresh processes must produce 217,600 measured calls and exactly 32 evidence files against the unchanged corrected predicate. FDPC1 remains negative historical evidence and is not reinterpreted. RP1C selection, production runtime change/repair, threshold/exact-v9 changes, VR3, P3-R1 and second replacement-long remain unauthorized pending returned FDPC2 adjudication.
+
+
+### Historical override — FDPC2 returned / RP1C Selection Planning 1 (superseded)
+
+FDPC2 has closed Branch A performance confirmation with 5/5 fresh processes green, 217,600 measured calls, zero unresolved calls, zero exact-v9 strict exceedances and zero seam strict exceedances under `AMBIENT-UNSET` on the frozen A2 host. At that checkpoint the next and only authorized activity was `RP1C-ENGINEERING-REPAIR-SELECTION-PLANNING1`. It froze a later `SELECT-C4 | SELECT-NONE` decision gate; it does not perform selection. `SELECT-NONE` remains mandatory. A later `SELECT-C4`, if returned and adjudicated, may authorize only `R1-IMPLEMENTATION-PLANNING-ONLY`.
+
+### Historical override — Selection Planning 1 returned / RP1C Selection 1 (superseded)
+
+Selection Planning 1 is returned `PASS-AS-AUTHORED`. The next and only authorized activity is decision-only `RP1C-ENGINEERING-REPAIR-SELECTION1`. It must not measure or mutate anything. Its frozen decision space is `SELECT-C4 | SELECT-NONE`; `SELECT-NONE` remains mandatory. The authored engineering decision is `SELECT-C4` because C4 + `AMBIENT-UNSET` is the sole selection-ready pair and D3 remains blocked. A returned/adjudicated selection may authorize only `R1-IMPLEMENTATION-PLANNING-ONLY`; production repair and downstream physical-reference/long-validation authority remain false.
+
+## Historical 2026-09-18 post-selection checkpoint -- R1 Implementation Planning 1 (superseded)
+
+RP1C Selection 1 returned `SELECT-C4`. This planning-only checkpoint is superseded by returned `PASS-AS-AUTHORED` R1 Implementation Planning 1.
+
+The planned production staging boundary is:
+
+1. preserve closure modes 0/1 and exact-v9 unchanged;
+2. reserve explicit opt-in `ReferenceConsistentTabulatedInverseDomain = 2` and dispatch it to a dedicated resolver before the existing mode-0/mode-1 pipeline;
+3. generate selected IF97-derived table data offline in C# with reproducible SHA-256 provenance;
+4. add an explicit `EmbeddedResource` entry in `NuclearReactorSimulator.Simulation.csproj` for `NRSVR2C4` schema 1 (little-endian IEEE-754 binary64 raw bits), initialized by the first mode-2 resolver into a static process-wide immutable cache;
+5. forbid test-assembly/direct-IF97 production runtime dependencies and resolve-time payload I/O/decoding/allocation;
+6. require the exact frozen 1,679-state + 288-hydraulic production-vs-C4 corpus (1,967 total) with hash/identity checks and zero mismatches, plus historical-mode/ordinary regressions in the later implementation gate;
+7. do not activate a default or create a new exact version at R1.
+
+Only after returned R1 implementation adjudication may R2 focused qualification planning open.
+
+## Live 2026-09-18 R1 implementation checkpoint
+
+R1 Selected C4 Opt-In Closure Implementation 1 has returned complete evidence and is independently adjudicated PASS. The only authorized activity is now planning-only `R2-FOCUSED-THERMODYNAMIC-REFERENCE-TOPOLOGY-QUALIFICATION-PLANNING1`. It freezes independent IF97 post-implementation qualification of explicit mode 2 over the frozen 40-row VR2 reference matrix, 360 exact-v9 committed-state rows and 1,280 seam probes. R2 execution remains blocked until returned planning adjudication; R3 owns later exact-v9-equivalent composition and R4 owns the long materiality recheck.
+
+## Live 2026-09-18 returned R1 / R2 Planning 1 checkpoint
+
+R1 implementation is adjudicated PASS as opt-in production staging. The current planning-only R2 contract intentionally separates three questions: independent VR2 reference correctness, frozen exact-v9 state phase topology, and Region-1/4/2 seam ownership/continuity. It performs no exact-v9 scenario composition and no hydraulic long materiality replay. A returned R2 planning PASS may authorize only the separately versioned R2 test gate.
+
+## Live 2026-09-18 returned R2 / R3 Planning 1 checkpoint
+
+R2 execution returned complete nine-file evidence and is adjudicated PASS. The only newly authorized activity is planning-only `R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION-PLANNING1`. R3 will prove a test-local mode-1 exact-v9 shadow matches the canonical factory for 128 deterministic steps, then change only the thermodynamic closure to mode 2 and run the inherited 120 s / 12,000-step exact-v9 health, conservation and ownership envelope. R4 retains the P1B-equivalent 5→6 MWe long materiality replay. No default, historical exact-v9 identity, new exact version, VR3, P3-R1 or replacement-long authority is granted.

@@ -67,7 +67,8 @@ public sealed class ThermodynamicBranchContinuityModel : IFluidThermodynamicMode
         bool multiplePhaseRootsAvailable;
         WaterSteamInverseBranchCandidate? previousPhaseCandidate;
         if (ReferenceEquals(_productionModel, _diagnosticProvider)
-            && _productionModel is SimplifiedWaterSteamThermodynamicModel optimizedProvider)
+            && _productionModel is SimplifiedWaterSteamThermodynamicModel optimizedProvider
+            && optimizedProvider.IsLegacyBranchContinuityFusionEligible)
         {
             // H.28.1-E: the production resolver and inverse-branch diagnostic are the same simplified
             // water/steam model in the H.13-H.28 corrected path. Fuse those two pure traversals while

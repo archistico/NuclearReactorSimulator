@@ -1,6 +1,0 @@
-process_run_index,process_max_us,process_max_boundary_index,calls_over_max_ceiling,boundaries_over_max_ceiling,exceedances_with_gc_activity
-1,2963.9,3,1,1,1
-2,2598.6,3,1,1,1
-3,2666.1,3,1,1,1
-4,3598.6,3,4,4,1
-5,3373.8,3,1,1,1

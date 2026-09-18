@@ -220,6 +220,8 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 
 | [0192](0192-activate-qualified-exact-v9-as-authoritative-production-without-reinterpreting-history.md) | Activate qualified exact-v9 as authoritative production without reinterpreting historical identities | Proposed | Scenarios / production policy |
 
+| [0193](0193-freeze-exact-v9-replacement-long-baseline-and-information-dense-workload.md) | Freeze exact-v9 replacement-long baseline and information-dense workload | Proposed | Validation / replacement-long |
+
 | [0194](0194-preserve-exact-v9-and-stage-reference-consistent-thermodynamic-repair-behind-new-closure-mode.md) | Preserve exact-v9 and stage physical-reference thermodynamic repair behind a new closure mode | Accepted | Fluids / thermo / secondary |
 | [0195](0195-separate-c3-algorithmic-performance-from-managed-runtime-wall-clock-tail-before-repair-selection.md) | Separate C3 algorithmic performance from managed-runtime wall-clock tail before repair selection | Accepted | Fluids / thermo / validation |
 | [0196](0196-c4-must-remove-resolve-time-allocation-without-changing-c3-thermodynamic-semantics.md) | C4 must remove resolve-time allocation without changing C3 thermodynamic semantics | Proposed | Fluids / thermo / validation |
@@ -228,9 +230,31 @@ This short list is a discovery aid rather than a substitute for `ARCHITECTURE.md
 | [0198](0198-require-immutable-c4-full-domain-performance-confirmation-before-rp1c-selection.md) | Require immutable C4 full-domain performance confirmation before RP1C selection | Accepted | Fluids / thermo / validation |
 | [0199](0199-attribute-rare-exact-v9-wall-clock-tail-before-rp1c-selection-or-candidate-mutation.md) | Attribute rare exact-v9 wall-clock tail before RP1C selection or candidate mutation | Accepted | Validation / performance |
 
+| [0200](0200-execute-exact-v9-runtime-mode-attribution-as-evidence-only-before-rp1c-selection.md) | Execute exact-v9 runtime-mode attribution as evidence-only before RP1C selection | Accepted | Validation / performance |
+
+| [0201](0201-isolate-tiered-compilation-quickjit-and-loop-quickjit-before-pgo-or-rp1c-selection.md) | Isolate TieredCompilation, QuickJit and QuickJitForLoops before PGO or RP1C selection | Accepted | Validation / performance |
+
+| [0202](0202-isolate-dynamic-pgo-with-qjfl-enabled-before-runtime-impact-assessment.md) | Isolate Dynamic PGO with QJFL enabled before runtime impact assessment | Accepted | Validation / performance |
+| [0203](0203-qualify-runtime-configuration-impact-before-rp1c-selection.md) | Qualify runtime configuration impact before RP1C selection | Accepted | Validation / performance |
+| [0204](0204-scope-runtime-performance-evidence-to-one-execution-host.md) | Scope runtime performance evidence to one execution host | Accepted for planning amendment only | Validation / performance |
+| [0205](0205-keep-ordinary-frozen-evidence-compact-and-archive-large-immutable-payloads.md) | Keep ordinary frozen evidence compact and archive large immutable payloads | Accepted | Validation / evidence retention |
+
+- [ADR 0206](0206-execute-runtime-configuration-impact-assessment-on-one-host-before-fdpc2.md) — Execute runtime configuration impact assessment on one host before FDPC2.
+- [ADR 0207](0207-reconfirm-c4-full-domain-performance-under-ambient-runtime-on-a2-host.md) — Reconfirm C4 full-domain performance under ambient runtime on the A2 host.
+
 ## Maintenance rule
 
 - New ADRs use a `## Status` heading.
 - Put the normalized state at the start of the status text (`Proposed`, `Accepted`, or `Superseded by ADR-NNNN`); put candidate/history nuance after it.
 - When a decision is superseded, update both the ADR body and this index in the same documentation change.
 - M11.5 owns automation that verifies ADR numbering, status headings and index coverage before release.
+- [ADR 0208](0208-execute-fdpc2-under-ambient-runtime-on-frozen-a2-host.md) — Execute FDPC2 under ambient runtime on the frozen A2 host.
+
+- [ADR-0209](0209-open-rp1c-selection-only-after-green-fdpc2-and-preserve-select-none.md) — Open RP1C selection only after green FDPC2 and preserve SELECT-NONE.
+
+- [ADR-0210](0210-select-c4-for-r1-planning-after-green-fdpc2-without-production-activation.md) — Select C4 for R1 planning after green FDPC2 without production activation.
+
+- [ADR-0211](0211-stage-selected-c4-behind-new-opt-in-production-closure-mode-before-requalification.md) — Stage selected C4 behind a new opt-in production closure mode before requalification.
+
+- [ADR-0212](0212-implement-selected-c4-as-opt-in-mode2-with-hash-anchored-embedded-reference-payload.md) — Implement selected C4 as opt-in mode 2 with a hash-anchored embedded reference payload.
+- [ADR-0213](0213-requalify-production-mode2-against-independent-if97-and-frozen-topology-before-exact-v9-composition.md) — Requalify production mode 2 against independent IF97 and frozen topology before exact-v9 composition.

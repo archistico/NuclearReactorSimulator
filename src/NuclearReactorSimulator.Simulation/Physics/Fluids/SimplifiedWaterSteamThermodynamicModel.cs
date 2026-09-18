@@ -39,6 +39,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
     private static readonly double SaturatedLiquidDensityMaximumTemperatureKelvins = FindSaturatedLiquidDensityMaximumTemperatureKelvins();
 
     private readonly WaterSteamThermodynamicClosureMode _closureMode;
+    private readonly ReferenceConsistentTabulatedInverseResolver? _referenceConsistentTabulatedInverseResolver;
 
     public SimplifiedWaterSteamThermodynamicModel()
         : this(WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
@@ -53,6 +54,10 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         }
 
         _closureMode = closureMode;
+        if (closureMode == WaterSteamThermodynamicClosureMode.ReferenceConsistentTabulatedInverseDomain)
+        {
+            _referenceConsistentTabulatedInverseResolver = new ReferenceConsistentTabulatedInverseResolver();
+        }
     }
 
     public static Temperature MinimumTemperature { get; } = Temperature.FromKelvins(TriplePointTemperatureKelvins);
@@ -60,6 +65,9 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
     public static Temperature MaximumSaturationTemperature { get; } = Temperature.FromKelvins(MaximumSaturationTemperatureKelvins);
 
     public static Temperature MaximumSuperheatedTemperature { get; } = Temperature.FromKelvins(MaximumSuperheatedTemperatureKelvins);
+
+    internal bool IsLegacyBranchContinuityFusionEligible
+        => _closureMode != WaterSteamThermodynamicClosureMode.ReferenceConsistentTabulatedInverseDomain;
 
     public FluidThermodynamicState Resolve(
         FluidNodeDefinition definition,
@@ -77,6 +85,19 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
         if (!double.IsFinite(specificVolume) || specificVolume <= 0d || !double.IsFinite(specificInternalEnergy))
         {
+            throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
+        }
+
+        if (_referenceConsistentTabulatedInverseResolver is not null)
+        {
+            if (_referenceConsistentTabulatedInverseResolver.TryResolve(
+                    specificVolume,
+                    specificInternalEnergy,
+                    out var referenceConsistentState))
+            {
+                return referenceConsistentState.ToFluidThermodynamicState();
+            }
+
             throw new WaterSteamStateOutOfRangeException(definition.Id, specificVolume, specificInternalEnergy);
         }
 

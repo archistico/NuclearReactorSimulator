@@ -1,23 +1,17 @@
 @echo off
 setlocal EnableExtensions
-set "ROOT=%~dp0"
-cd /d "%ROOT%"
+cd /d "%~dp0"
 if errorlevel 1 exit /b 1
 
-echo Applying M10.9.8.1 REV1 - Integrated Human / Automation / HMI Validation Matrix Freeze...
-echo Removing stale build and M10.9.8.1 audit outputs...
-for /d /r %%D in (bin obj) do @if exist "%%D" rd /s /q "%%D"
-if exist "artifacts\m1098-integrated-validation-matrix" rd /s /q "artifacts\m1098-integrated-validation-matrix"
-
+echo Nuclear Reactor Simulator - M10 Final VR2 RP1C C4
+echo Runtime Configuration Impact Assessment Planning 1 Amendment 1
+echo Execution Host Provenance
 echo.
-echo Baseline: M10.9.7.5 Hotfix 1 VALIDATED; M10.9.7 CLOSED.
-echo M10.9.8.1 REV1 freezes validation contracts only: 19 matrix rows, 11 cross-cutting invariants and owner routing.
-echo All src/tests files remain byte-identical to M10.9.7.5 Hotfix 1 VALIDATED; no compiled/runtime/test-surface change.
+echo This package is planning-only. It changes no production source or existing tests.
+echo It adds same-host provenance requirements before Branch A2 implementation.
 echo.
-echo Run:
-echo   dotnet build
-echo   dotnet test
-echo   scripts\run-m10981-integrated-validation-matrix-audit.cmd
-echo Then review:
-echo   docs\M10_9_8_1_MATRIX_ACCEPTANCE_CHECKLIST.md
+echo Run from PowerShell:
+echo   .\scripts\run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment-planning1-amendment1-host-provenance.cmd
+echo.
+echo Return the complete generated artifact folder before implementing A2.
 exit /b 0

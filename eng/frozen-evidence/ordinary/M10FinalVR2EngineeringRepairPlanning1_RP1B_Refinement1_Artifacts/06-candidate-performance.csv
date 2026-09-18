@@ -1,3 +1,0 @@
-candidate_id,initialization_us,initialization_allocated_bytes,measured_resolve_calls,measured_seam_calls,resolve_median_us,resolve_p95_us,resolve_max_us,seam_max_us,resolve_median_allocated_bytes,median_ceiling_us,p95_ceiling_us,max_ceiling_us,median_allocation_ceiling_bytes,all_timing_values_finite,within_frozen_ceilings
-C2-EXTENDED-TABULATED-SURROGATE,60576.2,5090480,2880,1280,23.6,26.2,211.8,436.7,0,94.8,158.80666666666667,409.30666666666673,2816,true,true
-D2-SEAM-COMPLETE-IF97-COMPARATOR,51123.1,5087648,2880,1280,17.4,20.4,277.1,16569.3,0,94.8,158.80666666666667,409.30666666666673,2816,true,true

@@ -10,4 +10,10 @@ public enum WaterSteamThermodynamicClosureMode
 {
     HistoricalCorrelationTopology = 0,
     CorrelationConsistentInverseDomain = 1,
+
+    /// <summary>
+    /// Explicit opt-in RP1C-selected C4 repair backed by the versioned embedded NRSVR2C4 reference payload.
+    /// Existing modes and default construction remain unchanged.
+    /// </summary>
+    ReferenceConsistentTabulatedInverseDomain = 2,
 }

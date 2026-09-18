@@ -24,7 +24,7 @@ The approved post-release milestone order is now explicit and dependency-driven:
 3. **M14 — Spatial Reactor** — deterministic multi-zone/equivalent-channel-group reference core, multiple rods/groups and selectable local power/flow/void/temperature/xenon/rod evidence. M14 provides the quasi-spatial evidence needed before localized core-damage claims.
 4. **M15 — Accident Progression & Consequence Models** — pressure-boundary damage/leak/rupture, rotating-equipment damage, electrical damage/fire and, only after a dedicated prerequisite gate, bounded core-damage progression.
 
-This order is not a calendar commitment. It is a dependency rule. M13 and M14 are intentionally placed before M15 because M15 consumes both the improved Instructor/operator presentation shell and the quasi-spatial evidence needed for credible localized consequence presentation. The detailed executable plans live in `milestones/M12.md` through `milestones/M15.md`; the cross-milestone map is `FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`.
+This order is not a calendar commitment. It is a dependency rule. M13 and M14 are intentionally placed before M15 because M15 consumes both the improved Instructor/operator presentation shell and the quasi-spatial evidence needed for credible localized consequence presentation. The detailed executable plans live in `milestones/M12.md` through `milestones/M15.md`; the current cross-milestone map is `ROADMAP.md`; the earlier detailed map is retained under `history/project/`.
 
 ## 2. Extreme operation and out-of-envelope robustness
 

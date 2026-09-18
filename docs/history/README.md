@@ -2,9 +2,23 @@
 
 This directory contains records that remain useful for provenance but are no longer the current project description.
 
-- `m10.9.4.1/` contains the detailed A–I numerical-hardening milestone notes, validation checklists, hotfix notes and static reviews.
-- `project/` contains superseded snapshots of high-level project documents retained for historical comparison.
+Use `../PROJECT.md` for the current validated checkpoint and restart instructions, `../ROADMAP.md` for future work, and `../ARCHITECTURE.md` for stable ownership.
 
-Historical files are **not** the place to determine the current production policy, current baseline or next milestone. Use `../PROJECT_STATUS.md`, `../PROJECT_HANDOFF.md` and `../ROADMAP.md` for current state.
+## Structure
 
-Do not delete historical evidence merely because it is no longer current. Delete or compact it only when a validated frozen-evidence contract makes the executable/documentary record redundant.
+- `m10.9.4.1/` — detailed A–I numerical-hardening milestone notes, validation checklists, hotfix notes and static reviews.
+- `m10-validation/` — consolidated completed M10.8–M10.9 validation/checklist material that no longer participates in executable contracts.
+- `m10-final/` — consolidated completed M10 Final diagnostics and VR2/RP1 gate history.
+- `project/` — superseded snapshots and earlier cross-milestone plans retained for comparison.
+- `ARCHITECTURE_MILESTONE_LEDGER.md` — milestone-led architecture chronology superseded by ownership-oriented `../ARCHITECTURE.md`.
+
+## Historical-document rule
+
+Historical files are **not** the place to determine the current production policy, active candidate or next gate. They may intentionally contain links to former paths.
+
+Do not delete historical evidence merely because it is no longer current. Compaction is allowed only when:
+
+1. the source gate is completed/superseded;
+2. no executable validator/script/test references the source path;
+3. the consolidation dossier records every original filename and normalized-LF SHA-256;
+4. the source content is retained in the dossier or in an equivalent frozen-evidence package.

@@ -375,7 +375,7 @@ References:
 
 ## P1B executable implementation
 
-Deep Review Pass 2 returned local PASS / `PASS-AS-AUTHORED`, and P1B has now returned execution PASS. The executable P1B contract is [`../eng/m10-final-replacement-long-closure-plan1-p1b-contract.json`](../eng/m10-final-replacement-long-closure-plan1-p1b-contract.json), the implementation note is [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P1B_SLOW_STATE_OWNER_QUALIFICATION.md), and the branch decision is now staged in [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md).
+Deep Review Pass 2 returned local PASS / `PASS-AS-AUTHORED`, and P1B has now returned execution PASS. The executable P1B contract is [`../eng/m10-final-replacement-long-closure-plan1-p1b-contract.json`](../eng/m10-final-replacement-long-closure-plan1-p1b-contract.json), the implementation note is [`history/m10-final/M10_FINAL_REPLACEMENT_LONG_DIAGNOSTICS_DOSSIER.md`](history/m10-final/M10_FINAL_REPLACEMENT_LONG_DIAGNOSTICS_DOSSIER.md), and the branch decision is now staged in [`M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md`](M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md).
 
 
 ## P1B returned evidence / P2R2 candidate decision

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Physics\Fluids\ReferenceData\NRSVR2C4.v1.bin" LogicalName="NuclearReactorSimulator.Simulation.Physics.Fluids.ReferenceData.NRSVR2C4.v1.bin" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NuclearReactorSimulator.Domain\NuclearReactorSimulator.Domain.csproj" />
   </ItemGroup>
 </Project>

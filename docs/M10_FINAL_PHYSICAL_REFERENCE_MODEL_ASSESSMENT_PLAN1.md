@@ -101,7 +101,7 @@ The full exact-v9/P1B materiality observation has now executed and produced the 
 
 ## VR2 Engineering Repair Planning 1 binding
 
-Returned-evidence adjudication is complete and confirms `HYDRAULIC-MATERIALITY-CONFIRMED`. VR3 therefore remains blocked while validated Planning 1 defines the repair domain and candidate-selection route. Returned RP1A REV1 evidence is now VALIDATED. The only authorized next execution is RP1B [`M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_TEST_ONLY_SHADOW_CANDIDATE_MATRIX.md`](M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_TEST_ONLY_SHADOW_CANDIDATE_MATRIX.md).
+Returned-evidence adjudication is complete and confirms `HYDRAULIC-MATERIALITY-CONFIRMED`. VR3 therefore remains blocked while validated Planning 1 defines the repair domain and candidate-selection route. Returned RP1A REV1 evidence is now VALIDATED. The only authorized next execution is RP1B [`history/m10-final/vr2/M10_FINAL_VR2_RP1B_REFINEMENTS_DOSSIER.md`](history/m10-final/vr2/M10_FINAL_VR2_RP1B_REFINEMENTS_DOSSIER.md).
 
 The planning gate treats the defect as `(v,u) -> phase,T,p,quality` ownership, because the actual exact-v9 path contains 72/72 sampled `pressure` inventories and 55/72 sampled `suction` inventories that production calls `SubcooledLiquid` while independent IF97 resolves Region-4 mixture. A standalone bulk-modulus/specific-heat retune is therefore not sufficient.
 

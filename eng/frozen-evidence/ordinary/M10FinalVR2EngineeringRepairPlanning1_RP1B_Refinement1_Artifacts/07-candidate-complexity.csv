@@ -1,3 +1,0 @@
-candidate_id,family_id,initialization_reference_point_count,max_iterative_solve_iterations,direct_if97_at_resolve_time,algorithm_shape,production_code_dependency
-C2-EXTENDED-TABULATED-SURROGATE,C-BOUNDED-IF97-DERIVED-TABLE-SURROGATE,15585,48,false,reachability-aware-region4-plus-dense-region1-region2-reference-table-interpolation-and-near-boundary-fallback,NONE-TEST-ONLY
-D2-SEAM-COMPLETE-IF97-COMPARATOR,D-BOUNDED-PRODUCTION-IF97-SUBSET-COMPARATOR,15585,1500,true,c2-phase-aware-seed-plus-direct-if97-newton-refinement-with-reference-fallback,NONE-TEST-ONLY

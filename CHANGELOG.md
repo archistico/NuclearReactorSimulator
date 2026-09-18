@@ -1,3 +1,409 @@
+## M10 Final VR2 R3 Requalification 2 — Authored-Seed Forward / Inverse Consistency Diagnostic 2
+
+- Returned Diagnostic 1 is frozen/adjudicated PASS, with an important refinement: logical STEP 0 follows two deterministic seed-preconditioning steps.
+- Adds a test-only zero-dynamic-step diagnostic that reconstructs the 12 exact-v9 raw authored fluid inventories before preconditioning.
+- Compares common forward saturation properties against mode-1 and mode-2 inverse interpretation and reconstructs eight hydraulic pressure heads.
+- No production source, seed repair, threshold, exact-version identity or R4 authority changes.
+
+## M10 Final VR2 R3 Requalification 2 Initial Closure / Operating-Point Displacement Diagnostic 1 — Hotfix 1
+
+- Fixed five compile errors in the test-only diagnostic; production source is unchanged.
+- Added `NuclearReactorSimulator.Application.Scenarios.Recording` for `ControlRoomSnapshotFingerprint`.
+- Aligned diagnostic rollback fields/summary parameters with the authoritative `long` type of `FourNodeProductionActivationTelemetrySnapshot.RollbackSteps`.
+- Added the derived `DynamicRow.SnapshotFingerprintMatch` property already referenced by the classification logic.
+- No diagnostic method, classification rule, threshold, production repair, exact-v9 identity or R4 authority changed.
+
+## M10 Final VR2 R3 Requalification 2 — Initial Closure / Operating-Point Displacement Diagnostic 1
+
+- Returned R3 Requalification 2 is frozen as RED: 12,000/12,000 health-envelope violations despite finite, conservative, trip-free, breaker-closed and deterministic repaired mode-2 execution.
+- Adds a test-only 1 s diagnostic comparing mode1/mode2 initial conserved inventories, factory thermodynamics, same-inventory direct closure mapping, eight hydraulic pressure heads and the first 100 running steps.
+- Diagnostic classification distinguishes seed-inventory divergence, identical-inventory closure-mapping displacement, post-seed integration divergence, or unresolved.
+- No production source, threshold, default mode, canonical exact-v9 identity or R4 authority changes.
+
+## M10 Final VR2 R3 Short Exact-v9-Equivalent Shadow / Composition Requalification 2
+
+- Returned Repair Implementation 1 evidence is frozen and adjudicated PASS.
+- Adds one test-only R3 Requalification 2 test, logic-identical to R3-1 but executed against the repaired production baseline.
+- Acceptance is unchanged: 128-step baseline equality, 120 s / 12,000 mode-2 steps, inherited health/ownership/conservation envelope, and 128-step deterministic repeat.
+- Full no-incremental solution build precedes the ordinary suite; Application.Tests is rebuilt no-incremental again before the long focused run.
+- No additional production, threshold, payload, default, canonical exact-v9 identity or R4 authority change.
+
+## M10 Final VR2 R3 Mode-2 Branch-Continuity Fusion Repair Implementation 1 — Hotfix 1
+
+- Fixed a stale incremental assembly hazard observed in the ordinary Release suite.
+- The candidate source already contained `IsLegacyBranchContinuityFusionEligible`, and `InternalsVisibleTo("NuclearReactorSimulator.Simulation.Tests")` was valid; however, `eng\ci-ordinary.cmd` performs an incremental solution build. After replacing a candidate over an existing working tree, MSBuild could reuse the previous `NuclearReactorSimulator.Simulation.dll`, causing the new focused test to compile against an assembly that did not yet contain the new internal property.
+- The Implementation 1 runner now performs `dotnet restore` followed by a full solution `dotnet build --configuration Release --no-restore --no-incremental` before invoking the unchanged canonical ordinary suite.
+- Production source, focused test, repair semantics, thresholds, payload, exact-v9 identity and downstream authority are unchanged.
+
+## M10 Final VR2 R3 Mode-2 Branch-Continuity Fusion Repair Implementation 1
+
+- Planning 1 returned PASS-AS-AUTHORED and is frozen byte-for-byte.
+- Added the two-file `MODE2-FUSION-ELIGIBILITY-GUARD`: modes 0/1 remain H.28.1-E eligible; mode 2 uses the existing non-fused production `Resolve()` path.
+- Added one focused Simulation test for returned-state equality and mode-0/mode-1 optimized-vs-non-fused regression.
+- No resolver, payload, closure enum/default, threshold or exact-v9 wiring change.
+- A PASS remains implementation-only; R3 Short Requalification 2 is mandatory before R4.
+
+## M10 Final VR2 R3 Mode-2 Branch-Continuity Fusion Repair Planning 1
+
+- Diagnostic 1 returned PASS and is frozen byte-for-byte.
+- Selected two-file mode-2 fusion eligibility guard repair planning.
+- Planning-only: no src/tests changes.
+- Preserves the two known bare-marker serialization defects in returned Diagnostic 1 evidence as non-blocking historical evidence.
+
+## M10 Final VR2 R3 Mode-2 Branch-Continuity Fusion Failure Diagnostic 1 — Hotfix 1
+
+- Fixed the focused diagnostic test compilation by importing `NuclearReactorSimulator.Simulation.Physics.Fluids`.
+- The import resolves `ReferenceConsistentTabulatedInverseResolver` and `WaterSteamInverseBranchSelectionDiagnostic`; `InternalsVisibleTo("NuclearReactorSimulator.Simulation.Tests")` remains the visibility authority for the internal resolver.
+- No production source, returned failure evidence, diagnostic hypothesis, thresholds, runtime mode, exact-v9 behavior, or R4 authority changed.
+
+## M10 Final VR2 R3 Mode-2 Branch-Continuity Fusion Failure Diagnostic 1
+
+- Added a test-only diagnostic for the returned R3 `turbine-inlet` out-of-range state.
+- Freezes the returned 128/128 canonical-v9 vs mode-1 shadow baseline artifact.
+- Compares mode-2 resolver/direct Resolve, same-instance H.28.1-E fused branch continuity, and a distinct-instance non-fused branch-continuity path.
+- No production source, thresholds, canonical exact-v9 identity, mode defaults, or R4 authority changed.
+
+## M10 Final VR2 R3 Short Exact-v9-Equivalent Shadow Composition Requalification 1 — Deep Pre-Run Review 2
+
+- Hardened stale-evidence handling: the R3 runner now removes any previous R3 artifact directory before the static audit and fails closed if cleanup or later artifact-directory creation fails.
+- Strengthened the execution validator to verify the frozen Planning 1 contract hash, prerequisite identities, single-factor contract, stride/determinism counts, output manifest, classifications, successor and all authority boundaries.
+- Strengthened final adjudication to re-check the production source tree, historical test tree, focused-test hash, exact-v9 provenance hashes and gate-file hashes after execution.
+- Key-value evidence now rejects duplicate keys and explicitly requires all health/determinism keys before numeric interpretation, avoiding PowerShell null-to-zero false greens.
+- CSV adjudication now requires exact baseline step sequence 1..128 and exact sampled trajectory sequence 100..12000 with matching simulated times.
+- `01-contract-and-provenance.txt` now records the execution-contract, focused-test, source-tree, historical-test-tree, planning-contract and returned-audit hashes.
+- Removed remaining stale live/current wording from `PROJECT.md`, `ROADMAP.md` and `docs/README.md`; the roadmap again contains future sequencing only.
+- No production source, historical test, focused R3 test physics/criteria, threshold, closure mode, exact-v9 identity or runtime behavior changed.
+
+## M10 Final VR2 R3 Short Exact-v9-Equivalent Shadow Composition Requalification 1 — Pre-Run Classic Error Check 1
+
+- Corrects the stale R3 Planning 1 returned-evidence adjudication placeholder to the already returned/adjudicated PASS state.
+- Repairs `docs/PROJECT.md` so its active validation section and continuation rule point to the current R3 execution gate instead of superseded Runtime Configuration Impact / RP1C checkpoints.
+- Removes duplicated live checkpoint text from README/navigation and removes the obsolete top-level historical Hotfix 3 banner; `PROJECT.md` remains the single current-state authority.
+- Removes the duplicated live-status paragraph from `ROADMAP.md`, keeping the roadmap future-sequencing-only.
+- Hardens the R3 validator with explicit current PROJECT command/checkpoint markers and the returned Planning 1 adjudication marker.
+- Changes pre-adjudication R3 evidence writer statuses from `PASS-*` to neutral `*-EVIDENCE-WRITTEN`; only the adjudicator may emit final PASS classifications.
+- No production source, physics, threshold, frozen corpus, exact-v9 identity, runtime default or R3 acceptance criterion changes.
+
+## M10 Final VR2 R3 execution candidate — Documentation Review 1
+
+- Reviewed the R3 execution candidate statically while execution is deferred. No new code/test/harness blocker was identified.
+- Reconciled `ROADMAP.md`, root `README.md`, and `docs/README.md` to the actual checkpoint: R1 and R2 closed PASS; R3 Planning 1 returned/adjudicated PASS; R3 execution is the only live gate; R4 Planning 1 requires returned R3 adjudication.
+- Removed stale live R1/R2 labels from the roadmap and preserved them as historical closed checkpoints.
+- No `src/`, `tests/`, runner, validator, adjudicator, threshold, corpus, exact-v9, or runtime-mode behavior changed.
+
+## M10 Final VR2 R3 Short Exact-v9-Equivalent Shadow / Composition Requalification 1
+
+- Returned R3 Planning 1 was adjudicated PASS-AS-AUTHORED and frozen as four immutable prerequisite artifacts.
+- Added one explicit Application focused test only; no production source or historical test changed.
+- The test proves 128-step canonical exact-v9 ↔ mode-1 shadow fingerprint equivalence before scoring mode 2.
+- The scored shadow changes only `thermodynamicClosureMode` from `CorrelationConsistentInverseDomain` to `ReferenceConsistentTabulatedInverseDomain`.
+- R3 runs the inherited 120 s / 12,000-step exact-v9 short health, conservation and moisture-ownership envelope plus a fresh 128-step mode-2 deterministic repeat.
+- R4 long materiality, default activation, canonical exact-v9 mutation, new exact identity, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+## M10 Final VR2 R3 Short Exact-v9-Equivalent Shadow / Composition Requalification — Planning 1
+
+- Adjudicated the complete nine-file R2 returned package PASS and froze it under `eng/frozen-evidence/ordinary`.
+- Opened R3 planning only. The future gate is test-only and proves a mode-1 shadow composition is fingerprint-equivalent to canonical exact-v9 before substituting mode 2 as the sole factor.
+- Frozen short workload: 120 s / 12,000 steps at the existing exact-v9 5 MWe operating point, using the previously qualified health/conservation/moisture-ownership envelope.
+- R4 retains the P1B-equivalent 5→6 MWe long materiality replay.
+- No production source, default mode, historical exact-v9 identity, threshold or exact-version activation changed.
+
+## M10 Final VR2 R2 Focused Thermodynamic Reference Topology Qualification 1 — Hotfix 1
+
+- Fixed the R2 evidence adjudicator PowerShell helper name: `R` collided with the built-in `r` alias for `Invoke-History`; the helper is now `Require-R2`.
+- Made Region-4 self-check artifact IDs culture-invariant so `R4-TSAT-P0.1` is serialized with a decimal point on Italian Windows instead of producing the malformed CSV row `R4-TSAT-P0,1`.
+- No production source, physical threshold, frozen corpus, runtime mode, exact-v9 composition, topology criterion, or reference calculation changed.
+- The R2 focused test must be rerun so the self-check CSV is regenerated in a formally valid form before final adjudication.
+
+## M10 Final VR2 R2 Focused Thermodynamic / Reference / Topology Qualification 1 — Execution Candidate
+
+- Adjudicated the returned R2 Planning 1 four-artifact package `PASS-AS-AUTHORED` and froze it under `eng/frozen-evidence/ordinary`.
+- Authorized only the bounded R2 test/reference execution gate.
+- Added exactly one explicit focused Simulation test over 40 VR2 rows, 360 exact-v9 frozen states and 1,280 seam probes against independent IF97/RP1A reference evidence.
+- Preserved production source, payload, historical tests, default mode, exact-v9 composition, thresholds and R4 hydraulic ownership unchanged.
+- R3 planning remains blocked pending returned R2 execution evidence adjudication.
+
+## M10 Final VR2 R2 Focused Thermodynamic Reference Topology Qualification — Planning 1
+
+- Adjudicated returned R1 Selected-C4 Opt-In Closure Implementation 1 evidence as PASS and froze its seven evidence artifacts byte-for-byte.
+- Froze R2 as planning-only: independent IAPWS-IF97 reference qualification over 40 VR2 points, 360 exact-v9 frozen states, and 1,280 seam probes / 320 boundaries.
+- Preserved the existing 25% VR2 blocking ceiling, 10% Planning-1 pressure target, 1e-8 independent-reference self-check, and C3/C4 continuity non-regression ceilings.
+- Reserved exact-v9 composition for R3 and hydraulic long-materiality execution for R4.
+- Added fail-closed planning contract, validator, runner, ADR-0213, returned-evidence placeholders, current-status reconciliation, and frozen R1 provenance.
+- No `src` or `tests` file changed; R2 execution, production default/runtime activation, exact-v9 changes, R3 planning, VR3, P3-R1, and second replacement-long remain unauthorized.
+
+## M10 Final VR2 R1 Selected C4 Opt-In Closure Implementation 1 — Hotfix 7
+
+- Corrected the historical mode-1 regression oracle. The frozen exact-v9 node corpus stores density, not the original specific-volume input; reconstructing `v = 1/rho` is therefore not a bitwise-authoritative replay input.
+- The 360-row density-derived mode-1 comparison remains in evidence as observation-only diagnostics and is no longer used as a zero-mismatch acceptance criterion.
+- Historical mode-1 preservation is now proven by an exact legacy-source projection: remove only the three authorized mode-2 integration fragments from `SimplifiedWaterSteamThermodynamicModel.cs`, normalize back to the original CRLF source representation, and require SHA-256 `93C5212C09D5D7362531398DE1CED105589D93DF9A892A3E6BE6BF401446D55E`, the Planning 1 frozen production-model source hash.
+- The ordinary Release suite remains mandatory and mode 0/default still requires zero runtime mismatches.
+- No production source, payload, frozen corpus, thermodynamic tolerance, exact-v9 behavior, or runtime activation changed.
+
+## M10 Final VR2 R1 Selected C4 Opt-In Closure Implementation 1 — Hotfix 6
+
+- Hardened the R1 execution harness against stale incremental `bin/obj` outputs after candidate replacement.
+- After the ordinary Release suite, the R1 runner now forces a `--no-incremental` rebuild of `NuclearReactorSimulator.Simulation.Tests` before the focused test executes with `--no-build`.
+- No production source, Domain source, payload, frozen corpus, tolerance, closure mode, exact-v9 behavior, or focused-test semantics changed.
+- The focused test remains the Hotfix 5 canonical Domain-unit version with SHA-256 `586B3E4B2BBDD0E00F0C4E26E313C7BAA4D69E1D171BB7718E78503B0697A8E2`.
+
+## 2026-09-18 — M10 Final VR2 R1 Implementation 1 - Hotfix 5 - canonical Domain-unit model integration equivalence
+
+- Returned Hotfix 4 evidence proves payload reproducibility PASS and advances the focused gate to model integration, where exactly 79 of 1,679 observations fail only after `Pressure.FromMegapascals(p)` stores pascals and the test converts the result back through `Pressure.Megapascals`.
+- Full frozen-corpus analysis reproduces exactly those 79 failures (VR2=3, EXACT-V9=16, SEAM=60), all pressure-only; resolver-vs-C4 state bits, repeatability, resolve status and resolution path are already zero-mismatch before the model-integration assertion.
+- Corrects the focused test boundary: C4/resolver equivalence remains bit-exact in frozen Celsius/MPa bits, while model integration is compared bit-exactly in the Domain quantities' canonical stored units (`Temperature.Kelvins`, `Pressure.Pascals`, phase and vapor-quality fraction).
+- No production source, Domain source, payload, resolver algorithm, frozen corpus, threshold, mode semantics, default/exact-v9 activation or downstream authority changes.
+
+## 2026-09-18 — M10 Final VR2 R1 Implementation 1 - Hotfix 4 - target-platform payload provenance alignment
+
+- Hotfix 3 diagnostic evidence measured 570 differing bytes across 429 IEEE-754 fields between the initially packaged payload and two byte-identical C# regenerations on the qualified local Windows/.NET target. The vapor table was byte-identical; observed differences were bounded last-bit/platform floating-point drift in dense saturation, prefix saturation and liquid-table reference values.
+- Replaces only `NRSVR2C4.v1.bin` with the exact `D2-generated-platform-payload.bin` returned by the Hotfix 3 diagnostic (`SHA-256 EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267`) and synchronizes the compiled hash anchor, validator literal and R1 implementation contract hashes.
+- Restores the clean Hotfix 2 focused test: diagnostic-only capture instrumentation and the diagnostic-only runner are not carried into this candidate. No IF97 equation, C4 source, resolver algorithm, mode semantics, threshold, default activation, exact-v9 call site or downstream authority changes.
+
+
+## 2026-09-18 — M10 Final VR2 R1 Implementation 1 - Hotfix 2 - focused-test namespace import
+
+- Fixes the ordinary Release compile RED `CS0246` in `R1SelectedC4OptInClosureImplementationTests.cs` by importing `NuclearReactorSimulator.Simulation.Physics.Fluids`.
+- The import resolves both `SimplifiedWaterSteamThermodynamicModel` and the internal `ReferenceConsistentTabulatedInverseResolver`; existing `InternalsVisibleTo("NuclearReactorSimulator.Simulation.Tests")` remains the visibility authority.
+- No production source, embedded payload, frozen corpus, thresholds, runtime/default/exact-v9 behavior, runner/adjudicator, or downstream authority is changed.
+- Synchronizes only the focused-test SHA-256 entries in the R1 implementation contract to the reviewed Hotfix 2 bytes.
+
+## M10 Final VR2 R1 Implementation 1 - Hotfix 1 - PowerShell path-char compatibility
+
+- Fixes the static-audit false RED caused by treating `\\` as a one-character path separator in PowerShell.
+- `Get-CanonicalTree` now uses `[char[]]@('\','/')` for `TrimStart` and one-character `\` replacement semantics.
+- Production implementation, payload, focused test, adjudicator, runner, evidence contract, thresholds and authority boundaries are otherwise unchanged.
+- Validator normalized SHA-256 in the R1 gate contract is synchronized to the reviewed Hotfix 1 bytes.
+
+## 2026-09-18 - M10 Final VR2 RP1C Engineering Repair Selection 1 candidate
+
+- Adjudicates returned Selection Planning 1 as `PASS-AS-AUTHORED`.
+- Implements the decision-only `RP1C-ENGINEERING-REPAIR-SELECTION1` gate with authored decision `SELECT-C4`; `SELECT-NONE` remains preserved and considered.
+- Performs no new measurement and changes no candidate, runtime profile, threshold, exact-v9 or seam corpus.
+- A returned/adjudicated `SELECT-C4` may authorize only `R1-IMPLEMENTATION-PLANNING-ONLY`; production repair and all downstream authority remain false.
+
+## M10 Final VR2 — RP1C Selection Planning 1 candidate
+
+- freezes returned FDPC2 as selection-ready evidence for C4 + `AMBIENT-UNSET`;
+- preserves D3 seam-max blocker and FDPC1 negative history;
+- freezes future decision space `SELECT-C4 | SELECT-NONE`;
+- adds no production/runtime/threshold authority.
+## 2026-09-18 - M10 Final VR2 RP1C C4 FDPC2 executable candidate
+
+- Adjudicated returned `Full-Domain Performance Confirmation 2 Planning 1` as `PASS-AS-AUTHORED`.
+- Added evidence-only `RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2`.
+- Freezes `AMBIENT-UNSET`, the A2 host fingerprint/power scheme, five fresh full-domain processes, 217,600 measured calls and 32 final evidence files.
+- Preserves FDPC1 negative history, immutable C4/exact-v9/seam corpora and all existing thresholds.
+- No RP1C selection or production/runtime authority is granted.
+
+## 2026-09-18 — A2 returned adjudication / FDPC2 Planning 1
+
+- Accepts the complete 78-file Runtime Configuration Impact Assessment 1 tree as valid same-host evidence.
+- Freezes `AMBIENT-UNSET` as operationally sufficient on the A2 host without claiming internal runtime-default identity.
+- Preserves all 78 A2 files: 68 direct compact prerequisites and 10 large exact-v9 raw CSVs in an authenticated compressed archive pack.
+- Opens planning only for `RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION2-PLANNING1`; future FDPC2 remains immutable-C4, ambient/unset, same-host, five-process and 217,600-call.
+- Preserves FDPC1 negative history and all thresholds. FDPC2 implementation, RP1C selection and all production/runtime authority remain false.
+
+## Hotfix 8 - A2 adjudicator hash synchronization
+
+- Corrected the A2 contract implementation hash for the adjudicator after the Hotfix 7 `$host` -> `$hostEvidence` rename.
+- No executable A2 logic changed.
+
+# M10 Final A2 Hotfix 7 — PowerShell Automatic Variable Collision
+
+- Fixes infrastructure-only adjudicator failure caused by assigning to `$host`, which collides case-insensitively with PowerShell automatic read-only `$Host`.
+- Renames the local host-provenance map to `$hostEvidence`; evidence protocol, child artifacts, thresholds and authority boundaries are unchanged.
+- Existing complete child evidence from the failed Hotfix 6 run is reusable; only final evidence adjudication must be rerun after static validation.
+
+
+## M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment 1 Hotfix 6 — Require-Text Literal Marker Sync
+
+- Fixed the A2 static validator marker for `$counts.Executed`: the prior single-quoted PowerShell literal ``'`$counts.Executed'`` incorrectly retained the backtick and therefore searched for a non-existent character sequence.
+- The validator now requires the actual implementation text `$counts.Executed`.
+- No A2 protocol, implementation, evidence shape, source/test tree, threshold, runtime profile, host policy, or authority boundary changed.
+- Full Require-Text audit confirms all static markers resolve against their actual targets.
+## M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment 1 - Hotfix 4
+
+- Classifies the Hotfix 3 `[1/4]` failure as infrastructure-only: the local diagnostic found 959 expected canonical `src` files, zero missing, zero changed, and 204 extras consisting exclusively of generated `bin/`/`obj/` build output.
+- Changes runtime tree identity to hash canonical source/test files while excluding generated `bin` and `obj` subtrees; the frozen Compaction1 hashes and counts remain unchanged.
+- Removes the runtime prohibition on local `bin`/`obj`/`TestResults` directories because normal prior build/test activity may legitimately leave them in a working copy. Candidate ZIP cleanliness remains a separate packaging-time invariant.
+- Permits a pre-existing partial A2 artifact directory from a failed prior attempt because the orchestrator deletes and recreates its owned A2 output root before collecting new evidence, preventing stale/new evidence mixing.
+- Preserves Hotfix 3 schema-aware xUnit accounting, same-host provenance, 78-file evidence shape, immutable C4/exact-v9/thresholds and all downstream authority boundaries.
+- Reconciles A2 docs and ADR-0206 with the canonical-source-vs-generated-output distinction.
+
+## M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment 1 - Hotfix 3
+
+- Classifies the first Hotfix 2 local A2 attempt as infrastructure RED during ordinary-suite evidence collection; exact-v9 evidence already collected remains partial/non-adjudicated and grants no engineering authority.
+- Corrects structured xUnit accounting using the returned xUnit v3 3.2.2 schema-3 evidence: derives `executed = passed + failed + skipped`, accepts reporter `total` only as either `executed` or `executed + not-run`, and records the detected accounting mode.
+- Uses `executed`, never reporter `total`, for zero-work guards, cross-profile cardinality checks and the non-VR2 hot-path exactly-one-test invariant.
+- Preserves .NET 10 MTP argument placement, single-host provenance, 78-file evidence shape, immutable C4/exact-v9/thresholds and every downstream authority boundary.
+- Reconciles PROJECT, detailed execution plan, A2 contract/review/adjudication documents and ADR-0206 with the observed reporter behavior.
+
+## M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment 1 - Hotfix 1
+
+- Corrects xUnit v2+ XML accounting by reading the canonical `not-run` attribute instead of deriving it from other counters.
+- Fails closed when a project/filter invocation executes no tests, preventing zero-work false PASS evidence.
+- Rejects and removes equivalent `COMPlus_*` JIT/runtime aliases so the two A2 profiles differ only by the intended controlled `DOTNET_*` treatment.
+- Runs `dotnet test` from the repository root while sending structured results to the per-run work directory, avoiding current-directory-induced test behavior changes.
+- No C4, exact-v9 corpus, threshold, production runtime, RP1C, FDPC2, VR3, P3-R1 or replacement-long authority change.
+
+# M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment 1 — CANDIDATE — 2026-09-17
+
+- Adjudicates Planning 1, Host-Provenance Amendment 1 and Frozen Evidence Ordinary Compaction 1 as returned `PASS-AS-AUTHORED` prerequisites and implements only the evidence-only Branch A2 gate.
+- Compares `AMBIENT-UNSET` with `EXPLICIT-REFERENCE-ALL-ON` on one physical host with start/end SHA-256 host fingerprint and active-power-scheme stability checks; cross-host evidence mixing is infrastructure RED.
+- Collects 10 fresh exact-v9 processes / 230,400 calls, ordinary Release-suite evidence, four frozen replay/determinism classes under both profiles, and 3 fresh M10.9.7.2 non-VR2 hot-path processes per profile; final evidence shape is exactly 78 files.
+- Uses structured xUnit XML as the authoritative functional-test count source and pins the MTP results directory, so localized console output cannot create a false RED.
+- Scrubs A2-specific `NRS_*` state and all five controlled DOTNET compilation variables from every child before applying the selected runtime profile.
+- Preserves immutable C4, exact-v9 corpus, `409.30666666666673 us` strict maximum, diagnostic-only `100 us` floor, compact frozen-evidence store and all existing production source.
+- Engineering-negative or inconclusive profile outcomes remain returned evidence; only evidence-integrity, host/power, environment, structured-report or exact-matrix failures are infrastructure RED.
+- FDPC2, RP1C selection, production runtime/repair, threshold/exact-v9 change, VR3, P3-R1 and second replacement-long remain unauthorized pending returned A2 adjudication.
+
+# M10 Final Frozen Evidence Ordinary Compaction 1 — Hotfix 1 — 2026-09-17
+
+- Classifies the first Compaction 1 local attempt as infrastructure RED before artifact creation; no engineering evidence or authority changed.
+- Corrects the tree-identity validator to use explicit ordinal, case-sensitive relative-path ordering instead of Windows PowerShell 5.1 `Sort-Object` semantics.
+- Preserves the existing frozen `src`/`tests` tree hashes, all seven archive packs, the 76 archived payload identities, the compact-store layout and every authority boundary.
+- Adds no A2 implementation and makes no physics, runtime, exact-v9 or threshold change.
+
+# M10 Final Frozen Evidence Ordinary Compaction 1 — 2026-09-17
+
+- Adjudicates Runtime Configuration Impact Assessment Planning 1 Amendment 1 returned evidence `PASS-AS-AUTHORED`; A2 remains unimplemented.
+- Restores the established compact-store boundary for `eng/frozen-evidence/ordinary`: direct payloads must be <= 1 MiB unless separately adjudicated.
+- Externalizes 76 immutable raw payloads / 167,307,127 uncompressed bytes from recent VR2 performance evidence into seven compressed gate-scoped packs under `eng/frozen-evidence/archive`.
+- Preserves canonical logical path, SHA-256 and uncompressed byte count in `eng/frozen-evidence/large-payload-manifest.csv`; the three pre-existing I.3 external rows remain unchanged.
+- Reduces the expanded ordinary store to 499 direct files / 9,247,351 bytes while retaining summaries, aggregates, runtime context and compact evidence at their original logical paths.
+- Adds fail-closed PowerShell 5.1 restore/re-compaction tooling for historical validators that require the externalized raw files.
+- Adds ADR-0205 and an evidence-retention dossier; `src/`, tests, C4, exact-v9, thresholds and runtime decisions are unchanged.
+- A2 implementation, FDPC2, RP1C selection, production runtime/repair, VR3, P3-R1 and second replacement-long remain unauthorized by this maintenance gate.
+
+# M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment Planning 1 Amendment 1 — Execution Host Provenance — 2026-09-17
+
+- Adjudicates the returned Runtime Configuration Impact Assessment Planning 1 four-file artifact set `PASS-AS-AUTHORED`.
+- Records post-return workflow information that project performance gates may run on materially different physical PCs.
+- Adds a planning-only host-provenance amendment before any A2 implementation.
+- Freezes one physical host per complete A2 execution, with the same host required for both runtime profiles and every assessment family.
+- Requires privacy-preserving SHA-256 host fingerprinting; machine name, user name and raw system UUID are not written to evidence.
+- Requires active Windows power-scheme capture at gate start/end and fail-closed handling of host/power provenance drift.
+- Keeps absolute wall-clock evidence host-scoped and forbids direct cross-host timing or threshold extrapolation.
+- Preserves C4, exact-v9, profiles, run counts, 78-file future evidence shape, strict `409.30666666666673 us` ceiling and diagnostic-only `100 us` floor.
+- Adds ADR-0204 and updates PROJECT/ROADMAP/README/index without restoring consolidated historical documentation.
+- A2 implementation, FDPC2, RP1C selection, production runtime change/repair, threshold/exact-v9 change, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+# M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment Planning 1 Candidate — 2026-09-17
+
+- Adjudicates returned Dynamic PGO Comparator 1 as complete 46-file / 10-process / 230,400-call evidence.
+- Promotes only the repeated Dynamic PGO central-distribution effect; rare strict-tail causality remains unproven.
+- Freezes the full returned comparator tree byte-for-byte under `eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_DynamicPgoComparator1_Artifacts/`.
+- Adds ADR-0203 and planning-only `RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1`.
+- The future A2 design compares ambient/unset with an explicit all-ON qualification reference across exact-v9, ordinary Release, M10 replay/determinism and representative non-VR2 performance.
+- Keeps C4, exact-v9, thresholds and production source immutable; A2 implementation, RP1C selection, production/runtime change, FDPC2, VR3, P3-R1 and second replacement-long remain unauthorized.
+
+# M10 Final VR2 RP1C C4 Dynamic PGO Comparator 1 Candidate — 2026-09-17
+
+- Adjudicated returned Dynamic PGO Comparator Planning 1 as `PASS-AS-AUTHORED`.
+- Added evidence-only `RP1C-C4-EXACT-V9-DYNAMIC-PGO-COMPARATOR1`.
+- Added explicit two-mode exact-v9 timing test, fail-closed 10-process runner and aggregate integrity adjudicator.
+- Frozen single factor: only `DOTNET_TieredPGO` changes; TieredCompilation/QuickJit/QuickJitForLoops/ReadyToRun remain ON.
+- Preserved C4, RP1A exact-v9 corpus, performance thresholds and all production/runtime authority.
+- Added returned-planning adjudication, comparator implementation contract and pre-execution review.
+- Final gate evidence shape: 46 files / 10 processes / 230,400 measured calls.
+- Branch A2 Runtime Configuration Impact Assessment remains unauthorized pending returned comparator evidence.
+
+# M10 Final — VR2 RP1C C4 Dynamic PGO Comparator Planning 1 — CANDIDATE
+
+## 2026-09-17 — Runtime Factor Isolation 1 returned adjudication and QJFL-enabled PGO planning
+
+- Freezes the complete 86-file Runtime Factor Isolation 1 evidence tree under `eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_RuntimeFactorIsolation1_Artifacts/`. The planning validator fail-closes on the complete deterministic byte-manifest SHA-256, not only aggregate/key-file hashes.
+- Adjudicates evidence integrity PASS: 20 fresh processes, 460,800 measured calls, zero unresolved calls, zero measured allocation and zero measured-region GC.
+- Promotes only the bounded A↔B conclusion: TieredCompilation has a material single-factor causal effect on the gross slowdown; one tiering-on strict miss prevents treating TieredCompilation as the complete rare-tail owner.
+- Does not promote QuickJit as a rare-tail causal owner; records QuickJitForLoops as having no material tail benefit.
+- Keeps Dynamic PGO materially unresolved for QJFL=1 and creates planning-only `RP1C-C4-DYNAMIC-PGO-COMPARATOR-PLANNING1`.
+- Freezes a future 2-mode, 10-process, 230,400-call comparator that changes only `DOTNET_TieredPGO` while TieredCompilation, QuickJit, QuickJitForLoops and ReadyToRun remain ON.
+- Defers ambient/effective-default equivalence and broader runtime regression assessment to Branch A2; no comparator implementation, RP1C selection or production/runtime change is authorized.
+- Preserves Documentation Consolidation Phase 1 and all historical candidate identities.
+
+# M10 Final — VR2 RP1C C4 Runtime Factor Isolation 1 — Hotfix 1
+
+## 2026-09-17 — Windows PowerShell 5.1 UTF-8 source-decoding false RED correction
+
+- Classifies the first local Runtime Factor Isolation 1 attempt as infrastructure/documentary RED in static step `[1/4]`, before build, focused evidence or engineering measurement.
+- Removes the non-ASCII multiplication-sign byte sequence from the validator source; the exact UTF-8 `64 × 360` Markdown marker is now constructed as `[char]0x00D7` at runtime.
+- Adds a fail-closed 7-bit-ASCII source check for the validator, adjudicator and CMD runner to prevent recurrence under Windows PowerShell 5.1 legacy source decoding.
+- Replays all direct `Require-Text` markers against their exact UTF-8 targets and preserves the existing normalized-LF SHA pins.
+- Leaves C4, `src/`, exact-v9 corpus, performance baseline, focused test, contract, runner, adjudicator, four runtime modes, 20-process schedule, thresholds and authority boundaries unchanged.
+- Preserves Documentation Consolidation Phase 1; no historical dossier is restored or moved.
+
+# M10 Final — VR2 RP1C C4 Runtime Factor Isolation 1 — CANDIDATE
+
+## 2026-09-17 — Executable evidence-only single-factor runtime isolation gate
+
+- Implements the returned `PASS-AS-AUTHORED` Planning 1 contract as `RP1C-C4-EXACT-V9-RUNTIME-FACTOR-ISOLATION1`.
+- Uses the frozen four-mode A→B→C→D single-factor chain across 20 fresh processes and 460,800 measured exact-v9 calls.
+- Holds Dynamic PGO OFF and ReadyToRun ON in every mode; Dynamic PGO remains outside this gate.
+- Preserves immutable C4, exact-v9 corpus, `409.30666666666673 us` strict maximum and diagnostic-only `100 us` tail floor.
+- Separates engineering-negative/inconclusive outcomes from infrastructure RED and forbids automatic causal promotion or RP1C selection.
+- Requires the complete 86-file evidence tree to be returned for adjudication before any selection or production/runtime change.
+
+# M10 Final — VR2 RP1C C4 Runtime Factor Isolation Planning 1 — CANDIDATE
+
+## 2026-09-17 — Single-factor runtime isolation planning after Attribution 1 returned adjudication
+
+- Freezes a planning-only four-mode chain that isolates `TieredCompilation`, `QuickJit`, and `QuickJitForLoops` through adjacent single-factor contrasts while holding Dynamic PGO OFF and ReadyToRun fixed.
+- Preserves immutable C4, frozen exact-v9 corpus, `409.30666666666673 us` ceiling and diagnostic-only `100 us` floor.
+- Uses 4 modes x 5 fresh processes, 460,800 measured exact-v9 calls and an 86-file future evidence contract.
+- Keeps Dynamic PGO outside this gate; a QJFL=1 PGO OFF/ON comparator requires separate returned-planning authorization if still material.
+- Authorizes no runtime-factor implementation, RP1C selection, production/runtime configuration change, threshold change, exact-v9 change, VR3, P3-R1 or second replacement-long.
+
+# M10 Final — VR2 RP1C C4 Exact-v9 Tail Attribution 1 REV1 — Hotfix 1
+
+## 2026-09-17 — Static validator documentation-marker alignment
+
+- Classifies the first local REV1 attempt as a static-audit/infrastructure RED before build or focused evidence.
+- Repairs one literal documentation marker in `validate-m10-final-vr2-engineering-repair-planning1-rp1c-c4-exact-v9-tail-attribution1.ps1`: `full exact-v9 matrix integrity` -> `full exact-v9 row identity`.
+- Confirms the pre-execution review already freezes the intended full `64 x 360` exact-v9 matrix identity/order invariant.
+- Replays all active validator document markers, code markers and normalized-LF SHA pins: 68/68 PASS.
+- Preserves C4, `src/`, tests, runtime-mode matrix, corpus, thresholds, runner, adjudicator and authority boundaries unchanged.
+- Stacks on Documentation Consolidation Phase 1; no consolidated historical documents are restored or moved.
+
+# Documentation consolidation and historical compaction — DOCUMENTATION ONLY
+
+## 2026-09-17 — Detailed documentation audit and safe phase-1 cleanup
+
+- Audits 716 Markdown files under `docs/`, including 231 live top-level documents, 95 top-level M10 documents, 201 ADRs, 175 pre-existing history documents and 96 milestone files.
+- Identifies M10 gate/checklist/diagnostic accumulation as the primary navigation problem; stable subsystem documentation remains intentionally modular.
+- Preserves every document referenced by `eng/`, `scripts/`, `tests/`, `src/` or `.github/` at its exact path.
+- Consolidates 50 completed, executable-unreferenced M10 documents into five historical dossiers with original filename manifests, normalized-LF SHA-256 values and retained source snapshots.
+- Reduces live top-level `docs/*.md` from 231 to 179 and total Markdown files under `docs/` from 716 to 671.
+- Folds documentation-governance rules into the curated `docs/README.md`, archives the superseded cross-milestone forward plan under `history/project/`, regenerates the top-level live-document index and fixes the stale `history/README.md` current-state pointers.
+- Finds 16 already-stale literal documentation markers in legacy validators; these pre-exist the cleanup and are deferred to a later validator-migration phase.
+- Leaves `src/`, `tests/`, `eng/`, `scripts/` and `.github/` byte-identical to the input package.
+
+# M10 Final — VR2/RP1C Forward Roadmap Consolidation — DOCUMENTATION ONLY
+
+## 2026-09-17 — Detailed post-Attribution decision tree through VR2 closure and M10 resumption
+
+- Expands `docs/ROADMAP.md` with the detailed conditional route beginning from Attribution 1 REV1 and continuing through returned-evidence adjudication, runtime-sensitive/runtime-insensitive/inconclusive/infrastructure branches, optional C5 successor planning, RP1C selection, R1-R6 production repair/requalification, VR3-VR5 and P3-R1/P3-R2/P4-P6.
+- Preserves Attribution 1 REV1 as the next executable gate; this documentation update authorizes no execution beyond the authority already recorded in `PROJECT.md`.
+- Adds explicit hard stops for runtime-configuration confounds, performance-contract changes, historical-tail contradiction, candidate mutation and infrastructure REDs.
+- Records that a PGO-specific interpretation remains limited by the frozen `DOTNET_TC_QuickJitForLoops=0` matrix and requires separately planned QJFL=1 comparison if material.
+- Defines the convergence rule: RP1C selection remains `SELECT-CANDIDATE | SELECT-NONE`, and positive selection authorizes only R1 planning.
+- Expands the post-selection route R1-R6 and the resumed Plan Amendment 3 route VR3 -> VR4 -> VR5 -> P3-R1 -> P3-R2 -> P4 -> P5 -> P6.
+- Updates `PROJECT.md` and `docs/README.md` only to point readers to the detailed future roadmap; no `src/`, tests, scripts, contracts, thresholds or candidate evidence are changed.
+
+# M10 Final — VR2 Engineering Repair Planning 1 — RP1C C4 Exact-v9 Wall-Clock Tail Attribution 1 — CANDIDATE
+
+## 2026-09-17 — Returned planning adjudication and evidence-only runtime-mode implementation
+
+- Adjudicates the returned Tail Attribution Planning 1 four-file artifact set PASS and freezes it byte-for-byte under `eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_ExactV9TailAttributionPlanning1_Artifacts/`.
+- Authorizes only the separately versioned evidence-only Attribution 1 implementation; RP1C selection and production repair remain unauthorized.
+- Adds one explicit focused test over immutable C4 and the frozen exact-v9 corpus.
+- Executes four runtime modes × five fresh processes = 20 processes, with 16 warm-up passes, 64 measured passes and 23,040 exact-v9 calls/process = 460,800 measured calls.
+- Fails closed when the caller already defines any planned `DOTNET_*` compilation variable; inherited configuration is never silently cleared.
+- Preserves `100 us` as diagnostic only and the strict `409.30666666666673 us` maximum unchanged.
+- Adds an 86-file evidence contract: 20 process directories × four files plus six aggregate files.
+- Adjudicator summarizes mode/run, pass-window and row/path evidence but deliberately emits no automatic causal promotion.
+- Adds ADR-0200 and pre-execution review; C4, production `src/`, frozen corpora and thresholds remain unchanged.
+
 # M10 Final — VR2 Engineering Repair Planning 1 — RP1C C4 Exact-v9 Wall-Clock Tail Attribution Planning 1 — CANDIDATE
 
 ## 2026-09-17 — Evidence-only runtime/tiering attribution protocol freeze
@@ -4201,3 +4607,82 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Replaces the two-argument `Contains` check and the `Require-Contains` `IndexOf(..., StringComparison.Ordinal)` helper with the single-argument `String.Contains(string)` API, preserving case-sensitive ordinal marker semantics while removing the runtime-overload dependency.
 - Does not modify C4, frozen corpora, focused test logic, runner protocol, adjudicator, thresholds, evidence contract, RP1C selection authority or production/runtime code.
 - The failed first attempt produced no focused evidence and grants no new authority.
+
+
+### M10 Final VR2 RP1C C4 Exact-v9 Wall-Clock Tail Attribution 1 REV1 — Conclusive Review Hardening
+- Performs a second pre-execution review before the 20-process runtime attribution experiment.
+- Closes a false-PASS integrity gap by requiring every process CSV to match the full deterministic `64 x 360` exact-v9 matrix and frozen probe/logical-step/node identity.
+- Pins the frozen RP1A performance baseline and removes the duplicated hard-coded strict-max literal from the focused test's per-call flagging path.
+- Counterbalances runtime-mode execution by run block to reduce systematic time/order confounding while preserving four modes, five fresh processes per mode and 460,800 measured calls.
+- Adds run sequence provenance, run/pass provenance for tail rows, and stronger cross-checks of process summaries, allocation accounting and GC deltas.
+- Keeps C4, production `src/`, frozen exact-v9 corpus, `100 us` diagnostic floor, `409.30666666666673 us` engineering ceiling and all RP1C/production authority unchanged.
+
+- REV1 conclusive review guardrail: returned Planning 1 keeps `DOTNET_TC_QuickJitForLoops=0` while the `C2-MIXTURE-PREFIX` target path is loop-bearing; a null PGO-on/off comparison is therefore non-exclusionary for Dynamic PGO, and a QJFL=1 comparator requires a separately adjudicated planning amendment.
+
+## 2026-09-17 — Attribution 1 returned-evidence adjudication
+
+- Froze the complete 86-file RP1C C4 Exact-v9 Tail Attribution 1 REV1 evidence package.
+- Adjudicated comparative evidence PASS: runtime configuration materially affects exact-v9 wall-clock performance.
+- `TIERING-OFF` is rejected as a repair direction; both explicit tiering-on modes recorded zero strict exceedances.
+- Dynamic PGO causality, ambient-default equivalence and scheduling/off-CPU causality remain unproven.
+- RP1C selection and production/runtime changes remain unauthorized; next step is planning-only single-factor runtime isolation.
+
+## 2026-09-17 — RP1C C4 Runtime Factor Isolation 1 executable candidate
+
+- Freezes the returned `RP1C C4 Runtime Factor Isolation Planning 1` four-file evidence set as `PASS-AS-AUTHORED` under `eng/frozen-evidence/ordinary`.
+- Implements the evidence-only `RP1C-C4-EXACT-V9-RUNTIME-FACTOR-ISOLATION1` gate without changing production `src/`, C4, the frozen exact-v9 corpus, or performance thresholds.
+- Uses four single-factor runtime modes with Dynamic PGO fixed OFF and ReadyToRun fixed ON; adjacent contrasts isolate TieredCompilation, QuickJit and QuickJitForLoops in that order.
+- Retains 5 fresh processes per mode, 20 processes total, 16 warm-up passes, 64 measured passes, 23,040 measured calls per process and 460,800 calls overall.
+- Adds fail-closed caller `DOTNET_*` preflight, counterbalanced blocked-by-run ordering, raw per-call evidence, runtime context, process summaries and full `64 x 360` matrix identity checks.
+- Adds `02-runtime-factor-run-summary.csv`, the three-row `03-single-factor-contrast-summary.csv`, per-mode aggregate evidence and tail row/path provenance while explicitly forbidding automatic causal promotion.
+- Engineering negative/inconclusive results remain valid evidence and do not become infrastructure RED; integrity/build/environment failures remain RED.
+- Dynamic PGO remains outside this gate and requires separately adjudicated planning if still material afterward.
+- RP1C selection, production runtime changes, production repair, threshold/exact-v9 changes, VR3, P3-R1 and second replacement-long authorization remain false.
+
+## M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment 1 — Hotfix 2 / second-pass review
+- Corrected .NET 10 MTP CLI boundary: `--results-directory` now precedes `--`; xUnit extension switches remain forwarded after `--`.
+- Added native `--minimum-expected-tests 1` to every structured ordinary/replay/hot-path invocation.
+- Corrected xUnit XML v2+ accounting: `total = passed + failed + skipped`; `not-run` is recorded separately and is not included in `total`.
+- Retained COMPlus alias fail-closed controls, repository-root working directory, same-host fingerprint/power-plan enforcement and 78-file evidence contract.
+- Reconciled PROJECT, ROADMAP, detailed next-steps plan, ADR 0206 and A2 docs so earlier planning/PGO checkpoints are clearly historical rather than active.
+
+### M10 Final VR2 RP1C C4 Runtime Configuration Impact Assessment 1 Hotfix 5 — contract/validator synchronization
+
+- Fixes an infrastructure-only `PropertyNotFoundStrict` in the A2 static validator.
+- Adds the already-enforced working-copy policy `preexisting_a2_artifact_policy=ORCHESTRATOR-DELETE-AND-RECREATE-BEFORE-EVIDENCE` to the A2 contract.
+- No test, runner, orchestrator, adjudicator, C4, exact-v9 corpus, threshold, evidence shape, runtime profile, host policy, or authority boundary changes.
+- Hotfix 5 supersedes Hotfix 4 for execution.
+
+## 2026-09-18 — R1 Implementation Planning 1
+
+- Adjudicated returned RP1C Selection 1 as `SELECT-C4` for planning authority only.
+- Added R1 planning contract/validator/runner and documentation.
+- Froze new opt-in closure mode value 2, offline C# reference-data generation/provenance and production-vs-C4 equivalence requirements.
+- Preserved `src/`, `tests/`, exact-v9, runtime defaults and all downstream activation authorities.
+
+## 2026-09-18 — R1 Implementation Planning 1 Hotfix 1 — review hardening
+
+- Second-pass review found the original planning scope inconsistent with its own `VERSIONED-BIT-EXACT-EMBEDDED-BINARY-RESOURCE` requirement: the SDK project only auto-embeds `*.resx`, so `NuclearReactorSimulator.Simulation.csproj` is now explicitly inside the future R1 change boundary for the binary `EmbeddedResource` declaration.
+- Freezes payload schema `NRSVR2C4` v1: little-endian IEEE-754 binary64 raw bits, full-payload SHA-256 validation, load-once-per-process behavior, fail-closed `InvalidDataException`, and no resolve-time resource I/O, decode or allocation.
+- Freezes the exact R1 semantic equivalence corpus rather than only its total count: 1,679 state rows plus 288 hydraulic rows, hash-pinned to the returned C4 semantic CSVs with ordinal-unique identities.
+- Requires mode 2 to dispatch to a dedicated resolver before the existing mode-0/mode-1 pipeline; fallthrough into the current equality-based branches is forbidden.
+- Freezes the test/reference C# generator ownership and forbids Python generation, solution-file changes and unrelated project-file changes.
+- Reconciles stale current-state documentation so A2/FDPC2/Selection checkpoints are historical and R1 Implementation Planning 1 is the only live activity.
+- Production `src/` and pre-existing tests remain byte-identical; this hotfix is still planning-only.
+
+
+- Review follow-up freezes the exact embedded-resource path/logical name `NRSVR2C4.v1.bin` and requires the expected payload SHA-256 to be anchored in compiled production C#, removing ambiguity between project embedding, loader lookup and runtime integrity authority.
+- Review follow-up also freezes constructor-time payload initialization, immutable loaded structures, invariant/canonical C# generation and an exact existing-production-file modification allowlist, preventing lazy first-call work or scope creep in the later R1 implementation.
+
+- Final review hardening freezes the exact future file set (3 existing production modifications, 2 new production files, 2 new test/reference files), a static process-wide immutable payload cache initialized by the first mode-2 resolver, and `03-reference-data-provenance.txt` as evidence-only SHA-256 provenance rather than runtime authority.
+- Future R1 reproducibility is defined as two temporary C# regenerations that must be byte-identical to each other, the checked-in embedded payload and the compiled SHA-256 constant; historical regression must cover modes 0 and 1 explicitly.
+
+
+## 2026-09-18 — R1 Selected C4 Opt-In Closure Implementation 1 candidate
+
+- Adjudicates returned R1 Implementation Planning 1 as PASS and implements the RP1C-selected C4 behavior behind explicit closure mode 2 only.
+- Adds the versioned/hash-anchored `NRSVR2C4` v1 embedded reference payload and a production-local tabulated inverse resolver with no production IF97 dependency.
+- Preserves historical modes 0/1, default construction, exact-v9 call sites and runtime defaults.
+- Adds offline C# payload generation/reproducibility evidence and focused 1,679-state + 288-hydraulic bit-equivalence/regression qualification.
+- Requires ordinary Release PASS and exactly seven returned evidence files before any R2 planning.
+- Adds R1 executable-gate documentation and ADR-0212; no downstream activation authority is granted.
