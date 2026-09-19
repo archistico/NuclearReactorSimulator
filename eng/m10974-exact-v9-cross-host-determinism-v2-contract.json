@@ -1,0 +1,65 @@
+{
+  "schema": "m10974-exact-v9-cross-host-determinism-contract-v2",
+  "status": "CANDIDATE",
+  "scope": "Exact-V9 cross-host determinism contract only; no physics/tolerance/VR2-R3 change",
+  "algorithms": {
+    "raw_v1": {
+      "id": "sha256-control-room-snapshot-v1",
+      "purpose": "same-host exact selector/direct equality and historical provenance",
+      "historical_local_exact_v9_aggregate": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+      "hosted_observed_exact_v9_aggregate": "1E8AAF3799059D8C9FB2E930981E26B0B31ECF465673AB6C722B24A95D80FDD7",
+      "cross_host_frozen": false
+    },
+    "cross_host_v2": {
+      "id": "sha256-control-room-snapshot-v2-presentation-canonical",
+      "rule": "Start from canonical V1 JSON. Preserve all bytes except JSON-number values of properties named numericValue, which are replaced by numeric token 0; preserve numericValue:null unchanged.",
+      "rationale": "numericValue is hidden machine precision redundant with sibling valueText/unit/state; raw V1 remains available for same-host exact equality.",
+      "frozen_exact_v9_aggregate": "99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73",
+      "determinism_steps": 128
+    }
+  },
+  "evidence": {
+    "local_transitive_diagnostic_sha256": "C84388F6E0AC0811B7288D25B681991D6C5354ACDCC4B7D2E651DF31C7855A3B",
+    "hosted_runtime_alignment_artifact_sha256": "69FBFB03C6CE430469D4D6EF0D5EAEDE7EC046C2DA955A006AB6600282A03A91",
+    "hosted_ordinary_artifact_sha256": "5B30DCA12C9ECCCB1C151A3401B0284C830FC27C674689AA22B366118DF91CF7",
+    "runtime_alignment_framework": ".NET 10.0.5",
+    "runtime_alignment_os": "Microsoft Windows 10.0.26100",
+    "runtime_alignment_result": "RAW-V1-STILL-HOST-SENSITIVE",
+    "hosted_runtime_alignment_and_ordinary_trace_payloads_byte_identical": true,
+    "cross_host_v2_all_128_step_hashes_equal_on_local_and_hosted_returned_evidence": true
+  },
+  "required_assertions": [
+    "raw V1 selector aggregate equals raw V1 direct aggregate on the same host",
+    "cross-host V2 selector aggregate equals cross-host V2 direct aggregate",
+    "cross-host V2 selector aggregate equals frozen V2 aggregate",
+    "existing physical health and conservation assertions remain unchanged"
+  ],
+  "prohibitions": {
+    "change_historical_raw_v1_record": false,
+    "physics_change_authorized": false,
+    "tolerance_change_authorized": false,
+    "vr2_r3_change_authorized": false,
+    "accept_multiple_host_specific_raw_hashes": false
+  },
+  "frozen_source_manifest": {
+    "path": "eng/m10974-exact-v9-cross-host-determinism-v2-frozen-source-manifest.json",
+    "sha256": "C861B07F2D05CDC53D1FEA2666D67F2AFABB46A7AC7E5A59C408909C586ABFE3"
+  },
+  "file_hashes": {
+    "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs": "64FBBA1C750185136E98DD8DED7FEDD81F1FAC88D44427CA325564145D8D2B8E",
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationDecisionTests.cs": "E600D3FE43F2A67C5F7D16791DD88D67458348E4A3E6F491C45B24CD90F531FF",
+    "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/MissionPerformance/M10974FingerprintV2CrossHostContractTests.cs": "5A327418E766EC68A6D8AAB3C87A1541B2F8732837093E74E16484A2D82836EA",
+    ".github/workflows/ordinary-ci.yml": "BDCB5A1F196E2C47050459DDA75A388649104203FFFFEE33018CF6462B5A1AD3",
+    "eng/ci-ordinary.cmd": "E8AEC59B23F5FB0A8E61870D808D05D267B056E9A1D135523A72FFE56F5C4F1D",
+    "eng/ci-current-evidence.cmd": "BA5225F572136C100E23D1F874E44602E722A2ED15327997CB8DAB81B04023DE",
+    "global.json": "15FC2962D00BBB3FEBAE9DDB01301F0723EBB743E1CFCD57AF3D1FDD3FB640BB",
+    "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/MissionPerformance/M10974FingerprintV1SchemaAnchorTests.cs": "9F8D4605954A48993FC8C75D7BAA3824A4646088AB8CD6240E18B8923A762BA3"
+  },
+  "evidence_files": {
+    "eng/evidence/m10974-exact-v9-cross-host-determinism-v2/returned-evidence-step-hashes.tsv": "9F381ABAA90D545ABF68A93E283CD625ADFF7EFA832543E60B9FC7534FFA4284",
+    "eng/evidence/m10974-exact-v9-cross-host-determinism-v2/returned-evidence-summary.json": "4F1F567A2645E3A1EEFAA2B57A3AE0C6F5C9106F552B7B83F04B894BA20CE337",
+    "docs/M10974_EXACT_V9_HOSTED_RUNTIME_ALIGNMENT_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md": "FD2C7A025AB1B987D2635100209C89FEDDEE336CFC5BE16FEEC08ECCBA3090E8",
+    "docs/M10974_EXACT_V9_CROSS_HOST_DETERMINISM_CONTRACT_V2.md": "2DC3050D8F4D6280062ADD73BB9099ADA6E5BEE2B576A811F03F6F60C041D47C",
+    "docs/adr/0215-version-exact-v9-cross-host-determinism-instead-of-freezing-host-sensitive-raw-doubles.md": "EC1FDA32D448D58770A2045A20C385840D4AAE7B3D71EEBF86748B4E21F4C781"
+  }
+}

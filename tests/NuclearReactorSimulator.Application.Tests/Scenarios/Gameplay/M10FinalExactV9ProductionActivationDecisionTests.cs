@@ -25,13 +25,15 @@ namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 /// </summary>
 public sealed class M10FinalExactV9ProductionActivationDecisionTests
 {
+    // NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-DETERMINISM-V2
     private const string OptInEnvironmentVariable = "NRS_M10_FINAL_V9_ACTIVATION_DECISION";
     private const string PrerequisitesEnvironmentVariable = "NRS_M10_FINAL_V9_ACTIVATION_PREREQUISITES_PASSED";
     private const int HealthSteps = 12_000;
     private const int MissionSteps = 1_200;
     private const int DeterminismSteps = 128;
     private const int StageCausalStep = 126;
-    private const string FrozenDeterminismFingerprint = "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418";
+    private const string HistoricalRawV1DeterminismFingerprint = "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418";
+    private const string FrozenCrossHostV2DeterminismFingerprint = "99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73";
     private static readonly UTF8Encoding Utf8WithoutBom = new(encoderShouldEmitUTF8Identifier: false);
 
     [Fact]
@@ -236,8 +238,11 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         WriteExactV9CrossHostTransitiveDiagnostic(selectorTrace, directTrace);
         var selectorFingerprint = selectorTrace.AggregateFingerprint;
         var directFingerprint = directTrace.AggregateFingerprint;
+        var selectorCrossHostV2Fingerprint = selectorTrace.CrossHostV2AggregateFingerprint;
+        var directCrossHostV2Fingerprint = directTrace.CrossHostV2AggregateFingerprint;
         Assert.Equal(directFingerprint, selectorFingerprint);
-        Assert.Equal(FrozenDeterminismFingerprint, selectorFingerprint);
+        Assert.Equal(directCrossHostV2Fingerprint, selectorCrossHostV2Fingerprint);
+        Assert.Equal(FrozenCrossHostV2DeterminismFingerprint, selectorCrossHostV2Fingerprint);
 
         var mission = RunCurrentProductionMission();
         Assert.Equal(0, mission.TripSteps);
@@ -268,6 +273,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             maxBalanceMassRate,
             maxBalancePower,
             selectorFingerprint,
+            selectorCrossHostV2Fingerprint,
             mission);
     }
 
@@ -342,6 +348,16 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             }
         }
 
+        var crossHostV2Builder = new StringBuilder();
+        foreach (var entry in entries)
+        {
+            var crossHostV2Fingerprint =
+                ControlRoomSnapshotFingerprint.ComputeCrossHostV2FromCanonicalV1Payload(entry.Payload);
+            crossHostV2Builder.Append(FormattableString.Invariant($"{entry.Step}:{crossHostV2Fingerprint}||"));
+        }
+        var crossHostV2AggregateFingerprint =
+            Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(crossHostV2Builder.ToString())));
+
         if (stageCausalSnapshot is null || stageCausalLogicalStep < 0)
         {
             throw new InvalidOperationException("Exact-V9 resolver causal snapshot was not captured at the frozen divergent step.");
@@ -354,6 +370,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         var sharedNodeDiagnostic = BuildExactV9AdmissionTrainSharedNodeDiagnostic(stageCausalSnapshot);
         return new DeterminismTraceCapture(
             Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))),
+            crossHostV2AggregateFingerprint,
             entries,
             new ExactV9StageCausalTraceEntry(StageCausalStep, stageCausalLogicalStep, stageDiagnostic),
             new ExactV9StageMassFlowResolverTraceEntry(StageCausalStep, stageCausalLogicalStep, resolverDiagnostic),
@@ -679,9 +696,12 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         var summaryLines = new[]
         {
             "schema=m10974-exact-v9-cross-host-transitive-determinism-diagnostic1",
-            $"expected-frozen-aggregate={FrozenDeterminismFingerprint}",
-            $"selector-aggregate={selector.AggregateFingerprint}",
-            $"direct-aggregate={direct.AggregateFingerprint}",
+            $"historical-local-raw-v1-aggregate={HistoricalRawV1DeterminismFingerprint}",
+            $"frozen-cross-host-v2-aggregate={FrozenCrossHostV2DeterminismFingerprint}",
+            $"selector-raw-v1-aggregate={selector.AggregateFingerprint}",
+            $"selector-cross-host-v2-aggregate={selector.CrossHostV2AggregateFingerprint}",
+            $"direct-raw-v1-aggregate={direct.AggregateFingerprint}",
+            $"direct-cross-host-v2-aggregate={direct.CrossHostV2AggregateFingerprint}",
             $"selector-direct-per-step-equal={perStepEqual}",
             $"determinism-steps={DeterminismSteps}",
             $"framework={RuntimeInformation.FrameworkDescription}",
@@ -968,7 +988,8 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         double maxEnergyClosure,
         double maxBalanceMassRate,
         double maxBalancePower,
-        string deterministicFingerprint,
+        string rawV1DeterministicFingerprint,
+        string crossHostV2DeterministicFingerprint,
         MissionResult mission)
     {
         var directory = ReportDirectory();
@@ -980,7 +1001,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             FormattableString.Invariant($"minimum-moisture-drain-kg-s={minimumMoistureDrain:G17}; max-commanded-transfer-mismatch-kg-s={maximumTransferMismatch:G17}; max-stage-energy-ownership-residual-w={maxStageOwnershipResidual:G17};"),
             FormattableString.Invariant($"max-network-mass-closure-kg={maxMassClosure:G17}; max-network-energy-closure-j={maxEnergyClosure:G17}; max-network-balance-mass-rate-kg-s={maxBalanceMassRate:G17}; max-network-balance-power-w={maxBalancePower:G17};"),
             FormattableString.Invariant($"corrected-triggered={telemetry.TriggeredSteps}; corrected-committed={telemetry.CorrectedCommittedSteps}; rollbacks={telemetry.RollbackSteps}; fallback-commit-violations={telemetry.FallbackCommitViolations}; unsafe-commits={telemetry.UnsafeCommitViolations}; untargeted-disagreements={telemetry.UntargetedBranchDisagreementSteps};"),
-            $"determinism-steps={DeterminismSteps}; selector-equals-direct-factory=True; fingerprint={deterministicFingerprint};",
+            $"determinism-steps={DeterminismSteps}; selector-equals-direct-factory-raw-v1=True; raw-v1-host-fingerprint={rawV1DeterministicFingerprint}; historical-local-raw-v1-fingerprint={HistoricalRawV1DeterminismFingerprint}; cross-host-v2-fingerprint={crossHostV2DeterministicFingerprint}; frozen-cross-host-v2-fingerprint={FrozenCrossHostV2DeterminismFingerprint};",
             FormattableString.Invariant($"mission-steps={MissionSteps}; mission-pack={mission.PackExactId}; mission-scenario={mission.ScenarioId}; mission-trip-steps={mission.TripSteps}; mission-breaker-open-steps={mission.BreakerOpenSteps}; mission-final-score={mission.FinalScore:G17};"),
             "exact-v9-authoritative=True; exact-v4-historical-retained=True; exact-v3-historical-retained=True; exact-v2-fail-closed-kill-preserved=True; production-mission-v3-authoritative=True; production-mission-v2-historical-retained=True; historical-identities-reinterpreted=False; production-activation=True; replacement-long-authorized=False;",
             "next-step=after this activation decision gate passes, freeze a new exact-v9 production baseline manifest and authorize only the redesigned replacement long campaign; do not reuse the failed exact-v4 long manifest;",
@@ -1172,6 +1193,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
 
     private sealed record DeterminismTraceCapture(
         string AggregateFingerprint,
+        string CrossHostV2AggregateFingerprint,
         IReadOnlyList<DeterminismTraceEntry> Entries,
         ExactV9StageCausalTraceEntry StageCausalTrace,
         ExactV9StageMassFlowResolverTraceEntry StageMassFlowResolverTrace,

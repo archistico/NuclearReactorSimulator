@@ -364,3 +364,26 @@ Active local qualification command for this checkpoint:
 Return the complete `artifacts/m10974-fingerprint-v1-cross-host-determinism-hotfix1-rev2` folder. If local qualification is GREEN, push the exact same candidate and require GitHub hosted `ordinary-ci` GREEN before unblocking VR2 Repair Planning 1.
 
 NRS-MARKER:PROJECT-FPV1-HOTFIX1-ACTIVE-COMMAND
+
+## 2026-09-19 - Exact-V9 cross-host determinism contract V2 candidate
+
+NRS-MARKER:PROJECT-EXACT-V9-CROSS-HOST-DETERMINISM-V2
+
+The runtime-alignment experiment is adjudicated: GitHub forced to `.NET 10.0.5` still reproduced the hosted raw V1
+aggregate `1E8AAF...80FDD7`, and its 128-step payload trace is byte-identical to ordinary hosted CI. The historical
+local raw V1 aggregate `7880AD...B5418` is therefore retained as provenance and same-host exact evidence, not as a
+cross-host frozen assertion.
+
+The candidate introduces `sha256-control-room-snapshot-v2-presentation-canonical` with frozen Exact-V9 aggregate
+`99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73`. V2 preserves the complete presentation
+payload except hidden machine-precision `numericValue` number tokens, while V1 selector/direct equality and all
+existing physical/conservation gates remain exact and unchanged.
+
+Local qualification command:
+
+```powershell
+.\scripts\run-m10974-exact-v9-cross-host-determinism-contract-v2.cmd
+```
+
+If local qualification is GREEN, push the exact candidate unchanged and require hosted `ordinary-ci` GREEN before
+closing the CI block. R3 remains RED/frozen until that hosted gate passes.

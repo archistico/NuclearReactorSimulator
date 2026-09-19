@@ -1,3 +1,9 @@
+# 2026-09-19 — M10.9.7.4 Exact-V9 Cross-Host Determinism Contract V2 Validator/Apply Hotfix 1
+
+- Fixed candidate application semantics for the superseded one-shot workflow: ZIP overlay cannot represent file deletion, so the V2 runner now deletes exactly `.github/workflows/exact-v9-runtime-alignment-diagnostic.yml` before validation if that stale file remains from the preceding runtime-alignment candidate.
+- The V2 validator remains fail-closed and still requires the one-shot workflow to be absent after cleanup.
+- No `src/`, test, golden, V1/V2 fingerprint algorithm, physics, tolerance, ordinary-CI, `global.json` or VR2/R3 change.
+
 # 2026-09-19 — M10.9.7.4 Exact-V9 Hosted Runtime Alignment Diagnostic 1 candidate
 
 - Stopped the ULP-by-ULP diagnostic chain after Diagnostic 4: evidence now shows 127/128 cross-host steps bit-identical, one transient step-126 one-ULP pressure-node drift, and immediate bit-identical reconvergence.
@@ -4997,3 +5003,12 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Preserves the Diagnostic 2 REV1 target test, contract, runner, frozen manifests, production `src`, workflow/CI semantics, Fingerprint V1 golden, Exact-V9 frozen aggregate, physics, tolerances and VR2/R3 authority.
 - The failed REV1 run stopped at static validation before restore/build/test and contains no new Exact-V9 engineering evidence.
 
+
+## 2026-09-19 - M10.9.7.4 Exact-V9 Cross-Host Determinism Contract V2
+
+- Adjudicates the hosted runtime-alignment probe: forcing `.NET 10.0.5` with runtime roll-forward disabled reproduced the same hosted Exact-V9 raw V1 aggregate and the same 128-step hosted trace as ordinary CI, so runtime patch mismatch is excluded.
+- Retains `sha256-control-room-snapshot-v1` unchanged for historical provenance and exact same-host selector/direct equality.
+- Introduces `sha256-control-room-snapshot-v2-presentation-canonical` as the frozen cross-host contract. V2 starts from canonical V1 JSON and replaces only numeric JSON values of `numericValue` properties with `0`, preserving `null`, `valueText`, `unit`, `state`, structure and all other fields.
+- Freezes the returned-evidence V2 128-step aggregate at `99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73`; all 128 V2 step fingerprints match between the qualified local trace and hosted returned evidence.
+- Removes the one-shot `exact-v9-runtime-alignment-diagnostic` workflow after adjudication so it cannot remain a permanent expected-RED status.
+- Does not change simulation physics, thermodynamic/turbine logic, numerical tolerances, production policy, mission binding or VR2/R3 authority.
