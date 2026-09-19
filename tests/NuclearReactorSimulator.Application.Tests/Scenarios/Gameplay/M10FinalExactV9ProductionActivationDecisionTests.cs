@@ -1,3 +1,5 @@
+using System.IO.Compression;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using NuclearReactorSimulator.Application.ControlRoom;
@@ -24,6 +26,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
     private const int HealthSteps = 12_000;
     private const int MissionSteps = 1_200;
     private const int DeterminismSteps = 128;
+    private const string FrozenDeterminismFingerprint = "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418";
     private static readonly UTF8Encoding Utf8WithoutBom = new(encoderShouldEmitUTF8Identifier: false);
 
     [Fact]
@@ -223,10 +226,13 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         Assert.True(maxBalanceMassRate <= 1e-8d);
         Assert.True(maxBalancePower <= 1e-3d);
 
-        var selectorFingerprint = DeterminismFingerprint(useSelector: true);
-        var directFingerprint = DeterminismFingerprint(useSelector: false);
+        var selectorTrace = DeterminismTrace(useSelector: true);
+        var directTrace = DeterminismTrace(useSelector: false);
+        WriteExactV9CrossHostTransitiveDiagnostic(selectorTrace, directTrace);
+        var selectorFingerprint = selectorTrace.AggregateFingerprint;
+        var directFingerprint = directTrace.AggregateFingerprint;
         Assert.Equal(directFingerprint, selectorFingerprint);
-        Assert.Equal("7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418", selectorFingerprint);
+        Assert.Equal(FrozenDeterminismFingerprint, selectorFingerprint);
 
         var mission = RunCurrentProductionMission();
         Assert.Equal(0, mission.TripSteps);
@@ -299,7 +305,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             source.Current.Score.FinalScore);
     }
 
-    private static string DeterminismFingerprint(bool useSelector)
+    private static DeterminismTraceCapture DeterminismTrace(bool useSelector)
     {
         var engine = useSelector
             ? Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
@@ -310,13 +316,114 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
                 new DesktopSustainedGenerationPostMoistureEquilibriumCandidateInitialConditionFactory().CreateRuntimeEngine());
 
         var builder = new StringBuilder();
+        var entries = new List<DeterminismTraceEntry>(DeterminismSteps);
         for (var step = 1; step <= DeterminismSteps; step++)
         {
             var snapshot = engine.Step(ControlRoomRunState.Running);
-            builder.Append(FormattableString.Invariant(
-                $"{step}:{ControlRoomSnapshotFingerprint.Compute(snapshot)}||"));
+            var payload = ControlRoomSnapshotFingerprint.SerializeCanonicalPayload(snapshot);
+            var fingerprint = Convert.ToHexString(SHA256.HashData(payload)).ToLowerInvariant();
+            builder.Append(FormattableString.Invariant($"{step}:{fingerprint}||"));
+            entries.Add(new DeterminismTraceEntry(step, snapshot.LogicalStep, fingerprint, payload));
         }
-        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString())));
+
+        return new DeterminismTraceCapture(
+            Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))),
+            entries);
+    }
+
+    // NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-TRANSITIVE-DIAGNOSTIC1
+    private static void WriteExactV9CrossHostTransitiveDiagnostic(
+        DeterminismTraceCapture selector,
+        DeterminismTraceCapture direct)
+    {
+        var diagnosticsRoot = Environment.GetEnvironmentVariable("NRS_FINGERPRINT_V1_DIAGNOSTICS_DIR");
+        if (string.IsNullOrWhiteSpace(diagnosticsRoot))
+        {
+            return;
+        }
+
+        var outputDirectory = Path.Combine(diagnosticsRoot, "exact-v9-transitive");
+        var captureDirectory = Path.Combine(outputDirectory, "capture");
+        if (Directory.Exists(captureDirectory))
+        {
+            Directory.Delete(captureDirectory, recursive: true);
+        }
+        Directory.CreateDirectory(captureDirectory);
+
+        var selectorDirectory = Path.Combine(captureDirectory, "payloads-selector");
+        var directDirectory = Path.Combine(captureDirectory, "payloads-direct");
+        Directory.CreateDirectory(selectorDirectory);
+        Directory.CreateDirectory(directDirectory);
+
+        var selectorLines = new List<string> { "step\tlogicalStep\tfingerprint\tpayloadBytes" };
+        var directLines = new List<string> { "step\tlogicalStep\tfingerprint\tpayloadBytes" };
+        var perStepEqual = selector.Entries.Count == direct.Entries.Count;
+
+        for (var index = 0; index < selector.Entries.Count; index++)
+        {
+            var selectorEntry = selector.Entries[index];
+            selectorLines.Add(FormattableString.Invariant(
+                $"{selectorEntry.Step}\t{selectorEntry.LogicalStep}\t{selectorEntry.Fingerprint}\t{selectorEntry.Payload.Length}"));
+            File.WriteAllBytes(
+                Path.Combine(selectorDirectory, $"step-{selectorEntry.Step:D3}.json"),
+                selectorEntry.Payload);
+
+            if (index >= direct.Entries.Count)
+            {
+                perStepEqual = false;
+                continue;
+            }
+
+            var directEntry = direct.Entries[index];
+            directLines.Add(FormattableString.Invariant(
+                $"{directEntry.Step}\t{directEntry.LogicalStep}\t{directEntry.Fingerprint}\t{directEntry.Payload.Length}"));
+            File.WriteAllBytes(
+                Path.Combine(directDirectory, $"step-{directEntry.Step:D3}.json"),
+                directEntry.Payload);
+
+            if (selectorEntry.Step != directEntry.Step
+                || selectorEntry.LogicalStep != directEntry.LogicalStep
+                || !string.Equals(selectorEntry.Fingerprint, directEntry.Fingerprint, StringComparison.Ordinal)
+                || !selectorEntry.Payload.AsSpan().SequenceEqual(directEntry.Payload))
+            {
+                perStepEqual = false;
+            }
+        }
+
+        File.WriteAllLines(Path.Combine(captureDirectory, "sequence-selector.tsv"), selectorLines, Utf8WithoutBom);
+        File.WriteAllLines(Path.Combine(captureDirectory, "sequence-direct.tsv"), directLines, Utf8WithoutBom);
+
+        var summaryLines = new[]
+        {
+            "schema=m10974-exact-v9-cross-host-transitive-determinism-diagnostic1",
+            $"expected-frozen-aggregate={FrozenDeterminismFingerprint}",
+            $"selector-aggregate={selector.AggregateFingerprint}",
+            $"direct-aggregate={direct.AggregateFingerprint}",
+            $"selector-direct-per-step-equal={perStepEqual}",
+            $"determinism-steps={DeterminismSteps}",
+            $"framework={RuntimeInformation.FrameworkDescription}",
+            $"os={RuntimeInformation.OSDescription}",
+            $"process-architecture={RuntimeInformation.ProcessArchitecture}",
+            $"os-architecture={RuntimeInformation.OSArchitecture}",
+            $"processor-count={Environment.ProcessorCount}",
+            $"current-culture={System.Globalization.CultureInfo.CurrentCulture.Name}",
+            $"current-ui-culture={System.Globalization.CultureInfo.CurrentUICulture.Name}",
+            "production-change=False",
+            "golden-change=False",
+            "vr2-r3-change=False",
+        };
+        File.WriteAllLines(Path.Combine(captureDirectory, "summary.txt"), summaryLines, Utf8WithoutBom);
+
+        Directory.CreateDirectory(outputDirectory);
+        var summaryPath = Path.Combine(outputDirectory, "exact-v9-transitive-summary.txt");
+        File.WriteAllLines(summaryPath, summaryLines, Utf8WithoutBom);
+
+        var zipPath = Path.Combine(outputDirectory, "exact-v9-transitive-diagnostic.zip");
+        if (File.Exists(zipPath))
+        {
+            File.Delete(zipPath);
+        }
+        ZipFile.CreateFromDirectory(captureDirectory, zipPath, CompressionLevel.SmallestSize, includeBaseDirectory: false);
     }
 
     private static void WriteArtifacts(
@@ -421,6 +528,17 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         }
         throw new DirectoryNotFoundException("Could not locate NuclearReactorSimulator.sln from the test output directory.");
     }
+
+
+    private sealed record DeterminismTraceEntry(
+        int Step,
+        long LogicalStep,
+        string Fingerprint,
+        byte[] Payload);
+
+    private sealed record DeterminismTraceCapture(
+        string AggregateFingerprint,
+        IReadOnlyList<DeterminismTraceEntry> Entries);
 
     private sealed record MissionResult(
         string PackExactId,

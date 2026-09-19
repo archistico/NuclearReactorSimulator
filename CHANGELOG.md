@@ -1,3 +1,16 @@
+## M10.9.7.4 Exact-V9 Cross-Host Transitive Determinism Diagnostic 1 - Validator Hotfix 1
+
+- First local execution stopped before restore/build/test because the diagnostic validator used `Get-FileHash`, unavailable in the proven user Windows PowerShell environment.
+- Replaced that dependency with stream-based `System.Security.Cryptography.SHA256`, preserving the exact uppercase SHA-256 contract representation.
+- No `src/`, test, workflow, golden, physics, tolerance, mission, VR2/R3 or repair-authority change.
+- Diagnostic semantics and the expected hosted RED-on-frozen-Exact-V9-anchor evidence flow remain unchanged.
+
+## M10.9.7.4 Exact-V9 Cross-Host Transitive Determinism Diagnostic 1
+
+- Added diagnostic-only 128-step selector/direct canonical-payload capture to the existing Exact-V9 authoritative decision test, before the unchanged frozen aggregate assertion.
+- Fingerprint V1 `63643e...f362`, Exact-V9 `7880AD...B5418`, production physics, tolerances, workflow semantics and VR2/R3 remain frozen.
+- Purpose: locate the first local-vs-hosted Exact-V9 trajectory divergence after Fingerprint V1 REV2 proved the single-snapshot H29 contract cross-host stable.
+
 ## 2026-09-19 — M10.9.7.4 Fingerprint V1 Cross-Host Determinism Diagnostic 1
 
 - Identified the exact hosted-only ordinary failure from `ordinary-ci-diagnostics`: `M10974FingerprintV1SchemaAnchorTests.FingerprintV1_PopulatedExactVersionFixtureMatchesFrozenGoldenHash`.
@@ -4930,3 +4943,10 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Preserves `sha256-control-room-snapshot-v1`, the populated H29 golden `63643e...f362`, the Exact-V9 deterministic anchor `7880AD...B5418`, H29 seed/runtime semantics, ordinary-CI runner/workflow semantics and all VR2/R3 physics.
 - Updates the diagnostic helper to serialize the exact production V1 canonical payload, keeping `payloadSha256 == actualFingerprint` true.
 - Adds fresh-session `it-IT` versus `en-US` regression and requires focused PASS, full local ordinary/current-evidence PASS and hosted ordinary GREEN before the CI block is closed.
+
+## 2026-09-19 - Exact-V9 Cross-Host Transitive Determinism Diagnostic 1 Validator Hotfix 2
+
+- Fixes a validator-only false RED where restore/build outputs under `src/**/{bin,obj}/**` and `tests/**/{bin,obj}/**` were counted as unfrozen source files.
+- Applies a normalized path-segment exclusion for `bin` and `obj` before manifest cardinality/content checks; the explicit instrumented-test exclusion remains unchanged.
+- Preserves the Diagnostic 1 test instrumentation, production `src`, workflow, frozen Fingerprint V1 `63643e...f362`, frozen Exact-V9 aggregate `7880AD...B5418`, physics, tolerances and VR2/R3 authority.
+- Supersedes Validator Hotfix 1 for execution; the previous 1436-problem run is infrastructure/validator evidence only and contains no Exact-V9 determinism result.

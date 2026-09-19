@@ -1,0 +1,55 @@
+{
+  "schema": "m10974-exact-v9-cross-host-transitive-determinism-diagnostic1",
+  "authority": "diagnostic-only",
+  "baseline": {
+    "fingerprint_v1_algorithm": "sha256-control-room-snapshot-v1",
+    "fingerprint_v1_frozen": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "exact_v9_frozen_aggregate": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "hosted_rev2_observed_prefix": "1E8AAF3799059D8C9FB2E930981E26B0B31ECF465673AB6C72",
+    "rev2_h29_hosted_matches_frozen_v1": true,
+    "determinism_steps": 128
+  },
+  "diagnostic": {
+    "marker": "NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-TRANSITIVE-DIAGNOSTIC1",
+    "environment_variable": "NRS_FINGERPRINT_V1_DIAGNOSTICS_DIR",
+    "relative_output": "exact-v9-transitive/exact-v9-transitive-diagnostic.zip",
+    "captures": [
+      "summary.txt",
+      "sequence-selector.tsv",
+      "sequence-direct.tsv",
+      "payloads-selector/step-001..128.json",
+      "payloads-direct/step-001..128.json"
+    ],
+    "expected_hosted_outcome_before_adjudication": "RED_ON_FROZEN_EXACT_V9_ANCHOR_WITH_DIAGNOSTIC_ARTIFACT"
+  },
+  "frozen_boundaries": {
+    "production_change_authorized": false,
+    "fingerprint_v1_golden_change_authorized": false,
+    "exact_v9_golden_change_authorized": false,
+    "physics_change_authorized": false,
+    "vr2_r3_change_authorized": false,
+    "workflow_change_authorized": false
+  },
+  "critical_sha256": {
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationDecisionTests.cs": "78A350DCA6CEA630C67EBD91299A19FE28963124060FE6F8466E0C2C7D15517A",
+    "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs": "060DD9B6ECBFC2AE68A128FFF09A2C6B9DE53DEB755F4225ADB661E14B46F92E",
+    "src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs": "777C9C834C583B807C14A0AC109434576216CC68AD7DB43915FB8AB5DDE14075",
+    "eng/ci-ordinary.cmd": "E8AEC59B23F5FB0A8E61870D808D05D267B056E9A1D135523A72FFE56F5C4F1D",
+    "eng/ci-current-evidence.cmd": "BA5225F572136C100E23D1F874E44602E722A2ED15327997CB8DAB81B04023DE",
+    ".github/workflows/ordinary-ci.yml": "BDCB5A1F196E2C47050459DDA75A388649104203FFFFEE33018CF6462B5A1AD3",
+    "eng/m10-final-v9-production-activation-decision-contract.json": "CC198072A0632149C6DB4D4F58C371BDE314C878A8FF0B2432EAD2DEA8AF64FE",
+    "eng/m10-final-v9-production-activation-decision-record.json": "A058A2EF8294CDD92FB1F6B0B4E695246D6220E3E548B9B5693B83C695C7B70C"
+  },
+  "manifests": {
+    "src": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-src-manifest.tsv",
+    "tests_excluding_target": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-tests-frozen-manifest.tsv"
+  },
+  "evidence": {
+    "hosted_rev2_outer": "eng/evidence/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1/hosted-rev2-ordinary-ci-diagnostics.zip",
+    "hosted_rev2_outer_sha256": "1255A58CD3DF4735BAE7F76DE596B73CD65158606976D1A7D10D93300BBD5E5F",
+    "local_rev2_hotfix_summary": "eng/evidence/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1/local-rev2-hotfix-summary.txt",
+    "local_rev2_hotfix_summary_sha256": "C748299B96748274FD78F6F4DE01CF4190F71AF6F0DB715F6C4A9B0259890C58",
+    "local_rev2_exact_v9_summary": "eng/evidence/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1/local-rev2-exact-v9-summary.txt",
+    "local_rev2_exact_v9_summary_sha256": "D9ED1A39557DD34C5181C316ED1483BD28CAA1FF2A2EE51CF14F4CD7DA27D78A"
+  }
+}

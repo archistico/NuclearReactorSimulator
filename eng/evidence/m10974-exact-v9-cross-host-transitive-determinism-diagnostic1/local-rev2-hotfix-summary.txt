@@ -1,0 +1,13 @@
+status=PASS
+revision=2
+classification=PRESENTATION-CULTURE-DRIFT-REPAIRED-WITH-V1-COMPATIBILITY-PRESERVED
+fingerprint-algorithm=sha256-control-room-snapshot-v1
+frozen-v1-fingerprint=63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362
+pre-repair-hosted-payload-fingerprint=3e11375d2e0abce2ccbb4d35434f7e51724d5977341319f7dad188d7c9e593d4
+exact-v9-transitive-anchor=7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418
+focused-culture-regression=PASS
+local-ordinary-ci=PASS
+local-current-evidence-exact-v9=PASS
+hosted-ordinary-ci=PENDING
+r3=RED
+vr2-r3-production-change=False
