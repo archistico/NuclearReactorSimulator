@@ -1,0 +1,115 @@
+{
+  "schema": "github-ordinary-ci-deterministic-serialization-hotfix1-v1",
+  "status": "EXECUTION-CANDIDATE",
+  "observed_hosted_failure": {
+    "workflow": "ordinary-ci",
+    "entry_point": "eng/ci-ordinary.cmd",
+    "release_build_succeeded": true,
+    "release_build_warnings": 0,
+    "release_build_errors": 0,
+    "failed_assembly": "NuclearReactorSimulator.Application.Tests",
+    "total_tests": 1525,
+    "succeeded_tests": 1370,
+    "skipped_tests": 154,
+    "failed_tests": 1,
+    "exact_failed_test_known": false,
+    "root_cause_proven": false
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "3BCC1ABA5FA29A67ECD907E575351A82364A26E7D29B8E789722C8104ADBAE28",
+    "tests_file_count": 396,
+    "tests_tree_sha256": "18B644F718BAA7D779F218186AB22433C79BF719C02F6C24CBDF61050EAE5C23",
+    "pre_hotfix_ci_ordinary_normalized_sha256": "71472EDC3F1355056D737EE0DB7E4FCBDFAFD27BC2F6ABDD2A206085AD3FF6FC"
+  },
+  "deterministic_ci": {
+    "ci_environment_intrinsic": true,
+    "max_parallel_test_modules": 1,
+    "xunit_parallel": "none",
+    "mtp_output": "Detailed",
+    "xunit_info": true,
+    "retry_allowed": false,
+    "test_filter_allowed": false,
+    "continue_on_error_allowed": false,
+    "test_source_change_allowed": false,
+    "production_source_change_allowed": false,
+    "expected_dotnet_test_command": "dotnet test --configuration Release --no-build --max-parallel-test-modules 1 --output Detailed -- --parallel none --xunit-info"
+  },
+  "files": {
+    "ci_ordinary": {
+      "path": "eng/ci-ordinary.cmd",
+      "normalized_sha256": "4C6D5915B29B49B3307696D3355CA4240B801CD46D6F39554472C1B91BB28B0A"
+    },
+    "workflow": {
+      "path": ".github/workflows/ordinary-ci.yml",
+      "normalized_sha256": "9769445EEC9C5F3F3D7EDA20314A76E9C807635537CA0EE6F9FA79FA782E7F33"
+    },
+    "document": {
+      "path": "docs/GITHUB_ORDINARY_CI_DETERMINISTIC_SERIALIZATION_HOTFIX1.md",
+      "normalized_sha256": "1A2773F290DE4DCBFBD0E042110196E7230EDD73330D6E130BAF1C9AC7E4519C"
+    },
+    "runner": {
+      "path": "scripts/run-github-ordinary-ci-deterministic-hotfix1.cmd",
+      "normalized_sha256": "2AFA88A62F74C002514F86D669A754C8AC21C849341B92C9B70B20644D28C790"
+    }
+  },
+  "diagnostic2_returned_evidence": {
+    "frozen_path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts",
+    "files": {
+      "01-raw-checkpoint-node-comparison.csv": {
+        "sha256": "7F97F772EDEA53BAEBCA7CF9F12546FFC5B09EDB6A36C1649B0DCB0A2A506EE3",
+        "bytes": 3947
+      },
+      "02-seed-step1-node-comparison.csv": {
+        "sha256": "E2828FDC60628E52FCE41DE58133AD7353C7B399AFA78955699A5F42D7F4E090",
+        "bytes": 4097
+      },
+      "03-seed-step2-node-comparison.csv": {
+        "sha256": "77B8F525BBD233CEF8A8905881739F8DF58F75EA17704D8ACC2F8EFF49763503",
+        "bytes": 4108
+      },
+      "04-seed-step-hydraulic-heads.csv": {
+        "sha256": "5132BC42DFBF7D6DED86029205AAFAAFF5A22F060107700C46B9A62AE7CB78B9",
+        "bytes": 1383
+      },
+      "05-seed-step-flow-comparison.csv": {
+        "sha256": "51381DA3F0FFFAF30B802B373D4937C26F2934BF92D5CE38F012C2D8C4ABAFD3",
+        "bytes": 1937
+      },
+      "06-seed-step-controller-turbine.csv": {
+        "sha256": "8CC26CCECD88E2417CEAE4373609808D4B5DF392985B15713052956D9B195E73",
+        "bytes": 1160
+      },
+      "07-diagnostic-summary.txt": {
+        "sha256": "3F924127DD1E6BC03E3E23EA987436E4E31FE690E74B8F91169A10CD7B085AD2",
+        "bytes": 1560
+      },
+      "08-pre-repair-review.txt": {
+        "sha256": "AF6D9B61C04BB62F49F7DF8E360B7326193CF2BD5D5166824058DBADBF824F50",
+        "bytes": 343
+      },
+      "09-adjudicator-hotfix1-record.txt": {
+        "sha256": "0A7BB34B2FAACD0E618BFA0A9F006A0D76466BB9A5864294D25BB4CB1B47D929",
+        "bytes": 395
+      }
+    },
+    "status_07": "DIAGNOSTIC-EVIDENCE-WRITTEN",
+    "status_08": "PASS-DIAGNOSTIC-EVIDENCE-COMPLETE",
+    "status_09": "PASS-ADJUDICATOR-HOTFIX1",
+    "first_phase_divergence_checkpoint": "seed-step1",
+    "first_phase_divergence_nodes": [
+      "suction"
+    ]
+  },
+  "authority": {
+    "r3_passed": false,
+    "production_repair_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_change_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "r3_requalification3_authorized": false,
+    "r4_planning_authorized": false,
+    "next_activity": "RUN-DETERMINISTIC-ORDINARY-CI-LOCALLY-THEN-HOSTED"
+  }
+}

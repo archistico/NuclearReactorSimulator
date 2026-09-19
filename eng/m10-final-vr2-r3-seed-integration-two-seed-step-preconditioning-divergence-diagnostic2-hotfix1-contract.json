@@ -1,0 +1,77 @@
+{
+  "schema": "m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-hotfix1-v1",
+  "status": "RETURNED-EVIDENCE-ADJUDICATOR-HOTFIX1",
+  "original_candidate": {
+    "contract_path": "eng/m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-contract.json",
+    "contract_sha256": "0EDE98E13ED06A21DD288D2773CC0EFC1DA71785C4D00DF24BB9E914DFBEF6FF",
+    "adjudicator_path": "eng/adjudicate-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2.ps1",
+    "adjudicator_normalized_sha256": "98511CDC0F1596F489CDB26E225644E64A9BD59585B8A8B01ED9B14DA897411A"
+  },
+  "failure": {
+    "stage": "[4/4] Evidence adjudication",
+    "error_id": "PropertyNotFoundStrict",
+    "expression": "$rawPhase.Count",
+    "root_cause": "ZERO-PIPELINE-OUTPUT-ASSIGNED-AS-NULL-UNDER-STRICTMODE",
+    "scope": "ADJUDICATOR-COLLECTION-SHAPE-ONLY"
+  },
+  "returned_evidence": {
+    "raw_checkpoint_nodes": {
+      "file": "01-raw-checkpoint-node-comparison.csv",
+      "sha256": "7F97F772EDEA53BAEBCA7CF9F12546FFC5B09EDB6A36C1649B0DCB0A2A506EE3"
+    },
+    "seed_step1_nodes": {
+      "file": "02-seed-step1-node-comparison.csv",
+      "sha256": "E2828FDC60628E52FCE41DE58133AD7353C7B399AFA78955699A5F42D7F4E090"
+    },
+    "seed_step2_nodes": {
+      "file": "03-seed-step2-node-comparison.csv",
+      "sha256": "77B8F525BBD233CEF8A8905881739F8DF58F75EA17704D8ACC2F8EFF49763503"
+    },
+    "hydraulic_heads": {
+      "file": "04-seed-step-hydraulic-heads.csv",
+      "sha256": "5132BC42DFBF7D6DED86029205AAFAAFF5A22F060107700C46B9A62AE7CB78B9"
+    },
+    "flow_comparison": {
+      "file": "05-seed-step-flow-comparison.csv",
+      "sha256": "51381DA3F0FFFAF30B802B373D4937C26F2934BF92D5CE38F012C2D8C4ABAFD3"
+    },
+    "controller_turbine": {
+      "file": "06-seed-step-controller-turbine.csv",
+      "sha256": "8CC26CCECD88E2417CEAE4373609808D4B5DF392985B15713052956D9B195E73"
+    }
+  },
+  "observed_evidence_before_hotfix_adjudication": {
+    "raw_phase_mismatch_count": 0,
+    "seed_step1_phase_mismatch_nodes": ["suction"],
+    "seed_step2_phase_mismatch_nodes": ["suction"],
+    "first_observed_phase_divergence_checkpoint": "seed-step1",
+    "raw_max_abs_pressure_delta_pa": 1.2218476684593043,
+    "seed_step1_max_abs_pressure_delta_pa": 338.6905378748288,
+    "seed_step2_max_abs_pressure_delta_pa": 646.3067859085459,
+    "seed_step1_max_abs_hydraulic_head_delta_pa": 370.7626022575423,
+    "seed_step2_max_abs_hydraulic_head_delta_pa": 729.2014673650265,
+    "seed_step1_max_abs_flow_delta_kg_s": 0.000045798939183328,
+    "seed_step2_max_abs_flow_delta_kg_s": 0.07418003361911474
+  },
+  "hotfix": {
+    "fix": "EXPLICIT-ARRAY-CAPTURE-AT-PHASE-NODE-CALL-SITES",
+    "dynamic_evidence_reexecuted": false,
+    "adjudicator_path": "eng/adjudicate-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-hotfix1.ps1",
+    "adjudicator_normalized_sha256": "0CF3CD06FC5A6439821EF2644C61F04E84B38DEACC10A4FA1720BE394D91DD99",
+    "document_path": "docs/M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2_HOTFIX1.md",
+    "document_normalized_sha256": "A3D2665A18E5ED4D09826F05A09BE3F0CA880FAF525CED29A4C38ED6E6E32F97",
+    "runner_path": "scripts/run-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-hotfix1-adjudication.cmd",
+    "runner_normalized_sha256": "77344EDA9D88479F828FCCE5E84AB4BED6F7BE2C01A93BC55AF2A90A67B9C24D"
+  },
+  "authority": {
+    "production_repair_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_change_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "r3_passed": false,
+    "r3_requalification3_authorized": false,
+    "r4_planning_authorized": false,
+    "next_step_after_execution": "RETURN-DIAGNOSTIC2-ARTIFACTS-FOR-ENGINEERING-ADJUDICATION"
+  }
+}

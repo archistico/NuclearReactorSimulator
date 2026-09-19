@@ -1,3 +1,32 @@
+## 2026-09-19 — Diagnostic 2 returned evidence + GitHub Ordinary CI Deterministic Serialization Hotfix 1
+
+- Integrated and SHA-froze the complete returned Diagnostic 2 artifact set `01`–`09`; Adjudicator Hotfix 1 returned `PASS-ADJUDICATOR-HOTFIX1` and the diagnostic review remains `PASS-DIAGNOSTIC-EVIDENCE-COMPLETE`.
+- Localized the first returned phase divergence to `seed-step1` / `suction`; hydraulic displacement precedes controller/governor displacement. R3 remains RED and no production repair is authorized.
+- Added a CI-harness-only ordinary-gate hotfix after the hosted run reported one `Application.Tests` failure following a clean Release build.
+- `eng/ci-ordinary.cmd` now makes `CI=true` intrinsic to the entry point, serializes Microsoft.Testing.Platform modules, disables xUnit collection parallelism and requests detailed failure information.
+- No retry, test filter, skip, continue-on-error, threshold change, `src/` change or `tests/` change is introduced.
+- Added a provenance/static validator and one local runner that executes the same ordinary entry point used by GitHub.
+
+## M10 Final VR2 R3 — Two-Seed-Step Preconditioning Divergence Diagnostic 2 candidate
+
+- Adds the only Diagnostic 1-authorized successor: a test-only `raw -> seed step 1 -> seed step 2` localization gate.
+- Preserves `src/` byte-for-byte and freezes the 395-file historical test baseline while adding one explicit diagnostic test.
+- Reuses frozen raw-state evidence, reconstructs deterministic seed checkpoints at 10 ms and 20 ms, and requires reconstructed step 2 to match both existing factories exactly before evidence is accepted.
+- Emits node conserved inventories/thermodynamic states/phases, eight hydraulic heads, twelve primary/secondary flow signals and controller/turbine response without introducing a new acceptance threshold.
+- Adds provenance-locked PowerShell static validation, evidence adjudication and a single runner command.
+- Updates `PROJECT.md`, `ROADMAP.md`, documentation navigation and the top-level document index for deterministic new-chat continuation.
+- R3 remains RED; seed retuning, C4/canonical exact-v9 changes, production repair, R3 Short Requalification 3, R4, VR3, P3-R1 and Replacement-Long Baseline 2 remain blocked.
+
+## M10 Final VR2 R3 — Dynamic Equilibrium Diagnostic 1 returned evidence + documentation restart checkpoint
+
+- Froze all six returned Dynamic Equilibrium Diagnostic 1 artifacts under `eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_FastGateDynamicEquilibriumDiagnostic1_ReturnedArtifacts`.
+- Adjudicated the diagnostic as `PASS-DIAGNOSTIC-EVIDENCE-COMPLETE`.
+- Refined the engineering classification from generic post-seed drift to `PRECONDITIONING-INDUCED-PRIMARY-HYDRAULIC-OPERATING-POINT-DIVERGENCE`.
+- Recorded that the raw 12-node mode-2 seed remains qualified, while state/phase/head displacement is already present after the two canonical seed-preconditioning steps.
+- Authorized only a future test-only Two-Seed-Step Preconditioning Divergence Diagnostic 2; production repair, threshold change, R3 Requalification 3 and R4 remain blocked.
+- Updated `PROJECT.md`, `ROADMAP.md` and `docs/README.md` for deterministic new-chat restart without creating a parallel handoff document.
+- No production source or test file was modified.
+
 ## M10 Final VR2 R3 Seed Integration Fast-Gate Dynamic Equilibrium Diagnostic 1 — Hotfix 2
 
 - Fixed the historical-tests tree exclusion bug: `Tree 'tests'` hashes paths relative to the `tests` directory, while the validator passed the repository-relative `tests/...` path, so the diagnostic test was never excluded.
@@ -4770,3 +4799,11 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Adds offline C# payload generation/reproducibility evidence and focused 1,679-state + 288-hydraulic bit-equivalence/regression qualification.
 - Requires ordinary Release PASS and exactly seven returned evidence files before any R2 planning.
 - Adds R1 executable-gate documentation and ADR-0212; no downstream activation authority is granted.
+
+## 2026-09-19 — R3 Diagnostic 2 Adjudicator Hotfix 1
+
+- Diagnostic 2 successfully emitted returned evidence files `01`–`06`; execution stopped only at `[4/4] Evidence adjudication` with Windows PowerShell `PropertyNotFoundStrict` on `$rawPhase.Count`.
+- Root cause is collection shape under `Set-StrictMode`: the raw checkpoint has zero phase mismatches, so the `PhaseNodes` function emits zero objects and the direct assignment becomes `$null`.
+- Adds a separate Hotfix 1 adjudicator using explicit `@(PhaseNodes ...)` capture for stable 0/1/N cardinality; the original Diagnostic 2 candidate and adjudicator remain untouched for audit provenance.
+- Freezes the exact returned `01`–`06` CSVs by SHA-256 and adds an adjudication-only runner. No restore, build, focused test, seed preconditioning or dynamic simulation is repeated.
+- Direct evidence already localizes the first phase divergence to `seed-step1` at `suction`; R3 remains RED and no production repair, seed retuning, threshold, C4, exact-v9 or R4 authority is granted.

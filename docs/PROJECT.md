@@ -1,4 +1,39 @@
 # Project — current authoritative state
+
+## New-chat restart checkpoint — 2026-09-19
+
+**Authoritative active engineering state:** M10 Final / VR2 / R3 remains **RED**. R1 and R2 are PASS. The mode-2 branch-continuity fusion repair implementation remains PASS, but R3 has not requalified. No production repair is authorized by the current diagnostic chain.
+
+**Latest completed engineering gate:** `R3 Seed Integration Two-Seed-Step Preconditioning Divergence Diagnostic 2 — Adjudicator Hotfix 1` returned `PASS-ADJUDICATOR-HOTFIX1` and `PASS-DIAGNOSTIC-EVIDENCE-COMPLETE`. The Hotfix repaired only the PowerShell empty-collection cardinality defect; dynamic evidence `01`–`06` was reused without rerun and the complete returned set `01`–`09` is now frozen.
+
+**Current engineering classification:** `TWO-SEED-STEP-PRECONDITIONING-DIVERGENCE-LOCALIZATION-EVIDENCE`.
+
+Key returned evidence:
+
+- raw checkpoint: 12/12 nodes remain phase-aligned; phase mismatch count = `0`;
+- first phase divergence appears after **seed-step1** on `suction`; canonical mode 1 remains `SubcooledLiquid`, candidate mode 2 resolves `SaturatedMixture`;
+- the same `suction` phase mismatch remains at seed-step2;
+- max absolute pressure delta grows from `1.2218476684593043 Pa` raw to `338.69053787482881 Pa` at seed-step1 and `646.30678590854586 Pa` at seed-step2;
+- max hydraulic-head delta grows to `370.76260225754231 Pa` at seed-step1 and `729.20146736502647 Pa` at seed-step2;
+- max flow delta grows from `4.5798939183328E-05 kg/s` at seed-step1 to `0.074180033619114738 kg/s` at seed-step2;
+- governor, speed-error and speed-integral deltas are exactly zero at seed-step1, so the returned evidence does not support controller/governor response as the initiating signal.
+
+**Engineering interpretation:** the divergence is localized to the **first canonical preconditioning step**, at the `suction` phase-boundary/hydraulic seam. This is localization evidence, not yet a causal repair authorization. The next engineering step after repository/CI hygiene is a dedicated causal-seam adjudication/planning gate that must distinguish phase-boundary branch sensitivity, closure tangent/derivative behavior and any mode-1-specific preconditioning assumption before production code is changed.
+
+**Interposed repository/CI maintenance activity:** the hosted GitHub `ordinary-ci` run builds Release cleanly but reports exactly one failure in `NuclearReactorSimulator.Application.Tests` (1,525 total / 1,370 succeeded / 154 skipped / 1 failed in the supplied log). The exact failing method was not exposed in that excerpt. `GitHub Ordinary CI Deterministic Serialization Hotfix 1` is therefore the active execution candidate. It changes only CI orchestration: local/hosted `CI=true` parity, one Microsoft.Testing.Platform module at a time, xUnit collection parallelism disabled and detailed failure output. It adds no retry, filter, skip, tolerance change, production source change or test semantic change.
+
+**Active validation command:** `.\scripts\run-github-ordinary-ci-deterministic-hotfix1.cmd`. The same relative-prefix convention applies from PowerShell.
+
+**After CI is green:** resume only from the returned Diagnostic 2 evidence and perform causal-seam engineering adjudication/planning. Do not jump directly to a production repair.
+
+**Explicitly blocked:** seed retuning, threshold/envelope changes, C4 resolver/payload changes, canonical exact-v9 changes, production repair, R3 Short Requalification 3, R4 Planning 1, VR3, P3-R1 and a second replacement-long baseline.
+
+**Current production baseline for this branch:** Seed Integration Implementation 1 Hotfix 4, including only the authorized `FluidPhase` namespace compile fix. Canonical exact-v9 method body remains frozen.
+
+**Frozen Diagnostic 2 returned evidence:** `eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts` contains the exact returned files `01`–`09`.
+
+For a new chat, start from this checkpoint. If the deterministic ordinary CI candidate has not yet been executed locally, run it first. If local CI is green but GitHub remains RED, return the full hosted failure output so the named failing test can be repaired without weakening the gate. Once local and hosted ordinary CI are green, continue with the Diagnostic 2 causal-seam adjudication/planning branch.
+
 **M10.9.8 is VALIDATED / CLOSED.** **M10 Final Pre-M11 Cumulative Validation Hotfix 1 is VALIDATED.** The exact-v9 Production Activation Decision 1 Hotfix 1 is now also **VALIDATED**: `integrated-operations-desktop-stable@9` is the authoritative desktop production default and `bounded-demand-following-5-10-5@3` is the authoritative production mission binding.
 
 The first M10 Final long campaign remains frozen as **FAILED / ABORTED exact-v4 evidence**. It is not rewritten. Diagnostic 1–11 repaired LR-M1 scalability, the primary/secondary whole-cycle operating point, breaker-closed governor integral ownership and wet-steam turbine-admission ownership. Exact-v9 was qualified at 600 s and then promoted through a separate opt-in staging gate and authoritative activation-decision gate.
@@ -79,7 +114,7 @@ The authoritative limitation register is `KNOWN_MODEL_LIMITATIONS.md`. In partic
 
 ## Continuation rule
 
-The current forward chain is: **R1 opt-in implementation PASS -> R2 focused thermodynamic/reference/topology qualification PASS -> R3 Planning 1 PASS-AS-AUTHORED -> R3 execution CURRENT -> returned R3 adjudication -> R4 Planning 1 only if explicitly authorized -> R4 long materiality recheck -> R5 VR2 re-entry -> R6 activation decision -> VR3 -> VR4 -> VR5 -> P3-R1 only if the physical-reference route authorizes it -> P3-R2 -> P4 -> P5 Replacement-Long Baseline 2 / Execution 2 -> P6 explicit M10 closure -> M11**. Do not skip a returned-evidence adjudication or reinterpret historical exact-v9 while advancing this chain.
+The current forward chain is: **Diagnostic 1 returned/adjudicated PASS -> Two-Seed-Step Preconditioning Divergence Diagnostic 2 -> returned Diagnostic 2 adjudication -> repair planning only if causally supported -> bounded implementation/fast gate -> R3 Short Requalification 3 only after an explicit fast-gate PASS -> R4 Planning 1 only after returned/adjudicated R3 PASS -> R4 long materiality recheck -> R5 VR2 re-entry -> R6 activation decision -> VR3 -> VR4 -> VR5 -> P3-R1 only if the physical-reference route authorizes it -> P3-R2 -> P4 -> P5 Replacement-Long Baseline 2 / Execution 2 -> P6 explicit M10 closure -> M11**. Do not skip returned-evidence adjudication, retune the raw seed without evidence, or reinterpret historical exact-v9 while advancing this chain.
 
 M10.9.6 challenge/demand/scoring state is observational Application state. It may consume existing plant evidence but may not issue plant commands, create supervisory authority, change protection or introduce new physics. Missing physical phenomena discovered while authoring challenges remain post-M11 backlog items rather than M10.9.6 scope expansion.
 
@@ -234,3 +269,17 @@ R2 Focused Thermodynamic / Reference / Topology Qualification 1 returned the com
 
 R3 Short Exact-v9-Equivalent Shadow / Composition Requalification Planning 1 returned all four required artifacts and is adjudicated `PASS-AS-AUTHORED`. The authorized executable successor is only `R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION1`. It may add one new `Application.Tests` source and no production source: first prove mode-1 shadow equivalence to canonical exact-v9 for 128 deterministic steps, then substitute only closure mode 2 for the inherited 120 s / 12,000-step exact-v9 short envelope and an independent 128-step deterministic repeat. A successful local R3 run is still qualification evidence only and must be returned/adjudicated before R4 planning. Mode-2 default activation, canonical exact-v9 mutation, new exact identity, VR3, P3-R1 and second replacement-long remain unauthorized.
 
+
+## 2026-09-19 — Current R3 Diagnostic 2 adjudicator hotfix checkpoint
+
+Diagnostic 2 dynamic evidence generation completed through files `01`–`06`. Stage `[4/4] Evidence adjudication` then failed before writing `07`/`08` because the raw checkpoint correctly has zero phase mismatches and Windows PowerShell assigned the zero-output `PhaseNodes` invocation to `$null`; `Set-StrictMode -Version Latest` therefore rejected `$rawPhase.Count` with `PropertyNotFoundStrict`.
+
+The active candidate is now **Diagnostic 2 Adjudicator Hotfix 1**, not a repeat of the dynamic diagnostic. It preserves the original Diagnostic 2 candidate byte-for-byte, SHA-256 locks the six returned CSVs, and adds a separate array-safe adjudicator plus an adjudication-only runner. The returned evidence already shows the first phase mismatch at `seed-step1` on `suction`, while the raw checkpoint has zero mismatches. R3 remains RED; production repair, seed retuning, threshold/C4/exact-v9 changes, R3 Requalification 3 and R4 Planning 1 remain unauthorized.
+
+Current command from repository root in PowerShell:
+
+```powershell
+.\scripts\run-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-hotfix1-adjudication.cmd
+```
+
+Return the complete Diagnostic 2 artifact directory containing `01`–`09` before causal-seam selection or repair planning.

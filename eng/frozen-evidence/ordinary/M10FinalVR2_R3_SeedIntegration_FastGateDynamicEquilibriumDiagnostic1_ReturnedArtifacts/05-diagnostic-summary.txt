@@ -1,0 +1,15 @@
+status=DIAGNOSTIC-EVIDENCE-WRITTEN
+classification=POST-SEED-DYNAMIC-EQUILIBRIUM-DIVERGENCE
+mode1-envelope-violation-steps=0
+candidate-envelope-violation-steps=86
+first-candidate-primary-flow-violation-step=15
+first-candidate-governor-violation-step=17
+step100-primary-flow-delta-kg-s=-0.71447629024923742
+step100-governor-delta=0.16390967693765646
+step100-speed-error-delta=0.12843713902702802
+step100-speed-integral-delta=0.0010196082434603682
+production-repair-applied=False
+threshold-change-applied=False
+r3-remains-red=True
+requalification3-authorized=False
+r4-planning-authorized=False

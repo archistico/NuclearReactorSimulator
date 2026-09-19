@@ -37,6 +37,20 @@ Rules:
 7. if operator-experience work reveals missing physics, assign it to the post-M11 engineering milestones instead of expanding M10 scope;
 8. no speculative audit, retuning or numerical requalification is added after a green gate merely “for safety”.
 
+## M10 Final / VR2 / R3 — live future sequence after Diagnostic 1
+
+Current-state facts belong in `PROJECT.md`; this section records only future work from the latest returned checkpoint.
+
+1. **Two-Seed-Step Preconditioning Divergence Diagnostic 2** — execution candidate prepared; run the test-only gate. Compare raw state, seed step 1 and seed step 2 for canonical mode 1 versus reference-consistent mode 2. Localize the first phase/pressure/head/flow displacement.
+2. **Returned Diagnostic 2 adjudication** — required before choosing any repair.
+3. **Repair planning** — only if Diagnostic 2 identifies a supported causal seam. No threshold or raw-seed retuning shortcut.
+4. **Bounded repair implementation + fast gate** — must preserve canonical exact-v9 and existing R3 envelopes.
+5. **R3 Short Requalification 3** — only after the fast gate is explicitly PASS.
+6. **R4 Planning 1** — only after returned/adjudicated R3 PASS.
+
+R3 is still RED and R4 remains blocked.
+
+
 ## Expected validation burden
 
 This is a planning classification, not a duration promise:
@@ -668,6 +682,18 @@ R3 Requalification 1 returned `R3-SHADOW-COMPOSITION-BLOCKING`. Diagnostic 1 con
 
 Future sequence:
 
-`Seed Integration Implementation 1 -> R3 Short Requalification 3 -> R4 Planning 1`
+`Two-Seed-Step Preconditioning Divergence Diagnostic 2 -> returned adjudication -> causally supported repair planning/implementation -> bounded fast gate -> R3 Short Requalification 3 -> R4 Planning 1`
 
 Repair Implementation 1 is returned/adjudicated PASS. R4 remains blocked until R3 Short Requalification 2 returns/adjudicates PASS.
+
+### 2026-09-19 — R3 Diagnostic 2 returned / CI deterministic maintenance checkpoint
+
+Diagnostic 2 Adjudicator Hotfix 1 has returned PASS. The complete `01`–`09` evidence set is frozen. The first phase divergence is localized to `seed-step1` at `suction`, where candidate mode 2 crosses to `SaturatedMixture` while mode 1 remains `SubcooledLiquid`. Hydraulic displacement is already present at that checkpoint while governor/speed-controller deltas remain zero. R3 therefore stays RED, but the next engineering question is now narrower: determine the causal phase-boundary/hydraulic seam before any repair is authorized.
+
+A repository-hygiene hold is interposed before that engineering successor because hosted `ordinary-ci` currently reports one failing `Application.Tests` test after a clean Release build. `GitHub Ordinary CI Deterministic Serialization Hotfix 1` may change only CI execution semantics: make `CI=true` intrinsic to the entry point, serialize Microsoft.Testing.Platform modules, disable xUnit collection parallelism, and improve failure logging. It may not filter, retry, skip or tolerate the failure, and it may not change `src/` or `tests/`.
+
+Sequence:
+
+`Diagnostic 2 returned PASS -> deterministic ordinary CI local + hosted PASS -> causal-seam adjudication/planning -> separately authorized repair candidate -> bounded fast gate -> R3 Short Requalification 3 -> R4 Planning 1`
+
+If serialized ordinary CI remains RED, stop and repair the specifically named failing test/dependency from its returned log. Do not resume the physics branch while the ordinary repository gate is red.

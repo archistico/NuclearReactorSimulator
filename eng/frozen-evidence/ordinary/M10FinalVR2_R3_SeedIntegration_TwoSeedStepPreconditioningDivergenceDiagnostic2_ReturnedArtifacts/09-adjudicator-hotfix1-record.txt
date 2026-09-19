@@ -1,0 +1,10 @@
+status=PASS-ADJUDICATOR-HOTFIX1
+original-failure=PropertyNotFoundStrict-on-empty-rawPhase-Count
+root-cause=ZERO-PIPELINE-OUTPUT-ASSIGNED-AS-NULL-UNDER-STRICTMODE
+fix=EXPLICIT-ARRAY-CAPTURE-AT-PHASE-NODE-CALL-SITES
+dynamic-evidence-reexecuted=False
+returned-evidence-reused=True
+evidence-files-reused=01-06
+r3-remains-red=True
+production-repair-authorized=False
+r4-remains-blocked=True

@@ -1,0 +1,10 @@
+status=PASS-DIAGNOSTIC-EVIDENCE-COMPLETE
+next-step=RETURN-ARTIFACTS-FOR-ADJUDICATION
+production-repair-authorized=False
+seed-retuning-authorized=False
+threshold-change-authorized=False
+c4-change-authorized=False
+canonical-exact-v9-change-authorized=False
+r3-remains-red=True
+requalification3-authorized=False
+r4-remains-blocked=True

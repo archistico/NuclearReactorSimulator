@@ -1,0 +1,77 @@
+{
+  "schema": "m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-v1",
+  "status": "DIAGNOSTIC-CANDIDATE",
+  "prerequisite": {
+    "diagnostic1_manifest": {
+      "path": "eng/m10-final-vr2-r3-seed-fast-dynamic-equilibrium-diagnostic1-returned-evidence-manifest.json",
+      "sha256": "D3CEA9B432E9D69F2FD983104D64E8060A608A0AF1E47169B7DFD0268E5CA474"
+    },
+    "raw_evidence": {
+      "canonical_raw_mode1": {
+        "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_Requalification2_AuthoredSeedForwardInverseConsistency_Diagnostic2_ReturnedArtifacts/01-raw-authored-seed-closure-comparison.csv",
+        "sha256": "D38CBF41556BA89FE901F32F2941A747792376B15EA5833CFFE0369C27F97481"
+      },
+      "candidate_conserved_inventory": {
+        "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_ReferenceConsistentRawSeed_CandidateConstruction1_ReturnedArtifacts/01-candidate-conserved-inventory-vector.csv",
+        "sha256": "BBA072BA589038D3E1AF764F00A5BE60AE124F1A374C673054C245C054989123"
+      },
+      "candidate_roundtrip": {
+        "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_ReferenceConsistentRawSeed_CandidateConstruction1_ReturnedArtifacts/02-candidate-target-roundtrip.csv",
+        "sha256": "9BA7D068C8E7C36AAE4A50DBCD0B00EF83590FFDE66AA45A87595EA858764685"
+      }
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "3BCC1ABA5FA29A67ECD907E575351A82364A26E7D29B8E789722C8104ADBAE28",
+    "historical_tests_file_count": 395,
+    "historical_tests_tree_sha256": "DB7AEF8BB4EC9EE48B88AE371E88E0F94F6DE345EE88B54C92BE776A877213B7"
+  },
+  "diagnostic": {
+    "runtime_step_ms": 10,
+    "raw_checkpoint_source": "FROZEN-RETURNED-EVIDENCE",
+    "seed_step1_count": 1,
+    "seed_step2_count": 2,
+    "raw_node_rows": 12,
+    "seed_node_rows_each": 12,
+    "hydraulic_paths_each": 8,
+    "flow_signals_each": 12,
+    "controller_rows": 2,
+    "production_change_allowed": false,
+    "threshold_change_allowed": false
+  },
+  "authority": {
+    "production_repair_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_change_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "new_exact_version_authorized": false,
+    "r3_passed": false,
+    "r3_requalification3_authorized": false,
+    "r4_planning_authorized": false,
+    "next_step_after_execution": "RETURN-ARTIFACTS-FOR-ADJUDICATION"
+  },
+  "files": {
+    "test": {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3SeedIntegrationTwoSeedStepPreconditioningDivergenceDiagnostic2Tests.cs",
+      "normalized_sha256": "C15EA485309C96D18BCBDDF1438ACFAF9B9AE440DE9CEC4FECF79C1F83544758"
+    },
+    "document": {
+      "path": "docs/M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2.md",
+      "normalized_sha256": "1B7DDF85EF6B64BA8E95E5949B5AE2C1DB45EA480A9F689DFF0DD6AEE5D29F34"
+    },
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2.ps1",
+      "normalized_sha256": "390BB41AEF5A2725AA919C24C0BB72B8C8306FE83FFACF5949A8ED716F055D27"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2.ps1",
+      "normalized_sha256": "98511CDC0F1596F489CDB26E225644E64A9BD59585B8A8B01ED9B14DA897411A"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2.cmd",
+      "normalized_sha256": "50595440EEF6B6D44A0C84E372A4D6334A4A610037699E08C41A68675E6D0D7B"
+    }
+  }
+}

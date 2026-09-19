@@ -1,0 +1,6 @@
+status=PASS-DIAGNOSTIC-EVIDENCE-COMPLETE
+next-step=RETURN-ARTIFACTS-FOR-ADJUDICATION
+production-repair-authorized=False
+threshold-change-authorized=False
+r3-remains-red=True
+r4-remains-blocked=True

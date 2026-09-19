@@ -1,5 +1,12 @@
 # M10 Final VR2 — R3 Reference-Consistent Seed Integration Implementation 1 — Fast-Gate Returned Evidence Adjudication
 
+## Supersession note after Dynamic Equilibrium Diagnostic 1
+
+The earlier label `POST-SEED DYNAMIC OPERATING-POINT DIVERGENCE` remains valid as the observed fast-gate symptom, but Diagnostic 1 localizes the onset more tightly: material state displacement is already present after the two canonical seed-preconditioning steps and before Running step 1. The current engineering classification is therefore **PRECONDITIONING-INDUCED PRIMARY-HYDRAULIC OPERATING-POINT DIVERGENCE**.
+
+The raw 12-node conserved-inventory candidate remains qualified evidence; do not retune it from the fast-gate RED alone.
+
+
 ## Status
 **RED — POST-SEED DYNAMIC OPERATING-POINT DIVERGENCE**
 

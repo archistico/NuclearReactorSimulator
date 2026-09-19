@@ -15,3 +15,10 @@ Localize the returned Implementation 1 fast-gate RED without changing production
 Run canonical exact-v9 mode 1 and the reference-consistent mode-2 candidate side by side for 100 steps at 10 ms. Record post-seed node coordinates, primary pump/channel/return flows, eight hydraulic heads, speed-controller setpoint/measurement/error/integral/output, turbine commanded/transferred flow, moisture drain and shaft power.
 
 The diagnostic is evidence-only. It introduces no new threshold and must not mutate the frozen seed vector, C4, canonical exact-v9 or production source.
+
+
+## Returned result
+
+Diagnostic 1 completed and its returned evidence is adjudicated **PASS-DIAGNOSTIC-EVIDENCE-COMPLETE**.
+
+The evidence refines the failure localization: divergence is already present after the canonical two seed-preconditioning steps, before the first normal Running step. The next authorized work is therefore a test-only two-seed-step preconditioning divergence diagnostic, not a production repair.
