@@ -1,0 +1,60 @@
+{
+  "schema": "m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1-v1",
+  "date": "2026-09-19",
+  "status": "PASS-AS-AUTHORED-READY-FOR-AUDIT",
+  "scope": "TEST-ONLY-HARNESS-PORTABILITY-AND-COUNTERFACTUAL-GUARD-CONSISTENCY",
+  "findings": {
+    "powershell_hashing": "GET-FILEHASH-UNAVAILABLE-IN-PROVEN-USER-ENVIRONMENT",
+    "counterfactual_guard": "FIXED-NET-RATE-GUARD-INCONSISTENT-WITH-SPECIFIC-ENERGY-GUARD-AT-100KGPS"
+  },
+  "changes": {
+    "hash_backend": "DOTNET-SHA256-STREAM",
+    "get_file_hash_dependency_allowed": false,
+    "superseded_fixed_counterfactual_net_energy_abs_ceiling_w": 0.01,
+    "counterfactual_net_budget_mode": "DERIVED-FROM-COMPONENT-GUARDS",
+    "counterfactual_rate_identity_abs_residual_ceiling_w": 1e-06,
+    "counterfactual_budget_roundoff_w": 0.001
+  },
+  "analytical_preflight_from_frozen_raw_evidence": {
+    "drum_temperature_k": 553.15,
+    "drum_pressure_pa": 6416459.281680372,
+    "suction_pressure_pa": 6416459.393982445,
+    "drum_to_suction_pressure_delta_pa": 0.11230207327753305,
+    "mode2_raw_suction_transport_j_kg": 1236671.000850998,
+    "if97_region1_drum_transport_j_kg": 1236671.0007034552,
+    "if97_minus_mode2_suction_transport_j_kg": -0.00014754291623830795,
+    "representative_candidate_pump_flow_kg_s": 100.00001123018062,
+    "predicted_counterfactual_net_if_flows_equal_w": -0.014754293280764394,
+    "derived_guard_budget_at_representative_flow_w": 0.10223668223103162
+  },
+  "invariants": {
+    "production_change": false,
+    "historical_test_semantic_change": false,
+    "seed_change": false,
+    "threshold_or_model_acceptance_change": false,
+    "c4_or_payload_change": false,
+    "canonical_exact_v9_change": false,
+    "repair_owner_selected": false,
+    "r3_passed": false,
+    "r4_authorized": false
+  },
+  "authority": {
+    "next_authorized_activity": "EXECUTE-DIAGNOSTIC3-REV1-TEST-ONLY",
+    "production_repair_authorized": false,
+    "repair_planning_authorized": false
+  },
+  "files": {
+    "document": {
+      "path": "docs/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md",
+      "normalized_sha256": "370C59F61C16E9C8E568BC07652FD399E532D38809CF80B58CD115B03A573BAB"
+    },
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1.ps1",
+      "normalized_sha256": "3ECE99D1D28F838F262F40AA14DBFB7C80C8D1823FD7D042E261BF2E4D2D49CE"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1.cmd",
+      "normalized_sha256": "F43881DA0C9416FEFE6E3766AAA79970A6A046B29F5B01B638014FE7A0169BDC"
+    }
+  }
+}

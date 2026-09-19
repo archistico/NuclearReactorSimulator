@@ -1,0 +1,27 @@
+{
+  "schema": "m10-final-vr2-r3-diagnostic3-deep-review-rev1-planning1-validator-hotfix2-v1",
+  "date": "2026-09-19",
+  "defect": "PROSE-AND-ENCODING-COUPLED-DOCUMENT-VALIDATION",
+  "scope": "VALIDATOR-AND-DOCUMENT-MARKER-HYGIENE-ONLY",
+  "engineering_review_change": false,
+  "rev1_guard_change": false,
+  "authority_change": false,
+  "next_authorized_activity": "IMPLEMENT-DIAGNOSTIC3-REV1-TEST-ONLY",
+  "validator_source_policy": "ASCII-ONLY-OR-UTF8-BOM",
+  "document_marker_policy": "ASCII-NRS-MARKER-IDS",
+  "aggregate_missing_marker_reporting": true,
+  "markers": {
+    "plan": [
+      "NRS-MARKER:DIAG3-REV1-REVIEW-DISPOSITION",
+      "NRS-MARKER:DIAG3-REV1-HOSTED-CI-REPAIR-HOLD",
+      "NRS-MARKER:DIAG3-REV1-NEXT-AUTHORITY"
+    ],
+    "project": [
+      "NRS-MARKER:DIAG3-REV1-PREEXECUTION-HOLD"
+    ],
+    "roadmap": [
+      "NRS-MARKER:DIAG3-REV1-LIVE-SEQUENCE",
+      "NRS-MARKER:DIAG3-REV1-ROADMAP-SUPERSESSION"
+    ]
+  }
+}

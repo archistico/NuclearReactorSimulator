@@ -1,38 +1,52 @@
 # Project — current authoritative state
 
+## Diagnostic 3 REV1 returned-evidence adjudication checkpoint - 2026-09-19
+
+<!-- NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-CHECKPOINT -->
+
+`R3 Seed Integration Suction Energy-Transport Causal-Seam Diagnostic 3 REV1` completed and returned the full `01`-`07` artifact set. Independent adjudication confirms `CAUSAL-CLOSURE-CONFIRMED`: the production runtime reproduces the approximately `-5.2162718 MW` suction energy discontinuity with closed mass/energy bookkeeping, while the independent IAPWS-IF97 liquid-transport counterfactual differs from mode2 raw suction transport by only `0.00014754291623830795 J/kg` and leaves a net `0.014754295349121094 W`, inside the derived `0.10223668223103162 W` component budget. The causal seam is localized to `STEAM-DRUM-LIQUID-TRANSPORT-VS-MODE2-SUCTION-TRANSPORT`; `repair-owner=UNSELECTED`.
+
+R3 remains RED. The deterministic ordinary CI gate is locally PASS, but hosted GitHub `ordinary-ci` is still `PENDING-CONFIRMATION` in the current evidence. The only next authorized activity is `CONFIRM-HOSTED-ORDINARY-CI-GREEN`. Production repair planning remains blocked until that hosted confirmation is returned GREEN.
+
+## Diagnostic 3 REV1 preexecution amendment checkpoint — 2026-09-19
+
+<!-- NRS-MARKER:DIAG3-REV1-AMENDMENT1-CHECKPOINT -->
+
+The first REV1 execution attempt stopped before build because the validator depended on `Get-FileHash`, which is unavailable in the proven user PowerShell environment. Full preexecution review also found that the frozen `0.01 W` counterfactual-net guard was stricter than the already-frozen `0.001 J/kg` reference-alignment guard at approximately `100 kg/s`; frozen evidence predicts about `0.01475 W` from the drum/suction pressure-work difference alone. Planning Amendment 1 therefore replaces the cmdlet dependency with .NET SHA-256 and replaces the fixed net-rate ceiling with a derived component budget. Production, seeds, model thresholds, historical test semantics and R3/R4 authority remain unchanged.
+
+<!-- NRS-MARKER:DIAG3-REV1-VALIDATOR-HOTFIX1-CHECKPOINT -->
+**REV1 validator contract-hygiene hotfix:** the first post-amendment execution stopped before build because the active validator still contained redundant Markdown literal-presence checks after the marker contract. Hotfix 1 removes all active REV1 Markdown prose/file-name presence assertions, moves index/navigation presence to JSON-declared ASCII markers with exact-one cardinality, and leaves physics, guards, scenario and authority unchanged.
+
+
 ## New-chat restart checkpoint — 2026-09-19
 
-**Authoritative active engineering state:** M10 Final / VR2 / R3 remains **RED**. R1 and R2 are PASS. The mode-2 branch-continuity fusion repair implementation remains PASS, but R3 has not requalified. No production repair is authorized by the current diagnostic chain.
+**Authoritative active engineering state:** M10 Final / VR2 / R3 remains **RED**. R1 and R2 are PASS. No new production repair, seed retuning, tolerance change, C4/payload change or canonical exact-v9 change is authorized.
 
-**Latest completed engineering gate:** `R3 Seed Integration Two-Seed-Step Preconditioning Divergence Diagnostic 2 — Adjudicator Hotfix 1` returned `PASS-ADJUDICATOR-HOTFIX1` and `PASS-DIAGNOSTIC-EVIDENCE-COMPLETE`. The Hotfix repaired only the PowerShell empty-collection cardinality defect; dynamic evidence `01`–`06` was reused without rerun and the complete returned set `01`–`09` is now frozen.
+**Latest completed diagnostic gate:** `R3 Seed Integration Two-Seed-Step Preconditioning Divergence Diagnostic 2 — Adjudicator Hotfix 1` is returned and accepted as `PASS-DIAGNOSTIC-EVIDENCE-COMPLETE`. The complete returned artifact set `01`–`09` is frozen and SHA-256 locked. The first phase divergence is `seed-step1` / `suction`: mode 1 remains `SubcooledLiquid`, mode 2 becomes `SaturatedMixture` at quality `1.5376981274668928E-07`. Governor/controller deltas are still zero at that first step.
 
-**Current engineering classification:** `TWO-SEED-STEP-PRECONDITIONING-DIVERGENCE-LOCALIZATION-EVIDENCE`.
+**New causal observation from the frozen evidence:** candidate `suction` mass is unchanged across the first 10 ms step, but its conserved internal energy falls by about `52.163 kJ`, equivalent to `-5.21627 MW`. The existing steam-drum liquid source and MCP suction sink reconstruct this rate from an approximately `52.163 kJ/kg` selected-specific-energy difference at approximately `100 kg/s`, to numerical roundoff. Mode 1 remains essentially energy-neutral over the same step. This strongly identifies an energy-transport closure seam but is not yet a repair decision.
 
-Key returned evidence:
+**Latest engineering review:** `Diagnostic 3 Deep Review & REV1 Planning 1` records `PASS-WITH-PREEXECUTION-REVISION`. The reviewed Diagnostic 3 design is sound on temporal attribution, suction topology, mass/energy bookkeeping, provenance and authority containment, but its `causal-owner` wording is stronger than the existing evidence and its provider proof should be strengthened with explicit `u + p/rho`, true IEEE-754 bit equality and an independent test-only IAPWS-IF97 counterfactual.
+**Planning validator hotfix:** Hotfix 2 replaces prose-coupled document assertions with stable ASCII marker IDs backed by the planning JSON contract, adds validator encoding hygiene and aggregate missing-marker reporting, and preserves review findings, REV1 guards, authority and next activity unchanged.
 
-- raw checkpoint: 12/12 nodes remain phase-aligned; phase mismatch count = `0`;
-- first phase divergence appears after **seed-step1** on `suction`; canonical mode 1 remains `SubcooledLiquid`, candidate mode 2 resolves `SaturatedMixture`;
-- the same `suction` phase mismatch remains at seed-step2;
-- max absolute pressure delta grows from `1.2218476684593043 Pa` raw to `338.69053787482881 Pa` at seed-step1 and `646.30678590854586 Pa` at seed-step2;
-- max hydraulic-head delta grows to `370.76260225754231 Pa` at seed-step1 and `729.20146736502647 Pa` at seed-step2;
-- max flow delta grows from `4.5798939183328E-05 kg/s` at seed-step1 to `0.074180033619114738 kg/s` at seed-step2;
-- governor, speed-error and speed-integral deltas are exactly zero at seed-step1, so the returned evidence does not support controller/governor response as the initiating signal.
 
-**Engineering interpretation:** the divergence is localized to the **first canonical preconditioning step**, at the `suction` phase-boundary/hydraulic seam. This is localization evidence, not yet a causal repair authorization. The next engineering step after repository/CI hygiene is a dedicated causal-seam adjudication/planning gate that must distinguish phase-boundary branch sensitivity, closure tangent/derivative behavior and any mode-1-specific preconditioning assumption before production code is changed.
+<!-- NRS-MARKER:DIAG3-REV1-PREEXECUTION-HOLD -->
+The pre-execution review/planning checkpoint is closed `PASS-AS-AUTHORED` after Validator Hotfix 2.
 
-**Interposed repository/CI maintenance activity:** the hosted GitHub `ordinary-ci` run builds Release cleanly but reports exactly one failure in `NuclearReactorSimulator.Application.Tests` (1,525 total / 1,370 succeeded / 154 skipped / 1 failed in the supplied log). The exact failing method was not exposed in that excerpt. `GitHub Ordinary CI Deterministic Serialization Hotfix 1` is therefore the active execution candidate. It changes only CI orchestration: local/hosted `CI=true` parity, one Microsoft.Testing.Platform module at a time, xUnit collection parallelism disabled and detailed failure output. It adds no retry, filter, skip, tolerance change, production source change or test semantic change.
+<!-- NRS-MARKER:DIAG3-REV1-IMPLEMENTATION-CHECKPOINT -->
+**Active engineering candidate:** `R3 Seed Integration Suction Energy-Transport Causal-Seam Diagnostic 3 REV1` is **implemented, not yet executed**. REV1 preserves the same 10 ms one-step scenario, records explicit production `u + p/rho` transport decomposition and true IEEE-754 bit equality, and adds a separate `Simulation.Tests` IAPWS-IF97 counterfactual. The reviewed Diagnostic 3 remains frozen pre-execution provenance and is not the authoritative runtime gate.
 
-**Active validation command:** `.\scripts\run-github-ordinary-ci-deterministic-hotfix1.cmd`. The same relative-prefix convention applies from PowerShell.
+**Active execution command:** `.\scripts\run-m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3-rev1.cmd`. The only next authorized activity is `EXECUTE-DIAGNOSTIC3-REV1-TEST-ONLY`; return the complete `01`–`07` artifact set for independent adjudication before any repair planning.
 
-**After CI is green:** resume only from the returned Diagnostic 2 evidence and perform causal-seam engineering adjudication/planning. Do not jump directly to a production repair.
+**Repository/CI state:** `GitHub Ordinary CI Deterministic Serialization Hotfix 1` is **locally PASS**, including exact-v9 authoritative production audit, current-evidence audit and complete ordinary suite. The same candidate must still be confirmed GREEN by the hosted GitHub `ordinary-ci` workflow. Hosted confirmation is a repository-hygiene hold before any eventual production repair is authorized; it does not alter Diagnostic 3 physics evidence.
 
-**Explicitly blocked:** seed retuning, threshold/envelope changes, C4 resolver/payload changes, canonical exact-v9 changes, production repair, R3 Short Requalification 3, R4 Planning 1, VR3, P3-R1 and a second replacement-long baseline.
+**Explicitly blocked:** production repair, seed retuning, transport-convention mutation, threshold/envelope changes, C4 resolver/payload changes, canonical exact-v9 changes, R3 Short Requalification 3, R4 Planning 1, VR3, P3-R1 and a second replacement-long baseline.
 
 **Current production baseline for this branch:** Seed Integration Implementation 1 Hotfix 4, including only the authorized `FluidPhase` namespace compile fix. Canonical exact-v9 method body remains frozen.
 
-**Frozen Diagnostic 2 returned evidence:** `eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts` contains the exact returned files `01`–`09`.
+**Frozen Diagnostic 2 returned evidence:** `eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts`.
 
-For a new chat, start from this checkpoint. If the deterministic ordinary CI candidate has not yet been executed locally, run it first. If local CI is green but GitHub remains RED, return the full hosted failure output so the named failing test can be repaired without weakening the gate. Once local and hosted ordinary CI are green, continue with the Diagnostic 2 causal-seam adjudication/planning branch.
+For a new chat, start from this checkpoint. First preserve the reviewed Diagnostic 3 as pre-execution provenance and implement the separately identified Diagnostic 3 REV1 test-only candidate from `M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md`. REV1 is planned to return `01`–`07`; separately confirm the hosted `ordinary-ci` workflow on the same deterministic-CI candidate. Do not merge those two evidence streams into an implicit production-repair authorization.
 
 **M10.9.8 is VALIDATED / CLOSED.** **M10 Final Pre-M11 Cumulative Validation Hotfix 1 is VALIDATED.** The exact-v9 Production Activation Decision 1 Hotfix 1 is now also **VALIDATED**: `integrated-operations-desktop-stable@9` is the authoritative desktop production default and `bounded-demand-following-5-10-5@3` is the authoritative production mission binding.
 

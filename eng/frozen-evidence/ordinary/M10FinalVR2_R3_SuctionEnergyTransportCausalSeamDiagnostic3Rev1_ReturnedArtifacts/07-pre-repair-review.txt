@@ -1,0 +1,10 @@
+status=PASS-DIAGNOSTIC-EVIDENCE-COMPLETE
+engineering-decision=CAUSAL-CLOSURE-CONFIRMED
+causal-closure-confirmed=true
+localized-seam=STEAM-DRUM-LIQUID-TRANSPORT-VS-MODE2-SUCTION-TRANSPORT
+repair-owner=UNSELECTED
+evidence-meaning=REV1 separates production runtime bookkeeping from an independent test-only IAPWS-IF97 transport counterfactual.
+evidence-meaning-2=A causal-closure classification confirms the seam for planning purposes only; it does not select a production ownership design.
+hosted-ci-hold=Production repair planning and implementation remain blocked until hosted ordinary-ci is GREEN.
+not-authorized=production repair; repair planning; seed retuning; threshold change; C4/payload change; canonical exact-v9 change; R3 PASS; R3 Requalification 3; R4 Planning 1
+next-required-action=Return artifacts 01-07 for independent adjudication. Combine causal closure with hosted ordinary-ci GREEN only in a later returned-evidence gate.

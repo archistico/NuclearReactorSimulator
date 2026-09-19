@@ -1,0 +1,81 @@
+{
+  "schema": "m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3-v1",
+  "status": "DIAGNOSTIC-CANDIDATE",
+  "prerequisite": {
+    "returned_diagnostic2_manifest": {
+      "path": "eng/m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-returned-evidence-manifest.json",
+      "sha256": "29C8B24DC0BA38F59ACBE66069B38BF8F2AE363274C91252E0116E616FAF3331"
+    },
+    "returned_diagnostic2_directory": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts",
+    "returned_diagnostic2_artifacts": {
+      "01-raw-checkpoint-node-comparison.csv": "7F97F772EDEA53BAEBCA7CF9F12546FFC5B09EDB6A36C1649B0DCB0A2A506EE3",
+      "02-seed-step1-node-comparison.csv": "E2828FDC60628E52FCE41DE58133AD7353C7B399AFA78955699A5F42D7F4E090",
+      "03-seed-step2-node-comparison.csv": "77B8F525BBD233CEF8A8905881739F8DF58F75EA17704D8ACC2F8EFF49763503",
+      "04-seed-step-hydraulic-heads.csv": "5132BC42DFBF7D6DED86029205AAFAAFF5A22F060107700C46B9A62AE7CB78B9",
+      "05-seed-step-flow-comparison.csv": "51381DA3F0FFFAF30B802B373D4937C26F2934BF92D5CE38F012C2D8C4ABAFD3",
+      "06-seed-step-controller-turbine.csv": "8CC26CCECD88E2417CEAE4373609808D4B5DF392985B15713052956D9B195E73",
+      "07-diagnostic-summary.txt": "3F924127DD1E6BC03E3E23EA987436E4E31FE690E74B8F91169A10CD7B085AD2",
+      "08-pre-repair-review.txt": "AF6D9B61C04BB62F49F7DF8E360B7326193CF2BD5D5166824058DBADBF824F50",
+      "09-adjudicator-hotfix1-record.txt": "0A7BB34B2FAACD0E618BFA0A9F006A0D76466BB9A5864294D25BB4CB1B47D929"
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "3BCC1ABA5FA29A67ECD907E575351A82364A26E7D29B8E789722C8104ADBAE28",
+    "historical_tests_file_count": 396,
+    "historical_tests_tree_sha256": "18B644F718BAA7D779F218186AB22433C79BF719C02F6C24CBDF61050EAE5C23"
+  },
+  "diagnostic": {
+    "runtime_step_ms": 10,
+    "seed_step_count": 1,
+    "balance_rows": 2,
+    "resolver_path_rows": 2,
+    "forward_provider_rows": 1,
+    "mass_identity_residual_ceiling_kg_s": 1e-09,
+    "energy_identity_residual_ceiling_w": 0.001,
+    "mode1_energy_baseline_abs_ceiling_w": 0.01,
+    "candidate_expected_energy_rate_min_w": -5217000.0,
+    "candidate_expected_energy_rate_max_w": -5215000.0,
+    "production_change_allowed": false,
+    "threshold_change_allowed": false,
+    "note": "Identity/localization guards only; not model acceptance-envelope changes."
+  },
+  "authority": {
+    "production_repair_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_change_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "new_exact_version_authorized": false,
+    "r3_passed": false,
+    "r3_requalification3_authorized": false,
+    "r4_planning_authorized": false,
+    "next_step_after_execution": "RETURN-ARTIFACTS-FOR-INDEPENDENT-ADJUDICATION"
+  },
+  "files": {
+    "test": {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3SeedIntegrationSuctionEnergyTransportCausalSeamDiagnostic3Tests.cs",
+      "normalized_sha256": "04D9A45176694FA43C8FC81E785E47A89E7489ADDDE534F52EAFEC1D60E93AD2"
+    },
+    "document": {
+      "path": "docs/M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3.md",
+      "normalized_sha256": "EB1E398C59A7C521C937BFB4B2F5BB600A78BD68E2E0B4D17DC93C9873BED8D8"
+    },
+    "returned_adjudication_document": {
+      "path": "docs/M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "CA2081BCBAF29858C83A5437B98D7D3F50F2B96E1A185E1C09B7BA544EFB42E6"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3.ps1",
+      "normalized_sha256": "EDDEC32D18D57C66B57CA75AE579F085933B417869E1FCABB132E0F58F61442B"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3.cmd",
+      "normalized_sha256": "92BC84F53BC960791B3C42FB23E10C2E3C7A7117982D20CE6C1C01110FB439EB"
+    },
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3.ps1",
+      "normalized_sha256": "F43A7A84276494B21030B0AB13876290A0BF1561F4CE367D2CFFF09F61238BD1"
+    }
+  }
+}

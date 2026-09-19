@@ -1,0 +1,30 @@
+{
+  "schema": "m10-final-vr2-r3-diagnostic3-rev1-validator-contract-hygiene-hotfix1-v1",
+  "date": "2026-09-19",
+  "status": "PASS-AS-AUTHORED-READY-FOR-EXECUTION",
+  "defect": "MARKER-CONTRACT-BYPASSED-BY-LEGACY-DOCUMENT-LITERAL-CHECKS",
+  "scope": "ACTIVE-REV1-VALIDATOR-DOCUMENT-CONTRACT-HYGIENE-ONLY",
+  "changes": {
+    "markdown_presence_mode": "JSON-DECLARED-ASCII-MARKERS-ONLY",
+    "marker_cardinality": "EXACTLY-ONE",
+    "navigation_presence_mode": "ASCII-MARKERS-ONLY",
+    "direct_markdown_technical_identifier_presence_checks_allowed": false,
+    "navigation_filename_literal_presence_checks_allowed": false
+  },
+  "invariants": {
+    "production_change": false,
+    "historical_test_semantic_change": false,
+    "diagnostic_scenario_change": false,
+    "guard_change": false,
+    "counterfactual_change": false,
+    "authority_change": false,
+    "repair_owner_selected": false,
+    "r3_passed": false,
+    "r4_authorized": false
+  },
+  "authority": {
+    "next_authorized_activity": "EXECUTE-DIAGNOSTIC3-REV1-TEST-ONLY",
+    "production_repair_authorized": false,
+    "repair_planning_authorized": false
+  }
+}

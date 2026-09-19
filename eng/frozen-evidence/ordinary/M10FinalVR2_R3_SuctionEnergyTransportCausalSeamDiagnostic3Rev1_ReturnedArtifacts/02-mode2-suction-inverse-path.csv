@@ -1,0 +1,3 @@
+checkpoint,mass_kg,energy_j,specific_volume_m3_kg,specific_energy_j_kg,resolved,resolved_phase,resolved_quality,resolution_path,evidence_semantics
+raw,7502.7459746337245,9214263779.64126,0.0013328453387345543,1228118.852856549,true,SubcooledLiquid,null,C2LiquidTablePrefix,RECONSTRUCTED-FROM-EXACT-FROZEN-CONSERVED-INVENTORY
+seed-step1,7502.7459746337245,9214211616.923414,0.0013328453387345543,1228111.9003730153,true,SaturatedMixture,1.5376981274668928E-07,C2MixturePrefix,RECONSTRUCTED-FROM-EXACT-FROZEN-CONSERVED-INVENTORY

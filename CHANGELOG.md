@@ -1,3 +1,67 @@
+## 2026-09-19 - M10 Final VR2 R3 Diagnostic 3 REV1 returned-evidence adjudication 1
+
+- Froze the complete returned Diagnostic 3 REV1 `01`-`07` artifact set with SHA-256 provenance.
+- Independently confirmed `CAUSAL-CLOSURE-CONFIRMED`.
+- Confirmed production runtime energy identity residual `6.383657455444336E-05 W`.
+- Confirmed independent IAPWS-IF97 transport delta to mode2 suction `0.00014754291623830795 J/kg`.
+- Confirmed counterfactual net rate `0.014754295349121094 W` within derived budget `0.10223668223103162 W`.
+- Preserved `repair-owner=UNSELECTED`; repair planning remains blocked until hosted GitHub `ordinary-ci` is GREEN.
+- Next authority: `CONFIRM-HOSTED-ORDINARY-CI-GREEN`.
+
+## 2026-09-19 — M10 Final VR2 R3 Diagnostic 3 REV1 Validator Contract Hygiene Hotfix 1
+
+- Fixed a pre-build false RED caused by active REV1 validator checks that still required technical identifiers/file names to appear literally in Markdown after marker-based validation had already been adopted.
+- REV1 Markdown validation is now driven only by JSON-declared ASCII markers with exact-one cardinality, including top-level index and documentation navigation.
+- Strengthened `docs/VALIDATOR_AUTHORING_RULES.md`: technical identifiers may be asserted in structured/code artifacts, but Markdown presence contracts are marker-only.
+- No production, historical-test semantic, diagnostic scenario, guard, counterfactual, CI, repair-owner, R3 or R4 change.
+
+## 2026-09-19 — Diagnostic 3 REV1 test-only implementation
+
+## 2026-09-19 — Diagnostic 3 REV1 Preexecution Audit / Planning Amendment 1
+
+- Full preexecution audit found that both REV1 validator and adjudicator depended on `Get-FileHash`, unavailable in the proven user PowerShell environment.
+- Replaced both hash paths with a .NET `SHA256` stream helper; no production/test semantic change.
+- Found an internal guard inconsistency: `0.001 J/kg` at approximately `100 kg/s` permits approximately `0.1 W`, while the fixed net-rate ceiling was `0.01 W`. Frozen raw evidence plus the existing IF97 equations predict approximately `0.0147543 W` from the approximately `0.1123 Pa` drum/suction pressure-work difference alone.
+- Superseded the fixed `0.01 W` diagnostic net-rate guard with a rate budget derived from the already-authorized specific-energy and mass-identity guards, plus `0.001 W` arithmetic roundoff budget.
+- Added an explicit counterfactual algebra-identity residual guard of `1E-6 W`.
+- Updated validator authoring policy to require runtime-portable primitives and preflight of every PowerShell script reached by a runner.
+- R3 remains RED; `repair-owner=UNSELECTED`; production repair planning remains blocked pending hosted ordinary-ci GREEN.
+
+
+- Closed `Diagnostic 3 Deep Review & REV1 Planning 1` as `PASS-AS-AUTHORED` after Validator Hotfix 2.
+- Implemented the authorized test-only Diagnostic 3 REV1 without changing `src/` or historical-test semantics.
+- Added Application runtime evidence for the frozen 10 ms raw -> seed-step1 scenario, including explicit `u + p/rho` transport decomposition and true IEEE-754 forward-provider equality.
+- Added a separate `Simulation.Tests` IAPWS-IF97 counterfactual that consumes only a minimal SHA-recorded runtime input artifact and does not reference production thermodynamic models.
+- Added a four-class evidence adjudicator; even `CAUSAL-CLOSURE-CONFIRMED` keeps `repair-owner=UNSELECTED`.
+- Preserved the hosted `ordinary-ci` hold: test-only evidence may proceed while hosted confirmation is pending, but production repair planning/implementation remains unauthorized.
+- Next authority is only `EXECUTE-DIAGNOSTIC3-REV1-TEST-ONLY`.
+
+## 2026-09-19 — Diagnostic 3 Deep Review & REV1 Planning 1 — Validator Hotfix 1
+
+
+- Fixed a false RED in the planning-only audit: the planning document bolds `production repair planning/implementation may not begin`, while the validator searched the same semantic marker without Markdown delimiters using raw `.Contains()`.
+- The validator now normalizes only Markdown bold delimiters for the hosted-CI production-repair hold check; all other planning markers and every engineering guard remain unchanged.
+- Added a dedicated hotfix record; no `src/`, test, review conclusion, counterfactual guard, authority or next-step decision changed.
+
+## 2026-09-19 — Diagnostic 3 deep review + REV1 Planning 1
+
+- Recorded the pre-execution deep review as `PASS-WITH-PREEXECUTION-REVISION`; the reviewed Diagnostic 3 remains unexecuted provenance rather than being promoted as-authored.
+- Confirmed the 10 ms temporal attribution, suction source/sink topology, mass/energy identity, Diagnostic 2 provenance and production/historical-test immutability.
+- Confirmed the architectural ownership seam: steam-drum separation owns an internal default forward thermodynamic model while the network integrator receives the selected mode-2 closure model.
+- Corrected the planning semantics: test-only causal evidence may proceed while hosted ordinary-ci confirmation is pending, but production repair planning/implementation remains blocked until hosted CI is GREEN.
+- Planned Diagnostic 3 REV1 with explicit `u + p/rho` transport decomposition, true IEEE-754 bit equality, precise reconstructed-resolver wording and a separate `Simulation.Tests` IAPWS-IF97 counterfactual.
+- Froze four REV1 adjudication classes and counterfactual guards before execution; `repair-owner` remains `UNSELECTED` even if causal closure is confirmed.
+- Authorized only `IMPLEMENT-DIAGNOSTIC3-REV1-TEST-ONLY`; production repair, seed retuning, threshold/C4/exact-v9 changes, R3 Requalification 3 and R4 remain unauthorized.
+
+## 2026-09-19 — Diagnostic 2 returned adjudication + Suction Energy-Transport Causal-Seam Diagnostic 3 candidate
+
+- Accepted and SHA-froze Diagnostic 2 returned evidence `01`–`09`; R3 remains RED.
+- Local deterministic ordinary CI is PASS; hosted GitHub confirmation remains pending and is kept separate from physics evidence.
+- Frozen evidence shows candidate `suction` mass unchanged across seed-step1 while energy falls at approximately `-5.21627 MW`; the existing drum-liquid source / MCP sink identity predicts the same rate from an approximately `52.163 kJ/kg` advected-specific-energy gap at approximately `100 kg/s`.
+- Added test-only Diagnostic 3 to prove that identity from production snapshots, capture mode-2 inverse resolver path transition and verify the common forward saturation-provider seam.
+- No production source, seed, threshold, C4 payload, canonical exact-v9 or existing test semantics are changed.
+- Production repair, R3 Requalification 3 and R4 remain unauthorized pending returned Diagnostic 3 adjudication and hosted CI confirmation.
+
 ## 2026-09-19 — Diagnostic 2 returned evidence + GitHub Ordinary CI Deterministic Serialization Hotfix 1
 
 - Integrated and SHA-froze the complete returned Diagnostic 2 artifact set `01`–`09`; Adjudicator Hotfix 1 returned `PASS-ADJUDICATOR-HOTFIX1` and the diagnostic review remains `PASS-DIAGNOSTIC-EVIDENCE-COMPLETE`.
@@ -4807,3 +4871,10 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Adds a separate Hotfix 1 adjudicator using explicit `@(PhaseNodes ...)` capture for stable 0/1/N cardinality; the original Diagnostic 2 candidate and adjudicator remain untouched for audit provenance.
 - Freezes the exact returned `01`–`06` CSVs by SHA-256 and adds an adjudication-only runner. No restore, build, focused test, seed preconditioning or dynamic simulation is repeated.
 - Direct evidence already localizes the first phase divergence to `seed-step1` at `suction`; R3 remains RED and no production repair, seed retuning, threshold, C4, exact-v9 or R4 authority is granted.
+
+## 2026-09-19 — Diagnostic 3 Planning 1 Validator Hotfix 2
+
+- Replaced prose/Markdown/Unicode-coupled documentation assertions with stable ASCII `NRS-MARKER` IDs backed by the planning JSON contract.
+- Added validator source-encoding hygiene and aggregate missing-marker reporting.
+- Added `docs/VALIDATOR_AUTHORING_RULES.md` as the project-wide validator authoring rule.
+- No engineering review, REV1 guard, production, historical-test or authority change.

@@ -1,5 +1,17 @@
 # Roadmap
 
+## Live checkpoint — Diagnostic 3 REV1 Preexecution Amendment 1
+
+<!-- NRS-MARKER:DIAG3-REV1-AMENDMENT1-NEXT -->
+
+1. Audit Diagnostic 3 REV1 Preexecution / Planning Amendment 1.
+2. If PASS-AS-AUTHORED, execute the same Diagnostic 3 REV1 test-only scenario with portable hashing and the derived counterfactual component budget.
+3. Return artifacts `01`–`07` for independent adjudication.
+4. Hosted `ordinary-ci` GREEN remains mandatory before any production repair planning or implementation.
+
+No production repair, seed retuning, model-threshold change, C4/payload change, canonical exact-v9 change, R3 PASS or R4 authority is granted by this amendment.
+
+
 This file contains **future work only**. The authoritative current checkpoint and active validation gate remain in `PROJECT.md`.
 
 Detailed current execution branches are maintained directly in this roadmap. The earlier cross-milestone execution map is retained only as historical provenance in [`history/project/FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md`](history/project/FORWARD_EXECUTION_PLAN_M10_9_7_TO_M15.md).
@@ -37,16 +49,21 @@ Rules:
 7. if operator-experience work reveals missing physics, assign it to the post-M11 engineering milestones instead of expanding M10 scope;
 8. no speculative audit, retuning or numerical requalification is added after a green gate merely “for safety”.
 
-## M10 Final / VR2 / R3 — live future sequence after Diagnostic 1
+<!-- NRS-MARKER:DIAG3-REV1-LIVE-SEQUENCE -->
 
-Current-state facts belong in `PROJECT.md`; this section records only future work from the latest returned checkpoint.
+## M10 Final / VR2 / R3 — live future sequence after Diagnostic 3 deep review
 
-1. **Two-Seed-Step Preconditioning Divergence Diagnostic 2** — execution candidate prepared; run the test-only gate. Compare raw state, seed step 1 and seed step 2 for canonical mode 1 versus reference-consistent mode 2. Localize the first phase/pressure/head/flow displacement.
-2. **Returned Diagnostic 2 adjudication** — required before choosing any repair.
-3. **Repair planning** — only if Diagnostic 2 identifies a supported causal seam. No threshold or raw-seed retuning shortcut.
-4. **Bounded repair implementation + fast gate** — must preserve canonical exact-v9 and existing R3 envelopes.
-5. **R3 Short Requalification 3** — only after the fast gate is explicitly PASS.
-6. **R4 Planning 1** — only after returned/adjudicated R3 PASS.
+Current-state facts belong in `PROJECT.md`; this section records only work still ahead. The detailed frozen contract is `M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md`.
+
+1. **Diagnostic 3 REV1 implementation — COMPLETE.**
+2. **Diagnostic 3 REV1 execution — COMPLETE.**
+3. **Returned Diagnostic 3 REV1 adjudication — COMPLETE / `CAUSAL-CLOSURE-CONFIRMED`** — the independent IF97 counterfactual closes the suction transport seam to the frozen guards; `repair-owner=UNSELECTED`.
+<!-- NRS-MARKER:DIAG3-REV1-HOSTED-CI-CONFIRMATION-NEXT -->
+4. **Hosted ordinary-ci confirmation — NEXT** — deterministic ordinary is locally PASS; the same CI candidate must be GREEN on GitHub before production repair planning/implementation may begin.
+5. **R3 Energy-Transport Ownership Repair Planning 1** — only when returned REV1 remains `CAUSAL-CLOSURE-CONFIRMED` **and** hosted ordinary-ci is GREEN. Compare multiple ownership families; do not retune the seed or relax thresholds.
+6. **Bounded repair implementation + fast gate** — only from an explicitly selected repair plan; canonical exact-v9, C4 payload and existing R3 envelopes remain frozen.
+7. **R3 Short Requalification 3** — only after the bounded fast gate is explicitly PASS.
+8. **R4 Planning 1** — only after returned/adjudicated R3 PASS.
 
 R3 is still RED and R4 remains blocked.
 
@@ -676,24 +693,20 @@ R1 Selected C4 Opt-In Closure Implementation 1 returned complete evidence and is
 
 R2 Planning 1 returned `PASS-AS-AUTHORED`, R2 execution returned all nine required artifacts, and returned evidence is adjudicated `PASS-R2-FOCUSED-THERMODYNAMIC-REFERENCE-TOPOLOGY-QUALIFIED`. The independent IF97/reference/topology gate is therefore closed and superseded by R3.
 
-### VR2 R3 repair branch after returned R3 RED
+### Historical VR2 R3 repair-branch checkpoint after the first returned R3 RED
 
-R3 Requalification 1 returned `R3-SHADOW-COMPOSITION-BLOCKING`. Diagnostic 1 confirmed `H28.1-E-FUSED-PATH-NOT-MODE2-AWARE`.
+R3 Requalification 1 returned `R3-SHADOW-COMPOSITION-BLOCKING`. Diagnostic 1 confirmed `H28.1-E-FUSED-PATH-NOT-MODE2-AWARE`. The then-planned sequence through Diagnostic 2 and causal repair planning is now superseded by the returned Diagnostic 2 evidence and Diagnostic 3 deep review. Use the live future-sequence section at the top of this file for current work.
 
-Future sequence:
+<!-- NRS-MARKER:DIAG3-REV1-ROADMAP-SUPERSESSION -->
 
-`Two-Seed-Step Preconditioning Divergence Diagnostic 2 -> returned adjudication -> causally supported repair planning/implementation -> bounded fast gate -> R3 Short Requalification 3 -> R4 Planning 1`
+### 2026-09-19 — Historical checkpoint — superseded after deterministic ordinary local PASS and Diagnostic 3 deep review
 
-Repair Implementation 1 is returned/adjudicated PASS. R4 remains blocked until R3 Short Requalification 2 returns/adjudicates PASS.
+Diagnostic 2 Adjudicator Hotfix 1 returned PASS and froze `01`–`09`. At this historical checkpoint hosted `ordinary-ci` had reported one failing `Application.Tests` test, so the initial sequence held the entire physics branch behind CI maintenance.
 
-### 2026-09-19 — R3 Diagnostic 2 returned / CI deterministic maintenance checkpoint
+`GitHub Ordinary CI Deterministic Serialization Hotfix 1` subsequently returned local PASS for exact-v9 audit, current-evidence audit and the complete ordinary suite. Diagnostic 3 deep review then clarified the authority split: **test-only causal evidence may proceed while hosted confirmation is pending, but no production repair planning/implementation may begin until hosted ordinary-ci is GREEN**.
 
-Diagnostic 2 Adjudicator Hotfix 1 has returned PASS. The complete `01`–`09` evidence set is frozen. The first phase divergence is localized to `seed-step1` at `suction`, where candidate mode 2 crosses to `SaturatedMixture` while mode 1 remains `SubcooledLiquid`. Hydraulic displacement is already present at that checkpoint while governor/speed-controller deltas remain zero. R3 therefore stays RED, but the next engineering question is now narrower: determine the causal phase-boundary/hydraulic seam before any repair is authorized.
-
-A repository-hygiene hold is interposed before that engineering successor because hosted `ordinary-ci` currently reports one failing `Application.Tests` test after a clean Release build. `GitHub Ordinary CI Deterministic Serialization Hotfix 1` may change only CI execution semantics: make `CI=true` intrinsic to the entry point, serialize Microsoft.Testing.Platform modules, disable xUnit collection parallelism, and improve failure logging. It may not filter, retry, skip or tolerate the failure, and it may not change `src/` or `tests/`.
-
-Sequence:
+The older sequence below is therefore superseded and retained only as provenance:
 
 `Diagnostic 2 returned PASS -> deterministic ordinary CI local + hosted PASS -> causal-seam adjudication/planning -> separately authorized repair candidate -> bounded fast gate -> R3 Short Requalification 3 -> R4 Planning 1`
 
-If serialized ordinary CI remains RED, stop and repair the specifically named failing test/dependency from its returned log. Do not resume the physics branch while the ordinary repository gate is red.
+Current execution order is defined in the live future-sequence section and `M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md`.

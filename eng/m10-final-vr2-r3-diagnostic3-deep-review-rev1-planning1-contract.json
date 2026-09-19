@@ -1,0 +1,82 @@
+{
+  "schema": "m10-final-vr2-r3-diagnostic3-deep-review-rev1-planning1-v1",
+  "status": "PASS-WITH-PREEXECUTION-REVISION-PLANNED",
+  "date": "2026-09-19",
+  "reviewed_candidate": "R3-SEED-INTEGRATION-SUCTION-ENERGY-TRANSPORT-CAUSAL-SEAM-DIAGNOSTIC3",
+  "review_disposition": "PASS-WITH-PREEXECUTION-REVISION",
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "3BCC1ABA5FA29A67ECD907E575351A82364A26E7D29B8E789722C8104ADBAE28",
+    "historical_tests_file_count_excluding_reviewed_diagnostic3": 396,
+    "historical_tests_tree_sha256_excluding_reviewed_diagnostic3": "18B644F718BAA7D779F218186AB22433C79BF719C02F6C24CBDF61050EAE5C23"
+  },
+  "review_findings": {
+    "production_baseline_integrity": "PASS",
+    "historical_test_integrity": "PASS",
+    "diagnostic2_provenance": "PASS",
+    "seed_step_temporal_attribution": "PASS",
+    "suction_topology_completeness": "PASS",
+    "mass_balance_reconstruction": "PASS",
+    "energy_balance_reconstruction": "PASS",
+    "forward_inverse_architectural_seam": "CONFIRMED",
+    "powershell_adjudicator_robustness": "PASS",
+    "authority_containment": "PASS",
+    "causal_wording": "NEEDS-REVISION",
+    "roadmap_consistency": "NEEDS-REVISION",
+    "forward_transport_decomposition": "STRENGTHEN",
+    "provider_bit_equality": "STRENGTHEN",
+    "independent_counterfactual": "REQUIRED-BEFORE-CAUSAL-CLOSURE"
+  },
+  "rev1": {
+    "status": "PLANNED-NOT-IMPLEMENTED",
+    "production_change_allowed": false,
+    "historical_test_semantic_change_allowed": false,
+    "reviewed_diagnostic3_rewrite_allowed": false,
+    "application_runtime_capture_required": true,
+    "simulation_if97_counterfactual_required": true,
+    "if97_production_runtime_dependency_allowed": false,
+    "c4_payload_change_allowed": false,
+    "seed_retuning_allowed": false,
+    "threshold_change_allowed": false,
+    "canonical_exact_v9_change_allowed": false,
+    "runtime_step_ms": 10,
+    "seed_step_count": 1,
+    "expected_returned_artifact_count": 7,
+    "guards": {
+      "mode1_energy_abs_ceiling_w": 0.01,
+      "candidate_energy_rate_min_w": -5217000.0,
+      "candidate_energy_rate_max_w": -5215000.0,
+      "production_energy_identity_abs_residual_ceiling_w": 0.001,
+      "mass_identity_abs_residual_ceiling_kg_s": 1e-9,
+      "if97_saturation_pressure_abs_delta_ceiling_pa": 1.0,
+      "if97_reference_vs_mode2_suction_transport_abs_delta_ceiling_j_kg": 0.001,
+      "if97_counterfactual_net_energy_abs_ceiling_w": 0.01,
+      "production_transport_gap_min_j_kg": 52100.0,
+      "production_transport_gap_max_j_kg": 52250.0
+    },
+    "adjudication_classes": [
+      "CAUSAL-CLOSURE-CONFIRMED",
+      "TRANSPORT-SEAM-LOCALIZED-COUNTERFACTUAL-NOT-CLOSED",
+      "DIAGNOSTIC-IDENTITY-RED",
+      "REFERENCE-COUNTERFACTUAL-RED"
+    ]
+  },
+  "ci": {
+    "deterministic_ordinary_local": "PASS",
+    "hosted_ordinary": "PENDING-CONFIRMATION",
+    "test_only_evidence_may_proceed_while_hosted_pending": true,
+    "production_repair_requires_hosted_green": true
+  },
+  "authority": {
+    "next_authorized_activity": "IMPLEMENT-DIAGNOSTIC3-REV1-TEST-ONLY",
+    "production_repair_authorized": false,
+    "repair_planning_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_change_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "r3_passed": false,
+    "r3_requalification3_authorized": false,
+    "r4_planning_authorized": false
+  }
+}

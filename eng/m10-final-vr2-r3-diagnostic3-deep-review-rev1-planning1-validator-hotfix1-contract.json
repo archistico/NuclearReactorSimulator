@@ -1,0 +1,12 @@
+{
+  "schema": "m10-final-vr2-r3-diagnostic3-deep-review-rev1-planning1-validator-hotfix1-v1",
+  "date": "2026-09-19",
+  "defect": "MARKDOWN-FORMAT-COUPLED-HOSTED-CI-HOLD-MARKER",
+  "original_validator_normalized_sha256": "63E9FCF3C787A9B5C713BC48785A6F05B6884A914EE33F8BE75D5298A3ECC7B5",
+  "parent_planning_contract_normalized_sha256": "2B1B524CF85E7839ABEBD8B9EE47B27E933908F1F43AF2B8FE63065227231664",
+  "scope": "VALIDATOR-ONLY",
+  "engineering_review_change": false,
+  "rev1_guard_change": false,
+  "authority_change": false,
+  "next_authorized_activity": "IMPLEMENT-DIAGNOSTIC3-REV1-TEST-ONLY"
+}

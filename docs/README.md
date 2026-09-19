@@ -42,6 +42,13 @@ The current live R3 documents are:
 - `M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2.md`
 - `M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2_HOTFIX1.md`
 - `GITHUB_ORDINARY_CI_DETERMINISTIC_SERIALIZATION_HOTFIX1.md`
+- `M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2_RETURNED_EVIDENCE_ADJUDICATION.md`
+- `M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md`
+- `M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3.md`
+<!-- NRS-MARKER:DIAG3-REV1-DOC-NAV -->
+- `M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3_REV1.md`
+<!-- NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-DOCNAV -->
+- `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md` — returned `01`-`07` independent adjudication; causal closure confirmed, repair owner unselected, hosted CI confirmation next.
 
 Older R1/R2/R3 planning and diagnostic documents remain provenance or executable-contract dependencies; they are not the restart point.
 
@@ -122,3 +129,11 @@ RP1C Selection 1 returned `SELECT-C4`; this planning checkpoint is superseded by
 
 R1 Implementation Planning 1 returned `PASS-AS-AUTHORED`; the implementation gate later returned complete evidence and is adjudicated PASS. Mode 2 is qualified as opt-in implementation evidence only.
 
+
+- `M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1_VALIDATOR_HOTFIX1.md` — records the Markdown-coupling false RED and validator-only correction; engineering authority unchanged.
+
+- `M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1_VALIDATOR_HOTFIX2.md` — structural validator hygiene hotfix: ASCII document markers, encoding guard and aggregate marker diagnostics.
+- `VALIDATOR_AUTHORING_RULES.md` — repository rules for robust PowerShell/document validation contracts.
+
+- `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md` — Diagnostic 3 REV1 preexecution portability and counterfactual-guard Planning Amendment 1.
+- `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_VALIDATOR_CONTRACT_HYGIENE_HOTFIX1.md` — Active REV1 validator hotfix: Markdown presence checks are JSON-declared ASCII markers only.

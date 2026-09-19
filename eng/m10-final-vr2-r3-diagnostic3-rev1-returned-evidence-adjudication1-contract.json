@@ -1,0 +1,147 @@
+{
+  "schema": "m10-final-vr2-r3-diagnostic3-rev1-returned-evidence-adjudication1-v1",
+  "status": "PASS-AS-AUTHORED-READY-FOR-AUDIT",
+  "date": "2026-09-19",
+  "engineering_classification": "CAUSAL-CLOSURE-CONFIRMED",
+  "prerequisite": {
+    "diagnostic3_rev1_contract": {
+      "path": "eng/m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3-rev1-contract.json",
+      "sha256": "9B586B7BB1AA18F9D1C101C1D2370CC62B39FF333B655D6C7429655D3820DD37"
+    },
+    "preexecution_amendment1_contract": {
+      "path": "eng/m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1-contract.json",
+      "sha256": "FA1D3F6D9889F8AEFD6EF2C55BA0E962D1EE8E28CDE1B0065FD090CC6832F1A0"
+    },
+    "validator_contract_hygiene_hotfix1_contract": {
+      "path": "eng/m10-final-vr2-r3-diagnostic3-rev1-validator-contract-hygiene-hotfix1-contract.json",
+      "sha256": "CEED564E8ABDCF843C06453A97BCC5C95D04974277BCCEBAE3A2F21915DE5C3D"
+    }
+  },
+  "returned_evidence": {
+    "source_zip_sha256": "A60EC796829E8E9302639EC8A315E6D700E864CC0BCA2401F79AE723D1A5BE76",
+    "directory": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SuctionEnergyTransportCausalSeamDiagnostic3Rev1_ReturnedArtifacts",
+    "artifact_count": 7,
+    "files": {
+      "01-step1-suction-energy-balance.csv": "B5EF3B198E6DB1990E343EBDD4AA2AB55A64306B73F8A07BCB5593FB3B08910A",
+      "02-mode2-suction-inverse-path.csv": "F1AE95DD6FA1D02ACCE17DA3D4D0C63B1827BB9AB6B95A1B0A859D5AF406818E",
+      "03-forward-transport-decomposition.csv": "2E6698EA2AB921F2B82479437B67E50BCD15C6E1CBE5138E61C0DA12E60E8BB1",
+      "04-reference-counterfactual-input.csv": "E176F354530BB16ECFD239B9152C723A7E68ED7373F35B6D6BCD63E8364E18E2",
+      "05-if97-reference-counterfactual.csv": "82D6CEB8E47174D281D88E3E0D96B019942BBFCAD354922ABE544735FB3D3CFC",
+      "06-diagnostic-summary.txt": "9CB18FC44B93FE60B041CC4FE57E446B221FFA2F5F0E6EBF3F702709B85F3296",
+      "07-pre-repair-review.txt": "6A9477BC85E20501AECDC3F8A1F1D87A55E9A1344E7826970784CC0E074ACC67"
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "3BCC1ABA5FA29A67ECD907E575351A82364A26E7D29B8E789722C8104ADBAE28",
+    "historical_tests_file_count": 396,
+    "historical_tests_tree_sha256": "18B644F718BAA7D779F218186AB22433C79BF719C02F6C24CBDF61050EAE5C23",
+    "ordinary_ci_cmd_sha256": "4C6D5915B29B49B3307696D3355CA4240B801CD46D6F39554472C1B91BB28B0A",
+    "ordinary_ci_workflow_sha256": "9769445EEC9C5F3F3D7EDA20314A76E9C807635537CA0EE6F9FA79FA782E7F33"
+  },
+  "findings": {
+    "first_causal_checkpoint": "seed-step1",
+    "first_causal_node": "suction",
+    "localized_seam": "STEAM-DRUM-LIQUID-TRANSPORT-VS-MODE2-SUCTION-TRANSPORT",
+    "repair_owner": "UNSELECTED",
+    "candidate_observed_energy_rate_w": -5216271.784591675,
+    "production_predicted_energy_rate_w": -5216271.784655511,
+    "production_energy_identity_abs_residual_w": 6.383657455444336e-05,
+    "mode2_raw_phase": "SubcooledLiquid",
+    "mode2_step1_phase": "SaturatedMixture",
+    "if97_saturation_pressure_abs_delta_pa": 0.0,
+    "if97_reference_vs_mode2_suction_abs_delta_j_kg": 0.00014754291623830795,
+    "if97_minus_production_transport_j_kg": 52162.71184104541,
+    "if97_counterfactual_net_energy_abs_w": 0.014754295349121094,
+    "if97_counterfactual_derived_budget_w": 0.10223668223103162,
+    "if97_counterfactual_rate_identity_residual_w": 2.068356699455598e-09,
+    "absolute_energy_rate_reduction_factor": 353542589.54172325,
+    "forward_provider_all_ieee754_bits_identical": true
+  },
+  "guards": {
+    "production_energy_identity_abs_residual_ceiling_w": 0.001,
+    "mass_identity_abs_residual_ceiling_kg_s": 1e-09,
+    "transport_identity_abs_residual_ceiling_j_kg": 1e-09,
+    "if97_saturation_pressure_abs_delta_ceiling_pa": 1.0,
+    "if97_reference_vs_mode2_suction_transport_abs_delta_ceiling_j_kg": 0.001,
+    "production_transport_gap_min_j_kg": 52100.0,
+    "production_transport_gap_max_j_kg": 52250.0,
+    "counterfactual_rate_identity_abs_residual_ceiling_w": 1e-06,
+    "counterfactual_budget_roundoff_w": 0.001
+  },
+  "ci": {
+    "deterministic_ordinary_local": "PASS",
+    "hosted_ordinary": "PENDING-CONFIRMATION",
+    "production_repair_planning_requires_hosted_green": true
+  },
+  "authority": {
+    "next_authorized_activity": "CONFIRM-HOSTED-ORDINARY-CI-GREEN",
+    "production_repair_authorized": false,
+    "repair_planning_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_change_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "r3_passed": false,
+    "r3_requalification3_authorized": false,
+    "r4_planning_authorized": false
+  },
+  "files": {
+    "document": {
+      "path": "docs/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md",
+      "normalized_sha256": "C8EFC2CA88891CE7118008D0AC275817E26883C39113876802AEE98865E285B7"
+    },
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-diagnostic3-rev1-returned-evidence-adjudication1.ps1",
+      "normalized_sha256": "7279F4FF60A81897033B6ACFE9F5B1BD19BB3DD458DFF1928BB3085B38D6363D"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-diagnostic3-rev1-returned-evidence-adjudication1.cmd",
+      "normalized_sha256": "910F413427FC0DE32EA350B25E7E38B74290E1F916B4C9EE5305F215CF18E9C2"
+    }
+  },
+  "document_validation_policy": {
+    "mode": "JSON-DECLARED-ASCII-MARKERS-ONLY",
+    "marker_cardinality": "EXACTLY-ONE"
+  },
+  "documentation_marker_files": [
+    {
+      "path": "docs/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md",
+      "markers": [
+        "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION1",
+        "NRS-MARKER:DIAG3-REV1-RETURNED-EVIDENCE-CONFIRMED",
+        "NRS-MARKER:DIAG3-REV1-CAUSAL-CLOSURE",
+        "NRS-MARKER:DIAG3-REV1-HOSTED-CI-NEXT"
+      ]
+    },
+    {
+      "path": "docs/PROJECT.md",
+      "markers": [
+        "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-CHECKPOINT"
+      ]
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "markers": [
+        "NRS-MARKER:DIAG3-REV1-HOSTED-CI-CONFIRMATION-NEXT"
+      ]
+    },
+    {
+      "path": "docs/TOP_LEVEL_DOCUMENT_INDEX.md",
+      "markers": [
+        "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-INDEX"
+      ]
+    },
+    {
+      "path": "docs/README.md",
+      "markers": [
+        "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-DOCNAV"
+      ]
+    }
+  ],
+  "powershell_compatibility": {
+    "hash_backend": "DOTNET-SHA256-STREAM",
+    "get_file_hash_dependency_allowed": false,
+    "validator_source_policy": "ASCII-ONLY-OR-UTF8-BOM"
+  }
+}
