@@ -1,5 +1,16 @@
 # Project — current authoritative state
 
+## Hosted ordinary-ci contract V2 recovery checkpoint — 2026-09-19
+
+<!-- NRS-MARKER:CI-STABLE-CONTRACT-V2-CHECKPOINT -->
+
+The hosted GitHub `ordinary-ci` workflow is currently RED **before restore/build/test**, because the permanent entry point still invokes the historical `GitHub Ordinary CI Deterministic Serialization Hotfix 1` validator. That validator freezes the Hotfix 1 `src/` and `tests/` snapshots and hashes raw working-tree bytes. Both assumptions are invalid for permanent CI: authorized later milestones have added test-only files, and Windows Git checkouts may materialize text with different EOL representation.
+
+`GitHub Ordinary CI Stable Contract V2` replaces that permanent gate with a semantic harness contract: pinned SDK/test runner, warnings-as-errors, serialized full ordinary suite, no filter/retry/continue-on-error, and current-evidence execution remain fail-closed. It intentionally does not freeze evolving `src/`/`tests/` counts or raw tree hashes. Hotfix 1 remains frozen provenance only.
+
+Current next activity: validate V2 locally with `./scripts/run-github-ordinary-ci-stable-contract-v2.cmd`, then push the same candidate and require hosted `ordinary-ci` GREEN. R3 remains RED; causal closure remains confirmed; `repair-owner=UNSELECTED`; production repair planning remains blocked until hosted GREEN.
+
+
 ## Causal-closure consolidation / hosted-CI hold checkpoint — 2026-09-19
 
 <!-- NRS-MARKER:R3-CAUSAL-CLOSURE-CONSOLIDATION-CHECKPOINT -->

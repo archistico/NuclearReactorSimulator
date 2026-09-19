@@ -1,0 +1,53 @@
+{
+  "schema": "github-ordinary-ci-stable-contract-v2",
+  "status": "ACTIVE-CI-CONTRACT",
+  "purpose": "Permanent ordinary CI harness contract. Protect execution semantics without freezing evolving repository trees or worktree byte representation.",
+  "paths": {
+    "ci_ordinary": "eng/ci-ordinary.cmd",
+    "workflow": ".github/workflows/ordinary-ci.yml",
+    "global_json": "global.json",
+    "directory_build_props": "Directory.Build.props",
+    "current_evidence": "eng/ci-current-evidence.cmd",
+    "legacy_hotfix1_contract": "eng/github-ordinary-ci-deterministic-hotfix1-contract.json",
+    "legacy_hotfix1_validator": "eng/validate-github-ordinary-ci-deterministic-hotfix1.ps1"
+  },
+  "deterministic_ci": {
+    "expected_dotnet_test_command": "dotnet test --configuration Release --no-build --max-parallel-test-modules 1 --output Detailed -- --parallel none --xunit-info || exit /b 1",
+    "restore_command": "dotnet restore || exit /b 1",
+    "build_command": "dotnet build --configuration Release --no-restore || exit /b 1",
+    "current_evidence_command": "call eng\\ci-current-evidence.cmd || exit /b 1",
+    "validator_command_fragment": "validate-github-ordinary-ci-stable-contract-v2.ps1",
+    "runner": "Microsoft.Testing.Platform",
+    "sdk_version": "10.0.100"
+  },
+  "workflow": {
+    "runner": "windows-latest",
+    "checkout_action": "actions/checkout@v7",
+    "setup_dotnet_action": "actions/setup-dotnet@v6",
+    "entry_point": "eng\\ci-ordinary.cmd"
+  },
+  "permanent_contract": {
+    "source_tree_snapshot_enforced": false,
+    "test_tree_snapshot_enforced": false,
+    "file_count_snapshot_enforced": false,
+    "raw_worktree_hash_enforced": false,
+    "full_ordinary_suite_required": true,
+    "test_filter_forbidden": true,
+    "retry_forbidden": true,
+    "continue_on_error_forbidden": true,
+    "warnings_as_errors_required": true,
+    "current_evidence_required": true
+  },
+  "historical_hotfix1": {
+    "role": "FROZEN-PROVENANCE-ONLY",
+    "active_ci_contract": false,
+    "reason": "Hotfix 1 src/tests snapshots were candidate-scoped. Permanent ordinary CI must allow later authorized repository evolution and must not depend on worktree EOL materialization."
+  },
+  "authority": {
+    "production_physics_change_authorized": false,
+    "test_semantics_change_authorized": false,
+    "threshold_change_authorized": false,
+    "r3_passed": false,
+    "repair_owner_selected": false
+  }
+}

@@ -1,16 +1,18 @@
 # Roadmap
 
-## Live checkpoint — Diagnostic 3 REV1 returned causal closure / hosted CI hold
+## Live checkpoint — Diagnostic 3 REV1 causal closure / CI Stable Contract V2 recovery
 
 <!-- NRS-MARKER:R3-CAUSAL-CLOSURE-HOSTED-CI-NEXT -->
+<!-- NRS-MARKER:CI-STABLE-CONTRACT-V2-ROADMAP -->
 
 1. Diagnostic 3 REV1 execution is COMPLETE.
 2. Returned-evidence independent adjudication is COMPLETE / `CAUSAL-CLOSURE-CONFIRMED`.
 3. Causal-closure architecture inventory is COMPLETE as documentation only; it selects no repair family.
-4. **Hosted GitHub `ordinary-ci` confirmation is NEXT.**
-5. Only after hosted `ordinary-ci` is explicitly GREEN may `R3 Energy-Transport Ownership Repair Planning 1` begin.
+4. Historical CI Hotfix 1 is locally validated provenance, but its frozen `src/tests` snapshot validator is no longer valid as the permanent ordinary-CI contract after later authorized repository evolution.
+5. **GitHub Ordinary CI Stable Contract V2 local validation is NEXT**, followed by hosted `ordinary-ci` on the same candidate.
+6. Only after hosted `ordinary-ci` is explicitly GREEN may `R3 Energy-Transport Ownership Repair Planning 1` begin.
 
-R3 remains RED. `repair-owner=UNSELECTED`. No production repair, seed retuning, model-threshold change, C4/payload change, canonical exact-v9 change, R3 Requalification 3 or R4 authority is granted by the architecture inventory.
+R3 remains RED. `repair-owner=UNSELECTED`. No production repair, seed retuning, model-threshold change, C4/payload change, canonical exact-v9 change, R3 Requalification 3 or R4 authority is granted by the CI repair.
 
 
 This file contains **future work only**. The authoritative current checkpoint and active validation gate remain in `PROJECT.md`.
@@ -60,7 +62,7 @@ Current-state facts belong in `PROJECT.md`; this section records only work still
 2. **Diagnostic 3 REV1 execution — COMPLETE.**
 3. **Returned Diagnostic 3 REV1 adjudication — COMPLETE / `CAUSAL-CLOSURE-CONFIRMED`** — the independent IF97 counterfactual closes the suction transport seam to the frozen guards; `repair-owner=UNSELECTED`.
 <!-- NRS-MARKER:DIAG3-REV1-HOSTED-CI-CONFIRMATION-NEXT -->
-4. **Hosted ordinary-ci confirmation — NEXT** — deterministic ordinary is locally PASS; the same CI candidate must be GREEN on GitHub before production repair planning/implementation may begin.
+4. **CI Stable Contract V2 validation — NEXT** — validate the permanent semantic CI contract locally, then push the same candidate and require hosted `ordinary-ci` GREEN before production repair planning/implementation may begin.
 5. **R3 Energy-Transport Ownership Repair Planning 1** — only when returned REV1 remains `CAUSAL-CLOSURE-CONFIRMED` **and** hosted ordinary-ci is GREEN. Compare multiple ownership families; do not retune the seed or relax thresholds.
 6. **Bounded repair implementation + fast gate** — only from an explicitly selected repair plan; canonical exact-v9, C4 payload and existing R3 envelopes remain frozen.
 7. **R3 Short Requalification 3** — only after the bounded fast gate is explicitly PASS.

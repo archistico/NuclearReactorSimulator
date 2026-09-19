@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-09-19 - GitHub Ordinary CI Stable Contract V2
+
+- Diagnosed hosted `ordinary-ci` false RED before build: the active Hotfix 1 validator hashed raw `src/` worktree bytes and froze the Hotfix 1 `tests/` snapshot.
+- Confirmed the repository has legitimately evolved beyond that candidate snapshot: current test-only diagnostics add files after the original 396-file Hotfix 1 baseline.
+- Replaced the permanent ordinary-CI validator with a semantic V2 contract that protects SDK/runner binding, warnings-as-errors, deterministic serialized full-suite execution, no filter/retry/continue-on-error, and current-evidence execution.
+- Removed permanent `src/`/`tests/` tree/file-count snapshot enforcement and all raw-worktree hashing from the active CI contract.
+- Retained Hotfix 1 contract/validator unchanged as frozen historical provenance; it is no longer invoked by `eng/ci-ordinary.cmd`.
+- No production source, test semantics, physics, thresholds, Diagnostic 3 evidence, R3 status or repair ownership changed.
+
+
 ## 2026-09-19 - M10 Final VR2 R3 Causal Closure Architecture Inventory 1
 
 - Consolidated the returned Diagnostic 3 REV1 `CAUSAL-CLOSURE-CONFIRMED` result without changing authority.
