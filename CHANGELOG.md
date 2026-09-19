@@ -1,3 +1,10 @@
+# M10.9.7.4 Exact-V9 Cross-Host Stage Mass-Flow Resolver Causal-Seam Diagnostic 3
+
+- Adjudicates Diagnostic 2 REV1 as PASS-AS-AUTHORED: the first captured cross-host delta is already stage commanded mass flow at step 126 (19 ULP); vapor-fraction/effective-flow arithmetic is downstream propagation.
+- Adds test/evidence-only post-loop resolver tracing for pressure-driven, drainable and stop/control/admission valve candidates using immutable step-125/126 snapshot references.
+- Captures production main-steam valve snapshot flows plus explanatory ValveFlowSolver arithmetic and IEEE-754 bits.
+- Keeps production source, workflow, frozen V1/Exact-V9 anchors, physics, tolerances and VR2/R3 unchanged.
+
 ## M10.9.7.4 Exact-V9 Cross-Host Transitive Determinism Diagnostic 1 - Validator Hotfix 1
 
 - First local execution stopped before restore/build/test because the diagnostic validator used `Get-FileHash`, unavailable in the proven user Windows PowerShell environment.

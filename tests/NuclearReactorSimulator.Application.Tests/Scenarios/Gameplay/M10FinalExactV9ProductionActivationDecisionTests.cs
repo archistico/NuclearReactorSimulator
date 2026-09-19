@@ -10,6 +10,7 @@ using NuclearReactorSimulator.Application.Scenarios.Recording;
 using NuclearReactorSimulator.Application.Scenarios.Training;
 using NuclearReactorSimulator.Simulation.Plant;
 using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
+using NuclearReactorSimulator.Simulation.Physics.TurbineIsland.MainSteam;
 using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
 using Xunit;
@@ -332,8 +333,8 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             builder.Append(FormattableString.Invariant($"{step}:{fingerprint}||"));
             entries.Add(new DeterminismTraceEntry(step, snapshot.LogicalStep, fingerprint, payload));
 
-            // Capture only an immutable canonical-snapshot reference after step 126 has already been computed and hashed.
-            // All turbine traversal and diagnostic arithmetic are intentionally deferred until after the 128-step loop.
+            // Capture only the immutable canonical-snapshot reference after step 126 has already been computed and hashed.
+            // All resolver traversal and arithmetic remain post-loop, preserving the Diagnostic 2 loop workload.
             if (step == StageCausalStep)
             {
                 stageCausalSnapshot = engine.LatestCanonicalSnapshot;
@@ -343,14 +344,18 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
 
         if (stageCausalSnapshot is null || stageCausalLogicalStep < 0)
         {
-            throw new InvalidOperationException("Exact-V9 stage causal snapshot was not captured at the frozen divergent step.");
+            throw new InvalidOperationException("Exact-V9 resolver causal snapshot was not captured at the frozen divergent step.");
         }
 
         var stageDiagnostic = BuildExactV9StageCausalDiagnostic(stageCausalSnapshot);
+        var resolverDiagnostic = BuildExactV9StageMassFlowResolverDiagnostic(
+            stageCausalSnapshot,
+            engine.FixedDeltaTime);
         return new DeterminismTraceCapture(
             Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))),
             entries,
-            new ExactV9StageCausalTraceEntry(StageCausalStep, stageCausalLogicalStep, stageDiagnostic));
+            new ExactV9StageCausalTraceEntry(StageCausalStep, stageCausalLogicalStep, stageDiagnostic),
+            new ExactV9StageMassFlowResolverTraceEntry(StageCausalStep, stageCausalLogicalStep, resolverDiagnostic));
     }
 
     private static ExactV9StageCausalDiagnostic BuildExactV9StageCausalDiagnostic(
@@ -406,6 +411,115 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             rotor.PassiveMechanicalLossTorque.NewtonMetres,
             rotor.NetTorque.NewtonMetres,
             rotor.ShaftPower.Watts);
+    }
+
+    private static ExactV9StageMassFlowResolverDiagnostic BuildExactV9StageMassFlowResolverDiagnostic(
+        IntegratedAutomaticOperationSnapshot causalSnapshot,
+        TimeSpan deltaTime)
+    {
+        var fullPlant = causalSnapshot.Control.ProtectedControl.FullPlant;
+        var turbine = fullPlant.IntegratedCycle.TurbineExpansion;
+        var stage = Assert.Single(turbine.StageGroups);
+        var stageDefinition = turbine.Definition.GetStageGroup(stage.StageGroupId);
+        var resistance = stageDefinition.ExpansionResistance
+            ?? throw new InvalidOperationException("Frozen Exact-V9 stage must retain its pressure-driven expansion resistance.");
+        var boundaryDefinition = turbine.MainSteamNetwork.Definition.GetTurbineAdmissionBoundary(stage.AdmissionBoundaryId);
+        var trainDefinition = turbine.MainSteamNetwork.Definition.GetAdmissionTrain(boundaryDefinition.AdmissionTrainId);
+        var trainSnapshot = turbine.MainSteamNetwork.GetAdmissionTrain(trainDefinition.Id);
+        var postStepInlet = fullPlant.CandidatePlant.GetFluidNode(boundaryDefinition.SourceNodeId);
+
+        var drivingPressurePa = stage.InletPressure.Pascals - stage.ExhaustPressure.Pascals;
+        var expansionResistance = resistance.PascalSecondsSquaredPerKilogramSquared;
+        var hydraulicCandidate = drivingPressurePa <= 0d
+            ? 0d
+            : Math.Sqrt(drivingPressurePa / expansionResistance);
+
+        var stop = BuildExactV9ValveFlowDiagnostic(
+            "STOP",
+            turbine.Definition.PlantDefinition.GetValve(trainDefinition.StopValveId),
+            trainSnapshot.StopValve);
+        var control = BuildExactV9ValveFlowDiagnostic(
+            "CONTROL",
+            turbine.Definition.PlantDefinition.GetValve(trainDefinition.ControlValveId),
+            trainSnapshot.ControlValve);
+        var admission = BuildExactV9ValveFlowDiagnostic(
+            "ADMISSION",
+            turbine.Definition.PlantDefinition.GetValve(trainDefinition.AdmissionValveId),
+            trainSnapshot.AdmissionValve);
+
+        var admissionTrainCandidate = Math.Min(
+            stop.PositiveSnapshotMassFlowKgPerS,
+            Math.Min(control.PositiveSnapshotMassFlowKgPerS, admission.PositiveSnapshotMassFlowKgPerS));
+        var visibleCandidate = Math.Min(hydraulicCandidate, admissionTrainCandidate);
+        var observedCommanded = stage.CommandedMassFlowRate.KilogramsPerSecond;
+        var drainableTiePreStepMassKg = 2d * visibleCandidate * deltaTime.TotalSeconds;
+        var selectedVisibleLimiter = hydraulicCandidate <= admissionTrainCandidate
+            ? "HYDRAULIC_CANDIDATE"
+            : "ADMISSION_TRAIN";
+        var selectedValveLimiter = stop.PositiveSnapshotMassFlowKgPerS
+            <= Math.Min(control.PositiveSnapshotMassFlowKgPerS, admission.PositiveSnapshotMassFlowKgPerS)
+                ? "STOP"
+                : control.PositiveSnapshotMassFlowKgPerS <= admission.PositiveSnapshotMassFlowKgPerS
+                    ? "CONTROL"
+                    : "ADMISSION";
+
+        return new ExactV9StageMassFlowResolverDiagnostic(
+            deltaTime.TotalSeconds,
+            postStepInlet.Mass.Kilograms,
+            drivingPressurePa,
+            expansionResistance,
+            hydraulicCandidate,
+            admissionTrainCandidate,
+            visibleCandidate,
+            observedCommanded,
+            observedCommanded - visibleCandidate,
+            observedCommanded - admissionTrainCandidate,
+            observedCommanded - hydraulicCandidate,
+            drainableTiePreStepMassKg,
+            selectedVisibleLimiter,
+            selectedValveLimiter,
+            stop,
+            control,
+            admission);
+    }
+
+    private static ExactV9ValveFlowDiagnostic BuildExactV9ValveFlowDiagnostic(
+        string role,
+        ValveDefinition definition,
+        MainSteamValveSnapshot snapshot)
+    {
+        var coefficientSquared = snapshot.FlowCoefficient.Fraction * snapshot.FlowCoefficient.Fraction;
+        var baseResistance = definition.Pipe.Resistance.PascalSecondsSquaredPerKilogramSquared;
+        var effectiveResistance = snapshot.FlowCoefficient.IsClosed
+            ? double.PositiveInfinity
+            : baseResistance / coefficientSquared;
+        var squaredMassFlow = snapshot.FlowCoefficient.IsClosed
+            ? 0d
+            : Math.Abs(snapshot.PressureDifference.Pascals) / effectiveResistance;
+        var massFlowMagnitude = Math.Sqrt(squaredMassFlow);
+        var reconstructedSignedFlow = snapshot.PressureDifference.Pascals > 0d
+            ? massFlowMagnitude
+            : snapshot.PressureDifference.Pascals < 0d
+                ? -massFlowMagnitude
+                : 0d;
+        var snapshotMassFlow = snapshot.MassFlowRate.KilogramsPerSecond;
+
+        return new ExactV9ValveFlowDiagnostic(
+            role,
+            snapshot.ValveId,
+            definition.Characteristic.Kind.ToString(),
+            definition.Characteristic.Rangeability,
+            snapshot.EffectivePosition.Fraction,
+            snapshot.FlowCoefficient.Fraction,
+            snapshot.PressureDifference.Pascals,
+            baseResistance,
+            coefficientSquared,
+            effectiveResistance,
+            squaredMassFlow,
+            reconstructedSignedFlow,
+            snapshotMassFlow,
+            Math.Max(0d, snapshotMassFlow),
+            snapshotMassFlow - reconstructedSignedFlow);
     }
 
     private static double? ResolveDiagnosticVaporMassFraction(FluidPhase phase, double? vaporQualityFraction)
@@ -479,6 +593,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         File.WriteAllLines(Path.Combine(captureDirectory, "sequence-selector.tsv"), selectorLines, Utf8WithoutBom);
         File.WriteAllLines(Path.Combine(captureDirectory, "sequence-direct.tsv"), directLines, Utf8WithoutBom);
         WriteExactV9StageCausalDiagnostic(captureDirectory, selector, direct);
+        WriteExactV9StageMassFlowResolverDiagnostic(captureDirectory, selector, direct);
 
         var summaryLines = new[]
         {
@@ -569,6 +684,95 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             DiagnosticDouble(d.RotorShaftPowerW), DiagnosticBits(d.RotorShaftPowerW),
         });
     }
+
+    // NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-STAGE-MASS-FLOW-RESOLVER-CAUSAL-SEAM-DIAGNOSTIC3
+    private static void WriteExactV9StageMassFlowResolverDiagnostic(
+        string captureDirectory,
+        DeterminismTraceCapture selector,
+        DeterminismTraceCapture direct)
+    {
+        const string resolverHeader = "step\tlogicalStep\tdeltaTimeSeconds\tdeltaTimeSecondsBits\tpostStepInletMassKg\tpostStepInletMassBits\tdrivingPressurePa\tdrivingPressureBits\texpansionResistance\texpansionResistanceBits\thydraulicCandidateKgPerS\thydraulicCandidateBits\tadmissionTrainCandidateKgPerS\tadmissionTrainCandidateBits\tvisibleCandidateKgPerS\tvisibleCandidateBits\tobservedCommandedKgPerS\tobservedCommandedBits\tobservedMinusVisibleKgPerS\tobservedMinusVisibleBits\tobservedMinusAdmissionTrainKgPerS\tobservedMinusAdmissionTrainBits\tobservedMinusHydraulicKgPerS\tobservedMinusHydraulicBits\tdrainableTiePreStepMassKg\tdrainableTiePreStepMassBits\tselectedVisibleLimiter\tselectedValveLimiter";
+        const string valveHeader = "step\tlogicalStep\trole\tvalveId\tcharacteristicKind\trangeability\trangeabilityBits\teffectivePosition\teffectivePositionBits\tflowCoefficient\tflowCoefficientBits\tpressureDifferencePa\tpressureDifferenceBits\tbaseResistance\tbaseResistanceBits\tcoefficientSquared\tcoefficientSquaredBits\teffectiveResistance\teffectiveResistanceBits\tsquaredMassFlow\tsquaredMassFlowBits\treconstructedSignedMassFlowKgPerS\treconstructedSignedMassFlowBits\tsnapshotMassFlowKgPerS\tsnapshotMassFlowBits\tpositiveSnapshotMassFlowKgPerS\tpositiveSnapshotMassFlowBits\treconstructionResidualKgPerS\treconstructionResidualBits";
+
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-resolver-selector.tsv"),
+            new[] { resolverHeader, StageResolverDiagnosticLine(selector.StageMassFlowResolverTrace) },
+            Utf8WithoutBom);
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-resolver-direct.tsv"),
+            new[] { resolverHeader, StageResolverDiagnosticLine(direct.StageMassFlowResolverTrace) },
+            Utf8WithoutBom);
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-resolver-valves-selector.tsv"),
+            StageResolverValveDiagnosticLines(valveHeader, selector.StageMassFlowResolverTrace),
+            Utf8WithoutBom);
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-resolver-valves-direct.tsv"),
+            StageResolverValveDiagnosticLines(valveHeader, direct.StageMassFlowResolverTrace),
+            Utf8WithoutBom);
+    }
+
+    private static string StageResolverDiagnosticLine(ExactV9StageMassFlowResolverTraceEntry entry)
+    {
+        var d = entry.Diagnostic;
+        return string.Join("\t", new[]
+        {
+            entry.Step.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            entry.LogicalStep.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            DiagnosticDouble(d.DeltaTimeSeconds), DiagnosticBits(d.DeltaTimeSeconds),
+            DiagnosticDouble(d.PostStepInletMassKg), DiagnosticBits(d.PostStepInletMassKg),
+            DiagnosticDouble(d.DrivingPressurePa), DiagnosticBits(d.DrivingPressurePa),
+            DiagnosticDouble(d.ExpansionResistance), DiagnosticBits(d.ExpansionResistance),
+            DiagnosticDouble(d.HydraulicCandidateKgPerS), DiagnosticBits(d.HydraulicCandidateKgPerS),
+            DiagnosticDouble(d.AdmissionTrainCandidateKgPerS), DiagnosticBits(d.AdmissionTrainCandidateKgPerS),
+            DiagnosticDouble(d.VisibleCandidateKgPerS), DiagnosticBits(d.VisibleCandidateKgPerS),
+            DiagnosticDouble(d.ObservedCommandedKgPerS), DiagnosticBits(d.ObservedCommandedKgPerS),
+            DiagnosticDouble(d.ObservedMinusVisibleKgPerS), DiagnosticBits(d.ObservedMinusVisibleKgPerS),
+            DiagnosticDouble(d.ObservedMinusAdmissionTrainKgPerS), DiagnosticBits(d.ObservedMinusAdmissionTrainKgPerS),
+            DiagnosticDouble(d.ObservedMinusHydraulicKgPerS), DiagnosticBits(d.ObservedMinusHydraulicKgPerS),
+            DiagnosticDouble(d.DrainableTiePreStepMassKg), DiagnosticBits(d.DrainableTiePreStepMassKg),
+            d.SelectedVisibleLimiter,
+            d.SelectedValveLimiter,
+        });
+    }
+
+    private static string[] StageResolverValveDiagnosticLines(
+        string header,
+        ExactV9StageMassFlowResolverTraceEntry entry)
+    {
+        var d = entry.Diagnostic;
+        return new[]
+        {
+            header,
+            StageResolverValveDiagnosticLine(entry, d.StopValve),
+            StageResolverValveDiagnosticLine(entry, d.ControlValve),
+            StageResolverValveDiagnosticLine(entry, d.AdmissionValve),
+        };
+    }
+
+    private static string StageResolverValveDiagnosticLine(
+        ExactV9StageMassFlowResolverTraceEntry entry,
+        ExactV9ValveFlowDiagnostic valve)
+        => string.Join("\t", new[]
+        {
+            entry.Step.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            entry.LogicalStep.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            valve.Role,
+            valve.ValveId,
+            valve.CharacteristicKind,
+            DiagnosticDouble(valve.Rangeability), DiagnosticBits(valve.Rangeability),
+            DiagnosticDouble(valve.EffectivePosition), DiagnosticBits(valve.EffectivePosition),
+            DiagnosticDouble(valve.FlowCoefficient), DiagnosticBits(valve.FlowCoefficient),
+            DiagnosticDouble(valve.PressureDifferencePa), DiagnosticBits(valve.PressureDifferencePa),
+            DiagnosticDouble(valve.BaseResistance), DiagnosticBits(valve.BaseResistance),
+            DiagnosticDouble(valve.CoefficientSquared), DiagnosticBits(valve.CoefficientSquared),
+            DiagnosticDouble(valve.EffectiveResistance), DiagnosticBits(valve.EffectiveResistance),
+            DiagnosticDouble(valve.SquaredMassFlow), DiagnosticBits(valve.SquaredMassFlow),
+            DiagnosticDouble(valve.ReconstructedSignedMassFlowKgPerS), DiagnosticBits(valve.ReconstructedSignedMassFlowKgPerS),
+            DiagnosticDouble(valve.SnapshotMassFlowKgPerS), DiagnosticBits(valve.SnapshotMassFlowKgPerS),
+            DiagnosticDouble(valve.PositiveSnapshotMassFlowKgPerS), DiagnosticBits(valve.PositiveSnapshotMassFlowKgPerS),
+            DiagnosticDouble(valve.ReconstructionResidualKgPerS), DiagnosticBits(valve.ReconstructionResidualKgPerS),
+        });
 
     private static string DiagnosticDouble(double value)
         => value.ToString("G17", System.Globalization.CultureInfo.InvariantCulture);
@@ -731,10 +935,52 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         double RotorNetTorqueNm,
         double RotorShaftPowerW);
 
+    private sealed record ExactV9StageMassFlowResolverTraceEntry(
+        int Step,
+        long LogicalStep,
+        ExactV9StageMassFlowResolverDiagnostic Diagnostic);
+
+    private sealed record ExactV9StageMassFlowResolverDiagnostic(
+        double DeltaTimeSeconds,
+        double PostStepInletMassKg,
+        double DrivingPressurePa,
+        double ExpansionResistance,
+        double HydraulicCandidateKgPerS,
+        double AdmissionTrainCandidateKgPerS,
+        double VisibleCandidateKgPerS,
+        double ObservedCommandedKgPerS,
+        double ObservedMinusVisibleKgPerS,
+        double ObservedMinusAdmissionTrainKgPerS,
+        double ObservedMinusHydraulicKgPerS,
+        double DrainableTiePreStepMassKg,
+        string SelectedVisibleLimiter,
+        string SelectedValveLimiter,
+        ExactV9ValveFlowDiagnostic StopValve,
+        ExactV9ValveFlowDiagnostic ControlValve,
+        ExactV9ValveFlowDiagnostic AdmissionValve);
+
+    private sealed record ExactV9ValveFlowDiagnostic(
+        string Role,
+        string ValveId,
+        string CharacteristicKind,
+        double Rangeability,
+        double EffectivePosition,
+        double FlowCoefficient,
+        double PressureDifferencePa,
+        double BaseResistance,
+        double CoefficientSquared,
+        double EffectiveResistance,
+        double SquaredMassFlow,
+        double ReconstructedSignedMassFlowKgPerS,
+        double SnapshotMassFlowKgPerS,
+        double PositiveSnapshotMassFlowKgPerS,
+        double ReconstructionResidualKgPerS);
+
     private sealed record DeterminismTraceCapture(
         string AggregateFingerprint,
         IReadOnlyList<DeterminismTraceEntry> Entries,
-        ExactV9StageCausalTraceEntry StageCausalTrace);
+        ExactV9StageCausalTraceEntry StageCausalTrace,
+        ExactV9StageMassFlowResolverTraceEntry StageMassFlowResolverTrace);
 
     private sealed record MissionResult(
         string PackExactId,

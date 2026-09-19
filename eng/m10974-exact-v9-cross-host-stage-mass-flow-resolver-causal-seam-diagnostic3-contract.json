@@ -1,0 +1,77 @@
+{
+  "schema": "m10974-exact-v9-cross-host-stage-mass-flow-resolver-causal-seam-diagnostic3",
+  "authority": "diagnostic-only",
+  "baseline": {
+    "fingerprint_v1_frozen": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "exact_v9_frozen_aggregate": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "hosted_diagnostic2_aggregate": "1E8AAF3799059D8C9FB2E930981E26B0B31ECF465673AB6C722B24A95D80FDD7",
+    "first_divergent_step": 126,
+    "diagnostic2_adjudication": "PASS-AS-AUTHORED",
+    "diagnostic2_classification": "COMMANDED_STAGE_MASS_FLOW_ALREADY_DIVERGENT",
+    "local_commanded_mass_flow_kg_per_s": 13.339237101974689,
+    "hosted_commanded_mass_flow_kg_per_s": 13.339237101974723,
+    "commanded_absolute_delta_kg_per_s": 3.375077994860476e-14,
+    "commanded_ulp_delta": 19,
+    "local_resolved_vapor_mass_fraction_bits": "3FEF40DC98994BFE",
+    "hosted_resolved_vapor_mass_fraction_bits": "3FEF40DC98994BFE",
+    "inlet_pressure_bits_equal": true,
+    "exhaust_pressure_bits_equal": true,
+    "effective_flow_identity_residual_zero_both_hosts": true
+  },
+  "diagnostic": {
+    "marker": "NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-STAGE-MASS-FLOW-RESOLVER-CAUSAL-SEAM-DIAGNOSTIC3",
+    "environment_variable": "NRS_FINGERPRINT_V1_DIAGNOSTICS_DIR",
+    "relative_output": "exact-v9-transitive/exact-v9-transitive-diagnostic.zip",
+    "new_capture_files": [
+      "stage-resolver-selector.tsv",
+      "stage-resolver-direct.tsv",
+      "stage-resolver-valves-selector.tsv",
+      "stage-resolver-valves-direct.tsv"
+    ],
+    "capture_step": 126,
+    "pre_step_capture": null,
+    "loop_instrumentation": "REFERENCE_CAPTURE_ONLY_AFTER_STEP_126_PAYLOAD_AND_FINGERPRINT; IDENTICAL TO DIAGNOSTIC 2 REV1 LOOP INSTRUMENTATION",
+    "post_loop_processing": true,
+    "primary_question": "Which exact visible TurbineStageMassFlowResolver candidate first differs cross-host at step 126: pressure-driven hydraulic sqrt or stop/control/admission production valve flow, and which valve arithmetic operand first diverges?",
+    "resolver_identity": "visibleCandidate = min(sqrt((inletP-exhaustP)/expansionResistance), min(stopPositiveFlow, min(controlPositiveFlow, admissionPositiveFlow))); the drainable pre-step inventory bound is intentionally not reconstructed unless evidence requires it, to avoid adding pre-step loop instrumentation",
+    "valve_identity": "positiveValveFlow = max(0, signedSqrt(abs(deltaP)/(baseResistance/(flowCoefficient^2)))) for open valves",
+    "expected_hosted_outcome_before_adjudication": "RED_ON_FROZEN_EXACT_V9_ANCHOR_WITH_STAGE_RESOLVER_TRACE_RETURNED",
+    "claim_limit": "Diagnostic 3 selects the first divergent production valve/hydraulic operand visible without perturbing the step-126 loop. The drainable pre-step inventory bound is not reconstructed; if evidence leaves an exact-tie ambiguity, a later diagnostic is required. No repair or golden change is authorized."
+  },
+  "frozen_boundaries": {
+    "production_change_authorized": false,
+    "fingerprint_v1_golden_change_authorized": false,
+    "exact_v9_golden_change_authorized": false,
+    "physics_change_authorized": false,
+    "tolerance_change_authorized": false,
+    "vr2_r3_change_authorized": false,
+    "workflow_change_authorized": false
+  },
+  "critical_sha256": {
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationDecisionTests.cs": "F20F3B47E912F67496974E90AFED613FC5EBA45961519FC43710AF066A15ED84",
+    "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs": "060DD9B6ECBFC2AE68A128FFF09A2C6B9DE53DEB755F4225ADB661E14B46F92E",
+    "src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs": "777C9C834C583B807C14A0AC109434576216CC68AD7DB43915FB8AB5DDE14075",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs": "FB0C6B20C6695F780797A4EDEB75F15D28484362BCD97F759FB7752372FD0284",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineStageMassFlowResolver.cs": "EE14A79779EDAF5C824DCC08095815748EDBB46A0C46EB50AB283BD6C1F8CE1A",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveFlowSolver.cs": "429334D65487A9FE4C516EA09DDAD7003D072BC2B6124029E223C1C080775FE7",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveCharacteristicSolver.cs": "360F45027F6D7D4017D56AF5884D35694F48B1213AA2329B684584ED7EC2866F",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/PipeFlowSolver.cs": "A9C57F3A71561D32A0278D345D2FE24627B11E32518BBF9D46F3446C82463E64",
+    "src/NuclearReactorSimulator.Simulation/Physics/Control/Protection/ProtectedAutomaticFullPlantSolver.cs": "316DE6004C6A0A7332B1A3A12C804049AFB767EC8C367B919BFBAECA86429FF8",
+    "eng/ci-ordinary.cmd": "E8AEC59B23F5FB0A8E61870D808D05D267B056E9A1D135523A72FFE56F5C4F1D",
+    "eng/ci-current-evidence.cmd": "BA5225F572136C100E23D1F874E44602E722A2ED15327997CB8DAB81B04023DE",
+    ".github/workflows/ordinary-ci.yml": "BDCB5A1F196E2C47050459DDA75A388649104203FFFFEE33018CF6462B5A1AD3",
+    "eng/m10-final-v9-production-activation-decision-contract.json": "CC198072A0632149C6DB4D4F58C371BDE314C878A8FF0B2432EAD2DEA8AF64FE",
+    "eng/m10-final-v9-production-activation-decision-record.json": "A058A2EF8294CDD92FB1F6B0B4E695246D6220E3E548B9B5693B83C695C7B70C"
+  },
+  "manifests": {
+    "src": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-src-manifest.tsv",
+    "tests_excluding_target": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-tests-frozen-manifest.tsv"
+  },
+  "evidence": {
+    "local_diagnostic2_artifacts": "eng/evidence/m10974-exact-v9-cross-host-stage-mass-flow-resolver-causal-seam-diagnostic3/local-diagnostic2-artifacts.zip",
+    "local_diagnostic2_artifacts_sha256": "2863139CB1C336A83EF9DB020C1BB8F0B26DAA8855DE2B1C7145D383FF4D906B",
+    "hosted_diagnostic2_outer": "eng/evidence/m10974-exact-v9-cross-host-stage-mass-flow-resolver-causal-seam-diagnostic3/hosted-diagnostic2-ordinary-ci-diagnostics.zip",
+    "hosted_diagnostic2_outer_sha256": "008CAB5007596055FACCCD8E90712831768CB5601B801772655057816D7C9872"
+  },
+  "revision": 0
+}
