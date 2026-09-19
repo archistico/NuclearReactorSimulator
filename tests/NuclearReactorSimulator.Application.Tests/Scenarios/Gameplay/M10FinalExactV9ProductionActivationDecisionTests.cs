@@ -351,11 +351,13 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         var resolverDiagnostic = BuildExactV9StageMassFlowResolverDiagnostic(
             stageCausalSnapshot,
             engine.FixedDeltaTime);
+        var sharedNodeDiagnostic = BuildExactV9AdmissionTrainSharedNodeDiagnostic(stageCausalSnapshot);
         return new DeterminismTraceCapture(
             Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))),
             entries,
             new ExactV9StageCausalTraceEntry(StageCausalStep, stageCausalLogicalStep, stageDiagnostic),
-            new ExactV9StageMassFlowResolverTraceEntry(StageCausalStep, stageCausalLogicalStep, resolverDiagnostic));
+            new ExactV9StageMassFlowResolverTraceEntry(StageCausalStep, stageCausalLogicalStep, resolverDiagnostic),
+            new ExactV9AdmissionTrainSharedNodeTraceEntry(StageCausalStep, stageCausalLogicalStep, sharedNodeDiagnostic));
     }
 
     private static ExactV9StageCausalDiagnostic BuildExactV9StageCausalDiagnostic(
@@ -483,6 +485,84 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             admission);
     }
 
+    private static ExactV9AdmissionTrainSharedNodeDiagnostic BuildExactV9AdmissionTrainSharedNodeDiagnostic(
+        IntegratedAutomaticOperationSnapshot causalSnapshot)
+    {
+        var fullPlant = causalSnapshot.Control.ProtectedControl.FullPlant;
+        var turbine = fullPlant.IntegratedCycle.TurbineExpansion;
+        var stage = Assert.Single(turbine.StageGroups);
+        var boundaryDefinition = turbine.MainSteamNetwork.Definition.GetTurbineAdmissionBoundary(stage.AdmissionBoundaryId);
+        var trainDefinition = turbine.MainSteamNetwork.Definition.GetAdmissionTrain(boundaryDefinition.AdmissionTrainId);
+        var trainSnapshot = turbine.MainSteamNetwork.GetAdmissionTrain(trainDefinition.Id);
+
+        var turbineInletPressurePa = trainSnapshot.TurbineInletPressure.Pascals;
+        var admissionPressureDifferencePa = trainSnapshot.AdmissionValve.PressureDifference.Pascals;
+        var controlOutPressurePa = turbineInletPressurePa + admissionPressureDifferencePa;
+        var controlPressureDifferencePa = trainSnapshot.ControlValve.PressureDifference.Pascals;
+        var stopOutPressurePa = controlOutPressurePa + controlPressureDifferencePa;
+        var stopPressureDifferencePa = trainSnapshot.StopValve.PressureDifference.Pascals;
+        var headerPressurePa = stopOutPressurePa + stopPressureDifferencePa;
+        var totalValvePressureDifferencePa =
+            stopPressureDifferencePa + controlPressureDifferencePa + admissionPressureDifferencePa;
+        var chainClosureResidualPa =
+            (headerPressurePa - turbineInletPressurePa) - totalValvePressureDifferencePa;
+
+        return new ExactV9AdmissionTrainSharedNodeDiagnostic(
+            turbineInletPressurePa,
+            admissionPressureDifferencePa,
+            controlOutPressurePa,
+            controlPressureDifferencePa,
+            stopOutPressurePa,
+            stopPressureDifferencePa,
+            headerPressurePa,
+            totalValvePressureDifferencePa,
+            chainClosureResidualPa,
+            BuildExactV9ValveEnergyDiagnostic("STOP", trainSnapshot.StopValve, headerPressurePa),
+            BuildExactV9ValveEnergyDiagnostic("CONTROL", trainSnapshot.ControlValve, stopOutPressurePa),
+            BuildExactV9ValveEnergyDiagnostic("ADMISSION", trainSnapshot.AdmissionValve, controlOutPressurePa));
+    }
+
+    private static ExactV9ValveEnergyDiagnostic BuildExactV9ValveEnergyDiagnostic(
+        string role,
+        MainSteamValveSnapshot snapshot,
+        double reconstructedUpstreamPressurePa)
+    {
+        var massFlowKgPerS = snapshot.MassFlowRate.KilogramsPerSecond;
+        var internalEnergyFlowW = snapshot.InternalEnergyFlowRate.Watts;
+        var flowWorkRateW = snapshot.FlowWorkRate.Watts;
+        var advectedEnergyFlowW = snapshot.AdvectedEnergyFlowRate.Watts;
+        var specificInternalEnergyJPerKg = massFlowKgPerS == 0d
+            ? double.NaN
+            : internalEnergyFlowW / massFlowKgPerS;
+        var specificFlowWorkJPerKg = massFlowKgPerS == 0d
+            ? double.NaN
+            : flowWorkRateW / massFlowKgPerS;
+        var specificAdvectedEnergyJPerKg = massFlowKgPerS == 0d
+            ? double.NaN
+            : advectedEnergyFlowW / massFlowKgPerS;
+        var inferredDensityKgPerM3 =
+            double.IsFinite(specificFlowWorkJPerKg) && specificFlowWorkJPerKg != 0d
+                ? reconstructedUpstreamPressurePa / specificFlowWorkJPerKg
+                : double.NaN;
+        var enthalpyIdentityResidualJPerKg =
+            specificAdvectedEnergyJPerKg - (specificInternalEnergyJPerKg + specificFlowWorkJPerKg);
+
+        return new ExactV9ValveEnergyDiagnostic(
+            role,
+            snapshot.ValveId,
+            snapshot.EnergyTransportMode.ToString(),
+            massFlowKgPerS,
+            internalEnergyFlowW,
+            flowWorkRateW,
+            advectedEnergyFlowW,
+            reconstructedUpstreamPressurePa,
+            specificInternalEnergyJPerKg,
+            specificFlowWorkJPerKg,
+            specificAdvectedEnergyJPerKg,
+            inferredDensityKgPerM3,
+            enthalpyIdentityResidualJPerKg);
+    }
+
     private static ExactV9ValveFlowDiagnostic BuildExactV9ValveFlowDiagnostic(
         string role,
         ValveDefinition definition,
@@ -594,6 +674,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         File.WriteAllLines(Path.Combine(captureDirectory, "sequence-direct.tsv"), directLines, Utf8WithoutBom);
         WriteExactV9StageCausalDiagnostic(captureDirectory, selector, direct);
         WriteExactV9StageMassFlowResolverDiagnostic(captureDirectory, selector, direct);
+        WriteExactV9AdmissionTrainSharedNodeDiagnostic(captureDirectory, selector, direct);
 
         var summaryLines = new[]
         {
@@ -772,6 +853,85 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             DiagnosticDouble(valve.SnapshotMassFlowKgPerS), DiagnosticBits(valve.SnapshotMassFlowKgPerS),
             DiagnosticDouble(valve.PositiveSnapshotMassFlowKgPerS), DiagnosticBits(valve.PositiveSnapshotMassFlowKgPerS),
             DiagnosticDouble(valve.ReconstructionResidualKgPerS), DiagnosticBits(valve.ReconstructionResidualKgPerS),
+        });
+
+    // NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-ADMISSION-TRAIN-SHARED-NODE-PROVENANCE-DIAGNOSTIC4
+    private static void WriteExactV9AdmissionTrainSharedNodeDiagnostic(
+        string captureDirectory,
+        DeterminismTraceCapture selector,
+        DeterminismTraceCapture direct)
+    {
+        const string chainHeader = "step\tlogicalStep\tturbineInletPressurePa\tturbineInletPressureBits\tadmissionPressureDifferencePa\tadmissionPressureDifferenceBits\tcontrolOutPressurePa\tcontrolOutPressureBits\tcontrolPressureDifferencePa\tcontrolPressureDifferenceBits\tstopOutPressurePa\tstopOutPressureBits\tstopPressureDifferencePa\tstopPressureDifferenceBits\theaderPressurePa\theaderPressureBits\ttotalValvePressureDifferencePa\ttotalValvePressureDifferenceBits\tchainClosureResidualPa\tchainClosureResidualBits";
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-shared-node-selector.tsv"),
+            new[] { chainHeader, StageSharedNodeDiagnosticLine(selector.SharedNodeTrace) },
+            Utf8WithoutBom);
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-shared-node-direct.tsv"),
+            new[] { chainHeader, StageSharedNodeDiagnosticLine(direct.SharedNodeTrace) },
+            Utf8WithoutBom);
+
+        const string energyHeader = "step\tlogicalStep\trole\tvalveId\tenergyTransportMode\tmassFlowKgPerS\tmassFlowBits\tinternalEnergyFlowW\tinternalEnergyFlowBits\tflowWorkRateW\tflowWorkRateBits\tadvectedEnergyFlowW\tadvectedEnergyFlowBits\treconstructedUpstreamPressurePa\treconstructedUpstreamPressureBits\tspecificInternalEnergyJPerKg\tspecificInternalEnergyBits\tspecificFlowWorkJPerKg\tspecificFlowWorkBits\tspecificAdvectedEnergyJPerKg\tspecificAdvectedEnergyBits\tinferredDensityKgPerM3\tinferredDensityBits\tenthalpyIdentityResidualJPerKg\tenthalpyIdentityResidualBits";
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-shared-node-energy-selector.tsv"),
+            StageSharedNodeEnergyDiagnosticLines(energyHeader, selector.SharedNodeTrace),
+            Utf8WithoutBom);
+        File.WriteAllLines(
+            Path.Combine(captureDirectory, "stage-shared-node-energy-direct.tsv"),
+            StageSharedNodeEnergyDiagnosticLines(energyHeader, direct.SharedNodeTrace),
+            Utf8WithoutBom);
+    }
+
+    private static string StageSharedNodeDiagnosticLine(ExactV9AdmissionTrainSharedNodeTraceEntry entry)
+    {
+        var d = entry.Diagnostic;
+        return string.Join("\t", new[]
+        {
+            entry.Step.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            entry.LogicalStep.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            DiagnosticDouble(d.TurbineInletPressurePa), DiagnosticBits(d.TurbineInletPressurePa),
+            DiagnosticDouble(d.AdmissionPressureDifferencePa), DiagnosticBits(d.AdmissionPressureDifferencePa),
+            DiagnosticDouble(d.ControlOutPressurePa), DiagnosticBits(d.ControlOutPressurePa),
+            DiagnosticDouble(d.ControlPressureDifferencePa), DiagnosticBits(d.ControlPressureDifferencePa),
+            DiagnosticDouble(d.StopOutPressurePa), DiagnosticBits(d.StopOutPressurePa),
+            DiagnosticDouble(d.StopPressureDifferencePa), DiagnosticBits(d.StopPressureDifferencePa),
+            DiagnosticDouble(d.HeaderPressurePa), DiagnosticBits(d.HeaderPressurePa),
+            DiagnosticDouble(d.TotalValvePressureDifferencePa), DiagnosticBits(d.TotalValvePressureDifferencePa),
+            DiagnosticDouble(d.ChainClosureResidualPa), DiagnosticBits(d.ChainClosureResidualPa),
+        });
+    }
+
+    private static string[] StageSharedNodeEnergyDiagnosticLines(
+        string header,
+        ExactV9AdmissionTrainSharedNodeTraceEntry entry)
+        => new[]
+        {
+            header,
+            StageSharedNodeEnergyDiagnosticLine(entry, entry.Diagnostic.StopValve),
+            StageSharedNodeEnergyDiagnosticLine(entry, entry.Diagnostic.ControlValve),
+            StageSharedNodeEnergyDiagnosticLine(entry, entry.Diagnostic.AdmissionValve),
+        };
+
+    private static string StageSharedNodeEnergyDiagnosticLine(
+        ExactV9AdmissionTrainSharedNodeTraceEntry entry,
+        ExactV9ValveEnergyDiagnostic valve)
+        => string.Join("\t", new[]
+        {
+            entry.Step.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            entry.LogicalStep.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            valve.Role,
+            valve.ValveId,
+            valve.EnergyTransportMode,
+            DiagnosticDouble(valve.MassFlowKgPerS), DiagnosticBits(valve.MassFlowKgPerS),
+            DiagnosticDouble(valve.InternalEnergyFlowW), DiagnosticBits(valve.InternalEnergyFlowW),
+            DiagnosticDouble(valve.FlowWorkRateW), DiagnosticBits(valve.FlowWorkRateW),
+            DiagnosticDouble(valve.AdvectedEnergyFlowW), DiagnosticBits(valve.AdvectedEnergyFlowW),
+            DiagnosticDouble(valve.ReconstructedUpstreamPressurePa), DiagnosticBits(valve.ReconstructedUpstreamPressurePa),
+            DiagnosticDouble(valve.SpecificInternalEnergyJPerKg), DiagnosticBits(valve.SpecificInternalEnergyJPerKg),
+            DiagnosticDouble(valve.SpecificFlowWorkJPerKg), DiagnosticBits(valve.SpecificFlowWorkJPerKg),
+            DiagnosticDouble(valve.SpecificAdvectedEnergyJPerKg), DiagnosticBits(valve.SpecificAdvectedEnergyJPerKg),
+            DiagnosticDouble(valve.InferredDensityKgPerM3), DiagnosticBits(valve.InferredDensityKgPerM3),
+            DiagnosticDouble(valve.EnthalpyIdentityResidualJPerKg), DiagnosticBits(valve.EnthalpyIdentityResidualJPerKg),
         });
 
     private static string DiagnosticDouble(double value)
@@ -976,11 +1136,46 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         double PositiveSnapshotMassFlowKgPerS,
         double ReconstructionResidualKgPerS);
 
+    private sealed record ExactV9AdmissionTrainSharedNodeTraceEntry(
+        int Step,
+        long LogicalStep,
+        ExactV9AdmissionTrainSharedNodeDiagnostic Diagnostic);
+
+    private sealed record ExactV9AdmissionTrainSharedNodeDiagnostic(
+        double TurbineInletPressurePa,
+        double AdmissionPressureDifferencePa,
+        double ControlOutPressurePa,
+        double ControlPressureDifferencePa,
+        double StopOutPressurePa,
+        double StopPressureDifferencePa,
+        double HeaderPressurePa,
+        double TotalValvePressureDifferencePa,
+        double ChainClosureResidualPa,
+        ExactV9ValveEnergyDiagnostic StopValve,
+        ExactV9ValveEnergyDiagnostic ControlValve,
+        ExactV9ValveEnergyDiagnostic AdmissionValve);
+
+    private sealed record ExactV9ValveEnergyDiagnostic(
+        string Role,
+        string ValveId,
+        string EnergyTransportMode,
+        double MassFlowKgPerS,
+        double InternalEnergyFlowW,
+        double FlowWorkRateW,
+        double AdvectedEnergyFlowW,
+        double ReconstructedUpstreamPressurePa,
+        double SpecificInternalEnergyJPerKg,
+        double SpecificFlowWorkJPerKg,
+        double SpecificAdvectedEnergyJPerKg,
+        double InferredDensityKgPerM3,
+        double EnthalpyIdentityResidualJPerKg);
+
     private sealed record DeterminismTraceCapture(
         string AggregateFingerprint,
         IReadOnlyList<DeterminismTraceEntry> Entries,
         ExactV9StageCausalTraceEntry StageCausalTrace,
-        ExactV9StageMassFlowResolverTraceEntry StageMassFlowResolverTrace);
+        ExactV9StageMassFlowResolverTraceEntry StageMassFlowResolverTrace,
+        ExactV9AdmissionTrainSharedNodeTraceEntry SharedNodeTrace);
 
     private sealed record MissionResult(
         string PackExactId,

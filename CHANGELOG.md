@@ -1,3 +1,11 @@
+## M10.9.7.4 Exact-V9 Cross-Host Admission-Train Shared-Node Provenance Diagnostic 4
+
+- Adjudicates Stage Mass-Flow Resolver Causal-Seam Diagnostic 3 as `PASS-AS-AUTHORED`.
+- Freezes the STOP valve as the production admission-train limiter at divergent step 126.
+- Records the exact STOP/CONTROL pressure-difference cancellation that localizes the visible drift to the shared `stop-out` / CONTROL-inlet pressure node.
+- Adds post-loop shared-node pressure-chain and production valve energy-transport provenance capture without changing the 128-step simulation loop.
+- Keeps Fingerprint V1, Exact-V9 golden, production physics, tolerances, workflow and VR2/R3 frozen.
+
 # M10.9.7.4 Exact-V9 Cross-Host Stage Mass-Flow Resolver Causal-Seam Diagnostic 3
 
 - Adjudicates Diagnostic 2 REV1 as PASS-AS-AUTHORED: the first captured cross-host delta is already stage commanded mass flow at step 126 (19 ULP); vapor-fraction/effective-flow arithmetic is downstream propagation.

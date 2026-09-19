@@ -1,0 +1,88 @@
+{
+  "schema": "m10974-exact-v9-cross-host-admission-train-shared-node-provenance-diagnostic4",
+  "authority": "diagnostic-only",
+  "baseline": {
+    "fingerprint_v1_frozen": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "exact_v9_frozen_aggregate": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "hosted_aggregate": "1E8AAF3799059D8C9FB2E930981E26B0B31ECF465673AB6C722B24A95D80FDD7",
+    "first_divergent_step": 126,
+    "diagnostic3_adjudication": "PASS-AS-AUTHORED",
+    "selected_visible_limiter": "ADMISSION_TRAIN",
+    "selected_valve_limiter": "STOP",
+    "local_stop_pressure_difference_pa": 177935.2464626981,
+    "hosted_stop_pressure_difference_pa": 177935.24646269903,
+    "local_stop_pressure_difference_bits": "4105B879F8C16F60",
+    "hosted_stop_pressure_difference_bits": "4105B879F8C16F80",
+    "stop_pressure_difference_absolute_delta_pa": 9.313225746154785e-10,
+    "stop_pressure_difference_ulp_delta": 32,
+    "local_control_pressure_difference_pa": 2075297.664297062,
+    "hosted_control_pressure_difference_pa": 2075297.664297061,
+    "control_pressure_difference_absolute_delta_pa": -9.313225746154785e-10,
+    "admission_pressure_difference_bits_equal": true,
+    "reconstructed_local_stop_out_pressure_pa": 6069485.549979557,
+    "reconstructed_hosted_stop_out_pressure_pa": 6069485.549979556,
+    "reconstructed_stop_out_pressure_absolute_delta_pa": -9.313225746154785e-10,
+    "reconstructed_stop_out_pressure_ulp_delta": 1,
+    "reconstructed_header_pressure_bits_equal": true,
+    "reconstructed_control_out_pressure_bits_equal": true,
+    "inference": "STOP deltaP +epsilon and CONTROL deltaP -epsilon with ADMISSION unchanged localizes the first captured admission-train state drift to the shared stop-out / control-in pressure node."
+  },
+  "diagnostic": {
+    "marker": "NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-ADMISSION-TRAIN-SHARED-NODE-PROVENANCE-DIAGNOSTIC4",
+    "environment_variable": "NRS_FINGERPRINT_V1_DIAGNOSTICS_DIR",
+    "relative_output": "exact-v9-transitive/exact-v9-transitive-diagnostic.zip",
+    "new_capture_files": [
+      "stage-shared-node-selector.tsv",
+      "stage-shared-node-direct.tsv",
+      "stage-shared-node-energy-selector.tsv",
+      "stage-shared-node-energy-direct.tsv"
+    ],
+    "capture_step": 126,
+    "loop_instrumentation": "IDENTICAL TO DIAGNOSTIC 3; ONLY THE EXISTING STEP-126 SNAPSHOT REFERENCE IS CAPTURED AFTER PAYLOAD/FINGERPRINT",
+    "post_loop_processing": true,
+    "primary_question": "Does the cross-host STOP/control pressure cancellation localize to the shared stop-out pressure only, or do production valve energy-transport outputs also show different stop-out specific internal energy / p-rho / inferred density?",
+    "pressure_chain_identity": "P_control_out = P_turbine_inlet + dP_admission; P_stop_out = P_control_out + dP_control; P_header = P_stop_out + dP_stop",
+    "energy_provenance_identity": "For positive valve flow, OpenControlVolumeEnergyTransportSolver uses the from-node as upstream; internalEnergyRate=u*q, flowWorkRate=(p/rho)*q, enthalpyRate=(u+p/rho)*q.",
+    "claim_limit": "Derived per-kg values and inferred density are explanatory post-loop evidence reconstructed from production MainSteamValveSnapshot outputs. Diagnostic 4 does not mutate or replay the step, does not capture pre-step inventory, and authorizes no repair.",
+    "expected_hosted_outcome_before_adjudication": "RED_ON_FROZEN_EXACT_V9_ANCHOR_WITH_SHARED_NODE_PROVENANCE_TRACE_RETURNED"
+  },
+  "frozen_boundaries": {
+    "production_change_authorized": false,
+    "fingerprint_v1_golden_change_authorized": false,
+    "exact_v9_golden_change_authorized": false,
+    "physics_change_authorized": false,
+    "tolerance_change_authorized": false,
+    "vr2_r3_change_authorized": false,
+    "workflow_change_authorized": false
+  },
+  "critical_sha256": {
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationDecisionTests.cs": "3A2ECC474C588F1C99DCC1CD96B50E879440A86B0A5DFB4574D003826EFE3CEE",
+    "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs": "060DD9B6ECBFC2AE68A128FFF09A2C6B9DE53DEB755F4225ADB661E14B46F92E",
+    "src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs": "777C9C834C583B807C14A0AC109434576216CC68AD7DB43915FB8AB5DDE14075",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs": "FB0C6B20C6695F780797A4EDEB75F15D28484362BCD97F759FB7752372FD0284",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineStageMassFlowResolver.cs": "EE14A79779EDAF5C824DCC08095815748EDBB46A0C46EB50AB283BD6C1F8CE1A",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/MainSteam/MainSteamNetworkSolver.cs": "0A443A85B2140D0B7F33F2DD504EEB52457BBC0DAB45DF890F222DE6D5BC1C99",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/MainSteam/MainSteamValveSnapshot.cs": "0B41FDD762940D47A808FDC8A1050A92708B2C8D3960CA660E71870285466C31",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveFlowSolver.cs": "429334D65487A9FE4C516EA09DDAD7003D072BC2B6124029E223C1C080775FE7",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveCharacteristicSolver.cs": "360F45027F6D7D4017D56AF5884D35694F48B1213AA2329B684584ED7EC2866F",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/PipeFlowSolver.cs": "A9C57F3A71561D32A0278D345D2FE24627B11E32518BBF9D46F3446C82463E64",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/OpenControlVolumeEnergyTransportSolver.cs": "9403E5133DCC668A7EC71B0800DB3294BB4EE3D09B596C30D5BCB0E843BCF727",
+    "src/NuclearReactorSimulator.Simulation/Physics/Control/Protection/ProtectedAutomaticFullPlantSolver.cs": "316DE6004C6A0A7332B1A3A12C804049AFB767EC8C367B919BFBAECA86429FF8",
+    "eng/ci-ordinary.cmd": "E8AEC59B23F5FB0A8E61870D808D05D267B056E9A1D135523A72FFE56F5C4F1D",
+    "eng/ci-current-evidence.cmd": "BA5225F572136C100E23D1F874E44602E722A2ED15327997CB8DAB81B04023DE",
+    ".github/workflows/ordinary-ci.yml": "BDCB5A1F196E2C47050459DDA75A388649104203FFFFEE33018CF6462B5A1AD3",
+    "eng/m10-final-v9-production-activation-decision-contract.json": "CC198072A0632149C6DB4D4F58C371BDE314C878A8FF0B2432EAD2DEA8AF64FE",
+    "eng/m10-final-v9-production-activation-decision-record.json": "A058A2EF8294CDD92FB1F6B0B4E695246D6220E3E548B9B5693B83C695C7B70C"
+  },
+  "manifests": {
+    "src": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-src-manifest.tsv",
+    "tests_excluding_target": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-tests-frozen-manifest.tsv"
+  },
+  "evidence": {
+    "local_diagnostic3_artifacts": "eng/evidence/m10974-exact-v9-cross-host-admission-train-shared-node-provenance-diagnostic4/local-diagnostic3-artifacts.zip",
+    "local_diagnostic3_artifacts_sha256": "118CCEAF8348FAA678BFCDE0A14CD0AA0E3051762AD535F39194038DC9817C71",
+    "hosted_diagnostic3_outer": "eng/evidence/m10974-exact-v9-cross-host-admission-train-shared-node-provenance-diagnostic4/hosted-diagnostic3-ordinary-ci-diagnostics.zip",
+    "hosted_diagnostic3_outer_sha256": "6F3CB414758FFB419E1520F044851245689496DBCD56A6D05918F7F36CE8B026"
+  },
+  "revision": 0
+}
