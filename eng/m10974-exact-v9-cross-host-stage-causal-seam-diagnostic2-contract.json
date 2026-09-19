@@ -1,0 +1,99 @@
+{
+  "schema": "m10974-exact-v9-cross-host-stage-causal-seam-diagnostic2",
+  "authority": "diagnostic-only",
+  "baseline": {
+    "fingerprint_v1_frozen": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "exact_v9_frozen_aggregate": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "hosted_diagnostic1_aggregate": "1E8AAF3799059D8C9FB2E930981E26B0B31ECF465673AB6C722B24A95D80FDD7",
+    "determinism_steps": 128,
+    "divergent_step_count": 1,
+    "first_divergent_step": 126,
+    "local_step126_fingerprint": "990bb4a4a2bb90101bb285d36a9434b8ada89c5af1b7a82d5f68452a1c7a703a",
+    "hosted_step126_fingerprint": "7f925442d75dded8dfae66ee5f838c2ad4d94c010f51cd8fa3aea47d31c691d0",
+    "divergent_top_level_component": "turbineSecondary",
+    "first_serialized_leaf": "/turbineSecondary/rotors/0/shaftPower/numericValue",
+    "upstream_visible_candidate": "/turbineSecondary/stageGroups/0/steamFlow/numericValue"
+  },
+  "observed_leaf_differences": [
+    {
+      "pointer": "/turbineSecondary/rotors/0/shaftPower/numericValue",
+      "local": 5.602040801785741,
+      "hosted": 5.602040801785755,
+      "absolute_delta": 1.4210854715202004e-14
+    },
+    {
+      "pointer": "/turbineSecondary/rotors/0/netTorque/numericValue",
+      "local": 1.9895067225661478e-05,
+      "hosted": 1.9895110881407163e-05,
+      "absolute_delta": 4.3655745685100555e-11
+    },
+    {
+      "pointer": "/turbineSecondary/stageGroups/0/steamFlow/numericValue",
+      "local": 13.028001865568523,
+      "hosted": 13.028001865568555,
+      "absolute_delta": 3.197442310920451e-14
+    },
+    {
+      "pointer": "/turbineSecondary/stageGroups/0/shaftPower/numericValue",
+      "local": 5.602040801785741,
+      "hosted": 5.602040801785755,
+      "absolute_delta": 1.4210854715202004e-14
+    },
+    {
+      "pointer": "/turbineSecondary/totalTurbineShaftPower/numericValue",
+      "local": 5.602040801785741,
+      "hosted": 5.602040801785755,
+      "absolute_delta": 1.4210854715202004e-14
+    }
+  ],
+  "diagnostic": {
+    "marker": "NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-STAGE-CAUSAL-SEAM-DIAGNOSTIC2",
+    "environment_variable": "NRS_FINGERPRINT_V1_DIAGNOSTICS_DIR",
+    "relative_output": "exact-v9-transitive/exact-v9-transitive-diagnostic.zip",
+    "new_capture_files": [
+      "stage-causal-selector.tsv",
+      "stage-causal-direct.tsv"
+    ],
+    "primary_question": "At frozen divergent step 126, does the first cross-host bit drift already exist in commanded stage flow, resolved inlet vapor mass fraction, phase-limited/effective-flow arithmetic, specific-work arithmetic, or rotor/load arithmetic?",
+    "expected_hosted_outcome_before_adjudication": "RED_ON_FROZEN_EXACT_V9_ANCHOR_WITH_STAGE_CAUSAL_TRACE_RETURNED",
+    "capture_step": 126,
+    "capture_scope": "STEP_126_ONLY",
+    "loop_instrumentation": "REFERENCE_CAPTURE_ONLY_AFTER_STEP_126_PAYLOAD_AND_FINGERPRINT",
+    "post_loop_processing": true,
+    "vapor_fraction_semantics": "MATCH_TURBINE_EXPANSION_SOLVER_FLUID_THERMODYNAMIC_STATE_VAPOR_MASS_FRACTION_THEN_POLICY_CLAMP",
+    "trip_semantics": "expectedEffectiveFlow = tripBlocked ? 0 : commandedFlow * resolvedAdmissionVaporMassFraction",
+    "claim_limit": "Diagnostic 2 REV1 selects the next causal owner/seam. If commanded stage flow is already divergent, a narrower upstream hydraulic-flow diagnostic is required before claiming the first floating-point operation."
+  },
+  "frozen_boundaries": {
+    "production_change_authorized": false,
+    "fingerprint_v1_golden_change_authorized": false,
+    "exact_v9_golden_change_authorized": false,
+    "physics_change_authorized": false,
+    "tolerance_change_authorized": false,
+    "vr2_r3_change_authorized": false,
+    "workflow_change_authorized": false
+  },
+  "critical_sha256": {
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationDecisionTests.cs": "BBC021F4AD98387ADE44F1632A1CE232993FD8ABB073D8342845EDA1B9A1CFBE",
+    "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs": "060DD9B6ECBFC2AE68A128FFF09A2C6B9DE53DEB755F4225ADB661E14B46F92E",
+    "src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs": "777C9C834C583B807C14A0AC109434576216CC68AD7DB43915FB8AB5DDE14075",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs": "FB0C6B20C6695F780797A4EDEB75F15D28484362BCD97F759FB7752372FD0284",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineStageMassFlowResolver.cs": "EE14A79779EDAF5C824DCC08095815748EDBB46A0C46EB50AB283BD6C1F8CE1A",
+    "eng/ci-ordinary.cmd": "E8AEC59B23F5FB0A8E61870D808D05D267B056E9A1D135523A72FFE56F5C4F1D",
+    "eng/ci-current-evidence.cmd": "BA5225F572136C100E23D1F874E44602E722A2ED15327997CB8DAB81B04023DE",
+    ".github/workflows/ordinary-ci.yml": "BDCB5A1F196E2C47050459DDA75A388649104203FFFFEE33018CF6462B5A1AD3",
+    "eng/m10-final-v9-production-activation-decision-contract.json": "CC198072A0632149C6DB4D4F58C371BDE314C878A8FF0B2432EAD2DEA8AF64FE",
+    "eng/m10-final-v9-production-activation-decision-record.json": "A058A2EF8294CDD92FB1F6B0B4E695246D6220E3E548B9B5693B83C695C7B70C"
+  },
+  "manifests": {
+    "src": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-src-manifest.tsv",
+    "tests_excluding_target": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-tests-frozen-manifest.tsv"
+  },
+  "evidence": {
+    "local_diagnostic1_artifacts": "eng/evidence/m10974-exact-v9-cross-host-stage-causal-seam-diagnostic2/local-diagnostic1-artifacts.zip",
+    "local_diagnostic1_artifacts_sha256": "C84388F6E0AC0811B7288D25B681991D6C5354ACDCC4B7D2E651DF31C7855A3B",
+    "hosted_diagnostic1_outer": "eng/evidence/m10974-exact-v9-cross-host-stage-causal-seam-diagnostic2/hosted-diagnostic1-ordinary-ci-diagnostics.zip",
+    "hosted_diagnostic1_outer_sha256": "96710FBE83E5F18B271B0B56FEBEEF5B89FFE82238952B1D1AED185DEDC2CEAD"
+  },
+  "revision": 1
+}

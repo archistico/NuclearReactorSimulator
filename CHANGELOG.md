@@ -4950,3 +4950,26 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Applies a normalized path-segment exclusion for `bin` and `obj` before manifest cardinality/content checks; the explicit instrumented-test exclusion remains unchanged.
 - Preserves the Diagnostic 1 test instrumentation, production `src`, workflow, frozen Fingerprint V1 `63643e...f362`, frozen Exact-V9 aggregate `7880AD...B5418`, physics, tolerances and VR2/R3 authority.
 - Supersedes Validator Hotfix 1 for execution; the previous 1436-problem run is infrastructure/validator evidence only and contains no Exact-V9 determinism result.
+
+## M10.9.7.4 Exact-V9 Cross-Host Stage Causal-Seam Diagnostic 2
+
+- Adjudicates Transitive Determinism Diagnostic 1 `PASS-AS-AUTHORED`: exactly one divergent step (`126`) across the 128-step Exact-V9 trace, isolated to five turbine-secondary numeric leaves.
+- Adds test/evidence-only stage causal tracing with invariant `G17` values and IEEE-754 bit patterns for commanded/effective turbine flow, inlet vapor quality and thermodynamic state, stage work/torque/power, and rotor/load terms.
+- Keeps production source, physics, tolerances, Fingerprint V1 golden, Exact-V9 frozen aggregate, workflow, and VR2/R3 unchanged.
+
+## 2026-09-19 - M10.9.7.4 Exact-V9 Cross-Host Stage Causal-Seam Diagnostic 2 REV1
+
+- Supersedes the unexecuted first Diagnostic 2 candidate after pre-execution review found avoidable all-128-step diagnostic work that could perturb a single-step few-ULP cross-host effect through tiered-JIT/background-compilation timing.
+- Keeps the 128-step Diagnostic 1 loop unchanged except for a single immutable canonical-snapshot reference capture after step 126 has already been simulated, serialized and fingerprinted; all turbine traversal and diagnostic arithmetic are deferred until after the loop.
+- Mirrors production turbine admission semantics exactly: phase-derived `VaporMassFraction`, `LegacyUnrestricted` handling, `Math.Clamp`, and the `TripBlocked ? 0 : commanded * resolvedVaporMassFraction` effective-flow gate.
+- Emits exactly one stage-causal selector row and one direct row for the already-frozen divergent step 126, with invariant `G17` values and IEEE-754 bits.
+- Narrows the claim: if commanded stage flow is already divergent, REV1 selects the upstream hydraulic-flow owner but does not claim the first floating-point operation without a further focused diagnostic.
+- Preserves all production `src`, workflow/CI semantics, Fingerprint V1 golden, frozen Exact-V9 aggregate, physics, tolerances and VR2/R3 authority.
+
+## 2026-09-19 - M10.9.7.4 Exact-V9 Cross-Host Stage Causal-Seam Diagnostic 2 REV1 Validator Hotfix 1
+
+- Fixes a validator-only false RED in Diagnostic 2 REV1 marker cardinality: the base `NRS-MARKER:...DIAGNOSTIC2` was counted as a substring of the distinct `...DIAGNOSTIC2-REV1` marker.
+- Replaces substring-regex marker counting with exact trimmed-line matching for both the base Diagnostic 2 marker and the REV1 marker.
+- Preserves the Diagnostic 2 REV1 target test, contract, runner, frozen manifests, production `src`, workflow/CI semantics, Fingerprint V1 golden, Exact-V9 frozen aggregate, physics, tolerances and VR2/R3 authority.
+- The failed REV1 run stopped at static validation before restore/build/test and contains no new Exact-V9 engineering evidence.
+

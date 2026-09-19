@@ -9,6 +9,9 @@ using NuclearReactorSimulator.Application.Scenarios.Challenges.Packs;
 using NuclearReactorSimulator.Application.Scenarios.Recording;
 using NuclearReactorSimulator.Application.Scenarios.Training;
 using NuclearReactorSimulator.Simulation.Plant;
+using NuclearReactorSimulator.Simulation.Physics.Control.Integration;
+using NuclearReactorSimulator.Domain.Physics.Fluids;
+using NuclearReactorSimulator.Domain.Physics.TurbineIsland.Turbine;
 using Xunit;
 
 namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
@@ -26,6 +29,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
     private const int HealthSteps = 12_000;
     private const int MissionSteps = 1_200;
     private const int DeterminismSteps = 128;
+    private const int StageCausalStep = 126;
     private const string FrozenDeterminismFingerprint = "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418";
     private static readonly UTF8Encoding Utf8WithoutBom = new(encoderShouldEmitUTF8Identifier: false);
 
@@ -317,6 +321,9 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
 
         var builder = new StringBuilder();
         var entries = new List<DeterminismTraceEntry>(DeterminismSteps);
+        IntegratedAutomaticOperationSnapshot? stageCausalSnapshot = null;
+        long stageCausalLogicalStep = -1;
+
         for (var step = 1; step <= DeterminismSteps; step++)
         {
             var snapshot = engine.Step(ControlRoomRunState.Running);
@@ -324,12 +331,91 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
             var fingerprint = Convert.ToHexString(SHA256.HashData(payload)).ToLowerInvariant();
             builder.Append(FormattableString.Invariant($"{step}:{fingerprint}||"));
             entries.Add(new DeterminismTraceEntry(step, snapshot.LogicalStep, fingerprint, payload));
+
+            // Capture only an immutable canonical-snapshot reference after step 126 has already been computed and hashed.
+            // All turbine traversal and diagnostic arithmetic are intentionally deferred until after the 128-step loop.
+            if (step == StageCausalStep)
+            {
+                stageCausalSnapshot = engine.LatestCanonicalSnapshot;
+                stageCausalLogicalStep = snapshot.LogicalStep;
+            }
         }
 
+        if (stageCausalSnapshot is null || stageCausalLogicalStep < 0)
+        {
+            throw new InvalidOperationException("Exact-V9 stage causal snapshot was not captured at the frozen divergent step.");
+        }
+
+        var stageDiagnostic = BuildExactV9StageCausalDiagnostic(stageCausalSnapshot);
         return new DeterminismTraceCapture(
             Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(builder.ToString()))),
-            entries);
+            entries,
+            new ExactV9StageCausalTraceEntry(StageCausalStep, stageCausalLogicalStep, stageDiagnostic));
     }
+
+    private static ExactV9StageCausalDiagnostic BuildExactV9StageCausalDiagnostic(
+        IntegratedAutomaticOperationSnapshot canonicalSnapshot)
+    {
+        var fullPlant = canonicalSnapshot.Control.ProtectedControl.FullPlant;
+        var turbine = fullPlant.IntegratedCycle.TurbineExpansion;
+        var stage = Assert.Single(turbine.StageGroups);
+        var rotor = Assert.Single(turbine.Rotors);
+        var stageDefinition = turbine.Definition.GetStageGroup(stage.StageGroupId);
+        var admissionBoundary = turbine.MainSteamNetwork.GetTurbineAdmissionBoundary(stage.AdmissionBoundaryId);
+        var admissionTrain = turbine.MainSteamNetwork.GetAdmissionTrain(admissionBoundary.AdmissionTrainId);
+
+        var rawThermodynamicVaporMassFraction = ResolveDiagnosticVaporMassFraction(
+            stage.InletPhase,
+            stage.InletVaporQuality?.Fraction);
+        var resolvedAdmissionVaporMassFraction = stageDefinition.AdmissionPhasePolicy == TurbineAdmissionPhasePolicy.LegacyUnrestricted
+            ? 1d
+            : Math.Clamp(rawThermodynamicVaporMassFraction ?? 0d, 0d, 1d);
+        var phaseLimitedFlow = stage.CommandedMassFlowRate.KilogramsPerSecond * resolvedAdmissionVaporMassFraction;
+        var expectedEffectiveMassFlow = stage.TripBlocked ? 0d : phaseLimitedFlow;
+
+        return new ExactV9StageCausalDiagnostic(
+            stageDefinition.AdmissionPhasePolicy.ToString(),
+            stage.TripBlocked,
+            admissionTrain.TurbineInletPhase.ToString(),
+            admissionTrain.TurbineInletVaporQuality?.Fraction,
+            stage.InletPhase.ToString(),
+            stage.InletVaporQuality?.Fraction,
+            rawThermodynamicVaporMassFraction,
+            resolvedAdmissionVaporMassFraction,
+            stage.CommandedMassFlowRate.KilogramsPerSecond,
+            stage.EffectiveMassFlowRate.KilogramsPerSecond,
+            admissionBoundary.MassFlowRate.KilogramsPerSecond,
+            phaseLimitedFlow,
+            expectedEffectiveMassFlow,
+            stage.EffectiveMassFlowRate.KilogramsPerSecond - expectedEffectiveMassFlow,
+            stage.InletPressure.Pascals,
+            stage.InletTemperature.Kelvins,
+            stage.InletSpecificInternalEnergy.JoulesPerKilogram,
+            stage.ExhaustPressure.Pascals,
+            stage.ExhaustTemperature.Kelvins,
+            stage.EffectiveIdealSpecificWork.JoulesPerKilogram,
+            stage.ShaftTorque.NewtonMetres,
+            stage.ShaftPower.Watts,
+            stage.MoistureDrainMassFlowRate.KilogramsPerSecond,
+            rotor.InitialAngularSpeed.RadiansPerSecond,
+            rotor.FinalAngularSpeed.RadiansPerSecond,
+            rotor.AverageAngularSpeed.RadiansPerSecond,
+            rotor.TurbineTorque.NewtonMetres,
+            rotor.CommandedExternalLoadTorque.NewtonMetres,
+            rotor.EffectiveExternalLoadTorque.NewtonMetres,
+            rotor.PassiveMechanicalLossTorque.NewtonMetres,
+            rotor.NetTorque.NewtonMetres,
+            rotor.ShaftPower.Watts);
+    }
+
+    private static double? ResolveDiagnosticVaporMassFraction(FluidPhase phase, double? vaporQualityFraction)
+        => phase switch
+        {
+            FluidPhase.SubcooledLiquid => 0d,
+            FluidPhase.SaturatedMixture => vaporQualityFraction,
+            FluidPhase.SuperheatedVapor => 1d,
+            _ => null,
+        };
 
     // NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-TRANSITIVE-DIAGNOSTIC1
     private static void WriteExactV9CrossHostTransitiveDiagnostic(
@@ -392,6 +478,7 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
 
         File.WriteAllLines(Path.Combine(captureDirectory, "sequence-selector.tsv"), selectorLines, Utf8WithoutBom);
         File.WriteAllLines(Path.Combine(captureDirectory, "sequence-direct.tsv"), directLines, Utf8WithoutBom);
+        WriteExactV9StageCausalDiagnostic(captureDirectory, selector, direct);
 
         var summaryLines = new[]
         {
@@ -425,6 +512,75 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         }
         ZipFile.CreateFromDirectory(captureDirectory, zipPath, CompressionLevel.SmallestSize, includeBaseDirectory: false);
     }
+
+    // NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-STAGE-CAUSAL-SEAM-DIAGNOSTIC2
+    // NRS-MARKER:M10974-EXACT-V9-CROSS-HOST-STAGE-CAUSAL-SEAM-DIAGNOSTIC2-REV1
+    private static void WriteExactV9StageCausalDiagnostic(
+        string captureDirectory,
+        DeterminismTraceCapture selector,
+        DeterminismTraceCapture direct)
+    {
+        const string header = "step\tlogicalStep\tadmissionPhasePolicy\ttripBlocked\ttrainInletPhase\ttrainInletVaporQuality\ttrainInletVaporQualityBits\tstageInletPhase\tstageInletVaporQuality\tstageInletVaporQualityBits\trawThermodynamicVaporMassFraction\trawThermodynamicVaporMassFractionBits\tresolvedAdmissionVaporMassFraction\tresolvedAdmissionVaporMassFractionBits\tcommandedMassFlowKgPerS\tcommandedMassFlowBits\teffectiveMassFlowKgPerS\teffectiveMassFlowBits\tadmissionBoundaryMassFlowKgPerS\tadmissionBoundaryMassFlowBits\tphaseLimitedMassFlowKgPerS\tphaseLimitedMassFlowBits\texpectedEffectiveMassFlowKgPerS\texpectedEffectiveMassFlowBits\teffectiveFlowResidualKgPerS\teffectiveFlowResidualBits\tinletPressurePa\tinletPressureBits\tinletTemperatureK\tinletTemperatureBits\tinletSpecificInternalEnergyJPerKg\tinletSpecificInternalEnergyBits\texhaustPressurePa\texhaustPressureBits\texhaustTemperatureK\texhaustTemperatureBits\teffectiveIdealSpecificWorkJPerKg\teffectiveIdealSpecificWorkBits\tstageShaftTorqueNm\tstageShaftTorqueBits\tstageShaftPowerW\tstageShaftPowerBits\tmoistureDrainMassFlowKgPerS\tmoistureDrainMassFlowBits\trotorInitialRadPerS\trotorInitialRadPerSBits\trotorFinalRadPerS\trotorFinalRadPerSBits\trotorAverageRadPerS\trotorAverageRadPerSBits\trotorTurbineTorqueNm\trotorTurbineTorqueBits\trotorCommandedExternalLoadTorqueNm\trotorCommandedExternalLoadTorqueBits\trotorEffectiveExternalLoadTorqueNm\trotorEffectiveExternalLoadTorqueBits\trotorPassiveMechanicalLossTorqueNm\trotorPassiveMechanicalLossTorqueBits\trotorNetTorqueNm\trotorNetTorqueBits\trotorShaftPowerW\trotorShaftPowerBits";
+        var selectorLines = new[] { header, StageCausalDiagnosticLine(selector.StageCausalTrace) };
+        var directLines = new[] { header, StageCausalDiagnosticLine(direct.StageCausalTrace) };
+
+        File.WriteAllLines(Path.Combine(captureDirectory, "stage-causal-selector.tsv"), selectorLines, Utf8WithoutBom);
+        File.WriteAllLines(Path.Combine(captureDirectory, "stage-causal-direct.tsv"), directLines, Utf8WithoutBom);
+    }
+
+    private static string StageCausalDiagnosticLine(ExactV9StageCausalTraceEntry entry)
+    {
+        var d = entry.Diagnostic;
+        return string.Join("\t", new[]
+        {
+            entry.Step.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            entry.LogicalStep.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            d.AdmissionPhasePolicy,
+            d.TripBlocked ? "True" : "False",
+            d.TrainInletPhase,
+            DiagnosticNullableDouble(d.TrainInletVaporQuality), DiagnosticNullableBits(d.TrainInletVaporQuality),
+            d.StageInletPhase,
+            DiagnosticNullableDouble(d.StageInletVaporQuality), DiagnosticNullableBits(d.StageInletVaporQuality),
+            DiagnosticNullableDouble(d.RawThermodynamicVaporMassFraction), DiagnosticNullableBits(d.RawThermodynamicVaporMassFraction),
+            DiagnosticDouble(d.ResolvedAdmissionVaporMassFraction), DiagnosticBits(d.ResolvedAdmissionVaporMassFraction),
+            DiagnosticDouble(d.CommandedMassFlowKgPerS), DiagnosticBits(d.CommandedMassFlowKgPerS),
+            DiagnosticDouble(d.EffectiveMassFlowKgPerS), DiagnosticBits(d.EffectiveMassFlowKgPerS),
+            DiagnosticDouble(d.AdmissionBoundaryMassFlowKgPerS), DiagnosticBits(d.AdmissionBoundaryMassFlowKgPerS),
+            DiagnosticDouble(d.PhaseLimitedMassFlowKgPerS), DiagnosticBits(d.PhaseLimitedMassFlowKgPerS),
+            DiagnosticDouble(d.ExpectedEffectiveMassFlowKgPerS), DiagnosticBits(d.ExpectedEffectiveMassFlowKgPerS),
+            DiagnosticDouble(d.EffectiveFlowResidualKgPerS), DiagnosticBits(d.EffectiveFlowResidualKgPerS),
+            DiagnosticDouble(d.InletPressurePa), DiagnosticBits(d.InletPressurePa),
+            DiagnosticDouble(d.InletTemperatureK), DiagnosticBits(d.InletTemperatureK),
+            DiagnosticDouble(d.InletSpecificInternalEnergyJPerKg), DiagnosticBits(d.InletSpecificInternalEnergyJPerKg),
+            DiagnosticDouble(d.ExhaustPressurePa), DiagnosticBits(d.ExhaustPressurePa),
+            DiagnosticDouble(d.ExhaustTemperatureK), DiagnosticBits(d.ExhaustTemperatureK),
+            DiagnosticDouble(d.EffectiveIdealSpecificWorkJPerKg), DiagnosticBits(d.EffectiveIdealSpecificWorkJPerKg),
+            DiagnosticDouble(d.StageShaftTorqueNm), DiagnosticBits(d.StageShaftTorqueNm),
+            DiagnosticDouble(d.StageShaftPowerW), DiagnosticBits(d.StageShaftPowerW),
+            DiagnosticDouble(d.MoistureDrainMassFlowKgPerS), DiagnosticBits(d.MoistureDrainMassFlowKgPerS),
+            DiagnosticDouble(d.RotorInitialRadPerS), DiagnosticBits(d.RotorInitialRadPerS),
+            DiagnosticDouble(d.RotorFinalRadPerS), DiagnosticBits(d.RotorFinalRadPerS),
+            DiagnosticDouble(d.RotorAverageRadPerS), DiagnosticBits(d.RotorAverageRadPerS),
+            DiagnosticDouble(d.RotorTurbineTorqueNm), DiagnosticBits(d.RotorTurbineTorqueNm),
+            DiagnosticDouble(d.RotorCommandedExternalLoadTorqueNm), DiagnosticBits(d.RotorCommandedExternalLoadTorqueNm),
+            DiagnosticDouble(d.RotorEffectiveExternalLoadTorqueNm), DiagnosticBits(d.RotorEffectiveExternalLoadTorqueNm),
+            DiagnosticDouble(d.RotorPassiveMechanicalLossTorqueNm), DiagnosticBits(d.RotorPassiveMechanicalLossTorqueNm),
+            DiagnosticDouble(d.RotorNetTorqueNm), DiagnosticBits(d.RotorNetTorqueNm),
+            DiagnosticDouble(d.RotorShaftPowerW), DiagnosticBits(d.RotorShaftPowerW),
+        });
+    }
+
+    private static string DiagnosticDouble(double value)
+        => value.ToString("G17", System.Globalization.CultureInfo.InvariantCulture);
+
+    private static string DiagnosticBits(double value)
+        => unchecked((ulong)BitConverter.DoubleToInt64Bits(value)).ToString("X16", System.Globalization.CultureInfo.InvariantCulture);
+
+    private static string DiagnosticNullableDouble(double? value)
+        => value.HasValue ? DiagnosticDouble(value.Value) : string.Empty;
+
+    private static string DiagnosticNullableBits(double? value)
+        => value.HasValue ? DiagnosticBits(value.Value) : string.Empty;
 
     private static void WriteArtifacts(
         DesktopHydraulicProductionPolicyDecision current,
@@ -536,9 +692,49 @@ public sealed class M10FinalExactV9ProductionActivationDecisionTests
         string Fingerprint,
         byte[] Payload);
 
+    private sealed record ExactV9StageCausalTraceEntry(
+        int Step,
+        long LogicalStep,
+        ExactV9StageCausalDiagnostic Diagnostic);
+
+    private sealed record ExactV9StageCausalDiagnostic(
+        string AdmissionPhasePolicy,
+        bool TripBlocked,
+        string TrainInletPhase,
+        double? TrainInletVaporQuality,
+        string StageInletPhase,
+        double? StageInletVaporQuality,
+        double? RawThermodynamicVaporMassFraction,
+        double ResolvedAdmissionVaporMassFraction,
+        double CommandedMassFlowKgPerS,
+        double EffectiveMassFlowKgPerS,
+        double AdmissionBoundaryMassFlowKgPerS,
+        double PhaseLimitedMassFlowKgPerS,
+        double ExpectedEffectiveMassFlowKgPerS,
+        double EffectiveFlowResidualKgPerS,
+        double InletPressurePa,
+        double InletTemperatureK,
+        double InletSpecificInternalEnergyJPerKg,
+        double ExhaustPressurePa,
+        double ExhaustTemperatureK,
+        double EffectiveIdealSpecificWorkJPerKg,
+        double StageShaftTorqueNm,
+        double StageShaftPowerW,
+        double MoistureDrainMassFlowKgPerS,
+        double RotorInitialRadPerS,
+        double RotorFinalRadPerS,
+        double RotorAverageRadPerS,
+        double RotorTurbineTorqueNm,
+        double RotorCommandedExternalLoadTorqueNm,
+        double RotorEffectiveExternalLoadTorqueNm,
+        double RotorPassiveMechanicalLossTorqueNm,
+        double RotorNetTorqueNm,
+        double RotorShaftPowerW);
+
     private sealed record DeterminismTraceCapture(
         string AggregateFingerprint,
-        IReadOnlyList<DeterminismTraceEntry> Entries);
+        IReadOnlyList<DeterminismTraceEntry> Entries,
+        ExactV9StageCausalTraceEntry StageCausalTrace);
 
     private sealed record MissionResult(
         string PackExactId,
