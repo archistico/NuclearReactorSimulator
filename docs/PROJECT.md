@@ -1,5 +1,15 @@
 # Project — current authoritative state
 
+## Hosted Exact-V9 runtime-alignment decision gate — 2026-09-19
+
+<!-- NRS-MARKER:M10974-EXACT-V9-HOSTED-RUNTIME-ALIGNMENT-CHECKPOINT -->
+
+Cross-host diagnostics 1-4 have reduced the remaining hosted Exact-V9 RED to a single transient IEEE-754 difference at step 126: 127/128 steps are bit-identical, selector/direct are identical on each host, the drift is one ULP at the shared STOP-out / CONTROL-in pressure node, and the trajectories reconverge bit-identically at step 127. The local frozen aggregate is produced on .NET 10.0.5; hosted RED evidence is produced on .NET 10.0.12.
+
+No further ULP-by-ULP production diagnostic is authorized at this point. The next activity is the one-shot `Exact-V9 Hosted Runtime Alignment Diagnostic 1`: execute the unchanged authoritative Exact-V9 method on GitHub with SDK 10.0.105, runtime 10.0.5 and runtime roll-forward disabled. Permanent `global.json`, ordinary CI, source/test code, Fingerprint V1, Exact-V9 golden and VR2/R3 remain unchanged by the probe.
+
+Decision is binary: if the hosted aligned-runtime probe reproduces `7880AD...B5418`, prepare the permanent ordinary-CI runtime pin; if it remains RED while the trace proves .NET 10.0.5, stop numerical seam diagnostics and move to a separately versioned cross-host numerical-canonicalization contract. R3 remains RED and frozen until ordinary CI is actually GREEN.
+
 ## Hosted M10.9.7.4 fingerprint-v1 cross-host diagnostic checkpoint — 2026-09-19
 
 <!-- NRS-MARKER:M10974-FINGERPRINT-V1-CROSS-HOST-DIAGNOSTIC1 -->

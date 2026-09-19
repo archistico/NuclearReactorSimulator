@@ -1,0 +1,63 @@
+{
+  "schema": "m10974-exact-v9-hosted-runtime-alignment-diagnostic1",
+  "status": "TEST-ONLY-HOSTED-RUNTIME-ALIGNMENT-DIAGNOSTIC",
+  "purpose": "One-shot hosted experiment to determine whether the Exact-V9 bit-exact RED is caused by executing the frozen trajectory on .NET 10.0.12 instead of the local .NET 10.0.5 runtime.",
+  "baseline": {
+    "local_runtime": ".NET 10.0.5",
+    "hosted_runtime_before_alignment": ".NET 10.0.12",
+    "frozen_exact_v9": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "hosted_pre_alignment_exact_v9": "1E8AAF3799059D8C9FB2E930981E26B0B31ECF465673AB6C722B24A95D80FDD7",
+    "first_divergent_step": 126,
+    "cross_host_behavior": "127/128 steps bit-identical; one one-ULP shared pressure-node drift at step 126; step 127 and 128 reconverge bit-identically."
+  },
+  "alignment": {
+    "sdk_version": "10.0.105",
+    "runtime_version": "10.0.5",
+    "runtime_roll_forward": "Disable",
+    "sdk_roll_forward": "disable",
+    "test_runner": "Microsoft.Testing.Platform",
+    "target_method": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalExactV9ProductionActivationDecisionTests.AuthoritativeExactV9_DefaultAndMissionPathsRemainHealthyConservativeDeterministicAndFailClosed",
+    "runtimeconfig_must_request": "Microsoft.NETCore.App 10.0.5",
+    "trace_framework_must_equal": ".NET 10.0.5"
+  },
+  "workflow": {
+    "path": ".github/workflows/exact-v9-runtime-alignment-diagnostic.yml",
+    "checkout_action": "actions/checkout@v7",
+    "setup_action": "actions/setup-dotnet@v6",
+    "upload_action": "actions/upload-artifact@v7",
+    "artifact_name": "exact-v9-runtime-alignment-diagnostic",
+    "markers": [
+      "NRS-CI-MARKER:M10974-EXACT-V9-RUNTIME-ALIGNMENT-SDK-10_0_105",
+      "NRS-CI-MARKER:M10974-EXACT-V9-RUNTIME-ALIGNMENT-EXECUTE",
+      "NRS-CI-MARKER:M10974-EXACT-V9-RUNTIME-ALIGNMENT-UPLOAD"
+    ]
+  },
+  "frozen_boundaries": {
+    "production_change_authorized": false,
+    "test_source_change_authorized": false,
+    "fingerprint_v1_golden_change_authorized": false,
+    "exact_v9_golden_change_authorized": false,
+    "physics_change_authorized": false,
+    "tolerance_change_authorized": false,
+    "ordinary_ci_contract_change_authorized": false,
+    "repository_global_json_change_authorized": false,
+    "vr2_r3_change_authorized": false
+  },
+  "frozen_sha256": {
+    "global.json": "15FC2962D00BBB3FEBAE9DDB01301F0723EBB743E1CFCD57AF3D1FDD3FB640BB",
+    ".github/workflows/ordinary-ci.yml": "BDCB5A1F196E2C47050459DDA75A388649104203FFFFEE33018CF6462B5A1AD3",
+    "eng/ci-ordinary.cmd": "E8AEC59B23F5FB0A8E61870D808D05D267B056E9A1D135523A72FFE56F5C4F1D",
+    "eng/ci-current-evidence.cmd": "BA5225F572136C100E23D1F874E44602E722A2ED15327997CB8DAB81B04023DE",
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationDecisionTests.cs": "3A2ECC474C588F1C99DCC1CD96B50E879440A86B0A5DFB4574D003826EFE3CEE",
+    "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs": "060DD9B6ECBFC2AE68A128FFF09A2C6B9DE53DEB755F4225ADB661E14B46F92E"
+  },
+  "manifests": {
+    "src": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-src-manifest.tsv",
+    "tests_excluding_target": "eng/m10974-exact-v9-cross-host-transitive-determinism-diagnostic1-tests-frozen-manifest.tsv"
+  },
+  "decision": {
+    "if_green": "RUNTIME-PATCH-MISMATCH-CONFIRMED; prepare permanent ordinary-CI runtime contract alignment and remove this one-shot workflow.",
+    "if_red_on_runtime_10_0_5": "RUNTIME-PATCH-MISMATCH-NOT-SUFFICIENT; stop ULP diagnostics and replace raw-double cross-host Exact-V9 hashing with a separately versioned numerical canonicalization contract.",
+    "no_third_branch": true
+  }
+}

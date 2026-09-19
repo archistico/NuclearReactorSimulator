@@ -1,3 +1,12 @@
+# 2026-09-19 — M10.9.7.4 Exact-V9 Hosted Runtime Alignment Diagnostic 1 candidate
+
+- Stopped the ULP-by-ULP diagnostic chain after Diagnostic 4: evidence now shows 127/128 cross-host steps bit-identical, one transient step-126 one-ULP pressure-node drift, and immediate bit-identical reconvergence.
+- Added a one-shot GitHub runtime-alignment workflow that leaves permanent ordinary CI unchanged.
+- The probe installs SDK 10.0.105, isolates SDK resolution with a temporary `global.json`, forces `RuntimeFrameworkVersion=10.0.5` and runtime roll-forward `Disable`, validates the generated test runtimeconfig, and executes only the already-authoritative Exact-V9 decision method.
+- Added fail-closed evidence capture for `dotnet --info`, installed runtimes, runtimeconfig, Exact-V9 test log and existing transitive fingerprint trace.
+- Added a binary decision rule: GREEN confirms runtime-patch mismatch and authorizes a later permanent CI-runtime pin; RED on proven .NET 10.0.5 ends low-level ULP diagnostics and redirects to a separately versioned numerical-canonicalization contract.
+- No production/test source, golden, physics, tolerance, permanent `global.json`, ordinary-CI contract or VR2/R3 change is authorized.
+
 ## M10.9.7.4 Exact-V9 Cross-Host Admission-Train Shared-Node Provenance Diagnostic 4
 
 - Adjudicates Stage Mass-Flow Resolver Causal-Seam Diagnostic 3 as `PASS-AS-AUTHORED`.

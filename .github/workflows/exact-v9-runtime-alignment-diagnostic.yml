@@ -1,0 +1,36 @@
+name: exact-v9-runtime-alignment-diagnostic
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-v9-runtime-alignment:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      # NRS-CI-MARKER:M10974-EXACT-V9-RUNTIME-ALIGNMENT-SDK-10_0_105
+      - name: Setup aligned .NET SDK
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.105'
+      # NRS-CI-MARKER:M10974-EXACT-V9-RUNTIME-ALIGNMENT-EXECUTE
+      - name: Run Exact-V9 hosted runtime alignment diagnostic
+        shell: pwsh
+        run: |
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\eng\invoke-m10974-exact-v9-hosted-runtime-alignment-diagnostic1.ps1"
+          exit $LASTEXITCODE
+      # NRS-CI-MARKER:M10974-EXACT-V9-RUNTIME-ALIGNMENT-UPLOAD
+      - name: Upload runtime alignment evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: exact-v9-runtime-alignment-diagnostic
+          path: artifacts/ci/runtime-alignment/
+          if-no-files-found: warn
+          retention-days: 14
