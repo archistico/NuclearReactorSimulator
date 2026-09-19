@@ -1,5 +1,17 @@
 # Roadmap
 
+## Live checkpoint — M10.9.7.4 fingerprint-v1 hosted blocker
+
+<!-- NRS-MARKER:M10974-FINGERPRINT-V1-CROSS-HOST-DIAGNOSTIC1-ROADMAP -->
+
+1. Stable Contract V2.1.1 is GREEN locally and reaches the hosted complete ordinary suite.
+2. Hosted ordinary CI has one historical RED only: the H29 step-128 fingerprint-v1 schema anchor.
+3. **Fingerprint V1 Cross-Host Determinism Diagnostic 1 is NEXT** — capture exact normalized payload and JSON-node hashes locally and from the same hosted failing execution.
+4. Do not change the v1 golden or algorithm before the first differing serialized path is identified and adjudicated.
+5. Repair Planning 1 remains blocked until hosted ordinary-ci is explicitly GREEN.
+
+R3 remains RED and `repair-owner=UNSELECTED`.
+
 ## Live checkpoint — hosted failure capture V2.1.1
 
 <!-- NRS-MARKER:CI-STABLE-CONTRACT-V2_1_1-ROADMAP -->

@@ -1,3 +1,10 @@
+## 2026-09-19 — M10.9.7.4 Fingerprint V1 Cross-Host Determinism Diagnostic 1
+
+- Identified the exact hosted-only ordinary failure from `ordinary-ci-diagnostics`: `M10974FingerprintV1SchemaAnchorTests.FingerprintV1_PopulatedExactVersionFixtureMatchesFrozenGoldenHash`.
+- Preserves the frozen v1 golden and final assertion unchanged.
+- Adds test-only same-execution capture of the normalized fingerprint payload, top-level hashes, full JSON-node/leaf hash map and runtime environment.
+- Hosted capture is uploaded through the existing V2.1.1 `ordinary-ci-diagnostics` artifact; no second hosted test execution is added.
+- Production source, H29 exact-version factory, ordinary CI command, R3 state and repair authority remain frozen.
 
 ## GitHub Ordinary CI Stable Contract V2.1.1 - validator structural hotfix
 

@@ -48,6 +48,8 @@ public sealed class M10974FingerprintV1SchemaAnchorTests
         Assert.NotEmpty(snapshot.Electrical.Generators);
 
         Assert.Equal("sha256-control-room-snapshot-v1", ControlRoomSnapshotFingerprint.AlgorithmId);
-        Assert.Equal(GoldenFingerprint, ControlRoomSnapshotFingerprint.Compute(snapshot));
+        var actualFingerprint = ControlRoomSnapshotFingerprint.Compute(snapshot);
+        M10974FingerprintV1CrossHostDiagnostic1.TryWrite(snapshot, GoldenFingerprint, actualFingerprint);
+        Assert.Equal(GoldenFingerprint, actualFingerprint);
     }
 }

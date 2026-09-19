@@ -1,5 +1,13 @@
 # Project — current authoritative state
 
+## Hosted M10.9.7.4 fingerprint-v1 cross-host diagnostic checkpoint — 2026-09-19
+
+<!-- NRS-MARKER:M10974-FINGERPRINT-V1-CROSS-HOST-DIAGNOSTIC1 -->
+
+Stable Contract V2.1.1 is locally GREEN and the hosted workflow now reaches the real ordinary suite. The remaining hosted RED is exactly `M10974FingerprintV1SchemaAnchorTests.FingerprintV1_PopulatedExactVersionFixtureMatchesFrozenGoldenHash`: frozen expected `63643e55...`, hosted actual `3e11375d...`. Every other test assembly is GREEN.
+
+The next activity is test-only `M10.9.7.4 Fingerprint V1 Cross-Host Determinism Diagnostic 1`. It keeps the golden assertion and fingerprint-v1 implementation unchanged and captures the exact normalized JSON plus top-level/node hashes from the same local/hosted fixture execution. R3 remains RED; repair planning remains blocked.
+
 ## Hosted ordinary-ci V2.1.1 validator checkpoint — 2026-09-19
 
 <!-- NRS-MARKER:CI-STABLE-CONTRACT-V2_1_1-CHECKPOINT -->

@@ -14,6 +14,7 @@ jobs:
     timeout-minutes: 90
     env:
       CI: 'true'
+      NRS_FINGERPRINT_V1_DIAGNOSTICS_DIR: '${{ github.workspace }}\artifacts\ci\fingerprint-v1'
     steps:
       - name: Checkout
         uses: actions/checkout@v7

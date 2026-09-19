@@ -1,0 +1,48 @@
+{
+  "schema": "m10974-fingerprint-v1-cross-host-diagnostic1-contract-v1",
+  "status": "TEST-ONLY-DIAGNOSTIC",
+  "purpose": "Capture the exact fingerprint-v1 normalized payload and a deterministic JSON node hash map from the same H29 step-128 schema-anchor execution on local and hosted environments, without changing the golden hash, algorithm id, production physics, or test pass/fail condition.",
+  "observed_hosted_failure": {
+    "test": "NuclearReactorSimulator.Application.Tests.ControlRoom.MissionPerformance.M10974FingerprintV1SchemaAnchorTests.FingerprintV1_PopulatedExactVersionFixtureMatchesFrozenGoldenHash",
+    "expected_fingerprint": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "hosted_actual_fingerprint": "3e11375d2e0abce2ccbb4d35434f7e51724d5977341319f7da",
+    "hosted_failure_source": "ordinary-ci-diagnostics/ordinary-first-failure.txt",
+    "failure_location": "M10974FingerprintV1SchemaAnchorTests.cs:51"
+  },
+  "paths": {
+    "schema_anchor_test": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/MissionPerformance/M10974FingerprintV1SchemaAnchorTests.cs",
+    "diagnostic_helper": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/MissionPerformance/M10974FingerprintV1CrossHostDiagnostic1.cs",
+    "workflow": ".github/workflows/ordinary-ci.yml",
+    "runner": "scripts/run-m10974-fingerprint-v1-cross-host-diagnostic1.cmd",
+    "fingerprint_production": "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs",
+    "h29_factory": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.cs",
+    "ci_ordinary": "eng/ci-ordinary.cmd",
+    "documentation": "docs/M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1.md"
+  },
+  "frozen_normalized_sha256": {
+    "fingerprint_production": "E0396F7241A31AC2DBDBD653369659BADB90B0600FB046D892DD1DC6A2F6186B",
+    "h29_factory": "EE6D8B866AFCC581D4D0AE3A84EE906DD9BE03FF447D6B772DEAE2092CEA858C",
+    "ci_ordinary": "F011AE90ED2829E0507A555F67CD6E6AF82386BF2BD904DDD742364C2F466E6C"
+  },
+  "capture": {
+    "environment_variable": "NRS_FINGERPRINT_V1_DIAGNOSTICS_DIR",
+    "zip_name": "fingerprint-v1-cross-host-diagnostic.zip",
+    "summary_name": "fingerprint-v1-cross-host-summary.txt",
+    "hosted_upload_root": "artifacts/ci/",
+    "same_execution_required": true,
+    "golden_assertion_unchanged": true,
+    "fingerprint_algorithm_unchanged": true,
+    "production_source_change_authorized": false,
+    "test_pass_fail_semantics_change_authorized": false,
+    "second_hosted_test_execution_authorized": false
+  },
+  "authority": {
+    "production_physics_change_authorized": false,
+    "fingerprint_v1_change_authorized": false,
+    "golden_hash_change_authorized": false,
+    "test_threshold_change_authorized": false,
+    "repair_planning_authorized": false,
+    "r3_passed": false,
+    "repair_owner_selected": false
+  }
+}
