@@ -1,0 +1,17 @@
+metric,value
+matrix_scenarios,6
+runtime_steps,2080
+triggered_steps,529
+corrected_commits,529
+h20_rollbacks,0
+safe_fallbacks,0
+fallback_commit_violations,0
+unsafe_commits,0
+untargeted_branch_disagreements,0
+max_mass_closure_kg,2.1827872842550278E-11
+max_energy_closure_j,4.2211322579532862E-05
+max_balance_mass_rate_kg_s,1.4743761767022079E-13
+max_balance_power_w,1.3783574104309082E-07
+max_condenser_pressure_pa,14352.306851013782
+telemetry_fingerprint,DB61C3D3815D6EB81EB3D26B6B44283C21094EADB9B63E86E022594ED94E40A9
+h27_audit_passes,True

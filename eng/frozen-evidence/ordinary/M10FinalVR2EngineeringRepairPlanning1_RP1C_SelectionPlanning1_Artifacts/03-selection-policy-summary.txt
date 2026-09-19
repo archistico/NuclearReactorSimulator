@@ -1,0 +1,11 @@
+﻿status=PASS-RP1C-SELECTION-PLANNING-CONTRACT-FROZEN
+selection-result=NOT-PERFORMED
+selection-ready-count=1
+future-selection-decision-space=SELECT-C4|SELECT-NONE
+select-none-mandatory=True
+new-measurement-in-selection-gate=False
+automatic-selection=False
+post-select-c4=R1-IMPLEMENTATION-PLANNING-ONLY
+rp1c-selection-authorized=False
+production-repair-authorized=False
+next-action=RETURN-COMPLETE-SELECTION-PLANNING-ARTIFACTS-FOR-ADJUDICATION

@@ -1,0 +1,3 @@
+mode_id,DOTNET_TieredCompilation,DOTNET_TieredPGO,DOTNET_TC_QuickJit,DOTNET_TC_QuickJitForLoops,DOTNET_ReadyToRun,contrast_from_previous
+PGO-OFF-QJFL-ON,1,0,1,1,1,BASELINE
+PGO-ON-QJFL-ON,1,1,1,1,1,DOTNET_TieredPGO

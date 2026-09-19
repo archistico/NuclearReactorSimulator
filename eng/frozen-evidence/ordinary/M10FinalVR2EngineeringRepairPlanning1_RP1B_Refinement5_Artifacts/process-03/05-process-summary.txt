@@ -1,0 +1,17 @@
+gate=VR2-ENGINEERING-REPAIR-PLANNING1-RP1B-REFINEMENT5
+status=PASS-PROCESS-EVIDENCE-COMPLETE
+candidate=C3-VAPOR-SEAM-COMPLETE-SURROGATE
+candidate-source-changed=False
+process-run-index=3
+measured-calls=20480
+resolve-max-ceiling-us=409.30666666666673
+process-max-us=2666.1
+process-max-boundary-index=3
+process-max-boundary-temperature-c=47.26746165007364
+process-max-pass-index=58
+calls-over-max-ceiling=1
+boundaries-over-max-ceiling=1
+exceedances-with-gc-activity=1
+strict-single-call-max-preserved=True
+c4-created=False
+rp1c-selection-authorized=False

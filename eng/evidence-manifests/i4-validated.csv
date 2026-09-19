@@ -1,0 +1,17 @@
+key,value
+milestone,M10.9.4.1-I.4-Hotfix2
+status,VALIDATED
+source-artifact-archive,i4-phase-i-known-limitations-legacy-retirement-review.zip
+summary-file,I4_ValidatedKnownLimitationsLegacyRetirementReviewSummary.txt
+summary-sha256,330A292E0EF44E5D21D2A24F67AECB7F62BB7840472D00F75184BFDDC7EBED94
+dependencies-file,I4_ValidatedLegacySourceDependencies.csv
+dependencies-sha256,7221CC98AE5FCDAABB9CF5C72F59049734C690464189BDB44D8A7E8A5E87208E
+limitations-file,I4_ValidatedKnownLimitationObservations.csv
+limitations-sha256,BC29EEF4E54A39270E6BE6B749666F376CF0EB737CDB263AAE4061EA1C94E5C5
+retirement-file,I4_ValidatedLegacyRetirementDecision.csv
+retirement-sha256,5AB2F9281A4BB8724EBB655A98EF15D4CE2BD75548AE16668BD6EA10AAF3D9D3
+known-drift-observations,drum:+8.2451672984622224kg/s|main-steam-header:-0.35293086123580603kg/s|total-fluid-internal-energy:-2061802.7621648791W
+legacy-mode-1,DeterministicHybridSemiImplicit|production=False|exact-version=False|current-ci=False|source=4|tests=4|decision=DEFER-SOURCE-REMOVAL
+legacy-mode-2,FourNodeBranchContinuityShadowIntegrated|production=False|exact-version=False|current-ci=False|source=4|tests=4|decision=DEFER-SOURCE-REMOVAL
+legacy-mode-retirement-authorized,False
+i5-closure-gate-unblocked,True

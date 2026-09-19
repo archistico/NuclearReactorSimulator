@@ -1,0 +1,10 @@
+status=EVIDENCE-WRITTEN
+returned-node=turbine-inlet
+mode2-fusion-eligible=False
+direct-phase=SaturatedMixture
+same-instance-phase=SaturatedMixture
+split-phase=SaturatedMixture
+same-instance-equals-direct=True
+split-equals-direct=True
+same-instance-equals-split=True
+same-instance-decision-kind=production-no-overlap

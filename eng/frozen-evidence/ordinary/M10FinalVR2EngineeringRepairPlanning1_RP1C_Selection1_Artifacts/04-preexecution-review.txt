@@ -1,0 +1,10 @@
+﻿status=STATIC-SELECTION-REVIEW-PASS
+finding-1=SELECTION-PLANNING1-RETURNED-PASS-AS-AUTHORED
+finding-2=C4-AMBIENT-SELECTION-READY
+finding-3=D3-NOT-SELECTION-READY
+finding-4=SELECT-NONE-PRESERVED-AND-CONSIDERED
+finding-5=SELECT-C4-IS-AUTHORED-NOT-AUTOMATIC
+finding-6=NO-NEW-MEASUREMENT-OR-MUTATION
+selection-result=SELECT-C4
+r1-implementation-planning-authorized-now=False
+production-repair-authorized=False

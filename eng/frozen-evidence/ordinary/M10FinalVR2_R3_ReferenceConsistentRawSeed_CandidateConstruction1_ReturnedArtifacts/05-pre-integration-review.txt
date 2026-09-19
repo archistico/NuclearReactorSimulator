@@ -1,0 +1,14 @@
+﻿status=PASS-CANDIDATE-CONSTRUCTION-EVIDENCE-COMPLETE
+resolved-node-count=12
+phase-match-node-count=12
+max-abs-pressure-residual-pa=1.2218476684593043
+max-abs-temperature-residual-k=0.0004007105181926818
+max-abs-quality-residual=1.7415402453480056E-10
+max-abs-hydraulic-head-residual-pa=0.11230209190398455
+residual-acceptance-thresholds-defined=False
+candidate-vector-is-production=False
+production-seed-integration-authorized=False
+new-exact-version-identity-authorized=False
+r3-remains-red=True
+r4-planning-authorized=False
+next-step=RETURN-ARTIFACTS-FOR-SEED-INTEGRATION-PLANNING-ADJUDICATION

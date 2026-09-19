@@ -1,0 +1,11 @@
+scope=P2R2 compact derived evidence from returned full P1B artifact; all derived quantities use existing 1 s canonical evidence and do not add physics;
+background-reference=600s execution PASS; near-zero represented late drift;
+load-probe=5-to-6mwe execution PASS; checkpoints=3/3; max-hold=3600s; trips=0; numerical-sentinel-failures=0;
+p1b-owner-evidence-label=COUPLED-MULTI-DOMAIN;
+load-reachability-at-3600s=output:6.000344232909117MWe|frequency:50.000004483204116Hz|dispatch:+0.00035110283132855358MW;
+final-300s=thermofluid-stored-energy:+1.317398473MW|thermal-body-stored-energy:+0.127988636MW|drum-mass:-0.039412813kg/s|drum-level:-4.909582796e-6/s|channel-flow:+0.034203808kg/s2|return-flow:+0.034898058kg/s2|turbine-inlet-pressure:+6.451111280e-5MPa/s|shaft:+3.637413590e-5MW/s|electrical-output:+3.564770152e-5MW/s;
+late-2400-to-3600=outlet-mass:2283.995428424272->3141.048091688905kg|feedwater-inventory:7621.349871824543->6565.187761476099kg|drum-mass:3796.025260270544->3740.512473508993kg|channel-flow:185.38650144188568->233.9534410035708kg/s|return-flow:184.62430562772553->233.50781392423573kg/s|channel-return-difference:0.7621958141601795->0.4456270793350256kg/s|header-pressure-difference:-718247.4325690577->-1736574.8223719262Pa;
+interpretation=whole-plant stationarity not demonstrated; conserved total mass and numerical closure remain green while represented inventories redistribute; downstream electrical reachability does not justify workload-only P3-W;
+p2r2-proposed-decision=P3-R-OWNER-LOCALIZATION;
+production-repair-authorized=False;
+next=P3-R1-Primary-Inventory-Hydraulic-Slow-State-Owner-Localization;

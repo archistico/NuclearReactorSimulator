@@ -1,0 +1,6 @@
+status=PASS-AS-AUTHORED
+next-authorized-gate=R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-IMPLEMENTATION1
+production-repair-authorized-now=False
+r3-passed=False
+r4-planning-authorized=False
+post-implementation-successor=R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION2

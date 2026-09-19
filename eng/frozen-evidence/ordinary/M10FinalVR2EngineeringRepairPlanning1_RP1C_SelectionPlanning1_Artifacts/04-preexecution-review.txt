@@ -1,0 +1,9 @@
+﻿status=STATIC-PREEXECUTION-REVIEW-PASS
+finding-1=FDPC2-EVIDENCE-COMPLETE-32-FILES-217600-CALLS
+finding-2=C4-AMBIENT-PAIR-SELECTION-READY
+finding-3=D3-REMAINS-BLOCKED-BY-FROZEN-SEAM-MAX
+finding-4=SELECT-NONE-REMAINS-MANDATORY
+finding-5=SELECTION-GATE-MUST-NOT-MEASURE-OR-MUTATE
+future-selection-implementation-contained=False
+rp1c-selection-authorized=False
+production-repair-authorized=False

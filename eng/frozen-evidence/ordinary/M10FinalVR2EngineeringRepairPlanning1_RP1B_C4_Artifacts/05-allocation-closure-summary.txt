@@ -1,0 +1,10 @@
+status=PASS-ALLOCATION-EVIDENCE-COMPLETE
+measured-calls=204800
+nonzero-allocation-calls=0
+candidate-call-allocated-bytes-sum=0
+harness-allocated-bytes-sum=0
+fallback-calls=0
+zero-allocation-closed=True
+harness-allocation-neutral=True
+r1-zero-fallback=True
+allocation-closure-met=True

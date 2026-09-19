@@ -1,0 +1,19 @@
+key,value
+milestone,M10.9.4.1-I.5 REV1 Hotfix 4
+status,VALIDATED-DIAGNOSTIC
+summary_sha256,8B17B506AB3B2DFC7C488F9C2A6D4235A591184FE4F3D6E2F628FCD8BC560FBE
+metrics_sha256,988D351BFA7777703609CBE3E100553929731C2B842029B23A80363D5C51C2FA
+legacy_v2_qualifies,False
+candidate_count,7
+qualifying_candidates,1
+recommended_candidate,corrected-only
+corrected_only_qualifies,True
+corrected_only_stable_gross_violations,0
+corrected_only_stable_rotor_violations,0
+corrected_only_stable_shaft_violations,0
+corrected_only_reverse_admission_steps,0
+corrected_only_final_gross_mwe,4.6149367436954929
+corrected_only_final_shaft_mw,5.2087234076995177
+corrected_only_final_rotor_rpm,3000.4015162092605
+exact_v2_changed,False
+runtime_production_changed,False

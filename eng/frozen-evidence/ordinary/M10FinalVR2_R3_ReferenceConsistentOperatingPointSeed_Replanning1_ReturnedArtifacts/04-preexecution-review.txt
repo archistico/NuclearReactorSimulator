@@ -1,0 +1,9 @@
+status=PASS-AS-AUTHORED
+frozen-target-state-vector-required=True
+candidate-mass-energy-vector-must-be-emitted=True
+candidate-target-roundtrip-must-be-emitted=True
+candidate-hydraulic-head-comparison-must-be-emitted=True
+no-runtime-preconditioning=True
+no-dynamic-simulation=True
+returned-evidence-required-before-integration-planning=True
+r4-remains-blocked=True

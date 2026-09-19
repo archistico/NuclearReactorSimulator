@@ -1,0 +1,14 @@
+status=COMPLETE-ENGINEERING-EVIDENCE
+profile-id=EXPLICIT-REFERENCE-ALL-ON
+host-fingerprint-sha256=931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336
+reported-total=17
+executed=17
+passed=17
+failed=0
+skipped=0
+errors=0
+not-run=0
+all-class-exit-codes-zero=True
+engineering-pass=True
+summary-source=XUNIT-XML-V2PLUS
+console-language-independent=True

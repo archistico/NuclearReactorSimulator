@@ -1,0 +1,4 @@
+candidate_id,initialization_us,initialization_allocated_bytes,measured_resolve_calls,measured_seam_calls,resolve_median_us,resolve_p95_us,resolve_max_us,seam_max_us,resolve_median_allocated_bytes,median_ceiling_us,p95_ceiling_us,max_ceiling_us,median_allocation_ceiling_bytes,all_timing_values_finite,within_frozen_ceilings
+B1-PIECEWISE-REDUCED,3426.2,30352,2880,1280,9.6,10.1,89.7,154.2,0,94.8,158.80666666666667,409.30666666666673,2816,true,true
+C1-TABULATED-SURROGATE,9980.1,327592,2880,1280,13.6,14.5,137.9,160.1,0,94.8,158.80666666666667,409.30666666666673,2816,true,true
+D1-BOUNDED-IF97-SUBSET,5522.7,326824,2880,1280,13.5,15.6,2985,24173.9,0,94.8,158.80666666666667,409.30666666666673,2816,true,false

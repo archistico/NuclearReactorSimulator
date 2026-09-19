@@ -1,0 +1,10 @@
+status=PASS-AS-AUTHORED
+frozen-12-node-vector-required=True
+generic-conserved-inventory-seam-required=True
+active-closure-must-resolve-conserved-inventory=True
+canonical-exact-v9-source-must-remain-unchanged=True
+first-100-running-steps-health-violations-max=0
+first-100-running-steps-rollbacks-max=0
+ordinary-release-suite-required=True
+full-r3-120s-requalification-still-required=True
+r4-remains-blocked=True

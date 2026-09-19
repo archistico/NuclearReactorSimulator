@@ -1,0 +1,14 @@
+status=R3-SHADOW-COMPOSITION-BLOCKING
+source=RETURNED-CONSOLE-FAILURE-2026-09-18
+focused-baseline-artifact-present=True
+baseline-equivalence-rows=128
+baseline-equivalence-mismatches=0
+exception=NuclearReactorSimulator.Simulation.Physics.Fluids.WaterSteamStateOutOfRangeException
+node-id=turbine-inlet
+specific-volume-m3-kg=0.048580627845180926
+specific-internal-energy-j-kg=2525533.2846314958
+top-frame=SimplifiedWaterSteamThermodynamicModel.EvaluateBranchContinuity
+top-frame-line=199
+caller=ThermodynamicBranchContinuityModel.Resolve
+r3-completed=False
+r4-planning-authorized=False

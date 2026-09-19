@@ -1,0 +1,13 @@
+status=PASS-TAIL-ATTRIBUTION-PLANNING-CONTRACT-FROZEN
+classification=PLANNING-ONLY-NO-CAUSAL-PROMOTION
+open-owner=RARE-EXACT-V9-WALL-CLOCK-TAIL
+frozen-tail-path=C2-MIXTURE-PREFIX
+frozen-tail-pass-signature=15|17|17|18|18
+frozen-strict-exceedances=2
+seam-remeasurement-required=False
+c4-mutation-authorized=False
+runtime-tiering-causality-proven=False
+caller-environment-must-be-clean=True
+automatic-causal-promotion=False
+automatic-selection-authorized=False
+next-action=RETURN-COMPLETE-TAIL-ATTRIBUTION-PLANNING-ARTIFACTS-FOR-ADJUDICATION

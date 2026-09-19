@@ -1,0 +1,12 @@
+status=STATIC-PREEXECUTION-REVIEW-PASS
+finding-1=BASE-PLANNING1-RETURNED-PASS-AS-AUTHORED
+finding-2=MULTI-HOST-EXECUTION-IS-MATERIAL-PERFORMANCE-CONFOUND
+finding-3=SINGLE-HOST-PER-A2-GATE-REQUIRED
+finding-4=CROSS-HOST-EVIDENCE-MIXING-IS-INFRASTRUCTURE-RED
+finding-5=ABSOLUTE-WALL-CLOCK-RESULTS-ARE-HOST-SCOPED
+finding-6=HISTORICAL-RFI1-PGO-CONTEXT-CONSISTENT-BUT-PHYSICAL-HOST-NOT-PROVEN
+future-a2-required-files=78
+threshold-change-authorized=False
+a2-implementation-authorized=False
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False

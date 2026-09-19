@@ -1,0 +1,10 @@
+﻿status=PASS-DIAGNOSTIC-MODE2-FUSION-BYPASS-CONFIRMED
+returned-r3-classification=R3-SHADOW-COMPOSITION-BLOCKING
+failure-state-resolver-path=C2MixturePrefix
+direct-mode2-resolve=PASS
+same-instance-fused-continuity=BLOCKING
+distinct-instance-nonfused-continuity=PASS
+nonfused-state-equals-direct=True
+root-cause-classification=H28.1-E-FUSED-PATH-NOT-MODE2-AWARE
+production-repair-authorized=False
+r4-planning-authorized=False

@@ -1,0 +1,6 @@
+run_index,exact_v9_calls,seam_calls,exact_v9_median_us,exact_v9_p95_us,exact_v9_max_us,exact_v9_median_allocated_bytes,exact_v9_unresolved,seam_unresolved,seam_max_us,seam_calls_over_max_ceiling,candidate_allocated_bytes_sum,harness_allocated_bytes,strict_corrected_predicate_met
+1,23040,20480,2.9,27.9,150.4,0,0,0,315.1,0,14592,0,True
+2,23040,20480,2.8,27.2,237.4,0,0,0,314.1,0,14592,0,True
+3,23040,20480,2.8,27.8,223.2,0,0,0,324.1,0,14592,0,True
+4,23040,20480,2.8,26.3,1027.1,0,0,0,301.1,0,14592,0,False
+5,23040,20480,2.8,26.6,796.1,0,0,0,308.1,0,14592,0,False

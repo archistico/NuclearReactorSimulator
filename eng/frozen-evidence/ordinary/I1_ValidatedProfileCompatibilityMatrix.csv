@@ -1,0 +1,13 @@
+initial_condition_id,version,classification,expected_hydraulic_mode,observed_hydraulic_mode,retirement_action,fixed_step_ms
+cold-shutdown-pre-start,1,SUPPORTED,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+pre-criticality-source-range,1,SUPPORTED,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+low-power-steam-raising,1,SUPPORTED,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+pre-synchronization-grid-loading,1,COMPATIBILITY-RETAINED,ExplicitCommittedState,ExplicitCommittedState,RETAIN-EXACT-VERSION,10.000
+pre-synchronization-grid-loading,2,SUPPORTED-CURRENT,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+stable-low-load-parallel-operation,1,SUPPORTED,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+integrated-operations-desktop-stable,1,COMPATIBILITY-RETAINED,ExplicitCommittedState,ExplicitCommittedState,RETAIN-EXACT-VERSION,10.000
+integrated-operations-desktop-stable,2,AUTHORITATIVE-DEFAULT,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+integrated-operations-desktop-stable,3,QUALIFIED-OPT-IN,FourNodeBranchContinuityCorrectedCommitOptIn,FourNodeBranchContinuityCorrectedCommitOptIn,RETAIN,10.000
+secondary-transient-ready,1,SUPPORTED,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+post-shutdown-xenon-restart-window,1,SUPPORTED,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000
+poisoned-low-power-operation,1,SUPPORTED,ExplicitCommittedState,ExplicitCommittedState,RETAIN,10.000

@@ -1,0 +1,13 @@
+status=PASS-C4-PRODUCTION-EQUIVALENCE
+state-comparisons=1679
+hydraulic-comparisons=288
+total-comparisons=1967
+state-bit-mismatches=0
+hydraulic-bit-mismatches=0
+repeat-mismatches=0
+resolve-mismatches=0
+resolution-path-mismatches=0
+model-integration-mismatches=0
+resolve-allocation-bytes=0
+payload-runtime-io-count=0
+payload-decode-count=0

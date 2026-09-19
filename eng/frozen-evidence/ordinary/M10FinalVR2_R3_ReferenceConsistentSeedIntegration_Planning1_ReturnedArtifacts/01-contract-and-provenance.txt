@@ -1,0 +1,8 @@
+status=PASS-AS-AUTHORED
+planning-id=R3-REFERENCE-CONSISTENT-SEED-INTEGRATION-PLANNING1
+predecessor=PASS-CANDIDATE-CONSTRUCTION-EVIDENCE-COMPLETE
+returned-candidate-artifacts=5
+candidate-nodes=12
+phase-matches=12
+production-src-changed=False
+tests-changed=False

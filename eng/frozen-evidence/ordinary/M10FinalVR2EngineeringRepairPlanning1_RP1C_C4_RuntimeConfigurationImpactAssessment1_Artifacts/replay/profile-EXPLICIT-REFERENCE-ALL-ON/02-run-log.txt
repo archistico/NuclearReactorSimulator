@@ -1,0 +1,59 @@
+===== NuclearReactorSimulator.Simulation.Tests.Runtime.SimulationReplayTests / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-EQUALS-EXECUTED; reported-total=5; executed=5; not-run=0
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64) superato (465ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\replay-EXPLICIT-REFERENCE-ALL-ON-1\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 5
+  non riuscito: 0
+  operazione completata: 5
+  ignorato: 0
+  durata: 625ms
+
+===== NuclearReactorSimulator.Simulation.Tests.Runtime.SimulationLongRunDeterminismTests / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-EQUALS-EXECUTED; reported-total=2; executed=2; not-run=0
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64) superato (490ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\replay-EXPLICIT-REFERENCE-ALL-ON-2\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 2
+  non riuscito: 0
+  operazione completata: 2
+  ignorato: 0
+  durata: 665ms
+
+===== NuclearReactorSimulator.Application.Tests.Scenarios.Challenges.Replay.M10965ChallengeReplayCheckpointClosureTests / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-EQUALS-EXECUTED; reported-total=5; executed=5; not-run=0
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (1s 139ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\replay-EXPLICIT-REFERENCE-ALL-ON-3\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 5
+  non riuscito: 0
+  operazione completata: 5
+  ignorato: 0
+  durata: 1s 298ms
+
+===== NuclearReactorSimulator.Application.Tests.ControlRoom.Automation.M10984ReplayCheckpointSameSeedIntegrityTests / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-EQUALS-EXECUTED; reported-total=5; executed=5; not-run=0
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (9s 108ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\replay-EXPLICIT-REFERENCE-ALL-ON-4\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 5
+  non riuscito: 0
+  operazione completata: 5
+  ignorato: 0
+  durata: 9s 273ms

@@ -1,3 +1,64 @@
+## M10 Final VR2 R3 Seed Integration Fast-Gate Dynamic Equilibrium Diagnostic 1 — Hotfix 2
+
+- Fixed the historical-tests tree exclusion bug: `Tree 'tests'` hashes paths relative to the `tests` directory, while the validator passed the repository-relative `tests/...` path, so the diagnostic test was never excluded.
+- The validator now requires the diagnostic path to remain under `tests/`, strips that prefix, and passes the correctly relative path into the tree hash.
+- The already-frozen historical baseline remains unchanged at 394 files / `DF6EADA09D9BF2EF837C3D0AB052AB5930B2F34819BFC95D0D9373737C2488AA`.
+- Production source, all tests, the diagnostic test itself, thresholds, R3/R4 authority and diagnostic semantics are unchanged.
+
+## M10 Final VR2 R3 Seed Integration Fast-Gate Dynamic Equilibrium Diagnostic 1 — Hotfix 1
+
+- Fixed false `src drift` in the static diagnostic audit by replacing culture-sensitive `Sort-Object -CaseSensitive` path ordering with explicit `[StringComparer]::Ordinal`.
+- Corrected the historical-tests baseline: the pre-diagnostic Hotfix 4 tree contains 394 test files with SHA-256 `DF6EADA09D9BF2EF837C3D0AB052AB5930B2F34819BFC95D0D9373737C2488AA`; the previous contract incorrectly counted the newly added diagnostic test itself.
+- `src` remains the same 961-file Hotfix 4 tree with SHA-256 `3BCC1ABA5FA29A67ECD907E575351A82364A26E7D29B8E789722C8104ADBAE28`.
+- Production source, historical tests, diagnostic test, failed-fast evidence, thresholds, R3 status and R4 authority are unchanged.
+
+## M10 Final VR2 R3 — Seed Integration Fast-Gate Dynamic Equilibrium Diagnostic 1
+
+- Freezes the returned Implementation 1 partial fast-gate evidence: raw seed 12/12 healthy, 86/100 key-envelope violations, first primary-flow violation at step 15 and governor violation at step 17.
+- Adds a test-only canonical exact-v9 mode-1 vs reference-consistent mode-2 100-step diagnostic covering post-seed nodes, primary flow/head evolution, speed-controller internals and turbine flow/power.
+- No production source, C4, frozen seed vector, acceptance threshold, canonical exact-v9 identity or downstream authority is changed.
+
+## M10 Final VR2 R3 Reference-Consistent Seed Integration Implementation 1 — Hotfix 4
+
+- Fixed the Release compile failure in `DesktopSustainedGenerationInitialConditionFactory.cs` by adding the missing `using NuclearReactorSimulator.Domain.Physics.Fluids;` required for the 12 `FluidPhase` references in the new opt-in conserved-inventory candidate factory.
+- This is an authorized one-line production compile fix inside the already-approved third production file.
+- The canonical exact-v9 method segment remains byte-for-byte unchanged under the same hash calculation used by the Implementation 1 validator.
+- All 12 returned Candidate Construction mass/internal-energy literals remain character-for-character unchanged.
+- `OperationalFluidNodeSeed`, `ColdShutdownInitialConditionFactory`, the focused test, C4 resolver/payload, thresholds and downstream authority are unchanged.
+
+## M10 Final VR2 R3 Reference-Consistent Seed Integration Implementation 1 — Hotfix 3
+
+- Fixed the Hotfix 2 validator ordering bug where `$ReturnedRoot` was referenced without being defined.
+- Added a distinct `CandidateReturnedRoot` for the five frozen Raw-Seed Candidate Construction 1 artifacts; the existing `$Returned` variable remains reserved for the four Seed Integration Planning 1 artifacts.
+- Added the Candidate Construction returned-evidence root and all five raw SHA-256 hashes to the Implementation 1 contract.
+- The validator now verifies the complete five-file Candidate Construction evidence set before using the authoritative `01-candidate-conserved-inventory-vector.csv` for exact C# literal comparison.
+- Production source, tests, the 12-node conserved-inventory vector, canonical exact-v9 body, C4 resolver/payload, fast-gate criteria and downstream authority are unchanged.
+
+## M10 Final VR2 R3 Reference-Consistent Seed Integration Implementation 1 — Hotfix 2
+
+- Replaced the Hotfix 1 JSON/Double frozen-vector comparison with direct validation against the SHA-frozen returned Candidate Construction CSV.
+- Windows PowerShell 5.1 can materialize long JSON decimal numbers as an adjacent binary64 value; for `hotwell`, the authoritative returned/source literal is `1960455817.8974555`, while JSON materialization reported `1960455817.8974557`.
+- The validator now imports `01-candidate-conserved-inventory-vector.csv` from the frozen returned-evidence directory and compares the 12 C# mass/energy decimal tokens character-for-character with `mass_kg` and `internal_energy_j`.
+- The returned CSV is already protected by its frozen SHA-256, so this preserves exact provenance without any numeric reserialization.
+- Production source, tests, the 12-node vector, canonical exact-v9 body, C4, fast-gate criteria and downstream authority are unchanged.
+
+## M10 Final VR2 R3 Reference-Consistent Seed Integration Implementation 1 — Hotfix 1
+
+- Fixed a false RED in the static frozen-vector audit.
+- The source literal for `control-out` was already correct (`2050.381218833311d`), but PowerShell `ConvertFrom-Json` materialized the contract value as `Double` and `ToString("R")` could choose a different equivalent decimal spelling. The old validator therefore compared formatting rather than value.
+- The validator now extracts each of the exactly 12 `OperationalFluidNodeSeed.ConservedInventory` source literals, parses mass/internal-energy invariantly, and requires exact IEEE-754 `DoubleToInt64Bits` equality with the frozen contract values.
+- Node cardinality and uniqueness are also checked explicitly.
+- Production source, tests, frozen vector, canonical exact-v9 body, fast-gate criteria, C4 payload/resolver and downstream authority are unchanged.
+
+## M10 Final VR2 R3 — Reference-Consistent Seed Integration Implementation 1
+
+- Returned Seed Integration Planning 1 is frozen/adjudicated PASS-AS-AUTHORED.
+- Adds generic `OperationalFluidNodeSeed.ConservedInventory`, active-closure resolution including the drum node, and a separate internal mode-2 exact-v9-equivalent candidate factory carrying the frozen 12-node mass/energy vector.
+- Canonical exact-v9 method segment is hash-frozen and unchanged.
+- Adds a fast implementation test: 12/12 raw candidate phase match, candidate construction with 20 ms seed preconditioning, then 100 Running steps at 10 ms with the unchanged exact-v9 envelope and zero rollbacks.
+- Runner forces a full no-incremental solution build before the ordinary suite.
+- R3 remains RED until Requalification 3.
+
 ## M10 Final VR2 R3 — Reference-Consistent Seed Integration Planning 1
 
 - Returned Raw-Seed Candidate Construction 1 is frozen/adjudicated PASS with 12/12 resolved nodes, 12/12 phase matches, max pressure residual ~1.22 Pa, max temperature residual ~0.000401 K, and max hydraulic-head residual ~0.112 Pa.

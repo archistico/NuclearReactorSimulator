@@ -1,0 +1,10 @@
+status=PASS-R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-IMPLEMENTATION1
+mode0-fusion=PRESERVED
+mode1-fusion=PRESERVED
+mode2-fusion=INELIGIBLE
+mode2-production-path=NONFUSED-RESOLVE-PLUS-DIAGNOSTIC
+returned-failure-state-regression=PASS
+ordinary-release-suite=PASS
+r3-passed=False
+r4-planning-authorized=False
+next-action=RETURN-IMPLEMENTATION-ARTIFACTS-FOR-ADJUDICATION-BEFORE-R3-REQUALIFICATION2

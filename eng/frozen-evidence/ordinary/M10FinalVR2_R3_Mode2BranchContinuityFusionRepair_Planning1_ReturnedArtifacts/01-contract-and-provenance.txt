@@ -1,0 +1,8 @@
+status=PASS-AS-AUTHORED
+planning-id=R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-PLANNING1
+predecessor-r3=R3-SHADOW-COMPOSITION-BLOCKING
+predecessor-diagnostic=PASS-DIAGNOSTIC-MODE2-FUSION-BYPASS-CONFIRMED
+root-cause=H28.1-E-FUSED-PATH-NOT-MODE2-AWARE
+returned-diagnostic-artifacts=4
+production-src-changed=False
+tests-changed=False

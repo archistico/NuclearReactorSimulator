@@ -1,0 +1,14 @@
+=== 01-current-v2-jacobian-probe-coordinate-residual ===
+H.28.1-F starts from validated H.28.1-D, incorporates the measured H.28.1-E exact continuity/component reuse optimizations, and removes mapped thermodynamic fixed-point work only from finite-difference probes because Newton consumes only their coordinate residual. Initial residual and line-search merit remain full fixed-point evaluations.
+warmup-steps=64; attribution-steps=256; triggered=20; committed=20; rollbacks=0; unsafe-commits=0; fallback-commit-violations=0;
+nontrigger-average-engine-us=4490.0453389830527; nontrigger-average-predictor-us=113.10042372881344; nontrigger-average-predictor-alloc-bytes=19366.237288135595;
+trigger-average-engine-us=96029.089999999997; trigger-p95-engine-us=96573.5; trigger-average-corrector-us=74588.089999999982;
+h9-average-total-us=74579.555000000008; h9-average-jacobian-build-us=58854.574999999997; h9-average-line-search-us=7794.7049999999999; h9-average-hydraulic-evaluations=35; h9-average-probe-evaluations=32; h9-max-jacobian-dimension=32;
+probe-hydraulic-components-reused=4660; probe-hydraulic-components-total=5760; probe-hydraulic-component-reuse-fraction=0.80902777777777779; probe-applied-fluid-node-reuse-fraction=0.8828125; probe-mapped-fluid-node-reuse-fraction=1;
+h28.1e-baseline-jacobian-us=119404.49999999997; jacobian-wall-fraction-of-h28.1e=0.49290081194594854; h28.1e-baseline-h9-us=135138.55500000002; h9-wall-fraction-of-h28.1e=0.55187474070593689; h28.1e-baseline-trigger-engine-us=156670.12; trigger-engine-wall-fraction-of-h28.1e=0.61293812757659216;
+h28.1e-baseline-triggered-p95-us=157754; probe-mapped-fluid-node-integrations=0; mapped-probe-fixed-point-elided=True;
+h28-requalification1-explicit-p95-us=7365.1000000000004; unchanged-h28-p95-ratio-limit=12; unchanged-h28-trigger-tail-threshold-us=88381.200000000012; h28.1f-triggered-p95-estimated-ratio=13.112313478432064; tail-ready-for-h28=False;
+h9-average-total-alloc-bytes=308733.20000000001; h9-average-jacobian-build-alloc-bytes=243984;
+determinism-control-steps=128; deterministic-fingerprint=518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38; matches-failed-H28-fingerprint=True; default-current-v2-mode=ExplicitCommittedState;
+h28.1f-hydraulic-probe-cpu-tail-reduction-passes=False; h28-remains-failed=True; H29-default-activation-blocked=True;
+H.28.1-F recommendation: rerun unchanged H.28 only if triggered p95 is at or below the frozen 88.3812 ms threshold with identical deterministic trajectory. Do not raise H.28 ceilings, reduce the 32 probes, retune H.9, or alter P060/F040.

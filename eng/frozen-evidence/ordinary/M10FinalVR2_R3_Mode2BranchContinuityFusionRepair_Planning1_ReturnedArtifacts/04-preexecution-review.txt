@@ -1,0 +1,7 @@
+status=PASS-AS-AUTHORED
+implementation-must-be-two-file-bounded=True
+mode0-mode1-regression-must-pass=True
+mode2-returned-state-equality-must-pass=True
+ordinary-release-suite-must-pass=True
+r3-120s-requalification-still-required-after-implementation=True
+r4-remains-blocked=True

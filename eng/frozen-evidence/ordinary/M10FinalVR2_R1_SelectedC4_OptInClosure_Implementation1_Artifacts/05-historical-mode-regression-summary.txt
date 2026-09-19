@@ -1,0 +1,11 @@
+status=PASS-HISTORICAL-MODE-REGRESSION-FOCUSED
+historical-mode0-comparisons=360
+historical-mode0-default-mismatches=0
+historical-mode1-comparisons=360
+historical-mode1-density-derived-input-observation-mismatches=62
+historical-mode1-density-derived-input-observation-only=True
+historical-mode1-regression-basis=LEGACY-SOURCE-PROJECTION-SHA256+ORDINARY-RELEASE-SUITE
+historical-mode1-baseline-production-model-sha256=93C5212C09D5D7362531398DE1CED105589D93DF9A892A3E6BE6BF401446D55E
+historical-mode1-legacy-source-projection-sha256=93C5212C09D5D7362531398DE1CED105589D93DF9A892A3E6BE6BF401446D55E
+historical-mode1-legacy-source-projection-match=True
+ordinary-release-suite=PENDING-RUNNER

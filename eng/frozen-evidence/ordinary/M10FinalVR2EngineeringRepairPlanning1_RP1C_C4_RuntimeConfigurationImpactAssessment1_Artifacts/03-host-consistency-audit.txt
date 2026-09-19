@@ -1,0 +1,11 @@
+status=PASS-SINGLE-HOST-INTEGRITY
+host-fingerprint-sha256=931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336
+start-end-fingerprint-match=True
+active-power-scheme-stable=True
+all-exact-v9-process-contracts-match-root-host=True
+all-exact-v9-runtime-contexts-match-root-host=True
+all-ordinary-family-contracts-match-root-host=True
+all-replay-family-contracts-match-root-host=True
+all-non-vr2-family-contracts-match-root-host=True
+raw-system-uuid-retained=False
+cross-host-evidence-mixing-detected=False

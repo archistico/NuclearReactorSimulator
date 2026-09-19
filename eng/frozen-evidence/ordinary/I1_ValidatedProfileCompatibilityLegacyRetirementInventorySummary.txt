@@ -1,0 +1,10 @@
+=== 01-current-v2-phase-i-profile-compatibility-legacy-retirement-inventory ===
+I.1 begins Phase I after validated H.30 closure. It inventories exact-version initial-condition compatibility and numerical-mode lifecycle without changing plant physics, numerical mathematics, the H.30 OPT-IN ONLY production decision, save/replay identity or the 10 ms fixed step.
+registered-profile-versions=12; unique-profile-ids=9; compatibility-retained-exact-versions=2; delete-now-profile-versions=0;
+authoritative-default=integrated-operations-desktop-stable@2|ExplicitCommittedState; qualified-opt-in=integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn; explicit-kill=integrated-operations-desktop-stable@2|ExplicitCommittedState;
+compatibility-retained=integrated-operations-desktop-stable@1|pre-synchronization-grid-loading@1; compatibility-policy=retain exact identities for scenario/save/replay loading; no version reinterpretation;
+numerical-mode-lifecycle=ExplicitCommittedState:retain-authoritative|DeterministicHybridSemiImplicit:audit-only-retirement-candidate|FourNodeBranchContinuityShadowIntegrated:audit-only-retirement-candidate|FourNodeBranchContinuityCorrectedCommitOptIn:retain-qualified-opt-in;
+audit-only-retirement-rule=do-not-delete H.5/H.21 numerical modes until Phase-I audit consolidation no longer requires executable historical audit seams;
+H30-phase-h-closed=True; H30-phase-i-unblocked=True; phase-h-production-policy-decision=OPT-IN ONLY; production-fixed-step=10.000 ms; runtime-behavior-changed=False;
+profile-compatibility-inventory-passes=True; i1-audit-passes=True; phase-i-compatibility-baseline-established=True;
+I.1 recommendation: retain every exact-version profile identity now; retire only unselected historical numerical audit modes after audit consolidation proves they are no longer required as executable provenance. Proceed next to Phase-I audit consolidation/CI baseline work, not to M10.9.5 yet.

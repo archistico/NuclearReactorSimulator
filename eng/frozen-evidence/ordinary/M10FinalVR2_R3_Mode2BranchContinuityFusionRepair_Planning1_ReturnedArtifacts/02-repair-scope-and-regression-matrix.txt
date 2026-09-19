@@ -1,0 +1,11 @@
+status=PASS-AS-AUTHORED
+selected-repair=MODE2-FUSION-ELIGIBILITY-GUARD
+authorized-production-files=2
+mode0-fused-path=PRESERVE
+mode1-fused-path=PRESERVE
+mode2-fused-path=INELIGIBLE
+mode2-production-path=EXISTING-NONFUSED-RESOLVE-PLUS-DIAGNOSTIC
+evaluate-branch-continuity-change=FORBIDDEN
+resolver-change=FORBIDDEN
+payload-change=FORBIDDEN
+closure-enum-default-change=FORBIDDEN

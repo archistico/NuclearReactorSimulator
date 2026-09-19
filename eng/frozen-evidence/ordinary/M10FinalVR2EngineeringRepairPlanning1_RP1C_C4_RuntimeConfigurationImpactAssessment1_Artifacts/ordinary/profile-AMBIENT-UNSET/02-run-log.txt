@@ -1,0 +1,500 @@
+===== tests\NuclearReactorSimulator.Domain.Tests\NuclearReactorSimulator.Domain.Tests.csproj / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-EQUALS-EXECUTED; reported-total=279; executed=279; not-run=0
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Domain.Tests\bin\Release\net10.0\NuclearReactorSimulator.Domain.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Domain.Tests\bin\Release\net10.0\NuclearReactorSimulator.Domain.Tests.dll (net10.0|x64) superato (690ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\ordinary-AMBIENT-UNSET-1\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 279
+  non riuscito: 0
+  operazione completata: 279
+  ignorato: 0
+  durata: 879ms
+
+===== tests\NuclearReactorSimulator.Simulation.Tests\NuclearReactorSimulator.Simulation.Tests.csproj / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-INCLUDES-NOT-RUN; reported-total=507; executed=487; not-run=20
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bC4Tests.Rp1bC4_EstablishesBitEquivalentSemanticsAcrossFrozenCorpus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalPhysicalReferenceVr2MaterialityReturnedEvidenceAdjudicationTests.ReturnedAttempt5_Evidence_IsAdjudicatedAgainstAuthoritativeExactV9FixedPointResidualContract
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bRefinement1Tests.Rp1bRefinement1_ProducesC2D2ShadowEvidenceAgainstFrozenRp1aCorpus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalPhysicalReferenceVr2WaterSteamBenchmarkTests.SimplifiedWaterSteamModel_IsMappedAgainstIndependentIapwsIf97Reference
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1cC4RuntimeConfigurationImpactAssessment1Tests.Rp1cC4RuntimeConfigurationImpactAssessment1_MeasuresOneFreshProfileProcess
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bC4Tests.Rp1bC4_MeasuresOneIndependentR1LaneRun
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bRefinement2Tests.Rp1bRefinement2_ProducesC3D3ShadowEvidenceAgainstFrozenRp1aCorpus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1cC4ExactV9TailAttribution1Tests.Rp1cC4ExactV9TailAttribution1_MeasuresOneFreshRuntimeModeProcess
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalPhysicalReferenceVr2MaterialityDiagnosticTests.ExactV9_CompressedLiquidPressureDiscrepancy_IsMappedToCanonicalHydraulicMateriality
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.MainSteam.CompressibleSteamFlowCapacityAuditTests.CurrentV2RepresentativeSteamState_ProducesMonotonicSubcriticalToChokedCapacityMap
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Plant.FourNodeIntegratedRollbackFailClosedStressAuditTests.H20TypedDenialsAndRollbacks_ForceAtomicSameStepExplicitFallbackWithoutPartialCommit
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1cC4RuntimeFactorIsolation1Tests.Rp1cC4RuntimeFactorIsolation1_MeasuresOneFreshSingleFactorModeProcess
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1cC4FullDomainPerformanceConfirmation1Tests.Rp1cC4FullDomainPerformanceConfirmation1_MeasuresOneFreshProcess
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1aTests.Rp1a_FreezesReferenceCorpusSeamMapAndPreCandidatePerformanceCeilings
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Reactor.Neutronics.M10FinalPhysicalReferenceVr1PointKineticsBenchmarkTests.GenericPointKineticsSolver_IsAssessedAgainstIndependentHebertSixGroupReference
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1cC4DynamicPgoComparator1Tests.Rp1cC4DynamicPgoComparator1_MeasuresOneFreshPgoModeProcess
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bRefinement4Tests.Rp1bRefinement4_LocalizesAndTestsReproducibilityOfImmutableC3R1SeamWorstCase
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bRefinement3Tests.Rp1bRefinement3_AttributesAndQualifiesImmutableC3PerformanceTail
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bTests.Rp1b_ProducesTestOnlyShadowCandidateMatrixAgainstFrozenRp1aCorpus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Simulation.Tests.Physics.Fluids.M10FinalVr2EngineeringRepairPlanning1Rp1bRefinement5Tests.Rp1bRefinement5_MeasuresImmutableC3R1SeamAcrossOneIndependentProcessRun
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll (net10.0|x64) superato (1s 544ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\ordinary-AMBIENT-UNSET-2\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 507
+  non riuscito: 0
+  operazione completata: 487
+  ignorato: 20
+  durata: 1s 715ms
+
+===== tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-INCLUDES-NOT-RUN; reported-total=553; executed=432; not-run=121
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ProfileCompatibilityLegacyRetirementInventoryAuditTests.RegisteredProfiles_ResolveExactRuntimeModesAndProduceRetirementInventory
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodePhaseHClosureDecisionAuditTests.ValidatedEvidence_DerivesOptInOnlyAndClosesPhaseHWithoutRuntimeRetuning
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeHydraulicProbeCpuHotPathOptimizationAuditTests.HydraulicProbeCpuHotPathOptimization_ReducesTriggeredJacobianCostWithoutChangingNumericalAuthorityOrTrajectory
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.SemiImplicitHydraulicPrototypeAuditTests.CurrentV2FrozenForcingComparison_RecordsConvergenceChatterConservationDeterminismAndCost
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ThermodynamicInverseBranchSelectionAuditTests.PersistentH9Failures_ExplainH11PhaseSwitchesThroughInverseBranchSelection
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnosticTests.LR_H1_ExactV4_ThreeHundredSecondEquilibriumResidualCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnosticTests.LR_M1_MissionProjectionPrefixScalingCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseISynchronizationCorrectedExactVersionActivationAuditTests.ValidatedQualification_ActivatesExactV3RegistryAndLongJourneyContract
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodePerformanceAttributionAuditTests.FailedH28Cost_IsAttributedWithoutChangingNumericalAuthorityOrTrajectory
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.LongHorizonCrossProfileBranchContinuityQualificationAuditTests.ThreeNodeBoundedHysteresis_QualifiesLongHorizonAndCrossProfileWithoutDiscoveringAnotherUntargetedLateShadowNode
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicInverseDomainRepairCandidateAuditTests.CorrelationConsistentCandidate_CompletesFrozenLoadRaiseLowerJourneyUnderExplicitAndCorrectedHydraulics
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicInverseDomainRepairCandidateAuditTests.CorrelationConsistentCandidate_ClosesKnownVaporAndLowTemperatureInverseDomainDefects
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseICorrectedHealthyReferenceRequalificationAuditTests.ExactV3Corrected_ThreeHundredSeconds_RemainsHealthyContinuousConservativeAndDeterministic
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.JacobianHydraulicCorrectorAuditTests.CurrentV2TriggeredIntervals_EvaluateJacobianInformedCorrectorWithoutProductionActivation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeHistoricalExplicitPredictorReuseAuditTests.HistoricalExplicitPredictorReuse_ReducesNonTriggerPredictorCostWithoutChangingNumericalAuthorityOrTrajectory
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongFailureDiagnostic6Tests.ExactV9_FirstStageLongSettlingSteamPathAndSynchronousRecoveryCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.GameplayJourneyLongRunningTests.SynchronizeCloseLoadRaiseJourney_ProducesAndSustainsElectricalExport
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.GameplayJourneyLongRunningTests.DesktopIntegratedSession_SustainsParallelElectricalExportForSixtySimulatedSeconds
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongFailureDiagnostic3Tests.ExactV9_TurbineGoverningValvePreloadAndHistoricalVersionDiscriminationCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIKnownLimitationsLegacyRetirementReviewAuditTests.CurrentLimitationsAndLegacyModes_ProduceConservativeRetirementDecision
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeOrchestratorShadowIntegrationAuditTests.OptInShadowIntegratedRuntime_PreservesExplicitTrajectoryAndReportsEveryTriggerWithoutCommit
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ReferencePlantScaleAuditTests.CurrentProduction_ReferencePlantScaleEvidence_IsExplicitAndReproducible
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic5Tests.LR_H1_ExactV5_SixHundredSecondWholeCycleStateOwnerCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeLongHorizonCrossProfileQualificationAuditTests.FourNodeBoundedHysteresis_QualifiesLongHorizonAndCrossProfileWithoutDiscoveringAnotherUntargetedLateShadowNode
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ResidualBacktrackingCorrectorAuditTests.CurrentV2TriggeredIntervals_EvaluateResidualBacktrackingRevisionWithoutProductionActivation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIWaterSteamLowTemperatureLiquidSeamAuditTests.LowTemperatureLiquidSeam_MapsDensityMaximumBlindSpotWithoutRuntimeChanges
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.HybridSemiImplicitHydraulicActivationGateAuditTests.CurrentV2HybridSweep_RecordsQualityBoundedWorkDeterminismAndActivationRecommendation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongFailureDiagnostic2Tests.ExactV9_LoadRaiseAuthorityAndM76CoordinationDiscriminationCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeCommittedLongHorizonCrossProfileQualificationAuditTests.OptInCorrectedCommitRuntime_QualifiesCommittedLongHorizonAndCrossProfileOperation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeOffDesignQualificationEnvelopeAuditTests.OptInCommittedRuntime_MapsStagedOffDesignCasesWithoutUnsafeOwnershipOrHiddenRepair
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeJacobianProbeCoordinateResidualAuditTests.CoordinateOnlyJacobianProbeResidual_ReducesTriggeredTailWithoutChangingNumericalContract
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongClosurePlan1P1AsymptoticFirstStageQualificationTests.ExactV9_AsymptoticFirstStageQualification_ClassifiesPlannedDecisionBranch
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic2Tests.LR_H1_ExactV4_PrimaryBranchContinuityAndControllerCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic2Tests.LR_M1_IncrementalMissionProjectionScalingAndSemanticEquivalence
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.MainSteamReliefImplementationTests.CurrentV2HeaderPressureSweep_RecordsLiftCapacityAndConservativeBoundaryExchange
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineAdmissionAuthorityAuditTests.CurrentV2AdmissionAuthorityMap_IsDeterministicAndDoesNotRequirePhysicsMutation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineAdmissionAuthorityAuditTests.CurrentV2TenRpmGovernorPerturbation_CollectsOperationalAuthorityEvidenceWithoutRetuning
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineAdmissionAuthorityAuditTests.CurrentV2AdmissionResistanceBudget_ProducesDeterministicAuthorityMap
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic11Tests.LR_H1_ExactV9_SixHundredSecondPostMoistureEquilibriumRequalification
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OpenControlVolumeEnergyTransportAuditTests.CurrentV2RepresentativeOpenControlVolumes_RecordInternalEnergyVersusEnthalpyGap
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineInletContinuityResidualFloorSplitAuditTests.FrozenH17Failures_CompareFourNodeContinuityAndDiagnoseResidualFloorSplit
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeUntargetedDisagreementScanFastPathAuditTests.UntargetedDisagreementFastPath_ClosesTriggeredTailWithoutChangingNumericalContract
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionTrajectoryAuditTests.NormalGenerationAndLoadStep_RecordsBreakerClosedOperatingEnvelope
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionTrajectoryAuditTests.DisconnectedCoastdown_RecordsUnderfrequencyWithoutGeneratorTripEligibility
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionTrajectoryAuditTests.BreakerClosedPhaseOffsetSweep_RecordsReducedOrderCouplingEnvelope
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionTrajectoryAuditTests.TurbineTripWithBreakerClosed_RecordsReversePowerMotoringTrajectory
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalExactV9ProductionActivationCandidateTests.QualifiedExactV9_PolicyPathPreservesHealthConservationMoistureOwnershipAndDeterministicIdentity
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.AuthoritativeProductionV3_ThreeHundredSeconds_EstablishesReferenceConservationInventoryAndToleranceBudgets
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.HybridProductionIntegrationAuditTests.CurrentV2ExplicitProduction_ShadowQualifiesSelectedHybridWithoutCommittingCorrections
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PassiveHydraulicEnthalpyMigrationAuditTests.CurrentV2PassiveHydraulics_RecordEnthalpyTransportAndPumpWorkOwnership
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalExactV9ProductionActivationDecisionTests.AuthoritativeExactV9_DefaultAndMissionPathsRemainHealthyConservativeDeterministicAndFailClosed
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ReferencePlantScaleMigrationTests.CurrentProduction_LoadCommandsClampAtTenMegawattsAndSignedHmiRangeTracksDefinition
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ReferencePlantScaleMigrationTests.LegacyColdShutdownProfileRetainsOneGigawattGenerationOnlyDefaults
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ReferencePlantScaleMigrationTests.CurrentProductionProfilesOwnTenMegawattBidirectionalContract
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic8Tests.LR_H1_ExactV7_SixHundredSecondGridDroopIntegralReferenceRequalification
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairPerformanceCostOperationalSoakRequalificationAuditTests.RepairedClosure_PreservesH28RelativeCostBoundsAndFailClosedOperationalSoak
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Milestones.M10972Hotfix2TenMillisecondHotPathHardeningTests.MeasuredHotPathAudit_EliminatesLookupAndObservationFingerprintAllocationsWithoutChangingSemantics
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.NumericalStiffnessDecisionAuditTests.CurrentV2FixedStepRefinement_RecordsConvergenceHydraulicStiffnessAndBoundedCostEvidence
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongClosurePlan1P1BSlowStateOwnerQualificationTests.ExactV9_SlowStateClosureAndPhenomenonOwnerQualification_ReturnsEvidenceToP2R2
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeProductionActivationCandidateAuditTests.VersionedCorrectedCandidate_QualifiesSelectionKillTelemetryDeterminismAndReplayWithoutChangingDefault
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ExtendedTrigger723RootCauseAuditTests.ExtendedTrigger723_IsDiagnosedAcrossAllHydraulicPathsAndThermodynamicNodes
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongFailureDiagnostic5Tests.ExactV9_ReadinessGatedStagedLoadAndAttainableCapacityCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIExplicitVsCorrectedBranchDiscontinuityComparisonAuditTests.ExactV2ExplicitVsV3Corrected_ClassifiesTurbineInletFlowDirectionDiscontinuitiesAtTenMillisecondResolution
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic9Tests.LR_H1_ExactV7_TurbineAdmissionAndClosedCycleMassOwnerCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairReplayCheckpointProtectionRequalificationAuditTests.OptInCommittedTrajectory_ReplaysCheckpointAndPreservesReversePowerProtectionFailClosed
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeCommittedProtectionOperationalTransientMatrixAuditTests.OptInCommittedRuntime_PreservesProtectionActionsSupervisionAndFailClosedOwnershipAcrossTargetedMatrix
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ThermodynamicBranchContinuityBroaderQualificationAuditTests.BoundedHysteresis_QualifiesAcrossExtendedShadowWindowAndExplicitReleaseChallenges
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseISynchronizationCorrectedExactVersionQualificationAuditTests.ExactVersion3_CorrectedCommit_QualifiesBoundedStabilizationAndStrictSustainedLowLoadJourney
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic4Tests.LR_H1_ExactV5_SixHundredSecondFullPlantMassEnergyBalanceCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeCorrectedCommitIntegrationAuditTests.OptInCorrectedCommitRuntime_CommitsOnlyH20QualifiedCandidatesAndFailsClosedOtherwise
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeActivationRollbackContractAuditTests.H19QualifiedEvidence_ProducesDeterministicFailClosedShadowAuthorityAndTypedRollbackTelemetry
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic6Tests.LR_H1_ExactV6_SixHundredSecondWholeCycleEquilibriumCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIRepairedExactVersion4ProductionActivationAuditTests.RepairedExactV4_IsAuthoritativeProductionWithV2FailClosedRollbackAndHistoricalV3Retention
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairLongHorizonCrossProfileRequalificationAuditTests.RepairedClosure_CorrectedCommitRuntime_RequalifiesLongHorizonAndCrossProfileOperation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ThermodynamicBranchContinuityAuditTests.FrozenTriggerEvents_CompareProductionPreviousPhaseContinuityAndBoundedHysteresis
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseISynchronizationGovernorStabilityDiagnosticTests.FrozenV2AndBoundedGovernorCandidates_ClassifySixtySecondLowLoadStability
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeH9JacobianHotPathOptimizationAuditTests.OptimizedH9ProbePath_ReducesJacobianAllocationWithoutChangingNumericalAuthorityOrTrajectory
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineExpansionEnthalpyMigrationAuditTests.CurrentV2TurbineExpansion_RecordsEnthalpyAndSingleOwnedShaftWork
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseISynchronizationLoadedContractDiagnosticTests.FrozenV2AndBoundedLoadedContracts_ClassifySixtySecondLowLoadStability
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongClosurePlan1P1AAsymptoticClosureExtensionTests.ExactV9_AsymptoticClosureExtension_ReproducesP1AndReturnsToP2R
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeCommittedReplayProtectionQualificationAuditTests.OptInCommittedTrajectory_ReplaysCheckpointAndPreservesReversePowerProtectionFailClosed
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic3Tests.LR_H1_ExactV5_ReferenceOperatingPointSixHundredSecondCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongFailureDiagnostic1Tests.RL_M1_R1_ExactV9_LoadRaiseProtectionPickupAndLatchOwnerCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalReplacementLongFailureDiagnostic4Tests.ExactV9_LoadRampTorqueCouplingAndEnergySupportCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.HybridCorrectorRescueEnvelopeAuditTests.CurrentV2TriggeredIntervals_CharacterizeBoundedRescueEnvelopeWithoutProductionActivation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionImplementationTests.BreakerOpenTurbineCoastdown_DoesNotBecomeGeneratorTripEligible
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionImplementationTests.NormalFiveZeroFiveLoadTrajectory_DoesNotTripGeneratorProtection
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.BreakerOpenLoadRejection_ProducesBoundedDiagnosticEvidenceWithoutHiddenRepair
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.ExtendedLoadStepRecording_CheckpointsAndFullReplayRemainEquivalent
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.DesktopFiveMWePoint_SustainsThreeHundredSecondsWithConservationAndPerformanceEvidence
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.CurrentProductionSecondaryPumpCheckValves_BlockReverseFlowAtEverySampledLoadRejectionStep
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.TurbineTripLoadRejection_ProducesBoundedDiagnosticEvidenceWithoutHiddenRepair
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.CondenserCoolingDegradation_RemainsConservativeAndRaisesNoReverseSecondaryPumpFlow
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.GeneratorTripLoadRejection_ProducesBoundedDiagnosticEvidenceWithoutHiddenRepair
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.OperationalEnvelopeExtendedAuditTests.GeneratorLoadRaiseThenLower_ReplaysToIdenticalCanonicalAndPresentationEvidence
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.HydraulicMapSwitchingNonSmoothnessAuditTests.PersistentH9Failures_AreDiagnosedForSwitchingAndScaleSensitiveNonSmoothness
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.RemainingNonTurbineEnthalpyMigrationAuditTests.CurrentV2RemainingNonTurbineOwners_RecordEnthalpyAndSingleCountedWork
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ElectricalProtectionImplementationTests.TurbineTripReversePower_PicksUpGeneratorTripAndOpensBreaker
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIAuditConsolidationCiBaselineAuditTests.PhaseIAuditConsolidationCiBaseline_WritesFrozenTieredEngineeringContract
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIWaterSteamCorrelationTopologyAuditTests.WaterSteamPhaseBoundaryTopology_MapsGapOverlapAndLiquidContinuityWithoutRuntimeChanges
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ExtendedThreeNodeBranchContinuityQualificationAuditTests.ThreeNodeBoundedHysteresis_RequalifiesTheExtendedShadowWindowWithoutRetuning
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineGovernorActuatorTrackingAuditTests.BreakerOpenTenRpmReferenceStep_ExercisesEffectiveSetpointAndCollectsTrackingEvidence
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.AndersonHydraulicCorrectorAuditTests.CurrentV2TriggeredIntervals_EvaluateSafeguardedAndersonWithoutProductionActivation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairRequalificationStage1AuditTests.RepairedClosure_H29ControlPattern_RequalifiesFailClosedSafetyAndClassifiesContinuityActivity
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic10Tests.LR_H1_ExactV8_SixHundredSecondMoistureDrainRequalification
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIOperationalEnvelopeExhaustCorrelationGapDiagnosticTests.ExactV2AndV3_LoadRaiseLower_ClassifyExhaustEnvelopeFailureWithoutRuntimeChanges
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.ThermodynamicSwitchingLocalizationAuditTests.PersistentH9Failures_LocalizeTheH10ThermodynamicBoundaries
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongValidationTests.LR_H1_HealthyExactV4_LongSoakPreservesConservationBudgetsAndNumericalSafety
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongValidationTests.LR_P1_ProtectionAndTakeover_LongObservationPreservesProtectionPrecedence
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongValidationTests.LR_R1_ReplayCheckpoint_LongSentinelRemainsExactlyEquivalent
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongValidationTests.LR_M1_ProductionMissionV2_LongContinuationPreservesDemandEvidenceAndPlantHealth
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongValidationTests.LR_D1_DegradedMeasurement_LongRecoveryRemainsFailClosedAndDeterministic
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodeH30ProductionPolicyRereviewAuditTests.ValidatedEvidence_DerivesActivateWithoutNumericalRetuningAndWritesClosureRereview
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineGovernorActuatorTrackingAuditTests.BreakerClosedFiveMegawattLoadStep_UsesDroopDerivedEffectiveSetpointAndCollectsScaleEvidence
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIRepairedExactVersion4ActivationReadinessAuditTests.ExactVersion4_IsDistinctReplayableAndCompletesFrozenGapJourneyWithoutSwitchingProductionDefault
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalLongFailureDiagnostic7Tests.LR_H1_ExactV6_GovernorDroopSteamPathOwnerCensus
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.FourNodePostH28CommittedLongHorizonRequalificationAuditTests.OptInCorrectedCommitRuntime_RequalifiesPostOptimizationLongHorizonAndCrossProfileOperation
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseICumulativeM10941ClosureAuditTests.ValidatedCurrentAndLongEvidence_ClosesM10941AndPhaseIOnRepairedExactV4
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIRepairedExactVersion4ReferenceRequalificationAuditTests.AuthoritativeRepairedV4_ThreeHundredSeconds_RequalifiesFrozenI3BudgetsAndRemainsHealthy
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.PhaseIThermodynamicRepairOffDesignRequalificationAuditTests.OptInCommittedRuntime_MapsStagedOffDesignCasesWithoutUnsafeOwnershipOrHiddenRepair
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.TurbineBypassImplementationTests.CurrentV2PressureAndBackpressureSweeps_RecordCapacityAndConservativeInternalTransfer
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (15s 340ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\ordinary-AMBIENT-UNSET-3\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 553
+  non riuscito: 0
+  operazione completata: 432
+  ignorato: 121
+  durata: 15s 566ms
+
+===== tests\NuclearReactorSimulator.Infrastructure.Tests\NuclearReactorSimulator.Infrastructure.Tests.csproj / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-EQUALS-EXECUTED; reported-total=33; executed=33; not-run=0
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Infrastructure.Tests\bin\Release\net10.0\NuclearReactorSimulator.Infrastructure.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.Infrastructure.Tests\bin\Release\net10.0\NuclearReactorSimulator.Infrastructure.Tests.dll (net10.0|x64) superato (981ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\ordinary-AMBIENT-UNSET-4\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 33
+  non riuscito: 0
+  operazione completata: 33
+  ignorato: 0
+  durata: 1s 175ms
+
+===== tests\NuclearReactorSimulator.App.Tests\NuclearReactorSimulator.App.Tests.csproj / exit 0 =====
+STRUCTURED-XUNIT schema=3; accounting-mode=TOTAL-INCLUDES-NOT-RUN; reported-total=141; executed=140; not-run=1
+Esecuzione di test da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.App.Tests\bin\Release\net10.0\NuclearReactorSimulator.App.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.App.Tests.Views.OperatorComputerM10955CommandConsequenceClosureAuditTests.ValidatedFocusedEvidence_ClosesAutomatedM1095GatePendingManualHmiAcceptance
+  Not run (due to explicit test filtering)
+  da C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.App.Tests\bin\Release\net10.0\NuclearReactorSimulator.App.Tests.dll (net10.0|x64)
+C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\tests\NuclearReactorSimulator.App.Tests\bin\Release\net10.0\NuclearReactorSimulator.App.Tests.dll (net10.0|x64) superato (3s 610ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - C:\Users\rollandine\Downloads\GIT\NuclearReactorSimulator\artifacts\m10-final-physical-reference-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment1\_work\ordinary-AMBIENT-UNSET-5\result.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 141
+  non riuscito: 0
+  operazione completata: 140
+  ignorato: 1
+  durata: 3s 808ms

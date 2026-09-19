@@ -1,0 +1,14 @@
+metric,value
+matrix_scenarios,5
+runtime_steps,837
+corrected_commits,178
+h20_rollbacks,0
+safe_fallbacks,0
+fallback_commit_violations,0
+unsafe_commits,0
+max_mass_closure_kg,2.1827872842550278E-11
+max_energy_closure_j,3.7271362089086324E-05
+max_balance_mass_rate_kg_s,9.5923269327613525E-14
+max_balance_power_w,1.3969838619232178E-07
+matrix_fingerprint,ED60939F1E3EE279F018315904EC0BCD88A7D1F446AC199E129BF18EAF82A19E
+h25_audit_passes,True

@@ -1,0 +1,10 @@
+gate=VR1-Point-Kinetics-Independent-Benchmark
+status=VALIDATED
+evidence-source=user-reported-local-artifact-review
+user-confirmation=uploaded artifacts correctly confirm VR1
+result=PASS
+next-authorized-gate=VR2-IAPWS-IF97-Water-Steam-Error-Map
+production-repair-authorized=False
+exact-v9-change-authorized=False
+p3-r1-execution-authorized=False
+second-replacement-long-authorized=False

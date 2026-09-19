@@ -1,0 +1,13 @@
+﻿status=PASS-DIAGNOSTIC-EVIDENCE-COMPLETE
+classification=SEED-INVENTORY-DIVERGENCE
+all-initial-inventories-bitwise-equal=False
+same-inventory-direct-closure-difference-nodes=12
+max-same-inventory-direct-pressure-delta-pa=1458244.4641406983
+max-initial-hydraulic-head-delta-pa=743229.2365098009
+mode1-key-envelope-violation-steps=0
+mode2-key-envelope-violation-steps=100
+production-repair-authorized=False
+threshold-change-authorized=False
+r3-remains-red=True
+r4-planning-authorized=False
+next-step=RETURN-ARTIFACTS-FOR-ADJUDICATION

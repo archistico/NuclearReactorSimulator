@@ -1,0 +1,8 @@
+status=EVIDENCE-WRITTEN
+mode0-fusion-eligible=True
+mode0-optimized-vs-nonfused-state-equal=True
+mode0-optimized-vs-nonfused-decisions-equal=True
+mode1-fusion-eligible=True
+mode1-optimized-vs-nonfused-state-equal=True
+mode1-optimized-vs-nonfused-decisions-equal=True
+mode2-fusion-eligible=False

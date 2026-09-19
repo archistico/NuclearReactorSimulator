@@ -1,0 +1,14 @@
+key,value
+source-artifact-archive,h30-rq1-production-policy-rereview.zip
+summary-file,01-h30-rq1-production-policy-rereview.summary.txt
+summary-sha256,5F615FB8125095721449B3299076FB192701B5CA91255DE1CCAE6070BEFBE2FE
+metrics-file,02-h30-rq1-production-policy-rereview-metrics.csv
+metrics-sha256,96B8ECEC4026665B9DFB223CE1EA9040F66FAC3BEB02E7509C7793D12AF949FA
+decision,ACTIVATE
+authoritative-default,integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn
+rollback-reference,integrated-operations-desktop-stable@2|ExplicitCommittedState
+explicit-v2-continuity-evidence,338/338 generation-drop steps coincide one-for-one with targeted-train reverse flow
+corrected-v3-100s-evidence,0 generation drops|0 targeted reverse-flow steps
+corrected-v3-300s-evidence,30000 steps|0 generation-health violations|0 targeted reverse-flow violations|3757 commits|0 rollback|0 fallback|0 unsafe|deterministic
+performance-class,bounded-but-costly
+fixed-step-ms,10

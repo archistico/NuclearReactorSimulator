@@ -1,0 +1,17 @@
+status=PASS-RUNTIME-FACTOR-ISOLATION-EVIDENCE-INTEGRITY
+gate=RP1C-C4-EXACT-V9-RUNTIME-FACTOR-ISOLATION1
+processes=20
+runtime-modes=4
+single-factor-contrasts=3
+total-measured-calls=460800
+execution-order=COUNTERBALANCED-BLOCKED-BY-RUN
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+diagnostic-tail-floor-is-qualification-threshold=False
+dynamic-pgo-fixed-off=True
+ready-to-run-fixed-on=True
+automatic-causal-promotion=False
+automatic-selection-authorized=False
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False
+production-repair-authorized=False

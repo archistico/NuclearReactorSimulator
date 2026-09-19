@@ -1,0 +1,8 @@
+status=PASS-AS-AUTHORED
+next-authorized-gate=R3-REFERENCE-CONSISTENT-SEED-INTEGRATION-IMPLEMENTATION1
+production-seed-integration-authorized-now=False
+canonical-exact-v9-change-authorized=False
+new-exact-version-identity-authorized=False
+r3-passed=False
+r4-planning-authorized=False
+post-implementation-successor=R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION3

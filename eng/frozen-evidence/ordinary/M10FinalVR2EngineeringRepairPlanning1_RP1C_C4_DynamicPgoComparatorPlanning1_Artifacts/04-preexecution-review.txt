@@ -1,0 +1,12 @@
+status=STATIC-PREEXECUTION-REVIEW-PASS
+finding-1=RUNTIME-FACTOR-ISOLATION1-EVIDENCE-COMPLETE
+finding-2=TIERED-COMPILATION-MATERIAL-SINGLE-FACTOR-EFFECT
+finding-3=QUICKJIT-RARE-TAIL-CAUSALITY-NOT-PROMOTED
+finding-4=QUICKJITFORLOOPS-NO-MATERIAL-TAIL-BENEFIT
+remaining-hypothesis=DYNAMIC-PGO-WITH-QJFL-ON
+future-processes=2-MODES-X-5=10
+future-measured-calls=230400
+future-required-files=46
+ambient-effective-default=DEFERRED-TO-BRANCH-A2
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False

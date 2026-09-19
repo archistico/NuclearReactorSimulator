@@ -1,0 +1,12 @@
+﻿status=PASS-AS-AUTHORED
+gate=R2-FOCUSED-THERMODYNAMIC-REFERENCE-TOPOLOGY-QUALIFICATION-PLANNING1
+planning-only=True
+r1-returned-adjudication=PASS
+production-mode=ReferenceConsistentTabulatedInverseDomain
+production-mode-value=2
+payload-sha256=EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267
+independent-reference=IAPWS-R7-97-2012-REGIONS-1-2-4
+c4-is-r2-physical-oracle=False
+production-src-change=False
+tests-change=False
+r2-execution-authorized=False

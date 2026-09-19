@@ -1,0 +1,10 @@
+status=PASS-DYNAMIC-PGO-COMPARATOR-PLANNING-CONTRACT-FROZEN
+selection-result=NOT-PERFORMED
+dynamic-pgo-comparator-implementation-contained=False
+dynamic-pgo-comparator-implementation-authorized-now=False
+runtime-configuration-impact-assessment-authorized=False
+single-factor-contrasts=1
+next-action=RETURN-COMPLETE-DYNAMIC-PGO-COMPARATOR-PLANNING-ARTIFACTS-FOR-ADJUDICATION
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False
+threshold-change-authorized=False

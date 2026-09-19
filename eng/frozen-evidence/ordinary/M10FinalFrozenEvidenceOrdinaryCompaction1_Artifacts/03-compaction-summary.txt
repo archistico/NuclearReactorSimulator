@@ -1,0 +1,11 @@
+status=PASS-FROZEN-EVIDENCE-ORDINARY-COMPACTION
+expanded-large-payloads-present=0
+bundled-archive-manifest-rows=76
+preexisting-external-manifest-rows=3
+ordinary-direct-files=499
+ordinary-direct-bytes=9247351
+archive-total-bytes=10938420
+restore-tool=.\scripts\restore-frozen-evidence-large-payloads.ps1
+compact-tool=.\scripts\compact-frozen-evidence-ordinary.ps1
+engineering-contract-changed=False
+next-action=RETURN-COMPLETE-COMPACTION-ARTIFACTS-BEFORE-A2-IMPLEMENTATION

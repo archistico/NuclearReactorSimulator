@@ -1,0 +1,459 @@
+{
+  "schema": "m10-final-vr2-r3-reference-consistent-seed-integration-implementation1-v1",
+  "status": "IMPLEMENTATION-CANDIDATE",
+  "prerequisite": {
+    "planning1_classification": "PASS-AS-AUTHORED",
+    "returned_planning1_artifacts": {
+      "01-contract-and-provenance.txt": {
+        "sha256": "A83922505588644F5B6FD34036AB99A25228AF942F8238500CDB09FA5615490A",
+        "bytes": 269
+      },
+      "02-integration-seam-and-fast-gate-contract.txt": {
+        "sha256": "EE0509C290857E2A154BB2EA6C6D188A867601089EF55FB02806C090A0AB640C",
+        "bytes": 553
+      },
+      "03-planning-summary.txt": {
+        "sha256": "D4B121E2EAAE19FAD59BFEDCDAE829F85311F778C703995A507F5958CBCA74CC",
+        "bytes": 386
+      },
+      "04-preexecution-review.txt": {
+        "sha256": "3CE0D9D5CAE64FAF67E74678166D4B3C61DFCC4C08BDE52E75CFB893ECBD20AB",
+        "bytes": 421
+      }
+    },
+    "candidate_construction_returned_artifacts_root": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_ReferenceConsistentRawSeed_CandidateConstruction1_ReturnedArtifacts",
+    "candidate_construction_returned_artifacts": {
+      "01-candidate-conserved-inventory-vector.csv": {
+        "sha256": "BBA072BA589038D3E1AF764F00A5BE60AE124F1A374C673054C245C054989123",
+        "bytes": 1789
+      },
+      "02-candidate-target-roundtrip.csv": {
+        "sha256": "9BA7D068C8E7C36AAE4A50DBCD0B00EF83590FFDE66AA45A87595EA858764685",
+        "bytes": 3191
+      },
+      "03-candidate-hydraulic-head-comparison.csv": {
+        "sha256": "50025900DC5948347C64646B81106465C2CA6A181A928CB1E5EB565A2056F4D8",
+        "bytes": 803
+      },
+      "04-candidate-construction-summary.txt": {
+        "sha256": "3C64334E6BB9F8AC4DE64B5FAC0F40161C2D36C552D400965D3E77D584D2D9F1",
+        "bytes": 626
+      },
+      "05-pre-integration-review.txt": {
+        "sha256": "CF8AC41AE4568C015138864E23FEEA7B7068B677897D49C4BA084B3769E93D08",
+        "bytes": 613
+      }
+    }
+  },
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "871C630D5173CF8E5261E882586836BCB8F28A021EEE2B2F0E14FC45FE1D7EE4",
+    "historical_tests_file_count": 393,
+    "historical_tests_tree_sha256": "2396DBB31AB16E7F5AA404887F19B85F00C471871974A841C3EAB1E17CA65946",
+    "authorized_production_files": {
+      "operational_fluid_node_seed": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/OperationalFluidNodeSeed.cs",
+        "baseline_sha256": "C76AE653B31AE9A20CE0B793046FF1BD3BE1F58B4A6AA8BF780E1DE533633D86"
+      },
+      "cold_shutdown_factory": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+        "baseline_sha256": "AC615B5B4F58EA5A18BAA827E0567951BC8CC70D035E33BFE274608649EEB443"
+      },
+      "desktop_sustained_factory": {
+        "path": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs",
+        "baseline_sha256": "D5DB8BDE1CF086969C20005D5FC45D455B7A3BD454E74A8550E59E83847FA397"
+      }
+    },
+    "canonical_exact_v9_method_segment_normalized_sha256": "57CE73C8BE7AA53DBD281838F8A7968E4140F7AF369BB328D543CDC4B06E4FBA",
+    "canonical_exact_v9_segment_start": "internal static IControlRoomRuntimeEngine CreatePostMoistureEquilibriumCandidateRuntimeEngine(TimeSpan runtimeStep)",
+    "canonical_exact_v9_segment_end": "private static IControlRoomRuntimeEngine CreateRuntimeEngine("
+  },
+  "implementation": {
+    "design": "OPT-IN-CONSERVED-INVENTORY-SEED-SEAM",
+    "authorized_production_files": [
+      "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/OperationalFluidNodeSeed.cs",
+      "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+      "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs"
+    ],
+    "new_seed_subtype": "OperationalFluidNodeSeed.ConservedInventory",
+    "new_candidate_factory": "CreateReferenceConsistentPostMoistureEquilibriumCandidateRuntimeEngine",
+    "candidate_closure_mode": "ReferenceConsistentTabulatedInverseDomain",
+    "seed_preconditioning_ms": 20,
+    "fast_running_steps": 100,
+    "runtime_step_ms": 10,
+    "test_file": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3ReferenceConsistentSeedIntegrationImplementation1Tests.cs",
+    "test_normalized_sha256": "3EC9B4BF5470CCF5782D8C180F698E73951B4F996B7E4DC47EB3D8A797FD0F9F",
+    "test_project": "tests/NuclearReactorSimulator.Application.Tests/NuclearReactorSimulator.Application.Tests.csproj",
+    "artifact_root": "artifacts/m10-final-physical-reference-vr2-r3-reference-consistent-seed-integration-implementation1",
+    "required_files": [
+      "01-contract-and-provenance.txt",
+      "02-production-change-manifest.csv",
+      "03-raw-seed-roundtrip.csv",
+      "04-fast-100-step-health.csv",
+      "05-implementation-summary.txt",
+      "06-pre-requalification-review.txt"
+    ]
+  },
+  "frozen_candidate_vector": {
+    "node_count": 12,
+    "nodes": [
+      {
+        "node": "control-out",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.04877141825211464,
+        "specific_energy_j_kg": 2568017.4627047763,
+        "mass_kg": 2050.381218833311,
+        "internal_energy_j": 5265414775.165846,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "drum",
+        "construction_method": "c4-prefix-by-target-temperature",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0025526343760920505,
+        "specific_energy_j_kg": 1285602.623855127,
+        "mass_kg": 3917.5214804203474,
+        "internal_energy_j": 5036375894.23722,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "exhaust",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 1000.0,
+        "specific_volume_m3_kg": 15.025726993387746,
+        "specific_energy_j_kg": 2146238.1344336863,
+        "mass_kg": 66.55252025010584,
+        "internal_energy_j": 142837556.9034473,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "feedwater-inventory",
+        "construction_method": "c4-near-boundary-liquid-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.001010945775925426,
+        "specific_energy_j_kg": 198367.30625410698,
+        "mass_kg": 9891.727368706732,
+        "internal_energy_j": 1962195312.33038,
+        "resolution_path": "C2NearBoundaryLiquidPrefix"
+      },
+      {
+        "node": "header",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.030991725804371446,
+        "specific_energy_j_kg": 2585103.4593897555,
+        "mass_kg": 3226.6676799875017,
+        "internal_energy_j": 8341269781.836807,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "hotwell",
+        "construction_method": "c4-near-boundary-liquid-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0010109297707227903,
+        "specific_energy_j_kg": 198188.3150499235,
+        "mass_kg": 9891.883976124516,
+        "internal_energy_j": 1960455817.8974555,
+        "resolution_path": "C2NearBoundaryLiquidPrefix"
+      },
+      {
+        "node": "outlet",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.007271949685349985,
+        "specific_energy_j_kg": 1530028.5087290858,
+        "mass_kg": 1375.1470283335327,
+        "internal_energy_j": 2104014157.044389,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "pressure",
+        "construction_method": "c4-liquid-table-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0013319150046541043,
+        "specific_energy_j_kg": 1228014.8530602187,
+        "mass_kg": 7507.98659453272,
+        "internal_energy_j": 9219919054.66319,
+        "resolution_path": "C2LiquidTablePrefix"
+      },
+      {
+        "node": "steam",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.030240469279038222,
+        "specific_energy_j_kg": 2586212.0180637483,
+        "mass_kg": 3306.8269899275992,
+        "internal_energy_j": 8552155703.008327,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "stop-out",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.03192268317071505,
+        "specific_energy_j_kg": 2583796.617763556,
+        "mass_kg": 3132.5687588735377,
+        "internal_energy_j": 8093920564.089228,
+        "resolution_path": "C2MixturePrefix"
+      },
+      {
+        "node": "suction",
+        "construction_method": "c4-near-boundary-liquid-target-tp",
+        "node_volume_m3": 10.0,
+        "specific_volume_m3_kg": 0.0013328453387345543,
+        "specific_energy_j_kg": 1228118.852856549,
+        "mass_kg": 7502.7459746337245,
+        "internal_energy_j": 9214263779.64126,
+        "resolution_path": "C2LiquidTablePrefix"
+      },
+      {
+        "node": "turbine-inlet",
+        "construction_method": "c4-prefix-by-target-pressure",
+        "node_volume_m3": 100.0,
+        "specific_volume_m3_kg": 0.05104968638343995,
+        "specific_energy_j_kg": 2566581.2821789444,
+        "mass_kg": 1958.8758929660944,
+        "internal_energy_j": 5027614200.998343,
+        "resolution_path": "C2MixturePrefix"
+      }
+    ]
+  },
+  "target_state_vector": {
+    "node_count": 12,
+    "nodes": [
+      {
+        "node": "control-out",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 3994187.8856824953,
+        "target_temperature_k": 523.4213085893939,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9777652720483322,
+        "legacy_raw_mass_kg": 2050.466049852245,
+        "legacy_raw_internal_energy_j": 5110896780.948232
+      },
+      {
+        "node": "drum",
+        "seed_kind": "SteamDrumAtLevel",
+        "target_pressure_pa": 6416459.280654079,
+        "target_temperature_k": 553.149999989397,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.042322749720366454,
+        "legacy_raw_mass_kg": 3918.0095385504724,
+        "legacy_raw_internal_energy_j": 4825952448.9694395
+      },
+      {
+        "node": "exhaust",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 8438.344970819902,
+        "target_temperature_k": 315.67536613075987,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.8729051078626365,
+        "legacy_raw_mass_kg": 66.56335861027966,
+        "legacy_raw_internal_energy_j": 144430627.0640083
+      },
+      {
+        "node": "feedwater-inventory",
+        "seed_kind": "SubcooledLiquid",
+        "target_pressure_pa": 17484.899929958774,
+        "target_temperature_k": 320.5284886658307,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 9891.562750380897,
+        "legacy_raw_internal_energy_j": 1967903187.7208362
+      },
+      {
+        "node": "header",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6247420.79633744,
+        "target_temperature_k": 551.3857140089044,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9980222497643916,
+        "legacy_raw_mass_kg": 3226.7940664391003,
+        "legacy_raw_internal_energy_j": 8046776078.465472
+      },
+      {
+        "node": "hotwell",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 10808.002981101188,
+        "target_temperature_k": 320.48565943701715,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 9891.718932438995,
+        "legacy_raw_internal_energy_j": 1966154910.0618703
+      },
+      {
+        "node": "outlet",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6666459.282132472,
+        "target_temperature_k": 555.6953255146227,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.21514191260824764,
+        "legacy_raw_mass_kg": 1375.2501573397371,
+        "legacy_raw_internal_energy_j": 2017599371.9177291
+      },
+      {
+        "node": "pressure",
+        "seed_kind": "SubcooledLiquid",
+        "target_pressure_pa": 6916459.281680611,
+        "target_temperature_k": 553.3082998275795,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 7503.222372684405,
+        "legacy_raw_internal_energy_j": 8828462961.93033
+      },
+      {
+        "node": "steam",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6398665.756830846,
+        "target_temperature_k": 552.9659692384483,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9997887804601804,
+        "legacy_raw_mass_kg": 3306.9753003716223,
+        "legacy_raw_internal_energy_j": 8247126450.58239
+      },
+      {
+        "node": "stop-out",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6069485.550324526,
+        "target_temperature_k": 549.4887377389139,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9960097013407739,
+        "legacy_raw_mass_kg": 3132.6645561930072,
+        "legacy_raw_internal_energy_j": 7811610864.431434
+      },
+      {
+        "node": "suction",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 6416459.281680332,
+        "target_temperature_k": 553.1499999999999,
+        "target_phase": "SubcooledLiquid",
+        "target_quality": null,
+        "legacy_raw_mass_kg": 7504.377202844439,
+        "legacy_raw_internal_energy_j": 8824832406.702536
+      },
+      {
+        "node": "turbine-inlet",
+        "seed_kind": "SaturatedMixture",
+        "target_pressure_pa": 3816252.638393859,
+        "target_temperature_k": 520.7342832023278,
+        "target_phase": "SaturatedMixture",
+        "target_quality": 0.9766676884377713,
+        "legacy_raw_mass_kg": 1958.9547542837688,
+        "legacy_raw_internal_energy_j": 4882767620.548656
+      }
+    ]
+  },
+  "candidate_node_volumes_cubic_metres": {
+    "suction": 10.0,
+    "pressure": 10.0,
+    "outlet": 10.0,
+    "drum": 10.0,
+    "steam": 100.0,
+    "header": 100.0,
+    "stop-out": 100.0,
+    "control-out": 100.0,
+    "turbine-inlet": 100.0,
+    "exhaust": 1000.0,
+    "hotwell": 10.0,
+    "feedwater-inventory": 10.0
+  },
+  "fast_health_envelope": {
+    "electrical_mwe_min": 4.99,
+    "electrical_mwe_max": 5.01,
+    "primary_pump_kg_s_min": 99.9,
+    "primary_pump_kg_s_max": 100.1,
+    "drum_level_min": 0.49,
+    "drum_level_max": 0.51,
+    "governor_percent_min": 29.27,
+    "governor_percent_max": 29.3,
+    "trip_steps_max": 0,
+    "breaker_open_steps_max": 0,
+    "rollback_steps_max": 0
+  },
+  "authority": {
+    "r3_passed": false,
+    "r4_planning_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "new_exact_version_identity_authorized": false,
+    "threshold_change_authorized": false
+  },
+  "sequencing": {
+    "implementation_successor": "R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION3"
+  },
+  "documentation_files": {
+    "planning1_returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "406CBDEF8537BAC4D5FBA4BEE062CA8A8886AB2241A0446CC885560F55F3609E"
+    },
+    "main": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_IMPLEMENTATION1.md",
+      "normalized_sha256": "04EDA105A7DCD9C7A83CA124256B314DE3E59407CB7B71AF10EC7A0BDE65058F"
+    },
+    "preexecution": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_IMPLEMENTATION1_PREEXECUTION_REVIEW.md",
+      "normalized_sha256": "2C6BF4D39E617F175E916DCDE4EE8385E23294CF47F3FDA26054CFCFF654F75E"
+    },
+    "returned_adjudication": {
+      "path": "docs/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_IMPLEMENTATION1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "normalized_sha256": "220D5572BF0D62A9E3BE832A603ABF46CAE05C8B57DED28182BD879091F25AFF"
+    },
+    "project": {
+      "path": "docs/PROJECT.md",
+      "normalized_sha256": "161C1C705F1577DD1DAC2FF8792358C1E05698F9B49D83356109EE53B6977CCC"
+    },
+    "roadmap": {
+      "path": "docs/ROADMAP.md",
+      "normalized_sha256": "A227C8095AD39FE808BF4E3ED6F3376E26296F102C73B36FA45A35FCF2E96164"
+    }
+  },
+  "gate_files": {
+    "validator": {
+      "path": "eng/validate-m10-final-vr2-r3-reference-consistent-seed-integration-implementation1.ps1",
+      "normalized_sha256": "E1E1EC59DA80D21915E5930064768263EE25D8B609C6FEFEE7E08FC04997777D"
+    },
+    "adjudicator": {
+      "path": "eng/adjudicate-m10-final-vr2-r3-reference-consistent-seed-integration-implementation1.ps1",
+      "normalized_sha256": "32490632AB3B11213F060E238898F314EAB2F75B4625301DC94A87C43EDFAC99"
+    },
+    "runner": {
+      "path": "scripts/run-m10-final-vr2-r3-reference-consistent-seed-integration-implementation1.cmd",
+      "normalized_sha256": "567F360837C7B43BF5C3CEC959A41FB6B2E4815D5916D8050ABE973CDEB96D8C"
+    }
+  },
+  "hotfixes": {
+    "implementation1_hotfix1": {
+      "scope": "HARNESS-ONLY",
+      "reason": "Replace decimal-text frozen-vector validation with invariant numeric IEEE-754 bit equality.",
+      "production_source_changed": false,
+      "tests_changed": false,
+      "repair_semantics_changed": false
+    },
+    "implementation1_hotfix2": {
+      "scope": "HARNESS-ONLY",
+      "reason": "Use SHA-frozen returned Candidate Construction CSV strings as authoritative mass/energy literal provenance; avoid Windows PowerShell 5.1 JSON numeric materialization.",
+      "production_source_changed": false,
+      "tests_changed": false,
+      "frozen_vector_changed": false,
+      "repair_semantics_changed": false
+    },
+    "implementation1_hotfix3": {
+      "scope": "HARNESS-CONTRACT-ONLY",
+      "reason": "Define and SHA-freeze the Candidate Construction returned-evidence root before authoritative CSV literal validation.",
+      "production_source_changed": false,
+      "tests_changed": false,
+      "frozen_vector_changed": false,
+      "repair_semantics_changed": false
+    },
+    "implementation1_hotfix4": {
+      "scope": "AUTHORIZED-PRODUCTION-COMPILE-FIX",
+      "reason": "Add missing NuclearReactorSimulator.Domain.Physics.Fluids namespace import required by the 12 FluidPhase references in the new opt-in candidate factory.",
+      "authorized_production_file": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs",
+      "canonical_exact_v9_method_body_changed": false,
+      "frozen_vector_changed": false,
+      "tests_changed": false,
+      "c4_changed": false,
+      "fast_gate_criteria_changed": false
+    }
+  }
+}

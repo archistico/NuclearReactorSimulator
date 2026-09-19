@@ -1,0 +1,9 @@
+﻿status=PASS-DIAGNOSTIC-ONLY
+repair-planning-next=R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-PLANNING1
+candidate-repair=DISABLE-H28.1-E-FUSION-FOR-MODE2-ONLY
+mode0-mode1-fused-path-must-remain-UNCHANGED
+mode2-production-resolver-must-remain-ReferenceConsistentTabulatedInverseResolver
+threshold-change-authorized=False
+default-mode2-activation-authorized=False
+exact-v9-change-authorized=False
+r4-planning-authorized=False

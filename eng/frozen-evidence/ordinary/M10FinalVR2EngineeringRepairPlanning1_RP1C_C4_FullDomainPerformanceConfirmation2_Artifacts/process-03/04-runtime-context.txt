@@ -1,0 +1,15 @@
+status=PASS-RUNTIME-CONTEXT-CAPTURED
+run-index=3
+runtime-profile=AMBIENT-UNSET
+host-fingerprint-sha256=931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336
+controlled-runtime-variables-unset=True
+framework=.NET 10.0.7
+os=Microsoft Windows 10.0.22631
+process-architecture=X64
+stopwatch-frequency=10000000
+whole-measured-region-allocated-bytes=14592
+candidate-call-allocated-bytes-sum=14592
+harness-allocated-bytes=0
+gc-gen0-collections-during-measured-region=0
+gc-gen1-collections-during-measured-region=0
+gc-gen2-collections-during-measured-region=0

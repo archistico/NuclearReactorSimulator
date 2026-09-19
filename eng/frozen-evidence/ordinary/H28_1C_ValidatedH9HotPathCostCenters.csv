@@ -1,0 +1,16 @@
+cost_center,average_trigger_wall_us,average_trigger_allocated_bytes
+application-outside-orchestrator,683.21999999998366,269050.79999999999
+authority,1.1599999999999999,40
+commit-accounting,5194.7749999999996,25648
+corrector-setup-wrapper,9.1749999999883585,1799.5999999999999
+h9-coordinate-layout,11.869999999999999,2704
+h9-initial-residual,48786.515000000007,36052.400000000001
+h9-jacobian-build-probes,1557512.1400000001,925328
+h9-newton-line-search,48687.30000000001,28064
+h9-other,42.625,12312
+h9-residual-fallback,0,0
+historical-explicit-preparation,22.369999999999997,7680
+orchestrator-unattributed,17.765000000037297,296
+sidecar-predictor,5243.5500000000002,26316.400000000001
+sidecar-unattributed,2.9300000000117867,136
+untargeted-disagreement-scan,34428.509999999995,12032

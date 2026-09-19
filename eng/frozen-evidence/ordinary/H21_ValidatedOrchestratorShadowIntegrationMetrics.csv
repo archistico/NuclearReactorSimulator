@@ -1,0 +1,15 @@
+metric,value
+intervals,2000
+presentation_equivalent,2000
+repeat_equivalent,2000
+triggered,15
+candidate_eligible,15
+rollbacks,0
+corrected_commits,0
+untargeted_disagreements,0
+branch_overrides,408
+previous_phase_holds,6456
+hysteresis_releases,0
+deterministic_repeat,True
+telemetry_fingerprint,0454270F4AA63E89915FE231328807D4A6B7AD0C733441F78DC06C86A159CDC8
+h21_audit_passes,True

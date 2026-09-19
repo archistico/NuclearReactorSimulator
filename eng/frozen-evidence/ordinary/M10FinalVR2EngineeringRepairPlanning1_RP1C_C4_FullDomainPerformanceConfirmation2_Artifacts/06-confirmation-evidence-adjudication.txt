@@ -1,0 +1,13 @@
+status=PASS-EVIDENCE-ADJUDICATED
+classification=C4-FULL-DOMAIN-PERFORMANCE-CONFIRMED
+all-five-processes-meet-corrected-performance-predicate=True
+total-measured-calls=217600
+exact-v9-calls-over-max=0
+seam-calls-over-max=0
+candidate-allocated-bytes-sum=72960
+harness-allocated-bytes-sum=0
+c4-ambient-pair-selection-ready-after-returned-fdpc2-adjudication=True
+negative-performance-outcome-is-runner-failure=False
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False
+production-repair-authorized=False

@@ -1,0 +1,15 @@
+status=PASS
+gate=R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION-PLANNING1
+classification=PASS-R3-PLANNING-CONTRACT-FROZEN
+returned-artifact-count=4
+r2-returned-adjudication=PASS
+canonical-exact-v9-immutable=True
+single-factor-change=thermodynamicClosureMode:1->2
+baseline-equivalence-steps=128
+mode2-shadow-steps=12000
+mode2-shadow-simulated-seconds=120
+fixed-timestep-ms=10
+r3-execution-authorized=True
+production-default-switch-authorized=False
+exact-v9-change-authorized=False
+r4-planning-authorized=False

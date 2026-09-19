@@ -1,0 +1,6 @@
+status=PASS-AS-AUTHORED
+planning-id=R3-REQUALIFICATION2-REFERENCE-CONSISTENT-OPERATING-POINT-SEED-REPLANNING1
+predecessor=LEGACY-FORWARD-MODE2-INVERSE-SEED-CONSISTENCY-GAP
+returned-diagnostic2-artifacts=4
+production-src-changed=False
+tests-changed=False

@@ -1,0 +1,15 @@
+﻿status=PASS-RP1C-SELECTION-EVIDENCE-COMPLETE
+gate=RP1C-ENGINEERING-REPAIR-SELECTION1
+selection-result=SELECT-C4
+selection-mode=AUTHORED-ENGINEERING-DECISION
+automatic-selection=False
+select-none-preserved=True
+select-none-considered=True
+selected-candidate=C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE
+selected-runtime-profile=AMBIENT-UNSET
+selection-planning1-returned=PASS-AS-AUTHORED
+fdpc2-returned-adjudication=PASS
+new-measurement-performed=False
+candidate-mutation-performed=False
+r1-implementation-planning-authorized-now=False
+production-repair-authorized=False

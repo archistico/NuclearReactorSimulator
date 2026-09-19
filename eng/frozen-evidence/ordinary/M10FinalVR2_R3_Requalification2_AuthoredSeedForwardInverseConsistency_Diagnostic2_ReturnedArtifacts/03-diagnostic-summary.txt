@@ -1,0 +1,14 @@
+status=DIAGNOSTIC-EVIDENCE-WRITTEN
+classification=LEGACY-FORWARD-MODE2-INVERSE-SEED-CONSISTENCY-GAP
+forward-property-providers-bitwise-equal=True
+raw-seed-mode1-mode2-inverse-difference-nodes=12
+raw-seed-phase-difference-nodes=2
+max-raw-seed-pressure-delta-pa=1458244.4638436558
+max-raw-seed-temperature-delta-k=10.678387367729215
+max-raw-seed-hydraulic-head-delta-pa=754957.9613999138
+deterministic-preconditioning-included=False
+production-repair-applied=False
+threshold-change-applied=False
+new-exact-version-created=False
+r3-remains-red=True
+r4-planning-authorized=False

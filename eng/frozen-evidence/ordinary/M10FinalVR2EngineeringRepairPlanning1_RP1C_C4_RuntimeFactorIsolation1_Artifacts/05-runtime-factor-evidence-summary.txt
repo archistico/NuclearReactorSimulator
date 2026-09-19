@@ -1,0 +1,18 @@
+status=PASS-RUNTIME-FACTOR-ISOLATION-COMPARATIVE-EVIDENCE-COMPLETE
+classification=EVIDENCE-ONLY-NO-CAUSAL-PROMOTION
+execution-order=COUNTERBALANCED-BLOCKED-BY-RUN
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+dynamic-pgo-fixed-off=True
+ready-to-run-fixed-on=True
+TIERING-OFF-QJ-OFF-QJFL-OFF: processes=5; calls=115200; calls-over-100us=92203; calls-over-max=20; processes-with-over-100us=5; processes-with-over-max=5; max-us=729.5; median-of-process-medians-us=108.8; median-of-process-p95-us=115.9; gc-gen0=0; gc-gen1=0; gc-gen2=0
+TIERING-ON-QJ-OFF-QJFL-OFF: processes=5; calls=115200; calls-over-100us=36; calls-over-max=1; processes-with-over-100us=5; processes-with-over-max=1; max-us=457.8; median-of-process-medians-us=4.6; median-of-process-p95-us=5.1; gc-gen0=0; gc-gen1=0; gc-gen2=0
+TIERING-ON-QJ-ON-QJFL-OFF: processes=5; calls=115200; calls-over-100us=21; calls-over-max=0; processes-with-over-100us=5; processes-with-over-max=0; max-us=181.3; median-of-process-medians-us=4.5; median-of-process-p95-us=5; gc-gen0=0; gc-gen1=0; gc-gen2=0
+TIERING-ON-QJ-ON-QJFL-ON: processes=5; calls=115200; calls-over-100us=21; calls-over-max=0; processes-with-over-100us=5; processes-with-over-max=0; max-us=232; median-of-process-medians-us=4.7; median-of-process-p95-us=5.1; gc-gen0=0; gc-gen1=0; gc-gen2=0
+tiered-compilation-causality-proven=False
+quickjit-causality-proven=False
+quickjit-for-loops-causality-proven=False
+dynamic-pgo-causality-proven=False
+automatic-causal-promotion=False
+automatic-selection-authorized=False
+engineering-negative-or-inconclusive-is-infrastructure-red=False

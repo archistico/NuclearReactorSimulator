@@ -1,0 +1,12 @@
+=== 01-current-v2-h9-jacobian-probe-hot-path-optimization ===
+H.28.1-C preserves H.9 finite-difference Newton mathematics and the validated H.20/H.22 ownership contract while removing full PlantState materialization, repeated topology lookup and duplicate canonical-copy work from transient Jacobian probe evaluations.
+warmup-steps=64; attribution-steps=256; triggered=20; committed=20; rollbacks=0; unsafe-commits=0; fallback-commit-violations=0;
+nontrigger-average-engine-us=19200.666101694918; nontrigger-average-orchestrator-us=18621.750847457628; nontrigger-average-predictor-us=9309.4457627118718; nontrigger-average-predictor-alloc-bytes=26308.203389830509;
+trigger-average-engine-us=1700643.905; trigger-average-orchestrator-us=1699960.6850000001; trigger-average-predictor-us=5243.5500000000002; trigger-average-corrector-us=1655049.625; trigger-average-disagreement-scan-us=34428.509999999995; trigger-average-commit-accounting-us=5194.7749999999996;
+h9-average-total-us=1655040.45; h9-average-jacobian-build-us=1557512.1400000001; h9-jacobian-wall-share=0.94107194781855641; h9-average-line-search-us=48687.30000000001; h9-line-search-wall-share=0.029417589159225693; h9-average-hydraulic-evaluations=35; h9-average-probe-evaluations=32; h9-max-jacobian-dimension=32;
+trigger-average-engine-alloc-bytes=1347459.2; trigger-average-corrector-alloc-bytes=1006260; h9-average-total-alloc-bytes=1004460.4; h9-average-jacobian-build-alloc-bytes=925328;
+h28.1a-baseline-jacobian-alloc-bytes=39071378; jacobian-allocation-fraction-of-h28.1a=0.023683014200318198; h28.1a-baseline-h9-alloc-bytes=41523908; h9-allocation-fraction-of-h28.1a=0.024189929329387783;
+primary-trigger-wall-cost-center=h9-jacobian-build-probes; primary-trigger-wall-average-us=1557512.1400000001; primary-trigger-allocation-center=h9-jacobian-build-probes; primary-trigger-allocation-average-bytes=925328;
+determinism-control-steps=128; deterministic-fingerprint=518BA948637F0C270C7F8228AB97FEF9148E29A4F5CE4376319AB5D1CFBE7F38; matches-failed-H28-fingerprint=True; default-current-v2-mode=ExplicitCommittedState;
+h28.1c-jacobian-probe-hot-path-optimization-passes=True; h28-remains-failed=True; H29-default-activation-blocked=True;
+H.28.1-C recommendation: if allocation reduction and deterministic trajectory are green, proceed to the remaining performance work (including H.28.1-B predictor reuse if still desired) and rerun H.28 before any H.29 activation candidate.

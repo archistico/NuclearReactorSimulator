@@ -1,0 +1,11 @@
+status=PASS-R1-IMPLEMENTATION-EVIDENCE-COMPLETE
+gate=R1-SELECTED-C4-OPT-IN-CLOSURE-IMPLEMENTATION1
+planning-returned-adjudication=PASS
+selection-result=SELECT-C4
+selected-runtime-profile=AMBIENT-UNSET
+new-closure-mode=ReferenceConsistentTabulatedInverseDomain
+new-closure-mode-value=2
+default-activation=False
+exact-v9-activation=False
+production-runtime-change-authorized=False
+r2-planning-authorized-now=False

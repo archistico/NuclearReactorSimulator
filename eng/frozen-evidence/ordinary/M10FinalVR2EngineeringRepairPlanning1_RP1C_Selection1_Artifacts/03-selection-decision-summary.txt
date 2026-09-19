@@ -1,0 +1,12 @@
+﻿status=PASS-RP1C-SELECTION-DECISION-RECORDED
+selection-result=SELECT-C4
+selection-ready-count=1
+select-none-mandatory=True
+select-none-selected=False
+automatic-selection=False
+decision-basis=C4-ONLY-SELECTION-READY-AFTER-GREEN-FDPC2-D3-BLOCKED
+post-selection-successor=R1-IMPLEMENTATION-PLANNING-ONLY
+returned-selection-adjudication-required=True
+r1-implementation-planning-authorized-now=False
+production-repair-authorized=False
+next-action=RETURN-COMPLETE-SELECTION-ARTIFACTS-FOR-ADJUDICATION

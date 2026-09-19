@@ -1,0 +1,10 @@
+status=PASS-AS-AUTHORED
+gate=R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION-PLANNING1
+planning-only=True
+r2-returned-adjudication=PASS
+r2-classification=PASS-R2-FOCUSED-THERMODYNAMIC-REFERENCE-TOPOLOGY-QUALIFIED
+production-src-change=False
+tests-change=False
+historical-exact-v9-change=False
+mode2-default-activation=False
+r3-execution-authorized=False

@@ -1,0 +1,11 @@
+status=DIAGNOSTIC-EVIDENCE-WRITTEN
+resolver-mode2-success=True
+direct-mode2-success=True
+legacy-diagnostic-any-root=False
+same-instance-fused-success=False
+distinct-instance-nonfused-success=True
+nonfused-equals-direct=True
+hypothesis=H28.1-E-SAME-INSTANCE-FUSION-BYPASSES-MODE2-PRODUCTION-RESOLVE
+production-repair-applied=False
+r3-remains-blocking=True
+r4-planning-authorized=False

@@ -1,0 +1,14 @@
+status=PASS-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1-AMENDMENT1-CONTRACT-FROZEN
+base-planning1-status=PASS-AS-AUTHORED
+base-planning1-alone-sufficient-for-a2-implementation=False
+future-a2-profiles-unchanged=True
+future-a2-run-counts-unchanged=True
+future-a2-required-files=78
+c4-immutable=True
+exact-v9-immutable=True
+strict-threshold-unchanged=True
+a2-implementation-authorized-now=False
+full-domain-performance-confirmation2-authorized=False
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False
+next-action=RETURN-COMPLETE-HOST-PROVENANCE-AMENDMENT-ARTIFACTS-FOR-ADJUDICATION

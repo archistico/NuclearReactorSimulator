@@ -1,0 +1,10 @@
+=== 01-current-v3-phase-i-known-limitations-legacy-retirement-review ===
+I.4 reviews current limitations and historical numerical-mode retirement after validated I.3. It does not change runtime physics, numerical mathematics, exact-version persistence, the H.30 RQ1 ACTIVATE policy or the 10 ms fixed step.
+i3-authoritative-reference-validated=True; i3-slopes=7; i3-tolerance-budgets=19; generation-health-violations=0; targeted-reverse-flow-violations=0;
+known-drift-observations=drum-inventory:+8.2451672984622224kg/s|main-steam-header:-0.35293086123580603kg/s|total-fluid-internal-energy:-2061802.7621648791W; interpretation=regression-baseline-not-asymptotic-steady-state-proof;
+legacy-mode=DeterministicHybridSemiImplicit; production-dependency=False; exact-version-dependency=False; current-ci-dependency=False; source-files=4; test-files=4; retirement-decision=DEFER-SOURCE-REMOVAL;
+legacy-mode=FourNodeBranchContinuityShadowIntegrated; production-dependency=False; exact-version-dependency=False; current-ci-dependency=False; source-files=4; test-files=4; retirement-decision=DEFER-SOURCE-REMOVAL;
+legacy-mode-retirement-authorized=False; exact-version-identities-preserved=True; source-retained-historical-modes=True;
+authoritative-default=integrated-operations-desktop-stable@3|FourNodeBranchContinuityCorrectedCommitOptIn; rollback-reference=integrated-operations-desktop-stable@2|ExplicitCommittedState; H28-performance-class=bounded-but-costly; production-fixed-step=10.000 ms; runtime-behavior-changed=False;
+phase-i-known-limitations-review-passes=True; phase-i-legacy-retirement-review-passes=True; i4-audit-passes=True; i5-closure-gate-unblocked=True;
+I.4 recommendation: keep the two historical numerical modes source-retained through M10.9.4.1 closure because executable historical seams still compile against them. Do not expose them as production choices. Proceed to I.5 cumulative closure; perform physical source removal only as a separately scoped maintenance change after historical executable tests are archived or replaced.

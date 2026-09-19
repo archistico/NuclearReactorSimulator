@@ -1,0 +1,11 @@
+gate=RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1
+family=M10-REPLAY-DETERMINISM
+profile-id=AMBIENT-UNSET
+host-fingerprint-sha256=931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336
+runtime-five-tuple=UNSET,UNSET,UNSET,UNSET,UNSET
+same-physical-host-required=True
+engineering-negative-is-infrastructure-red=False
+automatic-selection-authorized=False
+production-runtime-change-authorized=False
+focused-classes=4
+structured-result-format=XUNIT-XML-V2PLUS

@@ -1,0 +1,9 @@
+status=PASS-AS-AUTHORED
+next-authorized-gate=R3-REFERENCE-CONSISTENT-RAW-SEED-CANDIDATE-CONSTRUCTION1
+candidate-construction-is-production=False
+production-seed-repair-authorized=False
+new-exact-version-identity-authorized=False
+threshold-change-authorized=False
+r3-passed=False
+r4-planning-authorized=False
+post-candidate-successor=R3-REFERENCE-CONSISTENT-SEED-INTEGRATION-PLANNING1

@@ -1,0 +1,5 @@
+status=PASS-DETERMINISTIC-REPEAT
+state-comparisons=1679
+repeat-mismatches=0
+production-mode=ReferenceConsistentTabulatedInverseDomain
+production-mode-value=2

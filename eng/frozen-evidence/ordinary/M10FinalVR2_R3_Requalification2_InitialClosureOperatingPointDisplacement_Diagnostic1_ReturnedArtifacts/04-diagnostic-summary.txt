@@ -1,0 +1,17 @@
+status=DIAGNOSTIC-EVIDENCE-WRITTEN
+classification=SEED-INVENTORY-DIVERGENCE
+all-initial-inventories-bitwise-equal=False
+factory-thermodynamic-difference-nodes=12
+same-inventory-direct-closure-difference-nodes=12
+max-factory-pressure-delta-pa=1455256.5778242955
+max-same-inventory-direct-pressure-delta-pa=1458244.4641406983
+max-initial-hydraulic-head-delta-pa=743229.2365098009
+mode1-key-envelope-violation-steps=0
+mode2-key-envelope-violation-steps=100
+first-snapshot-fingerprint-mismatch-step=1
+mode1-rollbacks-after-100-steps=0
+mode2-rollbacks-after-100-steps=0
+production-repair-applied=False
+threshold-change-applied=False
+r3-remains-red=True
+r4-planning-authorized=False

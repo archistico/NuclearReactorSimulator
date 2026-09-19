@@ -1,0 +1,8 @@
+metric,optimized,reference,ratio
+plant_definition_lookup_allocated_bytes,0,2560064,0
+plant_definition_lookup_elapsed_ticks,32990,581809,0.056702457335654828
+plant_state_lookup_allocated_bytes,0,2560064,0
+plant_state_lookup_elapsed_ticks,5894,656668,0.008975616293164887
+observation_change_tracking_allocated_bytes,0,27440000,0
+observation_change_tracking_elapsed_ticks,2834,187446,0.01511902094469874
+critical_ratio_elapsed_ticks,4247,14759,0.28775662307744426

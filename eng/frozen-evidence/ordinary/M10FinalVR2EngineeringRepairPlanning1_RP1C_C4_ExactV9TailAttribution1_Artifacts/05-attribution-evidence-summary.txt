@@ -1,0 +1,15 @@
+status=PASS-COMPARATIVE-EVIDENCE-COMPLETE
+classification=EVIDENCE-ONLY-NO-CAUSAL-PROMOTION
+revision=REV1-CONCLUSIVE-REVIEW-HARDENING
+execution-order=COUNTERBALANCED-BLOCKED-BY-RUN
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+AMBIENT-UNSET-CONTROL: processes=5; calls=115200; calls-over-100us=16; calls-over-max=2; processes-with-over-100us=4; processes-with-over-max=2; max-us=724.2; gc-gen0=0; gc-gen1=0; gc-gen2=0
+TIERING-OFF: processes=5; calls=115200; calls-over-100us=91283; calls-over-max=64; processes-with-over-100us=5; processes-with-over-max=5; max-us=15497.2; gc-gen0=0; gc-gen1=0; gc-gen2=0
+TIERING-ON-PGO-OFF: processes=5; calls=115200; calls-over-100us=18; calls-over-max=0; processes-with-over-100us=5; processes-with-over-max=0; max-us=273.9; gc-gen0=0; gc-gen1=0; gc-gen2=0
+TIERING-ON-PGO-ON: processes=5; calls=115200; calls-over-100us=28; calls-over-max=0; processes-with-over-100us=5; processes-with-over-max=0; max-us=330.4; gc-gen0=0; gc-gen1=0; gc-gen2=0
+runtime-tiering-causality-proven=False
+dynamic-pgo-causality-proven=False
+scheduling-causality-proven=False
+thermodynamic-slow-path-proven=False
+automatic-selection-authorized=False

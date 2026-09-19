@@ -1,0 +1,12 @@
+status=PASS-AS-AUTHORED
+gate=M10-FINAL-FROZEN-EVIDENCE-ORDINARY-COMPACTION1
+host-provenance-amendment-returned=PASS-AS-AUTHORED
+ordinary-max-direct-bytes=1048576
+compact-ordinary-files=499
+compact-ordinary-bytes=9247351
+archived-payloads=76
+archived-uncompressed-bytes=167307127
+archive-packs=7
+a2-implementation-authorized=False
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False

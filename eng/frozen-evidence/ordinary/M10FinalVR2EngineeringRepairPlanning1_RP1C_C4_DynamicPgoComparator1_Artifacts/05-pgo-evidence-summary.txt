@@ -1,0 +1,16 @@
+status=PASS-DYNAMIC-PGO-COMPARATOR-COMPARATIVE-EVIDENCE-COMPLETE
+classification=EVIDENCE-ONLY-NO-PGO-CAUSAL-PROMOTION
+changed-factor=DOTNET_TieredPGO
+execution-order=COUNTERBALANCED-BLOCKED-BY-RUN
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+tiered-compilation-fixed-on=True
+quickjit-fixed-on=True
+quickjit-for-loops-fixed-on=True
+ready-to-run-fixed-on=True
+PGO-OFF-QJFL-ON: processes=5; calls=115200; calls-over-100us=13; calls-over-max=1; processes-with-over-100us=5; processes-with-over-max=1; max-us=410.6; median-of-process-medians-us=4.7; median-of-process-p95-us=5.4; gc-gen0=0; gc-gen1=0; gc-gen2=0
+PGO-ON-QJFL-ON: processes=5; calls=115200; calls-over-100us=8; calls-over-max=0; processes-with-over-100us=4; processes-with-over-max=0; max-us=251.7; median-of-process-medians-us=2.1; median-of-process-p95-us=2.5; gc-gen0=0; gc-gen1=0; gc-gen2=0
+dynamic-pgo-causality-proven=False
+automatic-causal-promotion=False
+automatic-selection-authorized=False
+engineering-negative-or-inconclusive-is-infrastructure-red=False

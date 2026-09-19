@@ -1,0 +1,7 @@
+scenario_id,classification,runtime_steps,triggers,commits,rollbacks,safe_fallbacks,trip_steps,max_condenser_pressure_pa,min_requested_load_mwe,max_requested_load_mwe,evidence_condition,evidence_condition_satisfied
+high-load-10mwe,protected-boundary,256,64,64,0,0,58,7780.1318927431366,5,10,10 MWe requested-load point observed; any canonical protection action defines a protected boundary,True
+cooling-50pct-capacity,corrected-qualified,352,94,94,0,0,0,8617.4693152468244,5,5,cooling capacity 0,50 increases/maintains condenser backpressure without unsafe ownership,True
+cooling-25pct-capacity,corrected-qualified,352,94,94,0,0,0,10331.311480904389,5,5,cooling capacity 0,25 increases/maintains condenser backpressure without unsafe ownership,True
+high-load-10mwe-plus-cooling-50pct,protected-boundary,336,64,64,0,0,138,8801.0773412844155,5,10,combined 10 MWe + cooling capacity 0,50,True
+low-load-0mwe-plus-cooling-25pct,corrected-qualified,336,23,23,0,0,0,7565.6954952398783,0,5,combined 0 MWe + cooling capacity 0,25,True
+cooling-loss-protection-adjacent,corrected-qualified,448,190,190,0,0,0,14352.306851013782,5,5,cooling loss remained inside protection boundary during bounded observation window,True

@@ -1,0 +1,7 @@
+status=PASS-REPAIR-IMPLEMENTATION-EVIDENCE
+gate=R3-MODE2-BRANCH-CONTINUITY-FUSION-REPAIR-IMPLEMENTATION1
+planning-returned=PASS-AS-AUTHORED
+repair=MODE2-FUSION-ELIGIBILITY-GUARD
+production-files-changed=2
+r3-passed=False
+r4-planning-authorized=False

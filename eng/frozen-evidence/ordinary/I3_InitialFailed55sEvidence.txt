@@ -1,0 +1,6 @@
+M10.9.4.1-I.3 initial candidate — failed focused evidence reported 2026-08-19.
+Build and ordinary tests passed. Focused exact-v2 300-second reference trajectory stopped at logical step 5500 / 55 simulated seconds.
+trip=False; breaker=True; requested=5 MWe; gross=4.435 MWe; rotor-shaft=0 MW; rotor-speed=2996.119 rpm; condenser=7.602 kPa; drum-level=57.588%.
+Failure location: PhaseIReferenceTrajectoryConservationInventoryBaselineAuditTests.AssertHealthy, original line 225.
+Only 00-progress.txt existed because the original per-sample assertion ran before full-horizon artifact writing.
+I.3 was not validated; no tolerance budget from that run is frozen.

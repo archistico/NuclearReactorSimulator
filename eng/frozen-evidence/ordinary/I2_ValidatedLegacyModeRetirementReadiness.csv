@@ -1,0 +1,5 @@
+numerical_mode,i2_status,production_selectable,current_ci_dependency,source_dependency_remaining,i2_retirement_authorized
+ExplicitCommittedState,RETAIN-AUTHORITATIVE,True,True,True,False
+DeterministicHybridSemiImplicit,HISTORICAL-FROZEN-CANDIDATE,False,False,True,False
+FourNodeBranchContinuityShadowIntegrated,HISTORICAL-FROZEN-CANDIDATE,False,False,True,False
+FourNodeBranchContinuityCorrectedCommitOptIn,RETAIN-QUALIFIED-OPT-IN,True,True,True,False

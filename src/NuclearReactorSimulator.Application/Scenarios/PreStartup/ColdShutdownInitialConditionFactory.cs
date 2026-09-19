@@ -904,6 +904,10 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     thermodynamicModel,
                     subcooled.TemperatureCelsius,
                     subcooled.CompressionFraction),
+                OperationalFluidNodeSeed.ConservedInventory conserved => CreateConservedInventory(
+                    plant,
+                    thermodynamicModel,
+                    conserved),
                 _ => throw new InvalidOperationException($"Unsupported authored fluid-node seed type '{seed.GetType().Name}'."),
             };
         }
@@ -947,14 +951,16 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                     initialPrimaryOutletSaturationPressureMegapascals.Value,
                     initialPrimaryOutletVaporQualityFraction!.Value)
                 : PrimaryLiquid("outlet"));
-        var steamDrumInventory = initialSteamDrumLiquidLevelFraction.HasValue
-            ? CreateSaturatedSteamDrumAtLevel(
-                plant,
-                "drum",
-                thermodynamicModel,
-                initialPrimaryTemperatureCelsius,
-                initialSteamDrumLiquidLevelFraction.Value)
-            : PrimaryLiquid("drum");
+        var steamDrumInventory = ResolveAuthoredFluidNode(
+            "drum",
+            () => initialSteamDrumLiquidLevelFraction.HasValue
+                ? CreateSaturatedSteamDrumAtLevel(
+                    plant,
+                    "drum",
+                    thermodynamicModel,
+                    initialPrimaryTemperatureCelsius,
+                    initialSteamDrumLiquidLevelFraction.Value)
+                : PrimaryLiquid("drum"));
         FluidNodeState SteamSpace(string id) => ResolveAuthoredFluidNode(
             id,
             () => CreateSaturatedSteamSpace(plant, id, thermodynamicModel, initialPrimaryTemperatureCelsius));
@@ -1786,6 +1792,59 @@ public sealed class ColdShutdownInitialConditionFactory : IVersionedInitialCondi
                 temperatureCelsius,
                 "Operational seed steam-path temperature must be finite and between 40 and 300 °C when specified.");
         }
+    }
+
+    private static FluidNodeState CreateConservedInventory(
+        PlantDefinition plant,
+        SimplifiedWaterSteamThermodynamicModel thermodynamicModel,
+        OperationalFluidNodeSeed.ConservedInventory seed)
+    {
+        if (!double.IsFinite(seed.MassKilograms) || seed.MassKilograms <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(seed),
+                seed.MassKilograms,
+                "Conserved-inventory authored fluid-node mass must be finite and strictly positive.");
+        }
+
+        if (!double.IsFinite(seed.InternalEnergyJoules))
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(seed),
+                seed.InternalEnergyJoules,
+                "Conserved-inventory authored fluid-node internal energy must be finite.");
+        }
+
+        if (!double.IsFinite(seed.PreviousPressurePascals) || seed.PreviousPressurePascals <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(seed),
+                seed.PreviousPressurePascals,
+                "Conserved-inventory authored fluid-node previous pressure must be finite and strictly positive.");
+        }
+
+        if (!double.IsFinite(seed.PreviousTemperatureKelvins) || seed.PreviousTemperatureKelvins <= 0d)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(seed),
+                seed.PreviousTemperatureKelvins,
+                "Conserved-inventory authored fluid-node previous temperature must be finite and strictly positive.");
+        }
+
+        var quality = seed.PreviousVaporQualityFraction.HasValue
+            ? VaporQuality.FromFraction(seed.PreviousVaporQualityFraction.Value)
+            : (VaporQuality?)null;
+        var previous = new FluidThermodynamicState(
+            Pressure.FromPascals(seed.PreviousPressurePascals),
+            Temperature.FromKelvins(seed.PreviousTemperatureKelvins),
+            seed.PreviousPhase,
+            quality);
+        var definition = plant.GetFluidNode(seed.NodeId);
+        var inventory = new FluidNodeInventory(
+            Mass.FromKilograms(seed.MassKilograms),
+            Energy.FromJoules(seed.InternalEnergyJoules));
+        var resolved = thermodynamicModel.Resolve(definition, inventory, previous);
+        return new FluidNodeState(definition, inventory, resolved);
     }
 
     private static FluidNodeState CreateSubcooledLiquid(

@@ -1,0 +1,15 @@
+status=PASS-AS-AUTHORED
+gate=RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1-AMENDMENT1-HOST-PROVENANCE
+base-planning1-returned-adjudication=PASS-AS-AUTHORED
+future-gate=RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1
+single-physical-host-required=True
+all-profiles-same-host-required=True
+all-assessment-families-same-host-required=True
+cross-host-evidence-mixing-authorized=False
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+threshold-change-authorized=False
+future-required-files=78
+a2-implementation-authorized-now=False
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False

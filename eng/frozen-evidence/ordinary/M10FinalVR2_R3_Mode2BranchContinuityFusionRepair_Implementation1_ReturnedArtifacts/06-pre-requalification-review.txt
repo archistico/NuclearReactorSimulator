@@ -1,0 +1,8 @@
+status=PASS-IMPLEMENTATION-ONLY
+repair-scope=TWO-FILE-BOUNDED
+evaluate-branch-continuity=UNCHANGED
+resolver=UNCHANGED
+payload=UNCHANGED
+closure-enum-default=UNCHANGED
+r3-short-requalification2-still-required=True
+r4-remains-blocked=True

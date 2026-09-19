@@ -1,0 +1,23 @@
+M10 Final VR2 IAPWS-IF97 Water/Steam Error Map — returned artifact review
+status=EXECUTED-RED
+classification=MODEL-DISCREPANCY-BLOCKING
+gate-passes=False
+reference-selfcheck-max-relative-error=2.8096211618213283E-09
+reference-selfcheck-ceiling=1E-08
+numerical-comparison-count=79
+m10-core-comparison-count=42
+m10-core-max-relative-error=7.472383651819435
+unresolved-inside-production-envelope-count=0
+m10-core-phase-mismatch-count=0
+deterministic-repeat=True
+blocking-owner=INVERSE-COMPRESSED-LIQUID/resolved-pressure
+blocking-points=VR2-L200-P2;VR2-L250-P7;VR2-L280-P10
+production-pressures-mpa=9.842528006210257;40.86545412157356;84.72383651819435
+reference-pressures-mpa=2;7;10
+production-repair-authorized=False
+thermodynamic-tolerance-change-authorized=False
+exact-v9-change-authorized=False
+vr3-authorized=False
+p3-r1-authorized=False
+second-replacement-long-authorized=False
+next-authorized-gate=VR2-REPLANNING-MATERIALITY-DIAGNOSTIC1

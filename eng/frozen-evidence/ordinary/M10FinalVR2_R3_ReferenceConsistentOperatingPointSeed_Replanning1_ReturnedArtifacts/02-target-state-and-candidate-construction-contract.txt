@@ -1,0 +1,12 @@
+status=PASS-AS-AUTHORED
+target-state-source=DIAGNOSTIC2-MODE1-RESOLVED-RAW-SEED
+target-node-count=12
+candidate-representation=CONSERVED-INVENTORY
+candidate-construction-language=C#
+candidate-construction-scope=TEST-ONLY
+runtime-dynamic-steps=0
+candidate-hydraulic-head-count=8
+c4-resolver-change=FORBIDDEN
+c4-payload-change=FORBIDDEN
+canonical-exact-v9-change=FORBIDDEN
+production-seed-seam-change=FORBIDDEN

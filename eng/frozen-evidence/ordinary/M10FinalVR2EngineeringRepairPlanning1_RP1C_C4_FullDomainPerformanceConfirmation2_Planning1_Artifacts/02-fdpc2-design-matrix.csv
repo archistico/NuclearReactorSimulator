@@ -1,0 +1,12 @@
+dimension,value,qualification_role
+runtime-profile,AMBIENT-UNSET,no explicit production runtime override
+physical-host,931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336,same host as A2
+power-scheme,8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c,stable start/end
+fresh-processes,5,full-domain replication
+exact-v9-rows,360,immutable RP1A corpus
+exact-v9-measured-calls-per-process,23040,64 x 360
+seam-rows,1280,immutable RP1A seam corpus
+seam-measured-calls-per-process,20480,16 x 1280
+total-measured-calls,217600,5 x 43520
+future-required-files,32,25 process + 7 aggregate
+strict-max-us,409.30666666666673,unchanged engineering ceiling

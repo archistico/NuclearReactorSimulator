@@ -1,0 +1,6 @@
+probe_side,sample_count,median_us,p95_us,max_us,calls_over_max_ceiling,exceedance_fraction
+R1-SIDE,5120,7.5,14.6,3667.1,1,0.0001953125
+R2-SIDE,5120,0.1,0.2,4.8,0,0
+R4-LIQUID-SIDE,5120,2.3,2.6,37.8,0,0
+R4-VAPOR-SIDE,5120,2.3,2.8,122.8,0,0
+ALL-SEAM-SIDES,20480,2.3,13.6,3667.1,1,4.8828125E-05

@@ -31,7 +31,7 @@ The failed first-long manifests remain immutable provenance:
 
 ## Active validation candidate and parallel planning overlay
 
-**Active engineering state: M10 FINAL - VR2 R3 SHORT EXACT-V9-EQUIVALENT SHADOW / COMPOSITION REQUALIFICATION 2 - EXECUTION CANDIDATE.** Repair Implementation 1 returned/adjudicated PASS. The live gate is the unchanged 128-step baseline plus 120 s / 12,000-step R3 short requalification on the repaired production baseline. R3 remains RED until returned Requalification 2 evidence is adjudicated PASS. R4 remains blocked.
+**Active engineering state: M10 FINAL — VR2 R3 REFERENCE-CONSISTENT SEED INTEGRATION FAST-GATE DYNAMIC EQUILIBRIUM DIAGNOSTIC 1 — TEST-ONLY DIAGNOSTIC CANDIDATE.** Implementation 1 reached its focused fast gate but returned RED: raw seed 12/12 remains healthy, while primary flow and governor drift outside the unchanged exact-v9 envelope during the first second. R3 remains RED; Requalification 3 and R4 remain blocked.
 
 P0 Hotfix 2 is **VALIDATED**. Its returned artifact records `m10-final-replacement-long-closure-plan1-p0-passes=True`, no production source/test change, no second-long authorization and `next-authorized-implementation=P1-Asymptotic-First-Stage-Qualification`. D1–D6 are therefore frozen as the completed diagnostic campaign and the P0→P6 route is authoritative.
 

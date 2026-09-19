@@ -1,0 +1,9 @@
+status=PASS-SINGLE-HOST-INTEGRITY
+host-fingerprint-sha256=931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336
+runtime-profile=AMBIENT-UNSET
+start-end-fingerprint-match=True
+active-power-scheme-stable=True
+all-five-processes-same-host-required=True
+caller-dotnet-control-variables-unset=True
+caller-complus-aliases-unset=True
+cross-host-evidence-mixing-detected=False

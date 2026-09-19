@@ -1,0 +1,15 @@
+status=PASS-AS-AUTHORED
+integration-design=OPT-IN-CONSERVED-INVENTORY-SEED-SEAM
+authorized-production-files=3
+new-seed-subtype=OperationalFluidNodeSeed.ConservedInventory
+canonical-exact-v9-method-body=PRESERVE
+new-opt-in-candidate-factory=REQUIRED
+candidate-closure-mode=ReferenceConsistentTabulatedInverseDomain
+candidate-seed-preconditioning-ms=20
+fast-running-steps=100
+runtime-step-ms=10
+fast-health-envelope=UNCHANGED-EXACT-V9
+rollback-steps-max=0
+c4-resolver-change=FORBIDDEN
+c4-payload-change=FORBIDDEN
+threshold-change=FORBIDDEN

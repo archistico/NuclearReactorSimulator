@@ -1,0 +1,14 @@
+status=STATIC-PREEXECUTION-REVIEW-PASS
+finding-1=DYNAMIC-PGO-COMPARATOR1-EVIDENCE-COMPLETE
+finding-2=DYNAMIC-PGO-CENTRAL-DISTRIBUTION-CAUSAL-EFFECT
+finding-3=DYNAMIC-PGO-RARE-STRICT-TAIL-CAUSALITY-NOT-PROMOTED
+finding-4=AMBIENT-VS-EXPLICIT-PROJECT-IMPACT-ASSESSMENT-REQUIRED
+future-profiles=2
+future-exact-v9-processes=10
+future-exact-v9-measured-calls=230400
+future-required-files=78
+ordinary-release-suite=INCLUDED-BOTH-PROFILES
+m10-replay-determinism=INCLUDED-BOTH-PROFILES
+non-vr2-performance-owner=INCLUDED-3-FRESH-PROCESSES-PER-PROFILE
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False

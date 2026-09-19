@@ -1,0 +1,13 @@
+﻿status=STATIC-PREEXECUTION-REVIEW-PASS
+finding-1=D3-REFINEMENT2-ELIGIBILITY-OMITTED-SEAM-WORST-CASE
+finding-1-frozen-seam-max-us=16504.9
+finding-1-strict-max-us=
+409.30666666666673
+finding-2=C4-R1-TAIL-CLOSED-BUT-FULL-DOMAIN-C4-TIMING-NOT-YET-MEASURED
+finding-2-c4-worst-returned-r1-max-us=
+329.9
+finding-3=BIT-EQUIVALENCE-DOES-NOT-PROVE-WALL-CLOCK-EQUIVALENCE
+finding-4=SELECTION-READY-COUNT-REMAINS-ZERO-BEFORE-CONFIRMATION
+future-confirmation-implementation-contained=False
+returned-planning-adjudication-required-before-confirmation=True
+post-selection-if-c4=R1-IMPLEMENTATION-PLANNING-ONLY

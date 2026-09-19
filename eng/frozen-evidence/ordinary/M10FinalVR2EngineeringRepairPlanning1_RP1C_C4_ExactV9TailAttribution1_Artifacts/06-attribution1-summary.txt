@@ -1,0 +1,15 @@
+status=PASS-ATTRIBUTION1-EVIDENCE-COMPLETE
+classification=ATTRIBUTION-EVIDENCE-COMPLETE-NO-CAUSAL-PROMOTION
+revision=REV1-CONCLUSIVE-REVIEW-HARDENING
+total-runtime-modes=4
+total-processes=20
+total-measured-calls=460800
+execution-order=COUNTERBALANCED-BLOCKED-BY-RUN
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+diagnostic-tail-floor-is-qualification-threshold=False
+automatic-causal-promotion=False
+automatic-selection-authorized=False
+rp1c-selection-authorized=False
+production-repair-authorized=False
+next-action=RETURN-COMPLETE-ATTRIBUTION1-ARTIFACTS-FOR-ADJUDICATION

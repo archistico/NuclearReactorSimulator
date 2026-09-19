@@ -1,0 +1,13 @@
+status=PASS-HOST-PROVENANCE-POLICY-FROZEN
+host-scope=ENTIRE-A2-GATE
+host-fingerprint=SHA256-PRIVACY-PRESERVING
+raw-system-uuid-retained=False
+machine-name-retained=False
+user-name-retained=False
+start-end-fingerprint-match-required=True
+active-power-scheme-capture-required=True
+active-power-scheme-stability-required=True
+absolute-threshold-observation-host-scoped=True
+cross-host-absolute-timing-comparison-authorized=False
+cross-host-threshold-extrapolation-authorized=False
+cross-host-replication-in-a2=False

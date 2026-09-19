@@ -1,0 +1,17 @@
+status=PASS-AS-AUTHORED
+gate=RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT-PLANNING1
+contract-schema=m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment-planning1-v1
+dynamic-pgo-comparator1-returned-adjudication=PASS
+roadmap-branch=A-RUNTIME-SENSITIVE
+dynamic-pgo-central-distribution-causal=True
+dynamic-pgo-rare-strict-tail-causal=False
+future-gate=RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1
+future-runtime-profiles=2
+future-exact-v9-processes=10
+future-exact-v9-measured-calls=230400
+future-required-files=78
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+diagnostic-tail-floor-is-threshold=False
+rp1c-selection-authorized=False
+production-runtime-change-authorized=False

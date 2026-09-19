@@ -1,0 +1,14 @@
+gate=VR2-ENGINEERING-REPAIR-PLANNING1-RP1B-C4
+status=PASS-SEMANTIC-EVIDENCE-COMPLETE
+candidate=C4-ALLOCATION-NEUTRAL-VAPOR-SEAM-COMPLETE-SURROGATE
+family=C-BOUNDED-IF97-DERIVED-TABLE-SURROGATE
+state-observation-count=1679
+hydraulic-observation-count=288
+total-observation-count=1967
+state-bit-mismatch-count=0
+hydraulic-bit-mismatch-count=0
+repeat-mismatch-count=0
+semantic-bit-equivalent=true
+engineering-negative-outcome-is-xunit-failure=False
+rp1c-selection-authorized=False
+production-repair-authorized=False

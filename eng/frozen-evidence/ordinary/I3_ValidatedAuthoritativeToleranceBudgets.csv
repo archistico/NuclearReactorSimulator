@@ -1,0 +1,20 @@
+metric_id,unit,target,absolute_tolerance,derivation
+gross-electrical-power,MW,5.0841082341585064,0.050000000000000003,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+shaft-power,MW,5.6878644454051548,0.050000000000000003,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+rotor-speed,rpm,3000.0025979531392,1,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+condenser-pressure,kPa,8.4243282850330434,0.10000000000000001,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+drum-level-fraction,fraction,0.88432072654913985,0.067514112516769087,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+total-fluid-mass,kg,60009.396410760601,0.10000000000000001,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+total-fluid-internal-energy,J,67897834511.679855,124820553.8175354,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+exhaust-mass,kg,67.566650115395731,0.1218265069788913,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+hotwell-mass,kg,9936.8712606831814,2.0509206923015881,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+feedwater-inventory-mass,kg,9938.3115399352628,2.2928623754851287,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+drum-inventory-mass,kg,6743.2083105411093,496.06229452164553,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+main-steam-header-mass,kg,3038.0623826424144,21.34635620998688,I3-production-final-60s-mean; tolerance=max[absolute-floor;2x-observed-max-deviation]; freeze-after-validation
+slope.total-fluid-mass,kg/s,0,0.01,I3-production-final-60s-linear-slope; target-zero; freeze-after-validation
+slope.total-fluid-internal-energy,W,0,4123605.5243297582,I3-production-final-60s-linear-slope; target-zero; freeze-after-validation
+slope.exhaust-mass,kg/s,0,0.01,I3-production-final-60s-linear-slope; target-zero; freeze-after-validation
+slope.hotwell-mass,kg/s,0,0.066839855520631319,I3-production-final-60s-linear-slope; target-zero; freeze-after-validation
+slope.feedwater-inventory-mass,kg/s,0,0.074409954276082699,I3-production-final-60s-linear-slope; target-zero; freeze-after-validation
+slope.drum-inventory-mass,kg/s,0,16.490334596924445,I3-production-final-60s-linear-slope; target-zero; freeze-after-validation
+slope.main-steam-header-mass,kg/s,0,0.70586172247161205,I3-production-final-60s-linear-slope; target-zero; freeze-after-validation

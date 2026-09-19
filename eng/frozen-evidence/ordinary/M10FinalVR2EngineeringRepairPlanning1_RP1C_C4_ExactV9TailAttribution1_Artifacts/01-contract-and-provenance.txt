@@ -1,0 +1,14 @@
+status=PASS-ATTRIBUTION-EVIDENCE-INTEGRITY
+gate=RP1C-C4-EXACT-V9-WALL-CLOCK-TAIL-ATTRIBUTION1
+revision=REV1-CONCLUSIVE-REVIEW-HARDENING
+processes=20
+runtime-modes=4
+total-measured-calls=460800
+execution-order=COUNTERBALANCED-BLOCKED-BY-RUN
+strict-max-us=409.30666666666673
+diagnostic-tail-floor-us=100
+diagnostic-tail-floor-is-qualification-threshold=False
+automatic-causal-promotion=False
+automatic-selection-authorized=False
+rp1c-selection-authorized=False
+production-repair-authorized=False

@@ -1,0 +1,11 @@
+gate=RP1C-C4-RUNTIME-CONFIGURATION-IMPACT-ASSESSMENT1
+family=ORDINARY-RELEASE-SUITE
+profile-id=EXPLICIT-REFERENCE-ALL-ON
+host-fingerprint-sha256=931EAC000C09399B8EAABEB0316F16980620CAC45D1FC7F13516CE55DAF69336
+runtime-five-tuple=1,1,1,1,1
+same-physical-host-required=True
+engineering-negative-is-infrastructure-red=False
+automatic-selection-authorized=False
+production-runtime-change-authorized=False
+suite-run-count=1
+structured-result-format=XUNIT-XML-V2PLUS

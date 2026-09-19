@@ -2,6 +2,7 @@ using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios.PreStartup;
 using NuclearReactorSimulator.Domain.Physics.Control;
 using NuclearReactorSimulator.Domain.Physics.Control.TurbineSecondary;
+using NuclearReactorSimulator.Domain.Physics.Fluids;
 using NuclearReactorSimulator.Domain.Physics.Quantities;
 using NuclearReactorSimulator.Domain.Physics.Reactor.ControlRods;
 using NuclearReactorSimulator.Domain.Physics.Reactor.PrimaryCircuit.SteamDrums;
@@ -402,6 +403,64 @@ public sealed class DesktopSustainedGenerationInitialConditionFactory : IVersion
             initialControlValvePercentOpenOverride: 27.312320479840385d,
             initialCondensatePumpPercentOverride: 42d,
             initialFeedwaterPumpPercentOverride: 96.88913771103281d,
+            initialFluidNodeSeeds: fluidNodeSeeds,
+            governorIntegralReferenceMode: TurbineGovernorIntegralReferenceMode.SynchronousSpeedWhenParalleled,
+            turbineAdmissionPhasePolicyOverride: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+            turbineMoistureDrainNodeId: "hotwell");
+    }
+
+    /// <summary>
+    /// M10 Final VR2 R3 opt-in reference-consistent exact-v9-equivalent candidate.
+    /// It preserves canonical exact-v9 and re-expresses only the 12 authored fluid-node seeds as the
+    /// evidence-backed conserved-inventory vector qualified by Candidate Construction 1.
+    /// </summary>
+    internal static IControlRoomRuntimeEngine CreateReferenceConsistentPostMoistureEquilibriumCandidateRuntimeEngine(
+        TimeSpan runtimeStep)
+    {
+        if (runtimeStep <= TimeSpan.Zero)
+        {
+            throw new ArgumentOutOfRangeException(nameof(runtimeStep));
+        }
+
+        var seedDuration = TimeSpan.FromMilliseconds(20d);
+        if (seedDuration.Ticks % runtimeStep.Ticks != 0)
+        {
+            throw new ArgumentException(
+                "Reference-consistent candidate timestep must divide the versioned 20 ms seed preconditioning duration exactly.",
+                nameof(runtimeStep));
+        }
+
+        var seedStepCount = checked((int)(seedDuration.Ticks / runtimeStep.Ticks));
+        var fluidNodeSeeds = new OperationalFluidNodeSeed[]
+        {
+            new OperationalFluidNodeSeed.ConservedInventory("control-out", 2050.381218833311d, 5265414775.165846d, 3994187.8856824953d, 523.4213085893939d, FluidPhase.SaturatedMixture, 0.9777652720483322d),
+            new OperationalFluidNodeSeed.ConservedInventory("drum", 3917.5214804203474d, 5036375894.23722d, 6416459.280654079d, 553.149999989397d, FluidPhase.SaturatedMixture, 0.042322749720366454d),
+            new OperationalFluidNodeSeed.ConservedInventory("exhaust", 66.55252025010584d, 142837556.9034473d, 8438.344970819902d, 315.67536613075987d, FluidPhase.SaturatedMixture, 0.8729051078626365d),
+            new OperationalFluidNodeSeed.ConservedInventory("feedwater-inventory", 9891.727368706732d, 1962195312.33038d, 17484.899929958774d, 320.5284886658307d, FluidPhase.SubcooledLiquid, null),
+            new OperationalFluidNodeSeed.ConservedInventory("header", 3226.6676799875017d, 8341269781.836807d, 6247420.79633744d, 551.3857140089044d, FluidPhase.SaturatedMixture, 0.9980222497643916d),
+            new OperationalFluidNodeSeed.ConservedInventory("hotwell", 9891.883976124516d, 1960455817.8974555d, 10808.002981101188d, 320.48565943701715d, FluidPhase.SubcooledLiquid, null),
+            new OperationalFluidNodeSeed.ConservedInventory("outlet", 1375.1470283335327d, 2104014157.044389d, 6666459.282132472d, 555.6953255146227d, FluidPhase.SaturatedMixture, 0.21514191260824764d),
+            new OperationalFluidNodeSeed.ConservedInventory("pressure", 7507.98659453272d, 9219919054.66319d, 6916459.281680611d, 553.3082998275795d, FluidPhase.SubcooledLiquid, null),
+            new OperationalFluidNodeSeed.ConservedInventory("steam", 3306.8269899275992d, 8552155703.008327d, 6398665.756830846d, 552.9659692384483d, FluidPhase.SaturatedMixture, 0.9997887804601804d),
+            new OperationalFluidNodeSeed.ConservedInventory("stop-out", 3132.5687588735377d, 8093920564.089228d, 6069485.550324526d, 549.4887377389139d, FluidPhase.SaturatedMixture, 0.9960097013407739d),
+            new OperationalFluidNodeSeed.ConservedInventory("suction", 7502.7459746337245d, 9214263779.64126d, 6416459.281680332d, 553.1499999999999d, FluidPhase.SubcooledLiquid, null),
+            new OperationalFluidNodeSeed.ConservedInventory("turbine-inlet", 1958.8758929660944d, 5027614200.998343d, 3816252.638393859d, 520.7342832023278d, FluidPhase.SaturatedMixture, 0.9766676884377713d),
+        };
+
+        return CreateRuntimeEngine(
+            includeEvidenceDerivedElectricalProtections: true,
+            runtimeStep: runtimeStep,
+            deterministicSeedStepCount: seedStepCount,
+            useHybridSemiImplicitHydraulics: false,
+            useFourNodeBranchContinuityShadowIntegration: false,
+            useFourNodeBranchContinuityCorrectedCommitOptIn: true,
+            thermodynamicClosureMode: WaterSteamThermodynamicClosureMode.ReferenceConsistentTabulatedInverseDomain,
+            initialFuelTemperatureCelsiusOverride: 305.62514906467646d,
+            initialStructureTemperatureCelsiusOverride: 289.13956081139787d,
+            initialNeutronPopulationOverride: NeutronPopulation.FromRelative(0.3297117650655722d),
+            initialControlValvePercentOpenOverride: 29.281329697436618d,
+            initialCondensatePumpPercentOverride: 42.966515369975916d,
+            initialFeedwaterPumpPercentOverride: 96.930826801569154d,
             initialFluidNodeSeeds: fluidNodeSeeds,
             governorIntegralReferenceMode: TurbineGovernorIntegralReferenceMode.SynchronousSpeedWhenParalleled,
             turbineAdmissionPhasePolicyOverride: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,

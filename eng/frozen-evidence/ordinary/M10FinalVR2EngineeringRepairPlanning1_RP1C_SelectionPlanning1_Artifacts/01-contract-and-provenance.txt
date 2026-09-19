@@ -1,0 +1,11 @@
+﻿status=PASS-AS-AUTHORED
+gate=RP1C-ENGINEERING-REPAIR-SELECTION-PLANNING1
+contract-schema=m10-final-vr2-engineering-repair-planning1-rp1c-selection-planning1-v1
+fdpc2-returned-adjudication=PASS
+c4-selection-ready=True
+c4-runtime-profile=AMBIENT-UNSET
+d3-selection-ready=False
+selection-ready-count=1
+future-gate=RP1C-ENGINEERING-REPAIR-SELECTION1
+rp1c-selection-authorized=False
+production-repair-authorized=False

@@ -1,0 +1,5 @@
+mode,phase_i_classification,production_selectable,retirement_action
+ExplicitCommittedState,AUTHORITATIVE-PRODUCTION,True,RETAIN
+DeterministicHybridSemiImplicit,AUDIT-ONLY-HISTORICAL,False,RETIRE-AFTER-AUDIT-CONSOLIDATION
+FourNodeBranchContinuityShadowIntegrated,AUDIT-ONLY-HISTORICAL,False,RETIRE-AFTER-AUDIT-CONSOLIDATION
+FourNodeBranchContinuityCorrectedCommitOptIn,QUALIFIED-OPT-IN,True,RETAIN

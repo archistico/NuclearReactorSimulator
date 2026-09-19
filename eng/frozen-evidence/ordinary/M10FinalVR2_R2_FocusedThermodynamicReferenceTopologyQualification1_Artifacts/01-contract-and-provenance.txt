@@ -1,0 +1,13 @@
+status=PASS-R2-EVIDENCE-COMPLETE
+gate=R2-FOCUSED-THERMODYNAMIC-REFERENCE-TOPOLOGY-QUALIFICATION1
+planning1-returned-adjudication=PASS
+production-mode=ReferenceConsistentTabulatedInverseDomain
+production-mode-value=2
+independent-reference=IAPWS-R7-97-2012-REGIONS-1-2-4
+c4-is-physical-oracle=False
+ordinary-release-suite=PASS
+production-src-change=False
+historical-tests-change=False
+default-activation=False
+exact-v9-composition=False
+r3-planning-authorized-now=False
