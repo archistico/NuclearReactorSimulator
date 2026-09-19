@@ -139,3 +139,6 @@ R1 Implementation Planning 1 returned `PASS-AS-AUTHORED`; the implementation gat
 
 - `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md` — Diagnostic 3 REV1 preexecution portability and counterfactual-guard Planning Amendment 1.
 - `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_VALIDATOR_CONTRACT_HYGIENE_HOTFIX1.md` — Active REV1 validator hotfix: Markdown presence checks are JSON-declared ASCII markers only.
+
+- `M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md` - returned local/hosted diff adjudication proving a single culture-sensitive `VoidText` leaf and zero physical numeric drift. NRS-MARKER:DOCNAV-FPV1-DIAG1-ADJUDICATION1
+- `M10974_FINGERPRINT_V1_CROSS_HOST_DETERMINISM_HOTFIX1.md` - REV2 presentation-only invariant-culture repair with V1 compatibility preservation, Exact-V9 transitive-anchor preservation and cross-culture/hosted-GREEN qualification. NRS-MARKER:DOCNAV-FPV1-HOTFIX1

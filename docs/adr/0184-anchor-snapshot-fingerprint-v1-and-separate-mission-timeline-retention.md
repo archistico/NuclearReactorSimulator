@@ -33,3 +33,13 @@ M11.2 owns future multi-algorithm compatibility if fingerprint v2 is ever introd
 - making objective events unbounded forever;
 - using the current combined last-100 `RecentEvents` list as the full M10.9.7.4 timeline owner;
 - truncating/decimating M9.1 recording v1 without a new versioned recording contract.
+
+## 2026-09-19 addendum - cross-host culture defect correction
+
+NRS-MARKER:ADR0184-FPV1-CULTURE-DEFECT-ADDENDUM
+
+Cross-host Diagnostic 1 proved that the H29 step-128 live presentation differed at exactly one leaf: branch `VoidText` rendered `Void 0,0%` under `it-IT` and `Void 0.0%` under `en-US`. Structure, ordering and all numeric leaves were identical.
+
+Hotfix 1 REV1 initially attempted an explicit V1 re-anchor to the invariant-presentation payload. Local `CI CURRENT EVIDENCE` rejected that strategy because the authoritative Exact-V9 audit derives a second-level determinism hash from 128 V1 fingerprints; re-anchoring V1 therefore changed a frozen transitive historical contract.
+
+REV2 preserves the original ADR decision instead of weakening it. The live presentation becomes invariant-culture (`Void 0.0%`), while `sha256-control-room-snapshot-v1` applies a narrowly scoped compatibility canonicalization for the historical primary-branch `VoidText` byte representation before hashing. The populated H29 V1 golden remains `63643e...f362`, the Exact-V9 derived anchor remains `7880AD...B5418`, and the hosted pre-repair hash `3e1137...93d4` remains diagnostic provenance only. Any future intentional fingerprint-surface change still requires a new algorithm id.

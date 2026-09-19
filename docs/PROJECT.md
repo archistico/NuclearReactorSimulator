@@ -338,3 +338,19 @@ Current command from repository root in PowerShell:
 ```
 
 Return the complete Diagnostic 2 artifact directory containing `01`–`09` before causal-seam selection or repair planning.
+
+## 2026-09-19 - Fingerprint V1 cross-host culture drift isolated; Hotfix 1 candidate
+
+NRS-MARKER:PROJECT-FPV1-CROSS-HOST-HOTFIX1
+
+Cross-host Diagnostic 1 returned local and hosted captures with identical 731-node structure and zero numeric-leaf differences. The only scalar difference is `/primaryCircuit/loops/0/branches/0/voidText`: `Void 0,0%` under local `it-IT` versus `Void 0.0%` under hosted `en-US`. Hotfix 1 REV1 attempted to re-anchor V1, but local `CI CURRENT EVIDENCE` correctly rejected that approach because the Exact-V9 authoritative audit derives a second-level hash from V1 fingerprints. REV2 instead renders the live presentation invariant while preserving the frozen V1 canonical bytes and therefore the historical H29 `63643e...f362` and Exact-V9 `7880AD...B5418` anchors. R3 remains RED and the VR2 physical branch is unchanged; VR2 Repair Planning 1 remains blocked until hosted ordinary CI is GREEN.
+
+Active local qualification command for this checkpoint:
+
+```powershell
+.\scripts\run-m10974-fingerprint-v1-cross-host-determinism-hotfix1.cmd
+```
+
+Return the complete `artifacts/m10974-fingerprint-v1-cross-host-determinism-hotfix1-rev2` folder. If local qualification is GREEN, push the exact same candidate and require GitHub hosted `ordinary-ci` GREEN before unblocking VR2 Repair Planning 1.
+
+NRS-MARKER:PROJECT-FPV1-HOTFIX1-ACTIVE-COMMAND

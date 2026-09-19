@@ -1,0 +1,46 @@
+{
+  "schema": "m10974-fingerprint-v1-cross-host-diagnostic1-returned-evidence-adjudication1-v1",
+  "status": "PASS-AS-AUTHORED",
+  "date": "2026-09-19",
+  "engineering_classification": "PRESENTATION-CULTURE-DRIFT-CONFIRMED",
+  "evidence": {
+    "directory": "eng/frozen-evidence/ordinary/M10974_FingerprintV1_CrossHostDiagnostic1_ReturnedEvidence",
+    "local_zip_sha256": "36A12D5E1B9102CE56365A2667A7F414D5474D09CAC97C88D9C587E238930613",
+    "hosted_outer_zip_sha256": "E314DD0E4721446A59C9875D5626F03B5D5FCB994B76ADA7705E993C0CC01318",
+    "hosted_inner_zip_sha256": "C2DBECCCA65EAD6F713512D683A8805D0FA178FC0477F1FEC533F275E84AEF44",
+    "diff_summary_sha256": "3F6F15BE31582498FCB9AC5CE1A91087750B661DA8B26E4380CB1CDA4FF49976"
+  },
+  "findings": {
+    "historical_local_fingerprint": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "hosted_canonical_payload_fingerprint": "3e11375d2e0abce2ccbb4d35434f7e51724d5977341319f7dad188d7c9e593d4",
+    "json_node_count": 731,
+    "scalar_leaf_count": 596,
+    "path_difference_count": 0,
+    "kind_difference_count": 0,
+    "scalar_raw_value_difference_count": 1,
+    "numeric_leaf_difference_count": 0,
+    "first_divergent_pointer": "/primaryCircuit/loops/0/branches/0/voidText",
+    "leaf_kind": "String",
+    "local_raw_value": "Void 0,0%",
+    "hosted_raw_value": "Void 0.0%",
+    "payload_length_bytes": 14947,
+    "payload_differing_byte_count": 1,
+    "payload_differing_byte_zero_based_offset": 3150,
+    "physical_numeric_drift": false,
+    "serialization_shape_drift": false,
+    "floating_point_cross_host_drift": false
+  },
+  "root_cause": {
+    "owner": "Application/ControlRoom presentation formatting",
+    "file": "src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs",
+    "expression": "VoidText branch OutletVoidFraction Percent format 0.0",
+    "mechanism": "CurrentCulture-sensitive interpolated numeric formatting"
+  },
+  "authority": {
+    "cross_host_determinism_hotfix1_planning_authorized": true,
+    "production_physics_change_authorized": false,
+    "r3_change_authorized": false,
+    "r3_passed": false,
+    "vr2_repair_owner_selected": false
+  }
+}

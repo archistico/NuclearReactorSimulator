@@ -297,7 +297,7 @@ public static class ControlRoomSnapshotProjector
                             branch.OutletPhase.ToString().ToUpperInvariant(),
                             FlowDirection(directionValue),
                             branch.OutletVoidFraction.HasValue
-                                ? $"Void {branch.OutletVoidFraction.Value.Percent:0.0}%"
+                                ? FormattableString.Invariant($"Void {branch.OutletVoidFraction.Value.Percent:0.0}%")
                                 : "Void —");
                     })
                     .ToArray();

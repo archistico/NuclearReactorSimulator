@@ -5,10 +5,11 @@
 <!-- NRS-MARKER:M10974-FINGERPRINT-V1-CROSS-HOST-DIAGNOSTIC1-ROADMAP -->
 
 1. Stable Contract V2.1.1 is GREEN locally and reaches the hosted complete ordinary suite.
-2. Hosted ordinary CI has one historical RED only: the H29 step-128 fingerprint-v1 schema anchor.
-3. **Fingerprint V1 Cross-Host Determinism Diagnostic 1 is NEXT** — capture exact normalized payload and JSON-node hashes locally and from the same hosted failing execution.
-4. Do not change the v1 golden or algorithm before the first differing serialized path is identified and adjudicated.
-5. Repair Planning 1 remains blocked until hosted ordinary-ci is explicitly GREEN.
+2. Cross-host Diagnostic 1 is closed: the hosted RED is a single culture-sensitive branch `VoidText` presentation leaf with zero physical/numeric drift.
+3. Hotfix 1 REV1 is locally rejected because V1 re-anchoring propagated into the frozen Exact-V9 second-level determinism anchor.
+4. **Fingerprint V1 Cross-Host Determinism Hotfix 1 REV2 is NEXT** — make the live branch text invariant while preserving the historical V1 canonical bytes and Exact-V9 anchor; run focused culture regression and full local/current-evidence CI.
+5. Push the exact REV2 candidate only after local GREEN and require hosted ordinary-ci GREEN before closing the CI block.
+6. Repair Planning 1 remains blocked until hosted ordinary-ci is explicitly GREEN.
 
 R3 remains RED and `repair-owner=UNSELECTED`.
 
@@ -737,3 +738,9 @@ The older sequence below is therefore superseded and retained only as provenance
 `Diagnostic 2 returned PASS -> deterministic ordinary CI local + hosted PASS -> causal-seam adjudication/planning -> separately authorized repair candidate -> bounded fast gate -> R3 Short Requalification 3 -> R4 Planning 1`
 
 Current execution order is defined in the live future-sequence section and `M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md`.
+
+## 2026-09-19 - Immediate CI unblock: Fingerprint V1 Cross-Host Determinism Hotfix 1
+
+NRS-MARKER:ROADMAP-FPV1-HOTFIX1-NEXT
+
+Execute `M10974 Fingerprint V1 Cross-Host Determinism Hotfix 1 REV2`: validate invariant live `VoidText`, frozen V1 compatibility (`63643e...f362` under both cultures), and unchanged Exact-V9 derived anchor (`7880AD...B5418`) through full local ordinary/current-evidence CI. Push the same candidate only after local GREEN and require hosted ordinary CI GREEN. Do not resume VR2/R3 repair planning before hosted GREEN.

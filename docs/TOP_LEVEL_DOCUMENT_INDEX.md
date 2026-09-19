@@ -313,3 +313,12 @@ These nested research documents are retained here because existing validation co
 
 - `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md` — Diagnostic 3 REV1 preexecution portability and counterfactual-guard Planning Amendment 1.
 - `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_VALIDATOR_CONTRACT_HYGIENE_HOTFIX1.md` — Active REV1 validator document-contract hygiene hotfix.
+
+## M10.9.7.4 Fingerprint V1 cross-host determinism
+
+NRS-MARKER:INDEX-FPV1-CROSS-HOST-HOTFIX1
+
+| Document | Purpose/title |
+| --- | --- |
+| [`M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md`](M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md) | Cross-Host Diagnostic 1 returned-evidence adjudication |
+| [`M10974_FINGERPRINT_V1_CROSS_HOST_DETERMINISM_HOTFIX1.md`](M10974_FINGERPRINT_V1_CROSS_HOST_DETERMINISM_HOTFIX1.md) | REV2 culture-invariant live presentation repair with frozen V1/Exact-V9 compatibility preservation |

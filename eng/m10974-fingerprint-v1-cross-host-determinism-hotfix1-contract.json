@@ -1,0 +1,136 @@
+{
+  "schema": "m10974-fingerprint-v1-cross-host-determinism-hotfix1-rev2-v1",
+  "status": "CANDIDATE-READY-FOR-LOCAL-VALIDATION",
+  "date": "2026-09-19",
+  "revision": 2,
+  "purpose": "Repair the confirmed culture-sensitive branch VoidText presentation leak while preserving the frozen sha256-control-room-snapshot-v1 byte contract and all transitive historical determinism anchors.",
+  "rev1_local_result": {
+    "status": "RED",
+    "failure": "M10FinalExactV9ProductionActivationDecisionTests.AuthoritativeExactV9_DefaultAndMissionPathsRemainHealthyConservativeDeterministicAndFailClosed",
+    "expected_transitive_fingerprint": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "observed_actual_prefix": "6B7F8FD7CF487433F3E0000ED3575B54EC4D75E257E444207F",
+    "adjudication": "REV1 changed every dependent V1 fingerprint by re-anchoring the H29 payload. REV2 rejects that approach and preserves the frozen V1 payload contract instead."
+  },
+  "prerequisite": {
+    "adjudication_contract": "eng/m10974-fingerprint-v1-cross-host-diagnostic1-returned-evidence-adjudication1-contract.json",
+    "required_classification": "PRESENTATION-CULTURE-DRIFT-CONFIRMED"
+  },
+  "fingerprint": {
+    "algorithm_id": "sha256-control-room-snapshot-v1",
+    "frozen_v1_fingerprint": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "observed_hosted_pre_repair_payload_fingerprint": "3e11375d2e0abce2ccbb4d35434f7e51724d5977341319f7dad188d7c9e593d4",
+    "live_canonical_void_text": "Void 0.0%",
+    "legacy_v1_branch_void_text": "Void 0,0%",
+    "compatibility_strategy": "LIVE-INVARIANT-PRESENTATION-WITH-V1-LEGACY-BRANCH-VOIDTEXT-CANONICALIZATION",
+    "golden_reanchor_authorized": false,
+    "multiple_runtime_golden_hashes_allowed": false,
+    "historical_hash_preserved_as_runtime_golden": true
+  },
+  "transitive_anchor": {
+    "test": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalExactV9ProductionActivationDecisionTests.cs",
+    "test_sha256": "F40821EFBF39AF3B8984FD5AF407EF9C4A3F953220ADD150CC3D9F1B33CA5634",
+    "expected_determinism_fingerprint": "7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418",
+    "must_remain_unchanged": true
+  },
+  "allowed_changes": {
+    "projector_file": "src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomSnapshotProjector.cs",
+    "projector_old_sha256": "DDB0B98294CD7F12BC513191E8B0CEF9D8FC6AFB7711441AE8270479EAEC67CE",
+    "projector_new_sha256": "777C9C834C583B807C14A0AC109434576216CC68AD7DB43915FB8AB5DDE14075",
+    "fingerprint_file": "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs",
+    "fingerprint_old_sha256": "E0396F7241A31AC2DBDBD653369659BADB90B0600FB046D892DD1DC6A2F6186B",
+    "fingerprint_new_sha256": "060DD9B6ECBFC2AE68A128FFF09A2C6B9DE53DEB755F4225ADB661E14B46F92E",
+    "schema_test_file": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/MissionPerformance/M10974FingerprintV1SchemaAnchorTests.cs",
+    "schema_test_old_sha256": "311AB9D9AA18E1B548F69A9F7BA721F1DF3353775D1FFBC46B69B6C448469D0B",
+    "schema_test_new_sha256": "9F8D4605954A48993FC8C75D7BAA3824A4646088AB8CD6240E18B8923A762BA3",
+    "diagnostic_helper_file": "tests/NuclearReactorSimulator.Application.Tests/ControlRoom/MissionPerformance/M10974FingerprintV1CrossHostDiagnostic1.cs",
+    "diagnostic_helper_old_sha256": "4B0B788AE6DE23FD5C00EC8E7EAAC4A3B417996472F9E22E6994860130786F39",
+    "diagnostic_helper_new_sha256": "5A3E54235213AC266C3744F5CB9359B6988957FC95B8EA600D0CD5868F697C96"
+  },
+  "frozen_boundaries": {
+    "src_excluding_allowed_file_count": 959,
+    "src_excluding_allowed_tree_sha256": "93CB50CC3109562F8D60CFD0A351FCEDDE6D617F57CF32462D298516C646FE27",
+    "tests_excluding_allowed_file_count": 398,
+    "tests_excluding_allowed_tree_sha256": "74A835DCCBD7E34736BCFC220F34ABED14BB3AF1AE21D7479DF48B6837C7D453",
+    "h29_factory_sha256": "EE6D8B866AFCC581D4D0AE3A84EE906DD9BE03FF447D6B772DEAE2092CEA858C",
+    "ci_ordinary_sha256": "E8AEC59B23F5FB0A8E61870D808D05D267B056E9A1D135523A72FFE56F5C4F1D",
+    "ordinary_workflow_sha256": "BDCB5A1F196E2C47050459DDA75A388649104203FFFFEE33018CF6462B5A1AD3"
+  },
+  "qualification": {
+    "focused_class": "NuclearReactorSimulator.Application.Tests.ControlRoom.MissionPerformance.M10974FingerprintV1SchemaAnchorTests",
+    "required_cultures": ["it-IT", "en-US"],
+    "required_live_void_text_both": "Void 0.0%",
+    "required_v1_fingerprint_both": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362",
+    "diagnostic_payload_hash_must_match_actual": true,
+    "full_ordinary_ci_required": true,
+    "current_evidence_exact_v9_audit_required": true,
+    "hosted_ordinary_green_required_for_closure": true
+  },
+  "authority": {
+    "application_presentation_hotfix_authorized": true,
+    "v1_compatibility_canonicalization_authorized": true,
+    "fingerprint_algorithm_id_change_authorized": false,
+    "fingerprint_schema_change_authorized": false,
+    "fingerprint_golden_reanchor_authorized": false,
+    "exact_v9_anchor_change_authorized": false,
+    "physics_change_authorized": false,
+    "vr2_r3_change_authorized": false,
+    "r3_passed": false,
+    "vr2_repair_planning_unblocked_only_after_hosted_green": true
+  },
+  "document_validation_policy": {
+    "mode": "JSON-DECLARED-ASCII-MARKERS-ONLY",
+    "marker_cardinality": "EXACTLY-ONE"
+  },
+  "documentation_marker_files": [
+    {
+      "path": "docs/M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md",
+      "markers": [
+        "NRS-MARKER:FPV1-DIAG1-RETURNED-ADJUDICATION1",
+        "NRS-MARKER:FPV1-DIAG1-PRESENTATION-CULTURE-DRIFT-CONFIRMED",
+        "NRS-MARKER:FPV1-DIAG1-NO-PHYSICAL-NUMERIC-DRIFT",
+        "NRS-MARKER:FPV1-DIAG1-HOTFIX1-AUTHORIZED"
+      ]
+    },
+    {
+      "path": "docs/M10974_FINGERPRINT_V1_CROSS_HOST_DETERMINISM_HOTFIX1.md",
+      "markers": [
+        "NRS-MARKER:FPV1-CROSS-HOST-HOTFIX1",
+        "NRS-MARKER:FPV1-HOTFIX1-REV2",
+        "NRS-MARKER:FPV1-HOTFIX1-PRESENTATION-ONLY",
+        "NRS-MARKER:FPV1-HOTFIX1-V1-COMPATIBILITY-PRESERVED",
+        "NRS-MARKER:FPV1-HOTFIX1-EXACT-V9-ANCHOR-PRESERVED",
+        "NRS-MARKER:FPV1-HOTFIX1-HOSTED-GREEN-REQUIRED"
+      ]
+    },
+    {
+      "path": "docs/adr/0184-anchor-snapshot-fingerprint-v1-and-separate-mission-timeline-retention.md",
+      "markers": ["NRS-MARKER:ADR0184-FPV1-CULTURE-DEFECT-ADDENDUM"]
+    },
+    {
+      "path": "docs/PROJECT.md",
+      "markers": [
+        "NRS-MARKER:PROJECT-FPV1-CROSS-HOST-HOTFIX1",
+        "NRS-MARKER:PROJECT-FPV1-HOTFIX1-ACTIVE-COMMAND"
+      ]
+    },
+    {
+      "path": "docs/ROADMAP.md",
+      "markers": ["NRS-MARKER:ROADMAP-FPV1-HOTFIX1-NEXT"]
+    },
+    {
+      "path": "docs/README.md",
+      "markers": [
+        "NRS-MARKER:DOCNAV-FPV1-DIAG1-ADJUDICATION1",
+        "NRS-MARKER:DOCNAV-FPV1-HOTFIX1"
+      ]
+    },
+    {
+      "path": "docs/TOP_LEVEL_DOCUMENT_INDEX.md",
+      "markers": ["NRS-MARKER:INDEX-FPV1-CROSS-HOST-HOTFIX1"]
+    },
+    {
+      "path": "docs/MISSION_PERFORMANCE_DETERMINISTIC_TIMELINE.md",
+      "markers": ["NRS-MARKER:MISSION-TIMELINE-FPV1-CROSS-HOST-COMPATIBILITY"]
+    }
+  ]
+}

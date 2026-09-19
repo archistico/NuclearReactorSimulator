@@ -46,7 +46,7 @@ The diagnostic also records whether its independently reconstructed payload SHA 
 
 Local command:
 
-`./scripts/run-m10974-fingerprint-v1-cross-host-diagnostic1.cmd`
+`.\scripts\run-m10974-fingerprint-v1-cross-host-diagnostic1.cmd`
 
 Return:
 

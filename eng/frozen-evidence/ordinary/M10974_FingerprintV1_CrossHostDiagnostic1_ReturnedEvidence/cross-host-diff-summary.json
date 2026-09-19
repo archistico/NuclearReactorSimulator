@@ -1,0 +1,31 @@
+{
+  "schema": "m10974-fingerprint-v1-cross-host-diagnostic1-returned-diff-v1",
+  "classification": "PRESENTATION-CULTURE-DRIFT",
+  "local": {
+    "culture": "it-IT",
+    "framework": ".NET 10.0.5",
+    "actual_fingerprint": "63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362"
+  },
+  "hosted": {
+    "culture": "en-US",
+    "framework": ".NET 10.0.12",
+    "actual_fingerprint": "3e11375d2e0abce2ccbb4d35434f7e51724d5977341319f7dad188d7c9e593d4"
+  },
+  "node_count": 731,
+  "scalar_leaf_count": 596,
+  "path_differences": 0,
+  "kind_differences": 0,
+  "scalar_raw_value_differences": 1,
+  "first_divergent_pointer": "/primaryCircuit/loops/0/branches/0/voidText",
+  "leaf_kind": "String",
+  "local_raw_value": "\"Void 0,0%\"",
+  "hosted_raw_value": "\"Void 0.0%\"",
+  "numeric_leaf_differences": 0,
+  "payload_length_bytes": 14947,
+  "payload_differing_byte_count": 1,
+  "payload_differing_byte_zero_based_offset": 3150,
+  "local_byte": 44,
+  "hosted_byte": 46,
+  "physical_numeric_drift": false,
+  "serialization_shape_drift": false
+}

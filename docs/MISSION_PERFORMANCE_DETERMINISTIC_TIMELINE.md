@@ -81,3 +81,13 @@ M10.9.7.4 does not change:
 - M10.9.7.3 `RecentEvents` semantics.
 
 Fingerprint v2/multi-algorithm compatibility remains M11.2. Recorder memory/streaming/performance and notification-cost work remains M11.3.
+
+## 2026-09-19 cross-host determinism correction
+
+NRS-MARKER:MISSION-TIMELINE-FPV1-CROSS-HOST-REANCHOR
+
+The H29 step-128 fingerprint `63643e5506a6b99f8106950ecb25a5243e9755b3bc96bf2a60e96c219216f362` remains the frozen V1 golden. Cross-host Diagnostic 1 proved one environment-dependent live presentation byte in `PrimaryCircuit...VoidText` and no structural or numeric drift. Hotfix 1 REV2 renders the live value with invariant decimal syntax while preserving the historical V1 canonical byte representation inside the fingerprint compatibility layer; the hosted pre-repair `3e1137...93d4` hash remains evidence provenance only.
+
+NRS-MARKER:MISSION-TIMELINE-FPV1-CROSS-HOST-COMPATIBILITY
+
+This exception does not weaken the compatibility rule above: future intentional fingerprint-visible schema, topology, ordering, numeric semantics or presentation-surface changes still require an explicit versioning decision. The historical hash is provenance only and is not an accepted alternate runtime golden.

@@ -15,12 +15,6 @@ internal static class M10974FingerprintV1CrossHostDiagnostic1
 
     private static readonly UTF8Encoding Utf8NoBom = new(false);
 
-    private static readonly JsonSerializerOptions FingerprintSerializerOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        WriteIndented = false,
-    };
-
     private static readonly JsonSerializerOptions SummarySerializerOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -42,24 +36,7 @@ internal static class M10974FingerprintV1CrossHostDiagnostic1
         var outputDirectory = Path.GetFullPath(configuredDirectory);
         Directory.CreateDirectory(outputDirectory);
 
-        var normalized = new ControlRoomSnapshot(
-            snapshot.LogicalStep,
-            ControlRoomRunState.Paused,
-            snapshot.TotalMeasuredSignalCount,
-            snapshot.InvalidMeasuredSignalCount,
-            snapshot.AnnunciatedAlarmCount,
-            snapshot.UnacknowledgedAlarmCount,
-            snapshot.ReactorScramActive,
-            snapshot.TurbineTripActive,
-            snapshot.GeneratorTripActive,
-            snapshot.ReactorCore,
-            snapshot.PrimaryCircuit,
-            snapshot.TurbineSecondary,
-            snapshot.Electrical,
-            snapshot.AlarmEvents,
-            snapshot.Faults);
-
-        var payload = JsonSerializer.SerializeToUtf8Bytes(normalized, FingerprintSerializerOptions);
+        var payload = ControlRoomSnapshotFingerprint.SerializeCanonicalPayload(snapshot);
         var payloadHash = Sha256(payload);
         var payloadText = Utf8NoBom.GetString(payload);
 

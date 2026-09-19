@@ -1,3 +1,4 @@
+using System.Globalization;
 using NuclearReactorSimulator.Application.ControlRoom;
 using NuclearReactorSimulator.Application.Scenarios;
 using NuclearReactorSimulator.Application.Scenarios.Recording;
@@ -51,5 +52,49 @@ public sealed class M10974FingerprintV1SchemaAnchorTests
         var actualFingerprint = ControlRoomSnapshotFingerprint.Compute(snapshot);
         M10974FingerprintV1CrossHostDiagnostic1.TryWrite(snapshot, GoldenFingerprint, actualFingerprint);
         Assert.Equal(GoldenFingerprint, actualFingerprint);
+    }
+
+    [Fact]
+    public void FingerprintV1_PopulatedExactVersionFixtureIsInvariantAcrossItalianAndUsCultures()
+    {
+        var originalCulture = CultureInfo.CurrentCulture;
+        var originalUiCulture = CultureInfo.CurrentUICulture;
+        try
+        {
+            var italian = ComputeFixtureFingerprintAndVoidText(CultureInfo.GetCultureInfo("it-IT"));
+            var us = ComputeFixtureFingerprintAndVoidText(CultureInfo.GetCultureInfo("en-US"));
+
+            Assert.Equal("Void 0.0%", italian.VoidText);
+            Assert.Equal("Void 0.0%", us.VoidText);
+            Assert.Equal(GoldenFingerprint, italian.Fingerprint);
+            Assert.Equal(GoldenFingerprint, us.Fingerprint);
+            Assert.Equal(italian.Fingerprint, us.Fingerprint);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+            CultureInfo.CurrentUICulture = originalUiCulture;
+        }
+    }
+
+    private static (string Fingerprint, string VoidText) ComputeFixtureFingerprintAndVoidText(CultureInfo culture)
+    {
+        CultureInfo.CurrentCulture = culture;
+        CultureInfo.CurrentUICulture = culture;
+
+        var registry = new VersionedInitialConditionRegistry(new IVersionedInitialConditionFactory[]
+        {
+            new DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory(),
+        });
+        var factory = new ScenarioSessionFactory(registry);
+        var session = factory.Load(DesktopIntegratedOperationsH29ActivationCandidateProgram.Scenario);
+
+        session.CommandDispatcher.Dispatch(new ControlRoomCommand(ControlRoomCommandKind.Run));
+        var advance = session.Coordinator.AdvanceRunning(stepCount: 128, publicationStride: 128);
+        Assert.Equal(128, advance.ExecutedStepCount);
+        var snapshot = session.Coordinator.Current;
+        var branch = Assert.Single(Assert.Single(snapshot.PrimaryCircuit.Loops).Branches);
+
+        return (ControlRoomSnapshotFingerprint.Compute(snapshot), branch.VoidText);
     }
 }

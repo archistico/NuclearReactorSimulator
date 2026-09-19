@@ -4921,3 +4921,12 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Added validator source-encoding hygiene and aggregate missing-marker reporting.
 - Added `docs/VALIDATOR_AUTHORING_RULES.md` as the project-wide validator authoring rule.
 - No engineering review, REV1 guard, production, historical-test or authority change.
+
+## 2026-09-19 - M10.9.7.4 Fingerprint V1 Cross-Host Determinism Hotfix 1 REV2 candidate
+
+- Freezes local `it-IT` and GitHub hosted `en-US` Diagnostic 1 evidence and adjudicates the single divergent leaf at `/primaryCircuit/loops/0/branches/0/voidText` as presentation-culture drift; 731 paths/kinds match and there are zero numeric-leaf differences.
+- Records Hotfix 1 REV1 local validation RED in `CI CURRENT EVIDENCE`: re-anchoring V1 propagated into the frozen Exact-V9 second-level determinism anchor (`7880AD...B5418` expected, observed new value beginning `6B7F8F...`).
+- REV2 renders branch `VoidText` invariant (`Void 0.0%`) for the live Application presentation while adding a narrowly scoped V1 compatibility canonicalization for the historical primary-branch decimal-comma byte representation.
+- Preserves `sha256-control-room-snapshot-v1`, the populated H29 golden `63643e...f362`, the Exact-V9 deterministic anchor `7880AD...B5418`, H29 seed/runtime semantics, ordinary-CI runner/workflow semantics and all VR2/R3 physics.
+- Updates the diagnostic helper to serialize the exact production V1 canonical payload, keeping `payloadSha256 == actualFingerprint` true.
+- Adds fresh-session `it-IT` versus `en-US` regression and requires focused PASS, full local ordinary/current-evidence PASS and hosted ordinary GREEN before the CI block is closed.

@@ -20,6 +20,12 @@ public static class ControlRoomSnapshotFingerprint
 
     public static string Compute(ControlRoomSnapshot snapshot)
     {
+        var payload = SerializeCanonicalPayload(snapshot);
+        return Convert.ToHexString(SHA256.HashData(payload)).ToLowerInvariant();
+    }
+
+    internal static byte[] SerializeCanonicalPayload(ControlRoomSnapshot snapshot)
+    {
         ArgumentNullException.ThrowIfNull(snapshot);
 
         var normalized = new ControlRoomSnapshot(
@@ -33,13 +39,49 @@ public static class ControlRoomSnapshotFingerprint
             snapshot.TurbineTripActive,
             snapshot.GeneratorTripActive,
             snapshot.ReactorCore,
-            snapshot.PrimaryCircuit,
+            NormalizeLegacyV1PrimaryCircuit(snapshot.PrimaryCircuit),
             snapshot.TurbineSecondary,
             snapshot.Electrical,
             snapshot.AlarmEvents,
             snapshot.Faults);
 
-        var payload = JsonSerializer.SerializeToUtf8Bytes(normalized, SerializerOptions);
-        return Convert.ToHexString(SHA256.HashData(payload)).ToLowerInvariant();
+        return JsonSerializer.SerializeToUtf8Bytes(normalized, SerializerOptions);
+    }
+
+    private static PrimaryCircuitPanelSnapshot NormalizeLegacyV1PrimaryCircuit(PrimaryCircuitPanelSnapshot primaryCircuit)
+    {
+        if (primaryCircuit.Loops.Count == 0)
+        {
+            return primaryCircuit;
+        }
+
+        var loops = primaryCircuit.Loops
+            .Select(static loop => loop with
+            {
+                Branches = loop.Branches
+                    .Select(static branch => branch with
+                    {
+                        VoidText = NormalizeLegacyV1BranchVoidText(branch.VoidText),
+                    })
+                    .ToArray(),
+            })
+            .ToArray();
+
+        return primaryCircuit with { Loops = loops };
+    }
+
+    private static string NormalizeLegacyV1BranchVoidText(string voidText)
+    {
+        // Fingerprint v1 historically captured this one branch presentation leaf under it-IT, where the decimal
+        // separator was a comma. The live presentation is now invariant-culture, but v1 must preserve its frozen
+        // byte contract across hosts rather than silently redefining every dependent historical fingerprint.
+        if (!voidText.StartsWith("Void ", StringComparison.Ordinal) ||
+            !voidText.EndsWith('%') ||
+            voidText.IndexOf('.') < 0)
+        {
+            return voidText;
+        }
+
+        return voidText.Replace('.', ',');
     }
 }
