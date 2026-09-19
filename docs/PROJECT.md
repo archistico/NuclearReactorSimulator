@@ -1,5 +1,13 @@
 # Project — current authoritative state
 
+## Hosted ordinary-ci V2.1.1 validator checkpoint — 2026-09-19
+
+<!-- NRS-MARKER:CI-STABLE-CONTRACT-V2_1_1-CHECKPOINT -->
+
+Stable Contract V2 reached the hosted full test suite and exposed the persistent single historical `Application.Tests` failure. V2.1 added single-execution hosted log capture, but its local static validator false-RED because a PowerShell single-quoted literal searched for doubled backslashes while the workflow correctly contained single Windows path separators. V2.1.1 preserves the V2.1 hosted behavior and replaces brittle full-line YAML `.Contains()` checks with ASCII markers, slash normalization, multiline structural regex checks, and exact-one hosted entry-point cardinality.
+
+Next activity: validate V2.1.1 locally, then push the same candidate to capture the exact hosted failing test without rerunning or filtering the suite. R3 remains RED; `repair-owner=UNSELECTED`; repair planning remains blocked pending hosted ordinary-ci GREEN.
+
 ## Hosted ordinary-ci contract V2 recovery checkpoint — 2026-09-19
 
 <!-- NRS-MARKER:CI-STABLE-CONTRACT-V2-CHECKPOINT -->

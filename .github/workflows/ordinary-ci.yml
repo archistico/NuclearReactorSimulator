@@ -21,6 +21,34 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
+      # NRS-CI-MARKER:V2_1_1-SINGLE-EXECUTION-CAPTURE
       - name: Ordinary build, tests and current evidence
-        shell: cmd
-        run: eng\ci-ordinary.cmd
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifacts/ci | Out-Null
+          & cmd.exe /d /c "eng\ci-ordinary.cmd > artifacts\ci\ordinary-ci-hosted.log 2>&1"
+          $exitCode = $LASTEXITCODE
+          Get-Content -LiteralPath artifacts/ci/ordinary-ci-hosted.log
+          "exit-code=$exitCode" | Set-Content -LiteralPath artifacts/ci/ordinary-ci-hosted-exit-code.txt -Encoding ascii
+          exit $exitCode
+      # NRS-CI-MARKER:V2_1_1-FAILURE-SUMMARY
+      - name: Extract first hosted test failure
+        if: failure()
+        shell: pwsh
+        run: |
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\eng\summarize-hosted-ordinary-test-failure.ps1" -LogPath ".\artifacts\ci\ordinary-ci-hosted.log" -OutputPath ".\artifacts\ci\ordinary-first-failure.txt"
+          if (Test-Path -LiteralPath ".\artifacts\ci\ordinary-first-failure.txt") {
+            "## ordinary-ci first failure" | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+            '```text' | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+            Get-Content -LiteralPath ".\artifacts\ci\ordinary-first-failure.txt" | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+            '```' | Add-Content -LiteralPath $env:GITHUB_STEP_SUMMARY
+          }
+      # NRS-CI-MARKER:V2_1_1-DIAGNOSTIC-UPLOAD
+      - name: Upload ordinary CI diagnostics
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ordinary-ci-diagnostics
+          path: artifacts/ci/
+          if-no-files-found: warn
+          retention-days: 14

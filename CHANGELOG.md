@@ -1,3 +1,17 @@
+
+## GitHub Ordinary CI Stable Contract V2.1.1 - validator structural hotfix
+
+- fixes the V2.1 false RED caused by a PowerShell single-quoted literal containing doubled backslashes while the workflow correctly contains single Windows path separators;
+- preserves V2.1 hosted single-execution logging, exit-code propagation, failure summary and diagnostic artifact behavior;
+- replaces brittle full-line workflow `.Contains()` checks with ASCII markers plus normalized-slash regular-expression checks;
+- requires exactly one hosted `eng/ci-ordinary.cmd` occurrence and forbids a second `dotnet test` in the workflow;
+- no production source, test semantics, threshold or R3 authority change.
+
+## 2026-09-19 - GitHub Ordinary CI Stable Contract V2.1 hosted failure capture
+
+- Preserves Stable Contract V2 deterministic test semantics.
+- Adds single-execution hosted log capture, first-failure extraction, GitHub step summary, and diagnostic artifact upload.
+- No retry, filter, continue-on-error, production/test semantic change, threshold change, R3 PASS or repair authority.
 # Changelog
 
 ## 2026-09-19 - GitHub Ordinary CI Stable Contract V2

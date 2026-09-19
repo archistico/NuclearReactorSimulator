@@ -8,8 +8,8 @@ if not exist "NuclearReactorSimulator.sln" exit /b 1
 rem Keep local and hosted ordinary CI build semantics identical inside this entry point.
 set "CI=true"
 
-echo [CI ORDINARY] Validating stable CI contract V2...
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\eng\validate-github-ordinary-ci-stable-contract-v2.ps1" || exit /b 1
+echo [CI ORDINARY] Validating stable CI contract V2.1.1 hosted-failure-capture...
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File ".\eng\validate-github-ordinary-ci-stable-contract-v2_1_1.ps1" || exit /b 1
 
 echo [CI ORDINARY] Restoring packages...
 dotnet restore || exit /b 1

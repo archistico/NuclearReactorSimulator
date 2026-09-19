@@ -1,5 +1,17 @@
 # Roadmap
 
+## Live checkpoint — hosted failure capture V2.1.1
+
+<!-- NRS-MARKER:CI-STABLE-CONTRACT-V2_1_1-ROADMAP -->
+
+1. Stable Contract V2 local execution is GREEN and the hosted workflow reaches the full suite.
+2. Hosted ordinary CI still has one historical `Application.Tests` failure.
+3. V2.1 failure capture behavior is retained, but its local validator false-RED on a doubled-backslash literal mismatch.
+4. **Stable Contract V2.1.1 local validation is NEXT**, followed by hosted execution of the same candidate.
+5. Repair Planning 1 remains blocked until hosted ordinary-ci is explicitly GREEN.
+
+R3 remains RED and `repair-owner=UNSELECTED`.
+
 ## Live checkpoint — Diagnostic 3 REV1 causal closure / CI Stable Contract V2 recovery
 
 <!-- NRS-MARKER:R3-CAUSAL-CLOSURE-HOSTED-CI-NEXT -->
