@@ -1,5 +1,17 @@
 # Project — current authoritative state
 
+## Causal-closure consolidation / hosted-CI hold checkpoint — 2026-09-19
+
+<!-- NRS-MARKER:R3-CAUSAL-CLOSURE-CONSOLIDATION-CHECKPOINT -->
+
+Diagnostic 3 REV1 is complete and its returned `01`-`07` evidence is independently adjudicated `CAUSAL-CLOSURE-CONFIRMED`. The causal seam is `STEAM-DRUM-LIQUID-TRANSPORT-VS-MODE2-SUCTION-TRANSPORT`; `repair-owner=UNSELECTED`; R3 remains RED.
+
+A documentation/architecture inventory has now mapped the current ownership split without opening repair planning. The selected `IFluidThermodynamicModel` owns post-step conserved-inventory resolution, while `SteamDrumSeparationSolver` still constructs an independent default `SimplifiedWaterSteamThermodynamicModel` for saturation/phase-split/stream properties. Purely injecting a mode2 model into the drum would not by itself close the seam because the current public forward saturation provider is bit-identical between mode1 and mode2.
+
+Hosted GitHub `ordinary-ci` remains `PENDING-CONFIRMATION`. The only next authorized activity is `CONFIRM-HOSTED-ORDINARY-CI-GREEN`. Production repair planning/implementation, seed retuning, threshold/envelope changes, C4/payload changes, canonical exact-v9 changes, R3 Requalification 3 and R4 remain blocked.
+
+Architecture inventory: `M10_FINAL_VR2_R3_CAUSAL_CLOSURE_ARCHITECTURE_INVENTORY1.md`.
+
 ## Diagnostic 3 REV1 returned-evidence adjudication checkpoint - 2026-09-19
 
 <!-- NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-CHECKPOINT -->
@@ -18,7 +30,9 @@ The first REV1 execution attempt stopped before build because the validator depe
 **REV1 validator contract-hygiene hotfix:** the first post-amendment execution stopped before build because the active validator still contained redundant Markdown literal-presence checks after the marker contract. Hotfix 1 removes all active REV1 Markdown prose/file-name presence assertions, moves index/navigation presence to JSON-declared ASCII markers with exact-one cardinality, and leaves physics, guards, scenario and authority unchanged.
 
 
-## New-chat restart checkpoint — 2026-09-19
+## Historical new-chat restart checkpoint — 2026-09-19 (superseded by causal-closure consolidation)
+
+The text in this section is retained as historical provenance. Any wording below that says `active`, `next` or `authoritative` is superseded by the causal-closure checkpoint above and must not be used to select current work.
 
 **Authoritative active engineering state:** M10 Final / VR2 / R3 remains **RED**. R1 and R2 are PASS. No new production repair, seed retuning, tolerance change, C4/payload change or canonical exact-v9 change is authorized.
 

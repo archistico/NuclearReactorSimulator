@@ -49,6 +49,7 @@ The current live R3 documents are:
 - `M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3_REV1.md`
 <!-- NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-DOCNAV -->
 - `M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md` — returned `01`-`07` independent adjudication; causal closure confirmed, repair owner unselected, hosted CI confirmation next.
+- [`M10_FINAL_VR2_R3_CAUSAL_CLOSURE_ARCHITECTURE_INVENTORY1.md`](M10_FINAL_VR2_R3_CAUSAL_CLOSURE_ARCHITECTURE_INVENTORY1.md) — causal-closure ownership map and non-selective architecture inventory under hosted-CI hold.
 
 Older R1/R2/R3 planning and diagnostic documents remain provenance or executable-contract dependencies; they are not the restart point.
 

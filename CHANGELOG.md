@@ -1,3 +1,15 @@
+# Changelog
+
+## 2026-09-19 - M10 Final VR2 R3 Causal Closure Architecture Inventory 1
+
+- Consolidated the returned Diagnostic 3 REV1 `CAUSAL-CLOSURE-CONFIRMED` result without changing authority.
+- Recorded the current thermodynamic ownership map: mode2 conserved inventory is resolved by the selected model while `SteamDrumSeparationSolver` still constructs an independent default forward-property model.
+- Established a pre-planning technical fact: pure selected-model injection is insufficient under current semantics because public forward saturation properties are bit-identical across mode1/mode2.
+- Counted the broader existing saturation-provider impact surface (10 production call sites) and separated full forward-saturation alignment from bounded transport-property alignment.
+- Refined Families A/B/C descriptively without selecting, ranking or authorizing any repair.
+- Repaired stale top-level PROJECT/ROADMAP wording so the live next authority is consistently `CONFIRM-HOSTED-ORDINARY-CI-GREEN`.
+- No `src/`, test, physics, seed, threshold, C4/payload, exact-v9, CI, R3 or R4 change.
+
 ## 2026-09-19 - M10 Final VR2 R3 Diagnostic 3 REV1 returned-evidence adjudication 1
 
 - Froze the complete returned Diagnostic 3 REV1 `01`-`07` artifact set with SHA-256 provenance.

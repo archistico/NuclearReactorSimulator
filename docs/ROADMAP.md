@@ -1,15 +1,16 @@
 # Roadmap
 
-## Live checkpoint — Diagnostic 3 REV1 Preexecution Amendment 1
+## Live checkpoint — Diagnostic 3 REV1 returned causal closure / hosted CI hold
 
-<!-- NRS-MARKER:DIAG3-REV1-AMENDMENT1-NEXT -->
+<!-- NRS-MARKER:R3-CAUSAL-CLOSURE-HOSTED-CI-NEXT -->
 
-1. Audit Diagnostic 3 REV1 Preexecution / Planning Amendment 1.
-2. If PASS-AS-AUTHORED, execute the same Diagnostic 3 REV1 test-only scenario with portable hashing and the derived counterfactual component budget.
-3. Return artifacts `01`–`07` for independent adjudication.
-4. Hosted `ordinary-ci` GREEN remains mandatory before any production repair planning or implementation.
+1. Diagnostic 3 REV1 execution is COMPLETE.
+2. Returned-evidence independent adjudication is COMPLETE / `CAUSAL-CLOSURE-CONFIRMED`.
+3. Causal-closure architecture inventory is COMPLETE as documentation only; it selects no repair family.
+4. **Hosted GitHub `ordinary-ci` confirmation is NEXT.**
+5. Only after hosted `ordinary-ci` is explicitly GREEN may `R3 Energy-Transport Ownership Repair Planning 1` begin.
 
-No production repair, seed retuning, model-threshold change, C4/payload change, canonical exact-v9 change, R3 PASS or R4 authority is granted by this amendment.
+R3 remains RED. `repair-owner=UNSELECTED`. No production repair, seed retuning, model-threshold change, C4/payload change, canonical exact-v9 change, R3 Requalification 3 or R4 authority is granted by the architecture inventory.
 
 
 This file contains **future work only**. The authoritative current checkpoint and active validation gate remain in `PROJECT.md`.

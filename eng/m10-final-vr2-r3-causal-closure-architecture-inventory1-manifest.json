@@ -1,0 +1,40 @@
+{
+  "schema": "m10-final-vr2-r3-causal-closure-architecture-inventory1-v1",
+  "status": "DOCUMENTATION-AND-ARCHITECTURE-INVENTORY-ONLY",
+  "date": "2026-09-19",
+  "engineering_classification": "CAUSAL-CLOSURE-CONFIRMED",
+  "localized_seam": "STEAM-DRUM-LIQUID-TRANSPORT-VS-MODE2-SUCTION-TRANSPORT",
+  "repair_owner": "UNSELECTED",
+  "baseline": {
+    "src_file_count": 961,
+    "src_tree_sha256": "3BCC1ABA5FA29A67ECD907E575351A82364A26E7D29B8E789722C8104ADBAE28",
+    "historical_tests_file_count": 396,
+    "historical_tests_tree_sha256": "18B644F718BAA7D779F218186AB22433C79BF719C02F6C24CBDF61050EAE5C23"
+  },
+  "architecture_inventory": {
+    "production_get_saturation_properties_call_sites": 10,
+    "pure_selected_model_injection_closes_confirmed_seam": false,
+    "reason": "Current public forward saturation properties are IEEE-754 bit-identical across mode1 and mode2.",
+    "families_described_not_selected": [
+      "A_SELECTED_MODEL_PROVIDER_OWNERSHIP_INJECTION",
+      "B_EXPLICIT_CLOSURE_AWARE_TRANSPORT_PROPERTY_CONTRACT",
+      "C_BOUNDED_PRIMARY_CIRCUIT_MODE2_TRANSPORT_BRIDGE"
+    ]
+  },
+  "ci": {
+    "deterministic_ordinary_local": "PASS",
+    "hosted_ordinary": "PENDING-CONFIRMATION"
+  },
+  "authority": {
+    "next_authorized_activity": "CONFIRM-HOSTED-ORDINARY-CI-GREEN",
+    "repair_planning_authorized": false,
+    "production_repair_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_change_authorized": false,
+    "canonical_exact_v9_change_authorized": false,
+    "r3_passed": false,
+    "r3_requalification3_authorized": false,
+    "r4_planning_authorized": false
+  }
+}
