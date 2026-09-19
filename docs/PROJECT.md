@@ -387,3 +387,18 @@ Local qualification command:
 
 If local qualification is GREEN, push the exact candidate unchanged and require hosted `ordinary-ci` GREEN before
 closing the CI block. R3 remains RED/frozen until that hosted gate passes.
+
+
+## 2026-09-20 - R3 Energy-Transport Ownership Repair Planning 1 candidate
+
+NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-PLANNING1-CURRENT
+
+Diagnostic 3 REV1 remains independently adjudicated `CAUSAL-CLOSURE-CONFIRMED` at
+`STEAM-DRUM-LIQUID-TRANSPORT-VS-MODE2-SUCTION-TRANSPORT`. The project-owner process rule is now local-authority:
+local qualification is sufficient for advancement and hosted GitHub CI is advisory unless explicitly restored as a gate.
+
+The active planning-only candidate compares the three previously frozen ownership families and authors **Family B - explicit closure-aware transport-property contract** as the selected design for audit. The selected repair owner is
+`ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT`; no production file is changed by this planning candidate.
+
+A returned local planning PASS may authorize only `R3-ENERGY-TRANSPORT-OWNERSHIP-REPAIR-IMPLEMENTATION1`.
+R3 remains RED until a later 120 s / 12,000-step R3 Requalification 3 returns and is adjudicated PASS.

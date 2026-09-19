@@ -744,3 +744,23 @@ Current execution order is defined in the live future-sequence section and `M10_
 NRS-MARKER:ROADMAP-FPV1-HOTFIX1-NEXT
 
 Execute `M10974 Fingerprint V1 Cross-Host Determinism Hotfix 1 REV2`: validate invariant live `VoidText`, frozen V1 compatibility (`63643e...f362` under both cultures), and unchanged Exact-V9 derived anchor (`7880AD...B5418`) through full local ordinary/current-evidence CI. Push the same candidate only after local GREEN and require hosted ordinary CI GREEN. Do not resume VR2/R3 repair planning before hosted GREEN.
+
+
+## Live authority supersession and R3 repair sequence - 2026-09-20
+
+NRS-MARKER:R3-LOCAL-AUTHORITY-SUPERSESSION
+
+The earlier hosted-`ordinary-ci` hold on R3 production-repair planning is superseded by explicit project-owner policy: local qualification is authoritative for advancement; hosted CI is advisory unless explicitly restored as a blocking gate. This process change does not relax physics, conservation, deterministic same-host, fast-gate or R3 envelope requirements.
+
+NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-NEXT
+
+Current sequence:
+
+1. Diagnostic 3 REV1 returned/adjudicated `CAUSAL-CLOSURE-CONFIRMED` - COMPLETE.
+2. Exact-V9 Determinism Contract V2 local qualification - PASS.
+3. **R3 Energy-Transport Ownership Repair Planning 1 - CURRENT**. Compare Families A/B/C; authored selection for audit is Family B, `ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT`.
+4. Bounded Repair Implementation 1 + unchanged first-100-step fast gate - only after returned planning PASS.
+5. R3 Short Exact-V9-Equivalent Shadow Composition Requalification 3 - only after Implementation 1 fast-gate PASS.
+6. R4 Planning 1 - only after returned/adjudicated R3 PASS.
+
+No seed retuning, threshold relaxation, C4 payload mutation, runtime IF97 dependency or canonical exact-v9 reinterpretation is allowed in this sequence.

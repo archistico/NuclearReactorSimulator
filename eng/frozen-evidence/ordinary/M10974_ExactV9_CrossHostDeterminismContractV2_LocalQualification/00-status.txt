@@ -1,0 +1,14 @@
+status=STARTED
+scope=cross-host-determinism-contract-v2
+physics-change=False
+tolerance-change=False
+vr2-r3-change=False
+superseded-runtime-alignment-workflow-absent=PASS
+static-validator=PASS
+build=PASS
+fingerprint-v1-focused=PASS
+fingerprint-v2-focused=PASS
+exact-v9-authoritative-v2=PASS
+status=PASS
+frozen-cross-host-v2=99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73
+historical-raw-v1=7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418

@@ -1,3 +1,10 @@
+# 2026-09-20 - M10 Final VR2 R3 Energy-Transport Ownership Repair Planning 1 Validator Hotfix 1
+
+- Fixed a false `src tree drift` caused by host-dependent path ordering in the planning validator.
+- The frozen source tree was authored with ordinal case-sensitive path ordering; Windows PowerShell `Sort-Object` used case-insensitive ordering and produced a different aggregate hash for the same 961 byte-identical files.
+- `Get-FrozenTree` now sorts normalized repository-relative paths with `System.StringComparer.Ordinal` before hashing.
+- Contract, frozen tree hash, production source, tests, repair-family selection, thresholds, physics and R3 authority remain unchanged.
+
 # 2026-09-19 — M10.9.7.4 Exact-V9 Cross-Host Determinism Contract V2 Validator/Apply Hotfix 1
 
 - Fixed candidate application semantics for the superseded one-shot workflow: ZIP overlay cannot represent file deletion, so the V2 runner now deletes exactly `.github/workflows/exact-v9-runtime-alignment-diagnostic.yml` before validation if that stale file remains from the preceding runtime-alignment candidate.
@@ -5012,3 +5019,13 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Freezes the returned-evidence V2 128-step aggregate at `99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73`; all 128 V2 step fingerprints match between the qualified local trace and hosted returned evidence.
 - Removes the one-shot `exact-v9-runtime-alignment-diagnostic` workflow after adjudication so it cannot remain a permanent expected-RED status.
 - Does not change simulation physics, thermodynamic/turbine logic, numerical tolerances, production policy, mission binding or VR2/R3 authority.
+
+
+## 2026-09-20 - M10 Final VR2 R3 Energy-Transport Ownership Repair Planning 1 - CANDIDATE
+
+- Treats Diagnostic 3 REV1 `CAUSAL-CLOSURE-CONFIRMED` as the frozen causal prerequisite for planning.
+- Records the project-owner process supersession: local qualification is authoritative; hosted CI is advisory unless explicitly restored as a gate.
+- Compares the previously frozen ownership Families A/B/C and authors Family B (`ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT`) as the selected repair design for audit.
+- Freezes a five-path production implementation surface, with one new internal transport-property capability and mode-2 pressure-keyed lookup over the immutable `NRSVR2C4.v1.bin` dense saturation data.
+- Preserves mode 0/1 transport behavior, public saturation/void/level behavior, raw seed, thresholds, C4 payload, canonical exact-v9 semantics and production runtime IF97 exclusion.
+- Adds no production change; a returned local planning PASS may authorize only the separately versioned Repair Implementation 1 fast gate.

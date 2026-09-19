@@ -1,0 +1,222 @@
+{
+  "schema": "m10-final-vr2-r3-energy-transport-ownership-repair-planning1-v1",
+  "date": "2026-09-20",
+  "status": "CANDIDATE-PLANNING-ONLY-FAMILY-B-SELECTED",
+  "engineering_classification": "CAUSAL-CLOSURE-CONFIRMED",
+  "localized_seam": "STEAM-DRUM-LIQUID-TRANSPORT-VS-MODE2-SUCTION-TRANSPORT",
+  "process_authority": {
+    "policy": "LOCAL-QUALIFICATION-AUTHORITATIVE-HOSTED-ADVISORY",
+    "effective_date": "2026-09-20",
+    "supersedes_prior_hosted_green_prerequisite": true,
+    "physics_thresholds_weakened": false
+  },
+  "prerequisites": {
+    "diagnostic3_rev1_returned_adjudication": {
+      "path": "eng/m10-final-vr2-r3-diagnostic3-rev1-returned-evidence-adjudication1-contract.json",
+      "sha256": "76D890233F987AAB0FDC7B9FEFB81A0E0248BD6957C11576212E0ADC8C9B96DF"
+    },
+    "diagnostic3_summary": {
+      "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SuctionEnergyTransportCausalSeamDiagnostic3Rev1_ReturnedArtifacts/06-diagnostic-summary.txt",
+      "sha256": "9CB18FC44B93FE60B041CC4FE57E446B221FFA2F5F0E6EBF3F702709B85F3296"
+    },
+    "diagnostic3_pre_repair_review": {
+      "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SuctionEnergyTransportCausalSeamDiagnostic3Rev1_ReturnedArtifacts/07-pre-repair-review.txt",
+      "sha256": "6A9477BC85E20501AECDC3F8A1F1D87A55E9A1344E7826970784CC0E074ACC67"
+    },
+    "local_contract_v2_status": {
+      "path": "eng/frozen-evidence/ordinary/M10974_ExactV9_CrossHostDeterminismContractV2_LocalQualification/00-status.txt",
+      "sha256": "0778C41878E13008AD94D83E64E4A7E9D9B3D60BC42981C3ED7B3BA9D9DF73BD",
+      "source_zip_sha256": "E7021671C5C92884F4E6FCC5DE9066699C20CB10EB8E02A54E77905EE5D85EC3",
+      "required_status": "PASS"
+    },
+    "local_contract_v2_contract": {
+      "path": "eng/frozen-evidence/ordinary/M10974_ExactV9_CrossHostDeterminismContractV2_LocalQualification/01-contract.json",
+      "sha256": "BD4530D24C9A91CCA0E5F3FF3C8D753BBFEDF3788C5FD108122F7C3F9E4D87C3"
+    }
+  },
+  "baseline": {
+    "src": {
+      "file_count": 961,
+      "tree_sha256": "0ECBD950C034FC18E650A934DC449C4B41D0574434A96BE3EC1720DEDF177EE3"
+    },
+    "tests": {
+      "file_count": 401,
+      "tree_sha256": "AA34B23F5AF7A40E28985D5A97D5ECA7B2C7385EE0203DFFD40C1F924EF74915"
+    }
+  },
+  "causal_findings": {
+    "first_causal_checkpoint": "seed-step1",
+    "first_causal_node": "suction",
+    "candidate_observed_energy_rate_w": -5216271.784591675,
+    "production_energy_identity_abs_residual_w": 6.383657455444336e-05,
+    "if97_saturation_pressure_abs_delta_pa": 0.0,
+    "if97_reference_vs_mode2_suction_abs_delta_j_kg": 0.00014754291623830795,
+    "if97_minus_historical_drum_liquid_transport_j_kg": 52162.71184104541,
+    "if97_counterfactual_net_energy_abs_w": 0.014754295349121094,
+    "if97_counterfactual_derived_budget_w": 0.10223668223103162,
+    "if97_counterfactual_rate_identity_abs_residual_w": 2.068356699455598e-09,
+    "forward_provider_mode1_mode2_ieee754_identical": true,
+    "mode2_raw_inverse_path": "C2LiquidTablePrefix",
+    "mode2_step1_inverse_path": "C2MixturePrefix"
+  },
+  "families": {
+    "A": {
+      "name": "MODEL-PROVIDER-OWNERSHIP-INJECTION",
+      "disposition": "NOT-SELECTED-INSUFFICIENT-AS-CURRENTLY-EXPOSED",
+      "reason": "Existing public forward saturation provider is bit-identical between modes 1 and 2; injection alone cannot change the causal transport quantity."
+    },
+    "B": {
+      "name": "EXPLICIT-CLOSURE-AWARE-TRANSPORT-PROPERTY-CONTRACT",
+      "disposition": "SELECTED",
+      "reason": "Moves transport-property ownership to the active closure, reuses immutable C4 reference payload for mode 2, preserves historical modes and avoids runtime IF97."
+    },
+    "C": {
+      "name": "BOUNDED-MODE2-TRANSPORT-BRIDGE",
+      "disposition": "NOT-SELECTED-CONTINGENCY-ONLY",
+      "reason": "Would embed mode-specific thermodynamic policy at the consumer and preserve duplicated ownership."
+    }
+  },
+  "selection": {
+    "repair_owner": "ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT",
+    "selected_family": "B",
+    "composition_root": "IntegratedPrimaryCircuitSolver",
+    "consumer": "SteamDrumSeparationSolver",
+    "mode2_lookup_topology": "PRESSURE-KEYED-DENSE-SATURATION-LINEAR-INTERPOLATION",
+    "production_if97_dependency_allowed": false,
+    "c4_payload_change_allowed": false,
+    "raw_seed_retuning_allowed": false,
+    "threshold_change_allowed": false,
+    "canonical_exact_v9_reinterpretation_allowed": false
+  },
+  "planned_production_surface": [
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+      "change": "ADD"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs",
+      "change": "MODIFY",
+      "pre_sha256": "59772C4044FA19C67BAAF463B3314D143E2C1CFCFFA8A64D4D611DBF63663922"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "change": "MODIFY",
+      "pre_sha256": "44EA256839872EAB330132BA8AB536ABC7B38BB5522671BA7AB33E27BF6C4B1A"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/SteamDrums/SteamDrumSeparationSolver.cs",
+      "change": "MODIFY",
+      "pre_sha256": "B688CFBAE00986F263277F78A12EE4C00CC326BC3DC9AE4A618F478526A5F23B"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/Integration/IntegratedPrimaryCircuitSolver.cs",
+      "change": "MODIFY",
+      "pre_sha256": "FBAB13A83696D706E8615D9077B29A09238FB178C2DE560C51F9425828E05BD1"
+    }
+  ],
+  "frozen_non_target_source": {
+    "iwatersteam_saturation_provider_sha256": "79B1EC157E8EE06BE537EC7BB9F7157B75A254073D9154C3C29836DC5B6D9A91",
+    "watersteam_saturation_properties_sha256": "9405FC5B1783CC45B1AB61AB63941FB4AFF0D4C6D9EB3B9036CB570B41857F5F"
+  },
+  "implementation_acceptance": {
+    "transport": {
+      "mode2_vs_if97_abs_delta_j_kg_max": 0.001,
+      "mode2_vs_raw_suction_abs_delta_j_kg_max": 0.001,
+      "historical_modes_bit_identical": true,
+      "steady_state_lookup_allocated_bytes_per_call_max": 0,
+      "resolve_time_resource_io_count_max": 0,
+      "resolve_time_payload_decode_count_max": 0
+    },
+    "seed_step1": {
+      "mass_identity_abs_residual_kg_s_max": 1e-09,
+      "production_energy_identity_abs_residual_w_max": 0.001,
+      "transport_identity_abs_residual_j_kg_max": 1e-09,
+      "corrected_net_energy_abs_w_max": 0.10223668223103162,
+      "rate_identity_abs_residual_w_max": 1e-06,
+      "historical_multimegawatt_discontinuity_must_remain": false
+    },
+    "fast_gate": {
+      "runtime_step_ms": 10,
+      "running_steps": 100,
+      "electrical_export_mwe": [
+        4.99,
+        5.01
+      ],
+      "primary_pump_mass_flow_kg_s": [
+        99.9,
+        100.1
+      ],
+      "drum_level_fraction": [
+        0.49,
+        0.51
+      ],
+      "governor_output_percent": [
+        29.27,
+        29.3
+      ],
+      "max_envelope_violation_steps": 0,
+      "trip_allowed": false,
+      "breaker_open_allowed": false,
+      "rollback_allowed": false,
+      "nonfinite_allowed": false
+    },
+    "local_regression": {
+      "build": "PASS",
+      "ordinary_suite": "PASS",
+      "exact_v9_contract_v2": "PASS",
+      "historical_steam_drum_tests": "PASS",
+      "fluid_energy_transport_tests": "PASS"
+    }
+  },
+  "authority": {
+    "production_repair_authorized_now": false,
+    "next_authorized_gate_after_planning_pass": "R3-ENERGY-TRANSPORT-OWNERSHIP-REPAIR-IMPLEMENTATION1",
+    "implementation_pass_successor": "R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION3",
+    "r3_passed": false,
+    "r4_planning_authorized": false,
+    "vr3_authorized": false,
+    "p3_r1_authorized": false
+  },
+  "documents": {
+    "planning": {
+      "path": "docs/M10_FINAL_VR2_R3_ENERGY_TRANSPORT_OWNERSHIP_REPAIR_PLANNING1.md",
+      "sha256": "8FE6F2A5691ED0D29BD2BFA9CF4CC82DA3D1D9E3B56F333CE1E2CE2CFDCECDF1"
+    },
+    "preimplementation_review": {
+      "path": "docs/M10_FINAL_VR2_R3_ENERGY_TRANSPORT_OWNERSHIP_REPAIR_PLANNING1_PREEXECUTION_REVIEW.md",
+      "sha256": "56AAF7A088747F4A575B74BE56EE2D0CC2E70940D962001BB1C62E04225F23EF"
+    }
+  },
+  "document_markers": {
+    "docs/M10_FINAL_VR2_R3_ENERGY_TRANSPORT_OWNERSHIP_REPAIR_PLANNING1.md": [
+      "NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-PLANNING1",
+      "NRS-MARKER:R3-LOCAL-QUALIFICATION-AUTHORITY",
+      "NRS-MARKER:R3-REPAIR-FAMILY-MATRIX",
+      "NRS-MARKER:R3-REPAIR-OWNER-SELECTED",
+      "NRS-MARKER:R3-REPAIR-IMPLEMENTATION-FAST-GATE"
+    ],
+    "docs/M10_FINAL_VR2_R3_ENERGY_TRANSPORT_OWNERSHIP_REPAIR_PLANNING1_PREEXECUTION_REVIEW.md": [
+      "NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-PREIMPLEMENTATION-REVIEW",
+      "NRS-MARKER:R3-REPAIR-PLANNING-LOCAL-AUTHORITY"
+    ],
+    "docs/PROJECT.md": [
+      "NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-PLANNING1-CURRENT"
+    ],
+    "docs/ROADMAP.md": [
+      "NRS-MARKER:R3-LOCAL-AUTHORITY-SUPERSESSION",
+      "NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-NEXT"
+    ],
+    "docs/TOP_LEVEL_DOCUMENT_INDEX.md": [
+      "NRS-MARKER:INDEX-R3-ENERGY-TRANSPORT-REPAIR-PLANNING1"
+    ],
+    "docs/README.md": [
+      "NRS-MARKER:DOCNAV-R3-ENERGY-TRANSPORT-REPAIR-PLANNING1"
+    ]
+  },
+  "expected_returned_artifacts": [
+    "01-contract-and-provenance.txt",
+    "02-option-matrix-and-selected-seam.txt",
+    "03-planning-summary.txt",
+    "04-preimplementation-review.txt"
+  ]
+}
