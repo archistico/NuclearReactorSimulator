@@ -1,0 +1,8 @@
+status=PASS-AS-AUTHORED
+selected-family=B
+selected-repair-owner=ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT
+production-repair-authorized-now=False
+next-authorized-gate=R3-ENERGY-TRANSPORT-OWNERSHIP-REPAIR-IMPLEMENTATION1
+implementation-fast-gate-running-steps=100
+r3-passed=False
+r4-planning-authorized=False

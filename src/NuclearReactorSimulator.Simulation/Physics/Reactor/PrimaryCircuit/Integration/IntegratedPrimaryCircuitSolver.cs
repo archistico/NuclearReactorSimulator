@@ -35,7 +35,12 @@ public sealed class IntegratedPrimaryCircuitSolver
         _coreSolver = new AggregatedCorePowerSolver(definition.CoreDefinition);
         _channelGroupSolver = new FuelChannelGroupSolver(definition.ChannelGroups);
         _circulationSolver = new MainCirculationSystemSolver(definition.MainCirculationSystem);
-        _steamDrumSolver = new SteamDrumSeparationSolver(definition.SteamDrumSystem);
+        var phaseTransportPropertyProvider = thermodynamicModel is SimplifiedWaterSteamThermodynamicModel simplifiedWaterSteam
+            ? simplifiedWaterSteam.PhaseTransportPropertyProvider
+            : null;
+        _steamDrumSolver = new SteamDrumSeparationSolver(
+            definition.SteamDrumSystem,
+            phaseTransportPropertyProvider);
         _boundarySolver = new PrimaryCircuitBoundarySolver(definition.BoundarySystem);
         _networkOrchestrator = new PlantNetworkOrchestrator(thermodynamicModel);
     }

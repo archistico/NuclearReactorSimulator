@@ -40,6 +40,7 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
     private readonly WaterSteamThermodynamicClosureMode _closureMode;
     private readonly ReferenceConsistentTabulatedInverseResolver? _referenceConsistentTabulatedInverseResolver;
+    private readonly IWaterSteamPhaseTransportPropertyProvider _phaseTransportPropertyProvider;
 
     public SimplifiedWaterSteamThermodynamicModel()
         : this(WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology)
@@ -58,6 +59,8 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         {
             _referenceConsistentTabulatedInverseResolver = new ReferenceConsistentTabulatedInverseResolver();
         }
+
+        _phaseTransportPropertyProvider = new ActiveClosurePhaseTransportPropertyProvider(this);
     }
 
     public static Temperature MinimumTemperature { get; } = Temperature.FromKelvins(TriplePointTemperatureKelvins);
@@ -68,6 +71,9 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
 
     internal bool IsLegacyBranchContinuityFusionEligible
         => _closureMode != WaterSteamThermodynamicClosureMode.ReferenceConsistentTabulatedInverseDomain;
+
+    internal IWaterSteamPhaseTransportPropertyProvider PhaseTransportPropertyProvider
+        => _phaseTransportPropertyProvider;
 
     public FluidThermodynamicState Resolve(
         FluidNodeDefinition definition,
@@ -407,6 +413,38 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         }
 
         return EvaluateSaturation(saturationTemperatureKelvins.Value);
+    }
+
+    private WaterSteamPhaseTransportProperties ResolveSaturatedPhaseTransportProperties(
+        Pressure pressure,
+        Temperature temperature)
+    {
+        if (_referenceConsistentTabulatedInverseResolver is not null)
+        {
+            return _referenceConsistentTabulatedInverseResolver.ResolveSaturatedPhaseTransportProperties(pressure);
+        }
+
+        var saturation = GetSaturationProperties(temperature);
+        return new WaterSteamPhaseTransportProperties(
+            saturation.SaturatedLiquidDensity,
+            saturation.SaturatedVaporDensity,
+            saturation.SaturatedLiquidInternalEnergy,
+            saturation.SaturatedVaporInternalEnergy);
+    }
+
+    private sealed class ActiveClosurePhaseTransportPropertyProvider : IWaterSteamPhaseTransportPropertyProvider
+    {
+        private readonly SimplifiedWaterSteamThermodynamicModel _owner;
+
+        internal ActiveClosurePhaseTransportPropertyProvider(SimplifiedWaterSteamThermodynamicModel owner)
+        {
+            _owner = owner;
+        }
+
+        public WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(
+            Pressure pressure,
+            Temperature temperature)
+            => _owner.ResolveSaturatedPhaseTransportProperties(pressure, temperature);
     }
 
     private static bool TryResolveSaturatedMixture(

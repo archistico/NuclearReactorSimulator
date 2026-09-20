@@ -402,3 +402,25 @@ The active planning-only candidate compares the three previously frozen ownershi
 
 A returned local planning PASS may authorize only `R3-ENERGY-TRANSPORT-OWNERSHIP-REPAIR-IMPLEMENTATION1`.
 R3 remains RED until a later 120 s / 12,000-step R3 Requalification 3 returns and is adjudicated PASS.
+
+## 2026-09-20 - R3 Energy-Transport Ownership Repair Implementation 1 candidate
+
+NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-IMPLEMENTATION1-CURRENT
+
+Planning 1 returned `PASS-AS-AUTHORED` and formally selected Family B, `ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT`. The current candidate implements only that bounded ownership repair: historical modes 0/1 preserve their forward saturation transport values bit-for-bit; mode 2 obtains saturated liquid/vapor transport properties from the existing immutable C4 dense saturation payload; `SteamDrumSeparationSolver` consumes those properties only for current steam-source advected-energy bookkeeping. Geometry, void/level presentation, seed, thresholds, payload, default closure mode and canonical Exact-V9 remain unchanged.
+
+R3 remains RED. A local Implementation 1 PASS authorizes only `R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION3`.
+
+
+## 2026-09-20 - R3 Post-Repair Dynamic-Equilibrium Replanning 1
+
+NRS-MARKER:R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-REPLANNING1-CURRENT
+
+Family B post-repair causal closure is now confirmed independently of the historical 100-step envelope. The exact historical envelope was already RED before the repair and therefore cannot serve as a discriminator for Family B implementation success.
+
+The current planning-only candidate freezes the repaired causal seam as closed and separates two residual operating-point owners:
+
+- primary hydraulic drift, whose direction reverses after Family B and therefore requires a repaired-physics equilibrium reconstruction;
+- speed-control/governor drift, which is effectively common-mode pre/post repair and must be analyzed as an initial controller-state residual.
+
+No production, seed, controller state, threshold, C4, Exact-V9 or R3 authority changes are present. A returned local PASS authorizes only `R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-RESIDUAL-DIAGNOSTIC1`.

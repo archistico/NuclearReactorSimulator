@@ -764,3 +764,29 @@ Current sequence:
 6. R4 Planning 1 - only after returned/adjudicated R3 PASS.
 
 No seed retuning, threshold relaxation, C4 payload mutation, runtime IF97 dependency or canonical exact-v9 reinterpretation is allowed in this sequence.
+
+## 2026-09-20 - R3 Energy-Transport Ownership Repair Implementation 1
+
+NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-IMPLEMENTATION1-NEXT
+
+Planning 1 is returned `PASS-AS-AUTHORED`; Family B is selected. Execute the bounded Implementation 1 fast gate with no retuning. Required local gates are focused transport ownership, unchanged 100-step health envelope, Exact-V9 Contract V2 and ordinary regression. If all pass, the only authorized successor is `R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION3`. R3 stays RED until that 120 s / 12,000-step qualification is returned and adjudicated PASS.
+
+
+## 2026-09-20 - R3 Post-Repair Dynamic-Equilibrium Replanning 1
+
+NRS-MARKER:R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-REPLANNING1-NEXT
+
+Family B causal closure is COMPLETE and accepted. The historical zero-envelope fast gate is retained as a future equilibrium qualification envelope but is rejected as a retroactive discriminator for the energy-transport repair because it was already RED pre-repair.
+
+Current sequence:
+
+1. Family B causal closure - COMPLETE / CONFIRMED.
+2. **Post-Repair Dynamic-Equilibrium Replanning 1 - CURRENT**.
+3. Residual Diagnostic 1 - diagnostic-only, no production edits.
+4. Based on returned evidence, select hydraulic-seed, controller-state, or joint equilibrium reconstruction.
+5. Implement the selected operating-point reconstruction without physics/threshold retuning.
+6. Re-run the frozen 100-step envelope.
+7. If GREEN, execute R3 Short Requalification 3 (120 s / 12,000 steps).
+8. R4 Planning 1 remains blocked until returned/adjudicated R3 PASS.
+
+No transport-physics rollback, threshold relaxation, pump/governor gain retuning, steam-capacity retuning, C4 mutation or Exact-V9 reinterpretation is authorized.

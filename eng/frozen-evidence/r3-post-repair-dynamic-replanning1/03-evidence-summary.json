@@ -1,0 +1,58 @@
+{
+  "schema": "r3-post-repair-dynamic-replanning1-evidence-v1",
+  "status": "EVIDENCE-FROZEN",
+  "post_repair_causal_closure": {
+    "classification": "POST-REPAIR-CAUSAL-CLOSURE-CONFIRMED",
+    "mass_identity_abs_residual_kg_s": 0.0,
+    "transport_specific_energy_abs_delta_j_kg": 0.00014754408039152622,
+    "observed_net_energy_abs_w": 0.01468658447265625,
+    "production_energy_identity_abs_residual_w": 6.781518459320068e-05
+  },
+  "historical_fast_gate": {
+    "status": "KNOWN-RED",
+    "violation_steps": 86,
+    "first_violation_step": 15,
+    "primary_flow_violation_steps": 86,
+    "first_primary_flow_violation_step": 15,
+    "governor_violation_steps": 84,
+    "first_governor_violation_step": 17,
+    "primary_flow_start_kg_s": 99.96959508257872,
+    "primary_flow_end_kg_s": 99.2855236793509,
+    "primary_flow_delta_kg_s": -0.6840714032278186,
+    "governor_start_percent": 29.28222490151453,
+    "governor_end_percent": 29.445239618143546,
+    "governor_delta_percent": 0.16301471662901434
+  },
+  "post_repair_fast_gate": {
+    "status": "RED-DYNAMIC-EQUILIBRIUM-ONLY",
+    "violation_steps": 84,
+    "first_violation_step": 17,
+    "primary_flow_violation_steps": 79,
+    "first_primary_flow_violation_step": 22,
+    "governor_violation_steps": 84,
+    "first_governor_violation_step": 17,
+    "electrical_violation_steps": 0,
+    "drum_level_violation_steps": 0,
+    "trip_steps": 0,
+    "breaker_open_steps": 0,
+    "rollback_steps": 0,
+    "nonfinite_steps": 0,
+    "primary_flow_start_kg_s": 99.99537721912854,
+    "primary_flow_end_kg_s": 100.41741075778903,
+    "primary_flow_delta_kg_s": 0.4220335386604859,
+    "governor_start_percent": 29.28222490151453,
+    "governor_end_percent": 29.445239885077935,
+    "governor_delta_percent": 0.1630149835634036,
+    "electrical_start_mwe": 4.999998525473999,
+    "electrical_end_mwe": 4.993219958491229,
+    "electrical_delta_mwe": -0.006778566982769796,
+    "drum_level_start": 0.49993760778969654,
+    "drum_level_end": 0.49984798820674997,
+    "drum_level_delta": -8.961958294656514e-05
+  },
+  "comparison": {
+    "governor_delta_post_minus_pre_percent": 2.669343892591769e-07,
+    "primary_flow_drift_reversed": true,
+    "historical_zero_envelope_valid_as_family_b_discriminator": false
+  }
+}

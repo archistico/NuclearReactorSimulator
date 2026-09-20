@@ -1,3 +1,49 @@
+# M10 Final VR2 R3 Post-Repair Causal-Closure Diagnostic 1 - Path Retry Hotfix 3
+
+- Removes the unnecessary long-path evidence copy from the adjudicator.
+- Reads the already-produced Diagnostic 3 REV1 CSV in place and writes only the short adjudication summary.
+- Production, tests, thresholds, seed, causal criteria and R3 authority are unchanged.
+
+
+## M10 Final VR2 R3 Post-Repair Causal-Closure Diagnostic 1 - Path Hotfix 1
+
+- Fixes Windows PowerShell 5.1 `PathTooLongException` in adjudication artifact copying.
+- Shortens the returned artifact path to `artifacts/r3-post-repair-closure-d1`.
+- Uses `System.IO.File.Copy` for the already-produced seed-step1 balance evidence.
+- Adds `scripts/run-r3-post-repair-causal-closure-d1-adjudication-retry.cmd` so the already-PASS build/test evidence can be adjudicated without rerunning build/test.
+- No production/test-source/criteria/threshold/R3-authority change.
+
+## M10 Final VR2 R3 Energy-Transport Ownership Repair Implementation 1 - Fresh-Build Hotfix 4
+
+- Fixes local qualification hygiene only: the runner now performs an explicit Release clean and a non-incremental Release build before executing any `--no-build` focused tests.
+- Root cause addressed: ZIP overlays can preserve source timestamps older than existing `bin/obj` outputs, allowing MSBuild to reuse a stale test DLL/PDB even when the validator sees the new source hash.
+- Production source, focused-test source, contracts, C4 payload, thresholds, physics and R3 authority are unchanged from Allocation Slope Hotfix 3.
+## M10 Final VR2 R3 Energy-Transport Ownership Repair Implementation 1 - Allocation Slope Hotfix 3
+
+- Replaces brittle absolute-window zero-byte assertion with a zero marginal-allocation-slope qualification across 1k/10k/20k lookup windows.
+- Keeps the contractual steady-state per-lookup allocation maximum at exactly zero bytes.
+- Allows only a bounded fixed measurement/runtime overhead (<=256 bytes) that must not grow with lookup count.
+- No production, payload, physics, threshold, fast-gate, Exact-V9 or R3 authority change.
+
+## M10 Final VR2 R3 Energy-Transport Ownership Repair Implementation 1 - Allocation Callsite Hotfix 2
+
+- Preserved the exact zero-byte steady-state lookup requirement; no allocation tolerance was added.
+- Routed warmup, stabilization and authoritative allocation windows through one non-inlined helper so the interface dispatch is exercised at one shared callsite before measurement.
+- Production code, C4 payload, transport values, fast-gate thresholds and R3 authority remain unchanged.
+- This hotfix tests the observed fixed 24-byte per-new-callsite effect without changing the resolver implementation.
+
+## M10 Final VR2 R3 Energy-Transport Ownership Repair Implementation 1 - Allocation Test Hotfix 1
+
+- Corrected the focused zero-allocation measurement to distinguish one-off runtime/test-harness stabilization from recurring per-lookup allocation.
+- Production code and the zero-byte steady-state acceptance criterion remain unchanged.
+
+## 2026-09-20 - M10 Final VR2 R3 Energy-Transport Ownership Repair Implementation 1 Build Hotfix 1
+
+- Fixed CS0102 in `SimplifiedWaterSteamThermodynamicModel` by renaming the private nested provider implementation from `PhaseTransportPropertyProvider` to `ActiveClosurePhaseTransportPropertyProvider`.
+- Internal property `PhaseTransportPropertyProvider` and all behavior/contracts remain unchanged.
+- Updated only the expected post-repair SHA for that authorized production path in the Implementation 1 contract.
+- No retuning, threshold, C4 payload, default-mode, Exact-V9 or R3 authority change.
+
 # 2026-09-20 - M10 Final VR2 R3 Energy-Transport Ownership Repair Planning 1 Validator Hotfix 1
 
 - Fixed a false `src tree drift` caused by host-dependent path ordering in the planning validator.
@@ -5029,3 +5075,39 @@ Validation completed: build, complete ordinary suite, `scripts\run-m10973-deskto
 - Freezes a five-path production implementation surface, with one new internal transport-property capability and mode-2 pressure-keyed lookup over the immutable `NRSVR2C4.v1.bin` dense saturation data.
 - Preserves mode 0/1 transport behavior, public saturation/void/level behavior, raw seed, thresholds, C4 payload, canonical exact-v9 semantics and production runtime IF97 exclusion.
 - Adds no production change; a returned local planning PASS may authorize only the separately versioned Repair Implementation 1 fast gate.
+
+# 2026-09-20 - M10 Final VR2 R3 Energy-Transport Ownership Repair Implementation 1 candidate
+
+- Planning 1 returned `PASS-AS-AUTHORED` and selected Family B: `ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT`.
+- Added an internal phase-transport capability separate from the public forward saturation provider.
+- Mode 2 now resolves saturated liquid/vapor transport properties from the immutable C4 dense saturation payload by pressure-keyed binary search and linear interpolation; no runtime IF97 or payload mutation is introduced.
+- Historical modes 0/1 preserve the existing temperature-keyed forward saturation values bit-for-bit.
+- `IntegratedPrimaryCircuitSolver` wires the active Simplified water/steam closure transport capability into `SteamDrumSeparationSolver`; drum void fraction and level geometry remain on the historical model.
+- Added focused tests for frozen IF97/raw-suction transport agreement, historical bit identity, payload I/O/decode invariants and zero steady-state lookup allocation.
+- R3 remains RED; Implementation 1 PASS can authorize only Requalification 3.
+
+## 2026-09-20 - R3 Implementation 1 Post-Repair Causal-Closure Diagnostic 1
+
+- Freezes the returned post-repair 100-step observation and the historical pre-repair failed fast-gate evidence.
+- Records that the historical zero-envelope fast gate was already RED before Family B (86 violations, first at step 15), so it cannot by itself adjudicate the new repair.
+- Reuses the unchanged Diagnostic 3 REV1 runtime evidence test against repaired production to verify the selected causal seam directly.
+- No production, threshold, seed, payload or R3-authority change.
+
+- M10 Final VR2 R3 Post-Repair Causal-Closure Diagnostic 1 Path/Retry Hotfix 2: retry now regenerates only the exact Diagnostic 3 REV1 runtime evidence with --no-build when the prior runtime artifact is absent; no production/test-source/acceptance change.
+
+### M10 Final VR2 R3 Post-Repair Causal-Closure Diagnostic 1 - Path/Retry Hotfix 4
+- Removes artifact-copy/write plumbing from causal PASS/FAIL authority after repeated Windows path-provider failures.
+- Adjudication now computes and prints the complete verdict in memory first.
+- Optional persistence uses the ultra-short `artifacts/r3d1.txt` via `System.IO.File.WriteAllLines` and is best-effort only.
+- No production, test-source, threshold, seed, physics, C4 payload or R3-authority change.
+- Validator now self-checks the Hotfix 4 in-memory-authority/path-safe adjudicator contract before execution.
+
+
+## 2026-09-20 - R3 Post-Repair Dynamic-Equilibrium Replanning 1
+
+- Freezes `POST-REPAIR-CAUSAL-CLOSURE-CONFIRMED` for Family B.
+- Records the historical fast-gate contradiction: pre-repair 86 envelope violations vs post-repair 84; therefore zero-envelope was not a valid Family B implementation discriminator.
+- Separates the residual operating-point problem into primary-hydraulic and speed-control/governor owners.
+- Records the primary-flow drift reversal after repair (`-0.6840714032` to `+0.4220335387 kg/s` over the first second) and the near-common-mode governor drift.
+- Selects no new production repair. Next authorized activity is diagnostic-only: `R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-RESIDUAL-DIAGNOSTIC1`.
+- R3 remains RED and Requalification 3 remains blocked.

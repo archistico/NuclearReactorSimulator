@@ -1,0 +1,13 @@
+status=PASS-AS-AUTHORED
+family-a=NOT-SELECTED-INSUFFICIENT-AS-CURRENTLY-EXPOSED
+family-b=SELECTED
+family-c=NOT-SELECTED-CONTINGENCY-ONLY
+repair-owner=ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT
+composition-root=IntegratedPrimaryCircuitSolver
+consumer=SteamDrumSeparationSolver
+mode2-lookup=PRESSURE-KEYED-DENSE-SATURATION-LINEAR-INTERPOLATION
+runtime-if97=False
+c4-payload-change=False
+seed-retuning=False
+threshold-change=False
+canonical-exact-v9-reinterpretation=False

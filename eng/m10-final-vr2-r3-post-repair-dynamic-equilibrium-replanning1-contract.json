@@ -1,0 +1,204 @@
+{
+  "schema": "m10-final-vr2-r3-post-repair-dynamic-equilibrium-replanning1-v1",
+  "status": "PLANNING-CANDIDATE",
+  "date": "2026-09-20",
+  "baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 402,
+      "tree_sha256": "FB35665EE6136B1426A43EDD7F889B707D35A01A6AF07061FFF585A9C861C6AF"
+    },
+    "family_b_production_files": [
+      {
+        "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+        "sha256": "D6B06C1288084D3954780E29B55D866C7BEC0A159D8696B38B3B45FC45391899"
+      },
+      {
+        "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs",
+        "sha256": "EED188B6B8C8C9BF447E7F6E3CC0F050AB755B75F883BF5B672FA183A273DF81"
+      },
+      {
+        "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+        "sha256": "1F408DCC0E1B4AE69A9CC5A611BF252A448D4D8339E598BAB8986AD1123D6D75"
+      },
+      {
+        "path": "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/SteamDrums/SteamDrumSeparationSolver.cs",
+        "sha256": "361F155E1B388B967ED968C713DD1730869BA56AD5B2BE49B48617F6BB408243"
+      },
+      {
+        "path": "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/Integration/IntegratedPrimaryCircuitSolver.cs",
+        "sha256": "BBC2936AB656A9EEDFE5ADCA85A44DF834C7BE98BD3B100A7890406EEA24737F"
+      }
+    ]
+  },
+  "evidence": {
+    "post_repair_step1_energy": {
+      "path": "eng/frozen-evidence/r3-post-repair-dynamic-replanning1/01-post-repair-step1-energy.csv",
+      "sha256": "77A6354E8EB8119B741A98E0C3BBB7A915EBCC9517F6A311728F5682172C1E7E"
+    },
+    "post_repair_fast100": {
+      "path": "eng/frozen-evidence/r3-post-repair-dynamic-replanning1/02-post-repair-fast100.csv",
+      "sha256": "4ABA6055E592BE19508C9B49C49135A56BDAF530169B5BFA1F79DAFDDA2B1F5D"
+    },
+    "summary": {
+      "path": "eng/frozen-evidence/r3-post-repair-dynamic-replanning1/03-evidence-summary.json",
+      "sha256": "93AC5BC19999623F8557EC1114016DF845A7DCD82052CC0CA19EC8FC687EA6CC"
+    },
+    "historical_fast100": {
+      "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_FastGateDynamicEquilibriumDiagnostic1_ReturnedArtifacts/02-first-100-step-key-dynamics.csv",
+      "sha256": "2088394E8091A8D32609FDF0DF12FAFC8D2267D39351AFEF7E1C730476989E88"
+    },
+    "historical_summary": {
+      "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_FastGateDynamicEquilibriumDiagnostic1_ReturnedArtifacts/05-diagnostic-summary.txt",
+      "sha256": "14A038C7062D29FFA39C5B0D70BEAC472CCFB7F79AC46BF1E73C4059614BE1B4"
+    }
+  },
+  "adjudication": {
+    "family_b_causal_closure": "POST-REPAIR-CAUSAL-CLOSURE-CONFIRMED",
+    "historical_fast_gate_as_family_b_discriminator": "INVALID-HISTORICAL-CONTRADICTION",
+    "dynamic_classification": "POST-REPAIR-DYNAMIC-EQUILIBRIUM-RECONSTRUCTION-REQUIRED",
+    "primary_hydraulic_owner": "POST-REPAIR-OPERATING-POINT-RESIDUAL",
+    "governor_owner": "COMMON-MODE-CONTROLLER-INITIAL-STATE-RESIDUAL"
+  },
+  "returned_metrics": {
+    "schema": "r3-post-repair-dynamic-replanning1-evidence-v1",
+    "status": "EVIDENCE-FROZEN",
+    "post_repair_causal_closure": {
+      "classification": "POST-REPAIR-CAUSAL-CLOSURE-CONFIRMED",
+      "mass_identity_abs_residual_kg_s": 0.0,
+      "transport_specific_energy_abs_delta_j_kg": 0.00014754408039152622,
+      "observed_net_energy_abs_w": 0.01468658447265625,
+      "production_energy_identity_abs_residual_w": 6.781518459320068e-05
+    },
+    "historical_fast_gate": {
+      "status": "KNOWN-RED",
+      "violation_steps": 86,
+      "first_violation_step": 15,
+      "primary_flow_violation_steps": 86,
+      "first_primary_flow_violation_step": 15,
+      "governor_violation_steps": 84,
+      "first_governor_violation_step": 17,
+      "primary_flow_start_kg_s": 99.96959508257872,
+      "primary_flow_end_kg_s": 99.2855236793509,
+      "primary_flow_delta_kg_s": -0.6840714032278186,
+      "governor_start_percent": 29.28222490151453,
+      "governor_end_percent": 29.445239618143546,
+      "governor_delta_percent": 0.16301471662901434
+    },
+    "post_repair_fast_gate": {
+      "status": "RED-DYNAMIC-EQUILIBRIUM-ONLY",
+      "violation_steps": 84,
+      "first_violation_step": 17,
+      "primary_flow_violation_steps": 79,
+      "first_primary_flow_violation_step": 22,
+      "governor_violation_steps": 84,
+      "first_governor_violation_step": 17,
+      "electrical_violation_steps": 0,
+      "drum_level_violation_steps": 0,
+      "trip_steps": 0,
+      "breaker_open_steps": 0,
+      "rollback_steps": 0,
+      "nonfinite_steps": 0,
+      "primary_flow_start_kg_s": 99.99537721912854,
+      "primary_flow_end_kg_s": 100.41741075778903,
+      "primary_flow_delta_kg_s": 0.4220335386604859,
+      "governor_start_percent": 29.28222490151453,
+      "governor_end_percent": 29.445239885077935,
+      "governor_delta_percent": 0.1630149835634036,
+      "electrical_start_mwe": 4.999998525473999,
+      "electrical_end_mwe": 4.993219958491229,
+      "electrical_delta_mwe": -0.006778566982769796,
+      "drum_level_start": 0.49993760778969654,
+      "drum_level_end": 0.49984798820674997,
+      "drum_level_delta": -8.961958294656514e-05
+    },
+    "comparison": {
+      "governor_delta_post_minus_pre_percent": 2.669343892591769e-07,
+      "primary_flow_drift_reversed": true,
+      "historical_zero_envelope_valid_as_family_b_discriminator": false
+    }
+  },
+  "next_diagnostic": {
+    "id": "R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-RESIDUAL-DIAGNOSTIC1",
+    "production_change_authorized": false,
+    "test_only_diagnostic_authorized": true,
+    "checkpoints": [
+      0,
+      1,
+      2,
+      5,
+      10,
+      20,
+      50,
+      100
+    ],
+    "required_capture": [
+      "primary-fluid-node-mass-energy-pressure-temperature-phase",
+      "primary-pump-channel-return-flows-and-hydraulic-heads",
+      "steam-drum-mass-energy-pressure-level",
+      "speed-control-error-integral-output",
+      "rotor-speed-turbine-torque-turbine-power-generator-power-effective-load-torque",
+      "finite-trip-breaker-rollback-status"
+    ],
+    "candidate_future_families": [
+      "H-HYDRAULIC-SEED-RECONSTRUCTION",
+      "C-CONTROLLER-STATE-INITIALIZATION",
+      "J-JOINT-EQUILIBRIUM-RECONSTRUCTION"
+    ]
+  },
+  "frozen_constraints": {
+    "family_b_transport_ownership_locked": true,
+    "threshold_change_allowed": false,
+    "pump_governor_gain_retuning_allowed": false,
+    "hydraulic_resistance_retuning_allowed": false,
+    "steam_capacity_retuning_allowed": false,
+    "c4_payload_change_allowed": false,
+    "default_closure_change_allowed": false,
+    "canonical_exact_v9_reinterpretation_allowed": false,
+    "raw_seed_change_allowed_now": false,
+    "controller_state_change_allowed_now": false,
+    "r3_passed": false,
+    "requalification3_authorized": false,
+    "r4_planning_authorized": false
+  },
+  "authority": {
+    "local_qualification_authoritative": true,
+    "hosted_ci_advisory": true,
+    "next_authorized_gate_after_planning_pass": "R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-RESIDUAL-DIAGNOSTIC1"
+  },
+  "documents": {
+    "planning": {
+      "path": "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1.md",
+      "sha256": "6C5EC699BD7A1EFB14419F1DD029789FBAEDBF3895678E09AC3FB4059E32FAFB"
+    },
+    "preexecution": {
+      "path": "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1_PREEXECUTION_REVIEW.md",
+      "sha256": "5480551DF1028DE5AC1F977C7170A200ECCDDA2B0009EA7124EC2AC478BE58DE"
+    }
+  },
+  "document_markers": {
+    "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1.md": [
+      "NRS-MARKER:R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-REPLANNING1",
+      "NRS-MARKER:R3-POST-REPAIR-CAUSAL-CLOSURE-FROZEN",
+      "NRS-MARKER:R3-HISTORICAL-FAST-GATE-CONTRADICTION",
+      "NRS-MARKER:R3-POST-REPAIR-DYNAMIC-RESIDUAL-OWNERS",
+      "NRS-MARKER:R3-DYNAMIC-EQUILIBRIUM-REPLANNING-DECISION",
+      "NRS-MARKER:R3-DYNAMIC-REPLANNING-FROZEN-CONSTRAINTS"
+    ],
+    "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1_PREEXECUTION_REVIEW.md": [
+      "NRS-MARKER:R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-REPLANNING1-PREEXEC"
+    ]
+  },
+  "artifact_output": {
+    "root": "artifacts/r3-dyn-eq-plan1",
+    "files": [
+      "01-provenance.txt",
+      "02-residual-owners.txt",
+      "03-planning-summary.txt",
+      "04-preexecution-review.txt"
+    ]
+  }
+}

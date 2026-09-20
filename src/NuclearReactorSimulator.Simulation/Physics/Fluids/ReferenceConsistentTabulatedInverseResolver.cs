@@ -39,6 +39,66 @@ internal sealed class ReferenceConsistentTabulatedInverseResolver
     internal static int ResolveTimeResourceIoCount => 0;
     internal static int ResolveTimePayloadDecodeCount => 0;
 
+    internal WaterSteamPhaseTransportProperties ResolveSaturatedPhaseTransportProperties(Pressure pressure)
+    {
+        var pressureMegapascals = pressure.Megapascals;
+        var nodes = _payload.DenseSaturation;
+        if (!double.IsFinite(pressureMegapascals)
+            || pressureMegapascals <= 0d
+            || nodes.Length < 2
+            || pressureMegapascals < nodes[0].PressureMegapascals
+            || pressureMegapascals > nodes[^1].PressureMegapascals)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(pressure),
+                pressure,
+                "Reference-consistent saturation transport properties are outside the embedded dense saturation pressure envelope.");
+        }
+
+        var lower = 0;
+        var upper = nodes.Length - 1;
+        while (upper - lower > 1)
+        {
+            var middle = (lower + upper) / 2;
+            if (nodes[middle].PressureMegapascals <= pressureMegapascals)
+            {
+                lower = middle;
+            }
+            else
+            {
+                upper = middle;
+            }
+        }
+
+        var left = nodes[lower];
+        var right = nodes[upper];
+        var denominator = right.PressureMegapascals - left.PressureMegapascals;
+        var fraction = Math.Abs(denominator) <= 1e-30d
+            ? 0d
+            : Math.Clamp((pressureMegapascals - left.PressureMegapascals) / denominator, 0d, 1d);
+
+        var liquidSpecificVolume = Lerp(left.LiquidSpecificVolume, right.LiquidSpecificVolume, fraction);
+        var vaporSpecificVolume = Lerp(left.VaporSpecificVolume, right.VaporSpecificVolume, fraction);
+        var liquidSpecificEnergy = Lerp(left.LiquidSpecificEnergy, right.LiquidSpecificEnergy, fraction);
+        var vaporSpecificEnergy = Lerp(left.VaporSpecificEnergy, right.VaporSpecificEnergy, fraction);
+
+        if (!double.IsFinite(liquidSpecificVolume)
+            || !double.IsFinite(vaporSpecificVolume)
+            || liquidSpecificVolume <= 0d
+            || vaporSpecificVolume <= 0d
+            || !double.IsFinite(liquidSpecificEnergy)
+            || !double.IsFinite(vaporSpecificEnergy))
+        {
+            throw new InvalidDataException("Reference-consistent dense saturation transport interpolation produced a non-physical value.");
+        }
+
+        return new WaterSteamPhaseTransportProperties(
+            Density.FromKilogramsPerCubicMetre(1d / liquidSpecificVolume),
+            Density.FromKilogramsPerCubicMetre(1d / vaporSpecificVolume),
+            SpecificEnergy.FromJoulesPerKilogram(liquidSpecificEnergy),
+            SpecificEnergy.FromJoulesPerKilogram(vaporSpecificEnergy));
+    }
+
     internal bool TryResolve(
         double specificVolumeCubicMetresPerKilogram,
         double specificInternalEnergyJoulesPerKilogram,

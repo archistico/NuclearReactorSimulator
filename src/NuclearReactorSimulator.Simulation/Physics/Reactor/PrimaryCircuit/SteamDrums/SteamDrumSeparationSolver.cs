@@ -18,11 +18,20 @@ public sealed class SteamDrumSeparationSolver
     private readonly SteamDrumSystemDefinition _definition;
     private readonly MainCirculationSystemSolver _circulationSolver;
     private readonly SimplifiedWaterSteamThermodynamicModel _thermodynamicModel = new();
+    private readonly IWaterSteamPhaseTransportPropertyProvider? _phaseTransportPropertyProvider;
     private readonly WaterSteamVoidFractionSolver _voidFractionSolver;
 
     public SteamDrumSeparationSolver(SteamDrumSystemDefinition definition)
+        : this(definition, phaseTransportPropertyProvider: null)
+    {
+    }
+
+    internal SteamDrumSeparationSolver(
+        SteamDrumSystemDefinition definition,
+        IWaterSteamPhaseTransportPropertyProvider? phaseTransportPropertyProvider)
     {
         _definition = definition ?? throw new ArgumentNullException(nameof(definition));
+        _phaseTransportPropertyProvider = phaseTransportPropertyProvider;
         _circulationSolver = new MainCirculationSystemSolver(definition.MainCirculationSystem);
         _voidFractionSolver = new WaterSteamVoidFractionSolver(_thermodynamicModel);
     }
@@ -269,19 +278,19 @@ public sealed class SteamDrumSeparationSolver
                 $"Steam drum '{drum.Id}' uses the current pressure/energy/inventory steam-source closure and therefore requires an integration interval.");
         }
 
-        var saturation = _thermodynamicModel.GetSaturationProperties(drumState.Temperature);
+        var transportProperties = ResolveTransportProperties(drumState);
         var liquidSpecificInternalEnergy = drumState.Phase == FluidPhase.SubcooledLiquid
             ? drumState.SpecificInternalEnergy
-            : saturation.SaturatedLiquidInternalEnergy;
+            : transportProperties.SaturatedLiquidInternalEnergy;
         var liquidDensity = drumState.Phase == FluidPhase.SubcooledLiquid
             ? drumState.Density
-            : saturation.SaturatedLiquidDensity;
+            : transportProperties.SaturatedLiquidDensity;
         var steamSpecificInternalEnergy = drumState.Phase == FluidPhase.SuperheatedVapor
             ? drumState.SpecificInternalEnergy
-            : saturation.SaturatedVaporInternalEnergy;
+            : transportProperties.SaturatedVaporInternalEnergy;
         var steamDensity = drumState.Phase == FluidPhase.SuperheatedVapor
             ? drumState.Density
-            : saturation.SaturatedVaporDensity;
+            : transportProperties.SaturatedVaporDensity;
         var liquidAdvectedSpecificEnergy = FluidEnergyTransport.ResolveSelectedSpecificEnergy(
             drum.EnergyTransportMode,
             liquidSpecificInternalEnergy,
@@ -421,6 +430,23 @@ public sealed class SteamDrumSeparationSolver
         }
 
         return totalWatts;
+    }
+
+    private WaterSteamPhaseTransportProperties ResolveTransportProperties(FluidNodeState state)
+    {
+        if (_phaseTransportPropertyProvider is not null)
+        {
+            return _phaseTransportPropertyProvider.GetSaturatedPhaseTransportProperties(
+                state.Pressure,
+                state.Temperature);
+        }
+
+        var saturation = _thermodynamicModel.GetSaturationProperties(state.Temperature);
+        return new WaterSteamPhaseTransportProperties(
+            saturation.SaturatedLiquidDensity,
+            saturation.SaturatedVaporDensity,
+            saturation.SaturatedLiquidInternalEnergy,
+            saturation.SaturatedVaporInternalEnergy);
     }
 
     private static Mass ResolveSeparableVaporInventoryMass(FluidNodeState state)

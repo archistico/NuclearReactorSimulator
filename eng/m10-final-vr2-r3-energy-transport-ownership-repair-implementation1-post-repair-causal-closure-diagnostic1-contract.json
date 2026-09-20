@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "gate_id": "R3-ENERGY-TRANSPORT-OWNERSHIP-REPAIR-IMPLEMENTATION1-POST-REPAIR-CAUSAL-CLOSURE-DIAGNOSTIC1",
+  "gate_type": "test-evidence-only",
+  "authority": {
+    "production_change_authorized": false,
+    "seed_retuning_authorized": false,
+    "threshold_change_authorized": false,
+    "c4_payload_change_authorized": false,
+    "r3_pass_authorized": false,
+    "requalification3_authorized": false
+  },
+  "repair_owner": "ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT",
+  "production_surface_sha256": {
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs": "D6B06C1288084D3954780E29B55D866C7BEC0A159D8696B38B3B45FC45391899",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs": "EED188B6B8C8C9BF447E7F6E3CC0F050AB755B75F883BF5B672FA183A273DF81",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs": "1F408DCC0E1B4AE69A9CC5A611BF252A448D4D8339E598BAB8986AD1123D6D75",
+    "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/SteamDrums/SteamDrumSeparationSolver.cs": "361F155E1B388B967ED968C713DD1730869BA56AD5B2BE49B48617F6BB408243",
+    "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/Integration/IntegratedPrimaryCircuitSolver.cs": "BBC2936AB656A9EEDFE5ADCA85A44DF834C7BE98BD3B100A7890406EEA24737F"
+  },
+  "existing_runtime_evidence_test": {
+    "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3SeedIntegrationSuctionEnergyTransportCausalSeamDiagnostic3Rev1Tests.cs",
+    "sha256": "D275B9A0DD54B1E0E218557D0F1AC7802CBFBBD5F150646859E77F5DB010C2D1"
+  },
+  "frozen_fast_gate_evidence": {
+    "historical_pre_repair": {
+      "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_ReferenceConsistentSeedIntegration_Implementation1_FailedFastGate_Attempt1/04-fast-100-step-health.csv",
+      "sha256": "FBDA1E53B5C98D3897A9A0EDD4E8FDA4B034CCE2019CD81BDF10CAA2B701B001",
+      "expected_total_envelope_violations": 86,
+      "expected_first_violation_step": 15,
+      "expected_primary_flow_violations": 86,
+      "expected_primary_first_violation_step": 15,
+      "expected_governor_violations": 84,
+      "expected_governor_first_violation_step": 17
+    },
+    "returned_post_repair": {
+      "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_EnergyTransportOwnershipRepairImplementation1_FastGateReturnedAttempt1/04-fast-100-step-health.csv",
+      "sha256": "4ABA6055E592BE19508C9B49C49135A56BDAF530169B5BFA1F79DAFDDA2B1F5D",
+      "expected_total_envelope_violations": 84,
+      "expected_first_violation_step": 17,
+      "expected_primary_flow_violations": 79,
+      "expected_primary_first_violation_step": 22,
+      "expected_governor_violations": 84,
+      "expected_governor_first_violation_step": 17,
+      "expected_trip_steps": 0,
+      "expected_breaker_open_steps": 0,
+      "expected_rollback_steps": 0,
+      "expected_nonfinite_steps": 0,
+      "expected_electrical_violations": 0,
+      "expected_drum_level_violations": 0
+    },
+    "common_mode_governor_max_abs_delta_percent": 0.000001
+  },
+  "post_repair_causal_acceptance": {
+    "mass_identity_abs_residual_kg_s_max": 1e-9,
+    "transport_specific_energy_abs_delta_j_kg_max": 0.001,
+    "observed_net_energy_abs_w_max": 0.10223668223103162,
+    "production_energy_identity_abs_residual_w_max": 0.001
+  },
+  "decision_classes": [
+    "POST-REPAIR-CAUSAL-CLOSURE-CONFIRMED",
+    "POST-REPAIR-CAUSAL-CLOSURE-NOT-CONFIRMED",
+    "DIAGNOSTIC-EVIDENCE-INVALID"
+  ],
+  "next_if_confirmed": "R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-REPLANNING1",
+  "r3_state": "RED"
+}

@@ -1,0 +1,134 @@
+{
+  "schema": "m10-final-vr2-r3-energy-transport-ownership-repair-implementation1-v1",
+  "date": "2026-09-20",
+  "status": "CANDIDATE-IMPLEMENTATION-FAST-GATE",
+  "planning_authority": {
+    "planning_id": "R3-ENERGY-TRANSPORT-OWNERSHIP-REPAIR-PLANNING1",
+    "planning_status": "PASS-AS-AUTHORED",
+    "selected_family": "B",
+    "repair_owner": "ACTIVE-CLOSURE-TRANSPORT-PROPERTY-CONTRACT",
+    "next_authorized_gate": "R3-ENERGY-TRANSPORT-OWNERSHIP-REPAIR-IMPLEMENTATION1",
+    "returned_artifacts": [
+      {
+        "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_EnergyTransportOwnershipRepairPlanning1_ReturnedArtifacts/01-contract-and-provenance.txt",
+        "sha256": "2CD67FC2D635697BFEBF7A1D4D3E86F1C152AC1EF30B93A53252E0BCDFB8A28B"
+      },
+      {
+        "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_EnergyTransportOwnershipRepairPlanning1_ReturnedArtifacts/02-option-matrix-and-selected-seam.txt",
+        "sha256": "1A4BD599AAEC05A7DF6DDEEEE241AC3C118C53BF5C223376857649518513BA13"
+      },
+      {
+        "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_EnergyTransportOwnershipRepairPlanning1_ReturnedArtifacts/03-planning-summary.txt",
+        "sha256": "34E7A47FFAE5A882436E20E303EE677DEE9B0C2C28D725A435A66328678F7C3D"
+      },
+      {
+        "path": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_EnergyTransportOwnershipRepairPlanning1_ReturnedArtifacts/04-preimplementation-review.txt",
+        "sha256": "B1023F1EA219315FAED390CEB88F6BAF2AE4B3656559B06768924B6380A34733"
+      }
+    ]
+  },
+  "frozen_non_target_trees": {
+    "src": {
+      "file_count": 957,
+      "tree_sha256": "8FAC877D69F7C13637ACA0D1CF69D1A3DE54561FDB77A1103AFF383308AAB503"
+    },
+    "tests": {
+      "file_count": 401,
+      "tree_sha256": "AA34B23F5AF7A40E28985D5A97D5ECA7B2C7385EE0203DFFD40C1F924EF74915"
+    }
+  },
+  "production_surface": [
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+      "change": "ADD",
+      "post_sha256": "D6B06C1288084D3954780E29B55D866C7BEC0A159D8696B38B3B45FC45391899"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs",
+      "change": "MODIFY",
+      "pre_sha256": "59772C4044FA19C67BAAF463B3314D143E2C1CFCFFA8A64D4D611DBF63663922",
+      "post_sha256": "EED188B6B8C8C9BF447E7F6E3CC0F050AB755B75F883BF5B672FA183A273DF81"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "change": "MODIFY",
+      "pre_sha256": "44EA256839872EAB330132BA8AB536ABC7B38BB5522671BA7AB33E27BF6C4B1A",
+      "post_sha256": "1F408DCC0E1B4AE69A9CC5A611BF252A448D4D8339E598BAB8986AD1123D6D75"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/SteamDrums/SteamDrumSeparationSolver.cs",
+      "change": "MODIFY",
+      "pre_sha256": "B688CFBAE00986F263277F78A12EE4C00CC326BC3DC9AE4A618F478526A5F23B",
+      "post_sha256": "361F155E1B388B967ED968C713DD1730869BA56AD5B2BE49B48617F6BB408243"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Reactor/PrimaryCircuit/Integration/IntegratedPrimaryCircuitSolver.cs",
+      "change": "MODIFY",
+      "pre_sha256": "FBAB13A83696D706E8615D9077B29A09238FB178C2DE560C51F9425828E05BD1",
+      "post_sha256": "BBC2936AB656A9EEDFE5ADCA85A44DF834C7BE98BD3B100A7890406EEA24737F"
+    }
+  ],
+  "focused_test": {
+    "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/M10FinalVr2R3EnergyTransportOwnershipRepairImplementation1Tests.cs",
+    "sha256": "4B14D9BE77180C3AB65987F8DF64C4E7F0A6CE8D3E070605EC19B605CE01FE48"
+  },
+  "payload": {
+    "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceData/NRSVR2C4.v1.bin",
+    "sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267",
+    "mutation_allowed": false,
+    "runtime_if97_allowed": false
+  },
+  "transport_acceptance": {
+    "frozen_drum_pressure_pa": 6416459.281680372,
+    "frozen_drum_temperature_k": 553.15,
+    "if97_liquid_transport_j_kg": 1236671.0007034552,
+    "raw_mode2_suction_transport_j_kg": 1236671.000850998,
+    "mode2_vs_if97_abs_delta_j_kg_max": 0.001,
+    "mode2_vs_raw_suction_abs_delta_j_kg_max": 0.001,
+    "historical_modes_bit_identical": true,
+    "steady_state_lookup_allocated_bytes_per_call_max": 0,
+    "resolve_time_resource_io_count_max": 0,
+    "resolve_time_payload_decode_count_max": 0,
+    "steady_state_lookup_allocation_measurement": "MARGINAL-GROWTH-SLOPE-1K-10K-20K",
+    "steady_state_lookup_fixed_measurement_overhead_bytes_max": 256
+  },
+  "fast_gate": {
+    "existing_test_class": "NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalVr2R3ReferenceConsistentSeedIntegrationImplementation1Tests",
+    "runtime_step_ms": 10,
+    "running_steps": 100,
+    "electrical_export_mwe": [
+      4.99,
+      5.01
+    ],
+    "primary_pump_mass_flow_kg_s": [
+      99.9,
+      100.1
+    ],
+    "drum_level_fraction": [
+      0.49,
+      0.51
+    ],
+    "governor_output_percent": [
+      29.27,
+      29.3
+    ],
+    "max_envelope_violation_steps": 0,
+    "trip_allowed": false,
+    "breaker_open_allowed": false,
+    "rollback_allowed": false,
+    "nonfinite_allowed": false
+  },
+  "regression": {
+    "build_required": true,
+    "ordinary_local_suite_required": true,
+    "exact_v9_contract_v2_required": true,
+    "historical_steam_drum_tests_required": true,
+    "fluid_energy_transport_tests_required": true
+  },
+  "authority": {
+    "implementation_fast_gate_pass_can_authorize": "R3-SHORT-EXACT-V9-EQUIVALENT-SHADOW-COMPOSITION-REQUALIFICATION3",
+    "r3_passed": false,
+    "r4_planning_authorized": false,
+    "no_retuning_on_red": true
+  }
+}

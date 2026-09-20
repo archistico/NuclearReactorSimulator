@@ -1,0 +1,9 @@
+status=PASS-PREIMPLEMENTATION-REVIEW
+implementation-surface-count=5
+new-production-path-count=1
+historical-modes-must-remain-bit-identical=True
+transport-lookup-allocation-max-bytes-per-call=0
+first-100-step-envelope-violations-max=0
+stop-on-fast-gate-red=True
+no-retuning-on-red=True
+r3-remains-red=True
