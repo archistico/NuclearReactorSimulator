@@ -1,0 +1,17 @@
+﻿[
+    {
+        "case":  "production-authority",
+        "rejected":  true,
+        "error":  "powershell.exe : Authority drift: production_change"
+    },
+    {
+        "case":  "widened-search-bound",
+        "rejected":  true,
+        "error":  "powershell.exe : Frozen planning field drift: search"
+    },
+    {
+        "case":  "altered-source-digest",
+        "rejected":  true,
+        "error":  "powershell.exe : Frozen file drift: "
+    }
+]

@@ -1,0 +1,11 @@
+{
+    "status":  "PASS-PREEXECUTION-REVIEW",
+    "contract_sha256":  "87BBBB263027A79C3BF51EBD130EDA35BD061C1E893AD095FA06F81CDA79312E",
+    "test_assembly_sha256":  "373919688AD6CC2BA859116E8AB7CA2DD05FB9738338286ED13108F577304D27",
+    "preexecution_report_sha256":  "ED173E1F9A7C3C4A59091DFCD95A5661448634D0F21923D972207B81345568FB",
+    "baseline_state_hash":  "20636B1FAAB0C8995A005C493D37797C81823227F8EF87083A5A01EFEDED4820",
+    "focused_passed":  6,
+    "search_execution_authorized":  true,
+    "production_change":  false,
+    "r3_passed":  false
+}

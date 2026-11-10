@@ -1,0 +1,15 @@
+{
+    "status":  "PASS-RETURNED-EVIDENCE-REVIEW",
+    "selection":  "H-TEST-ONLY-FEASIBILITY-FIRST",
+    "outlet_seed_step1_energy_rate_w":  "-1156615.1212692261",
+    "turbine_inlet_seed_step1_energy_rate_w":  "1006736.5587234497",
+    "initial_control_actuator_rotor_load_equal":  true,
+    "candidate_post_seed_net_torque_nm":  "-0.44639695439468596",
+    "candidate_final_rotor_rpm":  "2999.8698454382456",
+    "governor_delta_percent":  "0.1630149835634036",
+    "envelope_violations":  84,
+    "independent_controller_defect_proven":  false,
+    "h_sufficiency_proven":  false,
+    "max_suction_energy_identity_abs_w":  "6.7815184593200684E-05",
+    "max_network_energy_closure_abs_j":  "1.7909030721057216E-05"
+}

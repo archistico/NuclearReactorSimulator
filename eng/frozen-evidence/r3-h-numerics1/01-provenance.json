@@ -1,0 +1,35 @@
+{
+  "status": "PASS-FROZEN-PROVENANCE",
+  "baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 406,
+      "tree_sha256": "DA357FCC2DE77CB76AC425F260EB6E265E1CEAF4263071DA37D1794B1DFD3D19"
+    }
+  },
+  "contract_sha256": "356148E77330D2CABB156A89BC10CF4EF9559E15E6E6D592804563FBAB61FCC3",
+  "trace_sha256": "6A21853E21C7CBD9ADC7412F4419E5262D1570EDE96D561D076F6CD7C4EF6F19",
+  "plant_evaluations": 0,
+  "ordinary_suite_rerun": false,
+  "inherited_regression": {
+    "status": "PASS",
+    "command": ".\\eng\\ci-ordinary.cmd",
+    "ordinary_total": 1542,
+    "ordinary_passed": 1382,
+    "ordinary_not_run_explicit": 160,
+    "ordinary_failed": 0,
+    "current_evidence": "PASS",
+    "authoritative_exact_v9": "PASS",
+    "raw_log_path": "artifacts/r3-h-feasibility1/10-ordinary.log",
+    "raw_log_sha256": "04911C1C6D22F67E37AEC1EF9C509626FEDFA72DC7B6863800A0163736D453C0",
+    "focused_preexecution_passed": 6,
+    "explicit_search_passed": 1,
+    "technical_empty_array_fix": "POWERSHELL-JSON-ARRAY-ENUMERATION-ONLY",
+    "engineering_outcome": "H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS",
+    "production_change": false,
+    "r3_passed": false
+  }
+}

@@ -1,0 +1,12 @@
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (2s 940ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\artifacts\r3-h-feasibility1\execution.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 3s 115ms

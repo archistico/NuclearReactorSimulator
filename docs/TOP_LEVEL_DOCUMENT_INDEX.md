@@ -18,6 +18,11 @@ This is the exhaustive index of **live top-level** `docs/*.md` files. Completed/
 
 | Document | Purpose/title |
 | --- | --- |
+| [`M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md`](M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md) | Post-repair seed/Running storage residuals, hydraulics, governor and rotor evidence |
+| [`M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md`](M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md) | Returned residual review and bounded H conserved-inventory feasibility plan |
+| [`M10_FINAL_VR2_R3_H_CONSERVED_INVENTORY_FEASIBILITY1.md`](M10_FINAL_VR2_R3_H_CONSERVED_INVENTORY_FEASIBILITY1.md) | Test-only H solver, baseline/preexecution checks and bounded search evidence protocol |
+| [`M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md`](M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md) | Frozen-data replay of terminal damping/bound rejection and offline next-design contract |
+| [`M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md`](M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md) | Offline column scaling, feasible-fraction comparison and known numerical fixtures |
 | [`M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.5.5 — Manual HMI Closure Checklist |
 | [`M10_9_6_5_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_6_5_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.6.5 manual closure checklist |
 | [`M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md`](M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md) | M10.9.7.3 Hotfix 2 REV2 manual validation checklist |

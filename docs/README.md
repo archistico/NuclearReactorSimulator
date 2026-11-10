@@ -31,7 +31,20 @@ Do not create parallel `CURRENT_STATUS`, `CHAT_HANDOFF` or `RESTART` documents. 
 
 ## Current M10 / VR2 working set
 
-For a new chat, use the **`New-chat restart checkpoint — 2026-09-19`** section at the top of `PROJECT.md`. Do not create a separate handoff document.
+For a new chat, use the **Current checkpoint** at the top of [PROJECT.md](PROJECT.md).
+Its current validation command and continuation boundary supersede the older records
+below. The latest diagnostic specification is
+[R3 Post-Repair Dynamic-Equilibrium Residual Diagnostic 1](M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md).
+Its returned evidence is reviewed in
+[R3 Equilibrium Reconstruction Planning 1](M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md),
+which defines the bounded H test-only feasibility investigation.
+Implementation and execution protocol:
+[H Conserved-Inventory Feasibility 1](M10_FINAL_VR2_R3_H_CONSERVED_INVENTORY_FEASIBILITY1.md).
+Its terminal search evidence is reviewed without new plant evaluations in
+[H Numerical Stop Review 1](M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md).
+The prescribed numerical comparison is implemented in
+[H Local-Model Design 1](M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md), still without new plant evaluations.
+Do not create a separate handoff document.
 
 The current live R3 documents are:
 

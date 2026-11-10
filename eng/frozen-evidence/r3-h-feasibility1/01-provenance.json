@@ -1,0 +1,21 @@
+{
+    "status":  "PASS-STATIC",
+    "baseline":  {
+                     "src":  {
+                                 "file_count":  962,
+                                 "tree_sha256":  "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+                             },
+                     "tests":  {
+                                   "file_count":  403,
+                                   "tree_sha256":  "C4021BDE9D259976B59A32351A28AC332EC9EF23ED452840B230CD852155639C"
+                               }
+                 },
+    "added_test_files":  [
+                             "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilitySearch.cs",
+                             "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+                             "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3HConservedInventoryFeasibility1Tests.cs"
+                         ],
+    "contract_sha256":  "87BBBB263027A79C3BF51EBD130EDA35BD061C1E893AD095FA06F81CDA79312E",
+    "production_change":  false,
+    "old_tests_changed":  false
+}

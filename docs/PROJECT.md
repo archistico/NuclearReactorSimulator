@@ -1,5 +1,183 @@
 # Project — current authoritative state
 
+## Current checkpoint - 2026-11-10 - H numerical review and offline local-model design
+
+NRS-MARKER:R3-H-LOCAL-MODEL-DESIGN1-CURRENT
+
+NRS-MARKER:R3-H-NUMERICAL-STOP-REVIEW1-CURRENT
+
+This checkpoint supersedes all older current/next instructions below.
+
+The bounded H search remains frozen as inconclusive. **Numerical Stop Review 1** is
+locally **PASS-REVIEW-EVIDENCE-COMPLETE**. It
+authenticates its complete compressed trace and reconstructs only the final local
+linear model. No plant evaluation or new seed construction is performed.
+
+Iteration 8 contains 48 valid derivative probes and 78 trial rejections, all before
+the plant evaluator. The final half-step in every damping attempt crosses the same
+unchanged raw suction-energy bound. The six recorded full trial directions are
+bit-identical. The independent replay reproduces them with zero coordinate error;
+all six normal matrices and all diagonals versus zero damping are bit-identical.
+The first box-admissible halving on that direction is 15, beyond the frozen 12.
+Three derivative probes change phase labels; local physical smoothness is unproven.
+This localizes the final stop to the numerical direction/box handling;
+it does not demonstrate physical infeasibility or an independent controller defect.
+
+Review and next-design contract:
+[H Numerical Stop Review 1](M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md).
+
+```powershell
+.\scripts\run-r3-h-numerical-stop-review1.cmd
+```
+
+The prescribed **offline bounded scaled local-model design** is implemented as a
+separate numerical comparison: six fixed damping values, column-normalized directions
+and one global fraction to the existing box. Six known numerical fixtures verify
+the transform/bound handling. It is locally **PASS-OFFLINE-DESIGN-EVIDENCE** and uses
+only the frozen residual/Jacobian. All six scaled dampings affect all 24 diagonals;
+all six capped directions are box-admissible and predict strict model descent.
+Predicted maxima range from about 6.908 million to 7.172 million versus 7.226 million
+at the frozen point. No physical candidate is selected; no nonlinear improvement is
+claimed. The original unscaled direction is retained as a separate model comparator.
+
+Design payloads are frozen under `eng/frozen-evidence/r3-h-local-model1`. Seven negative
+contract cases reject plant/nonlinear calls, residual reweighting, altered damping,
+wider bounds and baseline/input-digest drift. Production/tests remain unchanged.
+
+Specification: [H Local-Model Design 1](M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md).
+
+```powershell
+.\scripts\run-r3-h-local-model-design1.cmd
+```
+
+Next work is review of these local-model predictions before any separately frozen
+nonlinear plan. No new nonlinear search, extra plant probes, bound expansion, extra
+unknowns, controller/seed edits or C/J are authorized. R3 stays RED; Requalification 3
+and R4 remain blocked.
+
+This gate proves production and all 406 test files unchanged. The inherited ordinary
+PASS below remains provenance; no new ordinary-suite execution is claimed.
+Eight negative audit cases reject authority/bounds expansion, replay-guard widening,
+baseline/digest/marker drift, physical-search continuation and output outside artifacts.
+The compact review payloads are frozen under `eng/frozen-evidence/r3-h-numerics1`;
+the complete H1 input trace stays unchanged in its original frozen archive.
+
+## Historical H feasibility checkpoint
+
+NRS-MARKER:R3-H-CONSERVED-INVENTORY-FEASIBILITY1-CURRENT
+
+This checkpoint supersedes all older current/next instructions below.
+
+**H Conserved-Inventory Feasibility 1 is implemented and executed**, after a successful
+baseline/preexecution review. Its evidence gate is `PASS-EVIDENCE-COMPLETE`; its
+engineering outcome is **`H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS`**. These are separate
+claims: the harness worked, but it did not construct a qualified equilibrium seed.
+
+The frozen search stopped at `DAMPING-OR-LINE-SEARCH-EXHAUSTED` after 527 budgeted
+attempts: 395 valid evaluations and 132 bounds rejections, with seven accepted updates.
+The maximum scaled residual decreased from 7,848,623.002230483 to 7,226,221.379182156,
+remaining far above the root criterion of one. The worst final component is the
+seed-step1 turbine-inlet energy storage rate. The largest fractional inventory change
+is 0.019998404362641452, close to the frozen 0.02 bound; this does not authorize
+expanding the bound. No root was found and zero confirmation runs were performed.
+
+All 962 production files and all 403 preceding test files remain byte-identical.
+Three new test files contain the harness, solver and six ordinary/one explicit tests.
+No controller, seed, gain, physics, C4, envelope or Exact-V9 change was made.
+
+**R3 remains RED.** Next work is returned-H evidence review and planning only. The
+bounded search is not proof that no root exists or that H is insufficient; C/J are
+not fallback authorizations. Production seed installation, broader trimming,
+threshold relaxation, Requalification 3 and R4 remain blocked.
+
+Specification: [H Conserved-Inventory Feasibility 1](M10_FINAL_VR2_R3_H_CONSERVED_INVENTORY_FEASIBILITY1.md).
+
+```powershell
+.\scripts\run-r3-h-feasibility1.cmd
+```
+
+Execution artifacts: `artifacts/r3-h-feasibility1`; compact returned evidence is
+preserved under `eng/frozen-evidence/r3-h-feasibility1`, with the raw trace compressed
+losslessly and mapped by `13-payload-map.json`. Attempt 1, whose physical evidence
+was complete but whose adjudicator mishandled an empty JSON confirmation array, is
+preserved separately under `artifacts/r3-h-feasibility1-attempt1`. The correction
+changed only PowerShell array enumeration; the fresh rerun reproduced the same
+527-attempt inconclusive result with unchanged physics and search settings.
+
+Local verification: fresh Release build and six preexecution tests PASS; explicit
+physical search and independent trace adjudication PASS; three negative static
+contract checks reject production authority, bound widening and source-digest drift.
+Complete ordinary/current-evidence regression is **PASS**: 1,382 ordinary tests passed,
+160 explicit tests not run by that runner, zero failures; authoritative Exact-V9
+also passed. The H physical search ran explicitly and separately. The older counts
+below refer to the preceding diagnostic baseline.
+
+## Historical H planning checkpoint
+
+NRS-MARKER:R3-EQUILIBRIUM-RECONSTRUCTION-PLANNING1-CURRENT
+
+NRS-MARKER:R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-RESIDUAL-DIAGNOSTIC1-CURRENT
+
+This section supersedes every older current/next/restart instruction below. Older
+sections remain historical provenance and executable-marker dependencies.
+
+Post-Repair Dynamic-Equilibrium Replanning 1 has passed its local audit. Its authorized
+successor, **R3 Post-Repair Dynamic-Equilibrium Residual Diagnostic 1**, is implemented
+and locally `PASS-DIAGNOSTIC-EVIDENCE-COMPLETE`. Production and all 402 preceding test
+files remain byte-identical; the only test addition is the explicit diagnostic.
+
+The evidence locates substantial energy storage residuals during seed preconditioning
+before Running. It also shows that governor movement accompanies a developing rotor
+power deficit; an independent controller-initialization defect is not established.
+The historical candidate governor drift being common before/after Family B must not
+be confused with canonical mode 1, whose rotor/governor remain nearly stationary.
+
+Returned Diagnostic 1 evidence has now been reviewed for **Equilibrium Reconstruction
+Planning 1**, locally **PASS-AS-AUTHORED**. Eight malformed-contract cases are rejected,
+including authority expansion, added variables and widened envelope/residual scales.
+It selects **H as a bounded test-only feasibility investigation**, varying
+only mass/internal energy for the same 12 fluid nodes. C/J remain unselected; no
+controller defect, sufficient H solution, or corrected vector is claimed.
+
+**R3 remains RED.** Family B stays accepted. The next activity after local planning
+PASS is **H test-only feasibility implementation and preexecution review**. Production
+seed/controller changes, search execution before that review, retuning, threshold/C4/
+Exact-V9 changes, Requalification 3 and R4 remain blocked.
+
+Plan, search limits and outcomes:
+[Equilibrium Reconstruction Planning 1](M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md).
+
+```powershell
+.\scripts\run-r3-equilibrium-reconstruction-planning1.cmd
+```
+
+The planning audit verifies all 962 production and 403 current test files unchanged,
+authenticates the frozen returned evidence, and independently derives search scales.
+Planning artifacts are written to `artifacts/r3-eq-h-plan1`, with a compact frozen
+copy under `eng/frozen-evidence/r3-eq-h-plan1`. It does not rerun the simulation or
+ordinary suite; the inherited regression evidence below is preserved.
+
+Completed diagnostic execution and interpretation: [Residual Diagnostic 1](M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md).
+
+```powershell
+.\scripts\run-r3-post-repair-dynamic-equilibrium-residual-diagnostic1.cmd
+```
+
+Evidence: `artifacts/r3-dyn-eq-d1` (execution logs, five CSVs, derived summary and
+SHA-256 manifest). A compact frozen copy is retained under
+`eng/frozen-evidence/r3-dyn-eq-d1`.
+
+Local validation completed:
+
+- fresh focused Release build, warnings as errors: PASS;
+- explicit residual diagnostic and complete evidence validation: PASS;
+- malformed evidence: duplicate health identity and missing node rejected;
+- `.\eng\ci-ordinary.cmd`: PASS, including current-evidence/authoritative Exact-V9
+  audits; 1,376 ordinary tests passed, 159 explicit tests not run by the ordinary
+  runner, zero failures. The new explicit diagnostic ran separately above.
+
+## Historical checkpoint records
+
 ## Hosted Exact-V9 runtime-alignment decision gate — 2026-09-19
 
 <!-- NRS-MARKER:M10974-EXACT-V9-HOSTED-RUNTIME-ALIGNMENT-CHECKPOINT -->

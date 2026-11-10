@@ -1,0 +1,17 @@
+{
+  "status": "PASS-DESIGN-PROVENANCE",
+  "baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 406,
+      "tree_sha256": "DA357FCC2DE77CB76AC425F260EB6E265E1CEAF4263071DA37D1794B1DFD3D19"
+    }
+  },
+  "contract_sha256": "27431CEBC5E047C4081DCC712F4BC7AE3D2329CB49CA95E3752790C35E942A40",
+  "source_event": 401,
+  "plant_evaluations": 0,
+  "ordinary_suite_rerun": false
+}

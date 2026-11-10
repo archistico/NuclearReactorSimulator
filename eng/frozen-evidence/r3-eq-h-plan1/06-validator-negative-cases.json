@@ -1,0 +1,42 @@
+﻿[
+    {
+        "case":  "production-authority",
+        "rejected":  true,
+        "error":  "powershell.exe : Authority drift: production_change"
+    },
+    {
+        "case":  "search-execution",
+        "rejected":  true,
+        "error":  "powershell.exe : Authority drift: candidate_search_execution"
+    },
+    {
+        "case":  "expanded-variables",
+        "rejected":  true,
+        "error":  "powershell.exe : Unknown surface drift"
+    },
+    {
+        "case":  "widened-envelope",
+        "rejected":  true,
+        "error":  "powershell.exe : Envelope upper drift: primary_pump_kg_s"
+    },
+    {
+        "case":  "inflated-residual-scale",
+        "rejected":  true,
+        "error":  "powershell.exe : Energy scale drift: control-out"
+    },
+    {
+        "case":  "changed-seed-duration",
+        "rejected":  true,
+        "error":  "powershell.exe : Evaluation/confirmation drift"
+    },
+    {
+        "case":  "changed-test-baseline",
+        "rejected":  true,
+        "error":  "powershell.exe : tests content drift"
+    },
+    {
+        "case":  "missing-frozen-payload",
+        "rejected":  true,
+        "error":  "powershell.exe : Frozen input drift: eng/frozen-evidence/r3-dyn-eq-d1/00-build.txt"
+    }
+]

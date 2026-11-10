@@ -1,0 +1,42 @@
+[
+  {
+    "case": "plant-authority",
+    "rejected": true,
+    "reason": "ValueError: Forbidden authority: plant_evaluations"
+  },
+  {
+    "case": "bounds-expansion",
+    "rejected": true,
+    "reason": "ValueError: Offline next-design contract drift"
+  },
+  {
+    "case": "replay-guard-widening",
+    "rejected": true,
+    "reason": "ValueError: Replay arithmetic guard drift"
+  },
+  {
+    "case": "test-baseline-drift",
+    "rejected": true,
+    "reason": "ValueError: Production/test baseline drift"
+  },
+  {
+    "case": "payload-digest-drift",
+    "rejected": true,
+    "reason": "ValueError: Frozen file drift: eng/frozen-evidence/r3-h-feasibility1/13-payload-map.json"
+  },
+  {
+    "case": "physical-search-next",
+    "rejected": true,
+    "reason": "ValueError: Next activity drift"
+  },
+  {
+    "case": "missing-marker",
+    "rejected": true,
+    "reason": "ValueError: Marker cardinality drift: NRS-MARKER:MISSING-TEST-MARKER"
+  },
+  {
+    "case": "output-outside-artifacts",
+    "rejected": true,
+    "reason": "ValueError: Review outputs must be under repository artifacts"
+  }
+]

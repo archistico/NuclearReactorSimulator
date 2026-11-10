@@ -1,0 +1,12 @@
+{
+  "status": "PASS-EVIDENCE-COMPLETE",
+  "classification": "H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS",
+  "Stop": "DAMPING-OR-LINE-SEARCH-EXHAUSTED",
+  "Evaluations": 527,
+  "root": false,
+  "max_scaled_residual": 7226221.379182156,
+  "confirmation_runs": 0,
+  "production_change": false,
+  "r3_passed": false,
+  "next_activity": "RETURNED-H-EVIDENCE-REVIEW-AND-PLANNING-ONLY"
+}

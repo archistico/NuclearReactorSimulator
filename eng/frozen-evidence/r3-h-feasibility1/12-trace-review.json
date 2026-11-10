@@ -1,0 +1,20 @@
+{
+    "status":  "RETURNED-TRACE-REVIEW",
+    "budgeted_attempts":  527,
+    "valid_evaluations":  395,
+    "bounds_rejections":  132,
+    "accepted_updates":  7,
+    "initial_scaled_maximum":  7848623.002230483,
+    "final_scaled_maximum":  7226221.379182156,
+    "maximum_fractional_coordinate":  0.019998404362641452,
+    "worst_checkpoint":  "seed-step1",
+    "worst_node":  "turbine-inlet",
+    "worst_kind":  "energy-rate",
+    "root_found":  false,
+    "confirmation_runs":  0,
+    "h_impossibility_proven":  false,
+    "independent_controller_defect_proven":  false,
+    "bounds_expansion_authorized":  false,
+    "r3_passed":  false,
+    "next_activity":  "RETURNED-H-EVIDENCE-REVIEW-AND-PLANNING-ONLY"
+}

@@ -1,0 +1,15 @@
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+ignorato NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay.M10FinalVr2R3HConservedInventoryFeasibility1Tests.ExecuteFrozenHFeasibilitySearch_AfterSuccessfulPreexecutionReview
+  Not run (due to explicit test filtering)
+  da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (1s 198ms)
+
+  Artefatti file in fase di elaborazione prodotti:
+    - E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\artifacts\r3-h-feasibility1\preexecution.xml
+
+Riepilogo esecuzione test: Superato!
+  totale: 7
+  non riuscito: 0
+  operazione completata: 6
+  ignorato: 1
+  durata: 1s 638ms

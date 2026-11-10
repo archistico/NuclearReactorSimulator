@@ -1,0 +1,20 @@
+{
+  "status": "PASS-REVIEW-EVIDENCE-COMPLETE",
+  "classification": "TERMINAL-SEARCH-DIRECTION-BLOCKED-BY-FROZEN-BOUND",
+  "damping_effect_lost_in_reconstructed_normal_matrix": true,
+  "physical_infeasibility_proven": false,
+  "new_seed_constructed": false,
+  "authority": {
+    "plant_evaluations": false,
+    "source_changes": false,
+    "test_changes": false,
+    "search_rerun": false,
+    "bounds_expansion": false,
+    "controller_change": false,
+    "threshold_change": false,
+    "r3_passed": false,
+    "requalification3": false,
+    "r4": false,
+    "next_activity": "H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-OFFLINE"
+  }
+}

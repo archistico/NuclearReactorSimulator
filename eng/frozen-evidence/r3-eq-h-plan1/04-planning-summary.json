@@ -1,0 +1,78 @@
+{
+    "status":  "PASS-AS-AUTHORED",
+    "selection":  "H-TEST-ONLY-FEASIBILITY-FIRST",
+    "unknown_count":  24,
+    "rotor_torque_scale_nm":  "6.7055418867312255E-05",
+    "search":  {
+                   "variable_order":  [
+                                          "control-out",
+                                          "drum",
+                                          "exhaust",
+                                          "feedwater-inventory",
+                                          "header",
+                                          "hotwell",
+                                          "outlet",
+                                          "pressure",
+                                          "steam",
+                                          "stop-out",
+                                          "suction",
+                                          "turbine-inlet"
+                                      ],
+                   "variables_per_node":  [
+                                              "mass_kg",
+                                              "internal_energy_j"
+                                          ],
+                   "fractional_bound":  0.02,
+                   "maximum_iterations":  64,
+                   "maximum_recipe_evaluations":  4096,
+                   "central_difference_step":  1E-06,
+                   "initial_damping":  0.001,
+                   "damping_min":  1E-12,
+                   "damping_max":  1000000000000,
+                   "damping_factor":  10,
+                   "pivot_floor":  1E-14,
+                   "maximum_line_halvings":  12,
+                   "maximum_damping_attempts":  6,
+                   "method":  "DAMPED-LEAST-SQUARES-NORMAL-EQUATIONS-ORDINAL-PARTIAL-PIVOT",
+                   "acceptance":  "STRICT-MAX-ABS-SCALED-RESIDUAL-DECREASE",
+                   "stop_at_first_scaled_root":  true,
+                   "scale_ulp_factor":  64,
+                   "timestep_seconds":  0.01,
+                   "seed_steps":  2,
+                   "running_evaluation_steps":  1,
+                   "evaluation_checkpoints":  [
+                                                  "seed-step1",
+                                                  "post-seed",
+                                                  "1"
+                                              ],
+                   "confirmation_runs":  3,
+                   "confirmation_running_steps":  100,
+                   "residual_count":  75,
+                   "scaled_root_max":  1,
+                   "initial_guess":  "FROZEN-MODE2-RAW-VECTOR",
+                   "count_failed_recipes":  true,
+                   "clip_out_of_bounds":  false,
+                   "restart_after_failed_confirmation":  false
+               },
+    "authority":  {
+                      "production_change":  false,
+                      "test_source_change":  false,
+                      "candidate_search_execution":  false,
+                      "production_seed_installation":  false,
+                      "controller_initial_state_change":  false,
+                      "physics_retuning":  false,
+                      "threshold_change":  false,
+                      "requalification3":  false,
+                      "r3_passed":  false,
+                      "r4":  false,
+                      "test_only_h_implementation":  true,
+                      "next_activity":  "R3-H-CONSERVED-INVENTORY-FEASIBILITY1-IMPLEMENTATION-AND-PREEXECUTION-REVIEW"
+                  },
+    "outcomes":  [
+                     "H-FEASIBLE-FLUID-SEED",
+                     "H-CANDIDATE-NOT-QUALIFIED",
+                     "H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS",
+                     "HARNESS-FAIL"
+                 ],
+    "ordinary_suite_rerun":  false
+}

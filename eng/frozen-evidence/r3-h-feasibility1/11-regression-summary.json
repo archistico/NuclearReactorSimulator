@@ -1,0 +1,18 @@
+{
+    "status":  "PASS",
+    "command":  ".\\eng\\ci-ordinary.cmd",
+    "ordinary_total":  1542,
+    "ordinary_passed":  1382,
+    "ordinary_not_run_explicit":  160,
+    "ordinary_failed":  0,
+    "current_evidence":  "PASS",
+    "authoritative_exact_v9":  "PASS",
+    "raw_log_path":  "artifacts/r3-h-feasibility1/10-ordinary.log",
+    "raw_log_sha256":  "04911C1C6D22F67E37AEC1EF9C509626FEDFA72DC7B6863800A0163736D453C0",
+    "focused_preexecution_passed":  6,
+    "explicit_search_passed":  1,
+    "technical_empty_array_fix":  "POWERSHELL-JSON-ARRAY-ENUMERATION-ONLY",
+    "engineering_outcome":  "H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS",
+    "production_change":  false,
+    "r3_passed":  false
+}

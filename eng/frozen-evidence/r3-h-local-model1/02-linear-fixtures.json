@@ -1,0 +1,30 @@
+[
+  {
+    "fixture": "coupled-known-linear-root",
+    "passed": true,
+    "maximum_coordinate_error": 1.3010426069826053e-18
+  },
+  {
+    "fixture": "zero-column-keeps-zero-delta",
+    "passed": true,
+    "maximum_coordinate_error": 8.673617379884035e-19
+  },
+  {
+    "fixture": "badly-scaled-known-linear-root",
+    "passed": true,
+    "maximum_coordinate_error": 5.637851296924623e-17
+  },
+  {
+    "fixture": "outward-near-bound-global-fraction",
+    "passed": true,
+    "alpha": 9.900000000009901e-05
+  },
+  {
+    "fixture": "exact-bound-outward-direction-rejected",
+    "passed": true
+  },
+  {
+    "fixture": "zero-direction-does-not-move",
+    "passed": true
+  }
+]

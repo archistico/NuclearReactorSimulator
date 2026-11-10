@@ -1,0 +1,15 @@
+{
+    "status":  "PASS",
+    "command":  ".\\eng\\ci-ordinary.cmd",
+    "ordinary_total":  1535,
+    "ordinary_passed":  1376,
+    "ordinary_explicit_not_run":  159,
+    "ordinary_failed":  0,
+    "current_evidence":  "PASS",
+    "authoritative_exact_v9":  "PASS",
+    "log_path":  "artifacts/r3-dyn-eq-d1/08-ordinary.txt",
+    "log_sha256":  "4BBE0FD9732D6F71EF038BF2F2B9A1A100A57487F9FCD3D773BF8D7120451E66",
+    "duplicate_health_identity_rejected":  true,
+    "missing_node_row_rejected":  true,
+    "negative_fixture_bytes_restored":  true
+}

@@ -1,0 +1,75 @@
+{
+  "status": "PASS-OFFLINE-TERMINAL-REPLAY",
+  "starting_event": 401,
+  "terminal_iteration": 8,
+  "valid_derivative_probes": 48,
+  "out_of_bounds_trials": 78,
+  "plant_evaluated_terminal_trials": 0,
+  "bound_coordinate": 21,
+  "bound_node": "suction",
+  "bound_quantity": "energy",
+  "current_coordinate": -0.019998404362641452,
+  "remaining_lower_bound_distance": 1.5956373585479522e-06,
+  "six_recorded_full_directions_bit_identical": true,
+  "six_replayed_matrices_bit_identical": true,
+  "effective_diagonal_change_counts": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "phase_changing_derivative_probes": 3,
+  "phase_change_details": [
+    {
+      "probe": "difference+/10",
+      "changes": [
+        {
+          "checkpoint": "raw",
+          "node": "hotwell",
+          "before": "SaturatedMixture",
+          "after": "SubcooledLiquid"
+        }
+      ]
+    },
+    {
+      "probe": "difference-/10",
+      "changes": [
+        {
+          "checkpoint": "seed-step1",
+          "node": "hotwell",
+          "before": "SubcooledLiquid",
+          "after": "SaturatedMixture"
+        },
+        {
+          "checkpoint": "post-seed",
+          "node": "hotwell",
+          "before": "SubcooledLiquid",
+          "after": "SaturatedMixture"
+        },
+        {
+          "checkpoint": "1",
+          "node": "hotwell",
+          "before": "SubcooledLiquid",
+          "after": "SaturatedMixture"
+        }
+      ]
+    },
+    {
+      "probe": "difference+/11",
+      "changes": [
+        {
+          "checkpoint": "raw",
+          "node": "hotwell",
+          "before": "SaturatedMixture",
+          "after": "SubcooledLiquid"
+        }
+      ]
+    }
+  ],
+  "minimum_jacobian_column_norm": 586221330.0456576,
+  "maximum_jacobian_column_norm": 11522545088582.252,
+  "first_box_admissible_halving_on_frozen_direction": 15,
+  "nonlinear_improvement_at_that_halving_proven": false
+}

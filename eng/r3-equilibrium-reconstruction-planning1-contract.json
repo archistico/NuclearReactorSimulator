@@ -1,0 +1,271 @@
+{
+    "schema":  "r3-equilibrium-reconstruction-planning1-v1",
+    "baseline":  {
+                     "src":  {
+                                 "file_count":  962,
+                                 "tree_sha256":  "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+                             },
+                     "tests":  {
+                                   "file_count":  403,
+                                   "tree_sha256":  "C4021BDE9D259976B59A32351A28AC332EC9EF23ED452840B230CD852155639C"
+                               }
+                 },
+    "frozen_inputs":  [
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/00-build.txt",
+                              "sha256":  "CF40198306222DA9F8AA6ED951ED0C6AD441C031B824D2256BE31A269EA66E5D"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/00-static-audit.txt",
+                              "sha256":  "4CE8A78A16EF7EB24FEE66F343948BF4300913B21EE6F6707B8BA7DC650CC636"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/00-test.txt",
+                              "sha256":  "347885692D4BB29B9F8685AE8B8F5BC8DB531C7701941F97A5325C641D9A810A"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/01-node-residuals.csv",
+                              "sha256":  "649392DAFBC2B9A23963DE39AC8E740F62C6D5A26EFAED9F3761609C92DFCCAA"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/02-hydraulics-drum.csv",
+                              "sha256":  "FC847B284BDD612529CD0D6E5B740CA6045D3DBFABC55AE575CF6A4E27A1B1F1"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/03-controller-rotor.csv",
+                              "sha256":  "E75FF2D155C5C548669AF2B4218B3A3B8DA3AFC8281A78AD7192E27D919C3CE1"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/04-conservation.csv",
+                              "sha256":  "1B37E51FFA7BAB6A97DE2D73CCA8CAC012F4E8DBC7DD34B9C637DDB490C21D95"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/05-health.csv",
+                              "sha256":  "931C39C0DEF526C51D5148E9CAA4450A98FD1B35545A45B0948C3894EA51B177"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/06-diagnostic-summary.json",
+                              "sha256":  "D82F30D13BCBD13D9FAD3B85E9C8086AE7F67586ED13256CCDC9570FB4FD6551"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/07-manifest.csv",
+                              "sha256":  "7FE73638A74B18D4BF90742953270AA2B4AA8195257E4CEC0D4FDD2888F1486C"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-dyn-eq-d1/08-regression-summary.json",
+                              "sha256":  "2D99C40EFE937FB5579E7DB43B1C773D9B5281C1A02462F57ADF00DF8ACC25BA"
+                          },
+                          {
+                              "path":  "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md",
+                              "sha256":  "C7B32DD05630AE9A954497F83AE3AB4DC7AA66B98C386EE42CA4E9A404927DE2"
+                          },
+                          {
+                              "path":  "docs/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md",
+                              "sha256":  "7B27C2CD85F37AA411386278A16A68A4B2BA608425029F4386B1549861FFCAB3"
+                          },
+                          {
+                              "path":  "eng/r3-post-repair-dynamic-equilibrium-residual-diagnostic1-contract.json",
+                              "sha256":  "5C6E6CB826ADE79F72ED3C9F5C31209EABF989621CC2839ED02679437CEC4CF5"
+                          },
+                          {
+                              "path":  "eng/validate-r3-post-repair-dynamic-equilibrium-residual-diagnostic1.ps1",
+                              "sha256":  "2A464835EB257008954503660398530F47D9EDC15294860567993D1DB2C992E2"
+                          },
+                          {
+                              "path":  "eng/validate-r3-equilibrium-reconstruction-planning1.ps1",
+                              "sha256":  "3B9064D2785F91EAE335C66C1FCFE480A0CA1209CA6CEA4C8583639530F9BD3F"
+                          },
+                          {
+                              "path":  "scripts/run-r3-equilibrium-reconstruction-planning1.cmd",
+                              "sha256":  "F93479089641A223BF57D7C8E45415480F7DFD615E4CE23A1BFD282D1A942044"
+                          }
+                      ],
+    "selection":  "H-TEST-ONLY-FEASIBILITY-FIRST",
+    "unselected_families":  [
+                                "C",
+                                "J"
+                            ],
+    "search":  {
+                   "variable_order":  [
+                                          "control-out",
+                                          "drum",
+                                          "exhaust",
+                                          "feedwater-inventory",
+                                          "header",
+                                          "hotwell",
+                                          "outlet",
+                                          "pressure",
+                                          "steam",
+                                          "stop-out",
+                                          "suction",
+                                          "turbine-inlet"
+                                      ],
+                   "variables_per_node":  [
+                                              "mass_kg",
+                                              "internal_energy_j"
+                                          ],
+                   "fractional_bound":  0.02,
+                   "maximum_iterations":  64,
+                   "maximum_recipe_evaluations":  4096,
+                   "central_difference_step":  1E-06,
+                   "initial_damping":  0.001,
+                   "damping_min":  1E-12,
+                   "damping_max":  1000000000000,
+                   "damping_factor":  10,
+                   "pivot_floor":  1E-14,
+                   "maximum_line_halvings":  12,
+                   "maximum_damping_attempts":  6,
+                   "method":  "DAMPED-LEAST-SQUARES-NORMAL-EQUATIONS-ORDINAL-PARTIAL-PIVOT",
+                   "acceptance":  "STRICT-MAX-ABS-SCALED-RESIDUAL-DECREASE",
+                   "stop_at_first_scaled_root":  true,
+                   "scale_ulp_factor":  64,
+                   "timestep_seconds":  0.01,
+                   "seed_steps":  2,
+                   "running_evaluation_steps":  1,
+                   "evaluation_checkpoints":  [
+                                                  "seed-step1",
+                                                  "post-seed",
+                                                  "1"
+                                              ],
+                   "confirmation_runs":  3,
+                   "confirmation_running_steps":  100,
+                   "residual_count":  75,
+                   "scaled_root_max":  1,
+                   "initial_guess":  "FROZEN-MODE2-RAW-VECTOR",
+                   "count_failed_recipes":  true,
+                   "clip_out_of_bounds":  false,
+                   "restart_after_failed_confirmation":  false
+               },
+    "residual_scales":  [
+                            {
+                                "node":  "control-out",
+                                "mass_scale_kg_s":  "1.3019416655879468E-07",
+                                "energy_scale_w":  "0.350189208984375"
+                            },
+                            {
+                                "node":  "drum",
+                                "mass_scale_kg_s":  "7.0181158662308007E-07",
+                                "energy_scale_w":  "1.4052391052246094"
+                            },
+                            {
+                                "node":  "exhaust",
+                                "mass_scale_kg_s":  "4.8706283450883348E-08",
+                                "energy_scale_w":  "0.11181533336639404"
+                            },
+                            {
+                                "node":  "feedwater-inventory",
+                                "mass_scale_kg_s":  "3.8380676414817572E-08",
+                                "energy_scale_w":  "0.0076532363891601563"
+                            },
+                            {
+                                "node":  "header",
+                                "mass_scale_kg_s":  "6.0981619753874838E-08",
+                                "energy_scale_w":  "0.16393661499023438"
+                            },
+                            {
+                                "node":  "hotwell",
+                                "mass_scale_kg_s":  "1.8917489796876907E-08",
+                                "energy_scale_w":  "0.0048160552978515625"
+                            },
+                            {
+                                "node":  "outlet",
+                                "mass_scale_kg_s":  "3.8605776353506371E-07",
+                                "energy_scale_w":  "0.56240558624267578"
+                            },
+                            {
+                                "node":  "pressure",
+                                "mass_scale_kg_s":  "9.0312823886051774E-08",
+                                "energy_scale_w":  "0.1071929931640625"
+                            },
+                            {
+                                "node":  "steam",
+                                "mass_scale_kg_s":  "3.5261109587736428E-07",
+                                "energy_scale_w":  "0.94728469848632813"
+                            },
+                            {
+                                "node":  "stop-out",
+                                "mass_scale_kg_s":  "1.7116690287366509E-07",
+                                "energy_scale_w":  "0.4604339599609375"
+                            },
+                            {
+                                "node":  "suction",
+                                "mass_scale_kg_s":  "5.8207660913467407E-09",
+                                "energy_scale_w":  "0.01220703125"
+                            },
+                            {
+                                "node":  "turbine-inlet",
+                                "mass_scale_kg_s":  "4.78166839457117E-08",
+                                "energy_scale_w":  "0.12826919555664063"
+                            }
+                        ],
+    "rotor_torque_scale_nm":  "6.7055418867312255E-05",
+    "frozen_envelope":  {
+                            "electrical_mwe":  [
+                                                   4.99,
+                                                   5.01
+                                               ],
+                            "primary_pump_kg_s":  [
+                                                      99.9,
+                                                      100.1
+                                                  ],
+                            "drum_level":  [
+                                               0.49,
+                                               0.51
+                                           ],
+                            "governor_percent":  [
+                                                     29.27,
+                                                     29.3
+                                                 ],
+                            "trip_allowed":  false,
+                            "breaker_closed":  true,
+                            "rollback_allowed":  false
+                        },
+    "fixed_nonfluid_initial_conditions":  [
+                                              "thermal-body-states",
+                                              "neutrons-precursors-poison-decay",
+                                              "rod-positions",
+                                              "pump-valve-biases",
+                                              "controller-memory-and-modes",
+                                              "rotor-speed",
+                                              "generator-breaker-load-grid",
+                                              "geometry-resistances-capacities",
+                                              "control-gains",
+                                              "protection",
+                                              "thermodynamic-transport-laws"
+                                          ],
+    "outcomes":  [
+                     "H-FEASIBLE-FLUID-SEED",
+                     "H-CANDIDATE-NOT-QUALIFIED",
+                     "H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS",
+                     "HARNESS-FAIL"
+                 ],
+    "authority":  {
+                      "production_change":  false,
+                      "test_source_change":  false,
+                      "candidate_search_execution":  false,
+                      "production_seed_installation":  false,
+                      "controller_initial_state_change":  false,
+                      "physics_retuning":  false,
+                      "threshold_change":  false,
+                      "requalification3":  false,
+                      "r3_passed":  false,
+                      "r4":  false,
+                      "test_only_h_implementation":  true,
+                      "next_activity":  "R3-H-CONSERVED-INVENTORY-FEASIBILITY1-IMPLEMENTATION-AND-PREEXECUTION-REVIEW"
+                  },
+    "document_markers":  {
+                             "docs/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md":  [
+                                                                                                   "NRS-MARKER:R3-EQUILIBRIUM-RECONSTRUCTION-PLANNING1",
+                                                                                                   "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-RETURNED-REVIEW",
+                                                                                                   "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-H-SURFACE",
+                                                                                                   "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-SEARCH",
+                                                                                                   "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-EXIT"
+                                                                                               ],
+                             "docs/PROJECT.md":  [
+                                                     "NRS-MARKER:R3-EQUILIBRIUM-RECONSTRUCTION-PLANNING1-CURRENT"
+                                                 ],
+                             "docs/ROADMAP.md":  [
+                                                     "NRS-MARKER:R3-H-CONSERVED-INVENTORY-FEASIBILITY1-NEXT"
+                                                 ]
+                         }
+}

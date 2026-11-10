@@ -1,0 +1,9 @@
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (2s 064ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 2s 556ms

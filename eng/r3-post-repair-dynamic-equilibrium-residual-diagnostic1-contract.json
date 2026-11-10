@@ -1,0 +1,99 @@
+{
+    "schema":  "r3-post-repair-dynamic-equilibrium-residual-diagnostic1-v1",
+    "baseline":  {
+                     "src":  {
+                                 "file_count":  962,
+                                 "tree_sha256":  "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+                             },
+                     "tests":  {
+                                   "file_count":  402,
+                                   "tree_sha256":  "FB35665EE6136B1426A43EDD7F889B707D35A01A6AF07061FFF585A9C861C6AF"
+                               }
+                 },
+    "diagnostic_test":  {
+                            "path":  "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3PostRepairDynamicEquilibriumResidualDiagnostic1Tests.cs",
+                            "sha256":  "3F5315A8EE381B86FDAF794C5B36B4381AE33B519B42E555D23E3DC89DD20525"
+                        },
+    "frozen_inputs":  [
+                          {
+                              "path":  "eng/frozen-evidence/r3-post-repair-dynamic-replanning1/01-post-repair-step1-energy.csv",
+                              "sha256":  "77A6354E8EB8119B741A98E0C3BBB7A915EBCC9517F6A311728F5682172C1E7E"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-post-repair-dynamic-replanning1/02-post-repair-fast100.csv",
+                              "sha256":  "4ABA6055E592BE19508C9B49C49135A56BDAF530169B5BFA1F79DAFDDA2B1F5D"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-post-repair-dynamic-replanning1/03-evidence-summary.json",
+                              "sha256":  "93AC5BC19999623F8557EC1114016DF845A7DCD82052CC0CA19EC8FC687EA6CC"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_FastGateDynamicEquilibriumDiagnostic1_ReturnedArtifacts/02-first-100-step-key-dynamics.csv",
+                              "sha256":  "2088394E8091A8D32609FDF0DF12FAFC8D2267D39351AFEF7E1C730476989E88"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_FastGateDynamicEquilibriumDiagnostic1_ReturnedArtifacts/05-diagnostic-summary.txt",
+                              "sha256":  "14A038C7062D29FFA39C5B0D70BEAC472CCFB7F79AC46BF1E73C4059614BE1B4"
+                          },
+                          {
+                              "path":  "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1.md",
+                              "sha256":  "6C5EC699BD7A1EFB14419F1DD029789FBAEDBF3895678E09AC3FB4059E32FAFB"
+                          },
+                          {
+                              "path":  "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1_PREEXECUTION_REVIEW.md",
+                              "sha256":  "5480551DF1028DE5AC1F977C7170A200ECCDDA2B0009EA7124EC2AC478BE58DE"
+                          },
+                          {
+                              "path":  "eng/m10-final-vr2-r3-post-repair-dynamic-equilibrium-replanning1-contract.json",
+                              "sha256":  "F893F06956356FCAE8982920237822C20DE1935F5079512FC8F677B4B6E31CA6"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts/01-raw-checkpoint-node-comparison.csv",
+                              "sha256":  "7F97F772EDEA53BAEBCA7CF9F12546FFC5B09EDB6A36C1649B0DCB0A2A506EE3"
+                          }
+                      ],
+    "workload":  {
+                     "timestep_ms":  10,
+                     "running_steps_per_mode":  100,
+                     "modes":  [
+                                   "mode1",
+                                   "candidate-mode2"
+                               ],
+                     "checkpoints":  [
+                                         0,
+                                         1,
+                                         2,
+                                         5,
+                                         10,
+                                         20,
+                                         50,
+                                         100
+                                     ],
+                     "extra_checkpoints":  [
+                                               "raw",
+                                               "seed-step1"
+                                           ],
+                     "node_rows":  240,
+                     "hydraulic_rows":  18,
+                     "controller_rows":  18,
+                     "conservation_rows":  18,
+                     "health_rows":  204
+                 },
+    "authority":  {
+                      "production_change":  false,
+                      "retuning":  false,
+                      "threshold_change":  false,
+                      "reconstruction_family_selected":  false,
+                      "r3_passed":  false,
+                      "requalification3_authorized":  false,
+                      "r4_authorized":  false,
+                      "next_activity":  "REVIEW-DIAGNOSTIC1-EQUILIBRIUM-RECONSTRUCTION-PLANNING-ONLY"
+                  },
+    "evidence_headers":  {
+                             "01-node-residuals.csv":  "mode,checkpoint,node,mass_kg,energy_j,pressure_pa,temperature_k,phase,quality,mass_storage_residual_kg_s,energy_storage_residual_w,pressure_step_delta_pa",
+                             "02-hydraulics-drum.csv":  "mode,checkpoint,pump_kg_s,channel_kg_s,return_kg_s,recirculation_kg_s,feedwater_kg_s,steam_export_kg_s,pump_boost_pa,pump_net_head_pa,channel_head_pa,return_head_pa,pump_speed_fraction,drum_mass_kg,drum_energy_j,drum_pressure_pa,drum_level",
+                             "03-controller-rotor.csv":  "mode,checkpoint,setpoint_rpm,measurement_rpm,error_rpm,integral,output_percent,rotor_initial_rpm,rotor_final_rpm,turbine_torque_nm,effective_load_torque_nm,passive_loss_torque_nm,net_torque_nm,shaft_power_w,electrical_power_w,generator_load_torque_nm,requested_power_w,stage_command_kg_s,stage_transfer_kg_s,control_valve_fraction",
+                             "04-conservation.csv":  "mode,checkpoint,suction_observed_mass_rate_kg_s,suction_predicted_mass_rate_kg_s,suction_mass_identity_residual_kg_s,suction_observed_energy_rate_w,suction_predicted_energy_rate_w,suction_energy_identity_residual_w,network_mass_closure_kg,network_energy_closure_j,network_mass_rate_residual_kg_s,network_power_residual_w",
+                             "05-health.csv":  "mode,step,trip,breaker_closed,rollbacks,finite,electrical_mwe,primary_pump_kg_s,drum_level,governor_percent,in_frozen_envelope"
+                         }
+}

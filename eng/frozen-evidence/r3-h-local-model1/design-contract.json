@@ -1,0 +1,91 @@
+{
+    "schema":  "r3-h-bounded-scaled-local-model-design1-v1",
+    "baseline":  {
+                     "src":  {
+                                 "file_count":  962,
+                                 "tree_sha256":  "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+                             },
+                     "tests":  {
+                                   "file_count":  406,
+                                   "tree_sha256":  "DA357FCC2DE77CB76AC425F260EB6E265E1CEAF4263071DA37D1794B1DFD3D19"
+                               }
+                 },
+    "frozen_inputs":  [
+                          {
+                              "path":  "eng/r3-h-numerical-stop-review1-contract.json",
+                              "sha256":  "356148E77330D2CABB156A89BC10CF4EF9559E15E6E6D592804563FBAB61FCC3"
+                          },
+                          {
+                              "path":  "eng/review-r3-h-numerics1.py",
+                              "sha256":  "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+                          },
+                          {
+                              "path":  "eng/design-r3-h-local-model1.py",
+                              "sha256":  "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+                          },
+                          {
+                              "path":  "docs/M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md",
+                              "sha256":  "F7EA7B779DD48AF9E85454EF93D9F8D6661E65C8A55873C33206CA6A3C6FD963"
+                          },
+                          {
+                              "path":  "scripts/run-r3-h-local-model-design1.cmd",
+                              "sha256":  "2E22144F964E52D24C6905D65CC1696D89EFE2CFF7D344DBAC4033AC2D8C5A1B"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-h-numerics1/06-manifest.csv",
+                              "sha256":  "502FED51F7C80FF519F5A4F77B7CF6E5A55E559CC39C38A22D79FC74E18D8273"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-h-numerics1/05-review-summary.json",
+                              "sha256":  "6628C6E93FB583461F7DE71A96A3B467B8DF2133A95E7B65E1F9D9F2BE15B856"
+                          },
+                          {
+                              "path":  "eng/frozen-evidence/r3-h-feasibility1/13-payload-map.json",
+                              "sha256":  "B5813D680467CD5F500F7A41BFEE22AE3042CCC81BC763941F09F8BC0CC8BB4E"
+                          }
+                      ],
+    "design":  {
+                   "id":  "H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-OFFLINE",
+                   "event":  401,
+                   "variables":  24,
+                   "residuals":  75,
+                   "fractional_bound":  0.02,
+                   "column_scaling":  "EUCLIDEAN-NORM-NO-RESIDUAL-REWEIGHTING",
+                   "zero_column_delta":  0,
+                   "damping_values":  [
+                                          0.001,
+                                          0.01,
+                                          0.1,
+                                          1,
+                                          10,
+                                          100
+                                      ],
+                   "pivot_guard":  1E-14,
+                   "fraction_to_box_safety":  0.99,
+                   "coordinate_clipping":  false,
+                   "plant_evaluations":  0,
+                   "nonlinear_search_authorized":  false
+               },
+    "authority":  {
+                      "plant_evaluations":  false,
+                      "nonlinear_search":  false,
+                      "source_changes":  false,
+                      "test_changes":  false,
+                      "bounds_expansion":  false,
+                      "residual_reweighting":  false,
+                      "seed_installation":  false,
+                      "controller_change":  false,
+                      "r3_passed":  false,
+                      "requalification3":  false,
+                      "r4":  false,
+                      "next_activity":  "REVIEW-LOCAL-MODEL-EVIDENCE-BEFORE-NONLINEAR-PLANNING"
+                  },
+    "document_markers":  {
+                             "docs/M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md":  [
+                                                                                    "NRS-MARKER:R3-H-LOCAL-MODEL-DESIGN1"
+                                                                                ],
+                             "docs/PROJECT.md":  [
+                                                     "NRS-MARKER:R3-H-LOCAL-MODEL-DESIGN1-CURRENT"
+                                                 ]
+                         }
+}

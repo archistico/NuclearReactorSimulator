@@ -1,0 +1,34 @@
+{
+    "status":  "PASS-AS-AUTHORED",
+    "planning_contract_sha256":  "E9D2966552EDC318B1FAEF5F0BA0A6ED78EFAF01249EF206727AFB07AC9BF6AF",
+    "baseline":  {
+                     "src":  {
+                                 "file_count":  962,
+                                 "tree_sha256":  "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+                             },
+                     "tests":  {
+                                   "file_count":  403,
+                                   "tree_sha256":  "C4021BDE9D259976B59A32351A28AC332EC9EF23ED452840B230CD852155639C"
+                               }
+                 },
+    "production_change":  false,
+    "test_source_change":  false,
+    "returned_manifest_sha256":  "7FE73638A74B18D4BF90742953270AA2B4AA8195257E4CEC0D4FDD2888F1486C",
+    "inherited_regression":  {
+                                 "status":  "PASS",
+                                 "command":  ".\\eng\\ci-ordinary.cmd",
+                                 "ordinary_total":  1535,
+                                 "ordinary_passed":  1376,
+                                 "ordinary_explicit_not_run":  159,
+                                 "ordinary_failed":  0,
+                                 "current_evidence":  "PASS",
+                                 "authoritative_exact_v9":  "PASS",
+                                 "log_path":  "artifacts/r3-dyn-eq-d1/08-ordinary.txt",
+                                 "log_sha256":  "4BBE0FD9732D6F71EF038BF2F2B9A1A100A57487F9FCD3D773BF8D7120451E66",
+                                 "duplicate_health_identity_rejected":  true,
+                                 "missing_node_row_rejected":  true,
+                                 "negative_fixture_bytes_restored":  true
+                             },
+    "inherited_raw_log_present_and_verified":  true,
+    "ordinary_suite_rerun":  false
+}

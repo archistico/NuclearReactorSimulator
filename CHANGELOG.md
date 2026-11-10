@@ -1,3 +1,42 @@
+## 2026-11-10 - R3 H Bounded Scaled Local-Model Design 1
+
+- Implemented the prescribed offline comparison on the same frozen 75-residual/24-variable Jacobian. Six dampings now affect all 24 normalized diagonals; one global feasible fraction keeps all six directions within the original box without coordinate clipping or residual reweighting.
+- Six independent numerical fixtures PASS. All six directions predict strict local-model descent; scores remain in the millions and no nonlinear/physical improvement or corrected seed is claimed. Retained the original unscaled-direction comparator and phase-change caveats.
+- Seven malformed design contracts are rejected. No plant, build or ordinary-suite run; production and all 406 tests remain byte-identical. Compact output is frozen under eng/frozen-evidence/r3-h-local-model1. R3 remains RED.
+
+## 2026-11-10 - R3 H Numerical Stop Review 1
+
+- Added a standard-library-only offline review that authenticates/decompresses the complete H trace, proves production/all 406 tests unchanged and replays the terminal 75-by-24 linear model without plant evaluations.
+- Localized all 78 final trial rejections to the unchanged suction-energy bound; no valid nonlinear terminal trial was evaluated. The six recorded full directions are identical.
+- Replayed all full trial coordinates with zero error. All six normal matrices match zero-damping diagonals bit-for-bit; three derivative probes change phase labels. The first box-admissible fraction is at halving 15, without any new nonlinear evaluation.
+- Froze the next offline numerical comparison: unchanged residuals/variables/box, column scaling and a single global fraction to the bound. No new nonlinear search, bound widening, controller edits or R3 promotion is authorized.
+- Validation: review PASS, eight malformed-authority/provenance/output cases rejected, source/test hashes and documentation links checked. No simulation, build or ordinary-suite rerun was needed; compact review evidence is frozen under eng/frozen-evidence/r3-h-numerics1.
+
+## 2026-11-10 - R3 H Conserved-Inventory Feasibility 1
+
+- Implemented the frozen test-only 24-variable/75-residual H search, with deterministic damping, pivoting, bounds, accounting and complete phase/residual traces. Production and all 403 preceding tests are unchanged.
+- Baseline factory reproduction, six preexecution tests, conditional execution review and the explicit search passed. The engineering result is H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS: 527 budgeted attempts, seven accepted updates, no root, no confirmation runs and no qualified seed.
+- Corrected PowerShell enumeration of an empty JSON confirmation array in the adjudicator; preserved Attempt 1 and reproduced its physical result with unchanged algorithm/thresholds.
+- Negative static checks reject authority expansion, wider search bounds and source-digest drift. R3 remains RED; continuation is evidence review and planning only.
+- Validation: fresh Release build, six focused tests, explicit H evidence gate, 1,382 ordinary tests and current-evidence/Exact-V9 audits PASS. Compact payloads and a losslessly compressed full search trace are preserved under eng/frozen-evidence/r3-h-feasibility1.
+
+## 2026-11-10 - R3 Equilibrium Reconstruction Planning 1
+
+- Reviewed the frozen residual diagnostic and selected H as the first bounded test-only investigation: 24 fluid mass/energy unknowns, with controller/actuator and other non-fluid initial conditions fixed. C/J remain unselected; H sufficiency is not claimed.
+- Froze residual scales from canonical observations/roundoff, deterministic search bounds, confirmation workload, unchanged envelope and explicit feasible/unqualified/inconclusive outcomes.
+- Added a planning audit that authenticates returned evidence, independently recomputes storage rates/scales and proves production plus all 403 tests unchanged. No candidate search, production seed change or ordinary-suite rerun is claimed.
+- Next work is H test-only feasibility implementation and preexecution review. R3 remains RED; production promotion, retuning, Requalification 3 and R4 remain blocked.
+- Planning audit PASS-AS-AUTHORED; eight malformed-contract cases rejected. Compact planning evidence is preserved under eng/frozen-evidence/r3-eq-h-plan1.
+
+## 2026-11-10 - R3 Post-Repair Dynamic-Equilibrium Residual Diagnostic 1
+
+- Validated the preceding replanning audit and added the authorized explicit, test-only 100-step diagnostic for mode 2 versus canonical mode 1.
+- Captures raw/seed/checkpoint inventories, storage residuals, branch heads/flows, drum state, speed control, rotor/generator power and all-step health with frozen prerequisite hashes and complete evidence validation.
+- Local evidence exposes energy nonstationarity during seed preconditioning and governor response to a rotor power deficit; it does not independently prove a controller-initialization defect or select an equilibrium reconstruction family.
+- Production, preceding tests, raw seed, gains, thresholds, C4 and Exact-V9 remain unchanged. R3 remains RED; next work is evidence review and equilibrium reconstruction planning only.
+- Put the authoritative continuation checkpoint first in PROJECT.md and corrected documentation navigation so older current/next records cannot select work.
+- Validation: fresh Release build and explicit diagnostic PASS; 1,376 ordinary tests PASS plus current-evidence/authoritative Exact-V9 audits; malformed evidence rejected. Compact returned evidence and regression-log digest are frozen under eng/frozen-evidence/r3-dyn-eq-d1.
+
 # M10 Final VR2 R3 Post-Repair Causal-Closure Diagnostic 1 - Path Retry Hotfix 3
 
 - Removes the unnecessary long-path evidence copy from the adjudicator.

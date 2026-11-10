@@ -1,0 +1,24 @@
+{
+  "status": "PASS-OFFLINE-DESIGN-EVIDENCE",
+  "linear_fixtures_passed": 6,
+  "damping_comparisons": 6,
+  "solved": 6,
+  "box_admissible": 6,
+  "strict_model_descent": 6,
+  "selected_physical_candidate": null,
+  "nonlinear_improvement_proven": false,
+  "authority": {
+    "plant_evaluations": false,
+    "nonlinear_search": false,
+    "source_changes": false,
+    "test_changes": false,
+    "bounds_expansion": false,
+    "residual_reweighting": false,
+    "seed_installation": false,
+    "controller_change": false,
+    "r3_passed": false,
+    "requalification3": false,
+    "r4": false,
+    "next_activity": "REVIEW-LOCAL-MODEL-EVIDENCE-BEFORE-NONLINEAR-PLANNING"
+  }
+}

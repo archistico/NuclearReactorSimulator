@@ -1,0 +1,119 @@
+.NET SDK:
+ Version:           10.0.201
+ Commit:            4d3023de60
+ Workload version:  10.0.200-manifests.0793c108
+ MSBuild version:   18.3.0-release-26153-122+4d3023de6
+
+Ambiente di runtime:
+ OS Name:     Windows
+ OS Version:  10.0.19045
+ OS Platform: Windows
+ RID:         win-x64
+ Base Path:   C:\Program Files\dotnet\sdk\10.0.201\
+
+Carichi di lavoro .NET installati:
+ [android]
+   Origine dell'installazione: VS 17.14.37516.0
+   Versioni del manifesto:    36.1.2/10.0.100
+   Percorso del manifesto:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.android\36.1.2\WorkloadManifest.json
+   Tipo di installazione:              Msi
+
+ [maui-windows]
+   Origine dell'installazione: VS 17.14.37516.0
+   Versioni del manifesto:    10.0.0/10.0.100
+   Percorso del manifesto:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.maui\10.0.0\WorkloadManifest.json
+   Tipo di installazione:              Msi
+
+ [maccatalyst]
+   Origine dell'installazione: VS 17.14.37516.0
+   Versioni del manifesto:    26.0.11017/10.0.100
+   Percorso del manifesto:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.maccatalyst\26.0.11017\WorkloadManifest.json
+   Tipo di installazione:              Msi
+
+ [ios]
+   Origine dell'installazione: VS 17.14.37516.0
+   Versioni del manifesto:    26.0.11017/10.0.100
+   Percorso del manifesto:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.sdk.ios\26.0.11017\WorkloadManifest.json
+   Tipo di installazione:              Msi
+
+ [wasm-tools-net8]
+   Origine dell'installazione: VS 17.14.37516.0
+   Versioni del manifesto:    10.0.105/10.0.100
+   Percorso del manifesto:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.workload.mono.toolchain.net8\10.0.105\WorkloadManifest.json
+   Tipo di installazione:              Msi
+
+ [wasm-tools]
+   Origine dell'installazione: VS 17.14.37516.0
+   Versioni del manifesto:    10.0.105/10.0.100
+   Percorso del manifesto:       C:\Program Files\dotnet\sdk-manifests\10.0.100\microsoft.net.workload.mono.toolchain.current\10.0.105\WorkloadManifest.json
+   Tipo di installazione:              Msi
+
+Configurato per l'uso "workload sets" durante l'installazione di nuovi manifesti.
+Non sono installati set di carico di lavoro. Esegui il "dotnet workload restore" per installare un set del carico di lavoro.
+
+Host:
+  Version:      10.0.5
+  Architecture: x64
+  Commit:       a612c2a105
+
+.NET SDKs installed:
+  8.0.420 [C:\Program Files\dotnet\sdk]
+  9.0.101 [C:\Program Files\dotnet\sdk]
+  9.0.316 [C:\Program Files\dotnet\sdk]
+  10.0.201 [C:\Program Files\dotnet\sdk]
+
+.NET runtimes installed:
+  Microsoft.AspNetCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 8.0.26 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 8.0.29 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 9.0.18 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.AspNetCore.App 10.0.5 [C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App]
+  Microsoft.NETCore.App 6.0.10 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 8.0.26 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 8.0.29 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 9.0.18 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.NETCore.App 10.0.5 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  Microsoft.WindowsDesktop.App 6.0.10 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 6.0.36 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 7.0.20 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 8.0.26 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 8.0.29 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 9.0.0 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 9.0.18 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+  Microsoft.WindowsDesktop.App 10.0.5 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]
+
+Other architectures found:
+  x86   [C:\Program Files (x86)\dotnet]
+    registered at [HKLM\SOFTWARE\dotnet\Setup\InstalledVersions\x86\InstallLocation]
+
+Environment variables:
+  Not set
+
+global.json file:
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\global.json
+
+Learn more:
+  https://aka.ms/dotnet/info
+
+Download .NET:
+  https://aka.ms/dotnet/download
+  Individuazione dei progetti da ripristinare...
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Domain\NuclearReactorSimulator.Domain.csproj ripristinato (in 89 ms).
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Simulation\NuclearReactorSimulator.Simulation.csproj ripristinato (in 95 ms).
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Application\NuclearReactorSimulator.Application.csproj ripristinato (in 95 ms).
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj ripristinato (in 223 ms).
+  NuclearReactorSimulator.Domain -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Domain\bin\Release\net10.0\NuclearReactorSimulator.Domain.dll
+  NuclearReactorSimulator.Simulation -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Simulation\bin\Release\net10.0\NuclearReactorSimulator.Simulation.dll
+  NuclearReactorSimulator.Application -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Application\bin\Release\net10.0\NuclearReactorSimulator.Application.dll
+  NuclearReactorSimulator.Application.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll
+
+Compilazione completata.
+    Avvisi: 0
+    Errori: 0
+
+Tempo trascorso 00:00:05.92

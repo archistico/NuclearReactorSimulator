@@ -1,0 +1,566 @@
+{
+  "status": "PASS-BASELINE-IDENTITY",
+  "hash": "20636B1FAAB0C8995A005C493D37797C81823227F8EF87083A5A01EFEDED4820",
+  "Raw": [
+    {
+      "Id": "control-out",
+      "Mass": 2050.381218833311,
+      "Energy": 5265414775.165846,
+      "Pressure": 3994187.8859694917,
+      "Temperature": 523.4209078788757,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.9777652721225393
+    },
+    {
+      "Id": "drum",
+      "Mass": 3917.5214804203474,
+      "Energy": 5036375894.23722,
+      "Pressure": 6416459.281680372,
+      "Temperature": 553.15,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.04232274972708037
+    },
+    {
+      "Id": "exhaust",
+      "Mass": 66.55252025010584,
+      "Energy": 142837556.9034473,
+      "Pressure": 8438.344971163331,
+      "Temperature": 315.6750957421958,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.8729051078953289
+    },
+    {
+      "Id": "feedwater-inventory",
+      "Mass": 9891.727368706732,
+      "Energy": 1962195312.33038,
+      "Pressure": 17484.899929709074,
+      "Temperature": 320.5284886658307,
+      "Phase": "SubcooledLiquid",
+      "Quality": null
+    },
+    {
+      "Id": "header",
+      "Mass": 3226.6676799875017,
+      "Energy": 8341269781.836807,
+      "Pressure": 6247420.795383304,
+      "Temperature": 551.3853529542735,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.9980222495902376
+    },
+    {
+      "Id": "hotwell",
+      "Mass": 9891.883976124516,
+      "Energy": 1960455817.8974555,
+      "Pressure": 10809.224828769648,
+      "Temperature": 320.48565943701715,
+      "Phase": "SubcooledLiquid",
+      "Quality": null
+    },
+    {
+      "Id": "outlet",
+      "Mass": 1375.1470283335327,
+      "Energy": 2104014157.044389,
+      "Pressure": 6666459.282216402,
+      "Temperature": 555.6952079772949,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.21514191261129753
+    },
+    {
+      "Id": "pressure",
+      "Mass": 7507.98659453272,
+      "Energy": 9219919054.66319,
+      "Pressure": 6916459.281680632,
+      "Temperature": 553.3082998275795,
+      "Phase": "SubcooledLiquid",
+      "Quality": null
+    },
+    {
+      "Id": "steam",
+      "Mass": 3306.8269899275992,
+      "Energy": 8552155703.008327,
+      "Pressure": 6398665.757599528,
+      "Temperature": 552.9656339307692,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.9997887805985191
+    },
+    {
+      "Id": "stop-out",
+      "Mass": 3132.5687588735377,
+      "Energy": 8093920564.089228,
+      "Pressure": 6069485.550609279,
+      "Temperature": 549.4884188115597,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.9960097013939699
+    },
+    {
+      "Id": "suction",
+      "Mass": 7502.7459746337245,
+      "Energy": 9214263779.64126,
+      "Pressure": 6416459.393982445,
+      "Temperature": 553.15,
+      "Phase": "SubcooledLiquid",
+      "Quality": null
+    },
+    {
+      "Id": "turbine-inlet",
+      "Mass": 1958.8758929660944,
+      "Energy": 5027614200.998343,
+      "Pressure": 3816252.638242914,
+      "Temperature": 520.7340546488762,
+      "Phase": "SaturatedMixture",
+      "Quality": 0.976667688397457
+    }
+  ],
+  "Observations": [
+    {
+      "Checkpoint": "seed-step1",
+      "Nodes": [
+        {
+          "Id": "control-out",
+          "Mass": 2050.381218833204,
+          "Energy": 5265416740.196764,
+          "Pressure": 3994190.335162296,
+          "Temperature": 523.420944237709,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9777659053983857
+        },
+        {
+          "Id": "drum",
+          "Mass": 3917.5214803115714,
+          "Energy": 5036374272.350046,
+          "Pressure": 6416452.25780589,
+          "Temperature": 553.1499272227287,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.04232270364647799
+        },
+        {
+          "Id": "exhaust",
+          "Mass": 66.5510561566174,
+          "Energy": 142837298.76606247,
+          "Pressure": 8438.345135734415,
+          "Temperature": 315.67509611099956,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.8729243283736013
+        },
+        {
+          "Id": "feedwater-inventory",
+          "Mass": 9891.72736916472,
+          "Energy": 1962195312.5399299,
+          "Pressure": 17485.008023249316,
+          "Temperature": 320.52848866870204,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "header",
+          "Mass": 3226.6676799893353,
+          "Energy": 8341269913.748507,
+          "Pressure": 6247420.965249719,
+          "Temperature": 551.3853547451189,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9980222805945639
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9891.885439759048,
+          "Energy": 1960456156.548816,
+          "Pressure": 11146.693518487325,
+          "Temperature": 320.4856606120557,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "outlet",
+          "Mass": 1375.147028331389,
+          "Energy": 2104002590.8931763,
+          "Pressure": 6666362.628266034,
+          "Temperature": 555.6942403852939,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.21513840049315072
+        },
+        {
+          "Id": "pressure",
+          "Mass": 7507.986594646093,
+          "Energy": 9219919831.66078,
+          "Pressure": 6916498.554694102,
+          "Temperature": 553.308333460437,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "steam",
+          "Mass": 3306.826989924279,
+          "Energy": 8552155718.177682,
+          "Pressure": 6398665.776450336,
+          "Temperature": 552.9656341260904,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9997887839921302
+        },
+        {
+          "Id": "stop-out",
+          "Mass": 3132.5687588725377,
+          "Energy": 8093920720.279533,
+          "Pressure": 6069485.749460348,
+          "Temperature": 549.4884209573269,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9960097385425486
+        },
+        {
+          "Id": "suction",
+          "Mass": 7502.7459746337245,
+          "Energy": 9214263779.641113,
+          "Pressure": 6416459.393982445,
+          "Temperature": 553.15,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "turbine-inlet",
+          "Mass": 1958.875892967201,
+          "Energy": 5027624268.363931,
+          "Pressure": 3816265.22089968,
+          "Temperature": 520.7342476040125,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9766710489901047
+        }
+      ],
+      "ScaledResiduals": [
+        -0.08208173244848062,
+        561134.0577342048,
+        -15.49931963973304,
+        -115417.16762809637,
+        -3005964.2918830602,
+        -230860.4527306165,
+        1193.2796208530806,
+        2738.0560747663553,
+        3.0067114093959733,
+        80465.06224549157,
+        7736938.394230769,
+        7031716.613861386,
+        -0.5552741622003652,
+        -2056549.845097291,
+        125.5337361530715,
+        724858.56227758,
+        -0.9415785401083312,
+        1601.351253397765,
+        -0.5842189160467588,
+        33922.41217895609,
+        0,
+        -1.203125,
+        2.3143128863528295,
+        7848623.002230483,
+        -1.93674642886281
+      ],
+      "Healthy": true,
+      "InEnvelope": true,
+      "ElectricalMwe": 4.999999999989665,
+      "PumpKgS": 100.00001123018062,
+      "DrumLevel": 0.4999377160615026,
+      "Governor": 29.281329697436618,
+      "RotorTorque": -0.0001298693430271669,
+      "MassClosure": 0,
+      "EnergyClosure": 4.7602440460536855E-06,
+      "StateJson": "{\u0022Fluids\u0022:[{\u0022Id\u0022:\u0022control-out\u0022,\u0022Mass\u0022:2050.381218833204,\u0022Energy\u0022:5265416740.196764,\u0022Pressure\u0022:3994190.335162296,\u0022Temperature\u0022:523.420944237709,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9777659053983857},{\u0022Id\u0022:\u0022drum\u0022,\u0022Mass\u0022:3917.5214803115714,\u0022Energy\u0022:5036374272.350046,\u0022Pressure\u0022:6416452.25780589,\u0022Temperature\u0022:553.1499272227287,\u0022Phase\u0022:2,\u0022Quality\u0022:0.04232270364647799},{\u0022Id\u0022:\u0022exhaust\u0022,\u0022Mass\u0022:66.5510561566174,\u0022Energy\u0022:142837298.76606247,\u0022Pressure\u0022:8438.345135734415,\u0022Temperature\u0022:315.67509611099956,\u0022Phase\u0022:2,\u0022Quality\u0022:0.8729243283736013},{\u0022Id\u0022:\u0022feedwater-inventory\u0022,\u0022Mass\u0022:9891.72736916472,\u0022Energy\u0022:1962195312.5399299,\u0022Pressure\u0022:17485.008023249316,\u0022Temperature\u0022:320.52848866870204,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022header\u0022,\u0022Mass\u0022:3226.6676799893353,\u0022Energy\u0022:8341269913.748507,\u0022Pressure\u0022:6247420.965249719,\u0022Temperature\u0022:551.3853547451189,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9980222805945639},{\u0022Id\u0022:\u0022hotwell\u0022,\u0022Mass\u0022:9891.885439759048,\u0022Energy\u0022:1960456156.548816,\u0022Pressure\u0022:11146.693518487325,\u0022Temperature\u0022:320.4856606120557,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022outlet\u0022,\u0022Mass\u0022:1375.147028331389,\u0022Energy\u0022:2104002590.8931763,\u0022Pressure\u0022:6666362.628266034,\u0022Temperature\u0022:555.6942403852939,\u0022Phase\u0022:2,\u0022Quality\u0022:0.21513840049315072},{\u0022Id\u0022:\u0022pressure\u0022,\u0022Mass\u0022:7507.986594646093,\u0022Energy\u0022:9219919831.66078,\u0022Pressure\u0022:6916498.554694102,\u0022Temperature\u0022:553.308333460437,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022steam\u0022,\u0022Mass\u0022:3306.826989924279,\u0022Energy\u0022:8552155718.177682,\u0022Pressure\u0022:6398665.776450336,\u0022Temperature\u0022:552.9656341260904,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9997887839921302},{\u0022Id\u0022:\u0022stop-out\u0022,\u0022Mass\u0022:3132.5687588725377,\u0022Energy\u0022:8093920720.279533,\u0022Pressure\u0022:6069485.749460348,\u0022Temperature\u0022:549.4884209573269,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9960097385425486},{\u0022Id\u0022:\u0022suction\u0022,\u0022Mass\u0022:7502.7459746337245,\u0022Energy\u0022:9214263779.641113,\u0022Pressure\u0022:6416459.393982445,\u0022Temperature\u0022:553.15,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022turbine-inlet\u0022,\u0022Mass\u0022:1958.875892967201,\u0022Energy\u0022:5027624268.363931,\u0022Pressure\u0022:3816265.22089968,\u0022Temperature\u0022:520.7342476040125,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9766710489901047}],\u0022Thermal\u0022:[{\u0022Id\u0022:\u0022fuel\u0022,\u0022Energy\u0022:5787751489.4714365,\u0022Temperature\u0022:578.7751489471436},{\u0022Id\u0022:\u0022structure\u0022,\u0022Energy\u0022:11245791215.640295,\u0022Temperature\u0022:562.2895607820147}],\u0022Valves\u0022:[{\u0022ValveId\u0022:\u0022admission\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:true},\u0022IsFailSafeActive\u0022:false},{\u0022ValveId\u0022:\u0022control\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:0.2928132969743662,\u0022Percent\u0022:29.281329697436618,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:false},\u0022IsFailSafeActive\u0022:false},{\u0022ValveId\u0022:\u0022stop\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:true},\u0022IsFailSafeActive\u0022:false}],\u0022Pumps\u0022:[{\u0022PumpId\u0022:\u0022condensate-pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:0.42966515369975916,\u0022Percent\u0022:42.966515369975916,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:false},\u0022IsRunning\u0022:true},{\u0022PumpId\u0022:\u0022feedwater-pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:0.9693082680156916,\u0022Percent\u0022:96.93082680156915,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:false},\u0022IsRunning\u0022:true},{\u0022PumpId\u0022:\u0022pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:true},\u0022IsRunning\u0022:true}],\u0022HeatSources\u0022:[],\u0022PointKinetics\u0022:{\u0022NeutronPopulation\u0022:{\u0022Relative\u0022:0.3297117650655722},\u0022DelayedNeutronGroups\u0022:[{\u0022GroupId\u0022:\u0022dn\u0022,\u0022PrecursorPopulation\u0022:{\u0022Relative\u0022:0.2678908091157774}}]},\u0022IodineXenon\u0022:{\u0022Iodine\u0022:{\u0022Relative\u0022:0},\u0022Xenon\u0022:{\u0022Relative\u0022:0}},\u0022ControlRods\u0022:{\u0022Rods\u0022:[{\u0022RodId\u0022:\u0022rod-1\u0022,\u0022Position\u0022:{\u0022FractionWithdrawn\u0022:0.5,\u0022PercentWithdrawn\u0022:50,\u0022FractionInserted\u0022:0.5},\u0022Motion\u0022:0}]},\u0022PrimaryMemory\u0022:[{\u0022ControllerId\u0022:\u0022flow-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:0,\u0022LastOutput\u0022:100},{\u0022ControllerId\u0022:\u0022power-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:0,\u0022LastOutput\u0022:0}],\u0022PrimaryActuators\u0022:[{\u0022ActuatorId\u0022:\u0022mcp-actuator\u0022,\u0022LastControllerOutput\u0022:100},{\u0022ActuatorId\u0022:\u0022rod-actuator\u0022,\u0022LastControllerOutput\u0022:0}],\u0022SecondaryMemory\u0022:[{\u0022ControllerId\u0022:\u0022hotwell-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:42.966515369975916,\u0022PreviousError\u0022:0,\u0022LastOutput\u0022:42.966515369975916},{\u0022ControllerId\u0022:\u0022level-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:96.93082680156915,\u0022PreviousError\u0022:0,\u0022LastOutput\u0022:96.93082680156915},{\u0022ControllerId\u0022:\u0022pressure-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:-6416459.281680372,\u0022LastOutput\u0022:100},{\u0022ControllerId\u0022:\u0022speed-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:28.531329697436618,\u0022PreviousError\u0022:0.75,\u0022LastOutput\u0022:29.281329697436618}],\u0022SecondaryActuators\u0022:[{\u0022ActuatorId\u0022:\u0022condensate-actuator\u0022,\u0022LastControllerOutput\u0022:42.966515369975916},{\u0022ActuatorId\u0022:\u0022feedwater-actuator\u0022,\u0022LastControllerOutput\u0022:96.93082680156915},{\u0022ActuatorId\u0022:\u0022pressure-actuator\u0022,\u0022LastControllerOutput\u0022:100},{\u0022ActuatorId\u0022:\u0022speed-actuator\u0022,\u0022LastControllerOutput\u0022:29.281329697436618}],\u0022PrimaryControllers\u0022:[{\u0022ControllerId\u0022:\u0022flow-control\u0022,\u0022MeasurementChannelId\u0022:\u0022flow\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:0,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:0,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:100,\u0022Output\u0022:100,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0},{\u0022ControllerId\u0022:\u0022power-control\u0022,\u0022MeasurementChannelId\u0022:\u0022power\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:0,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:0,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:0,\u0022Output\u0022:0,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0}],\u0022SecondaryControllers\u0022:[{\u0022ControllerId\u0022:\u0022hotwell-control\u0022,\u0022MeasurementChannelId\u0022:\u0022hotwell\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:9891.883976124516,\u0022Measurement\u0022:9891.883976124516,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:0,\u0022ProportionalTerm\u0022:-0,\u0022IntegralTerm\u0022:42.966515369975916,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:42.966515369975916,\u0022Output\u0022:42.966515369975916,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:true,\u0022Status\u0022:1},{\u0022ControllerId\u0022:\u0022level-control\u0022,\u0022MeasurementChannelId\u0022:\u0022level\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:0.5,\u0022Measurement\u0022:0.5,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:0,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:96.93082680156915,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:96.93082680156915,\u0022Output\u0022:96.93082680156915,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:true,\u0022Status\u0022:1},{\u0022ControllerId\u0022:\u0022pressure-control\u0022,\u0022MeasurementChannelId\u0022:\u0022pressure\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:6416459.281680372,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-6416459.281680372,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:100,\u0022Output\u0022:100,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0},{\u0022ControllerId\u0022:\u0022speed-control\u0022,\u0022MeasurementChannelId\u0022:\u0022speed\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:3000.75,\u0022Measurement\u0022:3000,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:0.75,\u0022ProportionalTerm\u0022:0.75,\u0022IntegralTerm\u0022:28.531329697436618,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:29.281329697436618,\u0022Output\u0022:29.281329697436618,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:true,\u0022Status\u0022:1}],\u0022Rotors\u0022:[{\u0022RotorId\u0022:\u0022rotor\u0022,\u0022MomentOfInertia\u0022:{\u0022KilogramSquareMetres\u0022:1000},\u0022InitialAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592653589793,\u0022RevolutionsPerMinute\u0022:3000},\u0022FinalAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592653576806,\u0022RevolutionsPerMinute\u0022:2999.999999987598},\u0022AverageAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.15926535833,\u0022RevolutionsPerMinute\u0022:2999.9999999937995},\u0022RatedAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592653589793,\u0022RevolutionsPerMinute\u0022:3000},\u0022OverspeedThreshold\u0022:{\u0022RadiansPerSecond\u0022:345.57519189487726,\u0022RevolutionsPerMinute\u0022:3300.0000000000005},\u0022TurbineTorque\u0022:{\u0022NewtonMetres\u0022:17831.849616549134},\u0022CommandedExternalLoadTorque\u0022:{\u0022NewtonMetres\u0022:16240.300315499524},\u0022EffectiveExternalLoadTorque\u0022:{\u0022NewtonMetres\u0022:16240.300315499524},\u0022NetTorque\u0022:{\u0022NewtonMetres\u0022:-0.0001298693430271669},\u0022ShaftPower\u0022:{\u0022Watts\u0022:5602040.775515295,\u0022Kilowatts\u0022:5602.040775515295,\u0022Megawatts\u0022:5.602040775515294,\u0022Gigawatts\u0022:0.005602040775515294},\u0022ExternalLoadPower\u0022:{\u0022Watts\u0022:5102040.816315985,\u0022Kilowatts\u0022:5102.0408163159855,\u0022Megawatts\u0022:5.102040816315985,\u0022Gigawatts\u0022:0.005102040816315986},\u0022InitialKineticEnergy\u0022:{\u0022Joules\u0022:49348022.0054468,\u0022Kilojoules\u0022:49348.0220054468,\u0022Megajoules\u0022:49.3480220054468,\u0022KilowattHours\u0022:13.707783890401888,\u0022MegawattHours\u0022:0.013707783890401889},\u0022FinalKineticEnergy\u0022:{\u0022Joules\u0022:49348022.00503879,\u0022Kilojoules\u0022:49348.02200503879,\u0022Megajoules\u0022:49.34802200503879,\u0022KilowattHours\u0022:13.707783890288553,\u0022MegawattHours\u0022:0.013707783890288552},\u0022TripCommandActive\u0022:false,\u0022OverspeedDetectedAtStart\u0022:false,\u0022OverspeedDetectedAtEnd\u0022:false,\u0022ExternalLoadTorqueLimitedAtZeroSpeed\u0022:false}],\u0022Generators\u0022:[{\u0022GeneratorId\u0022:\u0022generator\u0022,\u0022RotorId\u0022:\u0022rotor\u0022,\u0022BreakerId\u0022:\u0022breaker\u0022,\u0022InitialElectricalFrequency\u0022:{\u0022Hertz\u0022:50},\u0022FinalElectricalFrequency\u0022:{\u0022Hertz\u0022:49.99999999979331},\u0022InitialElectricalPhaseAngle\u0022:{\u0022Radians\u0022:0,\u0022Degrees\u0022:0},\u0022FinalElectricalPhaseAngle\u0022:{\u0022Radians\u0022:3.1415926535833,\u0022Degrees\u0022:179.99999999962796},\u0022InitialPhaseDifference\u0022:{\u0022Radians\u0022:0,\u0022Degrees\u0022:0},\u0022FinalPhaseDifference\u0022:{\u0022Radians\u0022:6.4930283372177655E-12,\u0022Degrees\u0022:3.7202311998142464E-10},\u0022TerminalLineVoltage\u0022:{\u0022Volts\u0022:400000,\u0022Kilovolts\u0022:400},\u0022GridLineVoltage\u0022:{\u0022Volts\u0022:400000,\u0022Kilovolts\u0022:400},\u0022FrequencyDifferenceAtCloseCheck\u0022:{\u0022Hertz\u0022:0},\u0022VoltageDifferenceAtCloseCheck\u0022:{\u0022Volts\u0022:0,\u0022Kilovolts\u0022:0},\u0022SynchronizationConditionsSatisfied\u0022:true,\u0022BreakerInitiallyClosed\u0022:true,\u0022BreakerFinallyClosed\u0022:true,\u0022CloseBreakerCommand\u0022:false,\u0022OpenBreakerCommand\u0022:false,\u0022CloseCommandAccepted\u0022:false,\u0022CloseCommandRejected\u0022:false,\u0022RequestedElectricalPower\u0022:{\u0022Watts\u0022:5000000,\u0022Kilowatts\u0022:5000,\u0022Megawatts\u0022:5,\u0022Gigawatts\u0022:0.005},\u0022CommandedElectromagneticTorque\u0022:{\u0022NewtonMetres\u0022:16240.300315499524},\u0022EffectiveElectromagneticTorque\u0022:{\u0022NewtonMetres\u0022:16240.300315499524},\u0022MechanicalInputPower\u0022:{\u0022Watts\u0022:5102040.816315985,\u0022Kilowatts\u0022:5102.0408163159855,\u0022Megawatts\u0022:5.102040816315985,\u0022Gigawatts\u0022:0.005102040816315986},\u0022ElectricalOutputPower\u0022:{\u0022Watts\u0022:4999999.999989665,\u0022Kilowatts\u0022:4999.999999989665,\u0022Megawatts\u0022:4.999999999989665,\u0022Gigawatts\u0022:0.0049999999999896655},\u0022ConversionLossPower\u0022:{\u0022Watts\u0022:102040.81632632017,\u0022Kilowatts\u0022:102.04081632632017,\u0022Megawatts\u0022:0.10204081632632017,\u0022Gigawatts\u0022:0.00010204081632632017}}],\u0022FissionWatts\u0022:32971176.50655722,\u0022DecayWatts\u0022:0}"
+    },
+    {
+      "Checkpoint": "post-seed",
+      "Nodes": [
+        {
+          "Id": "control-out",
+          "Mass": 2050.381222560383,
+          "Energy": 5265418715.388182,
+          "Pressure": 3994192.792385241,
+          "Temperature": 523.4209807157516,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9777665389270953
+        },
+        {
+          "Id": "drum",
+          "Mass": 3917.5216857177857,
+          "Energy": 5036372546.233815,
+          "Pressure": 6416443.744018638,
+          "Temperature": 553.1498390078544,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.042322643144523636
+        },
+        {
+          "Id": "exhaust",
+          "Mass": 66.54959170195576,
+          "Energy": 142837033.63479686,
+          "Pressure": 8438.34482487792,
+          "Temperature": 315.6750954143703,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.8729435091754422
+        },
+        {
+          "Id": "feedwater-inventory",
+          "Mass": 9891.72717694744,
+          "Energy": 1962195274.5719154,
+          "Pressure": 17440.845534034524,
+          "Temperature": 320.5284886726114,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "header",
+          "Mass": 3226.667679935438,
+          "Energy": 8341270045.499813,
+          "Pressure": 6247421.135049798,
+          "Temperature": 551.3853565352647,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9980223116047926
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9891.886773516422,
+          "Energy": 1960456469.0177197,
+          "Pressure": 11454.309766520922,
+          "Temperature": 320.48566177639435,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "outlet",
+          "Mass": 1375.1474794224528,
+          "Energy": 2103991667.8104374,
+          "Pressure": 6666266.915044658,
+          "Temperature": 555.6932822108269,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.21513483614769652
+        },
+        {
+          "Id": "pressure",
+          "Mass": 7507.986283668701,
+          "Energy": 9219920223.582146,
+          "Pressure": 6916505.620722654,
+          "Temperature": 553.308355561547,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "steam",
+          "Mass": 3306.82696358641,
+          "Energy": 8552155660.152007,
+          "Pressure": 6398665.741319013,
+          "Temperature": 552.9656337620798,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9997887859995787
+        },
+        {
+          "Id": "stop-out",
+          "Mass": 3132.5687589318086,
+          "Energy": 8093920876.635889,
+          "Pressure": 6069485.949692327,
+          "Temperature": 549.4884231179952,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9960097759291129
+        },
+        {
+          "Id": "suction",
+          "Mass": 7502.7459746337245,
+          "Energy": 9214263779.261364,
+          "Pressure": 6416459.393982445,
+          "Temperature": 553.15,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "turbine-inlet",
+          "Mass": 1958.875892967201,
+          "Energy": 5027634334.846425,
+          "Pressure": 3816277.8025847385,
+          "Temperature": 520.7344405442476,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9766744093469764
+        }
+      ],
+      "ScaledResiduals": [
+        2862.7848410757947,
+        564035.4891067538,
+        29267.99987040757,
+        -122834.34360366475,
+        -3006705.8249693643,
+        -237115.30219355525,
+        -500817.8578199052,
+        -496104.0342679128,
+        -88.38255033557047,
+        80367.22396742292,
+        7050392.990384615,
+        6488067.193069307,
+        116845.4843630367,
+        -1942207.3688583663,
+        -344333.5941591138,
+        365622.1868327402,
+        -7469.381867423265,
+        -6125.473673613208,
+        34.62752391073326,
+        33958.475973487984,
+        0,
+        -3110.90625,
+        0,
+        7847934.533828996,
+        -6657.134679570135
+      ],
+      "Healthy": true,
+      "InEnvelope": true,
+      "ElectricalMwe": 4.999999964068564,
+      "PumpKgS": 99.9960838521532,
+      "DrumLevel": 0.49993765416276803,
+      "Governor": 29.281329957878363,
+      "RotorTorque": -0.44639695439468596,
+      "MassClosure": 7.275957614183426E-12,
+      "EnergyClosure": 1.416244485863416E-05,
+      "StateJson": "{\u0022Fluids\u0022:[{\u0022Id\u0022:\u0022control-out\u0022,\u0022Mass\u0022:2050.381222560383,\u0022Energy\u0022:5265418715.388182,\u0022Pressure\u0022:3994192.792385241,\u0022Temperature\u0022:523.4209807157516,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9777665389270953},{\u0022Id\u0022:\u0022drum\u0022,\u0022Mass\u0022:3917.5216857177857,\u0022Energy\u0022:5036372546.233815,\u0022Pressure\u0022:6416443.744018638,\u0022Temperature\u0022:553.1498390078544,\u0022Phase\u0022:2,\u0022Quality\u0022:0.042322643144523636},{\u0022Id\u0022:\u0022exhaust\u0022,\u0022Mass\u0022:66.54959170195576,\u0022Energy\u0022:142837033.63479686,\u0022Pressure\u0022:8438.34482487792,\u0022Temperature\u0022:315.6750954143703,\u0022Phase\u0022:2,\u0022Quality\u0022:0.8729435091754422},{\u0022Id\u0022:\u0022feedwater-inventory\u0022,\u0022Mass\u0022:9891.72717694744,\u0022Energy\u0022:1962195274.5719154,\u0022Pressure\u0022:17440.845534034524,\u0022Temperature\u0022:320.5284886726114,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022header\u0022,\u0022Mass\u0022:3226.667679935438,\u0022Energy\u0022:8341270045.499813,\u0022Pressure\u0022:6247421.135049798,\u0022Temperature\u0022:551.3853565352647,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9980223116047926},{\u0022Id\u0022:\u0022hotwell\u0022,\u0022Mass\u0022:9891.886773516422,\u0022Energy\u0022:1960456469.0177197,\u0022Pressure\u0022:11454.309766520922,\u0022Temperature\u0022:320.48566177639435,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022outlet\u0022,\u0022Mass\u0022:1375.1474794224528,\u0022Energy\u0022:2103991667.8104374,\u0022Pressure\u0022:6666266.915044658,\u0022Temperature\u0022:555.6932822108269,\u0022Phase\u0022:2,\u0022Quality\u0022:0.21513483614769652},{\u0022Id\u0022:\u0022pressure\u0022,\u0022Mass\u0022:7507.986283668701,\u0022Energy\u0022:9219920223.582146,\u0022Pressure\u0022:6916505.620722654,\u0022Temperature\u0022:553.308355561547,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022steam\u0022,\u0022Mass\u0022:3306.82696358641,\u0022Energy\u0022:8552155660.152007,\u0022Pressure\u0022:6398665.741319013,\u0022Temperature\u0022:552.9656337620798,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9997887859995787},{\u0022Id\u0022:\u0022stop-out\u0022,\u0022Mass\u0022:3132.5687589318086,\u0022Energy\u0022:8093920876.635889,\u0022Pressure\u0022:6069485.949692327,\u0022Temperature\u0022:549.4884231179952,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9960097759291129},{\u0022Id\u0022:\u0022suction\u0022,\u0022Mass\u0022:7502.7459746337245,\u0022Energy\u0022:9214263779.261364,\u0022Pressure\u0022:6416459.393982445,\u0022Temperature\u0022:553.15,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022turbine-inlet\u0022,\u0022Mass\u0022:1958.875892967201,\u0022Energy\u0022:5027634334.846425,\u0022Pressure\u0022:3816277.8025847385,\u0022Temperature\u0022:520.7344405442476,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9766744093469764}],\u0022Thermal\u0022:[{\u0022Id\u0022:\u0022fuel\u0022,\u0022Energy\u0022:5787751478.621364,\u0022Temperature\u0022:578.7751478621364},{\u0022Id\u0022:\u0022structure\u0022,\u0022Energy\u0022:11245791210.214817,\u0022Temperature\u0022:562.2895605107409}],\u0022Valves\u0022:[{\u0022ValveId\u0022:\u0022admission\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:true},\u0022IsFailSafeActive\u0022:false},{\u0022ValveId\u0022:\u0022control\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:0.2928132995787836,\u0022Percent\u0022:29.28132995787836,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:false},\u0022IsFailSafeActive\u0022:false},{\u0022ValveId\u0022:\u0022stop\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:true},\u0022IsFailSafeActive\u0022:false}],\u0022Pumps\u0022:[{\u0022PumpId\u0022:\u0022condensate-pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:0.4296653000633587,\u0022Percent\u0022:42.966530006335866,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:false},\u0022IsRunning\u0022:true},{\u0022PumpId\u0022:\u0022feedwater-pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:0.9693705519604172,\u0022Percent\u0022:96.93705519604173,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:false},\u0022IsRunning\u0022:true},{\u0022PumpId\u0022:\u0022pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:true},\u0022IsRunning\u0022:true}],\u0022HeatSources\u0022:[],\u0022PointKinetics\u0022:{\u0022NeutronPopulation\u0022:{\u0022Relative\u0022:0.3297117650655722},\u0022DelayedNeutronGroups\u0022:[{\u0022GroupId\u0022:\u0022dn\u0022,\u0022PrecursorPopulation\u0022:{\u0022Relative\u0022:0.2678908091157774}}]},\u0022IodineXenon\u0022:{\u0022Iodine\u0022:{\u0022Relative\u0022:0},\u0022Xenon\u0022:{\u0022Relative\u0022:0}},\u0022ControlRods\u0022:{\u0022Rods\u0022:[{\u0022RodId\u0022:\u0022rod-1\u0022,\u0022Position\u0022:{\u0022FractionWithdrawn\u0022:0.5,\u0022PercentWithdrawn\u0022:50,\u0022FractionInserted\u0022:0.5},\u0022Motion\u0022:0}]},\u0022PrimaryMemory\u0022:[{\u0022ControllerId\u0022:\u0022flow-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:-100.00001123018062,\u0022LastOutput\u0022:100},{\u0022ControllerId\u0022:\u0022power-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:-32971176.50655722,\u0022LastOutput\u0022:0}],\u0022PrimaryActuators\u0022:[{\u0022ActuatorId\u0022:\u0022mcp-actuator\u0022,\u0022LastControllerOutput\u0022:100},{\u0022ActuatorId\u0022:\u0022rod-actuator\u0022,\u0022LastControllerOutput\u0022:0}],\u0022SecondaryMemory\u0022:[{\u0022ControllerId\u0022:\u0022hotwell-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:42.96651536999055,\u0022PreviousError\u0022:-0.0014636345313192578,\u0022LastOutput\u0022:42.966530006335866},{\u0022ControllerId\u0022:\u0022level-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:96.93082680219199,\u0022PreviousError\u0022:6.228393849738723E-05,\u0022LastOutput\u0022:96.93705519604173},{\u0022ControllerId\u0022:\u0022pressure-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:-6416459.281680372,\u0022LastOutput\u0022:100},{\u0022ControllerId\u0022:\u0022speed-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:28.531329697439098,\u0022PreviousError\u0022:0.7500000124018698,\u0022LastOutput\u0022:29.281329957878363}],\u0022SecondaryActuators\u0022:[{\u0022ActuatorId\u0022:\u0022condensate-actuator\u0022,\u0022LastControllerOutput\u0022:42.966530006335866},{\u0022ActuatorId\u0022:\u0022feedwater-actuator\u0022,\u0022LastControllerOutput\u0022:96.93705519604173},{\u0022ActuatorId\u0022:\u0022pressure-actuator\u0022,\u0022LastControllerOutput\u0022:100},{\u0022ActuatorId\u0022:\u0022speed-actuator\u0022,\u0022LastControllerOutput\u0022:29.281329957878363}],\u0022PrimaryControllers\u0022:[{\u0022ControllerId\u0022:\u0022flow-control\u0022,\u0022MeasurementChannelId\u0022:\u0022flow\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:100.00001123018062,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-100.00001123018062,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:100,\u0022Output\u0022:100,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0},{\u0022ControllerId\u0022:\u0022power-control\u0022,\u0022MeasurementChannelId\u0022:\u0022power\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:32971176.50655722,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-32971176.50655722,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:0,\u0022Output\u0022:0,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0}],\u0022SecondaryControllers\u0022:[{\u0022ControllerId\u0022:\u0022hotwell-control\u0022,\u0022MeasurementChannelId\u0022:\u0022hotwell\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:9891.883976124516,\u0022Measurement\u0022:9891.885439759048,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-0.0014636345313192578,\u0022ProportionalTerm\u0022:1.4636345313192577E-05,\u0022IntegralTerm\u0022:42.96651536999055,\u0022DerivativeTerm\u0022:-0,\u0022UnsaturatedOutput\u0022:42.966530006335866,\u0022Output\u0022:42.966530006335866,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:1},{\u0022ControllerId\u0022:\u0022level-control\u0022,\u0022MeasurementChannelId\u0022:\u0022level\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:0.5,\u0022Measurement\u0022:0.4999377160615026,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:6.228393849738723E-05,\u0022ProportionalTerm\u0022:0.0062283938497387226,\u0022IntegralTerm\u0022:96.93082680219199,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:96.93705519604173,\u0022Output\u0022:96.93705519604173,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:1},{\u0022ControllerId\u0022:\u0022pressure-control\u0022,\u0022MeasurementChannelId\u0022:\u0022pressure\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:6416459.281680372,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-6416459.281680372,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:100,\u0022Output\u0022:100,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0},{\u0022ControllerId\u0022:\u0022speed-control\u0022,\u0022MeasurementChannelId\u0022:\u0022speed\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:3000.75,\u0022Measurement\u0022:2999.999999987598,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:0.7500000124018698,\u0022ProportionalTerm\u0022:0.7500000124018698,\u0022IntegralTerm\u0022:28.531329697439098,\u0022DerivativeTerm\u0022:2.48037395067513E-07,\u0022UnsaturatedOutput\u0022:29.281329957878363,\u0022Output\u0022:29.281329957878363,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:1}],\u0022Rotors\u0022:[{\u0022RotorId\u0022:\u0022rotor\u0022,\u0022MomentOfInertia\u0022:{\u0022KilogramSquareMetres\u0022:1000},\u0022InitialAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592653576806,\u0022RevolutionsPerMinute\u0022:2999.999999987598},\u0022FinalAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.15926089371106,\u0022RevolutionsPerMinute\u0022:2999.9999573598293},\u0022AverageAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592631256958,\u0022RevolutionsPerMinute\u0022:2999.999978673714},\u0022RatedAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592653589793,\u0022RevolutionsPerMinute\u0022:3000},\u0022OverspeedThreshold\u0022:{\u0022RadiansPerSecond\u0022:345.57519189487726,\u0022RevolutionsPerMinute\u0022:3300.0000000000005},\u0022TurbineTorque\u0022:{\u0022NewtonMetres\u0022:17831.403348198477},\u0022CommandedExternalLoadTorque\u0022:{\u0022NewtonMetres\u0022:16240.300314240498},\u0022EffectiveExternalLoadTorque\u0022:{\u0022NewtonMetres\u0022:16240.300314240498},\u0022NetTorque\u0022:{\u0022NewtonMetres\u0022:-0.44639695439468596},\u0022ShaftPower\u0022:{\u0022Watts\u0022:5601900.536367099,\u0022Kilowatts\u0022:5601.9005363670985,\u0022Megawatts\u0022:5.601900536367099,\u0022Gigawatts\u0022:0.005601900536367099},\u0022ExternalLoadPower\u0022:{\u0022Watts\u0022:5102040.779661801,\u0022Kilowatts\u0022:5102.040779661801,\u0022Megawatts\u0022:5.102040779661801,\u0022Gigawatts\u0022:0.005102040779661801},\u0022InitialKineticEnergy\u0022:{\u0022Joules\u0022:49348022.00503879,\u0022Kilojoules\u0022:49348.02200503879,\u0022Megajoules\u0022:49.34802200503879,\u0022KilowattHours\u0022:13.707783890288553,\u0022MegawattHours\u0022:0.013707783890288552},\u0022FinalKineticEnergy\u0022:{\u0022Joules\u0022:49348020.6026414,\u0022Kilojoules\u0022:49348.0206026414,\u0022Megajoules\u0022:49.348020602641405,\u0022KilowattHours\u0022:13.707783500733724,\u0022MegawattHours\u0022:0.013707783500733723},\u0022TripCommandActive\u0022:false,\u0022OverspeedDetectedAtStart\u0022:false,\u0022OverspeedDetectedAtEnd\u0022:false,\u0022ExternalLoadTorqueLimitedAtZeroSpeed\u0022:false}],\u0022Generators\u0022:[{\u0022GeneratorId\u0022:\u0022generator\u0022,\u0022RotorId\u0022:\u0022rotor\u0022,\u0022BreakerId\u0022:\u0022breaker\u0022,\u0022InitialElectricalFrequency\u0022:{\u0022Hertz\u0022:49.99999999979331},\u0022FinalElectricalFrequency\u0022:{\u0022Hertz\u0022:49.99999928933049},\u0022InitialElectricalPhaseAngle\u0022:{\u0022Radians\u0022:3.1415926535833,\u0022Degrees\u0022:179.99999999962796},\u0022FinalElectricalPhaseAngle\u0022:{\u0022Radians\u0022:6.2831852848402585,\u0022Degrees\u0022:359.99999872005077},\u0022InitialPhaseDifference\u0022:{\u0022Radians\u0022:6.4930283372177655E-12,\u0022Degrees\u0022:3.7202311998142464E-10},\u0022FinalPhaseDifference\u0022:{\u0022Radians\u0022:2.2339327720999336E-08,\u0022Degrees\u0022:1.2799491955728658E-06},\u0022TerminalLineVoltage\u0022:{\u0022Volts\u0022:400000,\u0022Kilovolts\u0022:400},\u0022GridLineVoltage\u0022:{\u0022Volts\u0022:400000,\u0022Kilovolts\u0022:400},\u0022FrequencyDifferenceAtCloseCheck\u0022:{\u0022Hertz\u0022:2.0668977640525554E-10},\u0022VoltageDifferenceAtCloseCheck\u0022:{\u0022Volts\u0022:0,\u0022Kilovolts\u0022:0},\u0022SynchronizationConditionsSatisfied\u0022:true,\u0022BreakerInitiallyClosed\u0022:true,\u0022BreakerFinallyClosed\u0022:true,\u0022CloseBreakerCommand\u0022:false,\u0022OpenBreakerCommand\u0022:false,\u0022CloseCommandAccepted\u0022:false,\u0022CloseCommandRejected\u0022:false,\u0022RequestedElectricalPower\u0022:{\u0022Watts\u0022:5000000,\u0022Kilowatts\u0022:5000,\u0022Megawatts\u0022:5,\u0022Gigawatts\u0022:0.005},\u0022CommandedElectromagneticTorque\u0022:{\u0022NewtonMetres\u0022:16240.300314240498},\u0022EffectiveElectromagneticTorque\u0022:{\u0022NewtonMetres\u0022:16240.300314240498},\u0022MechanicalInputPower\u0022:{\u0022Watts\u0022:5102040.779661801,\u0022Kilowatts\u0022:5102.040779661801,\u0022Megawatts\u0022:5.102040779661801,\u0022Gigawatts\u0022:0.005102040779661801},\u0022ElectricalOutputPower\u0022:{\u0022Watts\u0022:4999999.964068565,\u0022Kilowatts\u0022:4999.999964068565,\u0022Megawatts\u0022:4.999999964068564,\u0022Gigawatts\u0022:0.004999999964068564},\u0022ConversionLossPower\u0022:{\u0022Watts\u0022:102040.81559323613,\u0022Kilowatts\u0022:102.04081559323613,\u0022Megawatts\u0022:0.10204081559323612,\u0022Gigawatts\u0022:0.00010204081559323613}}],\u0022FissionWatts\u0022:32971176.50655722,\u0022DecayWatts\u0022:0}"
+    },
+    {
+      "Checkpoint": "1",
+      "Nodes": [
+        {
+          "Id": "control-out",
+          "Mass": 2050.3812340871314,
+          "Energy": 5265420712.051093,
+          "Pressure": 3994195.265668467,
+          "Temperature": 523.4210174322128,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9777671727918592
+        },
+        {
+          "Id": "drum",
+          "Mass": 3917.5217425190076,
+          "Energy": 5036370630.486188,
+          "Pressure": 6416435.155448124,
+          "Temperature": 553.1497500181198,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.04232258551179299
+        },
+        {
+          "Id": "exhaust",
+          "Mass": 66.54812688840528,
+          "Energy": 142836761.52884603,
+          "Pressure": 8438.344038593837,
+          "Temperature": 315.67509365230796,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.8729626502685842
+        },
+        {
+          "Id": "feedwater-inventory",
+          "Mass": 9891.727129458368,
+          "Energy": 1962195265.364159,
+          "Pressure": 17429.938938117026,
+          "Temperature": 320.52848867775236,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "header",
+          "Mass": 3226.6676798025774,
+          "Energy": 8341270177.025927,
+          "Pressure": 6247421.3047558805,
+          "Temperature": 551.3853583244198,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9980223426233839
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9891.887972126253,
+          "Energy": 1960456754.2630274,
+          "Pressure": 11730.862679923512,
+          "Temperature": 320.48566293011515,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "outlet",
+          "Mass": 1375.1483104404094,
+          "Energy": 2103981297.9437103,
+          "Pressure": 6666172.091943444,
+          "Temperature": 555.6923329472542,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.21513123138779863
+        },
+        {
+          "Id": "pressure",
+          "Mass": 7507.985760143442,
+          "Energy": 9219920352.415071,
+          "Pressure": 6916490.682277543,
+          "Temperature": 553.3083697841561,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "steam",
+          "Mass": 3306.826905547943,
+          "Energy": 8552155514.01719,
+          "Pressure": 6398665.641241414,
+          "Temperature": 552.9656327251346,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9997887863448027
+        },
+        {
+          "Id": "stop-out",
+          "Mass": 3132.568754975258,
+          "Energy": 8093921021.836734,
+          "Pressure": 6069486.141638844,
+          "Temperature": 549.4884251892566,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.9960098130998208
+        },
+        {
+          "Id": "suction",
+          "Mass": 7502.7459746337245,
+          "Energy": 9214263778.421547,
+          "Pressure": 6416459.393982445,
+          "Temperature": 553.15,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        },
+        {
+          "Id": "turbine-inlet",
+          "Mass": 1958.875892967201,
+          "Energy": 5027644400.449178,
+          "Pressure": 3816290.382326379,
+          "Temperature": 520.7346334546804,
+          "Phase": "SaturatedMixture",
+          "Quality": 0.976677769207971
+        }
+      ],
+      "ScaledResiduals": [
+        8853.506112469438,
+        570166.8869825708,
+        8093.514417158038,
+        -136328.94360366475,
+        -3007442.66796989,
+        -243352.98446120633,
+        -123731.72037914692,
+        -120311.92834890966,
+        -217.8702460850112,
+        80229.85805700989,
+        6335987.721153846,
+        5922799.678217822,
+        215257.41356970376,
+        -1843841.3452456654,
+        -579679.8680765358,
+        120187.82384341636,
+        -16459.625741552747,
+        -15426.705124333032,
+        -2311.5162061636556,
+        31535.65057995029,
+        0,
+        -6879.78125,
+        0,
+        7847248.678066915,
+        -13243.285793574998
+      ],
+      "Healthy": true,
+      "InEnvelope": true,
+      "ElectricalMwe": 4.999998525474,
+      "PumpKgS": 99.99537721912854,
+      "DrumLevel": 0.49993760778969654,
+      "Governor": 29.28222490151453,
+      "RotorTorque": -0.8880340760676972,
+      "MassClosure": 0,
+      "EnergyClosure": -4.900444182887043E-06,
+      "StateJson": "{\u0022Fluids\u0022:[{\u0022Id\u0022:\u0022control-out\u0022,\u0022Mass\u0022:2050.3812340871314,\u0022Energy\u0022:5265420712.051093,\u0022Pressure\u0022:3994195.265668467,\u0022Temperature\u0022:523.4210174322128,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9777671727918592},{\u0022Id\u0022:\u0022drum\u0022,\u0022Mass\u0022:3917.5217425190076,\u0022Energy\u0022:5036370630.486188,\u0022Pressure\u0022:6416435.155448124,\u0022Temperature\u0022:553.1497500181198,\u0022Phase\u0022:2,\u0022Quality\u0022:0.04232258551179299},{\u0022Id\u0022:\u0022exhaust\u0022,\u0022Mass\u0022:66.54812688840528,\u0022Energy\u0022:142836761.52884603,\u0022Pressure\u0022:8438.344038593837,\u0022Temperature\u0022:315.67509365230796,\u0022Phase\u0022:2,\u0022Quality\u0022:0.8729626502685842},{\u0022Id\u0022:\u0022feedwater-inventory\u0022,\u0022Mass\u0022:9891.727129458368,\u0022Energy\u0022:1962195265.364159,\u0022Pressure\u0022:17429.938938117026,\u0022Temperature\u0022:320.52848867775236,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022header\u0022,\u0022Mass\u0022:3226.6676798025774,\u0022Energy\u0022:8341270177.025927,\u0022Pressure\u0022:6247421.3047558805,\u0022Temperature\u0022:551.3853583244198,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9980223426233839},{\u0022Id\u0022:\u0022hotwell\u0022,\u0022Mass\u0022:9891.887972126253,\u0022Energy\u0022:1960456754.2630274,\u0022Pressure\u0022:11730.862679923512,\u0022Temperature\u0022:320.48566293011515,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022outlet\u0022,\u0022Mass\u0022:1375.1483104404094,\u0022Energy\u0022:2103981297.9437103,\u0022Pressure\u0022:6666172.091943444,\u0022Temperature\u0022:555.6923329472542,\u0022Phase\u0022:2,\u0022Quality\u0022:0.21513123138779863},{\u0022Id\u0022:\u0022pressure\u0022,\u0022Mass\u0022:7507.985760143442,\u0022Energy\u0022:9219920352.415071,\u0022Pressure\u0022:6916490.682277543,\u0022Temperature\u0022:553.3083697841561,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022steam\u0022,\u0022Mass\u0022:3306.826905547943,\u0022Energy\u0022:8552155514.01719,\u0022Pressure\u0022:6398665.641241414,\u0022Temperature\u0022:552.9656327251346,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9997887863448027},{\u0022Id\u0022:\u0022stop-out\u0022,\u0022Mass\u0022:3132.568754975258,\u0022Energy\u0022:8093921021.836734,\u0022Pressure\u0022:6069486.141638844,\u0022Temperature\u0022:549.4884251892566,\u0022Phase\u0022:2,\u0022Quality\u0022:0.9960098130998208},{\u0022Id\u0022:\u0022suction\u0022,\u0022Mass\u0022:7502.7459746337245,\u0022Energy\u0022:9214263778.421547,\u0022Pressure\u0022:6416459.393982445,\u0022Temperature\u0022:553.15,\u0022Phase\u0022:1,\u0022Quality\u0022:null},{\u0022Id\u0022:\u0022turbine-inlet\u0022,\u0022Mass\u0022:1958.875892967201,\u0022Energy\u0022:5027644400.449178,\u0022Pressure\u0022:3816290.382326379,\u0022Temperature\u0022:520.7346334546804,\u0022Phase\u0022:2,\u0022Quality\u0022:0.976677769207971}],\u0022Thermal\u0022:[{\u0022Id\u0022:\u0022fuel\u0022,\u0022Energy\u0022:5787751458.200397,\u0022Temperature\u0022:578.7751458200396},{\u0022Id\u0022:\u0022structure\u0022,\u0022Energy\u0022:11245791199.999825,\u0022Temperature\u0022:562.2895599999912}],\u0022Valves\u0022:[{\u0022ValveId\u0022:\u0022admission\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:true},\u0022IsFailSafeActive\u0022:false},{\u0022ValveId\u0022:\u0022control\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:0.2928222490151453,\u0022Percent\u0022:29.28222490151453,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:false},\u0022IsFailSafeActive\u0022:false},{\u0022ValveId\u0022:\u0022stop\u0022,\u0022Position\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsClosed\u0022:false,\u0022IsFullyOpen\u0022:true},\u0022IsFailSafeActive\u0022:false}],\u0022Pumps\u0022:[{\u0022PumpId\u0022:\u0022condensate-pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:0.42966543343937585,\u0022Percent\u0022:42.96654334393759,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:false},\u0022IsRunning\u0022:true},{\u0022PumpId\u0022:\u0022feedwater-pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:0.9693706138653865,\u0022Percent\u0022:96.93706138653864,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:false},\u0022IsRunning\u0022:true},{\u0022PumpId\u0022:\u0022pump\u0022,\u0022Speed\u0022:{\u0022Fraction\u0022:1,\u0022Percent\u0022:100,\u0022IsStopped\u0022:false,\u0022IsRatedSpeed\u0022:true},\u0022IsRunning\u0022:true}],\u0022HeatSources\u0022:[],\u0022PointKinetics\u0022:{\u0022NeutronPopulation\u0022:{\u0022Relative\u0022:0.3297117650655722},\u0022DelayedNeutronGroups\u0022:[{\u0022GroupId\u0022:\u0022dn\u0022,\u0022PrecursorPopulation\u0022:{\u0022Relative\u0022:0.2678908091157774}}]},\u0022IodineXenon\u0022:{\u0022Iodine\u0022:{\u0022Relative\u0022:0},\u0022Xenon\u0022:{\u0022Relative\u0022:0}},\u0022ControlRods\u0022:{\u0022Rods\u0022:[{\u0022RodId\u0022:\u0022rod-1\u0022,\u0022Position\u0022:{\u0022FractionWithdrawn\u0022:0.5,\u0022PercentWithdrawn\u0022:50,\u0022FractionInserted\u0022:0.5},\u0022Motion\u0022:0}]},\u0022PrimaryMemory\u0022:[{\u0022ControllerId\u0022:\u0022flow-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:-99.9960838521532,\u0022LastOutput\u0022:100},{\u0022ControllerId\u0022:\u0022power-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:-32971176.50655722,\u0022LastOutput\u0022:0}],\u0022PrimaryActuators\u0022:[{\u0022ActuatorId\u0022:\u0022mcp-actuator\u0022,\u0022LastControllerOutput\u0022:100},{\u0022ActuatorId\u0022:\u0022rod-actuator\u0022,\u0022LastControllerOutput\u0022:0}],\u0022SecondaryMemory\u0022:[{\u0022ControllerId\u0022:\u0022hotwell-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:42.96651537001853,\u0022PreviousError\u0022:-0.002797391905914992,\u0022LastOutput\u0022:42.96654334393759},{\u0022ControllerId\u0022:\u0022level-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:96.93082680281545,\u0022PreviousError\u0022:6.234583723196963E-05,\u0022LastOutput\u0022:96.93706138653864},{\u0022ControllerId\u0022:\u0022pressure-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:0,\u0022IntegralTerm\u0022:0,\u0022PreviousError\u0022:-6416452.25780589,\u0022LastOutput\u0022:100},{\u0022ControllerId\u0022:\u0022speed-control\u0022,\u0022IsInitialized\u0022:true,\u0022LastMode\u0022:1,\u0022IntegralTerm\u0022:28.53132970596713,\u0022PreviousError\u0022:0.7500426401707045,\u0022LastOutput\u0022:29.28222490151453}],\u0022SecondaryActuators\u0022:[{\u0022ActuatorId\u0022:\u0022condensate-actuator\u0022,\u0022LastControllerOutput\u0022:42.96654334393759},{\u0022ActuatorId\u0022:\u0022feedwater-actuator\u0022,\u0022LastControllerOutput\u0022:96.93706138653864},{\u0022ActuatorId\u0022:\u0022pressure-actuator\u0022,\u0022LastControllerOutput\u0022:100},{\u0022ActuatorId\u0022:\u0022speed-actuator\u0022,\u0022LastControllerOutput\u0022:29.28222490151453}],\u0022PrimaryControllers\u0022:[{\u0022ControllerId\u0022:\u0022flow-control\u0022,\u0022MeasurementChannelId\u0022:\u0022flow\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:99.9960838521532,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-99.9960838521532,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:100,\u0022Output\u0022:100,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0},{\u0022ControllerId\u0022:\u0022power-control\u0022,\u0022MeasurementChannelId\u0022:\u0022power\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:32971176.50655722,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-32971176.50655722,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:0,\u0022Output\u0022:0,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0}],\u0022SecondaryControllers\u0022:[{\u0022ControllerId\u0022:\u0022hotwell-control\u0022,\u0022MeasurementChannelId\u0022:\u0022hotwell\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:9891.883976124516,\u0022Measurement\u0022:9891.886773516422,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-0.002797391905914992,\u0022ProportionalTerm\u0022:2.7973919059149922E-05,\u0022IntegralTerm\u0022:42.96651537001853,\u0022DerivativeTerm\u0022:-0,\u0022UnsaturatedOutput\u0022:42.96654334393759,\u0022Output\u0022:42.96654334393759,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:1},{\u0022ControllerId\u0022:\u0022level-control\u0022,\u0022MeasurementChannelId\u0022:\u0022level\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:0.5,\u0022Measurement\u0022:0.49993765416276803,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:6.234583723196963E-05,\u0022ProportionalTerm\u0022:0.0062345837231969625,\u0022IntegralTerm\u0022:96.93082680281545,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:96.93706138653864,\u0022Output\u0022:96.93706138653864,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:1},{\u0022ControllerId\u0022:\u0022pressure-control\u0022,\u0022MeasurementChannelId\u0022:\u0022pressure\u0022,\u0022Mode\u0022:0,\u0022Setpoint\u0022:0,\u0022Measurement\u0022:6416452.25780589,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:-6416452.25780589,\u0022ProportionalTerm\u0022:0,\u0022IntegralTerm\u0022:0,\u0022DerivativeTerm\u0022:0,\u0022UnsaturatedOutput\u0022:100,\u0022Output\u0022:100,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:0},{\u0022ControllerId\u0022:\u0022speed-control\u0022,\u0022MeasurementChannelId\u0022:\u0022speed\u0022,\u0022Mode\u0022:1,\u0022Setpoint\u0022:3000.75,\u0022Measurement\u0022:2999.9999573598293,\u0022MeasurementValidity\u0022:0,\u0022MeasurementQuality\u0022:0,\u0022Error\u0022:0.7500426401707045,\u0022ProportionalTerm\u0022:0.7500426401707045,\u0022IntegralTerm\u0022:28.53132970596713,\u0022DerivativeTerm\u0022:0.0008525553766958183,\u0022UnsaturatedOutput\u0022:29.28222490151453,\u0022Output\u0022:29.28222490151453,\u0022IsSaturated\u0022:false,\u0022AntiWindupActive\u0022:false,\u0022BumplessTransferApplied\u0022:false,\u0022Status\u0022:1}],\u0022Rotors\u0022:[{\u0022RotorId\u0022:\u0022rotor\u0022,\u0022MomentOfInertia\u0022:{\u0022KilogramSquareMetres\u0022:1000},\u0022InitialAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.15926089371106,\u0022RevolutionsPerMinute\u0022:2999.9999573598293},\u0022FinalAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592520133703,\u0022RevolutionsPerMinute\u0022:2999.9998725588216},\u0022AverageAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592564535407,\u0022RevolutionsPerMinute\u0022:2999.999914959326},\u0022RatedAngularSpeed\u0022:{\u0022RadiansPerSecond\u0022:314.1592653589793,\u0022RevolutionsPerMinute\u0022:3000},\u0022OverspeedThreshold\u0022:{\u0022RadiansPerSecond\u0022:345.57519189487726,\u0022RevolutionsPerMinute\u0022:3300.0000000000005},\u0022TurbineTorque\u0022:{\u0022NewtonMetres\u0022:17830.95736073399},\u0022CommandedExternalLoadTorque\u0022:{\u0022NewtonMetres\u0022:16240.29598651242},\u0022EffectiveExternalLoadTorque\u0022:{\u0022NewtonMetres\u0022:16240.29598651242},\u0022NetTorque\u0022:{\u0022NewtonMetres\u0022:-0.8880340760676972},\u0022ShaftPower\u0022:{\u0022Watts\u0022:5601760.30630298,\u0022Kilowatts\u0022:5601.760306302979,\u0022Megawatts\u0022:5.60176030630298,\u0022Gigawatts\u0022:0.005601760306302979},\u0022ExternalLoadPower\u0022:{\u0022Watts\u0022:5102039.3117081635,\u0022Kilowatts\u0022:5102.039311708163,\u0022Megawatts\u0022:5.102039311708164,\u0022Gigawatts\u0022:0.005102039311708164},\u0022InitialKineticEnergy\u0022:{\u0022Joules\u0022:49348020.6026414,\u0022Kilojoules\u0022:49348.0206026414,\u0022Megajoules\u0022:49.348020602641405,\u0022KilowattHours\u0022:13.707783500733724,\u0022MegawattHours\u0022:0.013707783500733723},\u0022FinalKineticEnergy\u0022:{\u0022Joules\u0022:49348017.812800154,\u0022Kilojoules\u0022:49348.01781280016,\u0022Megajoules\u0022:49.34801781280015,\u0022KilowattHours\u0022:13.70778272577782,\u0022MegawattHours\u0022:0.01370778272577782},\u0022TripCommandActive\u0022:false,\u0022OverspeedDetectedAtStart\u0022:false,\u0022OverspeedDetectedAtEnd\u0022:false,\u0022ExternalLoadTorqueLimitedAtZeroSpeed\u0022:false}],\u0022Generators\u0022:[{\u0022GeneratorId\u0022:\u0022generator\u0022,\u0022RotorId\u0022:\u0022rotor\u0022,\u0022BreakerId\u0022:\u0022breaker\u0022,\u0022InitialElectricalFrequency\u0022:{\u0022Hertz\u0022:49.99999928933049},\u0022FinalElectricalFrequency\u0022:{\u0022Hertz\u0022:49.999997875980355},\u0022InitialElectricalPhaseAngle\u0022:{\u0022Radians\u0022:6.2831852848402585,\u0022Degrees\u0022:359.99999872005077},\u0022FinalElectricalPhaseAngle\u0022:{\u0022Radians\u0022:3.1415925421960793,\u0022Degrees\u0022:179.99999361761033},\u0022InitialPhaseDifference\u0022:{\u0022Radians\u0022:2.2339327720999336E-08,\u0022Degrees\u0022:1.2799491955728658E-06},\u0022FinalPhaseDifference\u0022:{\u0022Radians\u0022:1.113937138086385E-07,\u0022Degrees\u0022:6.382389665523145E-06},\u0022TerminalLineVoltage\u0022:{\u0022Volts\u0022:400000,\u0022Kilovolts\u0022:400},\u0022GridLineVoltage\u0022:{\u0022Volts\u0022:400000,\u0022Kilovolts\u0022:400},\u0022FrequencyDifferenceAtCloseCheck\u0022:{\u0022Hertz\u0022:7.106695107950145E-07},\u0022VoltageDifferenceAtCloseCheck\u0022:{\u0022Volts\u0022:0,\u0022Kilovolts\u0022:0},\u0022SynchronizationConditionsSatisfied\u0022:true,\u0022BreakerInitiallyClosed\u0022:true,\u0022BreakerFinallyClosed\u0022:true,\u0022CloseBreakerCommand\u0022:false,\u0022OpenBreakerCommand\u0022:false,\u0022CloseCommandAccepted\u0022:false,\u0022CloseCommandRejected\u0022:false,\u0022RequestedElectricalPower\u0022:{\u0022Watts\u0022:5000000,\u0022Kilowatts\u0022:5000,\u0022Megawatts\u0022:5,\u0022Gigawatts\u0022:0.005},\u0022CommandedElectromagneticTorque\u0022:{\u0022NewtonMetres\u0022:16240.29598651242},\u0022EffectiveElectromagneticTorque\u0022:{\u0022NewtonMetres\u0022:16240.29598651242},\u0022MechanicalInputPower\u0022:{\u0022Watts\u0022:5102039.3117081635,\u0022Kilowatts\u0022:5102.039311708163,\u0022Megawatts\u0022:5.102039311708164,\u0022Gigawatts\u0022:0.005102039311708164},\u0022ElectricalOutputPower\u0022:{\u0022Watts\u0022:4999998.525474,\u0022Kilowatts\u0022:4999.9985254739995,\u0022Megawatts\u0022:4.999998525474,\u0022Gigawatts\u0022:0.004999998525474},\u0022ConversionLossPower\u0022:{\u0022Watts\u0022:102040.78623416368,\u0022Kilowatts\u0022:102.04078623416368,\u0022Megawatts\u0022:0.10204078623416368,\u0022Gigawatts\u0022:0.00010204078623416368}}],\u0022FissionWatts\u0022:32971176.50655722,\u0022DecayWatts\u0022:0}"
+    }
+  ]
+}

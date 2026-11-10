@@ -1,0 +1,37 @@
+[
+  {
+    "case": "plant-call",
+    "rejected": true,
+    "reason": "ValueError: Forbidden design authority: plant_evaluations"
+  },
+  {
+    "case": "nonlinear-search",
+    "rejected": true,
+    "reason": "ValueError: Forbidden design authority: nonlinear_search"
+  },
+  {
+    "case": "residual-reweighting",
+    "rejected": true,
+    "reason": "ValueError: Forbidden design authority: residual_reweighting"
+  },
+  {
+    "case": "changed-damping",
+    "rejected": true,
+    "reason": "ValueError: Frozen offline design drift"
+  },
+  {
+    "case": "wider-box",
+    "rejected": true,
+    "reason": "ValueError: Frozen offline design drift"
+  },
+  {
+    "case": "test-drift",
+    "rejected": true,
+    "reason": "ValueError: Design baseline drift"
+  },
+  {
+    "case": "digest-drift",
+    "rejected": true,
+    "reason": "ValueError: Frozen design input drift: eng/r3-h-numerical-stop-review1-contract.json"
+  }
+]
