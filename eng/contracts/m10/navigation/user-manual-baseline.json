@@ -1,0 +1,19 @@
+{
+  "schema": "m1098-user-manual-text-baseline-v1",
+  "source_path": "docs/usermanual/MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md",
+  "snapshot_path": "eng/contracts/m10/navigation/USER_MANUAL_M1098_BASELINE.md",
+  "sha256": "A6BBF95472F974ACF9EA4BC694D598E9FBE8F7544947FAA6DC5E00134FC6AC0B",
+  "purpose": "Original M10.9.8 manual text for historical literal assertions; current user guidance evolves separately.",
+  "validator_changes": [
+    {
+      "path": "eng/validate-m10981-integrated-validation-matrix.ps1",
+      "before_sha256": "2E663CC3C4C1A9D70A6AAFCE901764E321E3D07DF8ECE637B034E2D08DC4EF05",
+      "after_sha256": "37294E2BE128FE77368C0931D7B3F0E558A311A7009837D8477840D66D4E5004"
+    },
+    {
+      "path": "eng/validate-m10985-integrated-hmi-closure-contract.ps1",
+      "before_sha256": "F9E08007588AD1A8FED89FB5D3E794837D85F2F2CA97C285E26C73043948DAA2",
+      "after_sha256": "1AA4350B819D203A5162F817D76054184AE018D22F61BDBF65C331870C5EA5B9"
+    }
+  ]
+}

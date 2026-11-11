@@ -23,7 +23,8 @@ function RequireNonEmptyArray($Value, [string]$Name) {
     Require (@($Value).Count -gt 0) "$Name must contain at least one item."
 }
 
-$manualPath = Join-Path $RepositoryRoot 'docs\usermanual\MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md'
+# Historical textual assertions use the frozen manual; the live guide may evolve.
+$manualPath = Join-Path $RepositoryRoot 'eng\contracts\m10\navigation\USER_MANUAL_M1098_BASELINE.md'
 Require (Test-Path -LiteralPath $manualPath -PathType Leaf) "User manual not found: $manualPath"
 $manual = Get-Content -LiteralPath $manualPath -Raw
 $manualRequiredAnchors = @(
