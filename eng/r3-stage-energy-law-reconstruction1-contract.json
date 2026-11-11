@@ -1,0 +1,133 @@
+{
+    "schema": "r3-stage-energy-law-reconstruction1-v1",
+    "policy": {
+        "plant_calls": 1,
+        "checkpoint": "1",
+        "node": "turbine-inlet",
+        "explained_fraction": 0.1,
+        "partial_fraction": 0.5,
+        "identity_relative_tolerance": 1e-09,
+        "production_change": false,
+        "family_selected": false,
+        "seed_installation": false,
+        "r3_passed": false
+    },
+    "output": "artifacts/r3-stage-energy-law-reconstruction1",
+    "test_additions": [
+        "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3StageEnergyLawReconstructionTests.cs"
+    ],
+    "test_modifications": [],
+    "predecessor": {
+        "commit": "ed35d9e5883988f6e0d2d00110b12b4e1ec3746c",
+        "tests": {
+            "file_count": 411,
+            "tree_sha256": "DFE3C0AD9FF822F3EC2C84A7446BE226692262A17793D9914C69EC0AE73C3298"
+        }
+    },
+    "unchanged_tests_baseline": {
+        "file_count": 411,
+        "tree_sha256": "DFE3C0AD9FF822F3EC2C84A7446BE226692262A17793D9914C69EC0AE73C3298"
+    },
+    "incoming_baseline": {
+        "src": {
+            "file_count": 962,
+            "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+        },
+        "tests": {
+            "file_count": 412,
+            "tree_sha256": "84970B9674BBE2CD159156E0D1B682AFA8742CA43843167E980D843822220B8E"
+        }
+    },
+    "implementation_files": [
+        {
+            "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3StageEnergyLawReconstructionTests.cs",
+            "sha256": "7D04513EC05E64BEED4E4BAB42949BF1E9C51A2483CD35DE633DC1697F013718"
+        },
+        {
+            "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+            "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+        },
+        {
+            "path": "eng/r3_h_protocol.py",
+            "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+        },
+        {
+            "path": "eng/run-r3-stage-energy-law-reconstruction1.py",
+            "sha256": "2B13B03458E54817F89EE0BD0666EF9A184CC1AF8572FE2D0E2C5D8564302D09"
+        },
+        {
+            "path": "eng/review-r3-h-family-sufficiency1.py",
+            "sha256": "C6B8ACF43AA534CE3295D0189F2B8C5D311FA82A60B92BA680FC34CF9FF2F8F0"
+        },
+        {
+            "path": "eng/run-r3-h-trust-search3.py",
+            "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+        },
+        {
+            "path": "eng/run-r3-h-scaled-search2.py",
+            "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+        },
+        {
+            "path": "eng/review-r3-h-numerics1.py",
+            "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+        },
+        {
+            "path": "eng/design-r3-h-local-model1.py",
+            "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+        }
+    ],
+    "frozen_inputs": [
+        {
+            "path": "eng/contracts/r3-stage-energy-law-reconstruction1.md",
+            "sha256": "C5DC370477077860631454AA02A10F4EC4151BFA28B2C9B0C71165F1509D10DB"
+        },
+        {
+            "path": "scripts/run-r3-stage-energy-law-reconstruction1.cmd",
+            "sha256": "911779D8AE940E4A2B303196A80194C7A86D9688B57D319BE346F013C8263C4E"
+        },
+        {
+            "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+            "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+        },
+        {
+            "path": "eng/frozen-evidence/r3-h-feasibility1/04-search-trace.jsonl.gz",
+            "sha256": "3B3BD7E2EE0ED4C672A8627FAF77675B350D7FF67721AC9CF45F200AFB17AEBB"
+        },
+        {
+            "path": "eng/frozen-evidence/r3-h-feasibility1/08-manifest.csv",
+            "sha256": "125037BC24308CAA332449351C02FD658957BC909CFABCA2DA1956243626F416"
+        },
+        {
+            "path": "eng/r3-h-family-sufficiency-review1-contract.json",
+            "sha256": "58C615DEA145E48B5A3F4BF8281251268EEA66960DBFA2BC5DB470A32772F052"
+        },
+        {
+            "path": "eng/r3-h-family-sufficiency-review1-returned.json",
+            "sha256": "34480163A2CC2527BE88527124472D9B015F401CF9A8D077A960A5F45BCC9C76"
+        },
+        {
+            "path": "eng/frozen-evidence/r3-h-family-sufficiency-review1/manifest.json",
+            "sha256": "EE19DEC19EEF8CCDC88D8D029F02A4BF799C76E4291A124D7CB8E967907508CA"
+        },
+        {
+            "path": "eng/frozen-evidence/r3-h-family-sufficiency-review1/01-analysis.json",
+            "sha256": "ACB5231B392D1F3724005CA8648146020883AFF306D34B5A6CB65B94634742DC"
+        },
+        {
+            "path": "eng/r3-op-bounded-combination-review1-contract.json",
+            "sha256": "8F417D977D759125728EF2752AD0055FAF823E267C4EA06E73781537B9A2C8F4"
+        },
+        {
+            "path": "eng/r3-op-bounded-combination-review1-returned.json",
+            "sha256": "2017DDB4BBEEE1329A07A2F4B0C9E3EDF07D93B08EE968C3AA6E3BB79D44A55A"
+        },
+        {
+            "path": "eng/frozen-evidence/r3-op-bounded-combination-review1/manifest.json",
+            "sha256": "769971BA01FDFC731A0CE4580933A1AAB02E7D877F2F7EED32287A8151D822FA"
+        },
+        {
+            "path": "eng/frozen-evidence/r3-op-bounded-combination-review1/01-analysis.json",
+            "sha256": "6AAE72E54EF2D2AA50BD791B46547F9726DB5FF87A6781DDCC9E6BF7637B4B3B"
+        }
+    ]
+}

@@ -1,0 +1,131 @@
+using System.Security.Cryptography;
+using System.Text.Json;
+using NuclearReactorSimulator.Domain.Physics.Fluids;
+using NuclearReactorSimulator.Domain.Physics.Quantities;
+using NuclearReactorSimulator.Simulation.Physics.Fluids;
+using Xunit;
+
+namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
+
+public sealed class M10R3StageEnergyLawReconstructionTests
+{
+    private const string Protocol = "r3-stage-energy-law-reconstruction1";
+    private static string Sha(string path) => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
+
+    private static object Providers(SimplifiedWaterSteamThermodynamicModel model, FluidEnergyTransportMode mode, Pressure pressure, Temperature temperature)
+    {
+        var historical = model.GetSaturationProperties(pressure);
+        var active = model.PhaseTransportPropertyProvider.GetSaturatedPhaseTransportProperties(pressure, temperature);
+        return new
+        {
+            PressurePa = pressure.Pascals,
+            TemperatureK = temperature.Kelvins,
+            HistoricalSaturationTemperatureK = historical.Temperature.Kelvins,
+            Historical = new
+            {
+                LiquidInternalJKg = historical.SaturatedLiquidInternalEnergy.JoulesPerKilogram,
+                VaporInternalJKg = historical.SaturatedVaporInternalEnergy.JoulesPerKilogram,
+                LiquidDensityKgM3 = historical.SaturatedLiquidDensity.KilogramsPerCubicMetre,
+                VaporDensityKgM3 = historical.SaturatedVaporDensity.KilogramsPerCubicMetre,
+                LiquidSelectedJKg = FluidEnergyTransport.ResolveSelectedSpecificEnergy(mode, historical.SaturatedLiquidInternalEnergy, pressure, historical.SaturatedLiquidDensity).JoulesPerKilogram,
+                VaporSelectedJKg = FluidEnergyTransport.ResolveSelectedSpecificEnergy(mode, historical.SaturatedVaporInternalEnergy, pressure, historical.SaturatedVaporDensity).JoulesPerKilogram,
+            },
+            ActiveClosure = new
+            {
+                LiquidInternalJKg = active.SaturatedLiquidInternalEnergy.JoulesPerKilogram,
+                VaporInternalJKg = active.SaturatedVaporInternalEnergy.JoulesPerKilogram,
+                LiquidDensityKgM3 = active.SaturatedLiquidDensity.KilogramsPerCubicMetre,
+                VaporDensityKgM3 = active.SaturatedVaporDensity.KilogramsPerCubicMetre,
+                LiquidSelectedJKg = FluidEnergyTransport.ResolveSelectedSpecificEnergy(mode, active.SaturatedLiquidInternalEnergy, pressure, active.SaturatedLiquidDensity).JoulesPerKilogram,
+                VaporSelectedJKg = FluidEnergyTransport.ResolveSelectedSpecificEnergy(mode, active.SaturatedVaporInternalEnergy, pressure, active.SaturatedVaporDensity).JoulesPerKilogram,
+            },
+        };
+    }
+
+    [Fact]
+    public void Preexecution_HistoricalClosureTransportEqualsForwardSaturation()
+    {
+        var pressure = Pressure.FromPascals(3_800_000d);
+        var model = new SimplifiedWaterSteamThermodynamicModel(WaterSteamThermodynamicClosureMode.HistoricalCorrelationTopology);
+        var saturation = model.GetSaturationProperties(pressure);
+        var transport = model.PhaseTransportPropertyProvider.GetSaturatedPhaseTransportProperties(pressure, saturation.Temperature);
+        Assert.Equal(saturation.SaturatedLiquidInternalEnergy, transport.SaturatedLiquidInternalEnergy);
+        Assert.Equal(saturation.SaturatedVaporInternalEnergy, transport.SaturatedVaporInternalEnergy);
+        Assert.Equal(saturation.SaturatedLiquidDensity, transport.SaturatedLiquidDensity);
+        Assert.Equal(saturation.SaturatedVaporDensity, transport.SaturatedVaporDensity);
+    }
+
+    [Fact]
+    public void Preexecution_ReconstructionContractNamesThisExecutor()
+    {
+        var contract = Path.Combine(R3HFeasibilityHarness.Root, "eng", Protocol + "-contract.json");
+        using var document = JsonDocument.Parse(File.ReadAllText(contract));
+        Assert.Contains(document.RootElement.GetProperty("implementation_files").EnumerateArray(),
+            static f => f.GetProperty("path").GetString()!.EndsWith(nameof(M10R3StageEnergyLawReconstructionTests) + ".cs", StringComparison.Ordinal));
+    }
+
+    [Fact(Explicit = true)]
+    public void ExecuteReviewedReconstruction()
+    {
+        var output = Path.Combine(R3HFeasibilityHarness.Root, "artifacts", Protocol);
+        var contractPath = Path.Combine(R3HFeasibilityHarness.Root, "eng", Protocol + "-contract.json");
+        using var contractDocument = JsonDocument.Parse(File.ReadAllText(contractPath));
+        var contract = contractDocument.RootElement;
+        Assert.Equal(Protocol + "-v1", contract.GetProperty("schema").GetString());
+        Assert.Equal("artifacts/" + Protocol, contract.GetProperty("output").GetString());
+        foreach (var file in contract.GetProperty("implementation_files").EnumerateArray())
+            Assert.Equal(file.GetProperty("sha256").GetString(), Sha(Path.Combine(R3HFeasibilityHarness.Root, file.GetProperty("path").GetString()!)));
+        using var tokenDocument = JsonDocument.Parse(File.ReadAllText(Path.Combine(output, "02-preexecution.json")));
+        Assert.Equal(Sha(contractPath), tokenDocument.RootElement.GetProperty("contract_sha256").GetString());
+        Assert.Equal(Sha(typeof(M10R3StageEnergyLawReconstructionTests).Assembly.Location), tokenDocument.RootElement.GetProperty("assembly_sha256").GetString());
+
+        var evaluation = new R3HFeasibilityHarness().Evaluate(new double[24]);
+        Assert.All(evaluation.Observations, static o => Assert.True(o.Healthy));
+        var full = evaluation.Engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant;
+        var cycle = full.IntegratedCycle;
+        var plant = full.CandidatePlant;
+        var model = new SimplifiedWaterSteamThermodynamicModel(WaterSteamThermodynamicClosureMode.ReferenceConsistentTabulatedInverseDomain);
+        var train = Assert.Single(cycle.TurbineExpansion.MainSteamNetwork.AdmissionTrains);
+        var stage = Assert.Single(cycle.TurbineExpansion.StageGroups);
+        var condenser = Assert.Single(cycle.Condenser.Condensers);
+        var inlet = plant.GetFluidNode(stage.InletNodeId);
+        var steamSpace = plant.GetFluidNode(condenser.SteamSpaceNodeId);
+        var record = new
+        {
+            Protocol,
+            Checkpoint = "1",
+            Residuals = evaluation.Residuals,
+            StateSha256 = R3HFeasibilityHarness.Hash(evaluation.Observations[^1].StateJson),
+            Stage = new
+            {
+                stage.StageGroupId, stage.InletNodeId, stage.ExhaustNodeId, stage.MoistureDrainNodeId,
+                EnergyTransportMode = stage.EnergyTransportMode.ToString(),
+                InletPressurePa = stage.InletPressure.Pascals, InletTemperatureK = stage.InletTemperature.Kelvins,
+                InletPhase = stage.InletPhase.ToString(), InletQuality = stage.InletVaporQuality?.Fraction,
+                InletSpecificInternalJKg = stage.InletSpecificInternalEnergy.JoulesPerKilogram,
+                InletAdvectedJKg = stage.InletAdvectedSpecificEnergy.JoulesPerKilogram,
+                VaporAdvectedJKg = stage.VaporInletAdvectedSpecificEnergy.JoulesPerKilogram,
+                DrainAdvectedJKg = stage.MoistureDrainAdvectedSpecificEnergy.JoulesPerKilogram,
+                VaporMassKgS = stage.EffectiveMassFlowRate.KilogramsPerSecond, DrainMassKgS = stage.MoistureDrainMassFlowRate.KilogramsPerSecond,
+                InletEnergyW = stage.InletEnergyFlowRate.Watts, DrainEnergyW = stage.MoistureDrainEnergyFlowRate.Watts,
+                Providers = Providers(model, stage.EnergyTransportMode, inlet.Pressure, inlet.Temperature),
+            },
+            Admission = new
+            {
+                train.TrainId, train.TurbineInletNodeId,
+                MassKgS = train.AdmissionValve.MassFlowRate.KilogramsPerSecond, EnergyW = train.AdmissionValve.AdvectedEnergyFlowRate.Watts,
+            },
+            Condenser = new
+            {
+                condenser.CondenserId, condenser.SteamSpaceNodeId, condenser.HotwellNodeId,
+                EnergyTransportMode = condenser.EnergyTransportMode.ToString(),
+                CondensationKgS = condenser.ActualCondensationMassFlowRate.KilogramsPerSecond,
+                SteamAdvectedJKg = condenser.SteamAdvectedSpecificEnergy.JoulesPerKilogram,
+                CondensateAdvectedJKg = condenser.CondensateAdvectedSpecificEnergy.JoulesPerKilogram,
+                HeatRejectionW = condenser.HeatRejectionPower.Watts,
+                Providers = Providers(model, condenser.EnergyTransportMode, steamSpace.Pressure, steamSpace.Temperature),
+            },
+        };
+        File.WriteAllText(Path.Combine(output, "03-reconstruction.json"), JsonSerializer.Serialize(record, new JsonSerializerOptions { WriteIndented = true }));
+    }
+}
