@@ -288,6 +288,11 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   e il catalogo dei guasti; sette figure SVG (volumi in scala, mattoni, scala
   delle pressioni, calore nel nocciolo, riserva del corpo cilindrico, inerzia del
   rotore, condensatore in sezione). Valori dai parametri del profilo Exact-V9.
+- Aggiunte alla roadmap sei proposte di miglioramento emerse dalle schede, in
+  ordine di priorità: protezione di bassa portata principale, canale di livello
+  separato per la protezione, allarme di squilibrio vapore-alimentazione,
+  reintegro dell'inventario, prova di rigetto del carico, preriscaldo
+  rigenerativo. Nessun impegno né modifica fisica; R3 e M10 invariati.
 - Archiviati 74 documenti conclusi o superati, preservandone byte e SHA-256;
   separati 174 input esatti dei validatori dalla documentazione leggibile.
 - Consolidati risultati e ripresa in `docs/PROJECT.md`, con handoff operativo.

@@ -170,6 +170,29 @@ qualificato, arresto normale, lettura di un intervento e ripristino di una sessi
 Saranno verificati sulla versione e sul pacchetto scelti; non daremo per sostenibile
 una manovra soltanto perché è descritta dal manuale o richiesta da una missione.
 
+### Proposte nate dalle schede tecniche dei componenti
+
+Scrivere le schede del capitolo 5 del manuale ha fatto emergere sei comportamenti
+del profilo Exact-V9. Sono tutti coerenti con il modello e già documentati per
+l'operatore; alcuni meritano un miglioramento. Le proposte non sono impegni e non
+entrano nel lavoro di R3 o di M10. Ognuna che tocchi protezioni, allarmi o stato
+iniziale richiederà una nuova identità versionata, con la rivalidazione prevista
+dalla [politica di impatto delle modifiche](CHANGE_IMPACT_REVALIDATION_POLICY.md).
+
+| Comportamento osservato | Proposta | Utilità | Collocazione possibile |
+| --- | --- | --- | --- |
+| Senza pompa di circolazione nessuna protezione interviene: lo SCRAM spetta all'operatore. | Protezione di bassa portata principale, con consenso che la escluda a reattore spento e durante l'avviamento a pompe ferme. | Alta: chiude la lacuna più rilevante e insegna il legame fra produzione e rimozione del calore. | M12, insieme agli stati estremi di M12.3 |
+| Regolatore di livello e protezione di livello molto basso leggono lo stesso canale `level`: un guasto della misura li inganna entrambi. | Canale di misura separato per la protezione, con guasti indipendenti; in seguito eventuale voto fra più canali. | Alta per la didattica: mostra perché protezione e controllo vanno separati. Nessuna pretesa di ridondanza qualificata. | M13.9 o successivo, con DIC-B04 |
+| Senza alimentazione il livello passa dal 50% allo scatto in circa 225 s, e lo squilibrio non ha un annuncio proprio. | Allarme di squilibrio fra portata di vapore esportata e portata di alimentazione, con un ritardo. | Media-alta: anticipa di minuti la diagnosi; costo contenuto. | M13 |
+| Lo scarico in atmosfera porta acqua fuori dal ciclo e non esiste un reintegro. | Reintegro verso la vasca del condensato, regolato sulla massa; almeno un annuncio di inventario totale in calo. | Media: rende sostenibili sessioni lunghe dopo un intervento dello scarico. | M12, con l'inventario dei percorsi di M12.1 |
+| Dopo una perdita del carico il rotore raggiunge 3300 giri/min in circa 2 s senza regolatore; la valvola CONTROL chiude in circa 0,6 s. | Prima una prova ripetibile di rigetto del carico. Se lo scatto per sovravelocità non viene evitato, valutare una chiusura rapida anticipata delle valvole. | Media: oggi il margine è dedotto dai parametri, non osservato. | Prova in M12.3; eventuale funzione in M12 |
+| L'alimentazione arriva a circa 47 °C: circa 14 MW del nocciolo servono solo a riscaldarla (rendimento del ciclo circa 15%). | Preriscaldo rigenerativo con uno spillamento equivalente dalla turbina. | Bassa nel breve periodo: cambia tutto il bilancio e il punto di riferimento. Da valutare dopo M12.0. | Dopo M12.0, solo con un nuovo punto qualificato |
+
+L'ordine della tabella è anche l'ordine di priorità suggerito. Le prime due
+proposte migliorano la sicurezza didattica dell'impianto con modifiche locali. La
+terza e la quarta rendono più leggibili e sostenibili i transitori lunghi. Le ultime
+due vanno precedute da prove o da un nuovo equilibrio qualificato.
+
 ## 6. Come tenere il piano leggibile
 
 Per ciascun intervento registriamo domanda, ingresso, consegna, prova di uscita ed
