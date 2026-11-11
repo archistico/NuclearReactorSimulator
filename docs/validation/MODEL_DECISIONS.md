@@ -62,6 +62,50 @@ is not evidence of physical infeasibility. A further investigation needs its own
 step-size policy and bounded protocol; returned evidence is never rewritten to
 make an executed method appear to have tried more than it did.
 
+H3 added controlled local radii, phase-compatible derivative stencils and deeper
+backtracking, achieving further real descent without a root. Its terminal model
+also demonstrates that decreasing the sum of squared residuals can increase the
+maximum residual used for acceptance. A new numerical design must address the
+actual acceptance objective; smaller steps alone do not fix this conflict.
+The minimax review optimizes along fixed local directions and retains the original
+residual scales. Its linear improvements still require separate physical trials.
+
+The H4–H7 evidence separates three further questions: whether a primary minimax
+LP passes numerical certificates, whether a secondary choice of smaller changes
+is numerically stable, and whether the resulting direction follows the actual
+phase path of the plant recipe. A change to the secondary optimization cap is
+recorded separately from unchanged physical residual and envelope criteria.
+H6 certificates passed while proposed plant steps worsened after a phase change
+during preconditioning. Raw-state phase checks alone are insufficient.
+
+Node ownership can close while equilibrium fails: the recorded control-out and
+turbine-inlet energy accumulations equal their incoming-minus-outgoing transfers.
+These closure checks verify evidence consistency; they do not replace stationarity
+criteria. A liquid initial point that returns to mixture during an unconstrained
+search does not establish infeasibility of the liquid branch.
+
+The subsequent phase-trajectory trial verified that constraining all four
+hotwell checkpoints can produce actual descent. H8 accepted coupled steps but
+eventually reached a reported zero quality, where a strictly interior-quality
+guard no longer applies. A clipped quality is not a signed distance from the
+resolver's domain boundary. Volume reachability alone is also insufficient:
+the existing energy-root tolerance participates in boundary acceptance.
+
+The local energy-boundary review reproduces the observed phases in frozen
+Trials 6–8 using the authenticated prefix and the resolver's existing tolerance.
+This sampled agreement is not global equivalence to the inverse resolver and
+does not qualify an optimizer guard. Unit conversion or auxiliary inequality
+normalization must never be presented as residual reweighting or a relaxed
+physical criterion.
+
+Repeated directional observations at the H8 boundary also show that preserving
+phase labels does not establish a useful first-order residual model. At small
+steps, prediction error exceeds the observed improvement and the smallest
+tested step reverses the descent. Before another search, compare admissible
+derivative stencils at several widths, together with energy margins and joint
+directional predictions. Identical repeats establish deterministic observations;
+they do not establish derivative accuracy.
+
 ## Separate readable documentation from validator inputs
 
 `docs/` explains the project, model and current conclusions. Exact-text M10 inputs

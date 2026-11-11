@@ -1,0 +1,83 @@
+{
+  "schema": "r3-h-trust-search3-frozen-v1",
+  "contract_sha256": "F18A480B1ED51463A82EC16647F4E84B56BF9F50CBACE85BBAEE95FC2E0B6E67",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 1676,
+      "sha256": "BB7071B3129FA9BE7F5A10EA2D71E484A608D825322BC77F3262527B8F3CA965",
+      "stored_sha256": "BB7071B3129FA9BE7F5A10EA2D71E484A608D825322BC77F3262527B8F3CA965"
+    },
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 2285,
+      "sha256": "4A154A8BF75603A021F1C243C47E66138C6B8F14425BD1F78DA71331B9676A13",
+      "stored_sha256": "4A154A8BF75603A021F1C243C47E66138C6B8F14425BD1F78DA71331B9676A13"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "CF9C8D890616481103DD3329DB9F38EB7F3C532D4577A8FF49F9005B4AC21515",
+      "stored_sha256": "CF9C8D890616481103DD3329DB9F38EB7F3C532D4577A8FF49F9005B4AC21515"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 129541795,
+      "sha256": "0B1FE4D9DBDF27FFC3306EF3177488EDA9C9C3AFB5B860828A69D5C13DF63B21",
+      "stored_sha256": "6C953ECBB7A70A4605959B2C625C960216EC352FEC3A341CD2D768D9ADBA5779"
+    },
+    {
+      "file": "04-result.json",
+      "stored": "04-result.json",
+      "bytes": 625989,
+      "sha256": "7BB96BA1F141888BC9169065927B233EA46DE438D13736358CE5E18128FF2E79",
+      "stored_sha256": "7BB96BA1F141888BC9169065927B233EA46DE438D13736358CE5E18128FF2E79"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 1907,
+      "sha256": "4D37EB76783AA363668015C2B5B47146552EAEF5DD77B6215A131915305FD447",
+      "stored_sha256": "4D37EB76783AA363668015C2B5B47146552EAEF5DD77B6215A131915305FD447"
+    },
+    {
+      "file": "07-terminal-review.json",
+      "stored": "07-terminal-review.json",
+      "bytes": 16465,
+      "sha256": "DE47DE2001609C4BABEF4E07E62BBCC67726BBFF05A054C45BCB7082B88FD0E9",
+      "stored_sha256": "DE47DE2001609C4BABEF4E07E62BBCC67726BBFF05A054C45BCB7082B88FD0E9"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3279,
+      "sha256": "CFB54DFDA5B4284DD135E79F51897B02DAE838DEE8DE500B6813E33556AE67A4",
+      "stored_sha256": "CFB54DFDA5B4284DD135E79F51897B02DAE838DEE8DE500B6813E33556AE67A4"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1921,
+      "sha256": "3C01381D4EFC0C4B132EBE42CF8F70DBB95A0FAF314E910C47413DA098A340CD",
+      "stored_sha256": "3C01381D4EFC0C4B132EBE42CF8F70DBB95A0FAF314E910C47413DA098A340CD"
+    },
+    {
+      "file": "ordinary-suite.log",
+      "stored": "ordinary-suite.log.gz",
+      "bytes": 1180556,
+      "sha256": "2053E7570D98580FC66EEB4A914DA4BD0DE6FF62D42A622B652616E136D06D8D",
+      "stored_sha256": "EE6B5485D8742FD61670D50B460FD93323BD6492292681358B7F8FCBEED08844"
+    },
+    {
+      "file": "progress.log",
+      "stored": "progress.log",
+      "bytes": 23256,
+      "sha256": "BC30B49840434902ABA7149E05EE37A0EB126157525DDE767257EDF84965112E",
+      "stored_sha256": "BC30B49840434902ABA7149E05EE37A0EB126157525DDE767257EDF84965112E"
+    }
+  ]
+}

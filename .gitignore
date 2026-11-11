@@ -7,6 +7,7 @@
 *.cache
 TestResults/
 artifacts/
+**/__pycache__/
 
 # Local/generated historical audit payloads are not source-package content.
 tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence/

@@ -1,0 +1,75 @@
+{
+  "schema": "r3-h-secondary-minimax-search6-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 1276,
+      "sha256": "BED403D4B9152EAC879B3BA086F4332F9743385E33B958EC7C282F428532E053",
+      "stored_sha256": "BED403D4B9152EAC879B3BA086F4332F9743385E33B958EC7C282F428532E053"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "02779344D957E3441EF5BBC505ECBD55D64A0E1E61153923CF4EC8CFDECD2876",
+      "stored_sha256": "02779344D957E3441EF5BBC505ECBD55D64A0E1E61153923CF4EC8CFDECD2876"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 58771699,
+      "sha256": "7E189C9FA0115F73AF0B5AE479C957E13F5555C7B3DD5EF6672CF010C453AC76",
+      "stored_sha256": "62249E672AD3BCAA54CA5367C8E1C39A9C807FAC9C08060A3746B283CEF8B126"
+    },
+    {
+      "file": "04-result.json",
+      "stored": "04-result.json",
+      "bytes": 249206,
+      "sha256": "8B3D8657D61A60347FA032B2EBA9A56810DFAB988098FFD57CCA83F915DAD647",
+      "stored_sha256": "8B3D8657D61A60347FA032B2EBA9A56810DFAB988098FFD57CCA83F915DAD647"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 397,
+      "sha256": "FC776106FA1D2770B824536BBEE85F413A1F75956707A19EFEFEE154B3177F16",
+      "stored_sha256": "FC776106FA1D2770B824536BBEE85F413A1F75956707A19EFEFEE154B3177F16"
+    },
+    {
+      "file": "07-secondary-slack-design.json",
+      "stored": "07-secondary-slack-design.json",
+      "bytes": 38658,
+      "sha256": "DAD904E0056F4DAC7B4DFCBC148F8D33744803D416E9A1F524CE41F9B5CBDA5F",
+      "stored_sha256": "DAD904E0056F4DAC7B4DFCBC148F8D33744803D416E9A1F524CE41F9B5CBDA5F"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3980,
+      "sha256": "C22EE8411FCBE70D86803DD66339B420AE4D204CCE17B259D540FD006CBA2B73",
+      "stored_sha256": "C22EE8411FCBE70D86803DD66339B420AE4D204CCE17B259D540FD006CBA2B73"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "77BB33CA0CBD518A4EE8585EC91D5F7D97BEE586587CAF5CED40751E0E881C9C",
+      "stored_sha256": "77BB33CA0CBD518A4EE8585EC91D5F7D97BEE586587CAF5CED40751E0E881C9C"
+    },
+    {
+      "file": "ordinary-suite.log",
+      "stored": "ordinary-suite.log.gz",
+      "bytes": 1183362,
+      "sha256": "A6C16EB5E526D94DD66CEF7C006E7526ACB8765AFAFDE4A52694AB237176F391",
+      "stored_sha256": "B9BA7B6F22ED470BE67701EEA182E5C55BCD4D1A03800A9965EC53FCB86DD230"
+    },
+    {
+      "file": "progress.log",
+      "stored": "progress.log",
+      "bytes": 18926,
+      "sha256": "580A4EC68ACAE166217F65F08D5CCA1289BD92F06AD41D29180F6951EB4D6443",
+      "stored_sha256": "580A4EC68ACAE166217F65F08D5CCA1289BD92F06AD41D29180F6951EB4D6443"
+    }
+  ]
+}

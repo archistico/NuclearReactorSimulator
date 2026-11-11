@@ -1,0 +1,154 @@
+{
+  "schema": "r3-h-c4-margin-trial7-v1",
+  "policy": {
+    "variables": 24,
+    "residuals": 75,
+    "fractional_bound": 0.02,
+    "radius_values": [
+      1e-06,
+      1e-05,
+      0.0001
+    ],
+    "mixture_margin_fraction": 0.1,
+    "unclipped_c4_margin": true,
+    "repeats": 2,
+    "recipes": 8,
+    "batches": 1,
+    "maximum_physical_steps": 26,
+    "production_change": false,
+    "seed_installation": false,
+    "r3_passed": false
+  },
+  "output": "artifacts/r3-h-c4-margin-trial7",
+  "test_additions": [],
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 410,
+      "tree_sha256": "DB6DB96BD54D13B26D7D4795A6D9415EAEBFAF7514BC8B0C014D6FED31BE5AF2"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HProtocolBatchTests.cs",
+      "sha256": "E73DC89313EFED673608B14C8D0C15796666046BDDCEDA66D552CCD88C0D1D8F"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/r3_h_minimax_lp.py",
+      "sha256": "741E6A38FD8C849497E7004074CDCF599B0FB7E249851DFCA4CCE50FEAF3DD5E"
+    },
+    {
+      "path": "eng/r3_h_phase_minimax.py",
+      "sha256": "662537BBB3F861B9571EFD21D5500573F7355BEA72B0AB0BB9083D9E57EE4E9F"
+    },
+    {
+      "path": "eng/r3_h_phase_trajectory.py",
+      "sha256": "256B982174E673AA249619358E820DBD18C55ACD4A00A3D400365C5C2F78C625"
+    },
+    {
+      "path": "eng/r3_h_c4_phase_margin.py",
+      "sha256": "A26041A08F2676A048CF930EC61E0030ADFB75DC749EAD7169BF8030DDFB100D"
+    },
+    {
+      "path": "eng/r3_h_margin_trajectory.py",
+      "sha256": "436EFE31B3DCA484C130A084141AF4672F6A7B93A399637FB2E161EB96C87253"
+    },
+    {
+      "path": "eng/run-r3-h-c4-margin-trial7.py",
+      "sha256": "4454AE8A3022F2268D98603C412B85C7345EF4B8D360F5AF23A2EABFF23EC556"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-h-c4-margin-trial7.md",
+      "sha256": "93D519CAF2AE401B4574AD753EA8352A8AA6F6CFFA4D1A52A62D24FED1F364FB"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs",
+      "sha256": "EED188B6B8C8C9BF447E7F6E3CC0F050AB755B75F883BF5B672FA183A273DF81"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+      "sha256": "2EF50596DBB4AB5215A484511623D569F2CAE9260962BABAE14BC789F21459F7"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceData/NRSVR2C4.v1.bin",
+      "sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267"
+    },
+    {
+      "path": "eng/r3-h-phase-constrained-search8-contract.json",
+      "sha256": "5F2181D8FB4B3BEFB85F372ACA2D78C3E62C47E2185D8A39CED7C0EC54CF7DDE"
+    },
+    {
+      "path": "eng/r3-h-phase-constrained-search8-returned.json",
+      "sha256": "1CFD4B3B6D5E6AF27E5574D464BB52345F8A1BED95855D80425B1C100B1C844C"
+    },
+    {
+      "path": "eng/run-r3-h-phase-constrained-search8.py",
+      "sha256": "DC93FA06D159ACC1D895F661D94589A73892563893CB9450B867F5FFCCA78EAD"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/01-static.json",
+      "sha256": "4CC1C42DCFF0FF608C62B11F9253D26A8CF6FD1844A092D4037F650F6918A4C6"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/02-preexecution.json",
+      "sha256": "EED73020A49153097812FD205D9410B7B33217D11DF00B0FE7FD8B3968E72F53"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/03-batches.jsonl.gz",
+      "sha256": "A6DDB3ED31C0879D4D5EBF42FA8725A9CDD34389F4F9358838A2892D4876F8DF"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/04-result.json",
+      "sha256": "A58BD973172B310778B554C382E09B12133591B4ACC3A44BC95C757CB309E43B"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/05-adjudication.json",
+      "sha256": "34A36515D7DBF4FCFEBA0D23B0E4F53887E5D6C534A152CBE2F670B27C525EAF"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/batch-execution.xml",
+      "sha256": "59ABDAFDDF2E474EFED772454B9334B06DFD852502C1E952868D38BDA2E374BC"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/manifest.json",
+      "sha256": "11E49C6ED2CFDC546EA0E32D1F9D4700B8C6D165A85EEC4AD2BB03430AAB113C"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/preexecution.xml",
+      "sha256": "023DFEDCE8B33EF8216DD24C9364938518B863115678728C5C0F9220FC2E05D1"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-phase-constrained-search8/progress.log",
+      "sha256": "CC416D176A5E35397EFF41FF2C07B3E736F99D74B25E53E6CAB34822A6A7B2BB"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schema": "r3-h-minimax-trial2-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 1840,
+      "sha256": "D05841B17214FE3EBA8E81211ABE4075110E8D175EBEDF0CDE9BDD9C24FCFFD6",
+      "stored_sha256": "D05841B17214FE3EBA8E81211ABE4075110E8D175EBEDF0CDE9BDD9C24FCFFD6"
+    },
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 26471,
+      "sha256": "6BC7ED8272AF9D3BD82DCF5A2BD3B5964FEDFE7BC34200C3B18A9D49DBD2BB56",
+      "stored_sha256": "6BC7ED8272AF9D3BD82DCF5A2BD3B5964FEDFE7BC34200C3B18A9D49DBD2BB56"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "A7699BE5D3E49BB8D09E90C699082E7A6610F859D046B2D53E76DB39C66C5CFB",
+      "stored_sha256": "A7699BE5D3E49BB8D09E90C699082E7A6610F859D046B2D53E76DB39C66C5CFB"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 200811,
+      "sha256": "058239CB29F1E5E8CA997DFBD49921227EB8AD87872FFDBA3D1C0C1087EB09F2",
+      "stored_sha256": "18565A22CE6FA39166ABCCB4E2032E26461D2B246F4E11735FEF034B13DAB928"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 2318,
+      "sha256": "325FE62923A54975B7E14D41E136D67AE141EBD260B778A2AFFBE0909904B781",
+      "stored_sha256": "325FE62923A54975B7E14D41E136D67AE141EBD260B778A2AFFBE0909904B781"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3981,
+      "sha256": "3FF9BAE37DC989A7EA4D6A2DEBB691C3B1738651B77DFF6A189A41759F872775",
+      "stored_sha256": "3FF9BAE37DC989A7EA4D6A2DEBB691C3B1738651B77DFF6A189A41759F872775"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "9EF357C0DA12E0722981E959A96B2766128FA6A5D5D4D9A3FB1EB352FB832A81",
+      "stored_sha256": "9EF357C0DA12E0722981E959A96B2766128FA6A5D5D4D9A3FB1EB352FB832A81"
+    }
+  ]
+}

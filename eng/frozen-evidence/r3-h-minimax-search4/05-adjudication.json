@@ -1,0 +1,15 @@
+{
+  "status": "PASS-INDEPENDENT-MINIMAX-REPLAY",
+  "stop": "RECIPE-BUDGET",
+  "recipes": 4071,
+  "batches": 115,
+  "maximum_physical_steps": 12443,
+  "accepted_updates": 38,
+  "initial_maximum": 3763367.9211895913,
+  "final_maximum": 3672671.871287129,
+  "all_in_envelope": false,
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

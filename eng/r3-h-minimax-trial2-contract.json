@@ -1,0 +1,155 @@
+{
+  "schema": "r3-h-minimax-trial2-v1",
+  "policy": {
+    "variables": 24,
+    "residuals": 75,
+    "fractional_bound": 0.02,
+    "iterations": [
+      8,
+      47
+    ],
+    "radii": [
+      1e-06,
+      0.0001
+    ],
+    "repeats": 2,
+    "recipes": 12,
+    "batches": 1,
+    "maximum_physical_steps": 38,
+    "minimum_reduction_ratio": 0.1,
+    "nonlinear_search": false,
+    "production_change": false,
+    "seed_installation": false,
+    "r3_passed": false
+  },
+  "output": "artifacts/r3-h-minimax-trial2",
+  "test_additions": [
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HProtocolBatchTests.cs"
+  ],
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 409,
+      "tree_sha256": "B88E2E56F5FCB1BCB10BC291E3E84A0F85067E64813DA5AB1C7CB4636B02E921"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HProtocolBatchTests.cs",
+      "sha256": "E73DC89313EFED673608B14C8D0C15796666046BDDCEDA66D552CCD88C0D1D8F"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/run-r3-h-minimax-trial2.py",
+      "sha256": "F9640B1750D51CA07785864B2361A0845222C1EC9FDE0BB6BAFAACA95A82F39F"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-h-minimax-trial2.md",
+      "sha256": "909B4801BA9252DDE654743C26880ABC59B0BD5DBD5C350194F4A5FDFCB606E6"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-h-trust-search3-returned.json",
+      "sha256": "757EEFE66E0681B605B1C5998E3B7952E0D39EA2C5B0F8D985E585FD7948E720"
+    },
+    {
+      "path": "eng/r3-h-minimax-direction-review1-returned.json",
+      "sha256": "23281FE894DDD9C787A1C86554F654B054D58C8A2473618656EA60FB423BBBAA"
+    },
+    {
+      "path": "eng/review-r3-h-trust-search3.py",
+      "sha256": "439E71E4894FBF537E9DE94896B455FA1DD1C9735FFB2AF0E496971AF96F7858"
+    },
+    {
+      "path": "eng/r3-h-minimax-direction-review1-contract.json",
+      "sha256": "B2D9A8E301F9220817DB0D08DD134AB0D910F7531DCAD7E66BA439E9B1C708B4"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/00-build.log",
+      "sha256": "BB7071B3129FA9BE7F5A10EA2D71E484A608D825322BC77F3262527B8F3CA965"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/01-static.json",
+      "sha256": "4A154A8BF75603A021F1C243C47E66138C6B8F14425BD1F78DA71331B9676A13"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/02-preexecution.json",
+      "sha256": "CF9C8D890616481103DD3329DB9F38EB7F3C532D4577A8FF49F9005B4AC21515"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/03-batches.jsonl.gz",
+      "sha256": "6C953ECBB7A70A4605959B2C625C960216EC352FEC3A341CD2D768D9ADBA5779"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/04-result.json",
+      "sha256": "7BB96BA1F141888BC9169065927B233EA46DE438D13736358CE5E18128FF2E79"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/05-adjudication.json",
+      "sha256": "4D37EB76783AA363668015C2B5B47146552EAEF5DD77B6215A131915305FD447"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/07-terminal-review.json",
+      "sha256": "DE47DE2001609C4BABEF4E07E62BBCC67726BBFF05A054C45BCB7082B88FD0E9"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/batch-execution.xml",
+      "sha256": "3C01381D4EFC0C4B132EBE42CF8F70DBB95A0FAF314E910C47413DA098A340CD"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/manifest.json",
+      "sha256": "3C14BCFD0BD69EFACD3E298408FD2D513E530F1048C40C3448334A50956348E3"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/ordinary-suite.log.gz",
+      "sha256": "EE6B5485D8742FD61670D50B460FD93323BD6492292681358B7F8FCBEED08844"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/preexecution.xml",
+      "sha256": "CFB54DFDA5B4284DD135E79F51897B02DAE838DEE8DE500B6813E33556AE67A4"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-trust-search3/progress.log",
+      "sha256": "BC30B49840434902ABA7149E05EE37A0EB126157525DDE767257EDF84965112E"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-minimax-direction-review1/01-comparison.json.gz",
+      "sha256": "BC19B40F31AFA088F3F8D6AF4FDEF0136489BD25001406FB2CD9935E7C09EA85"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-minimax-direction-review1/02-summary.json",
+      "sha256": "5B0FA475EA01F6760FA7A12CFAE3AE8C77E3002287659018FAE4A0594ED5FF12"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-minimax-direction-review1/manifest.json",
+      "sha256": "849FB120EE140F7357657700EA8647B7C64F3A1C6680BE0F89D89A19A5CD5278"
+    }
+  ]
+}

@@ -459,9 +459,11 @@ No requirement for monotonic return is imposed unless the model contract specifi
 
 The following subset records the original exact-v4 diagnostic proposal. It does
 not prescribe a new run now: the investigation has progressed to the bounded H
-and the returned nonlinear Local Trial 1 / bounded H2 checkpoint documented in
-`PROJECT.md`. H2 achieved real descent but stopped without a root; phase-boundary
-localization now precedes a separately frozen local-step protocol.
+and the returned H8 / local C4 energy-boundary review checkpoint documented in `PROJECT.md`.
+The minimax trials and searches are complete without a qualified root. Primary
+and secondary numerical certificates are distinct from the plant's nonlinear
+phase path through preconditioning. The next bounded diagnostic must address
+that path before another search; production remains unchanged.
 
 1. test-only/headless exact-v4 residual census;
 2. per-node `dm/dt` and `dU/dt` plus 60 s/300 s slopes;

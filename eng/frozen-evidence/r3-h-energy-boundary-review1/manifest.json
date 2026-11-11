@@ -1,0 +1,12 @@
+{
+  "schema": "r3-h-energy-boundary-review1-frozen-v1",
+  "files": [
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 118968,
+      "sha256": "E1F311EC1EF1B4EE202B8E7516FBF61D7028CF85DC5BEC6F07AFF30BD6DB8D2E",
+      "stored_sha256": "E1F311EC1EF1B4EE202B8E7516FBF61D7028CF85DC5BEC6F07AFF30BD6DB8D2E"
+    }
+  ]
+}

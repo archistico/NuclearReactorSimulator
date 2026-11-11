@@ -1,0 +1,82 @@
+{
+  "status": "PASS-REPEATED-MINIMAX-TRIAL",
+  "recipes": 12,
+  "maximum_physical_steps": 38,
+  "comparisons": [
+    {
+      "id": "i8/base",
+      "reason": "VALID",
+      "actual_maximum": 3801214.9843866173,
+      "predicted_maximum": 3801214.9843866173,
+      "reduction_ratio": null,
+      "phase_changes": [],
+      "prediction_error": 0.0,
+      "all_in_envelope": false,
+      "promising": false
+    },
+    {
+      "id": "i8/radius/1e-06",
+      "reason": "VALID",
+      "actual_maximum": 3800855.091449814,
+      "predicted_maximum": 3800855.1164423795,
+      "reduction_ratio": 1.0000694492688904,
+      "phase_changes": [],
+      "prediction_error": 0.9174403723009164,
+      "all_in_envelope": false,
+      "promising": true
+    },
+    {
+      "id": "i8/radius/0.0001",
+      "reason": "VALID",
+      "actual_maximum": 3765271.504832714,
+      "predicted_maximum": 3765228.189962824,
+      "reduction_ratio": 0.9987963676514252,
+      "phase_changes": [],
+      "prediction_error": 559.6538153924048,
+      "all_in_envelope": false,
+      "promising": true
+    },
+    {
+      "id": "i47/base",
+      "reason": "VALID",
+      "actual_maximum": 3799306.5278810407,
+      "predicted_maximum": 3799306.5278810407,
+      "reduction_ratio": null,
+      "phase_changes": [],
+      "prediction_error": 0.0,
+      "all_in_envelope": false,
+      "promising": false
+    },
+    {
+      "id": "i47/radius/1e-06",
+      "reason": "VALID",
+      "actual_maximum": 3798946.684758364,
+      "predicted_maximum": 3799048.907059101,
+      "reduction_ratio": 1.3967936285856337,
+      "phase_changes": [],
+      "prediction_error": 4911.737866147654,
+      "all_in_envelope": false,
+      "promising": true
+    },
+    {
+      "id": "i47/radius/0.0001",
+      "reason": "VALID",
+      "actual_maximum": 3763367.9211895913,
+      "predicted_maximum": 3773544.4456870626,
+      "reduction_ratio": 1.3950194872000696,
+      "phase_changes": [],
+      "prediction_error": 491668.6701671153,
+      "all_in_envelope": false,
+      "promising": true
+    }
+  ],
+  "promising": [
+    "i8/radius/1e-06",
+    "i8/radius/0.0001",
+    "i47/radius/1e-06",
+    "i47/radius/0.0001"
+  ],
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

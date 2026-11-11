@@ -1,0 +1,41 @@
+{
+  "status": "PASS-OFFLINE-MINIMAX-DIRECTION-REVIEW",
+  "fixtures_passed": 8,
+  "plant_calls": 0,
+  "comparisons": [
+    {
+      "iteration": 8,
+      "radius": 1e-06,
+      "derivative_step": 1e-06,
+      "current_maximum": 3801214.9843866173,
+      "best_linear_direction_only": "axis/1/-1",
+      "best_linear_maximum_only": 3800855.1164423795
+    },
+    {
+      "iteration": 8,
+      "radius": 0.0001,
+      "derivative_step": 1e-06,
+      "current_maximum": 3801214.9843866173,
+      "best_linear_direction_only": "axis/1/-1",
+      "best_linear_maximum_only": 3765228.189962824
+    },
+    {
+      "iteration": 47,
+      "radius": 1e-06,
+      "derivative_step": 1.0000000000000001e-11,
+      "current_maximum": 3799306.5278810407,
+      "best_linear_direction_only": "axis/1/-1",
+      "best_linear_maximum_only": 3799048.907059101
+    },
+    {
+      "iteration": 47,
+      "radius": 0.0001,
+      "derivative_step": 1.0000000000000001e-11,
+      "current_maximum": 3799306.5278810407,
+      "best_linear_direction_only": "axis/1/-1",
+      "best_linear_maximum_only": 3773544.4456870626
+    }
+  ],
+  "physical_candidate_selected": false,
+  "r3_passed": false
+}

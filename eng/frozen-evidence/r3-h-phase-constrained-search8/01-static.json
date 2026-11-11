@@ -1,0 +1,71 @@
+{
+  "status": "PASS-STATIC",
+  "contract_sha256": "5F2181D8FB4B3BEFB85F372ACA2D78C3E62C47E2185D8A39CED7C0EC54CF7DDE",
+  "fixtures": [
+    {
+      "name": "opposite-to-least-squares",
+      "passed": true
+    },
+    {
+      "name": "known-root",
+      "passed": true
+    },
+    {
+      "name": "minimum-at-start",
+      "passed": true
+    },
+    {
+      "name": "minimum-at-end",
+      "passed": true
+    },
+    {
+      "name": "zero-direction",
+      "passed": true
+    },
+    {
+      "name": "first-minimizer-on-plateau",
+      "passed": true
+    },
+    {
+      "name": "late-plateau",
+      "passed": true
+    },
+    {
+      "name": "nonfinite-rejected",
+      "passed": true
+    },
+    {
+      "name": "ordinary-margin",
+      "passed": true
+    },
+    {
+      "name": "tiny-quality-normalized",
+      "passed": true
+    },
+    {
+      "name": "simultaneous-coordinates-respect-shared-margin",
+      "passed": true
+    },
+    {
+      "name": "zero-quality-is-not-fictitious-mixture-interior",
+      "passed": true
+    },
+    {
+      "name": "accepted-probe-keeps-radius",
+      "passed": true
+    },
+    {
+      "name": "valid-liquid-observation-is-not-a-mixture-branch-candidate",
+      "passed": true
+    },
+    {
+      "name": "known-coupled-root",
+      "passed": true,
+      "recipes": 2338
+    },
+    {
+      "name": "budget-includes-truncated-trials",
+      "passed": true
+    }
+  ]
+}

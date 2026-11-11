@@ -1,0 +1,68 @@
+{
+  "schema": "r3-h-liquid-branch-search7-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 1276,
+      "sha256": "E01C2583035CDF30BE19DA55EC78B73D3F5CC6CC31E015A5D59E3B8BF49C354F",
+      "stored_sha256": "E01C2583035CDF30BE19DA55EC78B73D3F5CC6CC31E015A5D59E3B8BF49C354F"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "3ABA91551831EF66738AFFDAF07117BC33C7E27FCA52F2A723F5FFF0E625C4D7",
+      "stored_sha256": "3ABA91551831EF66738AFFDAF07117BC33C7E27FCA52F2A723F5FFF0E625C4D7"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 11005748,
+      "sha256": "36EFED35D9C00A21440F7E0E3B68616E279A5FC75DFF1503D8FEBEE7564155EC",
+      "stored_sha256": "F5F7DF6140476A325146E2B52F9E401D79133C3405F4C7D701D3D434DF849A22"
+    },
+    {
+      "file": "04-result.json",
+      "stored": "04-result.json",
+      "bytes": 60025,
+      "sha256": "64BF2F3D56C3F8F5E26DE2167C69705C9D28313F70FBE635FF8133E4D7DD0D9C",
+      "stored_sha256": "64BF2F3D56C3F8F5E26DE2167C69705C9D28313F70FBE635FF8133E4D7DD0D9C"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 389,
+      "sha256": "9FAA0C5438A6ABC8D76A7FACB68A2149DB562635FB345152F7697D728EF78DCB",
+      "stored_sha256": "9FAA0C5438A6ABC8D76A7FACB68A2149DB562635FB345152F7697D728EF78DCB"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3981,
+      "sha256": "716A3E48492FA478F9FC739B829439ABC76B0C915577D5839DFF129195B292B4",
+      "stored_sha256": "716A3E48492FA478F9FC739B829439ABC76B0C915577D5839DFF129195B292B4"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "B4FF2332EC9183CFEF676DBD05D3CCE7BA98E2EEB93886BBFC7CD56DD0B4D2E9",
+      "stored_sha256": "B4FF2332EC9183CFEF676DBD05D3CCE7BA98E2EEB93886BBFC7CD56DD0B4D2E9"
+    },
+    {
+      "file": "ordinary-suite.log",
+      "stored": "ordinary-suite.log.gz",
+      "bytes": 1183362,
+      "sha256": "A6C16EB5E526D94DD66CEF7C006E7526ACB8765AFAFDE4A52694AB237176F391",
+      "stored_sha256": "B9BA7B6F22ED470BE67701EEA182E5C55BCD4D1A03800A9965EC53FCB86DD230"
+    },
+    {
+      "file": "progress.log",
+      "stored": "progress.log",
+      "bytes": 3332,
+      "sha256": "43F588D2E719548EDFA90F1E44AA6B155EE1E0D2F8AC0CB86596C8666E08BCC2",
+      "stored_sha256": "43F588D2E719548EDFA90F1E44AA6B155EE1E0D2F8AC0CB86596C8666E08BCC2"
+    }
+  ]
+}

@@ -33,58 +33,51 @@ separa i risultati già acquisiti dal problema di integrazione ancora aperto.
 
 NRS-MARKER:R3-H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-NEXT
 
-La revisione offline e la prova fisica delle sei direzioni sono concluse. Tutte
-le direzioni migliorano realmente il residuo. La successiva ricerca scalata H2
-lo riduce ancora, fino a 4,907 milioni, poi si arresta senza una radice dopo
-143 ricette. I 75 residui devono invece essere tutti entro la soglia 1: il
-miglioramento numerico è reale, ma l'equilibrio non è ancora qualificato.
+La ricerca H8 riduce il miglior massimo accettato a 3.337.270,068, contro il
+criterio 1, e accetta 16 passi accoppiati. Il vincolo sulla traiettoria di fase
+ha quindi prodotto un miglioramento reale. La ricerca arriva però a qualità
+riportata zero nell'hotwell e si arresta al raggio minimo: nessun equilibrio
+o inviluppo operativo è ancora qualificato.
 
-Il problema immediato è ora localizzato: tutti i tentativi terminali attraversano
-il confine di fase dell'hotwell e peggiorano il risultato, mentre una piccola
-sonda già registrata migliora senza cambiare fase. H continua a indicare una
-correzione limitata ai 24 inventari fluidi; questo esito non richiede di per sé
-nuove leggi fisiche o una taratura dei controllori.
+La diagnosi successiva distingue volume ed energia al confine C4. Il margine
+energetico ricostruisce le fasi dei campioni esaminati; Trial 8 mostra però
+che, anche restando miscela, l'errore della previsione può superare il piccolo
+guadagno osservato. Il passo immediato è verificare l'affidabilità delle
+derivate prima di progettare un'altra ricerca.
 
-| Passo | Lavoro previsto | Consegna verificabile | Condizione per avanzare |
-| --- | --- | --- | --- |
-| A. Revisione offline — conclusa | Riproduzione dei sei modelli e verifica della scalatura. | PASS, con caveat sui cambi di fase. | Ha consentito il protocollo Local Trial 1. |
-| B. Verifica fisica — conclusa | Sette punti ripetuti due volte, 14 ricette. | Tutte le direzioni migliorano; migliore riduzione 4,39%, ripetizioni identiche. | Ha consentito la ricerca H2, senza qualificare un seed. |
-| C. Ricerca H2 — conclusa, inconclusiva | Sottoproblemi scalati con vincoli espliciti e 143 ricette fisiche. | Un aggiornamento, residuo 4,907 milioni, replay completo PASS. | Arresto `NO-STRICT-DESCENT`; nessuna radice o conferma. |
-| C2. Ricerca locale vicino al confine di fase — prossima | Confrontare le direzioni terminali con la sonda migliorativa; progettare un limite al passo e una riduzione progressiva più profonda. | Metodo verificato su casi noti e protocollo separato con selezione, budget e arresti congelati; poi indagine limitata ai test. | Stesse incognite, scale e limiti; una radice osservata richiede conferme indipendenti, un nuovo arresto richiede revisione dei bilanci. |
-| D. Conferma e integrazione del candidato | Dopo una radice e revisione indipendente, pianificare conferme ripetute e integrare il solo stato iniziale qualificato nella composizione di prova. | Riproduzione dello stato, residui conformi e inviluppo invariato di 100 passi. | Nessuna modifica implicita di controllori, guadagni, proprietà o identità storiche. |
-| E. R3 Requalification 3 | Eseguire la verifica integrata di 120 secondi, cioè 12.000 passi da 10 ms. | Evidenze complete e giudizio indipendente sull'esito R3. | Solo un R3 PASS restituito e revisionato permette la pianificazione di R4. |
-
-La figura rappresenta questi passaggi e il punto in cui ci si ferma se l'indagine
-non produce un candidato. Le frecce sono dipendenze del lavoro, non automatismi
-che autorizzano un'altra ricerca quando quella precedente è inconclusiva.
+| Passo | Stato e consegna | Condizione per avanzare |
+| --- | --- | --- |
+| Ricerche H–H8 e prove ripetute | Concluse senza radice; replay delle evidenze correnti PASS. | La riduzione del residuo non promuove un seed. |
+| Diagnosi della traiettoria e del confine C4 | Conclusa sui campioni dei Trial 6–8: qualità troncata e margine di volume da soli non bastano. | Il margine energetico è una spiegazione locale, non un vincolo di ricerca già qualificato. |
+| Derivate su più ampiezze — prossima | Confrontare residui, margine energetico e fasi da H8, con differenze centrali/unilaterali e direzione fissa di Trial 8. | Individuare passi per cui l'errore del modello consenta di giudicare la discesa; altrimenti rivedere la rappresentazione. |
+| Nuova prova e ricerca | Solo dopo la revisione delle derivate, congelare proposte e confrontarle due volte con la risposta reale. | Accordo misurato, ramo e discesa coerenti prima di impegnare una nuova ricerca. |
+| Conferma e integrazione | Dopo una radice osservata e revisione, conferme indipendenti e composizione di prova. | Residui conformi e inviluppo invariato di 100 passi. |
+| R3 Requalification 3 | Verifica integrata di 120 secondi, 12.000 passi da 10 ms. | Solo un R3 PASS restituito e revisionato permette la pianificazione di R4. |
 
 ```mermaid
 flowchart TD
-    A["Revisione e prova delle sei direzioni: concluse"] --> B["H2: discesa reale, nessuna radice"]
-    B --> C["Prossimo: protocollo locale vicino al cambio di fase"]
-    C --> D{"Radice osservata?"}
-    D -->|"no"| S["Conservare evidenze e rivedere il piano"]
-    D -->|"sì"| E["Revisione e conferme indipendenti di 100 passi"]
-    E --> F["R3: verifica integrata di 120 secondi"]
-    F --> G["Revisione dell'esito prima di R4"]
+    A["H8 e Trial 6-8: miglioramento, nessuna radice"] --> B["Prossimo: affidabilità delle derivate"]
+    B --> C{"Previsioni verificate su più passi?"}
+    C -->|"no"| R["Rivedere la rappresentazione locale"]
+    R --> B
+    C -->|"sì"| D["Nuova prova ripetuta prima della ricerca"]
+    D --> E{"Radice osservata?"}
+    E -->|"no"| R
+    E -->|"sì"| F["Conferme indipendenti di 100 passi"]
+    F --> G["R3: verifica integrata di 120 secondi"]
+    G --> H["Revisione prima di R4"]
 ```
 
-Il miglioramento misurato consente di superare il vecchio dubbio sullo smorzamento,
-ma non qualifica l'impianto. Per il passo C2 occorre ora controllare l'ampiezza
-del passo vicino alla saturazione: il migliore dei tentativi terminali H2 porta
-la pressione grezza dell'hotwell da circa 10,81 a 22,82 kPa. Una sonda più piccola
-raggiunge invece un residuo di 4,481 milioni senza cambiare fase. Questo confronto
-motiva il nuovo disegno numerico, senza dimostrare che una radice esista nel box.
+Le frecce indicano condizioni da dimostrare. La diagnosi del confine è progredita,
+ma un certificato del programma lineare non garantisce l'accuratezza della sua
+previsione fisica. Ridurre ancora il passo o aggiungere soltanto il margine
+energetico non basta a superare il limite osservato in Trial 8.
 
-Restano fissi residui, scale, incognite e limiti del percorso H finché un distinto
-piano verificato non motivi diversamente. L'esaurimento del budget non autorizza
-un ampliamento dei limiti, una taratura dei controllori o il passaggio automatico
-alle altre famiglie di intervento. L'esito inconclusivo è un punto di decisione.
-
-**A, B e C sono consegne completate; C2 è il prossimo lavoro.** D ed E dipendono
-da ciò che emerge: non sono date per acquisite e non hanno ancora una data di
-completamento attendibile. Le due nuove indagini hanno evidenze congelate e non
-sono esecuzioni ancora in corso.
+Restano fissi residui, scale, incognite e box H finché una decisione distinta
+non motivi diversamente. Le altre famiglie C/J, gli allargamenti dei limiti e
+le modifiche fisiche non sono conseguenze automatiche di un esito inconclusivo.
+Non è stata dimostrata l'impossibilità di una radice né un difetto dei controllori.
+Nessuna ricerca è in corso e non c'è ancora una data attendibile per R3 o M10.
 
 ## 3. Che cosa manca dopo R3 per chiudere M10
 

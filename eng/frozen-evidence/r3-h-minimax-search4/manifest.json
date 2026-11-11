@@ -1,0 +1,75 @@
+{
+  "schema": "r3-h-minimax-search4-frozen-v1",
+  "files": [
+    {
+      "file": "00-assembly-provenance.json",
+      "stored": "00-assembly-provenance.json",
+      "bytes": 426,
+      "sha256": "6DC8345C00360A3A4EFE909BB97C51E838F7D8B464D1602FC2ABD2714409AF70",
+      "stored_sha256": "6DC8345C00360A3A4EFE909BB97C51E838F7D8B464D1602FC2ABD2714409AF70"
+    },
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 996,
+      "sha256": "541B3A9A3D602610DDDE5C16D89D125119D8EA726091DA9C3D1AAA5683C4174E",
+      "stored_sha256": "541B3A9A3D602610DDDE5C16D89D125119D8EA726091DA9C3D1AAA5683C4174E"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "217951BA06362F0AEECCAD1D1877E4013E1701EB27411BE82800DA3C75F5F7F0",
+      "stored_sha256": "217951BA06362F0AEECCAD1D1877E4013E1701EB27411BE82800DA3C75F5F7F0"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 68019621,
+      "sha256": "D4EB1C09F05475B1619883A28730062800FB6E9A2E202A18082FE86626B6819E",
+      "stored_sha256": "4B90A8971CBE183F3EFE9AB81AEE2953D03DE7ED2888FE83F59BD76EB2A36B78"
+    },
+    {
+      "file": "04-result.json",
+      "stored": "04-result.json",
+      "bytes": 355639,
+      "sha256": "F94748192688BBA3E2287A4F2461D399B4246BD2D8238B91A7B5EE3F90A4DD7B",
+      "stored_sha256": "F94748192688BBA3E2287A4F2461D399B4246BD2D8238B91A7B5EE3F90A4DD7B"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 395,
+      "sha256": "D33E34BFC2C30666DA92332D9CBD42A5BE5AD9B2C511F2F51407E6A3AAE9D765",
+      "stored_sha256": "D33E34BFC2C30666DA92332D9CBD42A5BE5AD9B2C511F2F51407E6A3AAE9D765"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3981,
+      "sha256": "64670397867FD3F2F3BD3D503D9E5FBF4C2D62306DC756E83D7522D16624F2BF",
+      "stored_sha256": "64670397867FD3F2F3BD3D503D9E5FBF4C2D62306DC756E83D7522D16624F2BF"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "ADE7424B7DF964590C18BB490B7FF97FFD335A66FB8D6FB0A7D5ED7504ED4725",
+      "stored_sha256": "ADE7424B7DF964590C18BB490B7FF97FFD335A66FB8D6FB0A7D5ED7504ED4725"
+    },
+    {
+      "file": "ordinary-suite.log",
+      "stored": "ordinary-suite.log.gz",
+      "bytes": 1183362,
+      "sha256": "A6C16EB5E526D94DD66CEF7C006E7526ACB8765AFAFDE4A52694AB237176F391",
+      "stored_sha256": "B9BA7B6F22ED470BE67701EEA182E5C55BCD4D1A03800A9965EC53FCB86DD230"
+    },
+    {
+      "file": "progress.log",
+      "stored": "progress.log",
+      "bytes": 14394,
+      "sha256": "0366CF5C9E0C0920879E69F82404140281B29F9922C5F7231CF537DEBC64B340",
+      "stored_sha256": "0366CF5C9E0C0920879E69F82404140281B29F9922C5F7231CF537DEBC64B340"
+    }
+  ]
+}

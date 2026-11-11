@@ -1,0 +1,12 @@
+{
+  "assembly_sha256": "CF9F4678E965BAE434D60D07933339438DD9DF55BD0CBC5DB49DC16E00D36C4D",
+  "build": "eng/frozen-evidence/r3-h-minimax-trial2/00-build.log",
+  "source": {
+    "file_count": 962,
+    "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+  },
+  "tests": {
+    "file_count": 410,
+    "tree_sha256": "DB6DB96BD54D13B26D7D4795A6D9415EAEBFAF7514BC8B0C014D6FED31BE5AF2"
+  }
+}

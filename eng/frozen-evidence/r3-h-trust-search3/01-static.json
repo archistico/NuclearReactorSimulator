@@ -1,0 +1,115 @@
+{
+  "status": "PASS-STATIC",
+  "contract_sha256": "F18A480B1ED51463A82EC16647F4E84B56BF9F50CBACE85BBAEE95FC2E0B6E67",
+  "fixtures": [
+    {
+      "name": "interior",
+      "passed": true,
+      "iterations": 1,
+      "releases": 0,
+      "active": [],
+      "free_gradient_max": 0.0,
+      "tolerance": 3e-10
+    },
+    {
+      "name": "coupled-upper",
+      "passed": true,
+      "iterations": 3,
+      "releases": 0,
+      "active": [
+        {
+          "index": 0,
+          "side": 1
+        },
+        {
+          "index": 1,
+          "side": 1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 4e-10
+    },
+    {
+      "name": "coupled-one-active",
+      "passed": true,
+      "iterations": 2,
+      "releases": 0,
+      "active": [
+        {
+          "index": 0,
+          "side": 1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 4e-10
+    },
+    {
+      "name": "coupled-lower",
+      "passed": true,
+      "iterations": 2,
+      "releases": 0,
+      "active": [
+        {
+          "index": 0,
+          "side": -1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 4e-10
+    },
+    {
+      "name": "release-bound",
+      "passed": true,
+      "iterations": 4,
+      "releases": 1,
+      "active": [
+        {
+          "index": 1,
+          "side": -1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 6e-10
+    },
+    {
+      "name": "badly-scaled",
+      "passed": true
+    },
+    {
+      "name": "zero-column",
+      "passed": true
+    },
+    {
+      "name": "local-step-with-original-box",
+      "passed": true
+    },
+    {
+      "name": "one-sided-and-unavailable-at-seam",
+      "passed": true
+    },
+    {
+      "name": "known-root-across-slope-change",
+      "passed": true,
+      "evaluations": 697
+    },
+    {
+      "name": "budget-truncates-fixed-trial-prefix",
+      "passed": true,
+      "evaluations": 50
+    }
+  ],
+  "negative_policy_cases": [
+    {
+      "case": "maximum_recipes",
+      "rejected": true
+    },
+    {
+      "case": "fractional_bound",
+      "rejected": true
+    },
+    {
+      "case": "seed_installation",
+      "rejected": true
+    }
+  ]
+}

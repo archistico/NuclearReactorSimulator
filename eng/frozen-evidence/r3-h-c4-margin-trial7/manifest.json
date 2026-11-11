@@ -1,0 +1,47 @@
+{
+  "schema": "r3-h-c4-margin-trial7-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 22304,
+      "sha256": "5D988D771EEB5AA99C71C0D6192A7B886800F534848B6C559BA6DC6E34636A81",
+      "stored_sha256": "5D988D771EEB5AA99C71C0D6192A7B886800F534848B6C559BA6DC6E34636A81"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "B5ACC18622F54A8AB08CC692143581E7CFCEF5E811BD5CCDC448E3B9C793907E",
+      "stored_sha256": "B5ACC18622F54A8AB08CC692143581E7CFCEF5E811BD5CCDC448E3B9C793907E"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 133487,
+      "sha256": "4D80E0E27698697C96BBE4C210D7B97BA4CD1C5D993DAE8C44E0E852C217C615",
+      "stored_sha256": "A916A8371542AAA90F059EE6BBA675CDBBCC11AF6BAAB5EC1CB5B68F40111F80"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 8716,
+      "sha256": "67DE97DE5E8E8F3BDF25551C66D7BD18BBF5060A49645CA5511F7C663CD1DC1B",
+      "stored_sha256": "67DE97DE5E8E8F3BDF25551C66D7BD18BBF5060A49645CA5511F7C663CD1DC1B"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3981,
+      "sha256": "8AB886C62BC4CAB4D5E02A7BC697BC83B0C8E40B37839ED750466EF35623E4F2",
+      "stored_sha256": "8AB886C62BC4CAB4D5E02A7BC697BC83B0C8E40B37839ED750466EF35623E4F2"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "8E9096EC6DE95C4F07B17D3EAC2CC3033D046C8ABCDA7FC6CA0CED3DC14CF162",
+      "stored_sha256": "8E9096EC6DE95C4F07B17D3EAC2CC3033D046C8ABCDA7FC6CA0CED3DC14CF162"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "status": "PASS-INDEPENDENT-MINIMAX-REPLAY",
+  "stop": "ITERATION-LIMIT",
+  "recipes": 2945,
+  "batches": 65,
+  "maximum_physical_steps": 8965,
+  "accepted_updates": 64,
+  "initial_maximum": 3564754.5115241637,
+  "final_maximum": 3563047.259479554,
+  "all_in_envelope": false,
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

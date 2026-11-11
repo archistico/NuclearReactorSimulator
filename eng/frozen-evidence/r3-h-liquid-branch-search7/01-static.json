@@ -1,0 +1,67 @@
+{
+  "status": "PASS-STATIC",
+  "contract_sha256": "BA23597F6EF5B6066EB8A371919C3C13524BADA062FCF3D9C8A4BDAAB0C9F3AA",
+  "fixtures": [
+    {
+      "name": "opposite-to-least-squares",
+      "passed": true
+    },
+    {
+      "name": "known-root",
+      "passed": true
+    },
+    {
+      "name": "minimum-at-start",
+      "passed": true
+    },
+    {
+      "name": "minimum-at-end",
+      "passed": true
+    },
+    {
+      "name": "zero-direction",
+      "passed": true
+    },
+    {
+      "name": "first-minimizer-on-plateau",
+      "passed": true
+    },
+    {
+      "name": "late-plateau",
+      "passed": true
+    },
+    {
+      "name": "nonfinite-rejected",
+      "passed": true
+    },
+    {
+      "name": "opposite-to-squares",
+      "passed": true
+    },
+    {
+      "name": "coupled-root",
+      "passed": true
+    },
+    {
+      "name": "zero-column",
+      "passed": true
+    },
+    {
+      "name": "joint-descent",
+      "passed": true
+    },
+    {
+      "name": "accepted-probe-keeps-radius",
+      "passed": true
+    },
+    {
+      "name": "known-coupled-root",
+      "passed": true,
+      "recipes": 2680
+    },
+    {
+      "name": "budget-includes-truncated-trials",
+      "passed": true
+    }
+  ]
+}

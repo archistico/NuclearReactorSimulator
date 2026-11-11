@@ -1,0 +1,60 @@
+{
+  "status": "PASS-REPEATED-COUPLED-MINIMAX-TRIAL",
+  "recipes": 8,
+  "maximum_physical_steps": 26,
+  "comparisons": [
+    {
+      "id": "base",
+      "radius": null,
+      "reason": "VALID",
+      "actual_maximum": 3672782.2275092937,
+      "predicted_maximum": 3672782.2275092937,
+      "reduction_ratio": null,
+      "phase_changes": [],
+      "all_in_envelope": false,
+      "promising": false
+    },
+    {
+      "id": "radius/1e-06",
+      "radius": 1e-06,
+      "reason": "VALID",
+      "actual_maximum": 3671764.07732342,
+      "predicted_maximum": 3671764.059094842,
+      "reduction_ratio": 0.9999820966967184,
+      "phase_changes": [],
+      "all_in_envelope": false,
+      "promising": true
+    },
+    {
+      "id": "radius/0.0001",
+      "radius": 0.0001,
+      "reason": "VALID",
+      "actual_maximum": 3643749.2289962824,
+      "predicted_maximum": 3643739.1285521695,
+      "reduction_ratio": 0.9996522256757856,
+      "phase_changes": [],
+      "all_in_envelope": false,
+      "promising": true
+    },
+    {
+      "id": "radius/0.0004",
+      "radius": 0.0004,
+      "reason": "VALID",
+      "actual_maximum": 3564754.5115241637,
+      "predicted_maximum": 3564655.2467174022,
+      "reduction_ratio": 0.9990819608016943,
+      "phase_changes": [],
+      "all_in_envelope": false,
+      "promising": true
+    }
+  ],
+  "promising": [
+    "radius/1e-06",
+    "radius/0.0001",
+    "radius/0.0004"
+  ],
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

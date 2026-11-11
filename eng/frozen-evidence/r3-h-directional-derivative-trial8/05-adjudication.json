@@ -1,0 +1,124 @@
+{
+  "status": "PASS-REPEATED-DIRECTIONAL-DERIVATIVE-TRIAL",
+  "recipes": 12,
+  "maximum_physical_steps": 38,
+  "comparisons": [
+    {
+      "id": "base",
+      "fraction": 0.0,
+      "reason": "VALID",
+      "actual_maximum": 3337270.0676579927,
+      "predicted_maximum": 3337270.0676579927,
+      "maximum_error": 0.0,
+      "error_per_fraction": null,
+      "actual_reduction": 0.0,
+      "phase_compatible": true,
+      "margins": [
+        1.3484427681725472e-11,
+        8.98733302086234e-12,
+        4.5039419542229014e-12,
+        7.395917135124406e-15
+      ],
+      "phase_changes": []
+    },
+    {
+      "id": "fraction/1",
+      "fraction": 1.0,
+      "reason": "VALID",
+      "actual_maximum": 3337428.8499496477,
+      "predicted_maximum": 3337110.4066968346,
+      "maximum_error": 703.841265372932,
+      "error_per_fraction": 703.841265372932,
+      "actual_reduction": -158.78229165496305,
+      "phase_compatible": false,
+      "margins": [
+        1.335595424199962e-11,
+        8.85919467716975e-12,
+        4.375860578106827e-12,
+        -1.2008455803841528e-13
+      ],
+      "phase_changes": [
+        41
+      ]
+    },
+    {
+      "id": "fraction/0.1",
+      "fraction": 0.1,
+      "reason": "VALID",
+      "actual_maximum": 3337272.5346534653,
+      "predicted_maximum": 3337254.101561877,
+      "maximum_error": 67.58661764045246,
+      "error_per_fraction": 675.8661764045246,
+      "actual_reduction": -2.4669954725541174,
+      "phase_compatible": false,
+      "margins": [
+        1.3471439759507186e-11,
+        8.974434050832625e-12,
+        4.491131712011169e-12,
+        -5.236483789347098e-15
+      ],
+      "phase_changes": [
+        41
+      ]
+    },
+    {
+      "id": "fraction/0.01",
+      "fraction": 0.01,
+      "reason": "VALID",
+      "actual_maximum": 3337269.579207921,
+      "predicted_maximum": 3337268.471048381,
+      "maximum_error": 9.323608383303508,
+      "error_per_fraction": 932.3608383303508,
+      "actual_reduction": 0.4884500717744231,
+      "phase_compatible": false,
+      "margins": [
+        1.3483018069734596e-11,
+        8.986209207942601e-12,
+        4.502550235761995e-12,
+        6.247453340430923e-15
+      ],
+      "phase_changes": [
+        41
+      ]
+    },
+    {
+      "id": "fraction/0.001",
+      "fraction": 0.001,
+      "reason": "VALID",
+      "actual_maximum": 3337269.9323420073,
+      "predicted_maximum": 3337269.9079970317,
+      "maximum_error": 6.059404343366623,
+      "error_per_fraction": 6059.404343366623,
+      "actual_reduction": 0.13531598541885614,
+      "phase_compatible": true,
+      "margins": [
+        1.3484148235804132e-11,
+        8.987331364586713e-12,
+        4.503664446626231e-12,
+        7.395917116638105e-15
+      ],
+      "phase_changes": []
+    },
+    {
+      "id": "fraction/0.0001",
+      "fraction": 0.0001,
+      "reason": "VALID",
+      "actual_maximum": 3337270.0907063195,
+      "predicted_maximum": 3337270.0516918967,
+      "maximum_error": 5.412898005452007,
+      "error_per_fraction": 54128.98005452007,
+      "actual_reduction": -0.023048326838761568,
+      "phase_compatible": true,
+      "margins": [
+        1.3484427424558661e-11,
+        8.987332859993936e-12,
+        4.503665186423516e-12,
+        7.39591713328163e-15
+      ],
+      "phase_changes": []
+    }
+  ],
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

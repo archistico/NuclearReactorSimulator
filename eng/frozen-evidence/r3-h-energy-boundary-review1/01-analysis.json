@@ -1,0 +1,3050 @@
+{
+  "status": "PASS-LOCAL-ENERGY-BOUNDARY-REVIEW",
+  "contract_sha256": "F80AB8FF996A283C80FE8F5187F4FEB4CB34DC3F281902E3729557E501F9CB35",
+  "fixtures": [
+    {
+      "name": "exact-energy-boundary",
+      "passed": true
+    },
+    {
+      "name": "opposite-sides-of-existing-energy-root-band",
+      "passed": true
+    },
+    {
+      "name": "normalization-does-not-change-boundary",
+      "passed": true
+    },
+    {
+      "name": "exact-saturation-has-reachability-margin",
+      "passed": true
+    },
+    {
+      "name": "negative-signed-quality-can-clamp-to-zero",
+      "passed": true
+    },
+    {
+      "name": "beyond-original-tolerance-is-outside",
+      "passed": true
+    },
+    {
+      "name": "authenticated-prefix-node-interpolation",
+      "passed": true
+    }
+  ],
+  "plant_calls": 0,
+  "inputs": [
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "recipes": 10,
+      "distinct_repeated_points": 5,
+      "checkpoints": 40
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "recipes": 8,
+      "distinct_repeated_points": 4,
+      "checkpoints": 32
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "recipes": 12,
+      "distinct_repeated_points": 6,
+      "checkpoints": 48
+    }
+  ],
+  "samples": [
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48536772829607,
+      "reported_quality": 3.378579145270678e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4864082404055,
+        "boundary_energy_j_kg": 198191.44443665058,
+        "signed_energy_gap_j_kg": 4.348408340767492,
+        "existing_energy_root_tolerance_j_kg": 1.9818709602830982e-05,
+        "energy_margin_j_kg": 4.348428159477095,
+        "normalized_margin_mj_kg": 4.348428159477095e-06
+      },
+      "volume": {
+        "signed_quality": 3.3785791484509574e-11,
+        "volume_tolerance_m3_kg": 1.0109301025340797e-13,
+        "reachability_margin": 3.379320485402074e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48536128005367,
+      "reported_quality": 2.8989013393218726e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4862540644884,
+        "boundary_energy_j_kg": 198190.80010720954,
+        "signed_energy_gap_j_kg": 3.7310548486420885,
+        "existing_energy_root_tolerance_j_kg": 1.981870690523609e-05,
+        "energy_margin_j_kg": 3.731074667348994,
+        "normalized_margin_mj_kg": 3.731074667348994e-06
+      },
+      "volume": {
+        "signed_quality": 2.898901336141596e-11,
+        "volume_tolerance_m3_kg": 1.0109300342673687e-13,
+        "reachability_margin": 2.8996426728141788e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853548163628,
+      "reported_quality": 2.496123290486176e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48612355611925,
+        "boundary_energy_j_kg": 198190.2546887932,
+        "signed_energy_gap_j_kg": 3.212647797394311,
+        "existing_energy_root_tolerance_j_kg": 1.9818704204099583e-05,
+        "energy_margin_j_kg": 3.212667616098515,
+        "normalized_margin_mj_kg": 3.212667616098515e-06
+      },
+      "volume": {
+        "signed_quality": 2.496123288896036e-11,
+        "volume_tolerance_m3_kg": 1.0109299764802817e-13,
+        "reachability_margin": 2.4968646252972226e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853483483522,
+      "reported_quality": 2.1493336481063618e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48601028630253,
+        "boundary_energy_j_kg": 198189.78131345002,
+        "signed_energy_gap_j_kg": 2.7663172210450284,
+        "existing_energy_root_tolerance_j_kg": 1.98187014996229e-05,
+        "energy_margin_j_kg": 2.766337039746528,
+        "normalized_margin_mj_kg": 2.7663370397465277e-06
+      },
+      "volume": {
+        "signed_quality": 2.1493336449260966e-11,
+        "volume_tolerance_m3_kg": 1.0109299263261591e-13,
+        "reachability_margin": 2.1500749810613312e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48536772829607,
+      "reported_quality": 3.378579145270678e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4864082404055,
+        "boundary_energy_j_kg": 198191.44443665058,
+        "signed_energy_gap_j_kg": 4.348408340767492,
+        "existing_energy_root_tolerance_j_kg": 1.9818709602830982e-05,
+        "energy_margin_j_kg": 4.348428159477095,
+        "normalized_margin_mj_kg": 4.348428159477095e-06
+      },
+      "volume": {
+        "signed_quality": 3.3785791484509574e-11,
+        "volume_tolerance_m3_kg": 1.0109301025340797e-13,
+        "reachability_margin": 3.379320485402074e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48536128005367,
+      "reported_quality": 2.8989013393218726e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4862540644884,
+        "boundary_energy_j_kg": 198190.80010720954,
+        "signed_energy_gap_j_kg": 3.7310548486420885,
+        "existing_energy_root_tolerance_j_kg": 1.981870690523609e-05,
+        "energy_margin_j_kg": 3.731074667348994,
+        "normalized_margin_mj_kg": 3.731074667348994e-06
+      },
+      "volume": {
+        "signed_quality": 2.898901336141596e-11,
+        "volume_tolerance_m3_kg": 1.0109300342673687e-13,
+        "reachability_margin": 2.8996426728141788e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853548163628,
+      "reported_quality": 2.496123290486176e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48612355611925,
+        "boundary_energy_j_kg": 198190.2546887932,
+        "signed_energy_gap_j_kg": 3.212647797394311,
+        "existing_energy_root_tolerance_j_kg": 1.9818704204099583e-05,
+        "energy_margin_j_kg": 3.212667616098515,
+        "normalized_margin_mj_kg": 3.212667616098515e-06
+      },
+      "volume": {
+        "signed_quality": 2.496123288896036e-11,
+        "volume_tolerance_m3_kg": 1.0109299764802817e-13,
+        "reachability_margin": 2.4968646252972226e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "base/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853483483522,
+      "reported_quality": 2.1493336481063618e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48601028630253,
+        "boundary_energy_j_kg": 198189.78131345002,
+        "signed_energy_gap_j_kg": 2.7663172210450284,
+        "existing_energy_root_tolerance_j_kg": 1.98187014996229e-05,
+        "energy_margin_j_kg": 2.766337039746528,
+        "normalized_margin_mj_kg": 2.7663370397465277e-06
+      },
+      "volume": {
+        "signed_quality": 2.1493336449260966e-11,
+        "volume_tolerance_m3_kg": 1.0109299263261591e-13,
+        "reachability_margin": 2.1500749810613312e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48534940142645,
+      "reported_quality": 2.0046406877116906e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4859667777395,
+        "boundary_energy_j_kg": 198189.59948318353,
+        "signed_energy_gap_j_kg": 2.5800977858016267,
+        "existing_energy_root_tolerance_j_kg": 1.9818701938539773e-05,
+        "energy_margin_j_kg": 2.5801176045035654,
+        "normalized_margin_mj_kg": 2.5801176045035653e-06
+      },
+      "volume": {
+        "signed_quality": 2.0046406877116916e-11,
+        "volume_tolerance_m3_kg": 1.0109299070612404e-13,
+        "reachability_margin": 2.005382023870111e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48534294819285,
+      "reported_quality": 1.5249850614376037e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4858126034042,
+        "boundary_energy_j_kg": 198188.9551603531,
+        "signed_energy_gap_j_kg": 1.9627557190833613,
+        "existing_energy_root_tolerance_j_kg": 1.9818699240463402e-05,
+        "energy_margin_j_kg": 1.9627755377826017,
+        "normalized_margin_mj_kg": 1.962775537782602e-06
+      },
+      "volume": {
+        "signed_quality": 1.5249850630277405e-11,
+        "volume_tolerance_m3_kg": 1.0109298387952297e-13,
+        "reachability_margin": 1.5257263989074503e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853364841745,
+      "reported_quality": 1.1221145221143011e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48568206598287,
+        "boundary_energy_j_kg": 198188.40962052252,
+        "signed_energy_gap_j_kg": 1.444232072622981,
+        "existing_energy_root_tolerance_j_kg": 1.981869653884499e-05,
+        "energy_margin_j_kg": 1.4442518913195197,
+        "normalized_margin_mj_kg": 1.4442518913195196e-06
+      },
+      "volume": {
+        "signed_quality": 1.1221145221142983e-11,
+        "volume_tolerance_m3_kg": 1.010929780995279e-13,
+        "reachability_margin": 1.1228558577225911e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48533001080796,
+      "reported_quality": 7.75154714735809e-12,
+      "energy": {
+        "boundary_temperature_k": 320.48556873817944,
+        "boundary_energy_j_kg": 198187.93600284198,
+        "signed_energy_gap_j_kg": 0.9976639780215919,
+        "existing_energy_root_tolerance_j_kg": 1.9818693833886398e-05,
+        "energy_margin_j_kg": 0.9976837967154258,
+        "normalized_margin_mj_kg": 9.97683796715426e-07
+      },
+      "volume": {
+        "signed_quality": 7.751547131456706e-12,
+        "volume_tolerance_m3_kg": 1.0109297308154806e-13,
+        "reachability_margin": 7.758960484878035e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48534940142645,
+      "reported_quality": 2.0046406877116906e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4859667777395,
+        "boundary_energy_j_kg": 198189.59948318353,
+        "signed_energy_gap_j_kg": 2.5800977858016267,
+        "existing_energy_root_tolerance_j_kg": 1.9818701938539773e-05,
+        "energy_margin_j_kg": 2.5801176045035654,
+        "normalized_margin_mj_kg": 2.5801176045035653e-06
+      },
+      "volume": {
+        "signed_quality": 2.0046406877116916e-11,
+        "volume_tolerance_m3_kg": 1.0109299070612404e-13,
+        "reachability_margin": 2.005382023870111e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48534294819285,
+      "reported_quality": 1.5249850614376037e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4858126034042,
+        "boundary_energy_j_kg": 198188.9551603531,
+        "signed_energy_gap_j_kg": 1.9627557190833613,
+        "existing_energy_root_tolerance_j_kg": 1.9818699240463402e-05,
+        "energy_margin_j_kg": 1.9627755377826017,
+        "normalized_margin_mj_kg": 1.962775537782602e-06
+      },
+      "volume": {
+        "signed_quality": 1.5249850630277405e-11,
+        "volume_tolerance_m3_kg": 1.0109298387952297e-13,
+        "reachability_margin": 1.5257263989074503e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853364841745,
+      "reported_quality": 1.1221145221143011e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48568206598287,
+        "boundary_energy_j_kg": 198188.40962052252,
+        "signed_energy_gap_j_kg": 1.444232072622981,
+        "existing_energy_root_tolerance_j_kg": 1.981869653884499e-05,
+        "energy_margin_j_kg": 1.4442518913195197,
+        "normalized_margin_mj_kg": 1.4442518913195196e-06
+      },
+      "volume": {
+        "signed_quality": 1.1221145221142983e-11,
+        "volume_tolerance_m3_kg": 1.010929780995279e-13,
+        "reachability_margin": 1.1228558577225911e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "historical/halving/9/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48533001080796,
+      "reported_quality": 7.75154714735809e-12,
+      "energy": {
+        "boundary_temperature_k": 320.48556873817944,
+        "boundary_energy_j_kg": 198187.93600284198,
+        "signed_energy_gap_j_kg": 0.9976639780215919,
+        "existing_energy_root_tolerance_j_kg": 1.9818693833886398e-05,
+        "energy_margin_j_kg": 0.9976837967154258,
+        "normalized_margin_mj_kg": 9.97683796715426e-07
+      },
+      "volume": {
+        "signed_quality": 7.751547131456706e-12,
+        "volume_tolerance_m3_kg": 1.0109297308154806e-13,
+        "reachability_margin": 7.758960484878035e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48536772829607,
+      "reported_quality": 3.378579145270678e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4864082404055,
+        "boundary_energy_j_kg": 198191.44443665058,
+        "signed_energy_gap_j_kg": 4.348408340767492,
+        "existing_energy_root_tolerance_j_kg": 1.9818709602830982e-05,
+        "energy_margin_j_kg": 4.348428159477095,
+        "normalized_margin_mj_kg": 4.348428159477095e-06
+      },
+      "volume": {
+        "signed_quality": 3.3785791484509574e-11,
+        "volume_tolerance_m3_kg": 1.0109301025340797e-13,
+        "reachability_margin": 3.379320485402074e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853612695765,
+      "reported_quality": 2.8979387879456865e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48625375757257,
+        "boundary_energy_j_kg": 198190.79882455192,
+        "signed_energy_gap_j_kg": 3.729807009018259,
+        "existing_energy_root_tolerance_j_kg": 1.981870690175429e-05,
+        "energy_margin_j_kg": 3.729826827725161,
+        "normalized_margin_mj_kg": 3.729826827725161e-06
+      },
+      "volume": {
+        "signed_quality": 2.897938789535834e-11,
+        "volume_tolerance_m3_kg": 1.010930034131471e-13,
+        "reachability_margin": 2.8986801262079456e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.485354796563,
+      "reported_quality": 2.4943137870536717e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48612297904253,
+        "boundary_energy_j_kg": 198190.2522770837,
+        "signed_energy_gap_j_kg": 3.210305727669038,
+        "existing_energy_root_tolerance_j_kg": 1.9818704197135604e-05,
+        "energy_margin_j_kg": 3.210325546373235,
+        "normalized_margin_mj_kg": 3.210325546373235e-06
+      },
+      "volume": {
+        "signed_quality": 2.49431379023394e-11,
+        "volume_tolerance_m3_kg": 1.010929976224761e-13,
+        "reachability_margin": 2.4950551266342376e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853483202784,
+      "reported_quality": 2.146759677087126e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48600946551664,
+        "boundary_energy_j_kg": 198189.77788323525,
+        "signed_energy_gap_j_kg": 2.7629914706922136,
+        "existing_energy_root_tolerance_j_kg": 1.9818701489176455e-05,
+        "energy_margin_j_kg": 2.763011289393703,
+        "normalized_margin_mj_kg": 2.763011289393703e-06
+      },
+      "volume": {
+        "signed_quality": 2.1467596802674046e-11,
+        "volume_tolerance_m3_kg": 1.0109299259627278e-13,
+        "reachability_margin": 2.147501016401378e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48536772829607,
+      "reported_quality": 3.378579145270678e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4864082404055,
+        "boundary_energy_j_kg": 198191.44443665058,
+        "signed_energy_gap_j_kg": 4.348408340767492,
+        "existing_energy_root_tolerance_j_kg": 1.9818709602830982e-05,
+        "energy_margin_j_kg": 4.348428159477095,
+        "normalized_margin_mj_kg": 4.348428159477095e-06
+      },
+      "volume": {
+        "signed_quality": 3.3785791484509574e-11,
+        "volume_tolerance_m3_kg": 1.0109301025340797e-13,
+        "reachability_margin": 3.379320485402074e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853612695765,
+      "reported_quality": 2.8979387879456865e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48625375757257,
+        "boundary_energy_j_kg": 198190.79882455192,
+        "signed_energy_gap_j_kg": 3.729807009018259,
+        "existing_energy_root_tolerance_j_kg": 1.981870690175429e-05,
+        "energy_margin_j_kg": 3.729826827725161,
+        "normalized_margin_mj_kg": 3.729826827725161e-06
+      },
+      "volume": {
+        "signed_quality": 2.897938789535834e-11,
+        "volume_tolerance_m3_kg": 1.010930034131471e-13,
+        "reachability_margin": 2.8986801262079456e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.485354796563,
+      "reported_quality": 2.4943137870536717e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48612297904253,
+        "boundary_energy_j_kg": 198190.2522770837,
+        "signed_energy_gap_j_kg": 3.210305727669038,
+        "existing_energy_root_tolerance_j_kg": 1.9818704197135604e-05,
+        "energy_margin_j_kg": 3.210325546373235,
+        "normalized_margin_mj_kg": 3.210325546373235e-06
+      },
+      "volume": {
+        "signed_quality": 2.49431379023394e-11,
+        "volume_tolerance_m3_kg": 1.010929976224761e-13,
+        "reachability_margin": 2.4950551266342376e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-06/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4853483202784,
+      "reported_quality": 2.146759677087126e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48600946551664,
+        "boundary_energy_j_kg": 198189.77788323525,
+        "signed_energy_gap_j_kg": 2.7629914706922136,
+        "existing_energy_root_tolerance_j_kg": 1.9818701489176455e-05,
+        "energy_margin_j_kg": 2.763011289393703,
+        "normalized_margin_mj_kg": 2.763011289393703e-06
+      },
+      "volume": {
+        "signed_quality": 2.1467596802674046e-11,
+        "volume_tolerance_m3_kg": 1.0109299259627278e-13,
+        "reachability_margin": 2.147501016401378e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848758917226,
+      "reported_quality": 1.4797069777341854e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48533161265004,
+        "boundary_energy_j_kg": 198186.9450117544,
+        "signed_energy_gap_j_kg": 1.9045045728853438,
+        "existing_energy_root_tolerance_j_kg": 1.9818504050718152e-05,
+        "energy_margin_j_kg": 1.9045243913893946,
+        "normalized_margin_mj_kg": 1.9045243913893946e-06
+      },
+      "volume": {
+        "signed_quality": 1.4797069793242792e-11,
+        "volume_tolerance_m3_kg": 1.0109296258199644e-13,
+        "reachability_margin": 1.480448298499589e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848693766362,
+      "reported_quality": 9.995850951790194e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4851772294717,
+        "boundary_energy_j_kg": 198186.29981613057,
+        "signed_energy_gap_j_kg": 1.2865664951095823,
+        "existing_energy_root_tolerance_j_kg": 1.9818501324963546e-05,
+        "energy_margin_j_kg": 1.2865863136109073,
+        "normalized_margin_mj_kg": 1.2865863136109072e-06
+      },
+      "volume": {
+        "signed_quality": 9.995850967691204e-12,
+        "volume_tolerance_m3_kg": 1.0109295574614813e-13,
+        "reachability_margin": 1.0003264156634725e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848628485038,
+      "reported_quality": 5.912986441177169e-12,
+      "energy": {
+        "boundary_temperature_k": 320.48504495708266,
+        "boundary_energy_j_kg": 198185.7470255516,
+        "signed_energy_gap_j_kg": 0.7610689070716035,
+        "existing_energy_root_tolerance_j_kg": 1.9818498595664453e-05,
+        "energy_margin_j_kg": 0.7610887255701991,
+        "normalized_margin_mj_kg": 7.610887255701992e-07
+      },
+      "volume": {
+        "signed_quality": 5.912986457078171e-12,
+        "volume_tolerance_m3_kg": 1.0109294988933137e-13,
+        "reachability_margin": 5.9203996432792895e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848563118157,
+      "reported_quality": 2.342916101755984e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4849284691362,
+        "boundary_energy_j_kg": 198185.26020105375,
+        "signed_energy_gap_j_kg": 0.3015708367456682,
+        "existing_energy_root_tolerance_j_kg": 1.98184958630217e-05,
+        "energy_margin_j_kg": 0.3015906552415312,
+        "normalized_margin_mj_kg": 3.015906552415312e-07
+      },
+      "volume": {
+        "signed_quality": 2.3429161176569724e-12,
+        "volume_tolerance_m3_kg": 1.010929447314253e-13,
+        "reachability_margin": 2.3503293011639087e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848758917226,
+      "reported_quality": 1.4797069777341854e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48533161265004,
+        "boundary_energy_j_kg": 198186.9450117544,
+        "signed_energy_gap_j_kg": 1.9045045728853438,
+        "existing_energy_root_tolerance_j_kg": 1.9818504050718152e-05,
+        "energy_margin_j_kg": 1.9045243913893946,
+        "normalized_margin_mj_kg": 1.9045243913893946e-06
+      },
+      "volume": {
+        "signed_quality": 1.4797069793242792e-11,
+        "volume_tolerance_m3_kg": 1.0109296258199644e-13,
+        "reachability_margin": 1.480448298499589e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848693766362,
+      "reported_quality": 9.995850951790194e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4851772294717,
+        "boundary_energy_j_kg": 198186.29981613057,
+        "signed_energy_gap_j_kg": 1.2865664951095823,
+        "existing_energy_root_tolerance_j_kg": 1.9818501324963546e-05,
+        "energy_margin_j_kg": 1.2865863136109073,
+        "normalized_margin_mj_kg": 1.2865863136109072e-06
+      },
+      "volume": {
+        "signed_quality": 9.995850967691204e-12,
+        "volume_tolerance_m3_kg": 1.0109295574614813e-13,
+        "reachability_margin": 1.0003264156634725e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848628485038,
+      "reported_quality": 5.912986441177169e-12,
+      "energy": {
+        "boundary_temperature_k": 320.48504495708266,
+        "boundary_energy_j_kg": 198185.7470255516,
+        "signed_energy_gap_j_kg": 0.7610689070716035,
+        "existing_energy_root_tolerance_j_kg": 1.9818498595664453e-05,
+        "energy_margin_j_kg": 0.7610887255701991,
+        "normalized_margin_mj_kg": 7.610887255701992e-07
+      },
+      "volume": {
+        "signed_quality": 5.912986457078171e-12,
+        "volume_tolerance_m3_kg": 1.0109294988933137e-13,
+        "reachability_margin": 5.9203996432792895e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/1e-05/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4848563118157,
+      "reported_quality": 2.342916101755984e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4849284691362,
+        "boundary_energy_j_kg": 198185.26020105375,
+        "signed_energy_gap_j_kg": 0.3015708367456682,
+        "existing_energy_root_tolerance_j_kg": 1.98184958630217e-05,
+        "energy_margin_j_kg": 0.3015906552415312,
+        "normalized_margin_mj_kg": 3.015906552415312e-07
+      },
+      "volume": {
+        "signed_quality": 2.3429161176569724e-12,
+        "volume_tolerance_m3_kg": 1.010929447314253e-13,
+        "reachability_margin": 2.3503293011639087e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4805617001899,
+      "reported_quality": 1.600915045496008e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48105485250284,
+        "boundary_energy_j_kg": 198169.0716465325,
+        "signed_energy_gap_j_kg": 2.0609247632091865,
+        "existing_energy_root_tolerance_j_kg": 1.981670107217693e-05,
+        "energy_margin_j_kg": 2.0609445799102586,
+        "normalized_margin_mj_kg": 2.0609445799102585e-06
+      },
+      "volume": {
+        "signed_quality": 1.600915045496005e-11,
+        "volume_tolerance_m3_kg": 1.0109277321367306e-13,
+        "reachability_margin": 1.6016562104622834e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4805546555971,
+      "reported_quality": 1.1257456358278563e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48090143492885,
+        "boundary_energy_j_kg": 198168.43048634662,
+        "signed_energy_gap_j_kg": 1.4492292201903183,
+        "existing_energy_root_tolerance_j_kg": 1.9816698125712643e-05,
+        "energy_margin_j_kg": 1.449249036888444,
+        "normalized_margin_mj_kg": 1.449249036888444e-06
+      },
+      "volume": {
+        "signed_quality": 1.1257456326483138e-11,
+        "volume_tolerance_m3_kg": 1.0109276642058022e-13,
+        "reachability_margin": 1.1264867973153012e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48054759873474,
+      "reported_quality": 6.760235562890459e-12,
+      "energy": {
+        "boundary_temperature_k": 320.48075584389176,
+        "boundary_energy_j_kg": 198167.82203469402,
+        "signed_energy_gap_j_kg": 0.8702779031300452,
+        "existing_energy_root_tolerance_j_kg": 1.981669517567909e-05,
+        "energy_margin_j_kg": 0.8702977198252209,
+        "normalized_margin_mj_kg": 8.702977198252208e-07
+      },
+      "volume": {
+        "signed_quality": 6.760235562890441e-12,
+        "volume_tolerance_m3_kg": 1.0109275997403432e-13,
+        "reachability_margin": 6.767647206588471e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4805405330851,
+      "reported_quality": 2.3378367046317972e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4806125488211,
+        "boundary_energy_j_kg": 198167.22317830645,
+        "signed_energy_gap_j_kg": 0.30095553331193514,
+        "existing_energy_root_tolerance_j_kg": 1.9816692222277313e-05,
+        "energy_margin_j_kg": 0.3009753500041574,
+        "normalized_margin_mj_kg": 3.009753500041574e-07
+      },
+      "volume": {
+        "signed_quality": 2.3378367205295187e-12,
+        "volume_tolerance_m3_kg": 1.0109275362915025e-13,
+        "reachability_margin": 2.345248361260048e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4805617001899,
+      "reported_quality": 1.600915045496008e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48105485250284,
+        "boundary_energy_j_kg": 198169.0716465325,
+        "signed_energy_gap_j_kg": 2.0609247632091865,
+        "existing_energy_root_tolerance_j_kg": 1.981670107217693e-05,
+        "energy_margin_j_kg": 2.0609445799102586,
+        "normalized_margin_mj_kg": 2.0609445799102585e-06
+      },
+      "volume": {
+        "signed_quality": 1.600915045496005e-11,
+        "volume_tolerance_m3_kg": 1.0109277321367306e-13,
+        "reachability_margin": 1.6016562104622834e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4805546555971,
+      "reported_quality": 1.1257456358278563e-11,
+      "energy": {
+        "boundary_temperature_k": 320.48090143492885,
+        "boundary_energy_j_kg": 198168.43048634662,
+        "signed_energy_gap_j_kg": 1.4492292201903183,
+        "existing_energy_root_tolerance_j_kg": 1.9816698125712643e-05,
+        "energy_margin_j_kg": 1.449249036888444,
+        "normalized_margin_mj_kg": 1.449249036888444e-06
+      },
+      "volume": {
+        "signed_quality": 1.1257456326483138e-11,
+        "volume_tolerance_m3_kg": 1.0109276642058022e-13,
+        "reachability_margin": 1.1264867973153012e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.48054759873474,
+      "reported_quality": 6.760235562890459e-12,
+      "energy": {
+        "boundary_temperature_k": 320.48075584389176,
+        "boundary_energy_j_kg": 198167.82203469402,
+        "signed_energy_gap_j_kg": 0.8702779031300452,
+        "existing_energy_root_tolerance_j_kg": 1.981669517567909e-05,
+        "energy_margin_j_kg": 0.8702977198252209,
+        "normalized_margin_mj_kg": 8.702977198252208e-07
+      },
+      "volume": {
+        "signed_quality": 6.760235562890441e-12,
+        "volume_tolerance_m3_kg": 1.0109275997403432e-13,
+        "reachability_margin": 6.767647206588471e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-phase-trajectory-trial6",
+      "id": "branch/radius/0.0001/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4805405330851,
+      "reported_quality": 2.3378367046317972e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4806125488211,
+        "boundary_energy_j_kg": 198167.22317830645,
+        "signed_energy_gap_j_kg": 0.30095553331193514,
+        "existing_energy_root_tolerance_j_kg": 1.9816692222277313e-05,
+        "energy_margin_j_kg": 0.3009753500041574,
+        "normalized_margin_mj_kg": 3.009753500041574e-07
+      },
+      "volume": {
+        "signed_quality": 2.3378367205295187e-12,
+        "volume_tolerance_m3_kg": 1.0109275362915025e-13,
+        "reachability_margin": 2.345248361260048e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747663064,
+      "reported_quality": 1.3477031740013924e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4368907927853,
+        "boundary_energy_j_kg": 197984.50193912818,
+        "signed_energy_gap_j_kg": 1.7386079861898907,
+        "existing_energy_root_tolerance_j_kg": 1.97982763331142e-05,
+        "energy_margin_j_kg": 1.7386277844662237,
+        "normalized_margin_mj_kg": 1.7386277844662236e-06
+      },
+      "volume": {
+        "signed_quality": 1.3477031755878201e-11,
+        "volume_tolerance_m3_kg": 1.0109081769742834e-13,
+        "reachability_margin": 1.3484427681725472e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436467879562,
+      "reported_quality": 8.979937082051481e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4367450839872,
+        "boundary_energy_j_kg": 197983.89299533074,
+        "signed_energy_gap_j_kg": 1.1584717404912226,
+        "existing_energy_root_tolerance_j_kg": 1.9798273452359026e-05,
+        "energy_margin_j_kg": 1.158491538764675,
+        "normalized_margin_mj_kg": 1.158491538764675e-06
+      },
+      "volume": {
+        "signed_quality": 8.979937097915765e-12,
+        "volume_tolerance_m3_kg": 1.0109081124566816e-13,
+        "reachability_margin": 8.98733302086234e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364609749008,
+      "reported_quality": 4.4965460183177454e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365997802017,
+        "boundary_energy_j_kg": 197983.28574415538,
+        "signed_energy_gap_j_kg": 0.580066979280673,
+        "existing_energy_root_tolerance_j_kg": 1.979827056771761e-05,
+        "energy_margin_j_kg": 0.5800867775512407,
+        "normalized_margin_mj_kg": 5.800867775512407e-07
+      },
+      "volume": {
+        "signed_quality": 4.4965460341820275e-12,
+        "volume_tolerance_m3_kg": 1.0109080481184132e-13,
+        "reachability_margin": 4.5039419542229014e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540737944,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540737944,
+        "boundary_energy_j_kg": 197982.6768103496,
+        "signed_energy_gap_j_kg": 1.6300909919664264e-05,
+        "existing_energy_root_tolerance_j_kg": 1.979826767940487e-05,
+        "energy_margin_j_kg": 3.609917759906913e-05,
+        "normalized_margin_mj_kg": 3.609917759906913e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079836018701e-13,
+        "reachability_margin": 7.395917135124406e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747663064,
+      "reported_quality": 1.3477031740013924e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4368907927853,
+        "boundary_energy_j_kg": 197984.50193912818,
+        "signed_energy_gap_j_kg": 1.7386079861898907,
+        "existing_energy_root_tolerance_j_kg": 1.97982763331142e-05,
+        "energy_margin_j_kg": 1.7386277844662237,
+        "normalized_margin_mj_kg": 1.7386277844662236e-06
+      },
+      "volume": {
+        "signed_quality": 1.3477031755878201e-11,
+        "volume_tolerance_m3_kg": 1.0109081769742834e-13,
+        "reachability_margin": 1.3484427681725472e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436467879562,
+      "reported_quality": 8.979937082051481e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4367450839872,
+        "boundary_energy_j_kg": 197983.89299533074,
+        "signed_energy_gap_j_kg": 1.1584717404912226,
+        "existing_energy_root_tolerance_j_kg": 1.9798273452359026e-05,
+        "energy_margin_j_kg": 1.158491538764675,
+        "normalized_margin_mj_kg": 1.158491538764675e-06
+      },
+      "volume": {
+        "signed_quality": 8.979937097915765e-12,
+        "volume_tolerance_m3_kg": 1.0109081124566816e-13,
+        "reachability_margin": 8.98733302086234e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364609749008,
+      "reported_quality": 4.4965460183177454e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365997802017,
+        "boundary_energy_j_kg": 197983.28574415538,
+        "signed_energy_gap_j_kg": 0.580066979280673,
+        "existing_energy_root_tolerance_j_kg": 1.979827056771761e-05,
+        "energy_margin_j_kg": 0.5800867775512407,
+        "normalized_margin_mj_kg": 5.800867775512407e-07
+      },
+      "volume": {
+        "signed_quality": 4.4965460341820275e-12,
+        "volume_tolerance_m3_kg": 1.0109080481184132e-13,
+        "reachability_margin": 4.5039419542229014e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "base/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540737944,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540737944,
+        "boundary_energy_j_kg": 197982.6768103496,
+        "signed_energy_gap_j_kg": 1.6300909919664264e-05,
+        "existing_energy_root_tolerance_j_kg": 1.979826767940487e-05,
+        "energy_margin_j_kg": 3.609917759906913e-05,
+        "normalized_margin_mj_kg": 3.609917759906913e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079836018701e-13,
+        "reachability_margin": 7.395917135124406e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364267427378,
+      "reported_quality": 1.3348558333256675e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43683880427653,
+        "boundary_energy_j_kg": 197984.28466961277,
+        "signed_energy_gap_j_kg": 1.7220490348117892,
+        "existing_energy_root_tolerance_j_kg": 1.9798256262057797e-05,
+        "energy_margin_j_kg": 1.7220688330680511,
+        "normalized_margin_mj_kg": 1.7220688330680512e-06
+      },
+      "volume": {
+        "signed_quality": 1.334855833325671e-11,
+        "volume_tolerance_m3_kg": 1.010908153954576e-13,
+        "reachability_margin": 1.335595424199962e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364198525881,
+      "reported_quality": 8.851798787192973e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43669310209793,
+        "boundary_energy_j_kg": 197983.67575347962,
+        "signed_energy_gap_j_kg": 1.1419397520076018,
+        "existing_energy_root_tolerance_j_kg": 1.979825338137276e-05,
+        "energy_margin_j_kg": 1.1419595502609832,
+        "normalized_margin_mj_kg": 1.1419595502609832e-06
+      },
+      "volume": {
+        "signed_quality": 8.851798771328705e-12,
+        "volume_tolerance_m3_kg": 1.0109080894399052e-13,
+        "reachability_margin": 8.85919467716975e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364129544008,
+      "reported_quality": 4.368464691033435e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365478062263,
+        "boundary_energy_j_kg": 197983.0685353778,
+        "signed_energy_gap_j_kg": 0.5635673605429474,
+        "existing_energy_root_tolerance_j_kg": 1.9798250496801727e-05,
+        "energy_margin_j_kg": 0.5635871587934442,
+        "normalized_margin_mj_kg": 5.635871587934442e-07
+      },
+      "volume": {
+        "signed_quality": 4.368464675169161e-12,
+        "volume_tolerance_m3_kg": 1.010908025105141e-13,
+        "reachability_margin": 4.375860578106827e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364060441368,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364021088921,
+        "boundary_energy_j_kg": 197982.4596394899,
+        "signed_energy_gap_j_kg": -0.01644610962830484,
+        "existing_energy_root_tolerance_j_kg": 1.9798247608559954e-05,
+        "energy_margin_j_kg": -0.01642631138069628,
+        "normalized_margin_mj_kg": -1.642631138069628e-08
+      },
+      "volume": {
+        "signed_quality": -1.2748045806714368e-13,
+        "volume_tolerance_m3_kg": 1.0109079605926151e-13,
+        "reachability_margin": -1.2008455803841528e-13,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364267427378,
+      "reported_quality": 1.3348558333256675e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43683880427653,
+        "boundary_energy_j_kg": 197984.28466961277,
+        "signed_energy_gap_j_kg": 1.7220490348117892,
+        "existing_energy_root_tolerance_j_kg": 1.9798256262057797e-05,
+        "energy_margin_j_kg": 1.7220688330680511,
+        "normalized_margin_mj_kg": 1.7220688330680512e-06
+      },
+      "volume": {
+        "signed_quality": 1.334855833325671e-11,
+        "volume_tolerance_m3_kg": 1.010908153954576e-13,
+        "reachability_margin": 1.335595424199962e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364198525881,
+      "reported_quality": 8.851798787192973e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43669310209793,
+        "boundary_energy_j_kg": 197983.67575347962,
+        "signed_energy_gap_j_kg": 1.1419397520076018,
+        "existing_energy_root_tolerance_j_kg": 1.979825338137276e-05,
+        "energy_margin_j_kg": 1.1419595502609832,
+        "normalized_margin_mj_kg": 1.1419595502609832e-06
+      },
+      "volume": {
+        "signed_quality": 8.851798771328705e-12,
+        "volume_tolerance_m3_kg": 1.0109080894399052e-13,
+        "reachability_margin": 8.85919467716975e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364129544008,
+      "reported_quality": 4.368464691033435e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365478062263,
+        "boundary_energy_j_kg": 197983.0685353778,
+        "signed_energy_gap_j_kg": 0.5635673605429474,
+        "existing_energy_root_tolerance_j_kg": 1.9798250496801727e-05,
+        "energy_margin_j_kg": 0.5635871587934442,
+        "normalized_margin_mj_kg": 5.635871587934442e-07
+      },
+      "volume": {
+        "signed_quality": 4.368464675169161e-12,
+        "volume_tolerance_m3_kg": 1.010908025105141e-13,
+        "reachability_margin": 4.375860578106827e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-06/repeat/2",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364060441368,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364021088921,
+        "boundary_energy_j_kg": 197982.4596394899,
+        "signed_energy_gap_j_kg": -0.01644610962830484,
+        "existing_energy_root_tolerance_j_kg": 1.9798247608559954e-05,
+        "energy_margin_j_kg": -0.01642631138069628,
+        "normalized_margin_mj_kg": -1.642631138069628e-08
+      },
+      "volume": {
+        "signed_quality": -1.2748045806714368e-13,
+        "volume_tolerance_m3_kg": 1.0109079605926151e-13,
+        "reachability_margin": -1.2008455803841528e-13,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43599454357013,
+      "reported_quality": 1.2250302746676144e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4363727104484,
+        "boundary_energy_j_kg": 197982.33677800055,
+        "signed_energy_gap_j_kg": 1.580395768105518,
+        "existing_energy_root_tolerance_j_kg": 1.9798075638223247e-05,
+        "energy_margin_j_kg": 1.5804155661811563,
+        "normalized_margin_mj_kg": 1.5804155661811563e-06
+      },
+      "volume": {
+        "signed_quality": 1.2250302762540077e-11,
+        "volume_tolerance_m3_kg": 1.0109079475754391e-13,
+        "reachability_margin": 1.2257698517357659e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4359876600112,
+      "reported_quality": 7.755405728847114e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43622706948577,
+        "boundary_energy_j_kg": 197981.7281177002,
+        "signed_energy_gap_j_kg": 1.0005234234267846,
+        "existing_energy_root_tolerance_j_kg": 1.9798072759427676e-05,
+        "energy_margin_j_kg": 1.000543221499544,
+        "normalized_margin_mj_kg": 1.000543221499544e-06
+      },
+      "volume": {
+        "signed_quality": 7.755405760574971e-12,
+        "volume_tolerance_m3_kg": 1.0109078830878738e-13,
+        "reachability_margin": 7.762801512493323e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4359807600296,
+      "reported_quality": 3.282763268724958e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43608209900714,
+        "boundary_energy_j_kg": 197981.12225947532,
+        "signed_energy_gap_j_kg": 0.4234919859445654,
+        "existing_energy_root_tolerance_j_kg": 1.9798069876748938e-05,
+        "energy_margin_j_kg": 0.4235117840144421,
+        "normalized_margin_mj_kg": 4.235117840144421e-07
+      },
+      "volume": {
+        "signed_quality": 3.2827632687249516e-12,
+        "volume_tolerance_m3_kg": 1.0109078188971885e-13,
+        "reachability_margin": 3.2901590177404558e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.43597385885465,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4359365291764,
+        "boundary_energy_j_kg": 197980.51389644796,
+        "signed_energy_gap_j_kg": -0.15600757364882156,
+        "existing_energy_root_tolerance_j_kg": 1.979806699040216e-05,
+        "energy_margin_j_kg": -0.15598777558183116,
+        "normalized_margin_mj_kg": -1.5598777558183115e-07
+      },
+      "volume": {
+        "signed_quality": -1.2092529419405622e-12,
+        "volume_tolerance_m3_kg": 1.0109077544411193e-13,
+        "reachability_margin": -1.2018571958302664e-12,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43599454357013,
+      "reported_quality": 1.2250302746676144e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4363727104484,
+        "boundary_energy_j_kg": 197982.33677800055,
+        "signed_energy_gap_j_kg": 1.580395768105518,
+        "existing_energy_root_tolerance_j_kg": 1.9798075638223247e-05,
+        "energy_margin_j_kg": 1.5804155661811563,
+        "normalized_margin_mj_kg": 1.5804155661811563e-06
+      },
+      "volume": {
+        "signed_quality": 1.2250302762540077e-11,
+        "volume_tolerance_m3_kg": 1.0109079475754391e-13,
+        "reachability_margin": 1.2257698517357659e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4359876600112,
+      "reported_quality": 7.755405728847114e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43622706948577,
+        "boundary_energy_j_kg": 197981.7281177002,
+        "signed_energy_gap_j_kg": 1.0005234234267846,
+        "existing_energy_root_tolerance_j_kg": 1.9798072759427676e-05,
+        "energy_margin_j_kg": 1.000543221499544,
+        "normalized_margin_mj_kg": 1.000543221499544e-06
+      },
+      "volume": {
+        "signed_quality": 7.755405760574971e-12,
+        "volume_tolerance_m3_kg": 1.0109078830878738e-13,
+        "reachability_margin": 7.762801512493323e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4359807600296,
+      "reported_quality": 3.282763268724958e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43608209900714,
+        "boundary_energy_j_kg": 197981.12225947532,
+        "signed_energy_gap_j_kg": 0.4234919859445654,
+        "existing_energy_root_tolerance_j_kg": 1.9798069876748938e-05,
+        "energy_margin_j_kg": 0.4235117840144421,
+        "normalized_margin_mj_kg": 4.235117840144421e-07
+      },
+      "volume": {
+        "signed_quality": 3.2827632687249516e-12,
+        "volume_tolerance_m3_kg": 1.0109078188971885e-13,
+        "reachability_margin": 3.2901590177404558e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/1e-05/repeat/2",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.43597385885465,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4359365291764,
+        "boundary_energy_j_kg": 197980.51389644796,
+        "signed_energy_gap_j_kg": -0.15600757364882156,
+        "existing_energy_root_tolerance_j_kg": 1.979806699040216e-05,
+        "energy_margin_j_kg": -0.15598777558183116,
+        "normalized_margin_mj_kg": -1.5598777558183115e-07
+      },
+      "volume": {
+        "signed_quality": -1.2092529419405622e-12,
+        "volume_tolerance_m3_kg": 1.0109077544411193e-13,
+        "reachability_margin": -1.2018571958302664e-12,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43169384554017,
+      "reported_quality": 3.381515043600278e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4327379333849,
+        "boundary_energy_j_kg": 197967.14637785667,
+        "signed_energy_gap_j_kg": 4.363361828320194,
+        "existing_energy_root_tolerance_j_kg": 1.9796278301602837e-05,
+        "energy_margin_j_kg": 4.363381624598496,
+        "normalized_margin_mj_kg": 4.363381624598496e-06
+      },
+      "volume": {
+        "signed_quality": 3.381515043600278e-11,
+        "volume_tolerance_m3_kg": 1.0109063381523835e-13,
+        "reachability_margin": 3.3822544662745386e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4316869948674,
+      "reported_quality": 2.9340028268964344e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43259290764524,
+        "boundary_energy_j_kg": 197966.540288686,
+        "signed_energy_gap_j_kg": 3.7858986659848597,
+        "existing_energy_root_tolerance_j_kg": 1.9796275439002e-05,
+        "energy_margin_j_kg": 3.7859184622602986,
+        "normalized_margin_mj_kg": 3.7859184622602986e-06
+      },
+      "volume": {
+        "signed_quality": 2.9340028253103686e-11,
+        "volume_tolerance_m3_kg": 1.0109062739372295e-13,
+        "reachability_margin": 2.9347422476961736e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4316801405246,
+      "reported_quality": 2.4960255044295663e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43245082217464,
+        "boundary_energy_j_kg": 197965.94648743892,
+        "signed_energy_gap_j_kg": 3.220761937496718,
+        "existing_energy_root_tolerance_j_kg": 1.9796272572550144e-05,
+        "energy_margin_j_kg": 3.2207817337692908,
+        "normalized_margin_mj_kg": 3.220781733769291e-06
+      },
+      "volume": {
+        "signed_quality": 2.496025506015643e-11,
+        "volume_tolerance_m3_kg": 1.010906211023981e-13,
+        "reachability_margin": 2.4967649281138165e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4316732787561,
+      "reported_quality": 2.0474280082813627e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4323054500654,
+        "boundary_energy_j_kg": 197965.33895072597,
+        "signed_energy_gap_j_kg": 2.641926087322645,
+        "existing_energy_root_tolerance_j_kg": 1.9796269702463865e-05,
+        "energy_margin_j_kg": 2.6419458835923475,
+        "normalized_margin_mj_kg": 2.6419458835923477e-06
+      },
+      "volume": {
+        "signed_quality": 2.0474280082813666e-11,
+        "volume_tolerance_m3_kg": 1.01090614665546e-13,
+        "reachability_margin": 2.048167430090582e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43169384554017,
+      "reported_quality": 3.381515043600278e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4327379333849,
+        "boundary_energy_j_kg": 197967.14637785667,
+        "signed_energy_gap_j_kg": 4.363361828320194,
+        "existing_energy_root_tolerance_j_kg": 1.9796278301602837e-05,
+        "energy_margin_j_kg": 4.363381624598496,
+        "normalized_margin_mj_kg": 4.363381624598496e-06
+      },
+      "volume": {
+        "signed_quality": 3.381515043600278e-11,
+        "volume_tolerance_m3_kg": 1.0109063381523835e-13,
+        "reachability_margin": 3.3822544662745386e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4316869948674,
+      "reported_quality": 2.9340028268964344e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43259290764524,
+        "boundary_energy_j_kg": 197966.540288686,
+        "signed_energy_gap_j_kg": 3.7858986659848597,
+        "existing_energy_root_tolerance_j_kg": 1.9796275439002e-05,
+        "energy_margin_j_kg": 3.7859184622602986,
+        "normalized_margin_mj_kg": 3.7859184622602986e-06
+      },
+      "volume": {
+        "signed_quality": 2.9340028253103686e-11,
+        "volume_tolerance_m3_kg": 1.0109062739372295e-13,
+        "reachability_margin": 2.9347422476961736e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4316801405246,
+      "reported_quality": 2.4960255044295663e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43245082217464,
+        "boundary_energy_j_kg": 197965.94648743892,
+        "signed_energy_gap_j_kg": 3.220761937496718,
+        "existing_energy_root_tolerance_j_kg": 1.9796272572550144e-05,
+        "energy_margin_j_kg": 3.2207817337692908,
+        "normalized_margin_mj_kg": 3.220781733769291e-06
+      },
+      "volume": {
+        "signed_quality": 2.496025506015643e-11,
+        "volume_tolerance_m3_kg": 1.010906211023981e-13,
+        "reachability_margin": 2.4967649281138165e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-c4-margin-trial7",
+      "id": "margin/radius/0.0001/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4316732787561,
+      "reported_quality": 2.0474280082813627e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4323054500654,
+        "boundary_energy_j_kg": 197965.33895072597,
+        "signed_energy_gap_j_kg": 2.641926087322645,
+        "existing_energy_root_tolerance_j_kg": 1.9796269702463865e-05,
+        "energy_margin_j_kg": 2.6419458835923475,
+        "normalized_margin_mj_kg": 2.6419458835923477e-06
+      },
+      "volume": {
+        "signed_quality": 2.0474280082813666e-11,
+        "volume_tolerance_m3_kg": 1.01090614665546e-13,
+        "reachability_margin": 2.048167430090582e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747663064,
+      "reported_quality": 1.3477031740013924e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4368907927853,
+        "boundary_energy_j_kg": 197984.50193912818,
+        "signed_energy_gap_j_kg": 1.7386079861898907,
+        "existing_energy_root_tolerance_j_kg": 1.97982763331142e-05,
+        "energy_margin_j_kg": 1.7386277844662237,
+        "normalized_margin_mj_kg": 1.7386277844662236e-06
+      },
+      "volume": {
+        "signed_quality": 1.3477031755878201e-11,
+        "volume_tolerance_m3_kg": 1.0109081769742834e-13,
+        "reachability_margin": 1.3484427681725472e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436467879562,
+      "reported_quality": 8.979937082051481e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4367450839872,
+        "boundary_energy_j_kg": 197983.89299533074,
+        "signed_energy_gap_j_kg": 1.1584717404912226,
+        "existing_energy_root_tolerance_j_kg": 1.9798273452359026e-05,
+        "energy_margin_j_kg": 1.158491538764675,
+        "normalized_margin_mj_kg": 1.158491538764675e-06
+      },
+      "volume": {
+        "signed_quality": 8.979937097915765e-12,
+        "volume_tolerance_m3_kg": 1.0109081124566816e-13,
+        "reachability_margin": 8.98733302086234e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364609749008,
+      "reported_quality": 4.4965460183177454e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365997802017,
+        "boundary_energy_j_kg": 197983.28574415538,
+        "signed_energy_gap_j_kg": 0.580066979280673,
+        "existing_energy_root_tolerance_j_kg": 1.979827056771761e-05,
+        "energy_margin_j_kg": 0.5800867775512407,
+        "normalized_margin_mj_kg": 5.800867775512407e-07
+      },
+      "volume": {
+        "signed_quality": 4.4965460341820275e-12,
+        "volume_tolerance_m3_kg": 1.0109080481184132e-13,
+        "reachability_margin": 4.5039419542229014e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540737944,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540737944,
+        "boundary_energy_j_kg": 197982.6768103496,
+        "signed_energy_gap_j_kg": 1.6300909919664264e-05,
+        "existing_energy_root_tolerance_j_kg": 1.979826767940487e-05,
+        "energy_margin_j_kg": 3.609917759906913e-05,
+        "normalized_margin_mj_kg": 3.609917759906913e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079836018701e-13,
+        "reachability_margin": 7.395917135124406e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747663064,
+      "reported_quality": 1.3477031740013924e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4368907927853,
+        "boundary_energy_j_kg": 197984.50193912818,
+        "signed_energy_gap_j_kg": 1.7386079861898907,
+        "existing_energy_root_tolerance_j_kg": 1.97982763331142e-05,
+        "energy_margin_j_kg": 1.7386277844662237,
+        "normalized_margin_mj_kg": 1.7386277844662236e-06
+      },
+      "volume": {
+        "signed_quality": 1.3477031755878201e-11,
+        "volume_tolerance_m3_kg": 1.0109081769742834e-13,
+        "reachability_margin": 1.3484427681725472e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436467879562,
+      "reported_quality": 8.979937082051481e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4367450839872,
+        "boundary_energy_j_kg": 197983.89299533074,
+        "signed_energy_gap_j_kg": 1.1584717404912226,
+        "existing_energy_root_tolerance_j_kg": 1.9798273452359026e-05,
+        "energy_margin_j_kg": 1.158491538764675,
+        "normalized_margin_mj_kg": 1.158491538764675e-06
+      },
+      "volume": {
+        "signed_quality": 8.979937097915765e-12,
+        "volume_tolerance_m3_kg": 1.0109081124566816e-13,
+        "reachability_margin": 8.98733302086234e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364609749008,
+      "reported_quality": 4.4965460183177454e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365997802017,
+        "boundary_energy_j_kg": 197983.28574415538,
+        "signed_energy_gap_j_kg": 0.580066979280673,
+        "existing_energy_root_tolerance_j_kg": 1.979827056771761e-05,
+        "energy_margin_j_kg": 0.5800867775512407,
+        "normalized_margin_mj_kg": 5.800867775512407e-07
+      },
+      "volume": {
+        "signed_quality": 4.4965460341820275e-12,
+        "volume_tolerance_m3_kg": 1.0109080481184132e-13,
+        "reachability_margin": 4.5039419542229014e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540737944,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540737944,
+        "boundary_energy_j_kg": 197982.6768103496,
+        "signed_energy_gap_j_kg": 1.6300909919664264e-05,
+        "existing_energy_root_tolerance_j_kg": 1.979826767940487e-05,
+        "energy_margin_j_kg": 3.609917759906913e-05,
+        "normalized_margin_mj_kg": 3.609917759906913e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079836018701e-13,
+        "reachability_margin": 7.395917135124406e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364267427378,
+      "reported_quality": 1.3348558333256675e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43683880427653,
+        "boundary_energy_j_kg": 197984.28466961277,
+        "signed_energy_gap_j_kg": 1.7220490348117892,
+        "existing_energy_root_tolerance_j_kg": 1.9798256262057797e-05,
+        "energy_margin_j_kg": 1.7220688330680511,
+        "normalized_margin_mj_kg": 1.7220688330680512e-06
+      },
+      "volume": {
+        "signed_quality": 1.334855833325671e-11,
+        "volume_tolerance_m3_kg": 1.010908153954576e-13,
+        "reachability_margin": 1.335595424199962e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364198525881,
+      "reported_quality": 8.851798787192973e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43669310209793,
+        "boundary_energy_j_kg": 197983.67575347962,
+        "signed_energy_gap_j_kg": 1.1419397520076018,
+        "existing_energy_root_tolerance_j_kg": 1.979825338137276e-05,
+        "energy_margin_j_kg": 1.1419595502609832,
+        "normalized_margin_mj_kg": 1.1419595502609832e-06
+      },
+      "volume": {
+        "signed_quality": 8.851798771328705e-12,
+        "volume_tolerance_m3_kg": 1.0109080894399052e-13,
+        "reachability_margin": 8.85919467716975e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364129544008,
+      "reported_quality": 4.368464691033435e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365478062263,
+        "boundary_energy_j_kg": 197983.0685353778,
+        "signed_energy_gap_j_kg": 0.5635673605429474,
+        "existing_energy_root_tolerance_j_kg": 1.9798250496801727e-05,
+        "energy_margin_j_kg": 0.5635871587934442,
+        "normalized_margin_mj_kg": 5.635871587934442e-07
+      },
+      "volume": {
+        "signed_quality": 4.368464675169161e-12,
+        "volume_tolerance_m3_kg": 1.010908025105141e-13,
+        "reachability_margin": 4.375860578106827e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364060441368,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364021088921,
+        "boundary_energy_j_kg": 197982.4596394899,
+        "signed_energy_gap_j_kg": -0.01644610962830484,
+        "existing_energy_root_tolerance_j_kg": 1.9798247608559954e-05,
+        "energy_margin_j_kg": -0.01642631138069628,
+        "normalized_margin_mj_kg": -1.642631138069628e-08
+      },
+      "volume": {
+        "signed_quality": -1.2748045806714368e-13,
+        "volume_tolerance_m3_kg": 1.0109079605926151e-13,
+        "reachability_margin": -1.2008455803841528e-13,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364267427378,
+      "reported_quality": 1.3348558333256675e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43683880427653,
+        "boundary_energy_j_kg": 197984.28466961277,
+        "signed_energy_gap_j_kg": 1.7220490348117892,
+        "existing_energy_root_tolerance_j_kg": 1.9798256262057797e-05,
+        "energy_margin_j_kg": 1.7220688330680511,
+        "normalized_margin_mj_kg": 1.7220688330680512e-06
+      },
+      "volume": {
+        "signed_quality": 1.334855833325671e-11,
+        "volume_tolerance_m3_kg": 1.010908153954576e-13,
+        "reachability_margin": 1.335595424199962e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364198525881,
+      "reported_quality": 8.851798787192973e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43669310209793,
+        "boundary_energy_j_kg": 197983.67575347962,
+        "signed_energy_gap_j_kg": 1.1419397520076018,
+        "existing_energy_root_tolerance_j_kg": 1.979825338137276e-05,
+        "energy_margin_j_kg": 1.1419595502609832,
+        "normalized_margin_mj_kg": 1.1419595502609832e-06
+      },
+      "volume": {
+        "signed_quality": 8.851798771328705e-12,
+        "volume_tolerance_m3_kg": 1.0109080894399052e-13,
+        "reachability_margin": 8.85919467716975e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364129544008,
+      "reported_quality": 4.368464691033435e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365478062263,
+        "boundary_energy_j_kg": 197983.0685353778,
+        "signed_energy_gap_j_kg": 0.5635673605429474,
+        "existing_energy_root_tolerance_j_kg": 1.9798250496801727e-05,
+        "energy_margin_j_kg": 0.5635871587934442,
+        "normalized_margin_mj_kg": 5.635871587934442e-07
+      },
+      "volume": {
+        "signed_quality": 4.368464675169161e-12,
+        "volume_tolerance_m3_kg": 1.010908025105141e-13,
+        "reachability_margin": 4.375860578106827e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/2",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364060441368,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364021088921,
+        "boundary_energy_j_kg": 197982.4596394899,
+        "signed_energy_gap_j_kg": -0.01644610962830484,
+        "existing_energy_root_tolerance_j_kg": 1.9798247608559954e-05,
+        "energy_margin_j_kg": -0.01642631138069628,
+        "normalized_margin_mj_kg": -1.642631138069628e-08
+      },
+      "volume": {
+        "signed_quality": -1.2748045806714368e-13,
+        "volume_tolerance_m3_kg": 1.0109079605926151e-13,
+        "reachability_margin": -1.2008455803841528e-13,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364699682886,
+      "reported_quality": 1.3464043835368827e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4368855939351,
+        "boundary_energy_j_kg": 197984.4802121793,
+        "signed_energy_gap_j_kg": 1.7369520940992516,
+        "existing_energy_root_tolerance_j_kg": 1.979827432600852e-05,
+        "energy_margin_j_kg": 1.7369718923735775,
+        "normalized_margin_mj_kg": 1.7369718923735775e-06
+      },
+      "volume": {
+        "signed_quality": 1.3464043835368826e-11,
+        "volume_tolerance_m3_kg": 1.010908174672313e-13,
+        "reachability_margin": 1.3471439759507186e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364630794894,
+      "reported_quality": 8.967038113731371e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43673988579565,
+        "boundary_energy_j_kg": 197983.8712711346,
+        "signed_energy_gap_j_kg": 1.1568185307551175,
+        "existing_energy_root_tolerance_j_kg": 1.9798271445260382e-05,
+        "energy_margin_j_kg": 1.1568383290265627,
+        "normalized_margin_mj_kg": 1.1568383290265626e-06
+      },
+      "volume": {
+        "signed_quality": 8.967038129595681e-12,
+        "volume_tolerance_m3_kg": 1.0109081101550028e-13,
+        "reachability_margin": 8.974434050832625e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43645617293043,
+      "reported_quality": 4.4837357778163044e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365945828196,
+        "boundary_energy_j_kg": 197983.26402334232,
+        "signed_energy_gap_j_kg": 0.5784170822589658,
+        "existing_energy_root_tolerance_j_kg": 1.9798268560626007e-05,
+        "energy_margin_j_kg": 0.5784368805275264,
+        "normalized_margin_mj_kg": 5.784368805275264e-07
+      },
+      "volume": {
+        "signed_quality": 4.483735793680591e-12,
+        "volume_tolerance_m3_kg": 1.0109080458170928e-13,
+        "reachability_margin": 4.491131712011169e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364492673181,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.43644887736434,
+        "boundary_energy_j_kg": 197982.65509351518,
+        "signed_energy_gap_j_kg": -0.0016296882822643965,
+        "existing_energy_root_tolerance_j_kg": 1.9798265672320348e-05,
+        "energy_margin_j_kg": -0.0016098900165920761,
+        "normalized_margin_mj_kg": -1.609890016592076e-09
+      },
+      "volume": {
+        "signed_quality": -1.2632399212590555e-14,
+        "volume_tolerance_m3_kg": 1.0109079813009712e-13,
+        "reachability_margin": -5.236483789347098e-15,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364699682886,
+      "reported_quality": 1.3464043835368827e-11,
+      "energy": {
+        "boundary_temperature_k": 320.4368855939351,
+        "boundary_energy_j_kg": 197984.4802121793,
+        "signed_energy_gap_j_kg": 1.7369520940992516,
+        "existing_energy_root_tolerance_j_kg": 1.979827432600852e-05,
+        "energy_margin_j_kg": 1.7369718923735775,
+        "normalized_margin_mj_kg": 1.7369718923735775e-06
+      },
+      "volume": {
+        "signed_quality": 1.3464043835368826e-11,
+        "volume_tolerance_m3_kg": 1.010908174672313e-13,
+        "reachability_margin": 1.3471439759507186e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364630794894,
+      "reported_quality": 8.967038113731371e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43673988579565,
+        "boundary_energy_j_kg": 197983.8712711346,
+        "signed_energy_gap_j_kg": 1.1568185307551175,
+        "existing_energy_root_tolerance_j_kg": 1.9798271445260382e-05,
+        "energy_margin_j_kg": 1.1568383290265627,
+        "normalized_margin_mj_kg": 1.1568383290265626e-06
+      },
+      "volume": {
+        "signed_quality": 8.967038129595681e-12,
+        "volume_tolerance_m3_kg": 1.0109081101550028e-13,
+        "reachability_margin": 8.974434050832625e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43645617293043,
+      "reported_quality": 4.4837357778163044e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365945828196,
+        "boundary_energy_j_kg": 197983.26402334232,
+        "signed_energy_gap_j_kg": 0.5784170822589658,
+        "existing_energy_root_tolerance_j_kg": 1.9798268560626007e-05,
+        "energy_margin_j_kg": 0.5784368805275264,
+        "normalized_margin_mj_kg": 5.784368805275264e-07
+      },
+      "volume": {
+        "signed_quality": 4.483735793680591e-12,
+        "volume_tolerance_m3_kg": 1.0109080458170928e-13,
+        "reachability_margin": 4.491131712011169e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/2",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364492673181,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.43644887736434,
+        "boundary_energy_j_kg": 197982.65509351518,
+        "signed_energy_gap_j_kg": -0.0016296882822643965,
+        "existing_energy_root_tolerance_j_kg": 1.9798265672320348e-05,
+        "energy_margin_j_kg": -0.0016098900165920761,
+        "normalized_margin_mj_kg": -1.609890016592076e-09
+      },
+      "volume": {
+        "signed_quality": -1.2632399212590555e-14,
+        "volume_tolerance_m3_kg": 1.0109079813009712e-13,
+        "reachability_margin": -5.236483789347098e-15,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364742899255,
+      "reported_quality": 1.347562215992133e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43689027290054,
+        "boundary_energy_j_kg": 197984.4997664343,
+        "signed_energy_gap_j_kg": 1.7384423979965504,
+        "existing_energy_root_tolerance_j_kg": 1.979827613240363e-05,
+        "energy_margin_j_kg": 1.7384621962726827,
+        "normalized_margin_mj_kg": 1.7384621962726828e-06
+      },
+      "volume": {
+        "signed_quality": 1.347562214405701e-11,
+        "volume_tolerance_m3_kg": 1.0109081767440865e-13,
+        "reachability_margin": 1.3483018069734596e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436467394429,
+      "reported_quality": 8.978813269304501e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43674456416903,
+        "boundary_energy_j_kg": 197983.89082291521,
+        "signed_energy_gap_j_kg": 1.1583064234873746,
+        "existing_energy_root_tolerance_j_kg": 1.9798273251649175e-05,
+        "energy_margin_j_kg": 1.1583262217606263,
+        "normalized_margin_mj_kg": 1.1583262217606262e-06
+      },
+      "volume": {
+        "signed_quality": 8.978813285168798e-12,
+        "volume_tolerance_m3_kg": 1.0109081122265142e-13,
+        "reachability_margin": 8.986209207942601e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436460498141,
+      "reported_quality": 4.495154331755217e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43659926048343,
+        "boundary_energy_j_kg": 197983.28357215738,
+        "signed_energy_gap_j_kg": 0.5799020726699382,
+        "existing_energy_root_tolerance_j_kg": 1.979827036700847e-05,
+        "energy_margin_j_kg": 0.5799218709403052,
+        "normalized_margin_mj_kg": 5.799218709403052e-07
+      },
+      "volume": {
+        "signed_quality": 4.4951543158909384e-12,
+        "volume_tolerance_m3_kg": 1.0109080478882899e-13,
+        "reachability_margin": 4.502550235761995e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.43645358963727,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364535541848,
+        "boundary_energy_j_kg": 197982.67463880594,
+        "signed_energy_gap_j_kg": -0.00014816224575042725,
+        "existing_energy_root_tolerance_j_kg": 1.979826747869682e-05,
+        "energy_margin_j_kg": -0.00012836397827173043,
+        "normalized_margin_mj_kg": -1.2836397827173043e-10
+      },
+      "volume": {
+        "signed_quality": -1.1484636222678085e-15,
+        "volume_tolerance_m3_kg": 1.010907983371795e-13,
+        "reachability_margin": 6.247453340430923e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364742899255,
+      "reported_quality": 1.347562215992133e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43689027290054,
+        "boundary_energy_j_kg": 197984.4997664343,
+        "signed_energy_gap_j_kg": 1.7384423979965504,
+        "existing_energy_root_tolerance_j_kg": 1.979827613240363e-05,
+        "energy_margin_j_kg": 1.7384621962726827,
+        "normalized_margin_mj_kg": 1.7384621962726828e-06
+      },
+      "volume": {
+        "signed_quality": 1.347562214405701e-11,
+        "volume_tolerance_m3_kg": 1.0109081767440865e-13,
+        "reachability_margin": 1.3483018069734596e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436467394429,
+      "reported_quality": 8.978813269304501e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43674456416903,
+        "boundary_energy_j_kg": 197983.89082291521,
+        "signed_energy_gap_j_kg": 1.1583064234873746,
+        "existing_energy_root_tolerance_j_kg": 1.9798273251649175e-05,
+        "energy_margin_j_kg": 1.1583262217606263,
+        "normalized_margin_mj_kg": 1.1583262217606262e-06
+      },
+      "volume": {
+        "signed_quality": 8.978813285168798e-12,
+        "volume_tolerance_m3_kg": 1.0109081122265142e-13,
+        "reachability_margin": 8.986209207942601e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.436460498141,
+      "reported_quality": 4.495154331755217e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43659926048343,
+        "boundary_energy_j_kg": 197983.28357215738,
+        "signed_energy_gap_j_kg": 0.5799020726699382,
+        "existing_energy_root_tolerance_j_kg": 1.979827036700847e-05,
+        "energy_margin_j_kg": 0.5799218709403052,
+        "normalized_margin_mj_kg": 5.799218709403052e-07
+      },
+      "volume": {
+        "signed_quality": 4.4951543158909384e-12,
+        "volume_tolerance_m3_kg": 1.0109080478882899e-13,
+        "reachability_margin": 4.502550235761995e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/2",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.43645358963727,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364535541848,
+        "boundary_energy_j_kg": 197982.67463880594,
+        "signed_energy_gap_j_kg": -0.00014816224575042725,
+        "existing_energy_root_tolerance_j_kg": 1.979826747869682e-05,
+        "energy_margin_j_kg": -0.00012836397827173043,
+        "normalized_margin_mj_kg": -1.2836397827173043e-10
+      },
+      "volume": {
+        "signed_quality": -1.1484636222678085e-15,
+        "volume_tolerance_m3_kg": 1.010907983371795e-13,
+        "reachability_margin": 6.247453340430923e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747229437,
+      "reported_quality": 1.347675230997231e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43689074079714,
+        "boundary_energy_j_kg": 197984.50172186003,
+        "signed_energy_gap_j_kg": 1.7385914285841864,
+        "existing_energy_root_tolerance_j_kg": 1.9798276313043144e-05,
+        "energy_margin_j_kg": 1.7386112268604994,
+        "normalized_margin_mj_kg": 1.7386112268604993e-06
+      },
+      "volume": {
+        "signed_quality": 1.3476752309972322e-11,
+        "volume_tolerance_m3_kg": 1.0109081769512638e-13,
+        "reachability_margin": 1.3484148235804132e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364678276363,
+      "reported_quality": 8.979935441658628e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43674503201123,
+        "boundary_energy_j_kg": 197983.89277811375,
+        "signed_energy_gap_j_kg": 1.158455234952271,
+        "existing_energy_root_tolerance_j_kg": 1.979827343228788e-05,
+        "energy_margin_j_kg": 1.1584750332257032,
+        "normalized_margin_mj_kg": 1.1584750332257033e-06
+      },
+      "volume": {
+        "signed_quality": 8.97993544165862e-12,
+        "volume_tolerance_m3_kg": 1.0109081124336675e-13,
+        "reachability_margin": 8.987331364586713e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43646093150267,
+      "reported_quality": 4.496268526600837e-12,
+      "energy": {
+        "boundary_temperature_k": 320.436599728237,
+        "boundary_energy_j_kg": 197983.28552698548,
+        "signed_energy_gap_j_kg": 0.5800505217921454,
+        "existing_energy_root_tolerance_j_kg": 1.9798270547646368e-05,
+        "energy_margin_j_kg": 0.5800703200626931,
+        "normalized_margin_mj_kg": 5.800703200626931e-07
+      },
+      "volume": {
+        "signed_quality": 4.4962685266008305e-12,
+        "volume_tolerance_m3_kg": 1.010908048095404e-13,
+        "reachability_margin": 4.503664446626231e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540218518,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540218518,
+        "boundary_energy_j_kg": 197982.67659327178,
+        "signed_energy_gap_j_kg": -6.714253686368465e-08,
+        "existing_energy_root_tolerance_j_kg": 1.9798267659333895e-05,
+        "energy_margin_j_kg": 1.973112512247021e-05,
+        "normalized_margin_mj_kg": 1.973112512247021e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079835788707e-13,
+        "reachability_margin": 7.395917116638105e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747229437,
+      "reported_quality": 1.347675230997231e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43689074079714,
+        "boundary_energy_j_kg": 197984.50172186003,
+        "signed_energy_gap_j_kg": 1.7385914285841864,
+        "existing_energy_root_tolerance_j_kg": 1.9798276313043144e-05,
+        "energy_margin_j_kg": 1.7386112268604994,
+        "normalized_margin_mj_kg": 1.7386112268604993e-06
+      },
+      "volume": {
+        "signed_quality": 1.3476752309972322e-11,
+        "volume_tolerance_m3_kg": 1.0109081769512638e-13,
+        "reachability_margin": 1.3484148235804132e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364678276363,
+      "reported_quality": 8.979935441658628e-12,
+      "energy": {
+        "boundary_temperature_k": 320.43674503201123,
+        "boundary_energy_j_kg": 197983.89277811375,
+        "signed_energy_gap_j_kg": 1.158455234952271,
+        "existing_energy_root_tolerance_j_kg": 1.979827343228788e-05,
+        "energy_margin_j_kg": 1.1584750332257032,
+        "normalized_margin_mj_kg": 1.1584750332257033e-06
+      },
+      "volume": {
+        "signed_quality": 8.97993544165862e-12,
+        "volume_tolerance_m3_kg": 1.0109081124336675e-13,
+        "reachability_margin": 8.987331364586713e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43646093150267,
+      "reported_quality": 4.496268526600837e-12,
+      "energy": {
+        "boundary_temperature_k": 320.436599728237,
+        "boundary_energy_j_kg": 197983.28552698548,
+        "signed_energy_gap_j_kg": 0.5800505217921454,
+        "existing_energy_root_tolerance_j_kg": 1.9798270547646368e-05,
+        "energy_margin_j_kg": 0.5800703200626931,
+        "normalized_margin_mj_kg": 5.800703200626931e-07
+      },
+      "volume": {
+        "signed_quality": 4.4962685266008305e-12,
+        "volume_tolerance_m3_kg": 1.010908048095404e-13,
+        "reachability_margin": 4.503664446626231e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540218518,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540218518,
+        "boundary_energy_j_kg": 197982.67659327178,
+        "signed_energy_gap_j_kg": -6.714253686368465e-08,
+        "existing_energy_root_tolerance_j_kg": 1.9798267659333895e-05,
+        "energy_margin_j_kg": 1.973112512247021e-05,
+        "normalized_margin_mj_kg": 1.973112512247021e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079835788707e-13,
+        "reachability_margin": 7.395917116638105e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/1",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747611151,
+      "reported_quality": 1.3477031514577548e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43689078758644,
+        "boundary_energy_j_kg": 197984.50191740115,
+        "signed_energy_gap_j_kg": 1.7386063302401453,
+        "existing_energy_root_tolerance_j_kg": 1.979827633110709e-05,
+        "energy_margin_j_kg": 1.7386261285164764,
+        "normalized_margin_mj_kg": 1.7386261285164763e-06
+      },
+      "volume": {
+        "signed_quality": 1.3477031498713239e-11,
+        "volume_tolerance_m3_kg": 1.0109081769719815e-13,
+        "reachability_margin": 1.3484427424558661e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/1",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364678743691,
+      "reported_quality": 8.97993692118493e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4367450787893,
+        "boundary_energy_j_kg": 197983.8929736078,
+        "signed_energy_gap_j_kg": 1.1584700895182323,
+        "existing_energy_root_tolerance_j_kg": 1.9798273450351832e-05,
+        "energy_margin_j_kg": 1.1584898877916827,
+        "normalized_margin_mj_kg": 1.1584898877916828e-06
+      },
+      "volume": {
+        "signed_quality": 8.97993693704921e-12,
+        "volume_tolerance_m3_kg": 1.01090811245438e-13,
+        "reachability_margin": 8.987332859993936e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/1",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43646097825274,
+      "reported_quality": 4.4962692822457675e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365997750097,
+        "boundary_energy_j_kg": 197983.28572245702,
+        "signed_energy_gap_j_kg": 0.5800653539190535,
+        "existing_energy_root_tolerance_j_kg": 1.979827056571031e-05,
+        "energy_margin_j_kg": 0.5800851521896192,
+        "normalized_margin_mj_kg": 5.800851521896192e-07
+      },
+      "volume": {
+        "signed_quality": 4.496269266381477e-12,
+        "volume_tolerance_m3_kg": 1.0109080481161142e-13,
+        "reachability_margin": 4.503665186423516e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43645406861657,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.43645406861657,
+        "boundary_energy_j_kg": 197982.67678871058,
+        "signed_energy_gap_j_kg": 1.4732213458046317e-05,
+        "existing_energy_root_tolerance_j_kg": 1.9798267677397838e-05,
+        "energy_margin_j_kg": 3.453048113544416e-05,
+        "normalized_margin_mj_kg": 3.453048113544416e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079835995773e-13,
+        "reachability_margin": 7.39591713328163e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/2",
+      "checkpoint": "raw",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364747611151,
+      "reported_quality": 1.3477031514577548e-11,
+      "energy": {
+        "boundary_temperature_k": 320.43689078758644,
+        "boundary_energy_j_kg": 197984.50191740115,
+        "signed_energy_gap_j_kg": 1.7386063302401453,
+        "existing_energy_root_tolerance_j_kg": 1.979827633110709e-05,
+        "energy_margin_j_kg": 1.7386261285164764,
+        "normalized_margin_mj_kg": 1.7386261285164763e-06
+      },
+      "volume": {
+        "signed_quality": 1.3477031498713239e-11,
+        "volume_tolerance_m3_kg": 1.0109081769719815e-13,
+        "reachability_margin": 1.3484427424558661e-11,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/2",
+      "checkpoint": "seed-step1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364678743691,
+      "reported_quality": 8.97993692118493e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4367450787893,
+        "boundary_energy_j_kg": 197983.8929736078,
+        "signed_energy_gap_j_kg": 1.1584700895182323,
+        "existing_energy_root_tolerance_j_kg": 1.9798273450351832e-05,
+        "energy_margin_j_kg": 1.1584898877916827,
+        "normalized_margin_mj_kg": 1.1584898877916828e-06
+      },
+      "volume": {
+        "signed_quality": 8.97993693704921e-12,
+        "volume_tolerance_m3_kg": 1.01090811245438e-13,
+        "reachability_margin": 8.987332859993936e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/2",
+      "checkpoint": "post-seed",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43646097825274,
+      "reported_quality": 4.4962692822457675e-12,
+      "energy": {
+        "boundary_temperature_k": 320.4365997750097,
+        "boundary_energy_j_kg": 197983.28572245702,
+        "signed_energy_gap_j_kg": 0.5800653539190535,
+        "existing_energy_root_tolerance_j_kg": 1.979827056571031e-05,
+        "energy_margin_j_kg": 0.5800851521896192,
+        "normalized_margin_mj_kg": 5.800851521896192e-07
+      },
+      "volume": {
+        "signed_quality": 4.496269266381477e-12,
+        "volume_tolerance_m3_kg": 1.0109080481161142e-13,
+        "reachability_margin": 4.503665186423516e-12,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/2",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43645406861657,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.43645406861657,
+        "boundary_energy_j_kg": 197982.67678871058,
+        "signed_energy_gap_j_kg": 1.4732213458046317e-05,
+        "existing_energy_root_tolerance_j_kg": 1.9798267677397838e-05,
+        "energy_margin_j_kg": 3.453048113544416e-05,
+        "normalized_margin_mj_kg": 3.453048113544416e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079835995773e-13,
+        "reachability_margin": 7.39591713328163e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    }
+  ],
+  "volume_only_counterexamples": [
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.43645358963727,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364535541848,
+        "boundary_energy_j_kg": 197982.67463880594,
+        "signed_energy_gap_j_kg": -0.00014816224575042725,
+        "existing_energy_root_tolerance_j_kg": 1.979826747869682e-05,
+        "energy_margin_j_kg": -0.00012836397827173043,
+        "normalized_margin_mj_kg": -1.2836397827173043e-10
+      },
+      "volume": {
+        "signed_quality": -1.1484636222678085e-15,
+        "volume_tolerance_m3_kg": 1.010907983371795e-13,
+        "reachability_margin": 6.247453340430923e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/2",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.43645358963727,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364535541848,
+        "boundary_energy_j_kg": 197982.67463880594,
+        "signed_energy_gap_j_kg": -0.00014816224575042725,
+        "existing_energy_root_tolerance_j_kg": 1.979826747869682e-05,
+        "energy_margin_j_kg": -0.00012836397827173043,
+        "normalized_margin_mj_kg": -1.2836397827173043e-10
+      },
+      "volume": {
+        "signed_quality": -1.1484636222678085e-15,
+        "volume_tolerance_m3_kg": 1.010907983371795e-13,
+        "reachability_margin": 6.247453340430923e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    }
+  ],
+  "directional_running_checkpoints": [
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "base/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540737944,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540737944,
+        "boundary_energy_j_kg": 197982.6768103496,
+        "signed_energy_gap_j_kg": 1.6300909919664264e-05,
+        "existing_energy_root_tolerance_j_kg": 1.979826767940487e-05,
+        "energy_margin_j_kg": 3.609917759906913e-05,
+        "normalized_margin_mj_kg": 3.609917759906913e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079836018701e-13,
+        "reachability_margin": 7.395917135124406e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/1/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364060441368,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364021088921,
+        "boundary_energy_j_kg": 197982.4596394899,
+        "signed_energy_gap_j_kg": -0.01644610962830484,
+        "existing_energy_root_tolerance_j_kg": 1.9798247608559954e-05,
+        "energy_margin_j_kg": -0.01642631138069628,
+        "normalized_margin_mj_kg": -1.642631138069628e-08
+      },
+      "volume": {
+        "signed_quality": -1.2748045806714368e-13,
+        "volume_tolerance_m3_kg": 1.0109079605926151e-13,
+        "reachability_margin": -1.2008455803841528e-13,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.1/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.4364492673181,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.43644887736434,
+        "boundary_energy_j_kg": 197982.65509351518,
+        "signed_energy_gap_j_kg": -0.0016296882822643965,
+        "existing_energy_root_tolerance_j_kg": 1.9798265672320348e-05,
+        "energy_margin_j_kg": -0.0016098900165920761,
+        "normalized_margin_mj_kg": -1.609890016592076e-09
+      },
+      "volume": {
+        "signed_quality": -1.2632399212590555e-14,
+        "volume_tolerance_m3_kg": 1.0109079813009712e-13,
+        "reachability_margin": -5.236483789347098e-15,
+        "reachable_by_volume": false
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.01/repeat/1",
+      "checkpoint": "1",
+      "phase": "SubcooledLiquid",
+      "temperature_k": 320.43645358963727,
+      "reported_quality": null,
+      "energy": {
+        "boundary_temperature_k": 320.4364535541848,
+        "boundary_energy_j_kg": 197982.67463880594,
+        "signed_energy_gap_j_kg": -0.00014816224575042725,
+        "existing_energy_root_tolerance_j_kg": 1.979826747869682e-05,
+        "energy_margin_j_kg": -0.00012836397827173043,
+        "normalized_margin_mj_kg": -1.2836397827173043e-10
+      },
+      "volume": {
+        "signed_quality": -1.1484636222678085e-15,
+        "volume_tolerance_m3_kg": 1.010907983371795e-13,
+        "reachability_margin": 6.247453340430923e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.001/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.4364540218518,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.4364540218518,
+        "boundary_energy_j_kg": 197982.67659327178,
+        "signed_energy_gap_j_kg": -6.714253686368465e-08,
+        "existing_energy_root_tolerance_j_kg": 1.9798267659333895e-05,
+        "energy_margin_j_kg": 1.973112512247021e-05,
+        "normalized_margin_mj_kg": 1.973112512247021e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079835788707e-13,
+        "reachability_margin": 7.395917116638105e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    },
+    {
+      "protocol": "r3-h-directional-derivative-trial8",
+      "id": "fraction/0.0001/repeat/1",
+      "checkpoint": "1",
+      "phase": "SaturatedMixture",
+      "temperature_k": 320.43645406861657,
+      "reported_quality": 0,
+      "energy": {
+        "boundary_temperature_k": 320.43645406861657,
+        "boundary_energy_j_kg": 197982.67678871058,
+        "signed_energy_gap_j_kg": 1.4732213458046317e-05,
+        "existing_energy_root_tolerance_j_kg": 1.9798267677397838e-05,
+        "energy_margin_j_kg": 3.453048113544416e-05,
+        "normalized_margin_mj_kg": 3.453048113544416e-11
+      },
+      "volume": {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079835995773e-13,
+        "reachability_margin": 7.39591713328163e-15,
+        "reachable_by_volume": true
+      },
+      "observed_phase_reproduced": true
+    }
+  ],
+  "derivative_limit": {
+    "small_step": {
+      "id": "fraction/0.001",
+      "fraction": 0.001,
+      "reason": "VALID",
+      "actual_maximum": 3337269.9323420073,
+      "predicted_maximum": 3337269.9079970317,
+      "maximum_error": 6.059404343366623,
+      "error_per_fraction": 6059.404343366623,
+      "actual_reduction": 0.13531598541885614,
+      "phase_compatible": true,
+      "margins": [
+        1.3484148235804132e-11,
+        8.987331364586713e-12,
+        4.503664446626231e-12,
+        7.395917116638105e-15
+      ],
+      "phase_changes": []
+    },
+    "smallest_step": {
+      "id": "fraction/0.0001",
+      "fraction": 0.0001,
+      "reason": "VALID",
+      "actual_maximum": 3337270.0907063195,
+      "predicted_maximum": 3337270.0516918967,
+      "maximum_error": 5.412898005452007,
+      "error_per_fraction": 54128.98005452007,
+      "actual_reduction": -0.023048326838761568,
+      "phase_compatible": true,
+      "margins": [
+        1.3484427424558661e-11,
+        8.987332859993936e-12,
+        4.503665186423516e-12,
+        7.39591713328163e-15
+      ],
+      "phase_changes": []
+    },
+    "stable_first_order_model_demonstrated": false
+  },
+  "scope": "Observed hotwell neighbourhood only; no global C4 classifier or solver equivalence proof",
+  "next_activity": "MULTISCALE-RESIDUAL-AND-ENERGY-MARGIN-DERIVATIVE-REVIEW-BEFORE-NEW-SEARCH",
+  "optimizer_guard_qualified": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

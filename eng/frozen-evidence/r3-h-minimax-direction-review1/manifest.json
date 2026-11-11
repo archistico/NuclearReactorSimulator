@@ -1,0 +1,19 @@
+{
+  "schema": "r3-h-minimax-direction-review1-frozen-v1",
+  "files": [
+    {
+      "file": "01-comparison.json",
+      "stored": "01-comparison.json.gz",
+      "bytes": 741371,
+      "sha256": "0B604AD4053260030776E5637210D936ED5358DCCA215A68962DBDD869F4D970",
+      "stored_sha256": "BC19B40F31AFA088F3F8D6AF4FDEF0136489BD25001406FB2CD9935E7C09EA85"
+    },
+    {
+      "file": "02-summary.json",
+      "stored": "02-summary.json",
+      "bytes": 1210,
+      "sha256": "5B0FA475EA01F6760FA7A12CFAE3AE8C77E3002287659018FAE4A0594ED5FF12",
+      "stored_sha256": "5B0FA475EA01F6760FA7A12CFAE3AE8C77E3002287659018FAE4A0594ED5FF12"
+    }
+  ]
+}

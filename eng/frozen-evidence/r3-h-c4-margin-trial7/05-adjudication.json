@@ -1,0 +1,286 @@
+{
+  "status": "PASS-REPEATED-C4-MARGIN-TRIAL",
+  "recipes": 8,
+  "maximum_physical_steps": 26,
+  "unclipped_boundary": {
+    "reported_quality": [
+      1.3477031740013924e-11,
+      8.979937082051481e-12,
+      4.4965460183177454e-12,
+      0
+    ],
+    "unclipped": [
+      {
+        "signed_quality": 1.3477031755878201e-11,
+        "volume_tolerance_m3_kg": 1.0109081769742834e-13,
+        "reachability_margin": 1.3484427681725472e-11,
+        "reachable_by_volume": true
+      },
+      {
+        "signed_quality": 8.979937097915765e-12,
+        "volume_tolerance_m3_kg": 1.0109081124566816e-13,
+        "reachability_margin": 8.98733302086234e-12,
+        "reachable_by_volume": true
+      },
+      {
+        "signed_quality": 4.4965460341820275e-12,
+        "volume_tolerance_m3_kg": 1.0109080481184132e-13,
+        "reachability_margin": 4.5039419542229014e-12,
+        "reachable_by_volume": true
+      },
+      {
+        "signed_quality": 0.0,
+        "volume_tolerance_m3_kg": 1.0109079836018701e-13,
+        "reachability_margin": 7.395917135124406e-15,
+        "reachable_by_volume": true
+      }
+    ],
+    "plant_calls": 0
+  },
+  "comparisons": [
+    {
+      "id": "base",
+      "reason": "VALID",
+      "predicted_maximum": 3337270.0676579927,
+      "actual_maximum": 3337270.0676579927,
+      "reduction_ratio": null,
+      "phase_compatible": true,
+      "actual_hotwell": [
+        {
+          "Id": "hotwell",
+          "Mass": 9892.095274103605,
+          "Energy": 1958464357.5019622,
+          "Pressure": 10781.87286068398,
+          "Temperature": 320.4364747663064,
+          "Phase": "SaturatedMixture",
+          "Quality": 1.3477031740013924e-11
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.095905431277,
+          "Energy": 1958464197.5268946,
+          "Pressure": 10781.869110473386,
+          "Temperature": 320.436467879562,
+          "Phase": "SaturatedMixture",
+          "Quality": 8.979937082051481e-12
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.096535004186,
+          "Energy": 1958464036.8199472,
+          "Pressure": 10781.865350506147,
+          "Temperature": 320.4364609749008,
+          "Phase": "SaturatedMixture",
+          "Quality": 4.4965460183177454e-12
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.097166321659,
+          "Energy": 1958463876.0951858,
+          "Pressure": 10781.861592474628,
+          "Temperature": 320.4364540737944,
+          "Phase": "SaturatedMixture",
+          "Quality": 0
+        }
+      ],
+      "predicted_margin": [
+        1.3484427681725472e-11,
+        8.98733302086234e-12,
+        4.5039419542229014e-12,
+        7.395917135124406e-15
+      ],
+      "predicted_pressure": [
+        10781.87286068398,
+        10781.869110473386,
+        10781.865350506147,
+        10781.861592474628
+      ],
+      "all_in_envelope": false,
+      "promising": false
+    },
+    {
+      "id": "margin/radius/1e-06",
+      "reason": "VALID",
+      "predicted_maximum": 3337110.4066968346,
+      "actual_maximum": 3337428.8499496477,
+      "reduction_ratio": -0.9944966540551212,
+      "phase_compatible": false,
+      "actual_hotwell": [
+        {
+          "Id": "hotwell",
+          "Mass": 9892.095499359617,
+          "Energy": 1958462416.6507027,
+          "Pressure": 10781.846709213112,
+          "Temperature": 320.4364267427378,
+          "Phase": "SaturatedMixture",
+          "Quality": 1.3348558333256675e-11
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.096130658636,
+          "Energy": 1958462256.6767676,
+          "Pressure": 10781.842957148167,
+          "Temperature": 320.4364198525881,
+          "Phase": "SaturatedMixture",
+          "Quality": 8.851798787192973e-12
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.096760197286,
+          "Energy": 1958462095.9698665,
+          "Pressure": 10781.839200706345,
+          "Temperature": 320.4364129544008,
+          "Phase": "SaturatedMixture",
+          "Quality": 4.368464691033435e-12
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.097391475474,
+          "Energy": 1958461935.2442148,
+          "Pressure": 10785.753077402376,
+          "Temperature": 320.4364060441368,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        }
+      ],
+      "predicted_margin": [
+        1.3206772751897042e-11,
+        8.978688008556734e-12,
+        4.238147024322833e-12,
+        8.061549678171751e-16
+      ],
+      "predicted_pressure": [
+        10781.849216759594,
+        10781.840948304087,
+        10781.84151546607,
+        10781.833402850645
+      ],
+      "all_in_envelope": false,
+      "promising": false
+    },
+    {
+      "id": "margin/radius/1e-05",
+      "reason": "VALID",
+      "predicted_maximum": 3335720.1357444962,
+      "actual_maximum": 3338831.7524752477,
+      "reduction_ratio": -1.0075828516441312,
+      "phase_compatible": false,
+      "actual_hotwell": [
+        {
+          "Id": "hotwell",
+          "Mass": 9892.09751885322,
+          "Energy": 1958444948.989365,
+          "Pressure": 10781.611353027576,
+          "Temperature": 320.43599454357013,
+          "Phase": "SaturatedMixture",
+          "Quality": 1.2250302746676144e-11
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.098149887257,
+          "Energy": 1958444789.1486783,
+          "Pressure": 10781.607604551693,
+          "Temperature": 320.4359876600112,
+          "Phase": "SaturatedMixture",
+          "Quality": 7.755405728847114e-12
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.0987780163,
+          "Energy": 1958444628.3486948,
+          "Pressure": 10781.603847132714,
+          "Temperature": 320.4359807600296,
+          "Phase": "SaturatedMixture",
+          "Quality": 3.282763268724958e-12
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.099408742297,
+          "Energy": 1958444467.699976,
+          "Pressure": 10818.762773972607,
+          "Temperature": 320.43597385885465,
+          "Phase": "SubcooledLiquid",
+          "Quality": null
+        }
+      ],
+      "predicted_margin": [
+        1.076504313375305e-11,
+        8.959041949475679e-12,
+        2.148724359584956e-12,
+        8.061549670455264e-16
+      ],
+      "predicted_pressure": [
+        10781.636442139361,
+        10781.587491678005,
+        10781.62296548176,
+        10781.579833821583
+      ],
+      "all_in_envelope": false,
+      "promising": false
+    },
+    {
+      "id": "margin/radius/0.0001",
+      "reason": "VALID",
+      "predicted_maximum": 3322014.30604522,
+      "actual_maximum": 3357119.415841584,
+      "reduction_ratio": -1.3011050308345435,
+      "phase_compatible": true,
+      "actual_hotwell": [
+        {
+          "Id": "hotwell",
+          "Mass": 9892.113267661207,
+          "Energy": 1958270272.3759906,
+          "Pressure": 10779.26938673207,
+          "Temperature": 320.43169384554017,
+          "Phase": "SaturatedMixture",
+          "Quality": 3.381515043600278e-11
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.113896031606,
+          "Energy": 1958270113.5982087,
+          "Pressure": 10779.26565616446,
+          "Temperature": 320.4316869948674,
+          "Phase": "SaturatedMixture",
+          "Quality": 2.9340028268964344e-11
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.114511662425,
+          "Energy": 1958269951.9174812,
+          "Pressure": 10779.26192359828,
+          "Temperature": 320.4316801405246,
+          "Phase": "SaturatedMixture",
+          "Quality": 2.4960255044295663e-11
+        },
+        {
+          "Id": "hotwell",
+          "Mass": 9892.115141533737,
+          "Energy": 1958269792.6962836,
+          "Pressure": 10779.258186988469,
+          "Temperature": 320.4316732787561,
+          "Phase": "SaturatedMixture",
+          "Quality": 2.0474280082813627e-11
+        }
+      ],
+      "predicted_margin": [
+        1.888874468212242e-11,
+        4.149337831946741e-11,
+        4.909296731336116e-13,
+        3.281492614953785e-11
+      ],
+      "predicted_pressure": [
+        10779.52047895961,
+        10779.061516868627,
+        10779.672647523064,
+        10779.050562952682
+      ],
+      "all_in_envelope": false,
+      "promising": false
+    }
+  ],
+  "promising": [],
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

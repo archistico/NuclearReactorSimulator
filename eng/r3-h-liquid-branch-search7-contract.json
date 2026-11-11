@@ -1,0 +1,152 @@
+{
+  "schema": "r3-h-liquid-branch-search7-v1",
+  "policy": {
+    "variables": 24,
+    "residuals": 75,
+    "fractional_bound": 0.02,
+    "radius_initial": 1e-06,
+    "radius_minimum": 1e-08,
+    "radius_maximum": 0.0001,
+    "derivative_maximum": 1e-06,
+    "maximum_proposals": 1,
+    "maximum_halvings": 8,
+    "maximum_iterations": 64,
+    "maximum_recipes": 4096,
+    "maximum_batches": 129,
+    "maximum_physical_steps": 12546,
+    "stagnation_relative": 1e-09,
+    "stagnation_updates": 3,
+    "initial_branch": "hotwell-liquid-at-raw-and-all-checkpoints",
+    "secondary_objective_slack": 1e-06,
+    "keep_radius_on_accepted_probe": true,
+    "production_change": false,
+    "bound_expansion": false,
+    "residual_reweighting": false,
+    "seed_installation": false,
+    "r3_passed": false
+  },
+  "output": "artifacts/r3-h-liquid-branch-search7",
+  "test_additions": [],
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 410,
+      "tree_sha256": "DB6DB96BD54D13B26D7D4795A6D9415EAEBFAF7514BC8B0C014D6FED31BE5AF2"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HProtocolBatchTests.cs",
+      "sha256": "E73DC89313EFED673608B14C8D0C15796666046BDDCEDA66D552CCD88C0D1D8F"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/r3_h_minimax_lp.py",
+      "sha256": "741E6A38FD8C849497E7004074CDCF599B0FB7E249851DFCA4CCE50FEAF3DD5E"
+    },
+    {
+      "path": "eng/r3_h_minimax_regularized.py",
+      "sha256": "8392E74F1486DA9EEA8310A96827EF5F756A7C36199F7DB00D8AF7B4C3AD50B7"
+    },
+    {
+      "path": "eng/run-r3-h-liquid-branch-search7.py",
+      "sha256": "646E1CCBDC63E3A82E41C062D3D60BBD7B4C0B22B2CF184EB3CC32C860D682D5"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-h-liquid-branch-search7.md",
+      "sha256": "6CF1FD202D8FA7718FD75DD098AC1A30BD0C392B9E6758D7D56656DFF12DCF10"
+    },
+    {
+      "path": "eng/review-r3-h-trust-search3.py",
+      "sha256": "439E71E4894FBF537E9DE94896B455FA1DD1C9735FFB2AF0E496971AF96F7858"
+    },
+    {
+      "path": "eng/r3-h-minimax-direction-review1-contract.json",
+      "sha256": "B2D9A8E301F9220817DB0D08DD134AB0D910F7531DCAD7E66BA439E9B1C708B4"
+    },
+    {
+      "path": "eng/r3-h-secondary-minimax-search6-contract.json",
+      "sha256": "DEE3C8FCE2ECD033D48ED6235117278B1F59A15DA938AEEACFEFC4CBDDE9A5FB"
+    },
+    {
+      "path": "eng/r3-h-secondary-minimax-search6-returned.json",
+      "sha256": "51AEA5FF9790BE799324FC1F9CD671FC977CE57CD646A9C1C14E22ED55A9D8CE"
+    },
+    {
+      "path": "eng/run-r3-h-secondary-minimax-search6.py",
+      "sha256": "50E59712E3E406B8626F3BF111775E82F14C33BAFEA45362A96CB72BE0F33F97"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/01-static.json",
+      "sha256": "BED403D4B9152EAC879B3BA086F4332F9743385E33B958EC7C282F428532E053"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/02-preexecution.json",
+      "sha256": "02779344D957E3441EF5BBC505ECBD55D64A0E1E61153923CF4EC8CFDECD2876"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/03-batches.jsonl.gz",
+      "sha256": "62249E672AD3BCAA54CA5367C8E1C39A9C807FAC9C08060A3746B283CEF8B126"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/04-result.json",
+      "sha256": "8B3D8657D61A60347FA032B2EBA9A56810DFAB988098FFD57CCA83F915DAD647"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/05-adjudication.json",
+      "sha256": "FC776106FA1D2770B824536BBEE85F413A1F75956707A19EFEFEE154B3177F16"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/07-secondary-slack-design.json",
+      "sha256": "DAD904E0056F4DAC7B4DFCBC148F8D33744803D416E9A1F524CE41F9B5CBDA5F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/batch-execution.xml",
+      "sha256": "77BB33CA0CBD518A4EE8585EC91D5F7D97BEE586587CAF5CED40751E0E881C9C"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/manifest.json",
+      "sha256": "1CDDDEE56C68C5D0C8D43A2F44F7DBF00C9FE789EA636FE9B24C3806FDBB5AF7"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/ordinary-suite.log.gz",
+      "sha256": "B9BA7B6F22ED470BE67701EEA182E5C55BCD4D1A03800A9965EC53FCB86DD230"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/preexecution.xml",
+      "sha256": "C22EE8411FCBE70D86803DD66339B420AE4D204CCE17B259D540FD006CBA2B73"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-secondary-minimax-search6/progress.log",
+      "sha256": "580A4EC68ACAE166217F65F08D5CCA1289BD92F06AD41D29180F6951EB4D6443"
+    }
+  ]
+}

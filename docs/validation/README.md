@@ -1,88 +1,77 @@
-# Validation summary
+# Sintesi della validazione
 
-M10 brings together plant integration, operator workflows, deterministic replay
-and qualification against independent references. This page summarizes the results;
-[PROJECT.md](../PROJECT.md) holds the current checkpoint and execution commands.
+M10 riunisce integrazione dell'impianto, operatività, replay deterministico e
+confronto con riferimenti indipendenti. Questa pagina riassume le conclusioni;
+[PROJECT.md](../PROJECT.md) mantiene il checkpoint e i comandi correnti.
 
-## Operator capabilities delivered through M10
+## Funzionalità operative acquisite
 
-- A unified operator computer combines plant information, guidance, diagnostics,
-  alarms, incident logs and contextual commands.
-- Assistance and control authority are represented separately, including requested
-  and effective control ownership during supervisory automatic operation.
-- Session workspaces support checkpoints, replay, saving and control-state
-  inspection with deterministic logical time.
-- Instrument gauges, a plant mimic and subsystem schematics present engineering
-  state; command consequences, challenges, missions and performance views connect
-  operator actions with their observed results.
+La sala controllo integra informazioni, guida, diagnostica, allarmi, registro
+incidenti e comandi contestuali. Assistenza e autorità di controllo sono distinte,
+comprese proprietà richiesta ed effettiva durante la supervisione automatica.
+Le sessioni supportano checkpoint, replay, salvataggio e ispezione dei controlli
+con tempo logico deterministico. Strumenti, mimic e schemi collegano lo stato
+ingegneristico a missioni, conseguenze e prestazioni dell'operatore.
 
-The original M10.1–M10.9 milestone sheets remain available with the engineering
-records. Their individual closure status does not imply final M10 closure.
+La chiusura dei singoli fogli M10.1–M10.9 non equivale alla chiusura finale M10.
+I test automatici non sostituiscono l'accettazione manuale HMI richiesta.
 
-## What the evidence establishes
+## Che cosa dimostrano le evidenze
 
-| Area | Established result | Limit of the claim |
+| Ambito | Risultato acquisito | Limite della conclusione |
 | --- | --- | --- |
-| Operator workflows | Integrated controls, missions, scoring, checkpoints and replay have dedicated regression coverage. | A passed automated gate does not substitute for its required manual acceptance. |
-| Exact-version behaviour | Canonical Exact-V9 remains the authoritative baseline, with historical identities preserved. | Later physical-model options do not silently replace existing replay identities. |
-| Physical references | Independent reference assessment separates solver behaviour, parameter applicability and model discrepancies. | Subsystem agreement does not establish full-plant fidelity. |
-| C4 thermodynamics | R1 returned PASS for the explicit mode-2 implementation; R2 returned PASS for its focused qualification. | Mode 2 remains opt-in; these results do not qualify R3 equilibrium. |
-| R3 integration | Diagnostic and repair evidence identifies distinct closure, transport and initial-state issues. | R3 remains RED; earlier successful implementation gates do not imply successful full-plant qualification. |
-| Bounded H investigation | The test-only search completed with authenticated evidence and an inconclusive outcome. | No qualified equilibrium seed was found within the frozen bounds. |
-| Offline numerical review | Replay of the terminal linear model and the scaled local-model comparison pass their evidence checks. | Predicted model descent is not a nonlinear plant observation. |
-| Local Trial 1 | All six frozen directions produced real descent; all seven points reproduced identically in two runs. | No trial satisfied the complete operating envelope; no seed was qualified. |
-| Bounded scaled search H2 | 143 recipes produced one accepted update, reducing the maximum residual to 4.907 million. Full offline replay and physical residual reconstruction pass. | Search stopped without a root; all 24 terminal trials crossed the hotwell phase boundary and worsened the objective. |
+| Operatività e replay | Flussi operatore, missioni, checkpoint e replay hanno regressioni dedicate. | Non è una nuova accettazione manuale. |
+| Identità esatte | Exact-V9 resta la baseline produttiva; le identità storiche sono preservate. | Le opzioni fisiche successive non cambiano il significato degli archivi. |
+| Termodinamica C4 | Implementazione R1 e verifica focalizzata R2 PASS per il mode-2 esplicito. | Non qualificano l'equilibrio integrato R3. |
+| Ricerche di equilibrio | H8 porta il massimo accettato a 3.337.270,068, con 21 aggiornamenti e 16 passi accoppiati. | Nessuna radice; arresto al raggio minimo e punto fuori inviluppo. |
+| Confine di fase | Trial 6 verifica le proposte vincolate; il margine energetico concorda con 120 osservazioni nei Trial 6–8. | Verifica locale, non equivalenza globale del resolver o nuovo vincolo già qualificato. |
+| Previsione direzionale | Trial 8 misura la risposta reale a cinque frazioni di una direzione, ripetute identicamente. | Anche con fase compatibile l'errore del modello può superare il guadagno; serve una revisione delle derivate. |
+| Bilanci dei nodi | Accumuli ricostruiti dai trasferimenti con errore energetico inferiore a 0,01 W. | Conservazione e stazionarietà sono condizioni distinte. |
 
-## The unresolved equilibrium problem
+## Il problema ancora aperto
 
-The H search varied 24 fluid mass/energy coordinates against 75 residuals. It used
-527 budgeted attempts, with seven accepted updates and no confirmation run. Its
-maximum scaled residual decreased from about 7.849 million to 7.226 million,
-remaining above the root criterion of one. The result is
-`H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS`, not proof of physical infeasibility.
+La superficie H mantiene 24 inventari fluidi, box ±2%, 75 residui e criterio
+massimo assoluto ≤1. Il miglior punto accettato H8 è ancora a circa 3,337 milioni
+ed è fuori dall'inviluppo. Al primo Running accumula circa 428,1 kW all'ingresso
+turbina e 1,169 MW in control-out. Questi accumuli coincidono con la differenza
+fra energia entrante e uscente: non sono una perdita inspiegata di inventario.
 
-The terminal review found that all six recorded full trial directions were
-identical. All 78 terminal trial rejections occurred before plant evaluation at
-the unchanged suction-energy bound. Three derivative probes changed phase labels,
-so local physical smoothness remains unproven.
+H8 dimostra l'utilità di verificare la fase lungo l'intera ricetta. Arriva poi
+al confine nel quale la qualità C4 è troncata a zero. Trial 7 non trova proposte
+utili con il solo margine di volume; la successiva ricostruzione energetica
+spiega il cambio di ramo nei campioni osservati. Il criterio energetico usa
+la tolleranza già presente in C4, senza allentarla.
 
-The subsequent offline comparison scales Jacobian columns, compares six fixed
-dampings and uses one global fraction to the original coordinate box. All six
-capped directions predict strict local-model descent. Local Trial 1 subsequently
-tested all six directions, using 14 repeated recipes: the best reduced the actual
-maximum to 6.909 million, closely matching its prediction.
+Trial 8 restringe il problema residuo: alla frazione 0,001 il massimo migliora
+di 0,135, ma l'errore massimo della previsione sui 75 residui è 6,059. Alla
+frazione 0,0001 il massimo peggiora, pur restando miscela. Prima di un'altra
+ricerca occorre confrontare le derivate su più ampiezze, verificando insieme
+residui, margine energetico e traiettoria. Questi esiti non provano impossibilità
+fisica né un difetto indipendente dei controllori.
 
-H2 then solved bounded scaled subproblems with explicit active constraints. Its
-143 recipes and five setup batches used 439 physical steps. One update reduced
-the actual maximum to 4.907 million before `NO-STRICT-DESCENT`. Hotwell mass
-storage now dominates, followed by turbine-inlet energy and hotwell energy.
-The accepted point is healthy but outside the primary-flow envelope.
+R3 Requalification 3, R4 e la chiusura M10 restano subordinate all'equilibrio e
+alle rispettive condizioni d'ingresso. Nessuna nuova prova lunga è in corso.
 
-All 24 terminal model steps crossed the hotwell liquid boundary and worsened the
-objective; a recorded small inward derivative probe reached 4.481 million without
-changing phase. The next numerical design must therefore address local step size
-and deeper backtracking before another search. This does not establish physical
-infeasibility or a controller defect. Requalification 3, R4 and M10 closure remain
-blocked by the unqualified equilibrium.
+## Controlli e riferimenti
 
-The Release build passes with warnings treated as errors. The ordinary suite
-passes 1,387 tests, with 162 explicit tests excluded and no failures. Production
-and all pre-existing tests remain byte-identical. The current offline review is
-`python eng/review-r3-h-scaled-search2.py`; earlier gates retain historical tree
-baselines and are not current-checkout gates.
+L'ultima compilazione Release con avvisi come errori e la suite ordinaria hanno
+dato PASS: **1.392 superati, 164 espliciti esclusi, zero fallimenti**. Precedono
+i nuovi protocolli, che mantengono invariati i 962 sorgenti produttivi e i 410
+file di test. Trial 6, H8, Trial 7 e Trial 8 hanno ciascuno superato tre test
+preliminari, con uno esplicito escluso, prima dell'esecuzione fisica esplicita.
 
-## Evidence and detailed contracts
+Il comando corrente è `python eng/review-r3-h-current-equilibrium.py`: riproduce
+H8, i Trial 6–8 e la revisione energetica dalle evidenze congelate, senza chiamate
+fisiche. La revisione energetica da sola si esegue con
+`python eng/review-r3-h-energy-boundary1.py review`. Entrambi i controlli passano;
+le baseline dei gate precedenti conservano il proprio significato storico.
 
-- [Engineering decisions](MODEL_DECISIONS.md) records the rules that remain useful
-  beyond the individual diagnostic chain.
-- [Machine-readable and exact-text inputs](../../eng/contracts/m10/README.md) are
-  maintained with the engineering tooling. Their original bytes are retained for
-  validator compatibility and hash authentication.
-- Compact returned evidence is under `eng/frozen-evidence/`; it remains unchanged
-  by documentation reorganization.
-- [Historical documentation](../history/README.md) retains earlier chronology and
-  migration audits.
+Le [decisioni ingegneristiche](MODEL_DECISIONS.md) raccolgono i vincoli durevoli.
+Gli [input esatti storici](../../eng/contracts/m10/README.md) e i protocolli in
+`eng/contracts/` appartengono agli strumenti di verifica. Le evidenze complete
+sono conservate sotto `eng/frozen-evidence/`, con tracce dei batch compresse;
+il [registro storico](../history/README.md) conserva le migrazioni documentali.
 
-Use [model limitations](../KNOWN_MODEL_LIMITATIONS.md) when assessing the scope of
-the educational simulator. Successful numerical checks do not establish industrial
-or licensing-grade fidelity.
+I [limiti del modello](../KNOWN_MODEL_LIMITATIONS.md) definiscono il campo del
+simulatore educativo. I controlli numerici non costituiscono una qualificazione
+industriale o autorizzativa.

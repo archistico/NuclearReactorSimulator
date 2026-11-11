@@ -1,0 +1,47 @@
+{
+  "schema": "r3-h-phase-trajectory-trial6-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 35754,
+      "sha256": "513B3089E6A12477B2E4C2C88987BD3946455881AADA95024FE7B0135D2D43D2",
+      "stored_sha256": "513B3089E6A12477B2E4C2C88987BD3946455881AADA95024FE7B0135D2D43D2"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "5C723B73CEE3A970FA9CE2681EDC93577E00F733FA7A77ECCAA487758A83A076",
+      "stored_sha256": "5C723B73CEE3A970FA9CE2681EDC93577E00F733FA7A77ECCAA487758A83A076"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 167301,
+      "sha256": "8977564836FC8764E9049C9983B5AA12672D112DFB8D3F909AE3525933E6629F",
+      "stored_sha256": "669B250DB2999CC7E2971EF625CBECA3B72331BEE6C84F0D89CADF373F363001"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 9840,
+      "sha256": "F9927B748417C56EB3115099D55D1AADA7E22CB7BC2C74DAF7EAB49E32E46E50",
+      "stored_sha256": "F9927B748417C56EB3115099D55D1AADA7E22CB7BC2C74DAF7EAB49E32E46E50"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3981,
+      "sha256": "3F489CBF8F9B876C8C85074ABAE2C4C2339B2FCBF29F44C26DEC76EA7C8350CF",
+      "stored_sha256": "3F489CBF8F9B876C8C85074ABAE2C4C2339B2FCBF29F44C26DEC76EA7C8350CF"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "CB41F1C3ECEEBE17AD49E120F1AEDF594AFB5A8EBCC3114F033322371D8F02F4",
+      "stored_sha256": "CB41F1C3ECEEBE17AD49E120F1AEDF594AFB5A8EBCC3114F033322371D8F02F4"
+    }
+  ]
+}
