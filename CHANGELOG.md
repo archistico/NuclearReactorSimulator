@@ -102,6 +102,29 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   `NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`, congelato con
   replay PASS: la prossima attività è la revisione della legge di energia dello stadio.
 
+### Ricostruzione della legge di energia dello stadio
+
+- Individuata nel codice l'ipotesi: con il drenaggio della condensa lo stadio
+  assegna a vapore e condensa le energie di `GetSaturationProperties`, sempre
+  storiche, mentre il separatore del drum usa già il trasporto di fase della
+  chiusura attiva. Lo stesso vale per la condensa del condensatore.
+- Aggiunto un esecutore solo di test (`tests/` a 412 file) e committati
+  protocollo e soglie prima dell'esecuzione; nessuna modifica a `src/`.
+- La prima esecuzione è tecnicamente non valida: i provider sono stati valutati
+  sullo stato di fine passo invece che su quello letto dallo stadio, e
+  l'identità è fallita a 5e-8 contro 1e-9. Congelata come evidenza del difetto,
+  con la relativa decisione ingegneristica; nessuna soglia è stata cambiata.
+- La revisione 2 valuta i provider sugli ingressi registrati negli snapshot:
+  esito `STAGE-ADMISSION-CLOSURE-INCOHERENCE-DEMONSTRATED`. Vapore e condensa
+  coincidono esattamente con la saturazione storica (2.726,6 e 1.044,6 kJ/kg)
+  invece che con la chiusura attiva (2.801,7 e 1.074,0 kJ/kg).
+- Con le energie della chiusura attiva, a parità di stato, l'accumulo su
+  `turbine-inlet` scende da 1,007 MW a 18,8 kW, l'1,9%. La miscela C4 del nodo
+  coincide con le proprie proprietà di trasporto entro 1,7 J/kg; il condensatore,
+  solo riportato, vale circa 6,3 kW. Replay PASS; R3 resta RED.
+- CI ordinaria PASS con 412 file di test: 1.563 test, 1.397 superati, 166
+  espliciti esclusi, zero fallimenti; baseline delle evidenze correnti PASS.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

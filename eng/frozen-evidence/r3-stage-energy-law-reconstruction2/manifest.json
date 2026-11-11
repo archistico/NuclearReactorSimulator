@@ -1,0 +1,47 @@
+{
+  "schema": "r3-stage-energy-law-reconstruction2-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 123,
+      "sha256": "312D0CFE70B567470166B974BAEEDFC0554967173314F83230E83877A59D82B6",
+      "stored_sha256": "312D0CFE70B567470166B974BAEEDFC0554967173314F83230E83877A59D82B6"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "E3B5065A3D4770E952257BC2618FB22B5B991F09104655C32B49C4EDCB7BA4A2",
+      "stored_sha256": "E3B5065A3D4770E952257BC2618FB22B5B991F09104655C32B49C4EDCB7BA4A2"
+    },
+    {
+      "file": "03-reconstruction.json",
+      "stored": "03-reconstruction.json",
+      "bytes": 4840,
+      "sha256": "B18A0A4000BAA7CC763296289D89C41D6111CD9E4698F3B43F0E3131A39D11B9",
+      "stored_sha256": "B18A0A4000BAA7CC763296289D89C41D6111CD9E4698F3B43F0E3131A39D11B9"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 2559,
+      "sha256": "3BEF9D3ECC991961F767AE9E80AED2B0AA07448BD8A9566870AE9EEAA1B724ED",
+      "stored_sha256": "3BEF9D3ECC991961F767AE9E80AED2B0AA07448BD8A9566870AE9EEAA1B724ED"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3485,
+      "sha256": "2DB50440D937AD78E78E2783F0920D752FF4AFB13EFE33E32D7684C8F86CAFE3",
+      "stored_sha256": "2DB50440D937AD78E78E2783F0920D752FF4AFB13EFE33E32D7684C8F86CAFE3"
+    },
+    {
+      "file": "execution.xml",
+      "stored": "execution.xml",
+      "bytes": 1999,
+      "sha256": "E8489DE9EBD78330F02E783308A78D09FB4291C7B559D3E263D1425B8D8D30A3",
+      "stored_sha256": "E8489DE9EBD78330F02E783308A78D09FB4291C7B559D3E263D1425B8D8D30A3"
+    }
+  ]
+}

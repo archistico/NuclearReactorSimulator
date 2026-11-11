@@ -6,7 +6,7 @@ spiega il percorso futuro e il [changelog](../CHANGELOG.md) registra i cambiamen
 
 ## Stato corrente
 
-Checkpoint dell'**11 novembre 2026**, dopo la revisione vincolata delle grandezze non fluide.
+Checkpoint dell'**11 novembre 2026**, dopo la ricostruzione della legge di energia dello stadio.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -19,6 +19,7 @@ Checkpoint dell'**11 novembre 2026**, dopo la revisione vincolata delle grandezz
 | Diagnostica valvola di regolazione | Eseguita e congelata, replay PASS: `CONTROL-VALVE-NOT-MATERIAL-IN-LINEAR-MODEL`. |
 | Altre grandezze non fluide | Eseguite e congelate, replay PASS: `NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`, artefatto di colonne collineari. |
 | Revisione vincolata | Offline, congelata, replay PASS: `NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`. |
+| Legge di energia dello stadio | Revisione 2 congelata, replay PASS: `STAGE-ADMISSION-CLOSURE-INCOHERENCE-DEMONSTRATED`; la revisione 1 non è valida. |
 | M10 | **Aperto**. Nessuna ricerca o nuova prova lunga attualmente in corso. |
 
 ### Il problema da risolvere
@@ -150,40 +151,77 @@ energia lungo la linea vapore: l'esito è
 coincide per posizione con lo squilibrio su `turbine-inlet` che la revisione di
 sufficienza attribuisce allo spostamento di energia specifica introdotto da C4.
 
+### Che cosa ha mostrato la ricostruzione dello stadio
+
+Con il drenaggio della condensa, `TurbineExpansionSolver` divide la portata
+secondo la qualità del nodo di ingresso e assegna a vapore e condensa le
+energie di `GetSaturationProperties`, che il modello semplificato calcola sempre
+con le correlazioni storiche. Il separatore del drum usa invece
+`PhaseTransportPropertyProvider`, che sotto C4 delega al resolver tabulato.
+La [ricostruzione](../eng/contracts/r3-stage-energy-law-reconstruction2.md)
+lo ha misurato nel punto grezzo del modo 2, al checkpoint 1:
+
+| Energia specifica, entalpia | Registrata dallo stadio | Saturazione storica | Chiusura attiva C4 |
+| --- | --- | --- | --- |
+| Vapore | 2.726,6 kJ/kg | 2.726,6 kJ/kg, identica | 2.801,7 kJ/kg |
+| Condensa | 1.044,6 kJ/kg | 1.044,6 kJ/kg, identica | 1.074,0 kJ/kg |
+
+La miscela C4 di `turbine-inlet` vale 2.761,4 kJ/kg e coincide con le proprie
+proprietà di trasporto entro 1,7 J/kg; con quelle storiche differisce di 74
+kJ/kg. Lo stadio ammette quindi energia C4 e la rimuove con energie storiche.
+Ricalcolando l'uscita con le energie della chiusura attiva, a parità di stato e
+portate, l'accumulo su `turbine-inlet` scende da 1,007 MW a 18,8 kW, l'1,9%:
+l'esito è **`STAGE-ADMISSION-CLOSURE-INCOHERENCE-DEMONSTRATED`**. I 18,8 kW
+restanti corrispondono alla differenza di 1,4 kJ/kg fra `control-out` e il nodo.
+Anche la condensa del condensatore usa la saturazione storica, per circa 6,3 kW.
+
+Il controfattuale è contabile, non un'osservazione: non dice come evolverebbe
+l'impianto con la legge corretta. La prima esecuzione aveva valutato i provider
+sullo stato di fine passo ed è congelata come non valida.
+
 ## Handoff
 
-Inventari fluidi e grandezze non fluide sono misurati: nessuna combinazione
-entro i limiti delle sonde sposta l'accumulo di energia lungo la linea vapore.
-La condizione dell'handoff precedente è soddisfatta e gli esiti sono
-conservati. La prossima attività è la **revisione della legge di energia dello
-stadio**, cui la revisione di sufficienza attribuisce lo squilibrio su
-`turbine-inlet`: a parità di stato bersaglio, C4 assegna circa 75,5 kJ/kg in
-più alla portata di stadio.
+La ricostruzione ha dimostrato un'incoerenza nella legge di trasporto dello
+stadio sotto C4. La prossima attività è **pianificare la modifica**: con la
+chiusura C4, l'ammissione con drenaggio della condensa, e da valutare la
+condensa del condensatore, dovrebbero ricavare le energie di fase da
+`PhaseTransportPropertyProvider`, come già il separatore del drum. È una
+modifica della fisica di produzione e richiede un protocollo proprio:
 
-Seguendo le [decisioni ingegneristiche](validation/MODEL_DECISIONS.md#ricostruire-responsabilità-e-bilanci-prima-di-cambiare-la-fisica),
-il primo passo è una ricostruzione senza modifiche alla produzione: quale
-energia specifica trasporta lo stadio, da quale chiusura la ricava, e se
-Exact-V9 e C4 la valutano in modo coerente con l'energia degli inventari
-collegati. Solo un'incoerenza dimostrata motiva una proposta di modifica
-fisica, con protocollo, verifiche locali e riqualificazione propri.
+- dimostrare che, con le chiusure non C4, il comportamento resta identico bit
+  per bit. Il desktop usa `CorrelationConsistentInverseDomain`; lì il provider
+  attivo ricade sulle correlazioni storiche ma le valuta dalla temperatura del
+  nodo, mentre lo stadio usa la pressione. L'identità è verificata solo a
+  temperatura di saturazione esatta, quindi la modifica va limitata a C4 o
+  dimostrata identica sugli stati reali;
+- test locali dello stadio e del condensatore sotto C4, suite ordinaria e
+  baseline delle evidenze correnti;
+- poiché cambia il campo di flussi, ripetere la misura del punto grezzo del
+  modo 2 prima di qualsiasi nuova ricerca: le evidenze H, non fluide e della
+  ricostruzione restano storiche e non si riusano come Jacobiani.
 
-I replay delle diagnostiche non fluide e della revisione vincolata si eseguono
-sull'albero a 411 file:
+Nessuna modifica è autorizzata dalla sola ricostruzione.
+
+L'albero `tests/` conta ora 412 file. I replay della ricostruzione 2 si
+eseguono su questo albero; quelli delle diagnostiche non fluide e della
+revisione vincolata, legati all'albero a 411 file, al commit `ed35d9e`; quello
+della ricostruzione 1, non valida, al commit `804e76f`:
 
 ```powershell
+python .\eng\run-r3-stage-energy-law-reconstruction2.py review
 python .\eng\run-r3-op-control-valve-sensitivity1.py review
 python .\eng\run-r3-op-remaining-quantities-sensitivity1.py review
 python .\eng\review-r3-op-bounded-combination1.py review
 ```
 
-con esiti attesi `PASS-EVIDENCE-COMPLETE` e classificazioni
-`CONTROL-VALVE-NOT-MATERIAL-IN-LINEAR-MODEL` e
-`NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`, poi
-`PASS-BOUNDED-COMBINATION-REVIEW` con
-`NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`. I replay di H4–H9, dei Trial e
-delle revisioni restano legati all'albero a 410 file e si eseguono al commit
-`72b0910`, che lo contiene; i comandi seguenti valgono su quel commit. I
-pacchetti congelati non cambiano.
+con esiti attesi `PASS-RECONSTRUCTION-COMPLETE` e
+`STAGE-ADMISSION-CLOSURE-INCOHERENCE-DEMONSTRATED`, poi
+`CONTROL-VALVE-NOT-MATERIAL-IN-LINEAR-MODEL`,
+`NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL` e
+`NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`. I replay di H4–H9,
+dei Trial e delle revisioni restano legati all'albero a 410 file e si eseguono
+al commit `72b0910`, che lo contiene; i comandi seguenti valgono su quel
+commit. I pacchetti congelati non cambiano.
 
 Il confronto fra **sonde compensate tra inventari** e **maggiore riserva
 energetica interna alla miscela** resta sospeso. Sbloccherebbe la derivata
@@ -214,9 +252,11 @@ con esito atteso `PASS-FAMILY-SUFFICIENCY-REVIEW`.
    colonne, passi e previsioni esatte; le tracce dei batch le colonne complete.
 4. Leggere l'[analisi vincolata](../eng/frozen-evidence/r3-op-bounded-combination-review1/01-analysis.json):
    `models` contiene passi, certificati e `steam_path_energy_rates_w`.
-5. Preparare contratto e revisione statica della ricostruzione della legge di
-   energia dello stadio, senza modifiche alla produzione; eseguirla,
-   revisionarla e congelarla prima di proporre cambiamenti fisici.
+5. Leggere la [ricostruzione dello stadio](../eng/frozen-evidence/r3-stage-energy-law-reconstruction2/05-adjudication.json):
+   `stage`, `turbine_inlet` e `condenser` contengono energie, provider e controfattuale.
+6. Scrivere il protocollo della modifica della legge di trasporto sotto C4, con
+   identità sotto la chiusura storica, test locali, suite ordinaria e nuova
+   misura del punto grezzo, e farlo approvare prima di toccare `src/`.
 
 Per la famiglia H restano fissi 24 inventari fluidi, box ±2%, 75 residui e scale.
 La diagnostica varia le condizioni non fluide soltanto come sonde di test;
@@ -242,15 +282,17 @@ Un replay PASS attesta la completezza dell'evidenza; non promuove un seed.
 | [Diagnostica valvola](../eng/contracts/r3-op-control-valve-sensitivity1.md), [esito](../eng/frozen-evidence/r3-op-control-valve-sensitivity1/05-adjudication.json) e [ricevuta](../eng/r3-op-control-valve-sensitivity1-returned.json) | 22 sonde ripetute sulla valvola di regolazione; non materiale nel modello lineare. |
 | [Altre grandezze non fluide](../eng/contracts/r3-op-remaining-quantities-sensitivity1.md), [esito](../eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/05-adjudication.json) e [ricevuta](../eng/r3-op-remaining-quantities-sensitivity1-returned.json) | 102 sonde ripetute su pompe, popolazione e temperature; combinazione materiale solo fuori dal box. |
 | [Revisione vincolata](../eng/contracts/r3-op-bounded-combination-review1.md), [analisi](../eng/frozen-evidence/r3-op-bounded-combination-review1/01-analysis.json) e [ricevuta](../eng/r3-op-bounded-combination-review1-returned.json) | Minimi quadrati certificati entro i limiti delle sonde; nessuna chiamata fisica. |
+| [Ricostruzione dello stadio](../eng/contracts/r3-stage-energy-law-reconstruction2.md), [esito](../eng/frozen-evidence/r3-stage-energy-law-reconstruction2/05-adjudication.json) e [ricevuta](../eng/r3-stage-energy-law-reconstruction2-returned.json) | Energie di vapore e condensa dello stadio contro i due provider; la [revisione 1](../eng/contracts/r3-stage-energy-law-reconstruction1.md) non è valida. |
 | [Sintesi della validazione](validation/README.md) | Differenza fra controlli locali, evidenza e qualificazione fisica. |
 
 I replay H sono PASS sull'albero a 410 file di test; i 962 sorgenti produttivi
-sono invariati. Con i 411 file la CI ordinaria (`eng\ci-ordinary.cmd`) ha dato
-PASS: compilazione Release con avvisi come errori, **1.395 superati, 165
+sono invariati. Con i 412 file la CI ordinaria (`eng\ci-ordinary.cmd`) ha dato
+PASS: compilazione Release con avvisi come errori, **1.397 superati, 166
 espliciti esclusi, zero fallimenti**, baseline delle evidenze correnti PASS.
 Le due diagnostiche non fluide hanno superato ciascuna tre controlli preliminari,
-con uno esplicito escluso, prima dell'esecuzione fisica esplicita; i loro replay
-sono PASS. La seconda non modifica C#.
+la ricostruzione dello stadio due, con un esplicito escluso, prima
+dell'esecuzione esplicita; i replay sono PASS. La seconda diagnostica non
+modifica C#.
 Trial 9, Trial 10 e H9 non cambiano C#. Passano anche i casi analitici e i
 replay indipendenti; la cronologia è nel [changelog](../CHANGELOG.md).
 

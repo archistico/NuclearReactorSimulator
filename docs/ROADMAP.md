@@ -37,15 +37,19 @@ massimo scalato non misura l'avvicinamento fisico all'equilibrio. Misuriamo
 quindi la sensibilità ai punti operativi non fluidi prima di altre ricerche.
 Le sei grandezze sono misurate e, entro i limiti delle sonde,
 [nessuna combinazione](PROJECT.md#che-cosa-ha-mostrato-la-revisione-vincolata)
-sposta l'accumulo di energia lungo la linea vapore. Il passo successivo è
-ricostruire la legge di energia dello stadio. Il confronto fra sonde
-compensate e riserva energetica resta sospeso.
+sposta l'accumulo di energia lungo la linea vapore. La
+[ricostruzione dello stadio](PROJECT.md#che-cosa-ha-mostrato-la-ricostruzione-dello-stadio)
+ha individuato la causa: sotto C4 lo stadio rimuove vapore e condensa con
+energie di saturazione storiche. Il passo successivo è pianificare la modifica
+di quella legge di trasporto. Il confronto fra sonde compensate e riserva
+energetica resta sospeso.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
 | Diagnostica non fluida | Completata: sei grandezze misurate, revisione vincolata negativa e congelata. | — |
-| Legge di energia dello stadio | Ricostruire, senza modifiche alla produzione, l'energia specifica trasportata dallo stadio sotto Exact-V9 e C4. | Un'incoerenza dimostrata, o la sua esclusione, conservata con evidenza riproducibile. |
-| Scegliere la famiglia | Decidere con un protocollo distinto fra H, C, J o una legge di stadio corretta. | Esito della ricostruzione dello stadio revisionato e conservato. |
+| Legge di energia dello stadio | Completata: incoerenza dimostrata, l'1,9% dell'accumulo resta con le energie della chiusura attiva. | — |
+| Correggere il trasporto di fase | Con C4, ricavare le energie di vapore e condensa dello stadio, e da valutare del condensatore, dal provider della chiusura attiva. | Identità con la chiusura storica, test locali, suite ordinaria e nuova misura del punto grezzo. |
+| Scegliere la famiglia | Rimisurare residui e Jacobiani con la legge corretta e decidere fra H, C o J. | Evidenza nuova; le misure precedenti restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti, compatibili con tutti i checkpoint della ricetta. | Derivate disponibili e previsioni direzionali verificate a una scala utile. |
 | Provare le proposte | Congelare le proposte e confrontarle due volte con la risposta reale. | Ripetizioni identiche, discesa, ramo ed errore del modello conformi. |
 | Eseguire una nuova ricerca | Fissare algoritmo, criteri di arresto e budget sulla base della prova. | Evidenza completa e una radice osservata prima della conferma. |

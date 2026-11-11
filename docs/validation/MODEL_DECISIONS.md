@@ -93,6 +93,16 @@ passo, al più quelli delle sonde, oppure raggruppa le direzioni collineari, e
 riporta il condizionamento. Un esito ottenuto fuori da quei limiti è
 conservato ma non motiva una famiglia.
 
+## Ricostruire una legge sullo stato letto dal solutore
+
+I solutori di stadio e condensatore leggono lo stato committato all'inizio del
+passo; il motore espone anche lo stato candidato a fine passo. Una
+ricostruzione che confronta valori registrati con una funzione indipendente
+deve valutarla sugli ingressi registrati nello snapshot del solutore, non sullo
+stato finale: la differenza è piccola ma supera qualsiasi tolleranza di
+identità. La prima ricostruzione della legge di stadio è stata invalidata per
+questo motivo e resta congelata come evidenza del difetto.
+
 ## Considerare il ramo lungo tutta la ricetta
 
 Il controllo della fase include stato grezzo, primo passo preparatorio,
