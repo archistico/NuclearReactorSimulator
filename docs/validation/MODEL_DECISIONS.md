@@ -81,6 +81,18 @@ Un modello lineare che non contiene una radice nella famiglia di trim scelta
 motiva la misura di altre grandezze prima di estendere budget o limiti. Resta
 una previsione locale: non dimostra l'assenza di una radice non lineare.
 
+## Classificare i modelli lineari entro la regione delle sonde
+
+Una classificazione basata su minimi quadrati non vincolati può premiare
+colonne quasi collineari: passi enormi e di segno opposto annullano i residui
+sfruttando differenze minime fra derivate. Popolazione neutronica e
+temperature iniziali di combustibile e struttura agiscono tutte sul calore
+ceduto a `outlet`, con coseno pesato pari a 1 alla quarta cifra. Un protocollo
+che classifica con un modello lineare dichiara quindi in anticipo i limiti del
+passo, al più quelli delle sonde, oppure raggruppa le direzioni collineari, e
+riporta il condizionamento. Un esito ottenuto fuori da quei limiti è
+conservato ma non motiva una famiglia.
+
 ## Considerare il ramo lungo tutta la ricetta
 
 Il controllo della fase include stato grezzo, primo passo preparatorio,

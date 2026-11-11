@@ -1,0 +1,286 @@
+{
+  "status": "PASS-STATIC",
+  "contract_sha256": "8C1049820AEA1550491CA126E082DFE27EC10D584A662E6B7E85D76068987034",
+  "fixtures": [
+    {
+      "case": "exact",
+      "solution": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "case": "inconsistent",
+      "solution": [
+        0.3333333333333332,
+        0.33333333333333326
+      ]
+    },
+    {
+      "case": "rank-deficient",
+      "rejected": true
+    },
+    {
+      "case": "outside-bound-request",
+      "rejected": true
+    }
+  ],
+  "points": [
+    {
+      "id": "base",
+      "quantity": null,
+      "fraction": 0.0
+    },
+    {
+      "id": "condensate-pump-percent/plus/1e-06",
+      "quantity": "condensate-pump-percent",
+      "fraction": 1e-06
+    },
+    {
+      "id": "condensate-pump-percent/minus/1e-06",
+      "quantity": "condensate-pump-percent",
+      "fraction": -1e-06
+    },
+    {
+      "id": "condensate-pump-percent/plus/1e-05",
+      "quantity": "condensate-pump-percent",
+      "fraction": 1e-05
+    },
+    {
+      "id": "condensate-pump-percent/minus/1e-05",
+      "quantity": "condensate-pump-percent",
+      "fraction": -1e-05
+    },
+    {
+      "id": "condensate-pump-percent/plus/0.0001",
+      "quantity": "condensate-pump-percent",
+      "fraction": 0.0001
+    },
+    {
+      "id": "condensate-pump-percent/minus/0.0001",
+      "quantity": "condensate-pump-percent",
+      "fraction": -0.0001
+    },
+    {
+      "id": "condensate-pump-percent/plus/0.001",
+      "quantity": "condensate-pump-percent",
+      "fraction": 0.001
+    },
+    {
+      "id": "condensate-pump-percent/minus/0.001",
+      "quantity": "condensate-pump-percent",
+      "fraction": -0.001
+    },
+    {
+      "id": "condensate-pump-percent/plus/0.01",
+      "quantity": "condensate-pump-percent",
+      "fraction": 0.01
+    },
+    {
+      "id": "condensate-pump-percent/minus/0.01",
+      "quantity": "condensate-pump-percent",
+      "fraction": -0.01
+    },
+    {
+      "id": "feedwater-pump-percent/plus/1e-06",
+      "quantity": "feedwater-pump-percent",
+      "fraction": 1e-06
+    },
+    {
+      "id": "feedwater-pump-percent/minus/1e-06",
+      "quantity": "feedwater-pump-percent",
+      "fraction": -1e-06
+    },
+    {
+      "id": "feedwater-pump-percent/plus/1e-05",
+      "quantity": "feedwater-pump-percent",
+      "fraction": 1e-05
+    },
+    {
+      "id": "feedwater-pump-percent/minus/1e-05",
+      "quantity": "feedwater-pump-percent",
+      "fraction": -1e-05
+    },
+    {
+      "id": "feedwater-pump-percent/plus/0.0001",
+      "quantity": "feedwater-pump-percent",
+      "fraction": 0.0001
+    },
+    {
+      "id": "feedwater-pump-percent/minus/0.0001",
+      "quantity": "feedwater-pump-percent",
+      "fraction": -0.0001
+    },
+    {
+      "id": "feedwater-pump-percent/plus/0.001",
+      "quantity": "feedwater-pump-percent",
+      "fraction": 0.001
+    },
+    {
+      "id": "feedwater-pump-percent/minus/0.001",
+      "quantity": "feedwater-pump-percent",
+      "fraction": -0.001
+    },
+    {
+      "id": "feedwater-pump-percent/plus/0.01",
+      "quantity": "feedwater-pump-percent",
+      "fraction": 0.01
+    },
+    {
+      "id": "feedwater-pump-percent/minus/0.01",
+      "quantity": "feedwater-pump-percent",
+      "fraction": -0.01
+    },
+    {
+      "id": "neutron-population-relative/plus/1e-06",
+      "quantity": "neutron-population-relative",
+      "fraction": 1e-06
+    },
+    {
+      "id": "neutron-population-relative/minus/1e-06",
+      "quantity": "neutron-population-relative",
+      "fraction": -1e-06
+    },
+    {
+      "id": "neutron-population-relative/plus/1e-05",
+      "quantity": "neutron-population-relative",
+      "fraction": 1e-05
+    },
+    {
+      "id": "neutron-population-relative/minus/1e-05",
+      "quantity": "neutron-population-relative",
+      "fraction": -1e-05
+    },
+    {
+      "id": "neutron-population-relative/plus/0.0001",
+      "quantity": "neutron-population-relative",
+      "fraction": 0.0001
+    },
+    {
+      "id": "neutron-population-relative/minus/0.0001",
+      "quantity": "neutron-population-relative",
+      "fraction": -0.0001
+    },
+    {
+      "id": "neutron-population-relative/plus/0.001",
+      "quantity": "neutron-population-relative",
+      "fraction": 0.001
+    },
+    {
+      "id": "neutron-population-relative/minus/0.001",
+      "quantity": "neutron-population-relative",
+      "fraction": -0.001
+    },
+    {
+      "id": "neutron-population-relative/plus/0.01",
+      "quantity": "neutron-population-relative",
+      "fraction": 0.01
+    },
+    {
+      "id": "neutron-population-relative/minus/0.01",
+      "quantity": "neutron-population-relative",
+      "fraction": -0.01
+    },
+    {
+      "id": "fuel-temperature-celsius/plus/1e-06",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": 1e-06
+    },
+    {
+      "id": "fuel-temperature-celsius/minus/1e-06",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": -1e-06
+    },
+    {
+      "id": "fuel-temperature-celsius/plus/1e-05",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": 1e-05
+    },
+    {
+      "id": "fuel-temperature-celsius/minus/1e-05",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": -1e-05
+    },
+    {
+      "id": "fuel-temperature-celsius/plus/0.0001",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": 0.0001
+    },
+    {
+      "id": "fuel-temperature-celsius/minus/0.0001",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": -0.0001
+    },
+    {
+      "id": "fuel-temperature-celsius/plus/0.001",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": 0.001
+    },
+    {
+      "id": "fuel-temperature-celsius/minus/0.001",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": -0.001
+    },
+    {
+      "id": "fuel-temperature-celsius/plus/0.01",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": 0.01
+    },
+    {
+      "id": "fuel-temperature-celsius/minus/0.01",
+      "quantity": "fuel-temperature-celsius",
+      "fraction": -0.01
+    },
+    {
+      "id": "structure-temperature-celsius/plus/1e-06",
+      "quantity": "structure-temperature-celsius",
+      "fraction": 1e-06
+    },
+    {
+      "id": "structure-temperature-celsius/minus/1e-06",
+      "quantity": "structure-temperature-celsius",
+      "fraction": -1e-06
+    },
+    {
+      "id": "structure-temperature-celsius/plus/1e-05",
+      "quantity": "structure-temperature-celsius",
+      "fraction": 1e-05
+    },
+    {
+      "id": "structure-temperature-celsius/minus/1e-05",
+      "quantity": "structure-temperature-celsius",
+      "fraction": -1e-05
+    },
+    {
+      "id": "structure-temperature-celsius/plus/0.0001",
+      "quantity": "structure-temperature-celsius",
+      "fraction": 0.0001
+    },
+    {
+      "id": "structure-temperature-celsius/minus/0.0001",
+      "quantity": "structure-temperature-celsius",
+      "fraction": -0.0001
+    },
+    {
+      "id": "structure-temperature-celsius/plus/0.001",
+      "quantity": "structure-temperature-celsius",
+      "fraction": 0.001
+    },
+    {
+      "id": "structure-temperature-celsius/minus/0.001",
+      "quantity": "structure-temperature-celsius",
+      "fraction": -0.001
+    },
+    {
+      "id": "structure-temperature-celsius/plus/0.01",
+      "quantity": "structure-temperature-celsius",
+      "fraction": 0.01
+    },
+    {
+      "id": "structure-temperature-celsius/minus/0.01",
+      "quantity": "structure-temperature-celsius",
+      "fraction": -0.01
+    }
+  ],
+  "requests": 102
+}

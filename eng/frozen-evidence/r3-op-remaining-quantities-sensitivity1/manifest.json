@@ -1,0 +1,47 @@
+{
+  "schema": "r3-op-remaining-quantities-sensitivity1-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 7750,
+      "sha256": "0397A0F83197161AC8FC6DDD52D63D8B259276747D78F9DEE65008220D8383C8",
+      "stored_sha256": "0397A0F83197161AC8FC6DDD52D63D8B259276747D78F9DEE65008220D8383C8"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "0160F261A844E95EE70BB8BCD42A01F7B48460B1158615AC2045770F9996BCDB",
+      "stored_sha256": "0160F261A844E95EE70BB8BCD42A01F7B48460B1158615AC2045770F9996BCDB"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 1622493,
+      "sha256": "7C636823337419C10F498659630C05753CD71C43400213396A4CE0DB533CFEA0",
+      "stored_sha256": "72D360D512B3107CA49C0C2E6CBA587AB48AB8B737712BB9FDD79DC563EAE20F"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 128919,
+      "sha256": "069DDA1813CA20BB27B9BA5479EE34EBDA390DEAD6C7F05B00B9122ECF12A8B5",
+      "stored_sha256": "069DDA1813CA20BB27B9BA5479EE34EBDA390DEAD6C7F05B00B9122ECF12A8B5"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 4150,
+      "sha256": "3F8F6FBACDA658C82DE0D6E1A90FCB8FE75F6512176D8AE50CE458361DAD8126",
+      "stored_sha256": "3F8F6FBACDA658C82DE0D6E1A90FCB8FE75F6512176D8AE50CE458361DAD8126"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1993,
+      "sha256": "0B75A7B057A6EFE6F78C7C1E1A43C9EBFB609DA7F9000C115877CC29B597F0E3",
+      "stored_sha256": "0B75A7B057A6EFE6F78C7C1E1A43C9EBFB609DA7F9000C115877CC29B597F0E3"
+    }
+  ]
+}

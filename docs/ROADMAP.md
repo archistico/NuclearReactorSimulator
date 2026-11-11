@@ -35,13 +35,14 @@ di energia specifica introdotto dalla nuova chiusura. La
 indica che i soli inventari fluidi non bastano, nel modello lineare, e che il
 massimo scalato non misura l'avvicinamento fisico all'equilibrio. Misuriamo
 quindi la sensibilità ai punti operativi non fluidi prima di altre ricerche.
-La [valvola di regolazione](PROJECT.md#che-cosa-ha-mostrato-la-diagnostica-della-valvola)
-non è materiale nel modello lineare. Il confronto fra sonde compensate e
-riserva energetica resta sospeso.
+Le sei grandezze sono misurate: nessuna, da sola,
+[sposta il residuo della linea vapore](PROJECT.md#che-cosa-hanno-mostrato-le-altre-grandezze-non-fluide),
+e la sola combinazione che lo riduce esce dal box. Il confronto fra sonde
+compensate e riserva energetica resta sospeso.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
-| Diagnostica non fluida | Valvola completata. Restano pompe secondarie, popolazione neutronica e temperature iniziali, oppure la revisione della legge di stadio. | Sonde ripetute identiche, residui e scale invariati, metrica fisica riportata. |
+| Diagnostica non fluida | Completata per le sei grandezze; resta la revisione offline vincolata a ±2%, con le direzioni collineari raggruppate. | Soglie e limiti fissati prima del calcolo, condizionamento e metrica fisica riportati. |
 | Scegliere la famiglia | Decidere con un protocollo distinto fra H, C, J o revisione della legge di stadio. | Una grandezza che sposti i residui della linea vapore, o un esito negativo conservato. |
 | Verificare la base locale | Misurare direzioni indipendenti, compatibili con tutti i checkpoint della ricetta. | Derivate disponibili e previsioni direzionali verificate a una scala utile. |
 | Provare le proposte | Congelare le proposte e confrontarle due volte con la risposta reale. | Ripetizioni identiche, discesa, ramo ed errore del modello conformi. |

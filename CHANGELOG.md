@@ -68,6 +68,25 @@ Specifiche, esiti e comandi sono raggiungibili dalle
 - Congelato il pacchetto con ricevuta; replay PASS. Nessuna famiglia, radice o
   seed è qualificato: R3 resta RED e M10 aperto.
 
+### Sensibilità alle altre grandezze non fluide
+
+- Preparati e committati prima dell'esecuzione specifica, contratto e runner
+  per pompe di condensato e alimento, popolazione neutronica e temperature
+  iniziali, senza modifiche a `src/` o `tests/`. Revisione statica PASS.
+- Eseguite 102 ricette in tre batch: tutte valide e nell'inviluppo, ripetizioni
+  identiche, baseline uguale a quella congelata della valvola. Un solo cambio di
+  fase: pompa di alimento a +1e-2, su `feedwater-inventory` e hotwell.
+- Le pompe spostano massa fra hotwell, `feedwater-inventory` e drum; popolazione
+  e temperature agiscono solo sull'energia di `outlet`, con colonne pesate
+  collineari (coseno 1,0000). Con gli inventari nessuna grandezza scende sotto il
+  98% del massimo dei soli inventari; il residuo resta su `stop-out`, 295–314 kW.
+- Esito congelato `NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`: il modello
+  con tutte le colonne prevede 18 kW, il 6%, ma con passi fino a −6.077% sulla
+  pompa di condensato e +2.136% sulla popolazione. È un artefatto della
+  collinearità, non una motivazione fisica; replay PASS. R3 resta RED.
+- Registrata la decisione di classificare i modelli lineari entro i limiti
+  delle sonde, raggruppando le direzioni collineari.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto
