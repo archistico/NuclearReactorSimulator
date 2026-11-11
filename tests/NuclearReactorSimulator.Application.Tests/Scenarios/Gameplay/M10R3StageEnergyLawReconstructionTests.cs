@@ -9,8 +9,14 @@ namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 
 public sealed class M10R3StageEnergyLawReconstructionTests
 {
-    private const string Protocol = "r3-stage-energy-law-reconstruction1";
+    private const string CurrentProtocol = "r3-stage-energy-law-reconstruction2";
     private static string Sha(string path) => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(path)));
+    private static string Protocol(string? value)
+    {
+        Assert.NotNull(value);
+        Assert.Matches("^r3-stage-energy-law-reconstruction[0-9]+$", value);
+        return value;
+    }
 
     private static object Providers(SimplifiedWaterSteamThermodynamicModel model, FluidEnergyTransportMode mode, Pressure pressure, Temperature temperature)
     {
@@ -58,7 +64,9 @@ public sealed class M10R3StageEnergyLawReconstructionTests
     [Fact]
     public void Preexecution_ReconstructionContractNamesThisExecutor()
     {
-        var contract = Path.Combine(R3HFeasibilityHarness.Root, "eng", Protocol + "-contract.json");
+        Assert.ThrowsAny<Exception>(() => Protocol("../outside"));
+        Assert.ThrowsAny<Exception>(() => Protocol("r3-op-control-valve-sensitivity1"));
+        var contract = Path.Combine(R3HFeasibilityHarness.Root, "eng", Protocol(CurrentProtocol) + "-contract.json");
         using var document = JsonDocument.Parse(File.ReadAllText(contract));
         Assert.Contains(document.RootElement.GetProperty("implementation_files").EnumerateArray(),
             static f => f.GetProperty("path").GetString()!.EndsWith(nameof(M10R3StageEnergyLawReconstructionTests) + ".cs", StringComparison.Ordinal));
@@ -67,12 +75,13 @@ public sealed class M10R3StageEnergyLawReconstructionTests
     [Fact(Explicit = true)]
     public void ExecuteReviewedReconstruction()
     {
-        var output = Path.Combine(R3HFeasibilityHarness.Root, "artifacts", Protocol);
-        var contractPath = Path.Combine(R3HFeasibilityHarness.Root, "eng", Protocol + "-contract.json");
+        var protocol = Protocol(Environment.GetEnvironmentVariable("NRS_R3_STAGE_PROTOCOL"));
+        var output = Path.Combine(R3HFeasibilityHarness.Root, "artifacts", protocol);
+        var contractPath = Path.Combine(R3HFeasibilityHarness.Root, "eng", protocol + "-contract.json");
         using var contractDocument = JsonDocument.Parse(File.ReadAllText(contractPath));
         var contract = contractDocument.RootElement;
-        Assert.Equal(Protocol + "-v1", contract.GetProperty("schema").GetString());
-        Assert.Equal("artifacts/" + Protocol, contract.GetProperty("output").GetString());
+        Assert.Equal(protocol + "-v1", contract.GetProperty("schema").GetString());
+        Assert.Equal("artifacts/" + protocol, contract.GetProperty("output").GetString());
         foreach (var file in contract.GetProperty("implementation_files").EnumerateArray())
             Assert.Equal(file.GetProperty("sha256").GetString(), Sha(Path.Combine(R3HFeasibilityHarness.Root, file.GetProperty("path").GetString()!)));
         using var tokenDocument = JsonDocument.Parse(File.ReadAllText(Path.Combine(output, "02-preexecution.json")));
@@ -83,16 +92,14 @@ public sealed class M10R3StageEnergyLawReconstructionTests
         Assert.All(evaluation.Observations, static o => Assert.True(o.Healthy));
         var full = evaluation.Engine.LatestCanonicalSnapshot.Control.ProtectedControl.FullPlant;
         var cycle = full.IntegratedCycle;
-        var plant = full.CandidatePlant;
         var model = new SimplifiedWaterSteamThermodynamicModel(WaterSteamThermodynamicClosureMode.ReferenceConsistentTabulatedInverseDomain);
         var train = Assert.Single(cycle.TurbineExpansion.MainSteamNetwork.AdmissionTrains);
         var stage = Assert.Single(cycle.TurbineExpansion.StageGroups);
         var condenser = Assert.Single(cycle.Condenser.Condensers);
-        var inlet = plant.GetFluidNode(stage.InletNodeId);
-        var steamSpace = plant.GetFluidNode(condenser.SteamSpaceNodeId);
+        // Both solvers read the committed state at the start of the step; their snapshots record that state.
         var record = new
         {
-            Protocol,
+            Protocol = protocol,
             Checkpoint = "1",
             Residuals = evaluation.Residuals,
             StateSha256 = R3HFeasibilityHarness.Hash(evaluation.Observations[^1].StateJson),
@@ -108,7 +115,7 @@ public sealed class M10R3StageEnergyLawReconstructionTests
                 DrainAdvectedJKg = stage.MoistureDrainAdvectedSpecificEnergy.JoulesPerKilogram,
                 VaporMassKgS = stage.EffectiveMassFlowRate.KilogramsPerSecond, DrainMassKgS = stage.MoistureDrainMassFlowRate.KilogramsPerSecond,
                 InletEnergyW = stage.InletEnergyFlowRate.Watts, DrainEnergyW = stage.MoistureDrainEnergyFlowRate.Watts,
-                Providers = Providers(model, stage.EnergyTransportMode, inlet.Pressure, inlet.Temperature),
+                Providers = Providers(model, stage.EnergyTransportMode, stage.InletPressure, stage.InletTemperature),
             },
             Admission = new
             {
@@ -123,7 +130,7 @@ public sealed class M10R3StageEnergyLawReconstructionTests
                 SteamAdvectedJKg = condenser.SteamAdvectedSpecificEnergy.JoulesPerKilogram,
                 CondensateAdvectedJKg = condenser.CondensateAdvectedSpecificEnergy.JoulesPerKilogram,
                 HeatRejectionW = condenser.HeatRejectionPower.Watts,
-                Providers = Providers(model, condenser.EnergyTransportMode, steamSpace.Pressure, steamSpace.Temperature),
+                Providers = Providers(model, condenser.EnergyTransportMode, condenser.InitialSteamSpacePressure, condenser.InitialSteamSpaceTemperature),
             },
         };
         File.WriteAllText(Path.Combine(output, "03-reconstruction.json"), JsonSerializer.Serialize(record, new JsonSerializerOptions { WriteIndented = true }));
