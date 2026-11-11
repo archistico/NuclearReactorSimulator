@@ -1534,11 +1534,11 @@
         },
         {
           "type": "document",
-          "path": "docs/M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md"
+          "path": "eng/contracts/m10/M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md"
         },
         {
           "type": "document",
-          "path": "docs/M10_9_8_2_REV5_INTERACTIVE_LIST_STABILITY_AUDIT.md"
+          "path": "eng/contracts/m10/M10_9_8_2_REV5_INTERACTIVE_LIST_STABILITY_AUDIT.md"
         },
         {
           "type": "script",
@@ -1576,7 +1576,7 @@
       "final_cumulative_required_routes": [
         "dotnet test",
         "scripts/run-m1098-integrated-human-automation-hmi-audit.cmd",
-        "docs/M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md"
+        "eng/contracts/m10/M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md"
       ],
       "historical_frozen_not_dynamically_rerun": [],
       "long_validation_observed": false,
@@ -1744,7 +1744,7 @@
       "evidence_references": [
         {
           "type": "document",
-          "path": "docs/M10_FINAL_PRE_M11_VALIDATION_PLAN.md"
+          "path": "eng/contracts/m10/M10_FINAL_PRE_M11_VALIDATION_PLAN.md"
         },
         {
           "type": "external-review-artifact",

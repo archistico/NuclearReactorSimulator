@@ -24,7 +24,7 @@ Write-Host "This does not implement P3-R1, change production runtime/workload,"
 Write-Host "authorize a production repair or freeze a second replacement long."
 Write-Host ""
 
-$doc='docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md'
+$doc='eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md'
 Require-Text $doc 'P1B execution PASS'
 Require-Text $doc 'COUPLED-MULTI-DOMAIN'
 Require-Text $doc '6 MWe load reachability'
@@ -64,12 +64,12 @@ Require-Text $sentinels 'steps=362784;trip=0;nonconverged=0;nonfinite=0;rollback
 
 Require-File 'eng/frozen-evidence/ordinary/M10FinalReplacementLongClosurePlan1_P1B_LateWindowTrends.csv'
 Require-Text 'eng/frozen-evidence/ordinary/PreM11_TodreasKazimi_DeepReviewPass2_ValidatedSummary.txt' 'disposition=PASS-AS-AUTHORED'
-Require-Text 'docs/PROJECT.md' 'P2R2 DECISION RE-ENTRY 2 / P3-R OWNER-LOCALIZATION SELECTION'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'P3-R1-Primary-Inventory-Hydraulic-Slow-State-Owner-Localization'
-Require-Text 'docs/ROADMAP.md' 'P3-R1'
-Require-Text 'docs/M10_FINAL_VV_MATRIX.md' 'P2R2'
-Require-Text 'docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md' 'P2R2'
-Require-Text 'docs/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'P2R2 DECISION RE-ENTRY 2 / P3-R OWNER-LOCALIZATION SELECTION'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'P3-R1-Primary-Inventory-Hydraulic-Slow-State-Owner-Localization'
+Require-Text 'eng/contracts/m10/navigation/ROADMAP.md' 'P3-R1'
+Require-Text 'eng/contracts/m10/M10_FINAL_VV_MATRIX.md' 'P2R2'
+Require-Text 'eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md' 'P2R2'
+Require-Text 'eng/contracts/m10/navigation/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md'
 
 $contractPath='eng/m10-final-replacement-long-closure-plan1-p2r2-decision-contract.json'
 Require-File $contractPath

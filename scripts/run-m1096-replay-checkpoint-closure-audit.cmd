@@ -49,5 +49,5 @@ if not exist "artifacts\m1096-closure\03-m1096-pack-identity-policy-matrix.csv" 
 
 echo.
 echo Automated M10.9.6 closure gate completed.
-echo Final promotion requires: docs\M10_9_6_5_MANUAL_VALIDATION_CHECKLIST.md
+echo Final promotion requires: eng\contracts\m10\M10_9_6_5_MANUAL_VALIDATION_CHECKLIST.md
 exit /b 0

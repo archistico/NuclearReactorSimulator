@@ -82,9 +82,9 @@ function Require-ByteTreeManifestSha256([string]$Root,[string]$Expected,[string]
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $validatorPath = $MyInvocation.MyCommand.Path
 $contractPath = Join-Path $PSScriptRoot 'm10-final-vr2-engineering-repair-planning1-rp1c-c4-dynamic-pgo-comparator-planning1-contract.json'
-$adjudicationPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION1_RETURNED_EVIDENCE_ADJUDICATION.md'
-$planPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR_PLANNING1.md'
-$reviewPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR_PLANNING1_PREEXECUTION_REVIEW.md'
+$adjudicationPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$planPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR_PLANNING1.md'
+$reviewPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR_PLANNING1_PREEXECUTION_REVIEW.md'
 $adrPath = Join-Path $repoRoot 'docs\adr\0202-isolate-dynamic-pgo-with-qjfl-enabled-before-runtime-impact-assessment.md'
 $frozenRoot = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_RuntimeFactorIsolation1_Artifacts'
 $rfi01 = Join-Path $frozenRoot '01-contract-and-provenance.txt'

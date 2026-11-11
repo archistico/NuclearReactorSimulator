@@ -67,7 +67,7 @@ Require-Contains $planningSummary 'future-selection-decision-space=SELECT-C4|SEL
 Require-Contains $planningReview 'future-confirmation-implementation-contained=False' 'planning review'
 Require-Contains $planningReview 'returned-planning-adjudication-required-before-confirmation=True' 'planning review'
 
-$adjudicationDoc = Read-All 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$adjudicationDoc = Read-All 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
 Require-Contains $adjudicationDoc 'Returned RP1C Planning 1 evidence is adjudicated **PASS**.' 'returned planning adjudication'
 Require-Contains $adjudicationDoc 'RP1C-C4-FULL-DOMAIN-PERFORMANCE-CONFIRMATION1' 'returned planning adjudication'
 Require-Contains $adjudicationDoc 'does **not** authorize candidate mutation, RP1C selection, production repair' 'returned planning adjudication'

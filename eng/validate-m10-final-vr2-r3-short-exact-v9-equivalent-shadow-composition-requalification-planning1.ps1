@@ -127,9 +127,9 @@ $runnerPath=Join-Path $repoRoot ($contract.planning_gate_files.runner.path.Repla
 Require-R3 ((Get-R3NormalizedTextSha256 $validatorPath) -eq [string]$contract.planning_gate_files.validator.normalized_sha256) 'R3 planning validator hash drift.'
 Require-R3 ((Get-R3NormalizedTextSha256 $runnerPath) -eq [string]$contract.planning_gate_files.runner.normalized_sha256) 'R3 planning runner hash drift.'
 
-$main=Join-Path $repoRoot 'docs\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1.md'
-$pre=Join-Path $repoRoot 'docs\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1_PREEXECUTION_REVIEW.md'
-$ret=Join-Path $repoRoot 'docs\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$main=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1.md'
+$pre=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1_PREEXECUTION_REVIEW.md'
+$ret=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
 Require-R3Text $main '128 running steps'
 Require-R3Text $main '120 simulated seconds'
 Require-R3Text $main 'R4-P1B-EQUIVALENT-LONG-MATERIALITY-RECHECK-PLANNING1'

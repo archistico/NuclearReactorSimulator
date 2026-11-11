@@ -35,10 +35,10 @@ function Parse-InvDouble([string]$Text,[string]$Label) {
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $contractPath = Join-Path $PSScriptRoot 'm10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation-planning1-contract.json'
-$planPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION_PLANNING1.md'
-$reviewPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION_PLANNING1_PREEXECUTION_REVIEW.md'
+$planPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION_PLANNING1.md'
+$reviewPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION_PLANNING1_PREEXECUTION_REVIEW.md'
 $adrPath = Join-Path $repoRoot 'docs\adr\0201-isolate-tiered-compilation-quickjit-and-loop-quickjit-before-pgo-or-rp1c-selection.md'
-$adjudicationPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$adjudicationPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION1_RETURNED_EVIDENCE_ADJUDICATION.md'
 $attrRoot = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_ExactV9TailAttribution1_Artifacts'
 $runSummaryPath = Join-Path $attrRoot '02-runtime-mode-run-summary.csv'
 $evidenceSummaryPath = Join-Path $attrRoot '05-attribution-evidence-summary.txt'

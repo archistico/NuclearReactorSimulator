@@ -64,8 +64,8 @@ $performancePath = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2
 $planningRoot = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_ExactV9TailAttributionPlanning1_Artifacts'
 $runnerPath = Join-Path $repoRoot 'scripts\run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-exact-v9-tail-attribution1.cmd'
 $adjudicatorPath = Join-Path $PSScriptRoot 'adjudicate-m10-final-vr2-engineering-repair-planning1-rp1c-c4-exact-v9-tail-attribution1.ps1'
-$implementationDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION1.md'
-$reviewDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION1_PREEXECUTION_REVIEW.md'
+$implementationDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION1.md'
+$reviewDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION1_PREEXECUTION_REVIEW.md'
 
 foreach ($path in @($contractPath,$testPath,$c4Path,$exactPath,$performancePath,$runnerPath,$adjudicatorPath,$implementationDoc,$reviewDoc)) {
     Require-File $path

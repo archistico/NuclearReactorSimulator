@@ -118,5 +118,5 @@ if exist "artifacts\m10973-desktop-host-session-integrity\01-m10973-desktop-host
 
 echo.
 echo M10.9.7.3 Hotfix 2 REV2 automated desktop-host/session-integrity audit completed.
-echo Final promotion also requires docs\M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md.
+echo Final promotion also requires eng\contracts\m10\M10_9_7_3_HOTFIX2_MANUAL_VALIDATION_CHECKLIST.md.
 exit /b 0

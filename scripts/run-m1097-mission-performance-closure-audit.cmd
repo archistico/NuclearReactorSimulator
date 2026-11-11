@@ -86,5 +86,5 @@ if exist "artifacts\m1097-mission-performance-closure\01-m10975-mission-performa
 
 echo.
 echo M10.9.7.5 Hotfix 1 automated Mission / Performance closure audit completed.
-echo Final M10.9.7 promotion also requires docs\M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md.
+echo Final M10.9.7 promotion also requires eng\contracts\m10\M10_9_7_5_MANUAL_VALIDATION_CHECKLIST.md.
 exit /b 0

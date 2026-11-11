@@ -163,9 +163,9 @@ foreach($p in $contract.authority.PSObject.Properties){ Require (-not [bool]$p.V
 $futureTest=Join-Path $repoRoot ($c.new_test_files[0].Replace('/','\'))
 Require (-not (Test-Path -LiteralPath $futureTest)) 'Planning candidate must not contain future R2 test source.'
 
-$main=Join-Path $repoRoot 'docs\M10_FINAL_VR2_R2_FOCUSED_THERMODYNAMIC_REFERENCE_TOPOLOGY_QUALIFICATION_PLANNING1.md'
-$pre=Join-Path $repoRoot 'docs\M10_FINAL_VR2_R2_FOCUSED_THERMODYNAMIC_REFERENCE_TOPOLOGY_QUALIFICATION_PLANNING1_PREEXECUTION_REVIEW.md'
-$ret=Join-Path $repoRoot 'docs\M10_FINAL_VR2_R2_FOCUSED_THERMODYNAMIC_REFERENCE_TOPOLOGY_QUALIFICATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$main=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_R2_FOCUSED_THERMODYNAMIC_REFERENCE_TOPOLOGY_QUALIFICATION_PLANNING1.md'
+$pre=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_R2_FOCUSED_THERMODYNAMIC_REFERENCE_TOPOLOGY_QUALIFICATION_PLANNING1_PREEXECUTION_REVIEW.md'
+$ret=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_R2_FOCUSED_THERMODYNAMIC_REFERENCE_TOPOLOGY_QUALIFICATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
 $adr=Join-Path $repoRoot 'docs\adr\0213-requalify-production-mode2-against-independent-if97-and-frozen-topology-before-exact-v9-composition.md'
 Require-Text $main 'C4 shadow implementation is not the acceptance oracle'
 Require-Text $main '39 inverse-applicable rows'

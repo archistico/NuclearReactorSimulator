@@ -70,16 +70,16 @@
                               "sha256":  "2D99C40EFE937FB5579E7DB43B1C773D9B5281C1A02462F57ADF00DF8ACC25BA"
                           },
                           {
-                              "path":  "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md",
+                              "path":  "eng/contracts/m10/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md",
                               "sha256":  "C7B32DD05630AE9A954497F83AE3AB4DC7AA66B98C386EE42CA4E9A404927DE2"
                           },
                           {
-                              "path":  "docs/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md",
+                              "path":  "eng/contracts/m10/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md",
                               "sha256":  "7B27C2CD85F37AA411386278A16A68A4B2BA608425029F4386B1549861FFCAB3"
                           },
                           {
                               "path":  "eng/r3-post-repair-dynamic-equilibrium-residual-diagnostic1-contract.json",
-                              "sha256":  "5C6E6CB826ADE79F72ED3C9F5C31209EABF989621CC2839ED02679437CEC4CF5"
+                              "sha256":  "E8C3A3EA257031E4DC5081E3365A13FF3628DCC30EF442C659736178903C29A3"
                           },
                           {
                               "path":  "eng/validate-r3-post-repair-dynamic-equilibrium-residual-diagnostic1.ps1",
@@ -95,10 +95,10 @@
                           },
                           {
                               "path":  "eng/r3-equilibrium-reconstruction-planning1-contract.json",
-                              "sha256":  "E9D2966552EDC318B1FAEF5F0BA0A6ED78EFAF01249EF206727AFB07AC9BF6AF"
+                              "sha256":  "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
                           },
                           {
-                              "path":  "docs/M10_FINAL_VR2_R3_H_CONSERVED_INVENTORY_FEASIBILITY1.md",
+                              "path":  "eng/contracts/m10/M10_FINAL_VR2_R3_H_CONSERVED_INVENTORY_FEASIBILITY1.md",
                               "sha256":  "CBC7A3A06B841182A815116AA6999E6363B6A931E819281146B7BDF48E493891"
                           },
                           {

@@ -56,16 +56,16 @@
                               "sha256":  "2D99C40EFE937FB5579E7DB43B1C773D9B5281C1A02462F57ADF00DF8ACC25BA"
                           },
                           {
-                              "path":  "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md",
+                              "path":  "eng/contracts/m10/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_RESIDUAL_DIAGNOSTIC1.md",
                               "sha256":  "C7B32DD05630AE9A954497F83AE3AB4DC7AA66B98C386EE42CA4E9A404927DE2"
                           },
                           {
-                              "path":  "docs/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md",
+                              "path":  "eng/contracts/m10/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md",
                               "sha256":  "7B27C2CD85F37AA411386278A16A68A4B2BA608425029F4386B1549861FFCAB3"
                           },
                           {
                               "path":  "eng/r3-post-repair-dynamic-equilibrium-residual-diagnostic1-contract.json",
-                              "sha256":  "5C6E6CB826ADE79F72ED3C9F5C31209EABF989621CC2839ED02679437CEC4CF5"
+                              "sha256":  "E8C3A3EA257031E4DC5081E3365A13FF3628DCC30EF442C659736178903C29A3"
                           },
                           {
                               "path":  "eng/validate-r3-post-repair-dynamic-equilibrium-residual-diagnostic1.ps1",
@@ -254,17 +254,17 @@
                       "next_activity":  "R3-H-CONSERVED-INVENTORY-FEASIBILITY1-IMPLEMENTATION-AND-PREEXECUTION-REVIEW"
                   },
     "document_markers":  {
-                             "docs/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md":  [
+                             "eng/contracts/m10/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md":  [
                                                                                                    "NRS-MARKER:R3-EQUILIBRIUM-RECONSTRUCTION-PLANNING1",
                                                                                                    "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-RETURNED-REVIEW",
                                                                                                    "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-H-SURFACE",
                                                                                                    "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-SEARCH",
                                                                                                    "NRS-MARKER:R3-EQUILIBRIUM-PLANNING1-EXIT"
                                                                                                ],
-                             "docs/PROJECT.md":  [
+                             "eng/contracts/m10/navigation/PROJECT.md":  [
                                                      "NRS-MARKER:R3-EQUILIBRIUM-RECONSTRUCTION-PLANNING1-CURRENT"
                                                  ],
-                             "docs/ROADMAP.md":  [
+                             "eng/contracts/m10/navigation/ROADMAP.md":  [
                                                      "NRS-MARKER:R3-H-CONSERVED-INVENTORY-FEASIBILITY1-NEXT"
                                                  ]
                          }

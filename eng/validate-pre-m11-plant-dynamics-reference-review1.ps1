@@ -39,13 +39,13 @@ Require-Text $sources 'Steam Generators for Nuclear Power Plants'
 Require-Text $sources 'Applied Reactor Physics'
 
 Require-Text 'docs/PRE_M11_ENGINEERING_REVIEW_CONSOLIDATION.md' 'Plant dynamics, thermal-hydraulics and reactor physics'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Parallel literature-review constraint for P1A / P2R'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Parallel literature-review constraint for P1A / P2R'
 Require-Text 'docs/REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md' 'Additional reviewed-source reinforcement'
 Require-Text 'docs/KNOWN_MODEL_LIMITATIONS.md' 'industrial coordinated unit-load/direct-energy-balance controller'
-Require-Text 'docs/PROJECT.md' 'P1A ASYMPTOTIC CLOSURE EXTENSION CANDIDATE'
-Require-Text 'docs/PROJECT.md' 'five additional sources on coordinated plant control/flexibility'
-Require-Text 'docs/README.md' 'PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md'
-Require-Text 'docs/TOP_LEVEL_DOCUMENT_INDEX.md' 'PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'P1A ASYMPTOTIC CLOSURE EXTENSION CANDIDATE'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'five additional sources on coordinated plant control/flexibility'
+Require-Text 'eng/contracts/m10/navigation/README.md' 'PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md'
+Require-Text 'eng/contracts/m10/navigation/TOP_LEVEL_DOCUMENT_INDEX.md' 'PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md'
 
 $contractPath = 'eng/pre-m11-plant-dynamics-reference-review1-contract.json'
 Require-File $contractPath

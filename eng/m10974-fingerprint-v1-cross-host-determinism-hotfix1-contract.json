@@ -83,7 +83,7 @@
   },
   "documentation_marker_files": [
     {
-      "path": "docs/M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md",
+      "path": "eng/contracts/m10/M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md",
       "markers": [
         "NRS-MARKER:FPV1-DIAG1-RETURNED-ADJUDICATION1",
         "NRS-MARKER:FPV1-DIAG1-PRESENTATION-CULTURE-DRIFT-CONFIRMED",
@@ -92,7 +92,7 @@
       ]
     },
     {
-      "path": "docs/M10974_FINGERPRINT_V1_CROSS_HOST_DETERMINISM_HOTFIX1.md",
+      "path": "eng/contracts/m10/M10974_FINGERPRINT_V1_CROSS_HOST_DETERMINISM_HOTFIX1.md",
       "markers": [
         "NRS-MARKER:FPV1-CROSS-HOST-HOTFIX1",
         "NRS-MARKER:FPV1-HOTFIX1-REV2",
@@ -107,25 +107,25 @@
       "markers": ["NRS-MARKER:ADR0184-FPV1-CULTURE-DEFECT-ADDENDUM"]
     },
     {
-      "path": "docs/PROJECT.md",
+      "path": "eng/contracts/m10/navigation/PROJECT.md",
       "markers": [
         "NRS-MARKER:PROJECT-FPV1-CROSS-HOST-HOTFIX1",
         "NRS-MARKER:PROJECT-FPV1-HOTFIX1-ACTIVE-COMMAND"
       ]
     },
     {
-      "path": "docs/ROADMAP.md",
+      "path": "eng/contracts/m10/navigation/ROADMAP.md",
       "markers": ["NRS-MARKER:ROADMAP-FPV1-HOTFIX1-NEXT"]
     },
     {
-      "path": "docs/README.md",
+      "path": "eng/contracts/m10/navigation/README.md",
       "markers": [
         "NRS-MARKER:DOCNAV-FPV1-DIAG1-ADJUDICATION1",
         "NRS-MARKER:DOCNAV-FPV1-HOTFIX1"
       ]
     },
     {
-      "path": "docs/TOP_LEVEL_DOCUMENT_INDEX.md",
+      "path": "eng/contracts/m10/navigation/TOP_LEVEL_DOCUMENT_INDEX.md",
       "markers": ["NRS-MARKER:INDEX-FPV1-CROSS-HOST-HOTFIX1"]
     },
     {

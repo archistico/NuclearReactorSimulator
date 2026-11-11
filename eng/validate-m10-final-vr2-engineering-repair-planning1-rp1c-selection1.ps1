@@ -113,9 +113,9 @@ foreach($row in $contract.implementation_hashes.PSObject.Properties) {
     Require ((Get-NormalizedSha256 $p) -eq $row.Value.normalized_sha256.ToUpperInvariant()) ("Selection implementation hash drifted: {0}" -f $row.Name)
 }
 
-$main=Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1.md'
-$pre=Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1_PREEXECUTION_REVIEW.md'
-$ret=Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$main=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1.md'
+$pre=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1_PREEXECUTION_REVIEW.md'
+$ret=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION1_RETURNED_EVIDENCE_ADJUDICATION.md'
 $adr=Join-Path $repoRoot 'docs\adr\0210-select-c4-for-r1-planning-after-green-fdpc2-without-production-activation.md'
 Require-Text $main 'The authored decision is:'
 Require-Text $main 'SELECT-C4'
@@ -124,10 +124,10 @@ Require-Text $pre 'The authored selection is `SELECT-C4`'
 Require-Text $ret 'selection-result=SELECT-C4'
 Require-Text $adr 'Author the RP1C decision as `SELECT-C4`'
 
-$roadmap=Join-Path $repoRoot 'docs\ROADMAP.md'
-$detailed=Join-Path $repoRoot 'docs\M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md'
-$project=Join-Path $repoRoot 'docs\PROJECT.md'
-$docsReadme=Join-Path $repoRoot 'docs\README.md'
+$roadmap=Join-Path $repoRoot 'eng\contracts\m10\navigation\ROADMAP.md'
+$detailed=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md'
+$project=Join-Path $repoRoot 'eng\contracts\m10\navigation\PROJECT.md'
+$docsReadme=Join-Path $repoRoot 'eng\contracts\m10\navigation\README.md'
 Require-Text $roadmap 'The live gate is `RP1C-ENGINEERING-REPAIR-SELECTION1`'
 Require-Text $detailed 'The next and only authorized activity is decision-only `RP1C-ENGINEERING-REPAIR-SELECTION1`.'
 Require-Text $project 'The only live gate is now decision-only `RP1C-ENGINEERING-REPAIR-SELECTION1`.'

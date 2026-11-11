@@ -6,11 +6,11 @@
   "prerequisite": {
     "diagnostic3_rev1_contract": {
       "path": "eng/m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3-rev1-contract.json",
-      "sha256": "9B586B7BB1AA18F9D1C101C1D2370CC62B39FF333B655D6C7429655D3820DD37"
+      "sha256": "4439F5A4F6BA7645859E544FD8F5E378E7FEC537961AFA6CA46AE3BCC1A2B3F0"
     },
     "preexecution_amendment1_contract": {
       "path": "eng/m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1-contract.json",
-      "sha256": "FA1D3F6D9889F8AEFD6EF2C55BA0E962D1EE8E28CDE1B0065FD090CC6832F1A0"
+      "sha256": "1D8E150A74F717493C524A87E492A887DFBCEABC4BC200FE644BF13347135E97"
     },
     "validator_contract_hygiene_hotfix1_contract": {
       "path": "eng/m10-final-vr2-r3-diagnostic3-rev1-validator-contract-hygiene-hotfix1-contract.json",
@@ -88,7 +88,7 @@
   },
   "files": {
     "document": {
-      "path": "docs/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md",
       "normalized_sha256": "C8EFC2CA88891CE7118008D0AC275817E26883C39113876802AEE98865E285B7"
     },
     "validator": {
@@ -106,7 +106,7 @@
   },
   "documentation_marker_files": [
     {
-      "path": "docs/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_RETURNED_EVIDENCE_ADJUDICATION1.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION1",
         "NRS-MARKER:DIAG3-REV1-RETURNED-EVIDENCE-CONFIRMED",
@@ -115,25 +115,25 @@
       ]
     },
     {
-      "path": "docs/PROJECT.md",
+      "path": "eng/contracts/m10/navigation/PROJECT.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-CHECKPOINT"
       ]
     },
     {
-      "path": "docs/ROADMAP.md",
+      "path": "eng/contracts/m10/navigation/ROADMAP.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-HOSTED-CI-CONFIRMATION-NEXT"
       ]
     },
     {
-      "path": "docs/TOP_LEVEL_DOCUMENT_INDEX.md",
+      "path": "eng/contracts/m10/navigation/TOP_LEVEL_DOCUMENT_INDEX.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-INDEX"
       ]
     },
     {
-      "path": "docs/README.md",
+      "path": "eng/contracts/m10/navigation/README.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-DOCNAV"
       ]

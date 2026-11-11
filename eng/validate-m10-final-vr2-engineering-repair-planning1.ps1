@@ -59,7 +59,7 @@ Require-Text 'docs/adr/0165-stage-correlation-consistent-water-steam-inverse-dom
 Require-Text 'docs/adr/0166-requalify-repaired-thermodynamic-closure-before-versioned-activation.md' 'Requalify the repaired thermodynamic closure before versioned activation'
 Require-Text 'docs/adr/0167-activate-repaired-exact-v4-with-historical-version-preservation.md' 'Old exact-version saves and scenarios remain reproducible rather than being migrated implicitly to new thermodynamics.'
 
-$planPath = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
+$planPath = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
 Require-Text $planPath 'VALIDATED / CLOSED'
 Require-Text $planPath 'HYDRAULIC-MATERIALITY-CONFIRMED'
 Require-Text $planPath 'Family A'
@@ -141,11 +141,11 @@ if ($contract.authority.p3_r1_execution_authorized -ne $false) { throw 'P3-R1 ca
 if ($contract.authority.second_replacement_long_authorized -ne $false) { throw 'Second replacement-long cannot be authorized.' }
 if ($contract.authority.rp1a_implementation_authorized_before_returned_planning_audit_review -ne $false) { throw 'RP1A cannot start before returned Planning 1 audit review.' }
 
-Require-Text 'docs/PROJECT.md' 'VR2 ENGINEERING REPAIR PLANNING 1'
-Require-Text 'docs/M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md' 'VR2 Engineering Repair Planning 1'
-Require-Text 'docs/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md' 'VR2 Engineering Repair Planning 1'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'VR2 ENGINEERING REPAIR PLANNING 1'
+Require-Text 'eng/contracts/m10/M10_FINAL_PHYSICAL_REFERENCE_MODEL_ASSESSMENT_PLAN1.md' 'VR2 Engineering Repair Planning 1'
+Require-Text 'eng/contracts/m10/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md' 'VR2 Engineering Repair Planning 1'
 Require-Text 'docs/KNOWN_MODEL_LIMITATIONS.md' 'HYDRAULIC-MATERIALITY-CONFIRMED'
-Require-Text 'docs/README.md' 'M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
+Require-Text 'eng/contracts/m10/navigation/README.md' 'M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
 Require-Text 'docs/adr/README.md' '0194-preserve-exact-v9-and-stage-reference-consistent-thermodynamic-repair-behind-new-closure-mode.md'
 
 $artifactDir = 'artifacts/m10-final-physical-reference-vr2-engineering-repair-planning1'

@@ -67,7 +67,7 @@
       ],
       "projectArtifacts": [
         "docs/REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md",
-        "docs/M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md",
+        "eng/contracts/m10/M10_LR_H1_EQUILIBRIUM_DIAGNOSTIC_PLAN.md",
         "eng/reference-operating-point-equilibrium-plan.json",
         "docs/research/LAMARSH_FOLLOW_UP_CANDIDATES.md"
       ]

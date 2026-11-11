@@ -17,7 +17,7 @@
     "fingerprint_production": "src/NuclearReactorSimulator.Application/Scenarios/Recording/ControlRoomSnapshotFingerprint.cs",
     "h29_factory": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationH29ActivationCandidateInitialConditionFactory.cs",
     "ci_ordinary": "eng/ci-ordinary.cmd",
-    "documentation": "docs/M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1.md"
+    "documentation": "eng/contracts/m10/M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1.md"
   },
   "frozen_normalized_sha256": {
     "fingerprint_production": "E0396F7241A31AC2DBDBD653369659BADB90B0600FB046D892DD1DC6A2F6186B",

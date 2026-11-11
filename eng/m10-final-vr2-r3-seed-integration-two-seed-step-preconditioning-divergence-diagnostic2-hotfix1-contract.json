@@ -3,7 +3,7 @@
   "status": "RETURNED-EVIDENCE-ADJUDICATOR-HOTFIX1",
   "original_candidate": {
     "contract_path": "eng/m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-contract.json",
-    "contract_sha256": "0EDE98E13ED06A21DD288D2773CC0EFC1DA71785C4D00DF24BB9E914DFBEF6FF",
+    "contract_sha256": "5ED080BBC850685FB573BC7118CF541653E038CE3937EDA76600343A8A365FB5",
     "adjudicator_path": "eng/adjudicate-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2.ps1",
     "adjudicator_normalized_sha256": "98511CDC0F1596F489CDB26E225644E64A9BD59585B8A8B01ED9B14DA897411A"
   },
@@ -58,7 +58,7 @@
     "dynamic_evidence_reexecuted": false,
     "adjudicator_path": "eng/adjudicate-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-hotfix1.ps1",
     "adjudicator_normalized_sha256": "0CF3CD06FC5A6439821EF2644C61F04E84B38DEACC10A4FA1720BE394D91DD99",
-    "document_path": "docs/M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2_HOTFIX1.md",
+    "document_path": "eng/contracts/m10/M10_FINAL_VR2_R3_SEED_INTEGRATION_TWO_SEED_STEP_PRECONDITIONING_DIVERGENCE_DIAGNOSTIC2_HOTFIX1.md",
     "document_normalized_sha256": "A3D2665A18E5ED4D09826F05A09BE3F0CA880FAF525CED29A4C38ED6E6E32F97",
     "runner_path": "scripts/run-m10-final-vr2-r3-seed-integration-two-seed-step-preconditioning-divergence-diagnostic2-hotfix1-adjudication.cmd",
     "runner_normalized_sha256": "77344EDA9D88479F828FCCE5E84AB4BED6F7BE2C01A93BC55AF2A90A67B9C24D"

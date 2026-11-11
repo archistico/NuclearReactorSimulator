@@ -24,7 +24,7 @@ This localizes the final stop to the numerical direction/box handling;
 it does not demonstrate physical infeasibility or an independent controller defect.
 
 Review and next-design contract:
-[H Numerical Stop Review 1](M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md).
+[H Numerical Stop Review 1](../eng/contracts/m10/M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md).
 
 ```powershell
 .\scripts\run-r3-h-numerical-stop-review1.cmd
@@ -44,7 +44,7 @@ Design payloads are frozen under `eng/frozen-evidence/r3-h-local-model1`. Seven 
 contract cases reject plant/nonlinear calls, residual reweighting, altered damping,
 wider bounds and baseline/input-digest drift. Production/tests remain unchanged.
 
-Specification: [H Local-Model Design 1](M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md).
+Specification: [H Local-Model Design 1](../eng/contracts/m10/M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md).
 
 ```powershell
 .\scripts\run-r3-h-local-model-design1.cmd
@@ -68,64 +68,4 @@ The complete preceding state and handoff history is preserved in the
 [2026-11-11 snapshot](history/archives/README.md#snapshot-docs-project-md).
 Use the checkpoint above for continuation.
 
-## Historical validator compatibility
-
-The following retained identifiers and literal excerpts are interfaces for older
-validators, not current status or instructions. The complete historical prose
-is in the [documentation archive](history/archives/README.md).
-
-NRS-MARKER:R3-H-CONSERVED-INVENTORY-FEASIBILITY1-CURRENT
-
-NRS-MARKER:R3-EQUILIBRIUM-RECONSTRUCTION-PLANNING1-CURRENT
-
-NRS-MARKER:R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-RESIDUAL-DIAGNOSTIC1-CURRENT
-
-<!-- NRS-MARKER:M10974-EXACT-V9-HOSTED-RUNTIME-ALIGNMENT-CHECKPOINT -->
-
-<!-- NRS-MARKER:M10974-FINGERPRINT-V1-CROSS-HOST-DIAGNOSTIC1 -->
-
-<!-- NRS-MARKER:CI-STABLE-CONTRACT-V2_1_1-CHECKPOINT -->
-
-<!-- NRS-MARKER:CI-STABLE-CONTRACT-V2-CHECKPOINT -->
-
-<!-- NRS-MARKER:R3-CAUSAL-CLOSURE-CONSOLIDATION-CHECKPOINT -->
-
-<!-- NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-CHECKPOINT -->
-
-<!-- NRS-MARKER:DIAG3-REV1-AMENDMENT1-CHECKPOINT -->
-
-<!-- NRS-MARKER:DIAG3-REV1-VALIDATOR-HOTFIX1-CHECKPOINT -->
-
-<!-- NRS-MARKER:DIAG3-REV1-PREEXECUTION-HOLD -->
-
-<!-- NRS-MARKER:DIAG3-REV1-IMPLEMENTATION-CHECKPOINT -->
-
-NRS-MARKER:PROJECT-FPV1-CROSS-HOST-HOTFIX1
-
-NRS-MARKER:PROJECT-FPV1-HOTFIX1-ACTIVE-COMMAND
-
-NRS-MARKER:PROJECT-EXACT-V9-CROSS-HOST-DETERMINISM-V2
-
-NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-PLANNING1-CURRENT
-
-NRS-MARKER:R3-ENERGY-TRANSPORT-REPAIR-IMPLEMENTATION1-CURRENT
-
-NRS-MARKER:R3-POST-REPAIR-DYNAMIC-EQUILIBRIUM-REPLANNING1-CURRENT
-
-```text
-VR0 REFERENCE / PROVENANCE CONTRACT FREEZE
-Plan Amendment 3 is VALIDATED
-is now VALIDATED from the user-reported local audit PASS
-VR1 POINT-KINETICS INDEPENDENT BENCHMARK
-VR1 POINT-KINETICS INDEPENDENT BENCHMARK** is now VALIDATED
-VR2 IAPWS-IF97 WATER/STEAM ERROR MAP
-P2R2 Decision Re-entry 2 is now
-Todreas/Kazimi Deep Review Pass 2
-Diagnostic 6 returned execution PASS
-VR2 ENGINEERING REPAIR PLANNING 1
-VR2 MATERIALITY DIAGNOSTIC 1 RETURNED-EVIDENCE ADJUDICATION
-MODEL-DISCREPANCY-BLOCKING
-Reviews 1–2 now record and deeply re-check five additional sources
-five additional sources on coordinated plant control/flexibility
-PASS-AS-AUTHORED
-```
+For the consolidated engineering context, use the [validation summary](validation/README.md).

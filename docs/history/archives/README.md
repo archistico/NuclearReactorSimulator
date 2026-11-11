@@ -1,5 +1,8 @@
 # Documentation archive — 2026-11-11
 
+A subsequent [M10 contract separation](../M10_CONTRACT_SEPARATION_2026-11-11.md)
+is preserved in [its own original-input archive](m10-contract-migration-2026-11-11.zip).
+
 This lossless archive consolidates 74 completed or superseded top-level notes and
 preserves seven navigation files before their compaction. The 48 notes already
 represented in earlier historical dossiers are included here too, with exact bytes.

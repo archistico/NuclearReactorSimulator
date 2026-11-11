@@ -76,7 +76,7 @@ if not "%TEST_EXIT%"=="0" goto :fail
 >> "%REPORT_DIR%\00-status.txt" echo exact-v9-authoritative-v2=PASS
 
 copy /y "eng\m10974-exact-v9-cross-host-determinism-v2-contract.json" "%REPORT_DIR%\01-contract.json" >nul
-copy /y "docs\M10974_EXACT_V9_CROSS_HOST_DETERMINISM_CONTRACT_V2.md" "%REPORT_DIR%\02-decision.md" >nul
+copy /y "eng\contracts\m10\M10974_EXACT_V9_CROSS_HOST_DETERMINISM_CONTRACT_V2.md" "%REPORT_DIR%\02-decision.md" >nul
 >> "%REPORT_DIR%\00-status.txt" echo status=PASS
 >> "%REPORT_DIR%\00-status.txt" echo frozen-cross-host-v2=99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73
 >> "%REPORT_DIR%\00-status.txt" echo historical-raw-v1=7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418

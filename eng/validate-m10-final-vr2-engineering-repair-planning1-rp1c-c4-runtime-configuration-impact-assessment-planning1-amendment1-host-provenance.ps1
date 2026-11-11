@@ -46,13 +46,13 @@ $runnerPath = Join-Path $repoRoot 'scripts\run-m10-final-vr2-engineering-repair-
 $baseContract = Join-Path $PSScriptRoot 'm10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment-planning1-contract.json'
 $baseValidator = Join-Path $PSScriptRoot 'validate-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment-planning1.ps1'
 $baseRunner = Join-Path $repoRoot 'scripts\run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-configuration-impact-assessment-planning1.cmd'
-$baseDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1.md'
-$baseReview = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_PREEXECUTION_REVIEW.md'
+$baseDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1.md'
+$baseReview = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_PREEXECUTION_REVIEW.md'
 $baseAdr = Join-Path $repoRoot 'docs\adr\0203-qualify-runtime-configuration-impact-before-rp1c-selection.md'
 
-$returnedAdj = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
-$amendDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_AMENDMENT1_HOST_PROVENANCE.md'
-$amendReview = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_AMENDMENT1_HOST_PROVENANCE_PREEXECUTION_REVIEW.md'
+$returnedAdj = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$amendDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_AMENDMENT1_HOST_PROVENANCE.md'
+$amendReview = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_AMENDMENT1_HOST_PROVENANCE_PREEXECUTION_REVIEW.md'
 $adr0204 = Join-Path $repoRoot 'docs\adr\0204-scope-runtime-performance-evidence-to-one-execution-host.md'
 
 $frozenRoot = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_RuntimeConfigurationImpactAssessmentPlanning1_Artifacts'

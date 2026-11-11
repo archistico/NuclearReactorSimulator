@@ -1,0 +1,10 @@
+# Validator inputs are authenticated as raw bytes. Preserve their original EOLs.
+eng/contracts/m10/*.md -text whitespace=cr-at-eol
+eng/contracts/m10/navigation/*.md -text whitespace=cr-at-eol
+eng/contracts/m10/milestones/*.md -text whitespace=cr-at-eol
+eng/contracts/m10/research/*.md -text whitespace=cr-at-eol
+
+# Existing Windows tooling uses CRLF. Keep whitespace checks without flagging CR.
+eng/*.ps1 whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+eng/*.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+scripts/*.cmd whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

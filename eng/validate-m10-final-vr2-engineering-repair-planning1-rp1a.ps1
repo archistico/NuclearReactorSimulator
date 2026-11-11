@@ -113,7 +113,7 @@ $region4UniqueTemperatureCount = @($nodeObjects | Where-Object { $_.reference_re
 if ($region4UniqueTemperatureCount -ne 310) { throw ("Frozen node corpus has {0} unique Region-4 reference temperatures, expected 310." -f $region4UniqueTemperatureCount) }
 if (($region4UniqueTemperatureCount + 10) -ne $contract.seam_map.expected_boundary_count) { throw 'Data-derived RP1A seam-boundary count no longer matches the frozen contract.' }
 
-$rp1aDoc = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1A_REFERENCE_DOMAIN_CORPUS_SEAM_MAP_FREEZE.md'
+$rp1aDoc = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1A_REFERENCE_DOMAIN_CORPUS_SEAM_MAP_FREEZE.md'
 Require-Text $rp1aDoc 'EXECUTION CANDIDATE'
 Require-Text $rp1aDoc '360 frozen exact-v9/P1B Attempt-5 node observations'
 Require-Text $rp1aDoc '288 frozen hydraulic-path rows'

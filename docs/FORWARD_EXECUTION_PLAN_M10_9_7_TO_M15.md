@@ -28,7 +28,7 @@ Every future implementation slice follows the same rules:
 
 ## Immediate transition
 
-This Planning 2 version is adopted only **after** the final M10 long gate is green and the explicit closure-only checkpoint has declared M10 CLOSED. The detailed handoff is owned by [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md).
+This Planning 2 version is adopted only **after** the final M10 long gate is green and the explicit closure-only checkpoint has declared M10 CLOSED. The detailed handoff is owned by [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](../eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md).
 
 After adoption, the authorized forward sequence is:
 
@@ -64,7 +64,7 @@ If the M10 long gate is red, this forward sequence is **not yet active**; preser
 
 ## M10.9.7 — Mission & Performance Workstation
 
-Detailed plan: [`milestones/M10.9.7.md`](milestones/M10.9.7.md).
+Detailed plan: [`milestones/M10.9.7.md`](../eng/contracts/m10/milestones/M10.9.7.md).
 
 ### M10.9.7.3 live workspace — implementation order
 
@@ -113,7 +113,7 @@ M10.9.7 must close with:
 
 ## M10.9.8 — Integrated Human / Automation / HMI Validation
 
-Detailed plan: [`milestones/M10.9.8.md`](milestones/M10.9.8.md).
+Detailed plan: [`milestones/M10.9.8.md`](../eng/contracts/m10/milestones/M10.9.8.md).
 
 This is an **integration gate, not feature work**.
 

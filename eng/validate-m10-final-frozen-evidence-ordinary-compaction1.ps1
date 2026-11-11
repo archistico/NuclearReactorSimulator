@@ -78,7 +78,7 @@ $compactPath = Join-Path $repoRoot 'scripts\compact-frozen-evidence-ordinary.ps1
 $runnerPath = Join-Path $repoRoot 'scripts\run-m10-final-frozen-evidence-ordinary-compaction1.cmd'
 $policyDoc = Join-Path $repoRoot 'docs\history\m10-final\vr2\M10_FINAL_FROZEN_EVIDENCE_ORDINARY_COMPACTION1.md'
 $adr = Join-Path $repoRoot 'docs\adr\0205-keep-ordinary-frozen-evidence-compact-and-archive-large-immutable-payloads.md'
-$returnedAdj = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_AMENDMENT1_HOST_PROVENANCE_RETURNED_EVIDENCE_ADJUDICATION.md'
+$returnedAdj = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_CONFIGURATION_IMPACT_ASSESSMENT_PLANNING1_AMENDMENT1_HOST_PROVENANCE_RETURNED_EVIDENCE_ADJUDICATION.md'
 $amendRoot = Join-Path $ordinaryRoot 'M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_RuntimeConfigurationImpactAssessmentPlanning1Amendment1HostProvenance_Artifacts'
 
 foreach ($p in @($contractPath,$manifestPath,$inventoryPath,$restorePath,$compactPath,$runnerPath,$policyDoc,$adr,$returnedAdj)) { Require-File $p }

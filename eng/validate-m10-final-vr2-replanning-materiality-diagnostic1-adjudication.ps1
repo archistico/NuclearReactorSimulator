@@ -114,15 +114,15 @@ if ($contract.authority.p3_r1_execution_authorized -ne $false) { throw 'P3-R1 ca
 if ($contract.authority.second_replacement_long_authorized -ne $false) { throw 'Second replacement-long cannot be authorized.' }
 if ($contract.authority.separate_engineering_repair_planning_decision_required -ne $true) { throw 'Separate repair-planning decision must remain mandatory.' }
 
-Require-Text 'docs/PROJECT.md' 'VR2 MATERIALITY DIAGNOSTIC 1 RETURNED-EVIDENCE ADJUDICATION'
-Require-Text 'docs/M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md' 'Attempt 5 returned evidence'
-Require-Text 'docs/M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md' '0.009952798974779853 kg/s'
-Require-Text 'docs/M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md' 'H22'
-Require-Text 'docs/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md' 'returned-evidence adjudication'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'VR2 MATERIALITY DIAGNOSTIC 1 RETURNED-EVIDENCE ADJUDICATION'
+Require-Text 'eng/contracts/m10/M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md' 'Attempt 5 returned evidence'
+Require-Text 'eng/contracts/m10/M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md' '0.009952798974779853 kg/s'
+Require-Text 'eng/contracts/m10/M10_FINAL_VR2_REPLANNING_MATERIALITY_DIAGNOSTIC1.md' 'H22'
+Require-Text 'eng/contracts/m10/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md' 'returned-evidence adjudication'
 
-Require-Text 'docs/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' 'ACTIVE CANDIDATE'
-Require-Text 'docs/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' '0.009952798974779853 kg/s'
-Require-Text 'docs/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' '72 sampled `pressure` states'
-Require-Text 'docs/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' '55 of 72 `suction` samples'
+Require-Text 'eng/contracts/m10/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' 'ACTIVE CANDIDATE'
+Require-Text 'eng/contracts/m10/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' '0.009952798974779853 kg/s'
+Require-Text 'eng/contracts/m10/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' '72 sampled `pressure` states'
+Require-Text 'eng/contracts/m10/M10_FINAL_VR2_MATERIALITY_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION.md' '55 of 72 `suction` samples'
 
 Write-Host 'M10 Final VR2 Materiality Diagnostic 1 returned-evidence adjudication static audit: PASS'

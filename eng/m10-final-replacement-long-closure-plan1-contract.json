@@ -53,13 +53,13 @@
     "exact_v9_never_reinterpreted": true
   },
   "primary_documents": [
-    "docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md",
-    "docs/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md",
-    "docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md",
-    "docs/M10_FINAL_VV_MATRIX.md",
-    "docs/PROJECT.md",
-    "docs/ROADMAP.md",
-    "docs/README.md"
+    "eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md",
+    "eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md",
+    "eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md",
+    "eng/contracts/m10/M10_FINAL_VV_MATRIX.md",
+    "eng/contracts/m10/navigation/PROJECT.md",
+    "eng/contracts/m10/navigation/ROADMAP.md",
+    "eng/contracts/m10/navigation/README.md"
   ],
   "validator_hotfix": "P0-HOTFIX2-PROJECT-MARKER-ALIGNMENT"
 }

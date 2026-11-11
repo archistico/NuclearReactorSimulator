@@ -81,10 +81,10 @@ Write-Host 'No RP1C selection, production repair, threshold change, exact-v9 cha
 Write-Host ''
 
 $contractPath = 'eng/m10-final-vr2-engineering-repair-planning1-rp1c-planning1-contract.json'
-$planPath = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_PLANNING1.md'
+$planPath = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_PLANNING1.md'
 $adrPath = 'docs/adr/0197-rp1c-selection-uses-corrected-full-performance-predicate-and-preserves-no-selection.md'
-$mainPlanPath = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
-$c4AdjudicationPath = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_C4_RETURNED_EVIDENCE_ADJUDICATION.md'
+$mainPlanPath = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
+$c4AdjudicationPath = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_C4_RETURNED_EVIDENCE_ADJUDICATION.md'
 $d3SummaryPath = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_Refinement2_Artifacts/08-candidate-summary.csv'
 $d3PerformancePath = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_Refinement2_Artifacts/06-candidate-performance.csv'
 $d3ComplexityPath = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_Refinement2_Artifacts/07-candidate-complexity.csv'

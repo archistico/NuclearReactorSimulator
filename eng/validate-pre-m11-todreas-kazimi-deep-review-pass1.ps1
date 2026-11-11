@@ -43,18 +43,18 @@ Require-Text $trace 'TK2-SENS-01'
 
 Require-Text 'docs/research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md' '## 9. Reactor thermal-hydraulic fundamentals'
 Require-Text 'docs/research/PRE_M11_ENGINEERING_REVIEW_SOURCES.md' '## 10. Reactor thermal-hydraulic design'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'P1A has now completed execution PASS with overall classification `INCONCLUSIVE`'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Deep Review Pass 2'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'P1A has now completed execution PASS with overall classification `INCONCLUSIVE`'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Deep Review Pass 2'
 Require-Text 'docs/REFERENCE_OPERATING_POINT_EQUILIBRIUM_AND_STABILITY_PLAN.md' 'Todreas/Kazimi Deep Review Pass 1'
 Require-Text 'docs/KNOWN_MODEL_LIMITATIONS.md' 'reduced HEM-like fidelity'
-Require-Text 'docs/ROADMAP.md' 'Todreas/Kazimi thermal-hydraulic deep-review additions'
+Require-Text 'eng/contracts/m10/navigation/ROADMAP.md' 'Todreas/Kazimi thermal-hydraulic deep-review additions'
 Require-Text 'docs/milestones/M14.md' 'Todreas/Kazimi hydraulic reduction boundary'
 # PROJECT.md is the current-state handoff and legitimately advances after the pre-amendment review.
 # Validate durable provenance instead of requiring the superseded pre-amendment heading.
-Require-Text 'docs/PROJECT.md' 'Todreas/Kazimi Deep Review Pass 1'
-Require-Text 'docs/PROJECT.md' 'Todreas/Kazimi Deep Review Pass 2'
-Require-Text 'docs/README.md' 'PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS1.md'
-Require-Text 'docs/TOP_LEVEL_DOCUMENT_INDEX.md' 'PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS1.md'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'Todreas/Kazimi Deep Review Pass 1'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'Todreas/Kazimi Deep Review Pass 2'
+Require-Text 'eng/contracts/m10/navigation/README.md' 'PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS1.md'
+Require-Text 'eng/contracts/m10/navigation/TOP_LEVEL_DOCUMENT_INDEX.md' 'PRE_M11_TODREAS_KAZIMI_DEEP_REVIEW_TRACEABILITY_PASS1.md'
 
 $contractPath='eng/pre-m11-todreas-kazimi-deep-review-pass1-contract.json'
 Require-File $contractPath

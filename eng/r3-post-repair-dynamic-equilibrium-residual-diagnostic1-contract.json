@@ -36,16 +36,16 @@
                               "sha256":  "14A038C7062D29FFA39C5B0D70BEAC472CCFB7F79AC46BF1E73C4059614BE1B4"
                           },
                           {
-                              "path":  "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1.md",
+                              "path":  "eng/contracts/m10/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1.md",
                               "sha256":  "6C5EC699BD7A1EFB14419F1DD029789FBAEDBF3895678E09AC3FB4059E32FAFB"
                           },
                           {
-                              "path":  "docs/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1_PREEXECUTION_REVIEW.md",
+                              "path":  "eng/contracts/m10/M10_FINAL_VR2_R3_POST_REPAIR_DYNAMIC_EQUILIBRIUM_REPLANNING1_PREEXECUTION_REVIEW.md",
                               "sha256":  "5480551DF1028DE5AC1F977C7170A200ECCDDA2B0009EA7124EC2AC478BE58DE"
                           },
                           {
                               "path":  "eng/m10-final-vr2-r3-post-repair-dynamic-equilibrium-replanning1-contract.json",
-                              "sha256":  "F893F06956356FCAE8982920237822C20DE1935F5079512FC8F677B4B6E31CA6"
+                              "sha256":  "BF53BA6A3ADD8AC90C550AD93C0D66E847CB3244DFCA1AEB1EEB13B5F10F568C"
                           },
                           {
                               "path":  "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts/01-raw-checkpoint-node-comparison.csv",

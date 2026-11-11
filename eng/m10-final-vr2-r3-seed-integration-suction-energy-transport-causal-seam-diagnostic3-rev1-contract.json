@@ -15,7 +15,7 @@
     },
     "reviewed_diagnostic3_contract": {
       "path": "eng/m10-final-vr2-r3-seed-integration-suction-energy-transport-causal-seam-diagnostic3-contract.json",
-      "sha256": "0DD09973174C57B7516A3AC6C0C9401E5FFAFBFC59503791B3CE61070E564729"
+      "sha256": "158182295B11B19725864A1183E3219970A9443AC8040DAE5577773DB0EC1DD8"
     },
     "returned_diagnostic2_directory": "eng/frozen-evidence/ordinary/M10FinalVR2_R3_SeedIntegration_TwoSeedStepPreconditioningDivergenceDiagnostic2_ReturnedArtifacts",
     "returned_diagnostic2_artifacts": {
@@ -31,7 +31,7 @@
     },
     "preexecution_audit_planning_amendment1_contract": {
       "path": "eng/m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1-contract.json",
-      "sha256": "FA1D3F6D9889F8AEFD6EF2C55BA0E962D1EE8E28CDE1B0065FD090CC6832F1A0",
+      "sha256": "1D8E150A74F717493C524A87E492A887DFBCEABC4BC200FE644BF13347135E97",
       "required_status": "PASS-AS-AUTHORED-READY-FOR-AUDIT",
       "required_next_authority": "EXECUTE-DIAGNOSTIC3-REV1-TEST-ONLY"
     },
@@ -138,7 +138,7 @@
       "normalized_sha256": "C12C7D6D32868706834BFD98F22A09B6A563DCFE6CF5385E4A83B26489D512C8"
     },
     "document": {
-      "path": "docs/M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3_REV1.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3_REV1.md",
       "normalized_sha256": "12D77B0975C3F4182B2F31CFA85F0193783B3E30E5B2E4F48340DBC7A66B0F5A"
     },
     "adjudicator": {
@@ -168,7 +168,7 @@
   },
   "documentation_marker_files": [
     {
-      "path": "docs/M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3_REV1.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R3_SEED_INTEGRATION_SUCTION_ENERGY_TRANSPORT_CAUSAL_SEAM_DIAGNOSTIC3_REV1.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-IMPLEMENTED",
         "NRS-MARKER:DIAG3-REV1-EVIDENCE-CONTRACT",
@@ -177,26 +177,26 @@
       ]
     },
     {
-      "path": "docs/PROJECT.md",
+      "path": "eng/contracts/m10/navigation/PROJECT.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-IMPLEMENTATION-CHECKPOINT",
         "NRS-MARKER:DIAG3-REV1-VALIDATOR-HOTFIX1-CHECKPOINT"
       ]
     },
     {
-      "path": "docs/ROADMAP.md",
+      "path": "eng/contracts/m10/navigation/ROADMAP.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-EXECUTION-NEXT"
       ]
     },
     {
-      "path": "docs/TOP_LEVEL_DOCUMENT_INDEX.md",
+      "path": "eng/contracts/m10/navigation/TOP_LEVEL_DOCUMENT_INDEX.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-TOP-INDEX"
       ]
     },
     {
-      "path": "docs/README.md",
+      "path": "eng/contracts/m10/navigation/README.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-DOC-NAV"
       ]
@@ -208,7 +208,7 @@
       ]
     },
     {
-      "path": "docs/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_VALIDATOR_CONTRACT_HYGIENE_HOTFIX1.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_VALIDATOR_CONTRACT_HYGIENE_HOTFIX1.md",
       "markers": [
         "NRS-MARKER:DIAG3-REV1-VALIDATOR-CONTRACT-HYGIENE-HOTFIX1"
       ]

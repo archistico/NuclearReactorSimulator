@@ -45,12 +45,12 @@
   },
   "files": {
     "document": {
-      "path": "docs/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md",
       "normalized_sha256": "370C59F61C16E9C8E568BC07652FD399E532D38809CF80B58CD115B03A573BAB"
     },
     "validator": {
       "path": "eng/validate-m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1.ps1",
-      "normalized_sha256": "3ECE99D1D28F838F262F40AA14DBFB7C80C8D1823FD7D042E261BF2E4D2D49CE"
+      "normalized_sha256": "8135A864263604640AE4C0C69B60933787DDBFCBE03A2234C9E517C4089C66DC"
     },
     "runner": {
       "path": "scripts/run-m10-final-vr2-r3-diagnostic3-rev1-preexecution-audit-planning-amendment1.cmd",

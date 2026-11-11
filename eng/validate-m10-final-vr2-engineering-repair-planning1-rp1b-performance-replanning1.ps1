@@ -45,7 +45,7 @@ Write-Host 'No C4, RP1C selection, production repair, tolerance change, exact-v9
 Write-Host ''
 
 $contractPath = 'eng/m10-final-vr2-engineering-repair-planning1-rp1b-performance-replanning1-contract.json'
-$planPath = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_PERFORMANCE_REPLANNING1.md'
+$planPath = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_PERFORMANCE_REPLANNING1.md'
 $adrPath = 'docs/adr/0195-separate-c3-algorithmic-performance-from-managed-runtime-wall-clock-tail-before-repair-selection.md'
 $returnedSummary = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_Refinement4_UserReturnedSummary.txt'
 $attempt1Summary = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_PerformanceReplanning1_Attempt1Summary.txt'

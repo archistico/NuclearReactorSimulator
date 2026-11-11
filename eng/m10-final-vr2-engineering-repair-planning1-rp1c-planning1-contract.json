@@ -39,7 +39,7 @@
     "c4_allocation_summary": "eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_C4_Artifacts/05-allocation-closure-summary.txt",
     "c4_run_summary": "eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_C4_Artifacts/06-cross-process-run-summary.csv",
     "c4_summary": "eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_C4_Artifacts/09-rp1b-c4-summary.txt",
-    "c4_returned_adjudication": "docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_C4_RETURNED_EVIDENCE_ADJUDICATION.md"
+    "c4_returned_adjudication": "eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_C4_RETURNED_EVIDENCE_ADJUDICATION.md"
   },
   "current_readiness_expectation": {
     "c4_physical_and_r1_qualification_complete": true,

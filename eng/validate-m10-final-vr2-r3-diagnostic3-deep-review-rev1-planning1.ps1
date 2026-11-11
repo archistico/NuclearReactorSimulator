@@ -48,17 +48,17 @@ Req ([bool]$C.ci.production_repair_requires_hosted_green) 'hosted repair hold dr
 Req ($C.authority.next_authorized_activity -eq 'IMPLEMENT-DIAGNOSTIC3-REV1-TEST-ONLY') 'next activity drift'
 Req (-not [bool]$C.authority.production_repair_authorized -and -not [bool]$C.authority.repair_planning_authorized) 'repair authority drift'
 Req (-not [bool]$C.authority.r3_passed -and -not [bool]$C.authority.r3_requalification3_authorized -and -not [bool]$C.authority.r4_planning_authorized) 'R3/R4 authority drift'
-$Plan='docs\M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md'
+$Plan='eng\contracts\m10\M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md'
 Req (Test-Path $Plan) 'review/plan document missing'
-Req (Test-Path 'docs\M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1_VALIDATOR_HOTFIX1.md') 'planning validator Hotfix 1 record missing'
-Req (Test-Path 'docs\M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1_VALIDATOR_HOTFIX2.md') 'planning validator Hotfix 2 record missing'
+Req (Test-Path 'eng\contracts\m10\M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1_VALIDATOR_HOTFIX1.md') 'planning validator Hotfix 1 record missing'
+Req (Test-Path 'eng\contracts\m10\M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1_VALIDATOR_HOTFIX2.md') 'planning validator Hotfix 2 record missing'
 Req (Test-Path 'docs\VALIDATOR_AUTHORING_RULES.md') 'validator authoring rules missing'
 
 # Machine semantics come from the JSON contract. Human documents expose only stable ASCII marker IDs.
 $missing=New-Object 'Collections.Generic.List[string]'
 foreach($m in @($H2.markers.plan)){AddMissingMarker $missing $Plan ([string]$m)}
-foreach($m in @($H2.markers.project)){AddMissingMarker $missing 'docs\PROJECT.md' ([string]$m)}
-foreach($m in @($H2.markers.roadmap)){AddMissingMarker $missing 'docs\ROADMAP.md' ([string]$m)}
+foreach($m in @($H2.markers.project)){AddMissingMarker $missing 'eng\contracts\m10\navigation\PROJECT.md' ([string]$m)}
+foreach($m in @($H2.markers.roadmap)){AddMissingMarker $missing 'eng\contracts\m10\navigation\ROADMAP.md' ([string]$m)}
 if($missing.Count -gt 0){throw ("documentation marker contract failed; missing:`n - "+($missing -join "`n - "))}
 
 # Stable technical identifiers are safe literal checks; editorial prose is not.
@@ -69,10 +69,10 @@ foreach($m in @(
 'TRANSPORT-SEAM-LOCALIZED-COUNTERFACTUAL-NOT-CLOSED',
 'IapwsIf97Reference'
 )){Req (Has $Plan $m) ('review/plan technical identifier missing: '+$m)}
-Req (Has 'docs\TOP_LEVEL_DOCUMENT_INDEX.md' 'M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md') 'top-level index missing review plan'
-Req (Has 'docs\README.md' 'M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md') 'documentation navigation missing review plan'
-Req (Has 'docs\TOP_LEVEL_DOCUMENT_INDEX.md' 'VALIDATOR_AUTHORING_RULES.md') 'top-level index missing validator rules'
-Req (Has 'docs\README.md' 'VALIDATOR_AUTHORING_RULES.md') 'documentation navigation missing validator rules'
+Req (Has 'eng\contracts\m10\navigation\TOP_LEVEL_DOCUMENT_INDEX.md' 'M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md') 'top-level index missing review plan'
+Req (Has 'eng\contracts\m10\navigation\README.md' 'M10_FINAL_VR2_R3_DIAGNOSTIC3_DEEP_REVIEW_REV1_PLANNING1.md') 'documentation navigation missing review plan'
+Req (Has 'eng\contracts\m10\navigation\TOP_LEVEL_DOCUMENT_INDEX.md' 'VALIDATOR_AUTHORING_RULES.md') 'top-level index missing validator rules'
+Req (Has 'eng\contracts\m10\navigation\README.md' 'VALIDATOR_AUTHORING_RULES.md') 'documentation navigation missing validator rules'
 
 # Windows PowerShell 5.1 hygiene: this validator must remain ASCII-only or gain an explicit UTF-8 BOM.
 $selfBytes=[IO.File]::ReadAllBytes($MyInvocation.MyCommand.Path)

@@ -23,7 +23,7 @@ Write-Host "Documentation/planning-only decision and amendment audit."
 Write-Host "This does not implement P1B, select P3 or freeze a second long baseline."
 Write-Host ""
 
-$doc='docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md'
+$doc='eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md'
 Require-Text $doc 'P2R-DECISION = PLAN-STOP-INCONCLUSIVE'
 Require-Text $doc '6 MWe LOAD REACHABILITY = DEMONSTRATED'
 Require-Text $doc '6 MWe WHOLE-OPERATING-POINT STATIONARITY = NOT DEMONSTRATED'
@@ -49,14 +49,14 @@ Require-File 'eng/frozen-evidence/ordinary/M10FinalReplacementLongClosurePlan1_P
 Require-File 'eng/frozen-evidence/ordinary/M10FinalReplacementLongClosurePlan1_P1A_Events.csv'
 Require-File 'eng/frozen-evidence/ordinary/M10FinalReplacementLongClosurePlan1_P1A_FrozenP1Calibration.csv'
 
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Plan Amendment 2'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'P1B Slow-State Closure & Phenomenon-Owner Qualification'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Todreas/Kazimi Deep Review Pass 2'
-Require-Text 'docs/PROJECT.md' 'P2R DECISION RE-ENTRY 1 / PLAN AMENDMENT 2'
-Require-Text 'docs/PROJECT.md' 'Todreas/Kazimi Deep Review Pass 2'
-Require-Text 'docs/ROADMAP.md' 'P1B Slow-State Closure & Phenomenon-Owner Qualification'
-Require-Text 'docs/M10_FINAL_VV_MATRIX.md' 'P2R1 records PLAN-STOP-INCONCLUSIVE'
-Require-Text 'docs/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Plan Amendment 2'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'P1B Slow-State Closure & Phenomenon-Owner Qualification'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md' 'Todreas/Kazimi Deep Review Pass 2'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'P2R DECISION RE-ENTRY 1 / PLAN AMENDMENT 2'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'Todreas/Kazimi Deep Review Pass 2'
+Require-Text 'eng/contracts/m10/navigation/ROADMAP.md' 'P1B Slow-State Closure & Phenomenon-Owner Qualification'
+Require-Text 'eng/contracts/m10/M10_FINAL_VV_MATRIX.md' 'P2R1 records PLAN-STOP-INCONCLUSIVE'
+Require-Text 'eng/contracts/m10/navigation/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md'
 
 $contractPath='eng/m10-final-replacement-long-closure-plan1-p2r-plan-amendment2-contract.json'
 Require-File $contractPath

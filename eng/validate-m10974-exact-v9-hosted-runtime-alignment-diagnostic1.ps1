@@ -126,7 +126,7 @@ if ($null -ne $Contract) {
         Check (([regex]::Matches($InvokerText, 'Get-FileHash')).Count -eq 0) 'invoker must not depend on Get-FileHash'
     }
 
-    $DocRelative = 'docs/M10974_EXACT_V9_HOSTED_RUNTIME_ALIGNMENT_DIAGNOSTIC1.md'
+    $DocRelative = 'eng/contracts/m10/M10974_EXACT_V9_HOSTED_RUNTIME_ALIGNMENT_DIAGNOSTIC1.md'
     $DocPath = Join-Path $Root ($DocRelative -replace '/', '\')
     if (-not (Test-Path -LiteralPath $DocPath -PathType Leaf)) {
         Add-Problem 'runtime alignment document missing'

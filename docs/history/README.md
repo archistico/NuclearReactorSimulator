@@ -6,6 +6,8 @@ Use `../PROJECT.md` for the current validated checkpoint and restart instruction
 
 ## Structure
 
+- [M10 contract separation audit](M10_CONTRACT_SEPARATION_2026-11-11.md) — 174 exact-text inputs and milestone/reference records moved to engineering tooling; readable validation and decision summaries live under `../validation/`.
+
 - [2026-11-11 compact archive](archives/README.md) — 74 completed notes and seven original navigation snapshots, with exact-byte SHA-256 provenance.
 - [2026-11-11 cleanup audit](DOCUMENTATION_CLEANUP_AUDIT_2026-11-11.md) — scope and verification.
 

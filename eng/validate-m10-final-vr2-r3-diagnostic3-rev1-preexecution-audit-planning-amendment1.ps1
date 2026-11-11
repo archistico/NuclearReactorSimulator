@@ -44,7 +44,7 @@ Req (-not [bool]$A.invariants.threshold_or_model_acceptance_change -and -not [bo
 Req (-not [bool]$A.invariants.repair_owner_selected -and -not [bool]$A.invariants.r3_passed -and -not [bool]$A.invariants.r4_authorized) 'R3/R4 authority drift'
 Req ($A.authority.next_authorized_activity -eq 'EXECUTE-DIAGNOSTIC3-REV1-TEST-ONLY') 'amendment next authority drift'
 foreach($n in @('document','validator','runner')){$e=$A.files.$n;Req (Test-Path ([string]$e.path)) ('amendment file missing: '+$n);Req ((NSha ([string]$e.path)) -eq [string]$e.normalized_sha256) ('amendment file drift: '+$n)}
-$doc='docs\M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md'
+$doc='eng\contracts\m10\M10_FINAL_VR2_R3_DIAGNOSTIC3_REV1_PREEXECUTION_AUDIT_PLANNING_AMENDMENT1.md'
 foreach($m in @('NRS-MARKER:DIAG3-REV1-AMENDMENT1-SCOPE','NRS-MARKER:DIAG3-REV1-AMENDMENT1-GUARD','NRS-MARKER:DIAG3-REV1-AMENDMENT1-POWERSHELL','NRS-MARKER:DIAG3-REV1-AMENDMENT1-AUTHORITY')){Req (Has $doc $m) ('amendment document marker missing: '+$m)}
 Req (Has 'docs\VALIDATOR_AUTHORING_RULES.md' 'Prefer runtime-portable primitives over convenience cmdlets') 'validator portability rule missing'
 Write-Host 'M10 Final VR2 R3 Diagnostic 3 REV1 Preexecution Audit / Planning Amendment 1: PASS-AS-AUTHORED' -ForegroundColor Green

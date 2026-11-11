@@ -64,5 +64,5 @@ type "%REPORT_DIR%\01-m1095-command-consequence-closure.summary.txt"
 echo Detailed closure artifacts: "%REPORT_DIR%"
 echo.
 echo Automated M10.9.5 closure gate completed.
-echo Final promotion requires: docs\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md
+echo Final promotion requires: eng\contracts\m10\M10_9_5_5_MANUAL_VALIDATION_CHECKLIST.md
 exit /b 0

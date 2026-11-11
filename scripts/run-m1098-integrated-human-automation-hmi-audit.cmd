@@ -73,6 +73,6 @@ echo === M10.9.8.5 artifact summary ===
 type "artifacts\m1098-integrated-hmi-closure\01-m10985-integrated-hmi-closure-preflight.summary.txt"
 echo.
 echo M10.9.8.5 automated integrated-HMI closure preflight completed.
-echo Promotion requires docs\M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md and explicit manual acceptance.
+echo Promotion requires eng\contracts\m10\M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md and explicit manual acceptance.
 echo After M10.9.8 closure, M10 remains OPEN until the final cumulative and long pre-M11 gates pass.
 exit /b 0

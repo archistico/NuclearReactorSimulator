@@ -62,15 +62,15 @@ function Require-True([object]$Value, [string]$Label) {
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
 $contractPath = Join-Path $PSScriptRoot 'm10-final-vr2-engineering-repair-planning1-rp1c-c4-exact-v9-tail-attribution-planning1-contract.json'
-$planPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION_PLANNING1.md'
-$reviewPath = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION_PLANNING1_PREEXECUTION_REVIEW.md'
+$planPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION_PLANNING1.md'
+$reviewPath = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_EXACT_V9_WALL_CLOCK_TAIL_ATTRIBUTION_PLANNING1_PREEXECUTION_REVIEW.md'
 $adrPath = Join-Path $repoRoot 'docs\adr\0199-attribute-rare-exact-v9-wall-clock-tail-before-rp1c-selection-or-candidate-mutation.md'
 $c4Path = Join-Path $repoRoot 'tests\NuclearReactorSimulator.Simulation.Tests\Physics\Fluids\Reference\Rp1bC4AllocationNeutralShadowThermodynamicCandidate.cs'
 $exactCorpusPath = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2EngineeringRepairPlanning1_RP1A_Artifacts\03-exact-v9-node-corpus.csv'
 $fdpcRoot = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2EngineeringRepairPlanning1_RP1C_C4_FullDomainPerformanceConfirmation1_Artifacts'
 $fdpcSummaryPath = Join-Path $fdpcRoot '05-rp1c-c4-full-domain-performance-confirmation1-summary.txt'
 $fdpcRunSummaryPath = Join-Path $fdpcRoot '02-cross-process-run-summary.csv'
-$fdpcAdjDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$fdpcAdjDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION1_RETURNED_EVIDENCE_ADJUDICATION.md'
 
 foreach ($path in @($contractPath, $planPath, $reviewPath, $adrPath, $c4Path, $exactCorpusPath, $fdpcSummaryPath, $fdpcRunSummaryPath, $fdpcAdjDoc)) {
     Require-File $path

@@ -68,8 +68,8 @@ try {
   }
 } finally { $zip.Dispose() }
 
-$main=Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION_PLANNING1.md'
-$pre=Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION_PLANNING1_PREEXECUTION_REVIEW.md'
+$main=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION_PLANNING1.md'
+$pre=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_SELECTION_PLANNING1_PREEXECUTION_REVIEW.md'
 $adr=Join-Path $repoRoot 'docs\adr\0209-open-rp1c-selection-only-after-green-fdpc2-and-preserve-select-none.md'
 Require-Text $main 'selection-ready count = 1'
 Require-Text $main 'SELECT-C4'
@@ -77,10 +77,10 @@ Require-Text $main 'SELECT-NONE'
 Require-Text $pre 'RP1C selection is not performed by this planning gate.'
 Require-Text $adr 'SELECT-C4 | SELECT-NONE'
 
-$roadmap=Join-Path $repoRoot 'docs\ROADMAP.md'
-$detailed=Join-Path $repoRoot 'docs\M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md'
-$docsReadme=Join-Path $repoRoot 'docs\README.md'
-$parentPlan=Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
+$roadmap=Join-Path $repoRoot 'eng\contracts\m10\navigation\ROADMAP.md'
+$detailed=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md'
+$docsReadme=Join-Path $repoRoot 'eng\contracts\m10\navigation\README.md'
+$parentPlan=Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1.md'
 Require-Text $roadmap 'The only live successor is planning-only `RP1C-ENGINEERING-REPAIR-SELECTION-PLANNING1`.'
 Require-Text $detailed 'The next and only authorized activity is `RP1C-ENGINEERING-REPAIR-SELECTION-PLANNING1`.'
 Require-Text $docsReadme 'The only live gate is planning-only `RP1C-ENGINEERING-REPAIR-SELECTION-PLANNING1`.'

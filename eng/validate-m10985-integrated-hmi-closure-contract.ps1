@@ -49,9 +49,9 @@ for ($i=1; $i -le 12; $i++) {
     Require (@($m.manualRoutes | Where-Object { $_.routeId -eq $id }).Count -eq 1) "$id missing or duplicated."
 }
 
-$checklistPath = Join-Path $RepositoryRoot 'docs\M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md'
-$closurePath = Join-Path $RepositoryRoot 'docs\M10_9_8_CLOSURE.md'
-$finalPlanPath = Join-Path $RepositoryRoot 'docs\M10_FINAL_PRE_M11_VALIDATION_PLAN.md'
+$checklistPath = Join-Path $RepositoryRoot 'eng\contracts\m10\M10_9_8_5_MANUAL_INTEGRATED_HMI_ACCEPTANCE_CHECKLIST.md'
+$closurePath = Join-Path $RepositoryRoot 'eng\contracts\m10\M10_9_8_CLOSURE.md'
+$finalPlanPath = Join-Path $RepositoryRoot 'eng\contracts\m10\M10_FINAL_PRE_M11_VALIDATION_PLAN.md'
 $manualPath = Join-Path $RepositoryRoot 'docs\usermanual\MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md'
 $limitationsPath = Join-Path $RepositoryRoot 'docs\KNOWN_MODEL_LIMITATIONS.md'
 foreach ($p in @($checklistPath,$closurePath,$finalPlanPath,$manualPath,$limitationsPath)) { Require (Test-Path -LiteralPath $p -PathType Leaf) "Required closure document '$p' is missing." }

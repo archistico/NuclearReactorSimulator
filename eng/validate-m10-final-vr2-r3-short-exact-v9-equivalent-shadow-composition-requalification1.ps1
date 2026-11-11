@@ -61,9 +61,9 @@ $Audit=Join-Path $Root $Contract.prerequisite.planning_returned_audit.Replace('/
 Require-R3 ((FileSha-R3 $Audit)-eq [string]$Contract.prerequisite.planning_returned_audit_sha256) 'R3 planning returned-audit hash drift.'
 Require-R3Text $Audit 'status=PASS'
 Require-R3Text $Audit 'r3-execution-authorized=True'
-Require-R3Text (Join-Path $Root 'docs\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md') 'PASS-AS-AUTHORED / RETURNED-EVIDENCE ADJUDICATED'
-Require-R3Text (Join-Path $Root 'docs\PROJECT.md') '.\scripts\run-m10-final-vr2-r3-short-exact-v9-equivalent-shadow-composition-requalification1.cmd'
-Require-R3Text (Join-Path $Root 'docs\PROJECT.md') 'R3 execution CURRENT'
+Require-R3Text (Join-Path $Root 'eng\contracts\m10\M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md') 'PASS-AS-AUTHORED / RETURNED-EVIDENCE ADJUDICATED'
+Require-R3Text (Join-Path $Root 'eng\contracts\m10\navigation\PROJECT.md') '.\scripts\run-m10-final-vr2-r3-short-exact-v9-equivalent-shadow-composition-requalification1.cmd'
+Require-R3Text (Join-Path $Root 'eng\contracts\m10\navigation\PROJECT.md') 'R3 execution CURRENT'
 
 $PlanningRoot=Join-Path $Root $Contract.planning_returned_artifacts.root.Replace('/','\')
 $PlanningProps=@($Contract.planning_returned_artifacts.sha256.PSObject.Properties)

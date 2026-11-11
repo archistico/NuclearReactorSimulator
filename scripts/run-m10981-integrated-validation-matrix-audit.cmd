@@ -53,5 +53,5 @@ if exist "artifacts\m1098-integrated-validation-matrix\01-m10981-validation-matr
 
 echo.
 echo M10.9.8.1 REV1 automated validation-matrix audit completed.
-echo Promotion also requires docs\M10_9_8_1_MATRIX_ACCEPTANCE_CHECKLIST.md.
+echo Promotion also requires eng\contracts\m10\M10_9_8_1_MATRIX_ACCEPTANCE_CHECKLIST.md.
 exit /b 0

@@ -4,7 +4,7 @@
 
 **PLANNING — adopt only after the currently running M10 final long validation is green and M10 is explicitly CLOSED.**
 
-This document is the operational execution map from the M10 closeout through M15. The immediate closure handoff is specified separately in [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md). It does not replace `PROJECT.md` as the current-state source and does not authorize changes to the active M10 long-validation candidate.
+This document is the operational execution map from the M10 closeout through M15. The immediate closure handoff is specified separately in [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](../eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md). It does not replace `PROJECT.md` as the current-state source and does not authorize changes to the active M10 long-validation candidate.
 
 It consolidates the existing milestone plans with three pre-M11 source-driven engineering review streams:
 

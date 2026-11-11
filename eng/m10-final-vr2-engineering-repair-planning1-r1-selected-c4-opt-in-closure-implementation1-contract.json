@@ -160,15 +160,15 @@
   "post_successor": "R2-FOCUSED-THERMODYNAMIC-REFERENCE-TOPOLOGY-QUALIFICATION-PLANNING-ONLY",
   "documentation_files": {
     "main": {
-      "path": "docs/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1.md",
       "normalized_sha256": "069934CD3F6259C21E2AD986FE2EDE303AE8D99371005403A58BD789881841B6"
     },
     "preexecution": {
-      "path": "docs/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1_PREEXECUTION_REVIEW.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1_PREEXECUTION_REVIEW.md",
       "normalized_sha256": "6CA39DCB201750BB370BD5CE55F34996BB0A81D1F635A1D21A4B6CC8BF8CE93E"
     },
     "returned_adjudication": {
-      "path": "docs/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1_RETURNED_EVIDENCE_ADJUDICATION.md",
+      "path": "eng/contracts/m10/M10_FINAL_VR2_R1_SELECTED_C4_OPT_IN_CLOSURE_IMPLEMENTATION1_RETURNED_EVIDENCE_ADJUDICATION.md",
       "normalized_sha256": "60EDA25FC6CF71F275A404F2C23D2EF896D196BD490D88579F74AE356DB3B166"
     },
     "adr": {
@@ -176,23 +176,23 @@
       "normalized_sha256": "98D4868C67E1919F48BD894D5334FE27340A8C1CA82F8C681556DB7AC94B913B"
     },
     "project": {
-      "path": "docs/PROJECT.md",
+      "path": "eng/contracts/m10/navigation/PROJECT.md",
       "normalized_sha256": "7CFB3124B6ED5EF6F642FCC49C59E41B975CE287144C1861DAAC6B3BC599FF97"
     },
     "roadmap": {
-      "path": "docs/ROADMAP.md",
+      "path": "eng/contracts/m10/navigation/ROADMAP.md",
       "normalized_sha256": "F09BCB1402DE87930B57A26E60E9543B26364ACAB5CC6C1EFC75102C01D97279"
     },
     "docs_readme": {
-      "path": "docs/README.md",
+      "path": "eng/contracts/m10/navigation/README.md",
       "normalized_sha256": "F79608B4B2338ADF39D1F9DE95B24C7CA33D64EE52EE307BB3D4E0D09B34A1B4"
     },
     "detailed_plan": {
-      "path": "docs/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md",
+      "path": "eng/contracts/m10/M10_FINAL_NEXT_STEPS_DETAILED_EXECUTION_PLAN.md",
       "normalized_sha256": "807CC4121DCB476A1F3F773F25095C1003168FFB906AC32924F25495349D9D70"
     },
     "top_level_index": {
-      "path": "docs/TOP_LEVEL_DOCUMENT_INDEX.md",
+      "path": "eng/contracts/m10/navigation/TOP_LEVEL_DOCUMENT_INDEX.md",
       "normalized_sha256": "26476C20C2D8B75F7C25677AB55C0EA870E3A55CCF76FC6BA4B1C3ED906633A6"
     },
     "adr_index": {

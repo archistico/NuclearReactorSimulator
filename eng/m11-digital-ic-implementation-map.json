@@ -132,7 +132,7 @@
     }
   ],
   "executionDocuments": [
-    "docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md",
+    "eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md",
     "docs/POST_M10_TO_M15_EXECUTION_MASTER_PLAN.md",
     "docs/CHANGE_IMPACT_REVALIDATION_POLICY.md",
     "docs/M11_RELEASE_EVIDENCE_MATRIX_PLAN.md"

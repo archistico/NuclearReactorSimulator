@@ -57,9 +57,9 @@ $performancePath = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2
 $testPath = Join-Path $repoRoot 'tests\NuclearReactorSimulator.Simulation.Tests\Physics\Fluids\M10FinalVr2EngineeringRepairPlanning1Rp1cC4DynamicPgoComparator1Tests.cs'
 $runnerPath = Join-Path $repoRoot 'scripts\run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-dynamic-pgo-comparator1.cmd'
 $adjudicatorPath = Join-Path $PSScriptRoot 'adjudicate-m10-final-vr2-engineering-repair-planning1-rp1c-c4-dynamic-pgo-comparator1.ps1'
-$planningAdjDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
-$implementationDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR1.md'
-$reviewDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR1_PREEXECUTION_REVIEW.md'
+$planningAdjDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md'
+$implementationDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR1.md'
+$reviewDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_DYNAMIC_PGO_COMPARATOR1_PREEXECUTION_REVIEW.md'
 
 foreach ($path in @($contractPath,$planning01,$planning02,$planning03,$planning04,$c4Path,$exactPath,$performancePath,$testPath,$runnerPath,$adjudicatorPath,$planningAdjDoc,$implementationDoc,$reviewDoc)) { Require-File $path }
 

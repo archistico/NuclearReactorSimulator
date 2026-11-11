@@ -109,9 +109,9 @@ Write-Host 'No RP1C, production repair, threshold change, exact-v9 change, VR3, 
 Write-Host ''
 
 $contractPath = 'eng/m10-final-vr2-engineering-repair-planning1-rp1b-c4-planning1-contract.json'
-$planPath = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_C4_PLANNING1.md'
+$planPath = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_C4_PLANNING1.md'
 $adrPath = 'docs/adr/0196-c4-must-remove-resolve-time-allocation-without-changing-c3-thermodynamic-semantics.md'
-$adjudicationPath = 'docs/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_RETURNED_EVIDENCE_ADJUDICATION.md'
+$adjudicationPath = 'eng/contracts/m10/M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1B_REFINEMENT5_RETURNED_EVIDENCE_ADJUDICATION.md'
 $returnedDir = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1B_Refinement5_Artifacts'
 $rp1aVr2Path = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1A_Artifacts/02-vr2-reference-point-corpus.csv'
 $rp1aExactV9Path = 'eng/frozen-evidence/ordinary/M10FinalVR2EngineeringRepairPlanning1_RP1A_Artifacts/03-exact-v9-node-corpus.csv'

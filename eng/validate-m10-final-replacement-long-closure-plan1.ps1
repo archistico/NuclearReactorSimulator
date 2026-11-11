@@ -16,13 +16,13 @@ function Require-Text([string]$Path, [string]$Needle) {
 
 $required = @(
     'eng/m10-final-replacement-long-closure-plan1-contract.json',
-    'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md',
-    'docs/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md',
-    'docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md',
-    'docs/M10_FINAL_VV_MATRIX.md',
-    'docs/PROJECT.md',
-    'docs/ROADMAP.md',
-    'docs/README.md'
+    'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md',
+    'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md',
+    'eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md',
+    'eng/contracts/m10/M10_FINAL_VV_MATRIX.md',
+    'eng/contracts/m10/navigation/PROJECT.md',
+    'eng/contracts/m10/navigation/ROADMAP.md',
+    'eng/contracts/m10/navigation/README.md'
 )
 $required | ForEach-Object { Require-File $_ }
 
@@ -38,7 +38,7 @@ if ($contract.hard_stops.exact_v9_never_reinterpreted -ne $true) { throw 'exact-
 if ($contract.hard_stops.no_second_long_freeze_before_p4_pass -ne $true) { throw 'P4 prerequisite for second long freeze missing.' }
 if ($contract.hard_stops.no_ad_hoc_diagnostic_after_p1_inconclusive -ne $true) { throw 'P1 inconclusive hard stop missing.' }
 
-$plan = 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md'
+$plan = 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md'
 @(
     'Evidence & Planning Freeze',
     'Asymptotic First-Stage Qualification',
@@ -53,16 +53,16 @@ $plan = 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md'
     'No second replacement-long baseline may be frozen until P4 PASS.'
 ) | ForEach-Object { Require-Text $plan $_ }
 
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' 'RETURNED / EXECUTION PASS'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' '50.000283643052136'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' '5.7338236172924848'
-Require-Text 'docs/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' '-0.27161903467884968'
-Require-Text 'docs/PROJECT.md' 'P0 EVIDENCE & PLANNING FREEZE HOTFIX 2 CANDIDATE'
-Require-Text 'docs/PROJECT.md' 'Diagnostic 6 returned execution PASS'
-Require-Text 'docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md'
-Require-Text 'docs/M10_FINAL_VV_MATRIX.md' 'Replacement-Long Execution 1 also remains **RED**'
-Require-Text 'docs/ROADMAP.md' 'P3-W/P3-R'
-Require-Text 'docs/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' 'RETURNED / EXECUTION PASS'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' '50.000283643052136'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' '5.7338236172924848'
+Require-Text 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_FAILURE_DIAGNOSTIC6.md' '-0.27161903467884968'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'P0 EVIDENCE & PLANNING FREEZE HOTFIX 2 CANDIDATE'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'Diagnostic 6 returned execution PASS'
+Require-Text 'eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md'
+Require-Text 'eng/contracts/m10/M10_FINAL_VV_MATRIX.md' 'Replacement-Long Execution 1 also remains **RED**'
+Require-Text 'eng/contracts/m10/navigation/ROADMAP.md' 'P3-W/P3-R'
+Require-Text 'eng/contracts/m10/navigation/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md'
 
 $artifactDir = 'artifacts/m10-final-replacement-long-closure-plan1'
 New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null

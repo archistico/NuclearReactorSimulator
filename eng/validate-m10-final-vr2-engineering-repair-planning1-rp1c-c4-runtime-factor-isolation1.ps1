@@ -83,8 +83,8 @@ $performancePath = Join-Path $repoRoot 'eng\frozen-evidence\ordinary\M10FinalVR2
 $testPath = Join-Path $repoRoot 'tests\NuclearReactorSimulator.Simulation.Tests\Physics\Fluids\M10FinalVr2EngineeringRepairPlanning1Rp1cC4RuntimeFactorIsolation1Tests.cs'
 $runnerPath = Join-Path $repoRoot 'scripts\run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation1.cmd'
 $adjudicatorPath = Join-Path $PSScriptRoot 'adjudicate-m10-final-vr2-engineering-repair-planning1-rp1c-c4-runtime-factor-isolation1.ps1'
-$implementationDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION1.md'
-$reviewDoc = Join-Path $repoRoot 'docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION1_PREEXECUTION_REVIEW.md'
+$implementationDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION1.md'
+$reviewDoc = Join-Path $repoRoot 'eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_RUNTIME_FACTOR_ISOLATION1_PREEXECUTION_REVIEW.md'
 
 foreach ($path in @(
     $contractPath,$planning01,$planning02,$planning03,$planning04,$c4Path,$exactPath,$performancePath,

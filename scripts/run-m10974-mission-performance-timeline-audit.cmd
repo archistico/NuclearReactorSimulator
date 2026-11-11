@@ -119,5 +119,5 @@ if exist "artifacts\m10974-mission-performance-timeline\01-m10974-mission-perfor
 
 echo.
 echo M10.9.7.4 automated deterministic Mission/Performance timeline audit completed.
-echo Final promotion also requires docs\M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md.
+echo Final promotion also requires eng\contracts\m10\M10_9_7_4_MANUAL_VALIDATION_CHECKLIST.md.
 exit /b 0

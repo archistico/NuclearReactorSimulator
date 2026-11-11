@@ -29,29 +29,8 @@ Engineering records have their own entry points: [PROJECT.md](PROJECT.md) holds 
 current checkpoint and validation commands; [ROADMAP.md](ROADMAP.md) holds future
 sequencing. Milestone plans are under `milestones/` and source reviews under `research/`.
 
-## Historical validator compatibility
+## Validation and engineering decisions
 
-The following retained identifiers and literal excerpts are interfaces for older
-validators, not current status or instructions. The complete historical prose
-is in the [documentation archive](history/archives/README.md).
-
-<!-- NRS-MARKER:DIAG3-REV1-DOC-NAV -->
-
-<!-- NRS-MARKER:DIAG3-REV1-RETURNED-ADJUDICATION-DOCNAV -->
-
-- `M10974_FINGERPRINT_V1_CROSS_HOST_DIAGNOSTIC1_RETURNED_EVIDENCE_ADJUDICATION1.md` - returned local/hosted diff adjudication proving a single culture-sensitive `VoidText` leaf and zero physical numeric drift. NRS-MARKER:DOCNAV-FPV1-DIAG1-ADJUDICATION1
-
-- `M10974_FINGERPRINT_V1_CROSS_HOST_DETERMINISM_HOTFIX1.md` - REV2 presentation-only invariant-culture repair with V1 compatibility preservation, Exact-V9 transitive-anchor preservation and cross-culture/hosted-GREEN qualification. NRS-MARKER:DOCNAV-FPV1-HOTFIX1
-
-NRS-MARKER:DOCNAV-R3-ENERGY-TRANSPORT-REPAIR-PLANNING1
-
-```text
-M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md
-M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R_DECISION_PLAN_AMENDMENT2.md
-M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2R2_DECISION_REENTRY2.md
-M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md
-PRE_M11_DEEP_ENGINEERING_SECTION_REVIEW_2.md
-PRE_M11_PLANT_DYNAMICS_THERMAL_HYDRAULICS_REACTOR_PHYSICS_REVIEW.md
-PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS1.md
-PRE_M11_TODREAS_KAZIMI_THERMAL_HYDRAULIC_DEEP_REVIEW_PASS2.md
-```
+Start with the [validation summary](validation/README.md) and
+[model decisions](validation/MODEL_DECISIONS.md). Exact-text M10 inputs
+used by validators are indexed under [engineering contracts](../eng/contracts/m10/README.md).

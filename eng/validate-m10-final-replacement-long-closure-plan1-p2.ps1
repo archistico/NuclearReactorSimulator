@@ -20,13 +20,13 @@ $required = @(
     'eng/frozen-evidence/ordinary/M10FinalReplacementLongClosurePlan1_P1_ProbeSummary.csv',
     'eng/frozen-evidence/ordinary/M10FinalReplacementLongClosurePlan1_P1_ReferenceNoiseCalibration.csv',
     'eng/frozen-evidence/ordinary/M10FinalReplacementLongClosurePlan1_P1_Events.csv',
-    'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md',
-    'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md',
-    'docs/PROJECT.md',
-    'docs/ROADMAP.md',
-    'docs/M10_FINAL_VV_MATRIX.md',
-    'docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md',
-    'docs/README.md'
+    'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md',
+    'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN.md',
+    'eng/contracts/m10/navigation/PROJECT.md',
+    'eng/contracts/m10/navigation/ROADMAP.md',
+    'eng/contracts/m10/M10_FINAL_VV_MATRIX.md',
+    'eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md',
+    'eng/contracts/m10/navigation/README.md'
 )
 $required | ForEach-Object { Require-File $_ }
 
@@ -54,7 +54,7 @@ Require-Text $p1 'm10-final-replacement-long-closure-plan1-p1-passes=True'
 Require-Text $p1 'output-error:0.068735004129901078'
 Require-Text $p1 'dispatch-adequacy:-0.070137744201449845'
 
-$p2 = 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md'
+$p2 = 'eng/contracts/m10/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md'
 @(
     'PLAN-STOP-INCONCLUSIVE',
     'P3-W-AUTHORIZED = False',
@@ -65,11 +65,11 @@ $p2 = 'docs/M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md'
     'no further automatic continuation beyond 3,600 s'
 ) | ForEach-Object { Require-Text $p2 $_ }
 
-Require-Text 'docs/PROJECT.md' 'P2 DECISION GATE 1 — PLAN-STOP-INCONCLUSIVE CANDIDATE'
-Require-Text 'docs/ROADMAP.md' 'P1A Asymptotic Closure Extension'
-Require-Text 'docs/M10_FINAL_VV_MATRIX.md' 'P1 returned `INCONCLUSIVE`'
-Require-Text 'docs/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md' 'P2 planning stop'
-Require-Text 'docs/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md'
+Require-Text 'eng/contracts/m10/navigation/PROJECT.md' 'P2 DECISION GATE 1 — PLAN-STOP-INCONCLUSIVE CANDIDATE'
+Require-Text 'eng/contracts/m10/navigation/ROADMAP.md' 'P1A Asymptotic Closure Extension'
+Require-Text 'eng/contracts/m10/M10_FINAL_VV_MATRIX.md' 'P1 returned `INCONCLUSIVE`'
+Require-Text 'eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md' 'P2 planning stop'
+Require-Text 'eng/contracts/m10/navigation/README.md' 'M10_FINAL_REPLACEMENT_LONG_CLOSURE_PLAN1_P2_DECISION.md'
 
 $artifactDir = 'artifacts/m10-final-replacement-long-closure-plan1-p2'
 New-Item -ItemType Directory -Force -Path $artifactDir | Out-Null

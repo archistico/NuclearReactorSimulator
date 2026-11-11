@@ -81,10 +81,10 @@ $implementation = @{
  'orchestrator'='eng\invoke-m10-final-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation2.ps1';
  'adjudicator'='eng\adjudicate-m10-final-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation2.ps1';
  'runner'='scripts\run-m10-final-vr2-engineering-repair-planning1-rp1c-c4-full-domain-performance-confirmation2.cmd';
- 'main_doc'='docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2.md';
- 'preexec_doc'='docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2_PREEXECUTION_REVIEW.md';
- 'returned_doc'='docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2_RETURNED_EVIDENCE_ADJUDICATION.md';
- 'planning_returned_doc'='docs\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md';
+ 'main_doc'='eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2.md';
+ 'preexec_doc'='eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2_PREEXECUTION_REVIEW.md';
+ 'returned_doc'='eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2_RETURNED_EVIDENCE_ADJUDICATION.md';
+ 'planning_returned_doc'='eng\contracts\m10\M10_FINAL_VR2_ENGINEERING_REPAIR_PLANNING1_RP1C_C4_FULL_DOMAIN_PERFORMANCE_CONFIRMATION2_PLANNING1_RETURNED_EVIDENCE_ADJUDICATION.md';
  'adr_0208'='docs\adr\0208-execute-fdpc2-under-ambient-runtime-on-frozen-a2-host.md'
 }
 foreach ($name in $implementation.Keys) {
