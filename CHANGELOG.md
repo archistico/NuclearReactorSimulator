@@ -275,6 +275,12 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   dell'impianto, criticità, periodo, barre, titolo e vuoto, pompa e circuito,
   coppie, sincronizzazione, xeno, treno di valvole, condensatore e soglie. Ogni
   figura ha introduzione, legenda e spiegazione; le curve qualitative sono dichiarate tali.
+- Aggiunte altre sedici figure SVG per lettori di ogni livello: itinerari di
+  lettura, dal clic alla risposta, accumuli, saturazione, calore dopo l'arresto,
+  volume di controllo, corpo cilindrico, portate della turbina, lettura di uno
+  strumento, passo dei comandi, memoria e reset, protezioni temporizzate,
+  percorso di avviamento, mappa della schermata, assistenza e autorità, ordine
+  della diagnosi. Valori e soglie verificati sul manuale e sul codice.
 - Archiviati 74 documenti conclusi o superati, preservandone byte e SHA-256;
   separati 174 input esatti dei validatori dalla documentazione leggibile.
 - Consolidati risultati e ripresa in `docs/PROJECT.md`, con handoff operativo.

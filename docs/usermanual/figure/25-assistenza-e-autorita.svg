@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Assistenza e autorità sono due regolazioni diverse</title>
+<desc id="desc">Griglia tre per tre: in orizzontale l'assistenza da HIDDEN o NONE a CHECKLIST a GUIDED, in verticale l'autorità da MANUAL ad ASSISTED a SUPERVISORY. Una fascia sopra la griglia ricorda che protezioni e interblocchi hanno priorità in ogni casella. Un esempio mostra autorità richiesta SUPERVISORY e autorità effettiva ASSISTED.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="519.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Assistenza e autorità sono due regolazioni diverse</text>
+<defs><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect x="200.0" y="62.0" width="600.0" height="34.0" rx="5" fill="#fbe3e3" stroke="#d03b3b" stroke-width="1.5"/>
+<text x="500.0" y="84.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">Protezioni e interblocchi: priorità in ogni casella</text>
+<text x="300.0" y="374.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">HIDDEN / NONE</text>
+<text x="500.0" y="374.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">CHECKLIST</text>
+<text x="700.0" y="374.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">GUIDED</text>
+<text x="186.0" y="155.0" font-size="12.5" fill="#0b0b0b" text-anchor="end" font-weight="600">SUPERVISORY</text>
+<rect x="203.0" y="113.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<rect x="403.0" y="113.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<rect x="603.0" y="113.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="186.0" y="235.0" font-size="12.5" fill="#0b0b0b" text-anchor="end" font-weight="600">ASSISTED</text>
+<rect x="203.0" y="193.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<rect x="403.0" y="193.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<rect x="603.0" y="193.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="186.0" y="315.0" font-size="12.5" fill="#0b0b0b" text-anchor="end" font-weight="600">MANUAL</text>
+<rect x="203.0" y="273.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<rect x="403.0" y="273.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<rect x="603.0" y="273.0" width="194.0" height="74.0" rx="5" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<path d="M200.0,394.0 L800.0,394.0" fill="none" stroke="#52514e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a52514e)"/>
+<text x="500.0" y="414.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">ASSISTENZA: quanta spiegazione vedi</text>
+<path d="M110.0,350.0 L110.0,110.0" fill="none" stroke="#52514e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a52514e)"/>
+<text transform="translate(96,230.0) rotate(-90)" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">AUTORITÀ: chi regola</text>
+<circle cx="700.0" cy="150.0" r="8" fill="#6250d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="714.0" y="155.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">richiesta</text>
+<circle cx="700.0" cy="230.0" r="8" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<text x="714.0" y="235.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">effettiva</text>
+<path d="M700.0,160.0 L700.0,218.0" fill="none" stroke="#52514e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="5 4" marker-end="url(#a52514e)"/>
+<text x="688.0" y="194.0" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal">degrado</text>
+<text x="40.0" y="450.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Le due scelte sono indipendenti: puoi avere molta guida e regolare tu stesso, o poca guida con il supervisore attivo.</text>
+<text x="40.0" y="468.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">L'assistenza non cambia fisica, soglie o punteggio. Se mancano le condizioni, l'autorità effettiva può scendere</text>
+<text x="40.0" y="486.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">sotto quella richiesta (qui SUPERVISORY richiesta, ASSISTED effettiva): leggi entrambe.</text>
+</svg>

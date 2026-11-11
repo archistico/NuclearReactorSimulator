@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Dall'arresto a freddo alla generazione, un gradino alla volta</title>
+<desc id="desc">Scalinata di sei gradini che corrispondono ai paragrafi da 8.2 a 8.7: preparazione, prima criticità a bassa potenza, riscaldamento, avviamento della turbina, parallelo con le finestre di sincronizzazione e carico. Una freccia indica che il desktop ordinario parte dall'ultimo gradino.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="499.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Dall'arresto a freddo alla generazione, un gradino alla volta</text>
+<defs><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect x="40.0" y="326.0" width="130.0" height="104.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.2"/>
+<text x="50.0" y="348.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">8.2  Preparazione</text>
+<text x="50.0" y="368.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">barre inserite</text>
+<text x="50.0" y="384.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">circolazione verificata</text>
+<rect x="178.0" y="282.0" width="130.0" height="148.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.2"/>
+<text x="188.0" y="304.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">8.3  Prima criticità</text>
+<text x="188.0" y="324.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">bassa potenza</text>
+<text x="188.0" y="340.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">0,01–5 MWth</text>
+
+<g transform="translate(166.0,352.0)"><circle cx="8" cy="8" r="9" fill="#0ca30c"/><path d="M4,8 L7,11 L12,5" fill="none" stroke="#ffffff" stroke-width="2"/></g>
+<rect x="316.0" y="238.0" width="130.0" height="192.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.2"/>
+<text x="326.0" y="260.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">8.4  Riscaldamento</text>
+<text x="326.0" y="280.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">temperature e fasi</text>
+<text x="326.0" y="296.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">producono vapore</text>
+
+<g transform="translate(304.0,308.0)"><circle cx="8" cy="8" r="9" fill="#0ca30c"/><path d="M4,8 L7,11 L12,5" fill="none" stroke="#ffffff" stroke-width="2"/></g>
+<rect x="454.0" y="194.0" width="130.0" height="236.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.2"/>
+<text x="464.0" y="216.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">8.5  Turbina</text>
+<text x="464.0" y="236.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">rotore verso</text>
+<text x="464.0" y="252.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">3000 giri/min</text>
+
+<g transform="translate(442.0,264.0)"><circle cx="8" cy="8" r="9" fill="#0ca30c"/><path d="M4,8 L7,11 L12,5" fill="none" stroke="#ffffff" stroke-width="2"/></g>
+<rect x="592.0" y="150.0" width="130.0" height="280.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.2"/>
+<text x="602.0" y="172.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">8.6  Parallelo</text>
+<text x="602.0" y="192.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">0,2 Hz · 10° · 10 kV</text>
+<text x="602.0" y="208.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">poi CLOSE BREAKER</text>
+
+<g transform="translate(580.0,220.0)"><circle cx="8" cy="8" r="9" fill="#0ca30c"/><path d="M4,8 L7,11 L12,5" fill="none" stroke="#ffffff" stroke-width="2"/></g>
+<rect x="730.0" y="106.0" width="130.0" height="324.0" rx="6" fill="#e3defb" stroke="#6250d6" stroke-width="2"/>
+<text x="740.0" y="128.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">8.7  Carico</text>
+<text x="740.0" y="148.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">richiesta in MWe</text>
+<text x="740.0" y="164.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">desktop: 5 MWe</text>
+
+<g transform="translate(718.0,176.0)"><circle cx="8" cy="8" r="9" fill="#0ca30c"/><path d="M4,8 L7,11 L12,5" fill="none" stroke="#ffffff" stroke-width="2"/></g>
+<path d="M675.0,76.0 L765.0,76.0 L765.0,100.0" fill="none" stroke="#52514e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a52514e)"/>
+<text x="669.0" y="80.0" font-size="12.5" fill="#0b0b0b" text-anchor="end" font-weight="600">il desktop ordinario parte qui</text>
+<text x="40.0" y="460.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Ogni gradino poggia sul precedente: il segno verde indica una verifica da fare prima di salire.</text>
+<text x="40.0" y="478.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Le fasi da 8.2 a 8.6 appartengono a scenari dedicati; il desktop si apre già in parallelo, con 5 MWe richiesti.</text>
+</svg>

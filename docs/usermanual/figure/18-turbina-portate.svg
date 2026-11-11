@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 526" width="900" height="526" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Dove va la portata che entra in turbina</title>
+<desc id="desc">Diagramma a nastri: circa 13,34 kg/s di ammissione si dividono in circa 13,03 kg/s di vapore che attraversano gli stadi, producono lavoro e scaricano al condensatore, e circa 0,31 kg/s di liquido drenato verso la vasca del condensato.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="525.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Dove va la portata che entra in turbina</text>
+<defs><marker id="aeb6834" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#eb6834"/></marker><marker id="a2a78d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/></marker><marker id="a6250d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6250d6"/></marker></defs>
+<path d="M120,120 L330,120 L330,315.35232383808096 L120,315.35232383808096 Z" fill="#eb6834" opacity="0.85"/>
+<path d="M120,315.35232383808096 L290,315.35232383808096 C330,315.35232383808096 330,385.35232383808096 370,385.35232383808096 L640,385.35232383808096 L640,390.0 L370,390.0 C325,390.0 325,320.0 290,320.0 L120,320.0 Z" fill="#2a78d6"/>
+<path d="M330,150 L560,120 L560,315.35232383808096 L330,285.35232383808096 Z" fill="#fbe0d3" stroke="#eb6834" stroke-width="2"/>
+<text x="445.0" y="222.7" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">stadi della turbina</text>
+<path d="M560,130 L720,130 L720,305.35232383808096 L560,305.35232383808096 Z" fill="#eb6834" opacity="0.6"/>
+<path d="M720.0,217.7 L770.0,217.7" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#aeb6834)"/>
+<text x="774.0" y="213.7" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">scarico al</text>
+<text x="774.0" y="231.7" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">condensatore</text>
+<path d="M640.0,387.7 L700.0,387.7" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<text x="706.0" y="385.4" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">drenaggio verso la</text>
+<text x="706.0" y="403.4" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">vasca del condensato</text>
+<path d="M445.0,114.0 L445.0,74.0" fill="none" stroke="#6250d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a6250d6)"/>
+<text x="455.0" y="86.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">lavoro all'albero</text>
+<text x="20.0" y="212.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">ammissione</text>
+<text x="20.0" y="229.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">≈ 13,34 kg/s</text>
+<text x="346.0" y="337.4" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">≈ 13,03 kg/s di vapore</text>
+<text x="346.0" y="353.4" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">agli stadi</text>
+<text x="376.0" y="413.4" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">≈ 0,31 kg/s di liquido drenato</text>
+<text x="40.0" y="456.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">13,34 = 13,03 + 0,31: sono tre misure di confini diversi dello stesso flusso. Sommare tutte le portate</text>
+<text x="40.0" y="474.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">visibili conterebbe due volte la stessa acqua. Solo la parte vapore attraversa gli stadi e produce lavoro;</text>
+<text x="40.0" y="492.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">il liquido presente all'ingresso segue un percorso esplicito verso la vasca del condensato.</text>
+<text x="24.0" y="510.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Valori del punto iniziale Exact-V9; spessori dei nastri proporzionali alle portate.</text>
+</svg>

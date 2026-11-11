@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580" width="900" height="580" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Dal clic alla risposta dell'impianto</title>
+<desc id="desc">Cinque righe nel tempo dopo un comando ADMISSION OPEN: il clic, l'esito accettato al passo successivo, il TARGET che cambia subito, la posizione effettiva che sale dal 30% al 100% in circa 1,4 secondi e la risposta del processo che segue con gradualità. Sotto, il righello dei passi logici da 10 millisecondi.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="579.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Dal clic alla risposta dell'impianto</text>
+<defs><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<text x="40.0" y="95.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Clic sul comando</text>
+<line x1="250.0" y1="108.0" x2="840.0" y2="108.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="40.0" y="155.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Esito della richiesta</text>
+<line x1="250.0" y1="168.0" x2="840.0" y2="168.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="40.0" y="215.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">TARGET della valvola</text>
+<line x1="250.0" y1="228.0" x2="840.0" y2="228.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="40.0" y="295.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Posizione effettiva</text>
+<line x1="250.0" y1="308.0" x2="840.0" y2="308.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="40.0" y="375.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Risposta del processo</text>
+<line x1="250.0" y1="388.0" x2="840.0" y2="388.0" stroke="#e1e0d9" stroke-width="1"/>
+<circle cx="254.7" cy="92.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="254.7" y="96.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="272.7" y="96.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">ADMISSION OPEN</text>
+<rect x="257.1" y="140.0" width="582.9" height="22.0" rx="4" fill="#d6efd6" stroke="none" stroke-width="1.5"/>
+<text x="264.2" y="156.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">LAST COMMAND FEEDBACK: accettato, al passo successivo</text>
+<path d="M250.0,222.0 L257.1,222.0 L257.1,196.0 L840.0,196.0" fill="none" stroke="#52514e" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4"/>
+<text x="273.6" y="190.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">bersaglio cambiato subito</text>
+<path d="M250.0,316.0 L257.1,316.0 L587.5,260.0 L840.0,260.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="610.0" y="252.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">arriva dopo circa 1,4 s (≈ 50 punti %/s)</text>
+<text x="273.6" y="334.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">esempio: dal 30% al 100%</text>
+<path d="M250.0,388.0 L254.7,388.0 L259.4,388.0 L264.2,388.0 L268.9,388.0 L273.6,388.0 L278.3,387.0 L283.0,386.0 L287.8,385.1 L292.5,384.2 L297.2,383.3 L301.9,382.4 L306.6,381.6 L311.4,380.7 L316.1,379.9 L320.8,379.2 L325.5,378.4 L330.2,377.6 L335.0,376.9 L339.7,376.2 L344.4,375.5 L349.1,374.8 L353.8,374.2 L358.6,373.5 L363.3,372.9 L368.0,372.3 L372.7,371.7 L377.4,371.1 L382.2,370.5 L386.9,370.0 L391.6,369.4 L396.3,368.9 L401.0,368.4 L405.8,367.9 L410.5,367.4 L415.2,366.9 L419.9,366.4 L424.6,366.0 L429.4,365.5 L434.1,365.1 L438.8,364.7 L443.5,364.3 L448.2,363.9 L453.0,363.5 L457.7,363.1 L462.4,362.7 L467.1,362.4 L471.8,362.0 L476.6,361.7 L481.3,361.3 L486.0,361.0 L490.7,360.7 L495.4,360.4 L500.2,360.0 L504.9,359.8 L509.6,359.5 L514.3,359.2 L519.0,358.9 L523.8,358.6 L528.5,358.4 L533.2,358.1 L537.9,357.9 L542.6,357.6 L547.4,357.4 L552.1,357.2 L556.8,356.9 L561.5,356.7 L566.2,356.5 L571.0,356.3 L575.7,356.1 L580.4,355.9 L585.1,355.7 L589.8,355.5 L594.6,355.3 L599.3,355.1 L604.0,355.0 L608.7,354.8 L613.4,354.6 L618.2,354.4 L622.9,354.3 L627.6,354.1 L632.3,354.0 L637.0,353.8 L641.8,353.7 L646.5,353.6 L651.2,353.4 L655.9,353.3 L660.6,353.1 L665.4,353.0 L670.1,352.9 L674.8,352.8 L679.5,352.7 L684.2,352.5 L689.0,352.4 L693.7,352.3 L698.4,352.2 L703.1,352.1 L707.8,352.0 L712.6,351.9 L717.3,351.8 L722.0,351.7 L726.7,351.6 L731.4,351.5 L736.2,351.5 L740.9,351.4 L745.6,351.3 L750.3,351.2 L755.0,351.1 L759.8,351.0 L764.5,351.0 L769.2,350.9 L773.9,350.8 L778.6,350.8 L783.4,350.7 L788.1,350.6 L792.8,350.6 L797.5,350.5 L802.2,350.4 L807.0,350.4 L811.7,350.3 L816.4,350.3 L821.1,350.2 L825.8,350.1 L830.6,350.1 L835.3,350.0 L840.0,350.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="698.4" y="404.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">portata e pressioni seguono</text>
+<line x1="250.0" y1="440.0" x2="840.0" y2="440.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<line x1="250.0" y1="434.0" x2="250.0" y2="446.0" stroke="#52514e" stroke-width="1.5"/>
+<text x="250.0" y="462.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">0,0</text>
+<line x1="368.0" y1="434.0" x2="368.0" y2="446.0" stroke="#52514e" stroke-width="1.5"/>
+<text x="368.0" y="462.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">0,5</text>
+<line x1="486.0" y1="434.0" x2="486.0" y2="446.0" stroke="#52514e" stroke-width="1.5"/>
+<text x="486.0" y="462.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">1,0</text>
+<line x1="604.0" y1="434.0" x2="604.0" y2="446.0" stroke="#52514e" stroke-width="1.5"/>
+<text x="604.0" y="462.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">1,5</text>
+<line x1="722.0" y1="434.0" x2="722.0" y2="446.0" stroke="#52514e" stroke-width="1.5"/>
+<text x="722.0" y="462.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">2,0</text>
+<line x1="840.0" y1="434.0" x2="840.0" y2="446.0" stroke="#52514e" stroke-width="1.5"/>
+<text x="840.0" y="462.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">2,5</text>
+<text x="858.0" y="462.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal">s</text>
+<text x="250.0" y="484.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">un passo logico = 10 ms · 100 passi = 1 secondo simulato</text>
+<text x="40.0" y="520.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Clic, «accettato», bersaglio e posizione sono quattro informazioni diverse. In pausa, SINGLE STEP fa avanzare un passo</text>
+<text x="40.0" y="538.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">alla volta e mostra che cosa è stato davvero applicato. Prima di ripetere un comando, guarda in quale di queste righe sei.</text>
+<text x="24.0" y="564.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Esempio illustrativo con la corsa delle valvole secondarie; la risposta del processo è qualitativa.</text>
+</svg>

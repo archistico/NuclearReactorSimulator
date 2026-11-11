@@ -38,6 +38,12 @@ Per costruire la visione d'insieme conviene leggere i capitoli 1–4 e poi segui
 | [16](#capitolo-16) | Che cosa il modello rappresenta e che cosa lascia aperto |
 | [17](#capitolo-17) | Schede rapide per la consultazione |
 
+Se non sai da dove cominciare, scegli uno dei tre itinerari della figura. Ogni riquadro è un capitolo; le frecce indicano un ordine comodo, non obbligatorio.
+
+![Tre itinerari di lettura: primo contatto con i capitoli 1, 2, 9 e 17; capire perché con i capitoli da 3 a 7; condurre e diagnosticare con i capitoli 8, 10, 11, 12, 13 e 14](figure/28-itinerari-di-lettura.svg)
+
+Nessun itinerario richiede conoscenze nucleari preliminari. Il primo ti fa prendere confidenza con la schermata e con l'impianto; il secondo spiega le ragioni fisiche dietro ai numeri; il terzo ti accompagna nelle manovre e nella diagnosi. Glossario e limiti del modello restano a disposizione in ogni momento.
+
 <a id="capitolo-1"></a>
 
 # 1. Come leggere e usare il simulatore
@@ -65,6 +71,12 @@ La simulazione fisica avanza con passi logici di 10 millisecondi. Cento passi co
 `RUN` lascia procedere il calcolo; `PAUSE` ferma l'avanzamento e ti permette di leggere; `SINGLE STEP` consente di esaminare un passo alla volta. La pausa non raffredda il reattore e non arresta una pompa: interrompe il tempo del modello. Quando riprendi, il processo continua dalla stessa condizione, con le richieste e le memorie che erano presenti.
 
 Anche un comando ha una propria sequenza. L'interfaccia invia una richiesta; il sistema verifica se può applicarla; il suo effetto diventa leggibile nello stato confermato e nella risposta fisica successiva. Un clic, il messaggio «accettato», il bersaglio di un attuatore e la sua posizione effettiva sono informazioni collegate, ma non intercambiabili. Durante una pausa, avanzare un passo è spesso il modo più chiaro per capire che cosa sia stato realmente applicato.
+
+La figura segue un solo comando, `ADMISSION OPEN`, lungo cinque righe che scorrono nello stesso tempo. Il tratteggio è il bersaglio, le linee continue sono ciò che accade davvero.
+
+![Dopo ADMISSION OPEN: esito accettato al passo successivo, TARGET cambiato subito, posizione effettiva che sale dal 30% al 100% in circa 1,4 s, risposta del processo graduale; sotto, passi logici da 10 ms](figure/27-dal-clic-alla-risposta.svg)
+
+Leggi le righe dall'alto verso il basso. Il clic e il messaggio di esito ti dicono che la richiesta è stata presa in carico; il `TARGET` cambia subito; la valvola però si muove a velocità finita e il processo la segue con gradualità. Se il valore non è ancora quello atteso, chiediti in quale riga ti trovi prima di ripetere il comando.
 
 ## 1.4 Un ciclo di apprendimento ripetibile
 
@@ -118,6 +130,12 @@ Il fatto che l'impianto sia ispirato a caratteristiche RBMK non lo rende una rip
 L'acqua che circola non attraversa solo collegamenti: incontra inventari. Il combustibile accumula energia termica; il corpo cilindrico contiene massa ed energia in una condizione bifase; la vasca del condensato raccoglie acqua; il volume di alimentazione fa da riserva intermedia; il rotore conserva energia cinetica. Questi accumuli spiegano perché una conseguenza possa comparire con ritardo.
 
 Se il corpo cilindrico riceve più acqua di quanta massa perda complessivamente, il suo inventario cambia. Se il combustibile riceve più calore dalla fissione di quanto ne ceda al fluido, la sua temperatura cresce. Se la turbina fornisce più coppia di quanta il generatore e le perdite ne assorbano, il rotore accelera. Sono tre manifestazioni dello stesso principio: la differenza fra ingresso e uscita modifica ciò che è immagazzinato.
+
+La figura applica la stessa regola a tre accumuli diversi. In alto le frecce mostrano che cosa entra e che cosa esce; in basso il grafico mostra che cosa succede a ciò che resta dentro.
+
+![Tre accumuli (corpo cilindrico, combustibile, rotore) con ingresso e uscita; sotto, un grafico in cui l'accumulo resta fermo quando ingresso e uscita sono uguali, cresce quando entra di più e scende quando esce di più](figure/13-accumuli.svg)
+
+Il punto da ricordare è uno solo: l'accumulo cambia con la differenza fra ingresso e uscita. Quando le due curve del grafico superiore coincidono, quella viola resta piatta, anche se il valore raggiunto è diverso da prima. Quando si separano, la viola si inclina, e la pendenza è proporzionale alla distanza fra le due.
 
 Un valore apparentemente fermo non dimostra quindi che tutto il sistema sia in equilibrio. Puoi avere quasi 3000 giri/min mentre un volume d'acqua si svuota lentamente. Per valutare la stabilità devi osservare almeno una grandezza lungo ogni parte del ciclo, soprattutto le tendenze degli inventari.
 
@@ -184,6 +202,12 @@ Il periodo è il tempo in cui la potenza si moltiplica per e, circa 2,72: con +2
 
 Dopo una riduzione di reattività la fissione può diminuire rapidamente, mentre combustibile e strutture rimangono caldi. Il refrigerante deve ancora raccogliere quell'energia e il ciclo deve trovare una destinazione alla quale cederla. Arrestare la reazione e rimuovere il calore sono quindi due problemi distinti.
 
+Il grafico confronta due grandezze dopo l'inserzione delle barre. La curva blu è la fissione; quella arancione è il calore che il combustibile cede all'acqua.
+
+![Grafico qualitativo dopo l'inserzione delle barre: la potenza di fissione crolla quasi subito, il calore ceduto dal combustibile al fluido scende gradualmente; l'area fra le curve è energia ancora da rimuovere](figure/15-calore-dopo-arresto.svg)
+
+L'area colorata fra le due curve è l'energia che il combustibile aveva immagazzinato e che deve ancora uscire. Per questo, dopo un arresto, circolazione e rimozione del calore restano importanti anche se la potenza di fissione è già quasi nulla. Le curve sono illustrative: servono a riconoscere la forma del fenomeno.
+
 Nel mondo fisico si aggiunge il calore di decadimento dei prodotti radioattivi. Il progetto possiede modelli dedicati, ma la loro effettiva composizione dipende dallo scenario. Nel percorso desktop di riferimento il contributo di potenza di decadimento del circuito è impostato a zero: non viene composta una curva completa di calore residuo. Il calore già accumulato nei materiali rimane invece presente e rende scorretto equiparare «reattore arrestato» a «impianto freddo».
 
 La conseguenza pratica è leggere l'arresto attraverso temperature, circolazione e rimozione di calore. Il numero della potenza neutronica è una parte della diagnosi, non il suo punto finale.
@@ -191,6 +215,12 @@ La conseguenza pratica è leggere l'arresto attraverso temperature, circolazione
 ## 3.5 Temperatura, pressione, massa ed energia
 
 La temperatura indica lo stato termico; la pressione partecipa sia all'equilibrio di fase sia alla spinta idraulica; massa ed energia descrivono quanto materiale e quanta energia siano presenti. Nel modello di un volume fluido queste grandezze devono essere coerenti con il suo volume geometrico e con la relazione termodinamica scelta.
+
+Nella figura la linea nera separa il liquido (zona azzurra) dal vapore (zona arancione). La pressione è in scala logaritmica, così condensatore e corpo cilindrico stanno nello stesso grafico.
+
+![Curva di saturazione dell'acqua in scala logaritmica: condensatore a 8,4 kPa e circa 42 °C, pressione atmosferica e circa 100 °C, corpo cilindrico a 6,5 MPa e circa 281 °C; sopra la curva liquido, sotto vapore](figure/14-saturazione.svg)
+
+Quando acqua e vapore convivono, come nel corpo cilindrico o nel condensatore, il punto sta sulla linea: pressione e temperatura non sono più indipendenti. Ecco perché una pressione del condensatore più alta significa anche una temperatura di condensazione più alta, e perché nel corpo cilindrico pressione e temperatura salgono insieme.
 
 Non è possibile interpretare ogni salita di pressione come semplice aumento di temperatura. Possono cambiare anche densità, inventario e distribuzione fra liquido e vapore. Allo stesso modo, due nodi alla stessa temperatura possono avere pressioni e fasi differenti. Quando una lettura sembra strana, bisogna cercare quale combinazione di massa, energia e volume la stia determinando.
 
@@ -286,6 +316,12 @@ Il ritorno verso la potenza è il motivo per cui una conseguenza termica può di
 ## 3.11 Conservazione e lavoro di flusso
 
 Per un volume di controllo, la variazione di massa dipende dalla massa che entra e da quella che esce. La variazione di energia interna dipende invece dagli scambi energetici dovuti a flussi, calore e lavoro. Questo permette di spiegare un transitorio senza immaginare che il software «aggiusti» un livello per renderlo piacevole da osservare.
+
+La figura traduce il paragrafo in un disegno. Il riquadro tratteggiato è il confine scelto; le frecce arancioni sono flussi di fluido, quella verde è calore, quella viola è lavoro all'albero.
+
+![Volume di controllo tratteggiato con flusso entrante e uscente, calore scambiato e lavoro d'albero; equazioni della massa e dell'energia; riquadro sul lavoro di flusso e sull'entalpia h = u + p/ρ](figure/16-volume-di-controllo.svg)
+
+Le due righe di equazioni dicono in simboli ciò che la figura del paragrafo 2.3 mostra con i grafici: massa ed energia contenute cambiano con la differenza fra ciò che entra e ciò che esce. Il riquadro in basso spiega perché il flusso trasporta l'entalpia: oltre all'energia interna porta con sé il lavoro necessario per spingerlo oltre il confine.
 
 Nei percorsi del desktop descritti in questo manuale, il trasporto energetico usa la convenzione entalpica, già implementata. L'entalpia specifica è `h = u + p/ρ`: comprende l'energia interna specifica e il lavoro necessario a spingere il fluido attraverso la frontiera. Il nodo continua a conservare massa ed energia interna; l'entalpia descrive ciò che il flusso trasporta. Calore e lavoro d'albero restano contributi da contabilizzare secondo il proprio componente.
 
@@ -487,6 +523,12 @@ flowchart TD
 
 Il livello deriva dallo stato e dall'inventario liquido del volume aggregato. Non è un righello che misuri tutta la geometria di un recipiente reale e non coincide semplicemente con la percentuale della massa totale presente nel circuito. Una variazione di fase può cambiare il rapporto fra volumi liquido e vapore anche mentre la massa complessiva cambia poco.
 
+Ecco lo stesso volume visto in sezione. Le frecce arancioni trasportano vapore o miscela, quelle blu acqua liquida; la scala a destra riporta le soglie del livello.
+
+![Sezione del corpo cilindrico pieno a metà: entrano miscela dai canali e acqua di alimentazione, escono vapore verso la linea principale e liquido verso il ricircolo; scala del livello con normale 50%, avvertimento 25%, scatto 10% e reset dal 20%](figure/17-corpo-cilindrico.svg)
+
+Guarda la superficie fra le due zone: è quella che l'indicatore di livello descrive. Se entra più acqua di quanta ne esca sale, se esce più di quanta ne entri scende. Le soglie in basso ricordano che il pericolo, per questo livello, è la perdita di liquido, e che dopo uno scatto serve un margine per il reset.
+
 La pressione racconta un altro aspetto dello stesso volume. Aumentare il calore in ingresso, ridurre l'esportazione di vapore o cambiare l'acqua di alimentazione modifica combinazioni diverse di energia e massa. Perciò pressione e livello devono essere letti insieme a `STEAM EXPORT TOTAL`, ricircolo e alimentazione.
 
 Il regolatore di livello agisce sulla pompa di alimentazione. Non può creare acqua né correggere istantaneamente uno squilibrio di tutto il ciclo. Il basso livello è annunciato separatamente dal livello molto basso, che nel profilo attuale provoca uno scatto coordinato di reattore, turbina e generatore.
@@ -533,6 +575,12 @@ flowchart TD
 ```
 
 Non devi sommare indiscriminatamente tutte le portate visibili. `ADMISSION FLOW`, la portata dello stadio e il drenaggio possono riferirsi a confini diversi dello stesso processo. Nel riferimento iniziale Exact-V9 l'ammissione totale è circa 13,34 kg/s, mentre circa 0,31 kg/s seguono il drenaggio; sono osservazioni del punto iniziale, non valori da imporre manualmente a ogni prova.
+
+La figura mostra la stessa divisione con le portate del punto iniziale. Lo spessore di ogni nastro è proporzionale alla portata: arancione per il vapore, blu per il liquido.
+
+![Diagramma a nastri: circa 13,34 kg/s di ammissione si dividono in circa 13,03 kg/s di vapore agli stadi, che producono lavoro e scaricano al condensatore, e circa 0,31 kg/s di liquido drenato verso la vasca del condensato](figure/18-turbina-portate.svg)
+
+Il nastro di ammissione si divide in due: quasi tutto il vapore attraversa gli stadi e produce lavoro, mentre una piccola parte liquida viene drenata. I tre numeri non vanno sommati fra loro, perché il primo contiene già gli altri due. Se leggi le tre portate in punti diversi della schermata, ora sai come si collegano.
 
 Se la pressione del condensatore aumenta, il salto utile di espansione si riduce. Può quindi scendere la potenza pur senza una chiusura comandata della valvola. Questo è uno degli esempi più chiari di componente «vittima» di un problema nato altrove.
 
@@ -654,6 +702,12 @@ Un esempio è la velocità del rotore. La scala del tachimetro può comprendere 
 
 Un margine è utile soltanto quando lo leggi insieme alla tendenza. Una pressione del condensatore di 18 kPa che sta scendendo racconta un recupero; lo stesso valore in salita rapida può annunciare una perdita di margine. Il dato istantaneo va quindi accompagnato dalla direzione, dal ritmo del cambiamento e dal bilancio che lo produce.
 
+La figura mette insieme le due idee della sezione. A sinistra uno strumento con tutti i suoi segni; a destra due storie diverse che terminano con lo stesso numero.
+
+![Quadrante di velocità con fondo scala, banda ciano obiettivo, riferimento a 3000 giri/min, soglia di protezione a 3300 e misura a 3010; accanto due andamenti della contropressione che arrivano a 18 kPa, uno in discesa e uno in salita rapida](figure/19-leggere-uno-strumento.svg)
+
+Nel quadrante, banda e segno ciano dicono dove vuoi stare, il segno rosso dove interviene la protezione, la lancetta dove sei. Nel grafico a destra, la stessa lettura di 18 kPa è rassicurante sulla curva blu e preoccupante su quella arancione. Abituati a leggere sempre misura, riferimento, soglia e tendenza insieme.
+
 ## 6.2 Il riferimento desktop attuale
 
 I valori seguenti appartengono alla configurazione educativa descritta. Quelli indicati come «iniziali» servono a riconoscere il punto di partenza, non sono soglie né prescrizioni da imporre a ogni scenario.
@@ -711,6 +765,12 @@ Le protezioni elettriche temporizzate sono illustrate nel capitolo 7. La loro ab
 
 La politica ordinaria dei comandi aumenta o riduce il riferimento di velocità di **10 giri/min per richiesta accettata**. Il carico elettrico richiesto cambia invece di **5 MWe per richiesta accettata**, entro i limiti consentiti. Per una macchina con targa da 10 MWe è una variazione importante: il passaggio da 5 a 10 MWe raddoppia la richiesta iniziale.
 
+La figura mette le due regole su scala. In alto il carico, in basso il riferimento di velocità; ogni freccia arancione è una richiesta accettata.
+
+![Barra del carico da 0 a 10 MWe: dalla richiesta iniziale di 5 MWe un solo LOAD RAISE arriva alla targa di 10 MWe; scala della velocità da 2950 a 3320 giri/min con passi da 10 e soglia di scatto a 3300](figure/20-quanto-vale-un-comando.svg)
+
+Le due scale raccontano due situazioni opposte. Per il carico basta una pressione per passare da metà targa a piena targa: prevedi una risposta ampia. Per la velocità ogni pressione sposta il riferimento di poco, e fra il valore nominale e lo scatto ci sono trenta passi. In entrambi i casi osserva la risposta prima di premere ancora.
+
 Per questo, nelle istruzioni che seguono, «una richiesta alla volta» non significa «una variazione fisica piccola». Prima di premere devi conoscere sia l'incremento sia il margine dell'impianto. La possibilità di inviare una richiesta di 10 MWe non dimostra che quel punto sia sostenibile per tutta la durata desiderata o che ogni rampa sia già qualificata.
 
 <a id="capitolo-7"></a>
@@ -752,6 +812,12 @@ flowchart TD
 ```
 
 Un reset accettato rimuove una memoria eleggibile, ma non ricrea la condizione precedente allo scatto. Le barre possono trovarsi inserite, il rotore può aver rallentato e i percorsi di vapore possono essere diversi. Prima di riprendere l'esercizio occorre riconoscere quello stato effettivo.
+
+La figura segue nel tempo una condizione, un allarme semplice e uno scatto memorizzato. I numeri sotto le righe sono le azioni o gli eventi, nell'ordine in cui avvengono.
+
+![Cronologia su tre righe: la condizione presente dal passo 1 al 4; un allarme non memorizzato riconosciuto e poi rientrato da solo; uno scatto memorizzato con PROTECTION RESET rifiutato mentre la causa è presente e accettato dopo il rientro](figure/21-memoria-e-reset.svg)
+
+Il riconoscimento al passo 2 cambia solo l'aspetto degli annunci. L'allarme semplice sparisce da solo quando la causa rientra; lo scatto invece resta in memoria finché un reset accettato non lo cancella. Il tentativo al passo 3 fallisce perché la causa è ancora presente: è il comportamento atteso, non un malfunzionamento.
 
 ## 7.3 Pressione alta nel corpo cilindrico
 
@@ -797,6 +863,12 @@ Oltre alla sovrafrequenza da 53 Hz, il profilo operativo comprende funzioni che 
 
 La durata è misurata nel tempo del simulatore. Mettere in pausa non continua a far maturare il timer usando l'orologio del computer. Un superamento breve e uno persistente possono quindi avere esiti diversi anche quando il valore massimo osservato è simile.
 
+La figura applica la riga della sottofrequenza della tabella. Il grafico superiore è la frequenza, quello inferiore il tempo che la protezione ha accumulato sotto soglia.
+
+![In alto la frequenza con un calo breve sotto 48,8 Hz e uno persistente; in basso il tempo accumulato sotto soglia, che si azzera nel primo caso e raggiunge 1,0 s nel secondo provocando lo scatto di sottofrequenza](figure/22-protezione-temporizzata.svg)
+
+Il primo calo supera la soglia ma dura troppo poco: il contatore sale e torna a zero. Il secondo resta sotto 48,8 Hz più a lungo e il contatore raggiunge il ritardo di 1,0 s: da quel momento lo scatto è memorizzato. Le altre funzioni della tabella seguono la stessa logica con soglie e ritardi propri.
+
 La potenza negativa merita attenzione perché indica importazione, non una richiesta manuale di carico negativo. La funzione di potenza inversa interviene se quella condizione raggiunge soglia e durata previste. Dopo lo scatto, l'apertura dell'interruttore rimuove la supervisione di queste funzioni, ma il reset globale deve comunque soddisfare tutte le altre condizioni applicabili.
 
 ## 7.8 Segnali degradati e comandi bloccati
@@ -812,6 +884,12 @@ Quando un comando viene rifiutato, leggi `LAST COMMAND FEEDBACK`, verifica il be
 # 8. Le operazioni spiegate attraverso i bilanci
 
 Questo capitolo descrive la logica delle manovre nel simulatore. Ogni scenario può partire da un punto differente e consentire solo una parte delle azioni: usa la guida operativa della sessione e lo stato effettivo come riferimento. Il percorso da freddo al parallelo non è una procedura universale da eseguire sul desktop già in generazione.
+
+La figura riassume il percorso dei paragrafi 8.2–8.7 come una scalinata. Ogni gradino è una fase; il segno verde ricorda le verifiche da completare prima di passare alla successiva.
+
+![Scalinata di sei gradini dai paragrafi 8.2 a 8.7: preparazione, prima criticità, riscaldamento, turbina, parallelo e carico; il desktop ordinario parte dall'ultimo gradino](figure/23-percorso-avviamento.svg)
+
+Puoi usare la scalinata come mappa: quando leggi un paragrafo, sai dove ti trovi e che cosa hai già alle spalle. Se usi il desktop ordinario, parti dall'ultimo gradino con l'impianto già in parallelo; i gradini precedenti diventano utili quando apri uno scenario dedicato o vuoi capire come si è arrivati lì.
 
 ## 8.1 Prima di ogni manovra
 
@@ -938,6 +1016,12 @@ flowchart TD
 ```
 
 Il vantaggio di questo percorso è mantenere il legame fra il numero locale e il resto del ciclo. Se selezioni il condensatore perché la sua pressione cresce, la vista dettagliata deve aiutarti a capire portate e calore, non soltanto a ingrandire il valore della pressione.
+
+La figura è una mappa semplificata della finestra principale. I numeri arancioni individuano le sei zone; la legenda sotto lo schema dice a che cosa serve ciascuna.
+
+![Schema della finestra principale in sei zone numerate: comandi del runtime, indicatori generali, striscia degli allarmi, navigazione SYSTEMS, area di lavoro centrale e CONTEXT INSPECTOR](figure/24-mappa-schermata.svg)
+
+Bastano queste sei zone per orientarsi. In alto controlli il tempo e vedi lo stato generale; a sinistra scegli che cosa guardare; al centro leggi e agisci; a destra trovi il significato di ciò che hai selezionato e l'esito dell'ultimo comando. Quando ti senti perso, torna a questa mappa e a `PLANT`.
 
 ## 9.2 Comandi globali e stato del runtime
 
@@ -1125,6 +1209,12 @@ L'assistenza risponde alla domanda «quanta spiegazione viene mostrata?». L'aut
 | `GUIDED` | Maggior contesto, motivazione e prossima azione proposta |
 
 Cambiare assistenza non modifica le equazioni fisiche o le soglie di protezione. Nelle policy standard non cambia neppure il valore matematico della stessa evidenza di punteggio. Puoi quindi cominciare con spiegazioni complete, ripetere con la checklist e infine verificare la tua autonomia senza alterare artificialmente il processo.
+
+La figura mostra le due scelte come assi indipendenti. Ogni casella è una combinazione possibile; la fascia rossa in alto vale per tutte.
+
+![Griglia tre per tre con l'assistenza in orizzontale (HIDDEN/NONE, CHECKLIST, GUIDED) e l'autorità in verticale (MANUAL, ASSISTED, SUPERVISORY); le protezioni hanno priorità in ogni casella; esempio di autorità richiesta SUPERVISORY ed effettiva ASSISTED](figure/25-assistenza-e-autorita.svg)
+
+Scegli la colonna in base a quanta spiegazione desideri e la riga in base a chi deve regolare l'impianto. Qualunque casella tu scelga, protezioni e interblocchi mantengono la priorità. L'esempio a destra anticipa il paragrafo 11.5: l'autorità effettiva può scendere sotto quella richiesta, quindi conviene leggerle entrambe.
 
 ## 11.2 `MANUAL`
 
@@ -1314,6 +1404,12 @@ Una diagnosi comincia da una sequenza, non da un elenco di componenti possibili.
 Poi identifica il bilancio che dovrebbe spiegare il fenomeno. Una massa sta aumentando perché entra più di quanto esca? Un materiale si scalda perché riceve più energia di quanta ceda? Il rotore accelera perché il carico è cambiato? Questa domanda restringe la ricerca senza imporre subito una spiegazione unica.
 
 Infine verifica la qualità dell'informazione. Un numero indisponibile non è uno zero; una diagnostica e una misura filtrata possono non coincidere nello stesso istante; una richiesta accettata può avere un attuatore ancora in corsa. Prima di parlare di «fisica sbagliata», occorre sapere che cosa stai realmente confrontando.
+
+La figura mette in fila i tre passi del metodo usando l'esempio del paragrafo seguente. Il verde segna la causa, giallo e rosso gli annunci, il grigio le conseguenze.
+
+![Linea del tempo dell'esempio del condensatore: riduzione del raffreddamento, salita della contropressione, avvertimento a 20 kPa, calo della potenza in turbina, scatto a 30 kPa, eventi elettrici; sotto, le tre domande del metodo](figure/26-diagnosi-in-ordine.svg)
+
+A fine sequenza la schermata mostra insieme scatti, allarmi e grandezze fuori valore, e può sembrare che sia successo tutto nello stesso momento. Rimettere gli eventi in ordine riporta il problema al suo inizio: in questo esempio il raffreddamento, non il generatore. Le tre domande in basso valgono per qualunque diagnosi.
 
 ## 14.2 Esempio completo: pressione del condensatore in aumento
 

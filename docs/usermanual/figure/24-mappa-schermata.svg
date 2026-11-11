@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 710" width="900" height="710" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">La schermata in sei zone</title>
+<desc id="desc">Schema della finestra principale: in alto titolo e comandi del runtime, la riga degli indicatori generali e la striscia degli allarmi; sotto, a sinistra la navigazione dei sistemi da PLANT a MISSION con il richiamo F1–F8, al centro l'area di lavoro, a destra il CONTEXT INSPECTOR con le sue cinque sezioni. Una legenda numerata spiega a cosa serve ogni zona.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="709.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">La schermata in sei zone</text>
+<rect x="40.0" y="60.0" width="820.0" height="470.0" rx="8" fill="#0d171e" stroke="#52514e" stroke-width="1.5"/>
+<rect x="50.0" y="70.0" width="800.0" height="40.0" rx="5" fill="#132630" stroke="#2d4a57" stroke-width="1.2"/>
+<circle cx="66.0" cy="87.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="66.0" y="91.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="84.0" y="92.0" font-size="12.5" fill="#eaf7fa" text-anchor="start" font-weight="600">Titolo e comandi del runtime</text>
+<text x="836.0" y="94.0" font-size="11.5" fill="#8fd8e5" text-anchor="end" font-weight="600">RUN · PAUSE · SINGLE STEP · RESET SESSION</text>
+<rect x="50.0" y="116.0" width="800.0" height="50.0" rx="5" fill="#132630" stroke="#2d4a57" stroke-width="1.2"/>
+<circle cx="66.0" cy="133.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="66.0" y="137.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="84.0" y="138.0" font-size="12.5" fill="#eaf7fa" text-anchor="start" font-weight="600">Indicatori generali</text>
+<text x="74.0" y="156.0" font-size="10.5" fill="#b6c9d0" text-anchor="start" font-weight="normal">RUNTIME · GROSS OUTPUT · TRAINING SCORE · UNACK ALARMS · PROTECTION · ASSISTANCE · CONTROL AUTHORITY</text>
+<rect x="50.0" y="172.0" width="800.0" height="34.0" rx="5" fill="#132630" stroke="#2d4a57" stroke-width="1.2"/>
+<circle cx="66.0" cy="189.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="66.0" y="193.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="84.0" y="194.0" font-size="12.5" fill="#eaf7fa" text-anchor="start" font-weight="600">Striscia degli allarmi recenti</text>
+<rect x="50.0" y="212.0" width="150.0" height="308.0" rx="5" fill="#132630" stroke="#2d4a57" stroke-width="1.2"/>
+<circle cx="66.0" cy="229.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="66.0" y="233.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="84.0" y="234.0" font-size="12.5" fill="#eaf7fa" text-anchor="start" font-weight="600">SYSTEMS</text>
+<text x="62.0" y="254.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">PLANT</text>
+<text x="62.0" y="269.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">REACTOR</text>
+<text x="62.0" y="284.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">PRIMARY</text>
+<text x="62.0" y="299.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">TURBINE</text>
+<text x="62.0" y="314.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">GRID</text>
+<text x="62.0" y="329.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">ALARMS</text>
+<text x="62.0" y="344.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">COMPUTER</text>
+<text x="62.0" y="359.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">MISSION</text>
+<text x="62.0" y="374.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal"></text>
+<text x="62.0" y="389.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">OPERATOR COMPUTER</text>
+<text x="62.0" y="404.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">F1–F8 da ovunque</text>
+<rect x="206.0" y="212.0" width="438.0" height="308.0" rx="5" fill="#0f1d25" stroke="#2d4a57" stroke-width="1.2"/>
+<circle cx="222.0" cy="229.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="222.0" y="233.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="240.0" y="234.0" font-size="12.5" fill="#eaf7fa" text-anchor="start" font-weight="600">Area di lavoro del sistema scelto</text>
+<text x="218.0" y="254.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">mimic, strumenti, comandi</text>
+<text x="218.0" y="269.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">e tendenze dell'area selezionata</text>
+<text x="218.0" y="284.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">a sinistra</text>
+<rect x="650.0" y="212.0" width="200.0" height="308.0" rx="5" fill="#132630" stroke="#2d4a57" stroke-width="1.2"/>
+<circle cx="666.0" cy="229.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="666.0" y="233.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="684.0" y="234.0" font-size="12.5" fill="#eaf7fa" text-anchor="start" font-weight="600">CONTEXT INSPECTOR</text>
+<text x="662.0" y="254.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">CURRENT CONDITION</text>
+<text x="662.0" y="269.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">NEXT CANONICAL ACTION</text>
+<text x="662.0" y="284.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">SYSTEM CONTEXT</text>
+<text x="662.0" y="299.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">LAST COMMAND FEEDBACK</text>
+<text x="662.0" y="314.0" font-size="11" fill="#b6c9d0" text-anchor="start" font-weight="normal">READING THE HMI</text>
+<circle cx="52.0" cy="556.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="52.0" y="560.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="72.0" y="561.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">avvia, ferma o fa avanzare il tempo simulato; RESET SESSION ricomincia l'esercizio</text>
+<circle cx="52.0" cy="578.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="52.0" y="582.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="72.0" y="583.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">il quadro sempre visibile: uscita elettrica, allarmi da riconoscere, protezioni, aiuto e autorità</text>
+<circle cx="52.0" cy="600.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="52.0" y="604.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="72.0" y="605.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">gli annunci più recenti; porta alla pagina degli allarmi</text>
+<circle cx="52.0" cy="622.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="52.0" y="626.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="72.0" y="627.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">scegli che cosa guardare; F1–F8 aprono il computer operatore</text>
+<circle cx="52.0" cy="644.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="52.0" y="648.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="72.0" y="649.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">dove leggi e agisci sul sistema scelto</text>
+<circle cx="52.0" cy="666.0" r="11" fill="#eb6834" stroke="#eb6834" stroke-width="1"/><text x="52.0" y="670.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="72.0" y="671.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">che cosa significa ciò che hai selezionato e com'è andato l'ultimo comando</text>
+<text x="24.0" y="694.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Schema semplificato: proporzioni e contenuti dell'area centrale cambiano con il sistema selezionato.</text>
+</svg>

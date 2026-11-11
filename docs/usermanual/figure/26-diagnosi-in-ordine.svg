@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 450" width="900" height="450" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Diagnosi: rimettere gli eventi in ordine</title>
+<desc id="desc">Linea del tempo dell'esempio del condensatore: riduzione del raffreddamento, salita della contropressione, avvertimento a 20 kPa, calo della potenza in turbina, scatto di turbina e generatore a 30 kPa e infine eventi elettrici. Sotto, le tre domande del metodo: che cosa è cambiato per primo, quale bilancio lo spiega, se il dato è affidabile.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="449.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Diagnosi: rimettere gli eventi in ordine</text>
+<defs><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<path d="M60.0,150.0 L840.0,150.0" fill="none" stroke="#52514e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a52514e)"/>
+<text x="840.0" y="176.0" font-size="12" fill="#52514e" text-anchor="end" font-weight="normal">tempo</text>
+<line x1="99.0" y1="150.0" x2="99.0" y2="102.0" stroke="#0ca30c" stroke-width="2"/>
+<circle cx="99.0" cy="150.0" r="11" fill="#0ca30c" stroke="#0ca30c" stroke-width="1"/><text x="99.0" y="154.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="91.0" y="80.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">si riduce il raffreddamento</text>
+<text x="91.0" y="96.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">prima variazione fisica: la causa</text>
+<line x1="247.2" y1="150.0" x2="247.2" y2="186.0" stroke="#52514e" stroke-width="2"/>
+<circle cx="247.2" cy="150.0" r="11" fill="#52514e" stroke="#52514e" stroke-width="1"/><text x="247.2" y="154.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="239.2" y="200.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">la contropressione sale</text>
+<text x="239.2" y="216.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">conseguenza nel condensatore</text>
+<line x1="387.6" y1="150.0" x2="387.6" y2="102.0" stroke="#fab219" stroke-width="2"/>
+<circle cx="387.6" cy="150.0" r="11" fill="#fab219" stroke="#fab219" stroke-width="1"/><text x="387.6" y="154.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="379.6" y="80.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">avvertimento a 20 kPa</text>
+<text x="379.6" y="96.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">primo annuncio</text>
+<line x1="528.0" y1="150.0" x2="528.0" y2="186.0" stroke="#52514e" stroke-width="2"/>
+<circle cx="528.0" cy="150.0" r="11" fill="#52514e" stroke="#52514e" stroke-width="1"/><text x="528.0" y="154.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">4</text>
+<text x="520.0" y="200.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">la potenza della turbina cala</text>
+<text x="520.0" y="216.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">minore salto utile</text>
+<line x1="668.4" y1="150.0" x2="668.4" y2="102.0" stroke="#d03b3b" stroke-width="2"/>
+<circle cx="668.4" cy="150.0" r="11" fill="#d03b3b" stroke="#d03b3b" stroke-width="1"/><text x="668.4" y="154.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">5</text>
+<text x="660.4" y="80.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">scatto turbina e generatore a 30 kPa</text>
+<text x="660.4" y="96.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">FIRST-OUT della protezione</text>
+<line x1="793.2" y1="150.0" x2="793.2" y2="186.0" stroke="#898781" stroke-width="2"/>
+<circle cx="793.2" cy="150.0" r="11" fill="#898781" stroke="#898781" stroke-width="1"/><text x="793.2" y="154.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">6</text>
+<text x="801.2" y="200.0" font-size="12.5" fill="#0b0b0b" text-anchor="end" font-weight="600">eventi elettrici</text>
+<text x="801.2" y="216.0" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal">conseguenze, non causa</text>
+<rect x="40.0" y="260.0" width="820.0" height="120.0" rx="6" fill="#f6f5f2" stroke="none" stroke-width="1.5"/>
+<circle cx="64.0" cy="286.0" r="11" fill="#0b0b0b" stroke="#0b0b0b" stroke-width="1"/><text x="64.0" y="290.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+<text x="84.0" y="291.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Che cosa è cambiato per primo?</text>
+<text x="330.0" y="291.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">comando, evento o grandezza fisica: usa FIRST-OUT, registro e passo logico</text>
+<circle cx="64.0" cy="318.0" r="11" fill="#0b0b0b" stroke="#0b0b0b" stroke-width="1"/><text x="64.0" y="322.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+<text x="84.0" y="323.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Quale bilancio lo spiega?</text>
+<text x="330.0" y="323.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">massa che entra ed esce, energia ricevuta e ceduta, coppie sul rotore</text>
+<circle cx="64.0" cy="350.0" r="11" fill="#0b0b0b" stroke="#0b0b0b" stroke-width="1"/><text x="64.0" y="354.5" font-size="12" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+<text x="84.0" y="355.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Mi fido del dato?</text>
+<text x="330.0" y="355.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">indisponibile non è zero; una richiesta accettata può avere un attuatore ancora in corsa</text>
+<text x="40.0" y="412.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">La schermata finale mostra tutto insieme; la sequenza ordinata nel tempo mostra chi ha cominciato.</text>
+<text x="24.0" y="434.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Ordine illustrativo degli eventi; i tempi reali dipendono dallo scenario.</text>
+</svg>
