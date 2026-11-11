@@ -1,0 +1,62 @@
+{
+  "status": "PASS-RECONSTRUCTION-COMPLETE",
+  "classification": "NO-STAGE-ADMISSION-CLOSURE-INCOHERENCE",
+  "baseline_reproduced": true,
+  "state_sha256": "C9140166CB1CA4A56B2551CFB600AC3A56910004538A85B28C7131CA69E55CA4",
+  "stage": {
+    "energy_transport_mode": "SpecificEnthalpy",
+    "inlet_quality": 0.9766744093469764,
+    "inlet_pressure_pa": 3816277.8025847385,
+    "vapor_mass_kg_s": 13.02734991882669,
+    "drain_mass_kg_s": 0.3111278729043647,
+    "node_advected_j_kg": 2761411.345417721,
+    "admission_advected_j_kg": 2762821.8266419857,
+    "recorded_vapor_j_kg": 2726593.132374909,
+    "recorded_drain_j_kg": 1044568.8365935973,
+    "historical_saturation": {
+      "LiquidInternalJKg": 1039814.4256838259,
+      "VaporInternalJKg": 2527242.003135551,
+      "LiquidDensityKgM3": 802.5441812480717,
+      "VaporDensityKgM3": 19.143574662136658,
+      "LiquidSelectedJKg": 1044569.6659204338,
+      "VaporSelectedJKg": 2726592.9838003307
+    },
+    "active_closure_transport": {
+      "LiquidInternalJKg": 1069214.5014393781,
+      "VaporInternalJKg": 2602353.1884272615,
+      "LiquidDensityKgM3": 802.4554083377334,
+      "VaporDensityKgM3": 19.142996034982943,
+      "LiquidSelectedJKg": 1073970.267732027,
+      "VaporSelectedJKg": 2801710.1947888723
+    },
+    "uses_historical_saturation": false,
+    "uses_active_closure_transport": false,
+    "node_minus_historical_mixture_j_kg": 74052.54899909766,
+    "node_minus_active_mixture_j_kg": 1.7049222621135414,
+    "admission_minus_recorded_outflow_j_kg": 75462.90445891209
+  },
+  "turbine_inlet": {
+    "observed_accumulation_w": 1006560.2752685547,
+    "recorded_stage_outflow_w": 35845277.30194923,
+    "active_closure_outflow_w": 36833001.16362072,
+    "counterfactual_accumulation_w": 18836.413553237915,
+    "counterfactual_to_observed": 0.01871364687843684,
+    "counterfactual_is_not_an_observation": true
+  },
+  "condenser": {
+    "energy_transport_mode": "SpecificEnthalpy",
+    "condensation_kg_s": 13.173831273874935,
+    "recorded_condensate_j_kg": 178573.04978232703,
+    "historical_liquid_j_kg": 178573.04230540802,
+    "active_liquid_j_kg": 178094.92647230782,
+    "uses_historical_saturation": false,
+    "active_minus_recorded_transfer_w": -6298.7158142995895,
+    "reported_only": true
+  },
+  "next_activity": "REVIEW-RECONSTRUCTION-BEFORE-ANY-PHYSICS-CHANGE",
+  "production_change": false,
+  "family_selected": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}
