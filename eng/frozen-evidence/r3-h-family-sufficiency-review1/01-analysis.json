@@ -1,0 +1,1136 @@
+{
+  "status": "PASS-FAMILY-SUFFICIENCY-REVIEW",
+  "contract_sha256": "58C615DEA145E48B5A3F4BF8281251268EEA66960DBFA2BC5DB470A32772F052",
+  "plant_calls": 0,
+  "fixtures": [
+    {
+      "case": "exact",
+      "solution": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "case": "inconsistent",
+      "solution": [
+        0.3333333333333332,
+        0.33333333333333326
+      ]
+    },
+    {
+      "case": "rank-deficient",
+      "rejected": true
+    }
+  ],
+  "scales": {
+    "rows": [
+      {
+        "node": "control-out",
+        "mass_scale_kg_s": 1.3019416655879468e-07,
+        "energy_scale_w": 0.350189208984375,
+        "energy_scale_per_inventory_per_s": 6.851815327004196e-11,
+        "mass_scale_per_inventory_per_s": 6.349491451866583e-11
+      },
+      {
+        "node": "drum",
+        "mass_scale_kg_s": 7.018115866230801e-07,
+        "energy_scale_w": 1.4052391052246094,
+        "energy_scale_per_inventory_per_s": 2.911837860161038e-10,
+        "mass_scale_per_inventory_per_s": 1.7912452221408477e-10
+      },
+      {
+        "node": "exhaust",
+        "mass_scale_kg_s": 4.870628345088335e-08,
+        "energy_scale_w": 0.11181533336639404,
+        "energy_scale_per_inventory_per_s": 7.741802112154515e-10,
+        "mass_scale_per_inventory_per_s": 7.317281529625434e-10
+      },
+      {
+        "node": "feedwater-inventory",
+        "mass_scale_kg_s": 3.838067641481757e-08,
+        "energy_scale_w": 0.007653236389160156,
+        "energy_scale_per_inventory_per_s": 3.8890309426369166e-12,
+        "mass_scale_per_inventory_per_s": 3.880142843287289e-12
+      },
+      {
+        "node": "header",
+        "mass_scale_kg_s": 6.098161975387484e-08,
+        "energy_scale_w": 0.16393661499023438,
+        "energy_scale_per_inventory_per_s": 2.0372956000224282e-11,
+        "mass_scale_per_inventory_per_s": 1.8898516142733136e-11
+      },
+      {
+        "node": "hotwell",
+        "mass_scale_kg_s": 1.8917489796876907e-08,
+        "energy_scale_w": 0.0048160552978515625,
+        "energy_scale_per_inventory_per_s": 2.449479068615205e-12,
+        "mass_scale_per_inventory_per_s": 1.9124572711865796e-12
+      },
+      {
+        "node": "outlet",
+        "mass_scale_kg_s": 3.860577635350637e-07,
+        "energy_scale_w": 0.5624055862426758,
+        "energy_scale_per_inventory_per_s": 2.7874988170129584e-10,
+        "mass_scale_per_inventory_per_s": 2.8071821077399324e-10
+      },
+      {
+        "node": "pressure",
+        "mass_scale_kg_s": 9.031282388605177e-08,
+        "energy_scale_w": 0.1071929931640625,
+        "energy_scale_per_inventory_per_s": 1.2141750339362007e-11,
+        "mass_scale_per_inventory_per_s": 1.2036538356484939e-11
+      },
+      {
+        "node": "steam",
+        "mass_scale_kg_s": 3.526110958773643e-07,
+        "energy_scale_w": 0.9472846984863281,
+        "energy_scale_per_inventory_per_s": 1.1486239530369193e-10,
+        "mass_scale_per_inventory_per_s": 1.0662646795025638e-10
+      },
+      {
+        "node": "stop-out",
+        "mass_scale_kg_s": 1.711669028736651e-07,
+        "energy_scale_w": 0.4604339599609375,
+        "energy_scale_per_inventory_per_s": 5.894225505489899e-11,
+        "mass_scale_per_inventory_per_s": 5.463939716599497e-11
+      },
+      {
+        "node": "suction",
+        "mass_scale_kg_s": 5.820766091346741e-09,
+        "energy_scale_w": 0.01220703125,
+        "energy_scale_per_inventory_per_s": 1.3832592719527065e-12,
+        "mass_scale_per_inventory_per_s": 7.756494555125045e-13
+      },
+      {
+        "node": "turbine-inlet",
+        "mass_scale_kg_s": 4.78166839457117e-08,
+        "energy_scale_w": 0.12826919555664062,
+        "energy_scale_per_inventory_per_s": 2.6269772703667504e-11,
+        "mass_scale_per_inventory_per_s": 2.4409284513155788e-11
+      }
+    ],
+    "rotor_torque_scale_nm": 6.705541886731226e-05,
+    "energy_scale_spread": 291.7821782178218,
+    "electrical_envelope_half_width_w": 10000.0,
+    "envelope_to_smallest_energy_scale": 2076388.1188118812,
+    "origin": "Maximum canonical mode-1 storage rate or 64 ULP floor; numerical-noise level of Exact-V9"
+  },
+  "attribution": {
+    "entries": [
+      {
+        "node": "turbine-inlet",
+        "flow_kg_s": 13.339237038677473,
+        "specific_energy_shift_j_kg": 75463.74238518393,
+        "predicted_w": 1006628.7475016605,
+        "observed_w": 1006736.5587234497,
+        "relative_difference": 0.00010708980502895905
+      },
+      {
+        "node": "outlet",
+        "flow_kg_s": 100.00001123018062,
+        "specific_energy_shift_j_kg": 11558.426533104153,
+        "predicted_w": -1155842.783113633,
+        "observed_w": -1156615.121269226,
+        "relative_difference": 0.0006677572698042281
+      }
+    ],
+    "interpretation": "Same pressure/temperature/quality targets carry different specific energy under C4; storage rates equal transported-energy shifts while core heat and shaft work are unchanged",
+    "arithmetic_agreement_is_not_a_causal_proof": true
+  },
+  "physical_progress": [
+    {
+      "point": "frozen-mode2-raw-vector",
+      "maximum_scaled": 7848623.002230483,
+      "maximum_mass_rate_kg_s": {
+        "value": -0.1464813550484223,
+        "checkpoint": "1",
+        "node": "exhaust"
+      },
+      "maximum_energy_rate_w": {
+        "value": -1156615.121269226,
+        "checkpoint": "seed-step1",
+        "node": "outlet"
+      },
+      "maximum_rotor_torque_nm": {
+        "value": -0.8880340760676972,
+        "checkpoint": "1",
+        "node": "rotor"
+      },
+      "seed_step1_net_energy_rate_w": 535.0447237491626,
+      "seed_step1_gross_energy_rate_w": 2689770.228332281
+    },
+    {
+      "point": "r3-h-minimax-search4",
+      "maximum_scaled": 3672671.871287129,
+      "maximum_mass_rate_kg_s": {
+        "value": 0.3548211376482868,
+        "checkpoint": "1",
+        "node": "outlet"
+      },
+      "maximum_energy_rate_w": {
+        "value": 1274887.756538391,
+        "checkpoint": "1",
+        "node": "control-out"
+      },
+      "maximum_rotor_torque_nm": {
+        "value": -136.77121733750096,
+        "checkpoint": "seed-step1",
+        "node": "rotor"
+      },
+      "seed_step1_net_energy_rate_w": 139743.5903251171,
+      "seed_step1_gross_energy_rate_w": 3166167.670327425,
+      "running_in_envelope": false,
+      "running_pump_kg_s": 98.64608849784383,
+      "running_governor_percent": 29.56555596814352,
+      "running_electrical_mwe": 4.999127560869236,
+      "coordinates_at_bound": [
+        "control-out:mass",
+        "suction:energy"
+      ]
+    },
+    {
+      "point": "r3-h-coupled-minimax-search5",
+      "maximum_scaled": 3563047.259479554,
+      "maximum_mass_rate_kg_s": {
+        "value": -1.7304886965121111,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_energy_rate_w": {
+        "value": -4351685.170459747,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_rotor_torque_nm": {
+        "value": -148.4303638888057,
+        "checkpoint": "seed-step1",
+        "node": "rotor"
+      },
+      "seed_step1_net_energy_rate_w": 143635.18218696106,
+      "seed_step1_gross_energy_rate_w": 9576475.842431188,
+      "running_in_envelope": false,
+      "running_pump_kg_s": 98.64583734730908,
+      "running_governor_percent": 29.589874996634716,
+      "running_electrical_mwe": 4.99905304123304,
+      "coordinates_at_bound": [
+        "control-out:mass",
+        "suction:energy"
+      ]
+    },
+    {
+      "point": "r3-h-secondary-minimax-search6",
+      "maximum_scaled": 3537690.124163569,
+      "maximum_mass_rate_kg_s": {
+        "value": -1.997013741902265,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_energy_rate_w": {
+        "value": -4967441.000843048,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_rotor_torque_nm": {
+        "value": -150.02623225758796,
+        "checkpoint": "seed-step1",
+        "node": "rotor"
+      },
+      "seed_step1_net_energy_rate_w": 135225.22872686398,
+      "seed_step1_gross_energy_rate_w": 11486338.550961018,
+      "running_in_envelope": false,
+      "running_pump_kg_s": 98.55909877525708,
+      "running_governor_percent": 29.593210798557813,
+      "running_electrical_mwe": 4.999042829540534,
+      "coordinates_at_bound": [
+        "control-out:mass",
+        "suction:energy"
+      ]
+    },
+    {
+      "point": "r3-h-liquid-branch-search7",
+      "maximum_scaled": 3537951.2639405206,
+      "maximum_mass_rate_kg_s": {
+        "value": -1.9965171160038153,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_energy_rate_w": {
+        "value": -4968566.052341461,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_rotor_torque_nm": {
+        "value": -149.41434747106243,
+        "checkpoint": "seed-step1",
+        "node": "rotor"
+      },
+      "seed_step1_net_energy_rate_w": 134756.01570904255,
+      "seed_step1_gross_energy_rate_w": 11494856.928035617,
+      "running_in_envelope": false,
+      "running_pump_kg_s": 98.55678468195578,
+      "running_governor_percent": 29.59193161066757,
+      "running_electrical_mwe": 4.999046745188165,
+      "coordinates_at_bound": [
+        "control-out:mass",
+        "suction:energy"
+      ]
+    },
+    {
+      "point": "r3-h-phase-constrained-search8",
+      "maximum_scaled": 3337270.0676579927,
+      "maximum_mass_rate_kg_s": {
+        "value": -1.5206265699816865,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_energy_rate_w": {
+        "value": -4689622.642040253,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_rotor_torque_nm": {
+        "value": -166.2089530611454,
+        "checkpoint": "seed-step1",
+        "node": "rotor"
+      },
+      "seed_step1_net_energy_rate_w": 13430.229017138481,
+      "seed_step1_gross_energy_rate_w": 12842087.6863271,
+      "running_in_envelope": false,
+      "running_pump_kg_s": 98.13243155998654,
+      "running_governor_percent": 29.626974585879594,
+      "running_electrical_mwe": 4.998939382041281,
+      "coordinates_at_bound": [
+        "control-out:mass",
+        "suction:energy"
+      ]
+    },
+    {
+      "point": "r3-h-energy-guarded-search9",
+      "maximum_scaled": 3334923.8557620817,
+      "maximum_mass_rate_kg_s": {
+        "value": -1.5101513046829496,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_energy_rate_w": {
+        "value": -4680774.249839783,
+        "checkpoint": "seed-step1",
+        "node": "drum"
+      },
+      "maximum_rotor_torque_nm": {
+        "value": -166.02928696283993,
+        "checkpoint": "seed-step1",
+        "node": "rotor"
+      },
+      "seed_step1_net_energy_rate_w": 13051.548254489899,
+      "seed_step1_gross_energy_rate_w": 12868170.497643948,
+      "running_in_envelope": false,
+      "running_pump_kg_s": 98.13113874720682,
+      "running_governor_percent": 29.62660067697912,
+      "running_electrical_mwe": 4.998940528990023,
+      "coordinates_at_bound": [
+        "control-out:mass",
+        "suction:energy"
+      ]
+    }
+  ],
+  "linear_models": [
+    {
+      "model": "all-checkpoints/contract-scales",
+      "stencil": "phase-compatible",
+      "equations": 75,
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.03114296392273148
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.006318796722526935
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.0005581237902074356
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -0.0007825842114587062
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.010575319798135948
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.00011159767675887314
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 5.91213296572697e-06
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.0008808413510729547
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.02300505832001451
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.007705610994951516
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 7.020176265742664e-06
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.0009367646509214658
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.04248489041861513
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.035604489071879554
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": 0.00023327577277801187
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": -0.00031615892204676704
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.022940230177371283
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.007782537603984951
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.04629005936252165
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.017912748209070635
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": 0.0006156063639121215
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.0004890892240665948
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": -0.011973229224298278
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": -0.011400384186561224
+        }
+      ],
+      "maximum_abs_fraction": 0.04629005936252165,
+      "coordinates_outside_box": 6,
+      "predicted": {
+        "maximum_scaled": 1007148.5779255939,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.1360866733598961,
+          "checkpoint": "post-seed",
+          "node": "steam"
+        },
+        "maximum_energy_rate_w": {
+          "value": 463725.40800330805,
+          "checkpoint": "1",
+          "node": "stop-out"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 23.918086194401443,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 755587.3435378682,
+        "seed_step1_gross_energy_rate_w": 1032042.6635532915
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "all-checkpoints/physical-weights",
+      "stencil": "phase-compatible",
+      "equations": 75,
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.03303129294786807
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.022958183818883742
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.0001365250483969802
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -2.7069801613238033e-05
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.011147974513503661
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.0009813456760316061
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": -0.00014951605239622742
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": 0.006820588855633873
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.0111506176897606
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.005242488162089486
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 0.00018597642903764056
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.0091049230194154
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.04170108296167935
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.033855916598157204
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.0005660857959614626
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.0002442802250438601
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.005095422191915615
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.002055754742171333
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.028208681993824668
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.013334516560064747
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": -0.0003150998955237235
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.00013692246549266488
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": 0.00029838096235135594
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.011136937820876974
+        }
+      ],
+      "maximum_abs_fraction": 0.04170108296167935,
+      "coordinates_outside_box": 5,
+      "predicted": {
+        "maximum_scaled": 36902021.49340027,
+        "maximum_mass_rate_kg_s": {
+          "value": 0.07477485643016192,
+          "checkpoint": "post-seed",
+          "node": "control-out"
+        },
+        "maximum_energy_rate_w": {
+          "value": 302206.75341717433,
+          "checkpoint": "1",
+          "node": "stop-out"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 4.85429481169217,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 472003.24276121025,
+        "seed_step1_gross_energy_rate_w": 1106857.184846938
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "seed-step1-only/contract-scales",
+      "stencil": "phase-compatible",
+      "equations": 25,
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.09346314559952337
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.09863932776975967
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": -0.5430995936500173
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -0.48618919790065834
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.01127543402946205
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.0032021409133678445
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 0.004818595856926167
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.22445074528675932
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.025756616102318903
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.025669857188888298
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 0.004831834642568859
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.22499310501059638
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.21166902282871142
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.16257487163066217
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.004030783112774999
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.0023829315082472494
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.02310005960500419
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.022689720424344504
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.029210436660361005
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.02951690705036699
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": -0.0051691194153703586
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": 0.0010487505196040679
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": 0.05798998304761011
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.08980047383126429
+        }
+      ],
+      "maximum_abs_fraction": 0.5430995936500173,
+      "coordinates_outside_box": 16,
+      "predicted": {
+        "maximum_scaled": 3899197444.353248,
+        "maximum_mass_rate_kg_s": {
+          "value": 151.37635743077277,
+          "checkpoint": "post-seed",
+          "node": "drum"
+        },
+        "maximum_energy_rate_w": {
+          "value": 41092802.42513592,
+          "checkpoint": "1",
+          "node": "drum"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 206.0293732355854,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": -2.1683840438816403e-06,
+        "seed_step1_gross_energy_rate_w": 3.4767902383817627e-06
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "all-checkpoints/contract-scales",
+      "stencil": "central-across-phase",
+      "equations": 75,
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.04007417697174422
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.015202112583599455
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.00012259550784856024
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": 0.00010829519857086278
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.01061770668712246
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.00034952717694859074
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": -4.987603385361294e-07
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": 1.978459957445654e-05
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.02131860433531032
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.009660869464784845
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": -3.634241915118256e-07
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": 4.750464463885146e-06
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.08973181208529829
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.07180394242428277
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.000539404875513791
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.00014181860743293752
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.02120706049668811
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.00957057398415804
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.04941513817421384
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.022211793994657007
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": -0.0007852556156471415
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.0005785793799512618
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": -0.0025565668302778514
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": -0.0021247437917385524
+        }
+      ],
+      "maximum_abs_fraction": 0.08973181208529829,
+      "coordinates_outside_box": 7,
+      "predicted": {
+        "maximum_scaled": 1070447.0418095556,
+        "maximum_mass_rate_kg_s": {
+          "value": 0.14480241764578725,
+          "checkpoint": "post-seed",
+          "node": "drum"
+        },
+        "maximum_energy_rate_w": {
+          "value": 492870.1703888449,
+          "checkpoint": "1",
+          "node": "stop-out"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 24.596304602914984,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 726487.9585112,
+        "seed_step1_gross_energy_rate_w": 1186012.2302947433
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "all-checkpoints/physical-weights",
+      "stencil": "central-across-phase",
+      "equations": 75,
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.03627244083732683
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.02544786647704171
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.00012333078239602855
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": 0.0004689249951999486
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.01110599312725695
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.0010094391005031583
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": -0.00031112625511704506
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": 0.014692204108242382
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.010560001557308957
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.005998203085910313
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": -3.582648012957305e-06
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": 1.4225106479162945e-05
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.06389315227289512
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.05095292309818826
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.0008753210925248349
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.00042141967713600663
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.0057752164727023604
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.003370652606765132
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.029851795562878983
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.015124860154190201
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": -0.001017204974521573
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.0003211067778268451
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": 0.00374311419186574
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.013660479550701836
+        }
+      ],
+      "maximum_abs_fraction": 0.06389315227289512,
+      "coordinates_outside_box": 5,
+      "predicted": {
+        "maximum_scaled": 38497713.097007975,
+        "maximum_mass_rate_kg_s": {
+          "value": 0.06444638824416336,
+          "checkpoint": "post-seed",
+          "node": "control-out"
+        },
+        "maximum_energy_rate_w": {
+          "value": 318621.3182368286,
+          "checkpoint": "1",
+          "node": "stop-out"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 5.246955234503659,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 481517.8882647105,
+        "seed_step1_gross_energy_rate_w": 1194160.2717159046
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "seed-step1-only/contract-scales",
+      "stencil": "central-across-phase",
+      "equations": 25,
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.09345952999908165
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.09863344240872104
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": -0.6047591079885551
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -0.5421023552184769
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.0112754219075637
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.0032019740248552986
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 0.0048184688298679
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.2244386797805308
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.02575883349532072
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.02566981933881592
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 0.004926262064391755
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.22466825268413207
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.21216966699410839
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.1629593572794028
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.0040388807831062455
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.002387698158557334
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.023102528372396854
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.022689934806537526
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.029212333335126104
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.029516546704494388
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": -0.006017866852471967
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": 0.0002080081339362389
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": 0.057985756118084354
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.08979393529868934
+        }
+      ],
+      "maximum_abs_fraction": 0.6047591079885551,
+      "coordinates_outside_box": 16,
+      "predicted": {
+        "maximum_scaled": 8715289578.009575,
+        "maximum_mass_rate_kg_s": {
+          "value": -332.00540952845716,
+          "checkpoint": "post-seed",
+          "node": "feedwater-inventory"
+        },
+        "maximum_energy_rate_w": {
+          "value": -65923786.280833706,
+          "checkpoint": "post-seed",
+          "node": "feedwater-inventory"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 206.03100049611706,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 5.658245518359948e-06,
+        "seed_step1_gross_energy_rate_w": 7.27007955335238e-06
+      },
+      "prediction_is_not_an_observation": true
+    }
+  ],
+  "baseline_one_sided_derivatives": [
+    {
+      "coordinate": "drum:mass",
+      "stencil": "one-sided/-1"
+    },
+    {
+      "coordinate": "drum:energy",
+      "stencil": "one-sided/1"
+    },
+    {
+      "coordinate": "hotwell:mass",
+      "stencil": "one-sided/1"
+    },
+    {
+      "coordinate": "hotwell:energy",
+      "stencil": "one-sided/1"
+    },
+    {
+      "coordinate": "suction:mass",
+      "stencil": "one-sided/1"
+    },
+    {
+      "coordinate": "suction:energy",
+      "stencil": "one-sided/1"
+    }
+  ],
+  "findings": {
+    "scaled_maximum_decreased_while_physical_imbalance_increased": true,
+    "unconstrained_linear_root_absent_for_fluid_only_family": true,
+    "unconstrained_linear_step_leaves_box": true,
+    "linearization_point": "frozen-mode2-raw-vector",
+    "h_infeasibility_proven": false,
+    "nonlinear_root_outside_linear_range_not_excluded": true,
+    "independent_controller_defect_proven": false
+  },
+  "next_activity": "PLAN-NON-FLUID-OPERATING-POINT-SENSITIVITY-DIAGNOSTIC-BEFORE-ANY-NEW-H-SEARCH",
+  "bound_expansion_authorized": false,
+  "family_selected": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

@@ -29,6 +29,28 @@ Lo [stato corrente](docs/PROJECT.md), l'[handoff](docs/PROJECT.md#handoff) e la
 Specifiche, esiti e comandi sono raggiungibili dalle
 [evidenze del checkpoint](docs/PROJECT.md#evidenze-e-verifiche).
 
+### Revisione di sufficienza della famiglia H
+
+- Riletti in unità fisiche i residui del punto iniziale e dei finali H4–H9: il
+  massimo scalato scende da 7,85 a 3,33 milioni mentre la somma assoluta dei
+  tassi di energia sale da 2,69 a 12,87 MW e la coppia netta da −0,9 a −166 N·m.
+- Attribuiti i due squilibri iniziali allo spostamento di energia specifica di
+  C4 a parità di stato bersaglio, entro lo 0,07% dei valori osservati.
+- Risolto il modello lineare 75×24 senza vincoli di box: passi fino al 4,6%,
+  sei coordinate oltre ±2% e 300–460 kW residui sulla linea vapore.
+- Esito offline PASS, replay identico su Windows e Linux. Nessuna radice,
+  famiglia o allargamento del box è qualificato: R3 resta RED e M10 aperto.
+  La prossima attività è la diagnostica di sensibilità ai punti operativi non fluidi.
+
+### Diagnostica della valvola di regolazione (preparata)
+
+- Aggiunto l'esecutore di test per i punti operativi non fluidi e reso
+  parametrico l'harness su sei grandezze, con valori predefiniti invariati.
+  `tests/` passa da 410 a 411 file; i replay H4–H9 restano legati al commit precedente.
+- Congelati specifica, contratto e runner della diagnostica: 22 ricette, colonna
+  primaria a 1e-4, tre modelli lineari e soglie di classificazione dichiarate.
+  Revisione statica PASS; compilazione, suite ordinaria ed esecuzione sono da fare.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

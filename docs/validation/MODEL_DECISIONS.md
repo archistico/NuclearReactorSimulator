@@ -68,6 +68,19 @@ derivate. Un modello può sostenere una proposta più grande verificata senza
 risolvere le variazioni più piccole. Anche il confronto affine deve considerare
 che coordinate arrotondate non sono perfettamente collineari.
 
+## Leggere i residui anche in unità fisiche
+
+Le scale dei residui sono il rumore numerico della baseline e differiscono fra
+nodi di oltre due ordini di grandezza. Vicino a una radice qualunque scala
+equivale; lontano, il massimo scalato può diminuire mentre gli accumuli in MW
+e la coppia netta aumentano. Ogni proposta o ricerca riporta quindi anche tassi
+di massa, tassi di energia, coppia e inviluppo. La metrica fisica affianca il
+criterio di radice senza ripesarlo o sostituirlo.
+
+Un modello lineare che non contiene una radice nella famiglia di trim scelta
+motiva la misura di altre grandezze prima di estendere budget o limiti. Resta
+una previsione locale: non dimostra l'assenza di una radice non lineare.
+
 ## Considerare il ramo lungo tutta la ricetta
 
 Il controllo della fase include stato grezzo, primo passo preparatorio,

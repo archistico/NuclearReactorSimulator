@@ -58,7 +58,31 @@ internal sealed class R3HFeasibilityHarness
         internal double[] Residuals => Observations.SelectMany(static o => o.ScaledResiduals).ToArray();
     }
 
-    internal Evaluation Evaluate(double[] coordinates)
+    internal sealed record OperatingPoint(double ControlValvePercentOpen, double CondensatePumpPercent, double FeedwaterPumpPercent,
+        double NeutronPopulationRelative, double FuelTemperatureCelsius, double StructureTemperatureCelsius)
+    {
+        internal const int Count = 6;
+        internal const double FractionalBound = 0.02d;
+        internal static readonly OperatingPoint Baseline = new(29.281329697436618d, 42.966515369975916d, 96.930826801569154d,
+            0.3297117650655722d, 305.62514906467646d, 289.13956081139787d);
+
+        internal double[] Values() =>
+            [ControlValvePercentOpen, CondensatePumpPercent, FeedwaterPumpPercent, NeutronPopulationRelative, FuelTemperatureCelsius, StructureTemperatureCelsius];
+
+        internal static OperatingPoint FromFractions(double[] fractions)
+        {
+            if (fractions.Length != Count || !fractions.All(static x => double.IsFinite(x) && Math.Abs(x) <= FractionalBound))
+                throw new ArgumentOutOfRangeException(nameof(fractions));
+            var baseline = Baseline.Values();
+            var values = new double[Count];
+            for (var i = 0; i < Count; i++) values[i] = baseline[i] * (1 + fractions[i]);
+            return new(values[0], values[1], values[2], values[3], values[4], values[5]);
+        }
+    }
+
+    internal Evaluation Evaluate(double[] coordinates) => Evaluate(coordinates, OperatingPoint.Baseline);
+
+    internal Evaluation Evaluate(double[] coordinates, OperatingPoint operatingPoint)
     {
         if (coordinates.Length != 24 || !coordinates.All(static x => double.IsFinite(x) && Math.Abs(x) <= 0.02))
             throw new ArgumentOutOfRangeException(nameof(coordinates));
@@ -75,7 +99,7 @@ internal sealed class R3HFeasibilityHarness
             seeds[i] = new(initial.NodeId, mass, energy, state.Pressure.Pascals, state.Temperature.Kelvins, state.Phase, state.VaporQuality?.Fraction);
             raw[i] = new(initial.NodeId, mass, energy, state.Pressure.Pascals, state.Temperature.Kelvins, state.Phase.ToString(), state.VaporQuality?.Fraction);
         }
-        var first = CreateSeedEngine(seeds, 1);
+        var first = CreateSeedEngine(seeds, 1, operatingPoint);
         var firstObservation = Observe("seed-step1", first, raw);
         var state1 = first.CurrentState;
         var solver = new IntegratedAutomaticOperationSolver(state1.ReactorPrimaryControlState.Definition,
@@ -222,11 +246,14 @@ new("control-out", 2050.381218833311d, 5265414775.165846d, 3994187.8856824953d, 
                 new("suction", 7502.7459746337245d, 9214263779.64126d, 6416459.281680332d, 553.1499999999999d, FluidPhase.SubcooledLiquid, null),
                 new("turbine-inlet", 1958.8758929660944d, 5027614200.998343d, 3816252.638393859d, 520.7342832023278d, FluidPhase.SaturatedMixture, 0.9766676884377713d),
     ];
-    private static IntegratedAutomaticOperationRuntimeEngine CreateSeedEngine(IReadOnlyCollection<OperationalFluidNodeSeed> fluidNodeSeeds, int deterministicSeedStepCount)
+    private static IntegratedAutomaticOperationRuntimeEngine CreateSeedEngine(IReadOnlyCollection<OperationalFluidNodeSeed> fluidNodeSeeds, int deterministicSeedStepCount) =>
+        CreateSeedEngine(fluidNodeSeeds, deterministicSeedStepCount, OperatingPoint.Baseline);
+
+    private static IntegratedAutomaticOperationRuntimeEngine CreateSeedEngine(IReadOnlyCollection<OperationalFluidNodeSeed> fluidNodeSeeds, int deterministicSeedStepCount, OperatingPoint operatingPoint)
     {
         return Assert.IsType<IntegratedAutomaticOperationRuntimeEngine>(
             ColdShutdownInitialConditionFactory.CreateRuntimeEngineForOperationalSeed(
-                NeutronPopulation.FromRelative(0.3297117650655722d),
+                NeutronPopulation.FromRelative(operatingPoint.NeutronPopulationRelative),
                 mainCirculationRunning: true,
                 initialRodPosition: ControlRodPosition.FromPercentWithdrawn(50d),
                 initialPrimaryTemperatureCelsius: 280d,
@@ -236,7 +263,7 @@ new("control-out", 2050.381218833311d, 5265414775.165846d, 3994187.8856824953d, 
                 initialRequestedElectricalPowerMegawatts: 5d,
                 initialCondenserCoolingPowerMegawatts: 40d,
                 initialTurbineSpeedSetpointRpm: 3_000d,
-                initialControlValvePercentOpen: 29.281329697436618d,
+                initialControlValvePercentOpen: operatingPoint.ControlValvePercentOpen,
                 initialHeaderSteamTemperatureCelsius: 278.5d,
                 initialStopOutletSteamTemperatureCelsius: 276.755d,
                 initialControlOutletSteamTemperatureCelsius: 249.5d,
@@ -255,8 +282,8 @@ new("control-out", 2050.381218833311d, 5265414775.165846d, 3994187.8856824953d, 
                 condenserCoolingWaterTemperatureCelsius: 20d,
                 usePressureResolvedCondenserCondensateEnergy: true,
                 secondaryPumpResistancePascalSecondsSquaredPerKilogramSquared: 500d,
-                initialCondensatePumpPercent: 42.966515369975916d,
-                initialFeedwaterPumpPercent: 96.930826801569154d,
+                initialCondensatePumpPercent: operatingPoint.CondensatePumpPercent,
+                initialFeedwaterPumpPercent: operatingPoint.FeedwaterPumpPercent,
                 levelControllerIntegralGainPerSecond: 0.001d,
                 hotwellControllerIntegralGainPerSecond: -0.000001d,
                 exhaustSteamSpaceVolumeCubicMetres: 1_000d,
@@ -293,8 +320,8 @@ new("control-out", 2050.381218833311d, 5265414775.165846d, 3994187.8856824953d, 
                 useFourNodeBranchContinuityShadowIntegration: false,
                 useFourNodeBranchContinuityCorrectedCommitOptIn: true,
                 thermodynamicClosureMode: WaterSteamThermodynamicClosureMode.ReferenceConsistentTabulatedInverseDomain,
-                initialFuelTemperatureCelsiusOverride: 305.62514906467646d,
-                initialStructureTemperatureCelsiusOverride: 289.13956081139787d,
+                initialFuelTemperatureCelsiusOverride: operatingPoint.FuelTemperatureCelsius,
+                initialStructureTemperatureCelsiusOverride: operatingPoint.StructureTemperatureCelsius,
                 initialFluidNodeSeeds: fluidNodeSeeds,
                 governorIntegralReferenceMode: TurbineGovernorIntegralReferenceMode.SynchronousSpeedWhenParalleled,
                 turbineAdmissionPhasePolicyOverride: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,

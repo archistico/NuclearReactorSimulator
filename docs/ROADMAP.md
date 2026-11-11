@@ -29,15 +29,18 @@ il significato delle verifiche; questa roadmap definisce le consegne future.
 
 NRS-MARKER:R3-H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-NEXT
 
-L'obiettivo immediato è rendere misurabili direzioni locali compatibili con
-il confine liquido/miscela. Confronteremo due ipotesi: sonde che compensano
-fra loro variazioni di inventario e un punto di prova con maggiore margine
-energetico interno. Il [problema osservato](PROJECT.md#il-problema-da-risolvere)
-definisce l'ingresso del confronto.
+L'obiettivo immediato è capire quale grandezza deve assorbire lo spostamento
+di energia specifica introdotto dalla nuova chiusura. La
+[revisione di sufficienza](PROJECT.md#che-cosa-ha-mostrato-la-revisione-di-sufficienza)
+indica che i soli inventari fluidi non bastano, nel modello lineare, e che il
+massimo scalato non misura l'avvicinamento fisico all'equilibrio. Misureremo
+quindi la sensibilità ai punti operativi non fluidi prima di altre ricerche.
+Il confronto fra sonde compensate e riserva energetica resta sospeso.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
-| Progettare il confronto | Definire direzioni, ampiezze e budget per le due ipotesi. | Coordinate esplicite nel box H, residui e scale invariati. |
+| Diagnostica non fluida | Misurare la sensibilità dei 75 residui a valvola, pompe secondarie, popolazione neutronica e temperature iniziali. | Sonde ripetute identiche, residui e scale invariati, metrica fisica riportata. |
+| Scegliere la famiglia | Decidere con un protocollo distinto fra H, C, J o revisione della legge di stadio. | Una grandezza che sposti i residui della linea vapore, o un esito negativo conservato. |
 | Verificare la base locale | Misurare direzioni indipendenti, compatibili con tutti i checkpoint della ricetta. | Derivate disponibili e previsioni direzionali verificate a una scala utile. |
 | Provare le proposte | Congelare le proposte e confrontarle due volte con la risposta reale. | Ripetizioni identiche, discesa, ramo ed errore del modello conformi. |
 | Eseguire una nuova ricerca | Fissare algoritmo, criteri di arresto e budget sulla base della prova. | Evidenza completa e una radice osservata prima della conferma. |
@@ -46,7 +49,9 @@ definisce l'ingresso del confronto.
 
 ```mermaid
 flowchart TD
-    A["Confronto: sonde compensate o riserva energetica"] --> B{"Base ammissibile e previsioni verificate?"}
+    S["Diagnostica di sensibilità non fluida"] --> T["Scelta motivata della famiglia"]
+    T --> A["Base locale nella famiglia scelta"]
+    A --> B{"Base ammissibile e previsioni verificate?"}
     B -->|"no"| R["Rivedere la rappresentazione locale"]
     R --> A
     B -->|"sì"| C["Proposte ripetute e ricerca con limiti espliciti"]
@@ -57,14 +62,13 @@ flowchart TD
     F --> G["Revisione prima di R4"]
 ```
 
-Le frecce rappresentano risultati da dimostrare. Una sonda compensata muove
-insieme più inventari per restare sul ramo; una riserva energetica cerca invece
-un punto abbastanza interno da permettere le sonde. Le osservazioni devono
+Le frecce rappresentano risultati da dimostrare. La diagnostica non sceglie una
+famiglia: fornisce le misure con cui motivarla. Le osservazioni devono
 dimostrare l'utilità della scelta prima che si impegni una nuova ricerca.
 Un esito negativo riporta alla rappresentazione locale, conservando l'evidenza.
 
-Le altre famiglie C/J, gli allargamenti dei limiti e le modifiche fisiche richiedono
-motivazioni e protocolli distinti. Il calendario di R3 e M10 potrà essere stimato
+Le famiglie C/J, gli allargamenti dei limiti e le modifiche fisiche richiedono
+comunque motivazioni e protocolli distinti. Il calendario di R3 e M10 potrà essere stimato
 quando il percorso verso un equilibrio qualificabile sarà sufficientemente prevedibile.
 
 ## 3. Che cosa manca dopo R3 per chiudere M10

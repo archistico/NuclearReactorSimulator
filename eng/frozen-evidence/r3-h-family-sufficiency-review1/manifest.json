@@ -1,0 +1,12 @@
+{
+  "schema": "r3-h-family-sufficiency-review1-frozen-v1",
+  "files": [
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 34424,
+      "sha256": "ACB5231B392D1F3724005CA8648146020883AFF306D34B5A6CB65B94634742DC",
+      "stored_sha256": "ACB5231B392D1F3724005CA8648146020883AFF306D34B5A6CB65B94634742DC"
+    }
+  ]
+}

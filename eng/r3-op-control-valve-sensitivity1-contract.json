@@ -1,0 +1,140 @@
+{
+  "schema": "r3-op-control-valve-sensitivity1-v1",
+  "policy": {
+    "quantity": "control-valve-percent-open",
+    "amplitudes": [
+      1e-06,
+      1e-05,
+      0.0001,
+      0.001,
+      0.01
+    ],
+    "primary_amplitude": 0.0001,
+    "linearity_reference_amplitude": 1e-05,
+    "linearity_tolerance": 0.1,
+    "material_energy_fraction": 0.5,
+    "fractional_bound": 0.02,
+    "inventory_derivative_step": 1e-06,
+    "physical_weights": {
+      "mass_kg_s": 1.0,
+      "energy_w": 2500000.0,
+      "torque_nm": 100.0
+    },
+    "repeats": 2,
+    "maximum_recipes": 22,
+    "maximum_batches": 1,
+    "maximum_physical_steps": 66,
+    "production_change": false,
+    "family_selected": false,
+    "seed_installation": false,
+    "r3_passed": false
+  },
+  "output": "artifacts/r3-op-control-valve-sensitivity1",
+  "test_additions": [
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3OperatingPointProtocolBatchTests.cs"
+  ],
+  "test_modifications": [
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs"
+  ],
+  "predecessor": {
+    "commit": "72b0910f48bf3e514d86b8ba0f3293fe5ac012c0",
+    "tests": {
+      "file_count": 410,
+      "tree_sha256": "DB6DB96BD54D13B26D7D4795A6D9415EAEBFAF7514BC8B0C014D6FED31BE5AF2"
+    }
+  },
+  "unchanged_tests_baseline": {
+    "file_count": 409,
+    "tree_sha256": "132ABF3779595E717D089181A08C4F0E3B5E4BE5F3B8D7FC30463D01951E0243"
+  },
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 411,
+      "tree_sha256": "DFE3C0AD9FF822F3EC2C84A7446BE226692262A17793D9914C69EC0AE73C3298"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3OperatingPointProtocolBatchTests.cs",
+      "sha256": "3C10F2ED696469018662847B0BC41745BADCA8F62ABDD2F23E9CD24B2285B8F9"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+      "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/r3_op_protocol.py",
+      "sha256": "41D69083D82CA389745D3E63271E8C70D5603F1CFDAF2EAB4EEE0B6B867227A5"
+    },
+    {
+      "path": "eng/run-r3-op-control-valve-sensitivity1.py",
+      "sha256": "8E3AE4AFB8C8B827E6495C2DF4EA444B95D3A9F651AE8D7DBA16DFD0C05683D2"
+    },
+    {
+      "path": "eng/review-r3-h-family-sufficiency1.py",
+      "sha256": "C6B8ACF43AA534CE3295D0189F2B8C5D311FA82A60B92BA680FC34CF9FF2F8F0"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-op-control-valve-sensitivity1.md",
+      "sha256": "DE3C3DA9192D02013B8009ED36A228A0D2A6F46D176008E8B99B77350D5230E7"
+    },
+    {
+      "path": "scripts/run-r3-op-control-valve-sensitivity1.cmd",
+      "sha256": "404C3F90A84A4F10B1ED8B0D337D3300BA5F67D639CC123791B2802C14DAB036"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/04-search-trace.jsonl.gz",
+      "sha256": "3B3BD7E2EE0ED4C672A8627FAF77675B350D7FF67721AC9CF45F200AFB17AEBB"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/08-manifest.csv",
+      "sha256": "125037BC24308CAA332449351C02FD658957BC909CFABCA2DA1956243626F416"
+    },
+    {
+      "path": "eng/r3-h-family-sufficiency-review1-contract.json",
+      "sha256": "58C615DEA145E48B5A3F4BF8281251268EEA66960DBFA2BC5DB470A32772F052"
+    },
+    {
+      "path": "eng/r3-h-family-sufficiency-review1-returned.json",
+      "sha256": "34480163A2CC2527BE88527124472D9B015F401CF9A8D077A960A5F45BCC9C76"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-family-sufficiency-review1/manifest.json",
+      "sha256": "EE19DEC19EEF8CCDC88D8D029F02A4BF799C76E4291A124D7CB8E967907508CA"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-family-sufficiency-review1/01-analysis.json",
+      "sha256": "ACB5231B392D1F3724005CA8648146020883AFF306D34B5A6CB65B94634742DC"
+    }
+  ]
+}
