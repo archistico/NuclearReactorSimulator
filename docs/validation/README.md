@@ -22,6 +22,7 @@ i comandi di ripresa e la [roadmap](../ROADMAP.md) definisce il percorso futuro.
 | Prime proposte riparate | Sei ricette ripetibili, sane e nell'inviluppo; due passi combinati confrontati con il modello. | Entrambe le previsioni falliscono: errori 14,734 e 15,011 contro 0,10. Il PASS dell'evidenza conserva questo fallimento. |
 | Limite di portata dello stadio | Minimo delle capacità e coppia ricostruiti offline entro 1e-9 kg/s e 1e-6 N·m; cambia il vincitore fra baseline e proposte. | Attribuzione del solo primo passo. Confine non incluso nei regimi precedenti; nessun nuovo difetto fisico o modello a tratti qualificato. |
 | Capacità a tutti i checkpoint | 38 ricette ripetute, identiche alle origini; minimo delle capacità esatto in binary64 in 57 ricostruzioni. Proposte nel ramo admission ovunque. | Osservazione descrittiva: secanti delle capacità non validate, nessun modello o proposta nuova. |
+| Modello del minimo | Errori delle proposte 1,78e-4 e 1,50e-4 contro 14,7 e 15,0; vincitori corretti nelle 16 sonde; controlli strutturali di coppia e inventario. | Retrospettivo e limitato alle otto direzioni attive; nessuna proposta nuova o ricerca. |
 | Replay delle evidenze | Richieste, risposte, selezioni, rifiuti e arresti ricostruiti dai pacchetti congelati. | PASS attesta la coerenza dell'esperimento, non la qualificazione fisica. |
 
 ## Come leggere l'indagine di equilibrio
@@ -59,7 +60,9 @@ quasi coincidenti, due secanti centrali possono attraversare vincitori diversi:
 anche se concordano fra scale, la loro somma può fallire. La ricostruzione del
 primo passo delle proposte mostra questo caso. I vecchi controlli registrati
 rimangono conformi nel proprio ambito; non si aggiunge retroattivamente un
-nuovo rifiuto del ramo. La verifica del modello composto resta separata.
+nuovo rifiuto del ramo. Il modello che conserva il minimo riproduce ora quel
+passo composto, ma soltanto in modo retrospettivo: la verifica prospettica
+richiede proposte nuove.
 
 La revisione offline conserva anche il fallimento del primo controllo sulle
 frazioni esattamente zero: quelle residue dell'ottimizzatore producono ingressi

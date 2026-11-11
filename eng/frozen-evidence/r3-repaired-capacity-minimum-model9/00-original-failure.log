@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\eng\review-r3-repaired-capacity-minimum-model9.py", line 258, in <module>
+    print(globals()[sys.argv[1]]())
+          ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\eng\review-r3-repaired-capacity-minimum-model9.py", line 252, in review
+    data=S['frozen'](ID);result=analyze();P.require(result==json.loads(data['01-analysis.json']),'Replay drift')
+                                          ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\eng\review-r3-h-numerics1.py", line 20, in require
+    raise ValueError(message)
+ValueError: Replay drift

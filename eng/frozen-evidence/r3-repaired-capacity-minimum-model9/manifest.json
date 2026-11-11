@@ -1,0 +1,61 @@
+{
+  "schema": "r3-repaired-capacity-minimum-model9-frozen-v1",
+  "files": [
+    {
+      "file": "00-original-review.py",
+      "stored": "00-original-review.py",
+      "bytes": 18359,
+      "sha256": "79538DF0B9A4F9D0235BA030645503C5340AB9A1EF0F11C75231B2E4C45AC999",
+      "stored_sha256": "79538DF0B9A4F9D0235BA030645503C5340AB9A1EF0F11C75231B2E4C45AC999"
+    },
+    {
+      "file": "00-original-spec.md",
+      "stored": "00-original-spec.md",
+      "bytes": 4271,
+      "sha256": "B5342A6B5614844182EFE6B1C9E99240C6B0079CEE94082F7E769ECE63B4C8AD",
+      "stored_sha256": "B5342A6B5614844182EFE6B1C9E99240C6B0079CEE94082F7E769ECE63B4C8AD"
+    },
+    {
+      "file": "00-original-contract.json",
+      "stored": "00-original-contract.json",
+      "bytes": 12552,
+      "sha256": "A801CC3EA5CCA5BDEAC6E1DD56EE5D25DF7C63147063B8F460BA7ED8E5537F6C",
+      "stored_sha256": "A801CC3EA5CCA5BDEAC6E1DD56EE5D25DF7C63147063B8F460BA7ED8E5537F6C"
+    },
+    {
+      "file": "00-original-failure.log",
+      "stored": "00-original-failure.log",
+      "bytes": 813,
+      "sha256": "0AEC457DAC9D8400110C21846EB6B89422FBC55A9B7D4C28C11F2E0A74F8AA82",
+      "stored_sha256": "0AEC457DAC9D8400110C21846EB6B89422FBC55A9B7D4C28C11F2E0A74F8AA82"
+    },
+    {
+      "file": "00-original-analysis.json",
+      "stored": "00-original-analysis.json",
+      "bytes": 127098,
+      "sha256": "4AD576AC56F3348D5692B08FA04534DFA08C14B4A9BD20380D702528EC28E8CC",
+      "stored_sha256": "4AD576AC56F3348D5692B08FA04534DFA08C14B4A9BD20380D702528EC28E8CC"
+    },
+    {
+      "file": "00-original-manifest.json",
+      "stored": "00-original-manifest.json",
+      "bytes": 373,
+      "sha256": "570BA39F0E9A9A3BE6BC43DD00E812C3C06E8B4DA785E540462A4F3D26649D38",
+      "stored_sha256": "570BA39F0E9A9A3BE6BC43DD00E812C3C06E8B4DA785E540462A4F3D26649D38"
+    },
+    {
+      "file": "00-original-returned.json",
+      "stored": "00-original-returned.json",
+      "bytes": 249,
+      "sha256": "751A56E4FA1C5BD0A2D6D545149392837F961EE91930CF1187C6F43AED7401DC",
+      "stored_sha256": "751A56E4FA1C5BD0A2D6D545149392837F961EE91930CF1187C6F43AED7401DC"
+    },
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 127098,
+      "sha256": "4AD576AC56F3348D5692B08FA04534DFA08C14B4A9BD20380D702528EC28E8CC",
+      "stored_sha256": "4AD576AC56F3348D5692B08FA04534DFA08C14B4A9BD20380D702528EC28E8CC"
+    }
+  ]
+}

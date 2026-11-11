@@ -39,8 +39,10 @@ fra le capacità delle valvole e dello stadio: cambia il limite che determina
 la portata, mentre la matrice di secanti somma risposte di tratti diversi.
 La prova 8 osserva le capacità a tutti i checkpoint e riproduce esattamente
 il minimo: le proposte restano nel ramo admission, la baseline passa da stop
-a control. La prossima finestra deve verificare un modello che mantenga
-tale minimo, prima di nuove proposte o di una ricerca.
+a control. La revisione 9 linearizza ogni capacità e ne prende il minimo:
+riproduce offline le due proposte con errori di circa 1,8e-4 e 1,5e-4.
+Il confronto è retrospettivo; la prossima finestra deve verificarlo con
+nuove proposte dichiarate prima della misura.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -50,7 +52,8 @@ tale minimo, prima di nuove proposte o di una ricerca.
 | Base direzionale costruita | 394 ricette portano a 28 direzioni; altre 114 aggiungono due direzioni accoppiate, con rango numerico 30. | Quattro coefficienti restano non negativi. Il risultato non valida le derivate cartesiane mancanti. |
 | Prime proposte eseguite | Due frazioni del passo lineare, ripetute: sei ricette. | Evidenza PASS, ma entrambe le previsioni falliscono il 10%; nessuna ricerca avviata. |
 | Capacità osservate | 38 ricette ripetute; capacità, vincitori e margini ai tre checkpoint, minimo riprodotto esattamente. | Evidenza PASS; nessun modello, proposta o ricerca. |
-| Modellare il limite di portata | Capacità linearizzate nel proprio ramo e loro minimo; confronto offline con le proposte e le sonde congelate. | Previsioni conformi prima di nuove proposte ripetute, con vincoli di ramo e verso. |
+| Modello del limite di portata | Capacità linearizzate e loro minimo; confronto offline con le proposte e le 16 sonde congelate. | Evidenza PASS: proposte entro 1,8e-4, vincitori corretti; retrospettivo, otto direzioni. |
+| Proposte prospettiche | Nuove proposte piccole e ripetute, con variazione, vincitori e margini previsti congelati prima della misura. | Errore ≤0,10 e vincitori concordi; le 22 direzioni senza capacità osservate vanno osservate o escluse. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
 | Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
@@ -61,7 +64,7 @@ tale minimo, prima di nuove proposte o di una ricerca.
 flowchart TD
     R["Trasporto di fase verificato"] --> M["Misura del punto riparato"]
     M --> S["30 direzioni e capacità osservate: prime proposte non conformi"]
-    S --> A["Modello del minimo delle capacità e nuove proposte verificate"]
+    S --> A["Modello del minimo verificato offline; nuove proposte prospettiche"]
     A --> B{"Previsioni e ramo verificati?"}
     B -->|"no"| S
     B -->|"sì"| C["Ricerca con criteri e budget congelati"]
@@ -82,8 +85,8 @@ Non è una prova di impossibilità della famiglia o una proposta di modifica a U
 Il successo della sonda nucleare-termica vale soltanto alle ampiezze misurate:
 non autorizza di colpo il passo necessario a compensare un deficit di circa 1 MW.
 Anche trenta direzioni disponibili non bastano a rendere affine una legge del
-minimo vicino a capacità quasi coincidenti. L'osservazione copre ora tutti
-i checkpoint delle ricette esistenti; il modello deve ancora essere verificato.
+minimo vicino a capacità quasi coincidenti. Il modello del minimo spiega ora
+le ricette esistenti; resta da verificarlo su proposte nuove.
 Poiché in un punto stazionario le tre valvole portano la stessa portata dello
 stadio, una radice starebbe sul pareggio: la ricerca futura dovrà trattarlo.
 

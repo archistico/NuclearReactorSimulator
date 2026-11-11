@@ -181,6 +181,14 @@ e senza altri flussi sui nodi intermedi, le valvole portano la portata dello
 stadio. Modello e ricerca devono quindi trattare un minimo non derivabile
 anche nella radice, non soltanto lontano da essa.
 
+Il modello locale linearizza ogni capacità nel proprio ramo, includendo le
+portate dei checkpoint precedenti, e valuta il minimo un checkpoint alla volta.
+Le righe rispondono alla portata comandata, quindi alla derivata della capacità
+che vince. Con la base sul pareggio, le somme delle sonde opposte isolano il
+salto del minimo e le differenze le risposte lisce. Un accordo ottenuto sugli
+stessi record usati per scegliere la forma resta retrospettivo: per avanzare
+servono proposte nuove con vincitori e margini congelati prima della misura.
+
 Il nodo che cambia fase può essere diverso da quello perturbato. La prova
 estesa riparata osserva, per esempio, una sonda di drum che porta suction
 in miscela soltanto al primo Running. Una colonna centrale richiede quindi

@@ -248,6 +248,25 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   i checkpoint, due solo al primo, una mai. Le secanti delle capacità sono
   descrittive; nessun modello, proposta o ricerca. R3 RED e M10 aperto.
 
+### Modello offline del minimo delle capacità
+
+- Aggiunta la revisione `r3-repaired-capacity-minimum-model9`, senza passi
+  runtime. Ogni capacità è lineare nelle direzioni attive e nelle portate dei
+  checkpoint precedenti; la portata è il loro minimo; le 81 righe rispondono
+  alle direzioni e alle portate fino al proprio checkpoint.
+- Stima dai soli 38 record congelati dell'osservazione 8, senza le proposte:
+  somme delle sonde opposte per i termini di portata, differenze per quelli di
+  direzione. Rapporto minimo fra valori singolari 0,0065.
+- Proposte della prova 6 previste con errori relativi 1,78e-4 e 1,50e-4, contro
+  14,734 e 15,011 del modello affine conservato; ramo admission previsto a tutti
+  i checkpoint. Vincitori corretti nelle 16 sonde, errore massimo 1,65e-3;
+  massimo 2,27e-4 escludendo una direzione alla volta.
+- Coppia per unità di portata entro 3,3e-4 dalla relazione meccanica; risposta
+  dell'inventario −0,5 entro 2,1e-3. Confronto dichiarato retrospettivo.
+- Il primo replay è fallito per chiavi intere diventate stringhe nel JSON; il
+  tentativo resta congelato come `00-original-*` e il contratto dichiara la
+  correzione. Handoff verso proposte prospettiche. R3 RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

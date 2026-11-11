@@ -8,8 +8,8 @@ le consegne e il [changelog](../CHANGELOG.md) conserva la cronologia.
 
 Checkpoint dell'**11 novembre 2026**, dopo la riparazione del trasporto di fase,
 la costruzione della base direzionale, il fallimento delle prime proposte,
-l'attribuzione al minimo delle capacità di portata e la sua osservazione
-a tutti i checkpoint.
+l'attribuzione al minimo delle capacità di portata, la sua osservazione
+a tutti i checkpoint e la verifica offline di un modello che lo conserva.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -20,6 +20,7 @@ a tutti i checkpoint.
 | Base direzionale | 30 direzioni misurate, rango numerico diagnostico 30; quattro coefficienti unilaterali e due direzioni accoppiate. |
 | Prime proposte | Due passi ripetibili e nei controlli registrati, ma errore predittivo circa 15 volte la variazione prevista. Nessuna ricerca avviata. |
 | Capacità di portata | Minimo delle cinque capacità riprodotto esattamente in 57 ricostruzioni su 38 ricette ripetute; proposte nel ramo admission a tutti i checkpoint. |
+| Modello del minimo | Offline, senza passi runtime: errori delle proposte 1,78e-4 e 1,50e-4 contro 14,734 e 15,011 del modello affine; vincitori previsti in 16 sonde su 16. Confronto retrospettivo. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -193,6 +194,43 @@ quei nodi, le tre valvole portano quindi la stessa portata dello stadio:
 le loro capacità coincidono con il minimo. Una radice si troverebbe sul
 pareggio. È una deduzione dalle equazioni, non una misura di una radice.
 
+### Un modello che conserva il minimo
+
+La revisione 9, offline e senza passi runtime, linearizza separatamente ogni
+capacità ai tre checkpoint e prende il minimo in ordine dal primo passo. Ogni
+riga risponde alle direzioni e alle portate comandate fino al proprio
+checkpoint: la sua derivata dipende quindi dalla capacità che vince. I
+coefficienti di portata si stimano dalle somme delle sonde opposte, che
+contengono il salto del minimo; quelli di direzione dalla loro differenza.
+Le proposte non entrano nella stima.
+
+| Confronto | Modello affine della prova 6 | Modello del minimo |
+| --- | --- | --- |
+| Proposta 0,25 | Errore 14,734 | Errore 1,78e-4; ramo admission previsto a tutti i checkpoint |
+| Proposta 0,50 | Errore 15,011 | Errore 1,50e-4; ramo admission previsto a tutti i checkpoint |
+| 16 sonde delle direzioni attive | Secanti fra vincitori diversi | Vincitori corretti in tutte; errore massimo 1,65e-3 |
+| Stima senza una direzione alla volta | — | Errore massimo sulle proposte 2,27e-4 |
+
+La portata prevista dista al massimo 9,5e-7 kg/s da quella osservata nelle
+proposte. Due controlli strutturali sono indipendenti dalla stima. Il
+coefficiente fra coppia e portata coincide entro 3,3e-4 relativo con
+`qualità × lavoro ideale × efficienza / ω`. La capacità di inventario risponde
+alle portate precedenti con −0,5 entro 2,1e-3, come impone la legge di metà
+inventario per passo. Il rapporto di cancellazione è circa 0,93: i contributi
+delle direzioni quasi non si elidono.
+
+Il risultato spiega il fallimento della prova 6 senza riscriverlo. Restano
+limiti precisi:
+- il confronto è retrospettivo, perché la forma del modello è stata provata
+  sugli stessi record prima del contratto;
+- sono modellate solo le otto direzioni attive;
+- le somme di portata dei tre checkpoint sono quasi collineari (rapporto fra i
+  valori singolari 0,0065), quindi i singoli coefficienti incrociati non sono
+  affermazioni fisiche.
+
+Il primo replay è fallito per le chiavi intere di un dizionario serializzato in
+JSON. Quel tentativo resta congelato nel pacchetto.
+
 ### Conservazione, portata e revisione della verifica
 
 Nel condensatore resta la stessa legge di limite termico, inventario e portata
@@ -218,11 +256,11 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **costruire e verificare offline un modello locale
-che mantenga il minimo delle capacità**. Le trenta direzioni sono misurate e
-le capacità sono ora osservate a tutti i checkpoint, ma nessun modello del
-minimo è stato ancora confrontato con le proposte. Non basta aumentare
-il budget della ricerca o dichiarare sufficiente il rango numerico.
+La prossima attività è **dichiarare e misurare nuove proposte piccole e
+ripetute con il modello del minimo**, per una verifica prospettica. Il
+modello riproduce ora le proposte della prova 6 e le sonde congelate, ma
+quel confronto è retrospettivo. Non basta aumentare il budget della ricerca o
+dichiarare sufficiente il rango numerico.
 
 Dalla radice del repository:
 
@@ -230,32 +268,35 @@ Dalla radice del repository:
 python .\eng\run-r3-repaired-proposal-trial6.py review
 python .\eng\review-r3-repaired-flow-minimum7.py review
 python .\eng\run-r3-repaired-capacity-observation8.py review
+python .\eng\review-r3-repaired-capacity-minimum-model9.py review
 ```
 
 Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
-`PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION` e
-`PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE`. Il PASS della prova 6 riguarda la
-completezza dell'evidenza: **le due previsioni restano non conformi**.
+`PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION`,
+`PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE` e
+`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE`. Il PASS della prova 6 riguarda
+la completezza dell'evidenza: **le due previsioni affini restano non conformi**.
 I replay non chiamano l'impianto; R3 e M10 restano aperti.
 
-1. Leggere la [prova combinata](../eng/frozen-evidence/r3-repaired-proposal-trial6/04-analysis.json),
-   l'[attribuzione offline](../eng/frozen-evidence/r3-repaired-flow-minimum7/01-analysis.json)
-   e l'[osservazione delle capacità](../eng/frozen-evidence/r3-repaired-capacity-observation8/04-analysis.json).
+1. Leggere l'[analisi del modello](../eng/frozen-evidence/r3-repaired-capacity-minimum-model9/01-analysis.json)
+   insieme alla [prova combinata](../eng/frozen-evidence/r3-repaired-proposal-trial6/04-analysis.json)
+   e all'[osservazione delle capacità](../eng/frozen-evidence/r3-repaired-capacity-observation8/04-analysis.json).
    Non riscrivere i risultati precedenti o aggiungere retroattivamente
    un rifiuto ai controlli registrati.
-2. Dichiarare un modello che linearizzi separatamente le singole capacità,
-   lisce nel proprio ramo, e ne prenda il minimo; per le righe che dipendono
-   dalla portata, usare risposte condizionate al vincitore. Le sole secanti
-   che attraversano vincitori diversi non sono derivate della portata.
-   Mantenere i quattro vincoli unilaterali e verificare tutte le fasi.
-3. Confrontarlo offline, prima di nuove chiamate fisiche, con le due proposte
-   della prova 6, nel ramo admission a tutti i checkpoint, e con le sonde
-   già congelate, senza modificarne i criteri originali.
-4. Solo dopo, dichiarare nuove proposte piccole e ripetute prima di una ricerca.
-   Poiché una radice starebbe sul pareggio delle valvole, la ricerca dovrà
-   trattare esplicitamente un minimo non derivabile.
-   Confrontare la variazione completa, le capacità attive e l'errore lungo
-   il passo composto, soprattutto quando i contributi si cancellano.
+2. Scegliere le direzioni delle nuove proposte. Le otto direzioni attive
+   hanno capacità osservate. Le altre 22 vanno prima osservate con la console
+   `R3CapacityObservation` sulle loro sonde congelate, oppure escluse.
+   I quattro vincoli unilaterali restano non negativi.
+3. Prima dell'esecuzione congelare, per ogni proposta:
+   - la variazione delle 81 righe;
+   - le capacità previste, i vincitori e i margini a ogni checkpoint;
+   - il rapporto di cancellazione.
+
+   Criteri invariati: errore relativo ≤0,10 sulle 81 righe, accordo dei
+   vincitori, guardie di fase e regime, ripetizioni identiche.
+4. Solo dopo un accordo prospettico, dichiarare una ricerca. Poiché una radice
+   starebbe sul pareggio delle valvole, la ricerca dovrà trattare
+   esplicitamente un minimo non derivabile, anche nella radice.
    Scale, criterio di radice e inviluppo restano invariati; nessuna modifica
    fisica o compensazione automatica degli inventari è implicata.
 
@@ -280,6 +321,7 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Proposte 6](../eng/contracts/r3-repaired-proposal-trial6.md) e [ricevuta](../eng/r3-repaired-proposal-trial6-returned.json) | Sei ricette; previsioni fallite, nessuna ricerca. |
 | [Attribuzione del minimo](../eng/contracts/r3-repaired-flow-minimum7.md) e [ricevuta](../eng/r3-repaired-flow-minimum7-returned.json) | Ricostruzione del primo passo senza nuove simulazioni; prima guardia errata conservata. |
 | [Capacità a tutti i checkpoint](../eng/contracts/r3-repaired-capacity-observation8.md) e [ricevuta](../eng/r3-repaired-capacity-observation8-returned.json) | 38 ricette ripetute; minimo riprodotto esattamente, vincitori e margini osservati. Nessun modello o proposta. |
+| [Modello del minimo](../eng/contracts/r3-repaired-capacity-minimum-model9.md) e [ricevuta](../eng/r3-repaired-capacity-minimum-model9-returned.json) | Zero passi runtime; proposte della prova 6 previste entro 1,8e-4, confronto retrospettivo. Primo replay fallito conservato. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:
@@ -300,7 +342,8 @@ La correzione del controllo, dichiarata dopo quel rifiuto, non ha aggiunto
 chiamate fisiche; codice, specifica, contratto e log originali restano congelati.
 La console `R3CapacityObservation` compila senza avvisi o errori; fixture,
 preflight, acquisizione e replay della prova 8 PASS, con alberi `src` e `tests`
-identici a quelli della prova 6.
+identici a quelli della prova 6. Fixture, analisi e replay della revisione 9
+PASS, senza compilazione né passi runtime; i replay 6–8 restano PASS.
 
 I vecchi replay richiedono i propri commit: H4–H9 e revisione di sufficienza
 `72b0910`; diagnostiche non fluide e revisione vincolata `ed35d9e`;
