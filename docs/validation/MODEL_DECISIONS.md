@@ -54,6 +54,14 @@ normalization and one global fraction to the bound are numerical design choices;
 they do not reweight the residual, clip coordinates independently or execute a
 nonlinear trial. Phase-change caveats remain attached to the predictions.
 
+Local Trial 1 subsequently compared all six frozen directions with nonlinear
+plant observations, repeated identically twice. H2 then used a bounded active-set
+subproblem and achieved further real descent. Its terminal phase crossings and
+an improving small derivative probe show why failure of four tested step fractions
+is not evidence of physical infeasibility. A further investigation needs its own
+step-size policy and bounded protocol; returned evidence is never rewritten to
+make an executed method appear to have tried more than it did.
+
 ## Separate readable documentation from validator inputs
 
 `docs/` explains the project, model and current conclusions. Exact-text M10 inputs

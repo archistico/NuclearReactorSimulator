@@ -1396,7 +1396,7 @@ L'interfaccia espone una tensione di riferimento da 400 kV perché quella è la 
 
 Il punto desktop attuale è stato verificato nei propri percorsi di regressione e attivazione. Questo non qualifica qualsiasi nuova rampa, durata o sostituzione termodinamica. La lettura deve restare legata alle condizioni effettivamente provate.
 
-La ricerca di un equilibrio per l'integrazione fisica successiva è ancora inconclusiva. Gli studi numerici offline che predicono una diminuzione del residuo non sono nuove osservazioni del processo e non hanno installato un nuovo stato iniziale produttivo. Per questo il manuale non propone una ricetta di ritocco dei limiti o di modifica arbitraria degli inventari.
+La ricerca di un equilibrio per l'integrazione fisica successiva è ancora inconclusiva. Alle previsioni numeriche offline sono seguite prove nel modello fisico: il residuo diminuisce, ma non soddisfa ancora i criteri di equilibrio e l'inviluppo operativo. Queste prove non hanno installato un nuovo stato iniziale produttivo. Per questo il manuale non propone una ricetta di ritocco dei limiti o di modifica arbitraria degli inventari.
 
 Per lo studio operativo la lezione è concreta: guarda le tendenze degli accumuli e non giudicare un equilibrio dal solo fatto che per qualche istante rimangano fermi giri e potenza. Il significato dell'esperimento dipende anche dalla sua durata simulata.
 

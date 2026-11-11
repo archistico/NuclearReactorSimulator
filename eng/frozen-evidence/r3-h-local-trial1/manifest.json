@@ -1,0 +1,61 @@
+{
+  "schema": "r3-h-local-trial1-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "sha256": "99FBDF2EE15DFE34AB70901436D102E611B86C4C93FD67C36F5222AB4FAFC81D",
+      "stored_sha256": "99FBDF2EE15DFE34AB70901436D102E611B86C4C93FD67C36F5222AB4FAFC81D",
+      "bytes": 1678
+    },
+    {
+      "file": "01-inputs.json",
+      "stored": "01-inputs.json",
+      "sha256": "5D8F133E52322207F2F8E41EE5E6EDC03F5D7681A0E91004D05BCFFC1F892702",
+      "stored_sha256": "5D8F133E52322207F2F8E41EE5E6EDC03F5D7681A0E91004D05BCFFC1F892702",
+      "bytes": 30576
+    },
+    {
+      "file": "02-static-review.json",
+      "stored": "02-static-review.json",
+      "sha256": "0F568C2DFC82D66066CC49E743BF16923F7B1B0E9C82D1A4D263814FB5CC991E",
+      "stored_sha256": "0F568C2DFC82D66066CC49E743BF16923F7B1B0E9C82D1A4D263814FB5CC991E",
+      "bytes": 1005
+    },
+    {
+      "file": "03-preexecution-review.json",
+      "stored": "03-preexecution-review.json",
+      "sha256": "FEB4784C7A3A7545DDC6A35974E737AFE25E195BD0B80915AB4E3CAF4208B881",
+      "stored_sha256": "FEB4784C7A3A7545DDC6A35974E737AFE25E195BD0B80915AB4E3CAF4208B881",
+      "bytes": 307
+    },
+    {
+      "file": "04-trials.jsonl",
+      "stored": "04-trials.jsonl.gz",
+      "sha256": "F795140FF96A6F0D7AF3F999C3DC32D436B85E21AAA5B5407AEA95AB3D3D0F3C",
+      "stored_sha256": "8FED440965BA5D8FE25AF2CF998D4B636B4C578C4F1D5BEAF7BF2EC278726893",
+      "bytes": 198648
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "sha256": "09387AB915EEDF7DFFB0E163253BB0B9096FA22112F18DABB67E15EA09CFB24F",
+      "stored_sha256": "09387AB915EEDF7DFFB0E163253BB0B9096FA22112F18DABB67E15EA09CFB24F",
+      "bytes": 3729
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "sha256": "0A71E408F603E296B3C61894858BA60A6695839CC647F73D039DD651C59BC5C1",
+      "stored_sha256": "0A71E408F603E296B3C61894858BA60A6695839CC647F73D039DD651C59BC5C1",
+      "bytes": 4087
+    },
+    {
+      "file": "execution.xml",
+      "stored": "execution.xml",
+      "sha256": "9B8686F996BEE85AB478E7698CCF7D7C62A58C0255A141F97ED5CF02DEEDF1CF",
+      "stored_sha256": "9B8686F996BEE85AB478E7698CCF7D7C62A58C0255A141F97ED5CF02DEEDF1CF",
+      "bytes": 1964
+    }
+  ]
+}

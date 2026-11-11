@@ -1,0 +1,41 @@
+{
+  "status": "PASS-STATIC",
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 406,
+      "tree_sha256": "DA357FCC2DE77CB76AC425F260EB6E265E1CEAF4263071DA37D1794B1DFD3D19"
+    }
+  },
+  "contract_sha256": "481962824C3CEAF8B0DFBC9392CA65E362BB7F0F9B6E1E904675EE7C3CDF0A77",
+  "negative_cases": [
+    {
+      "case": "wider-box",
+      "rejected": true
+    },
+    {
+      "case": "seventh-direction",
+      "rejected": true
+    },
+    {
+      "case": "extra-recipe",
+      "rejected": true
+    },
+    {
+      "case": "seed-installation",
+      "rejected": true
+    },
+    {
+      "case": "output-escape",
+      "rejected": true
+    },
+    {
+      "case": "unreviewed-tests",
+      "rejected": true
+    }
+  ],
+  "review": "Six directions reproduced exactly; phase-changing probes prevent assuming local differentiability."
+}

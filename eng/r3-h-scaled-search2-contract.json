@@ -1,0 +1,129 @@
+{
+  "schema": "r3-h-scaled-search2-v1",
+  "policy": {
+    "variables": 24,
+    "residuals": 75,
+    "fractional_bound": 0.02,
+    "derivative_step": 1e-06,
+    "damping": [
+      0.001,
+      0.01,
+      0.1,
+      1,
+      10,
+      100
+    ],
+    "fractions": [
+      1,
+      0.5,
+      0.25,
+      0.125
+    ],
+    "fraction_safety": 0.99,
+    "maximum_recipes": 4096,
+    "maximum_iterations": 64,
+    "maximum_batches": 129,
+    "maximum_physical_steps": 12546,
+    "active_set_iterations": 256,
+    "kkt_relative_tolerance": 1e-10,
+    "stagnation_relative": 1e-10,
+    "stagnation_updates": 3,
+    "root_threshold": 1,
+    "start": "lambda-0.01",
+    "seed_installation": false,
+    "r3_passed": false,
+    "production_change": false,
+    "residual_reweighting": false,
+    "bound_expansion": false
+  },
+  "output": "artifacts/r3-h-scaled-search2",
+  "test_additions": [
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HScaledSearch2Tests.cs"
+  ],
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 407,
+      "tree_sha256": "E260A3862F5FB9B1665F0DB7ED6561B2C12876B5A963DBD95868A3D2D67F3814"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HScaledSearch2Tests.cs",
+      "sha256": "F175214D444AD197F66F039D9020D38242890CBD182AE865338FEE66354FCEE3"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "scripts/run-r3-h-scaled-search2.cmd",
+      "sha256": "91D57139C572F2DAACD527898FB5050BC41DFDB4CC99DEBE94BADE15CEB7A7D2"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-h-scaled-search2.md",
+      "sha256": "638D62A3E97E49EB3E8A77E0A696939826EACFFC33B85751F12E6F55BA6FB863"
+    },
+    {
+      "path": "eng/r3-h-local-trial1-contract.json",
+      "sha256": "481962824C3CEAF8B0DFBC9392CA65E362BB7F0F9B6E1E904675EE7C3CDF0A77"
+    },
+    {
+      "path": "eng/validate-r3-h-local-trial1.py",
+      "sha256": "96FFC1C19DB32D9288425FDBD704E685378940872F05D07C0CFB666969B4FAC2"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/00-build.log",
+      "sha256": "99FBDF2EE15DFE34AB70901436D102E611B86C4C93FD67C36F5222AB4FAFC81D"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/01-inputs.json",
+      "sha256": "5D8F133E52322207F2F8E41EE5E6EDC03F5D7681A0E91004D05BCFFC1F892702"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/02-static-review.json",
+      "sha256": "0F568C2DFC82D66066CC49E743BF16923F7B1B0E9C82D1A4D263814FB5CC991E"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/03-preexecution-review.json",
+      "sha256": "FEB4784C7A3A7545DDC6A35974E737AFE25E195BD0B80915AB4E3CAF4208B881"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/04-trials.jsonl.gz",
+      "sha256": "8FED440965BA5D8FE25AF2CF998D4B636B4C578C4F1D5BEAF7BF2EC278726893"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/05-adjudication.json",
+      "sha256": "09387AB915EEDF7DFFB0E163253BB0B9096FA22112F18DABB67E15EA09CFB24F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/execution.xml",
+      "sha256": "9B8686F996BEE85AB478E7698CCF7D7C62A58C0255A141F97ED5CF02DEEDF1CF"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/manifest.json",
+      "sha256": "C3E773CACF465F811DC4911F6C96569E6E17BADC88FB7F72E14D50FD3AF673EF"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-trial1/preexecution.xml",
+      "sha256": "0A71E408F603E296B3C61894858BA60A6695839CC647F73D039DD651C59BC5C1"
+    }
+  ]
+}

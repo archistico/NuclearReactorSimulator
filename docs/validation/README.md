@@ -30,6 +30,8 @@ records. Their individual closure status does not imply final M10 closure.
 | R3 integration | Diagnostic and repair evidence identifies distinct closure, transport and initial-state issues. | R3 remains RED; earlier successful implementation gates do not imply successful full-plant qualification. |
 | Bounded H investigation | The test-only search completed with authenticated evidence and an inconclusive outcome. | No qualified equilibrium seed was found within the frozen bounds. |
 | Offline numerical review | Replay of the terminal linear model and the scaled local-model comparison pass their evidence checks. | Predicted model descent is not a nonlinear plant observation. |
+| Local Trial 1 | All six frozen directions produced real descent; all seven points reproduced identically in two runs. | No trial satisfied the complete operating envelope; no seed was qualified. |
+| Bounded scaled search H2 | 143 recipes produced one accepted update, reducing the maximum residual to 4.907 million. Full offline replay and physical residual reconstruction pass. | Search stopped without a root; all 24 terminal trials crossed the hotwell phase boundary and worsened the objective. |
 
 ## The unresolved equilibrium problem
 
@@ -46,9 +48,28 @@ so local physical smoothness remains unproven.
 
 The subsequent offline comparison scales Jacobian columns, compares six fixed
 dampings and uses one global fraction to the original coordinate box. All six
-capped directions predict strict local-model descent; no physical candidate is
-selected. Review of these predictions precedes any separately frozen nonlinear
-plan. Requalification 3, R4 and M10 closure remain blocked.
+capped directions predict strict local-model descent. Local Trial 1 subsequently
+tested all six directions, using 14 repeated recipes: the best reduced the actual
+maximum to 6.909 million, closely matching its prediction.
+
+H2 then solved bounded scaled subproblems with explicit active constraints. Its
+143 recipes and five setup batches used 439 physical steps. One update reduced
+the actual maximum to 4.907 million before `NO-STRICT-DESCENT`. Hotwell mass
+storage now dominates, followed by turbine-inlet energy and hotwell energy.
+The accepted point is healthy but outside the primary-flow envelope.
+
+All 24 terminal model steps crossed the hotwell liquid boundary and worsened the
+objective; a recorded small inward derivative probe reached 4.481 million without
+changing phase. The next numerical design must therefore address local step size
+and deeper backtracking before another search. This does not establish physical
+infeasibility or a controller defect. Requalification 3, R4 and M10 closure remain
+blocked by the unqualified equilibrium.
+
+The Release build passes with warnings treated as errors. The ordinary suite
+passes 1,387 tests, with 162 explicit tests excluded and no failures. Production
+and all pre-existing tests remain byte-identical. The current offline review is
+`python eng/review-r3-h-scaled-search2.py`; earlier gates retain historical tree
+baselines and are not current-checkout gates.
 
 ## Evidence and detailed contracts
 

@@ -1,0 +1,111 @@
+{
+  "status": "PASS-STATIC",
+  "numerical_fixtures": [
+    {
+      "name": "interior",
+      "passed": true,
+      "iterations": 1,
+      "releases": 0,
+      "active": [],
+      "free_gradient_max": 0.0,
+      "tolerance": 3e-10
+    },
+    {
+      "name": "coupled-upper",
+      "passed": true,
+      "iterations": 3,
+      "releases": 0,
+      "active": [
+        {
+          "index": 0,
+          "side": 1
+        },
+        {
+          "index": 1,
+          "side": 1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 4e-10
+    },
+    {
+      "name": "coupled-one-active",
+      "passed": true,
+      "iterations": 2,
+      "releases": 0,
+      "active": [
+        {
+          "index": 0,
+          "side": 1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 4e-10
+    },
+    {
+      "name": "coupled-lower",
+      "passed": true,
+      "iterations": 2,
+      "releases": 0,
+      "active": [
+        {
+          "index": 0,
+          "side": -1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 4e-10
+    },
+    {
+      "name": "release-bound",
+      "passed": true,
+      "iterations": 4,
+      "releases": 1,
+      "active": [
+        {
+          "index": 1,
+          "side": -1
+        }
+      ],
+      "free_gradient_max": 0.0,
+      "tolerance": 6e-10
+    },
+    {
+      "name": "badly-scaled",
+      "passed": true
+    },
+    {
+      "name": "zero-column",
+      "passed": true
+    }
+  ],
+  "negative_policy_cases": [
+    {
+      "case": "wider-box",
+      "rejected": true
+    },
+    {
+      "case": "extra-budget",
+      "rejected": true
+    },
+    {
+      "case": "seed-installation",
+      "rejected": true
+    },
+    {
+      "case": "residual-reweighting",
+      "rejected": true
+    }
+  ],
+  "contract_sha256": "FDB37F413B590A3C479E7D1175F1B910A41B0BECBF93F38F7F417A6865EAC102",
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 407,
+      "tree_sha256": "E260A3862F5FB9B1665F0DB7ED6561B2C12876B5A963DBD95868A3D2D67F3814"
+    }
+  }
+}

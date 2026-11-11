@@ -1,0 +1,951 @@
+{
+  "status": "PASS-EVIDENCE-COMPLETE",
+  "stop": "NO-STRICT-DESCENT",
+  "evaluations": 143,
+  "accepted": [
+    {
+      "iteration": 0,
+      "id": "i0/trial/0.001/1",
+      "coordinates": [
+        0.01987111548497527,
+        0.007169925742892063,
+        0.0001692301886999829,
+        -3.1230166311403503e-06,
+        -0.008589009738801279,
+        0.0017047170615532377,
+        -6.350042164570161e-07,
+        -3.275585447022438e-05,
+        0.003800166734547897,
+        0.0014135047639847495,
+        -2.6285074593374642e-06,
+        1.6418358444602183e-05,
+        -0.012786173182074579,
+        -0.010462546503828989,
+        -0.00011287342391942519,
+        3.638214847948309e-05,
+        0.0037956601354031615,
+        0.0014119801625578068,
+        0.005611601910223201,
+        0.0022119626025884835,
+        -0.019742276680473115,
+        -0.019999999840436263,
+        -0.002639114606694544,
+        -0.0020638652415018726
+      ],
+      "maximum": 4907140.615384615,
+      "relative_reduction": 0.2897619079609826
+    }
+  ],
+  "final": {
+    "Id": "i0/trial/0.001/1",
+    "Coordinates": [
+      0.01987111548497527,
+      0.007169925742892063,
+      0.0001692301886999829,
+      -3.1230166311403503e-06,
+      -0.008589009738801279,
+      0.0017047170615532377,
+      -6.350042164570161e-07,
+      -3.275585447022438e-05,
+      0.003800166734547897,
+      0.0014135047639847495,
+      -2.6285074593374642e-06,
+      1.6418358444602183e-05,
+      -0.012786173182074579,
+      -0.010462546503828989,
+      -0.00011287342391942519,
+      3.638214847948309e-05,
+      0.0037956601354031615,
+      0.0014119801625578068,
+      0.005611601910223201,
+      0.0022119626025884835,
+      -0.019742276680473115,
+      -0.019999999840436263,
+      -0.002639114606694544,
+      -0.0020638652415018726
+    ],
+    "Reason": "VALID",
+    "Raw": [
+      {
+        "Id": "control-out",
+        "Mass": 2091.124580820972,
+        "Energy": 5303167408.109312,
+        "Pressure": 3988295.274631945,
+        "Temperature": 523.3334307014942,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.9567217202247501
+      },
+      {
+        "Id": "drum",
+        "Mass": 3918.1844433197152,
+        "Energy": 5036360165.551541,
+        "Pressure": 6413044.904963263,
+        "Temperature": 553.1146222293377,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.04228538556187419
+      },
+      {
+        "Id": "exhaust",
+        "Mass": 65.98090000553591,
+        "Energy": 143081054.52373117,
+        "Pressure": 8462.041217834163,
+        "Temperature": 315.7281990215182,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.8827491477721897
+      },
+      {
+        "Id": "feedwater-inventory",
+        "Mass": 9891.721087418146,
+        "Energy": 1962131038.946287,
+        "Pressure": 14523.047009715456,
+        "Temperature": 320.5269640305369,
+        "Phase": "SubcooledLiquid",
+        "Quality": null
+      },
+      {
+        "Id": "header",
+        "Mass": 3238.9295551684313,
+        "Energy": 8353060206.411116,
+        "Pressure": 6244328.055864104,
+        "Temperature": 551.3527472257614,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.9935129589041499
+      },
+      {
+        "Id": "hotwell",
+        "Mass": 9891.857975233697,
+        "Energy": 1960488005.3637884,
+        "Pressure": 10809.148438252834,
+        "Temperature": 320.4865626018752,
+        "Phase": "SaturatedMixture",
+        "Quality": 1.6552626007242593e-10
+      },
+      {
+        "Id": "outlet",
+        "Mass": 1357.5641602784451,
+        "Energy": 2082000811.0815976,
+        "Pressure": 6655254.83904552,
+        "Temperature": 555.5826580166816,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.21814175791696672
+      },
+      {
+        "Id": "pressure",
+        "Mass": 7507.139142379054,
+        "Energy": 9220254495.127207,
+        "Pressure": 6898682.85094553,
+        "Temperature": 553.3368185734887,
+        "Phase": "SubcooledLiquid",
+        "Quality": null
+      },
+      {
+        "Id": "steam",
+        "Mass": 3319.378581307943,
+        "Energy": 8564231177.20808,
+        "Pressure": 6395407.967645751,
+        "Temperature": 552.9318786203861,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.9952504197500943
+      },
+      {
+        "Id": "stop-out",
+        "Mass": 3150.147487704738,
+        "Energy": 8111824013.685315,
+        "Pressure": 6066526.68536924,
+        "Temperature": 549.4564902126789,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.9896624363085769
+      },
+      {
+        "Id": "suction",
+        "Mass": 7354.6246877391995,
+        "Energy": 9029978505.518698,
+        "Pressure": 6385482.511057478,
+        "Temperature": 552.8290368556976,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.0009609700081422962
+      },
+      {
+        "Id": "turbine-inlet",
+        "Mass": 1953.7061949842657,
+        "Energy": 5017237882.801222,
+        "Pressure": 3809952.604394355,
+        "Temperature": 520.6373612821102,
+        "Phase": "SaturatedMixture",
+        "Quality": 0.9776288118376351
+      }
+    ],
+    "Residuals": [
+      -44838.25602514845,
+      1512818.3779956426,
+      -236109.4332274995,
+      -288144.93844587717,
+      -592427.2792787536,
+      -604871.4059543165,
+      2440117.2748815166,
+      2452198.847352025,
+      -37080.182699478,
+      42486.07038976149,
+      -4907140.615384615,
+      -4063763.5495049506,
+      640297.4562695094,
+      -957184.6991394294,
+      -63248.07049345418,
+      348528.42348754447,
+      -146177.13863812227,
+      -50976.368569415084,
+      -84387.16259298619,
+      32090.1570008285,
+      0,
+      66440.484375,
+      550934.5896338564,
+      4480780.6364312265,
+      40569.733884336565,
+      -64073.205728257075,
+      1492921.470043573,
+      -234133.5872481047,
+      -292690.22748557857,
+      -590642.0141214915,
+      -602994.810442709,
+      2013377.4407582937,
+      2027261.3208722742,
+      -36890.30648769575,
+      42701.766143106455,
+      -4487859.615384615,
+      -3742118.2376237623,
+      716763.6231815772,
+      -881832.3652973843,
+      -273887.87009063445,
+      128849.22953736655,
+      -156139.81880319834,
+      -61287.88704318937,
+      -69800.52098831031,
+      47093.76636288318,
+      0,
+      62421.1875,
+      550625.3371374228,
+      4480485.136802974,
+      40850.61331716942,
+      -65230.19664687391,
+      1491626.0098039217,
+      -236301.15784358192,
+      -298739.9332880896,
+      -588859.9801598879,
+      -601121.861643434,
+      1654659.018957346,
+      1670063.2242990655,
+      -36720.18866517524,
+      42896.88714368819,
+      -4142371.769230769,
+      -3477921.391089109,
+      782035.6535131633,
+      -816128.5727669677,
+      -416770.8136958711,
+      -20158.891459074734,
+      -166389.5791849368,
+      -71896.39927514346,
+      -68964.32863974496,
+      47949.8314001657,
+      0,
+      58251.671875,
+      550274.4341417024,
+      4480146.950929368,
+      41122.15742731401
+    ],
+    "Phases": [
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SubcooledLiquid",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture",
+      "SaturatedMixture"
+    ],
+    "Observations": [
+      {
+        "Checkpoint": "seed-step1",
+        "Nodes": [
+          {
+            "Id": "control-out",
+            "Mass": 2091.124522444178,
+            "Energy": 5303172705.836023,
+            "Pressure": 3988301.949686105,
+            "Temperature": 523.3335297942161,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9567234337064743
+          },
+          {
+            "Id": "drum",
+            "Mass": 3918.1827862763557,
+            "Energy": 5036356116.426187,
+            "Pressure": 6413035.729631734,
+            "Temperature": 553.1145271599293,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.0422853628897476
+          },
+          {
+            "Id": "exhaust",
+            "Mass": 65.98061145622603,
+            "Energy": 143080378.18475217,
+            "Pressure": 8461.998427689288,
+            "Temperature": 315.72810312882063,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.8827488785165694
+          },
+          {
+            "Id": "feedwater-inventory",
+            "Mass": 9891.722023951661,
+            "Energy": 1962131226.6188614,
+            "Pressure": 14738.28299563705,
+            "Temperature": 320.52696407651996,
+            "Phase": "SubcooledLiquid",
+            "Quality": null
+          },
+          {
+            "Id": "header",
+            "Mass": 3238.9295325563353,
+            "Energy": 8353060276.061341,
+            "Pressure": 6244328.180244582,
+            "Temperature": 551.3527485370636,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9935129887383142
+          },
+          {
+            "Id": "hotwell",
+            "Mass": 9891.857046925872,
+            "Energy": 1960487809.6506886,
+            "Pressure": 10809.148281041782,
+            "Temperature": 320.48656231317887,
+            "Phase": "SaturatedMixture",
+            "Quality": 1.724931709613586e-10
+          },
+          {
+            "Id": "outlet",
+            "Mass": 1357.5666321964848,
+            "Energy": 2081995427.821379,
+            "Pressure": 6655185.769560658,
+            "Temperature": 555.581962609291,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.2181386939276667
+          },
+          {
+            "Id": "pressure",
+            "Mass": 7507.139085257935,
+            "Energy": 9220254868.725256,
+            "Pressure": 6898699.38949659,
+            "Temperature": 553.33683569119,
+            "Phase": "SubcooledLiquid",
+            "Quality": null
+          },
+          {
+            "Id": "steam",
+            "Mass": 3319.3780658711325,
+            "Energy": 8564230694.316741,
+            "Pressure": 6395408.118650424,
+            "Temperature": 552.931880185008,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.99525060847979
+          },
+          {
+            "Id": "stop-out",
+            "Mass": 3150.1473432618454,
+            "Energy": 8111824161.439296,
+            "Pressure": 6066527.087214109,
+            "Temperature": 549.4564945489168,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9896625582060578
+          },
+          {
+            "Id": "suction",
+            "Mass": 7354.6246877391995,
+            "Energy": 9029978513.629108,
+            "Pressure": 6385482.534067715,
+            "Temperature": 552.8290370941162,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.0009609699862835639
+          },
+          {
+            "Id": "turbine-inlet",
+            "Mass": 1953.7064584229172,
+            "Energy": 5017243630.262499,
+            "Pressure": 3809959.3562706965,
+            "Temperature": 520.6374655008316,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9776305085163806
+          }
+        ],
+        "ScaledResiduals": [
+          -44838.25602514845,
+          1512818.3779956426,
+          -236109.4332274995,
+          -288144.93844587717,
+          -592427.2792787536,
+          -604871.4059543165,
+          2440117.2748815166,
+          2452198.847352025,
+          -37080.182699478,
+          42486.07038976149,
+          -4907140.615384615,
+          -4063763.5495049506,
+          640297.4562695094,
+          -957184.6991394294,
+          -63248.07049345418,
+          348528.42348754447,
+          -146177.13863812227,
+          -50976.368569415084,
+          -84387.16259298619,
+          32090.1570008285,
+          0,
+          66440.484375,
+          550934.5896338564,
+          4480780.6364312265,
+          40569.733884336565
+        ],
+        "Healthy": true,
+        "InEnvelope": false,
+        "ElectricalMwe": 5.000000216484184,
+        "PumpKgS": 98.67113662180526,
+        "DrumLevel": 0.5000000524061434,
+        "Governor": 29.281329697436618,
+        "RotorTorque": 2.7204204989495793,
+        "MassClosure": 0,
+        "EnergyClosure": -5.95593587604526e-06,
+        "StateSha256": "E32F3C47738FC8E686B1ECB16309C154773FF324D2D7ABA837473B398EE56C81"
+      },
+      {
+        "Checkpoint": "post-seed",
+        "Nodes": [
+          {
+            "Id": "control-out",
+            "Mass": 2091.124439024602,
+            "Energy": 5303177933.88591,
+            "Pressure": 3988308.571540585,
+            "Temperature": 523.3336280971765,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9567251455220257
+          },
+          {
+            "Id": "drum",
+            "Mass": 3918.1811430997122,
+            "Energy": 5036352003.428653,
+            "Pressure": 6413026.206270387,
+            "Temperature": 553.1144284844398,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.04228533762491763
+          },
+          {
+            "Id": "exhaust",
+            "Mass": 65.98032377645245,
+            "Energy": 143079703.9440947,
+            "Pressure": 8461.955770531145,
+            "Temperature": 315.7280075341463,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.882748610498363
+          },
+          {
+            "Id": "feedwater-inventory",
+            "Mass": 9891.722796699542,
+            "Energy": 1962131381.7699625,
+            "Pressure": 14915.884663088094,
+            "Temperature": 320.5269641217096,
+            "Phase": "SubcooledLiquid",
+            "Quality": null
+          },
+          {
+            "Id": "header",
+            "Mass": 3238.929510060029,
+            "Energy": 8353060346.065171,
+            "Pressure": 6244328.303211644,
+            "Temperature": 551.3527498334646,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9935130182787016
+          },
+          {
+            "Id": "hotwell",
+            "Mass": 9891.856197935487,
+            "Energy": 1960487629.428205,
+            "Pressure": 10809.148125172705,
+            "Temperature": 320.4865620269468,
+            "Phase": "SaturatedMixture",
+            "Quality": 1.788655295612409e-10
+          },
+          {
+            "Id": "outlet",
+            "Mass": 1357.5693993180982,
+            "Energy": 2081990468.3468952,
+            "Pressure": 6655117.336483583,
+            "Temperature": 555.5812736093998,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.21813559578432623
+          },
+          {
+            "Id": "pressure",
+            "Mass": 7507.1388379020655,
+            "Energy": 9220255006.842602,
+            "Pressure": 6898696.230492894,
+            "Temperature": 553.3368457569175,
+            "Phase": "SubcooledLiquid",
+            "Quality": null
+          },
+          {
+            "Id": "steam",
+            "Mass": 3319.3775153048064,
+            "Energy": 8564230113.745965,
+            "Pressure": 6395408.196309969,
+            "Temperature": 552.9318809896707,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9952507950979436
+          },
+          {
+            "Id": "stop-out",
+            "Mass": 3150.1472237864555,
+            "Energy": 8111824378.274989,
+            "Pressure": 6066527.540152655,
+            "Temperature": 549.4564994364977,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9896626813975441
+          },
+          {
+            "Id": "suction",
+            "Mass": 7354.6246877391995,
+            "Energy": 9029978521.248882,
+            "Pressure": 6385482.55707795,
+            "Temperature": 552.8290373325348,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.0009609699644248314
+          },
+          {
+            "Id": "turbine-inlet",
+            "Mass": 1953.7067217136944,
+            "Energy": 5017249377.344741,
+            "Pressure": 3809966.108147037,
+            "Temperature": 520.637569719553,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9776322052773788
+          }
+        ],
+        "ScaledResiduals": [
+          -64073.205728257075,
+          1492921.470043573,
+          -234133.5872481047,
+          -292690.22748557857,
+          -590642.0141214915,
+          -602994.810442709,
+          2013377.4407582937,
+          2027261.3208722742,
+          -36890.30648769575,
+          42701.766143106455,
+          -4487859.615384615,
+          -3742118.2376237623,
+          716763.6231815772,
+          -881832.3652973843,
+          -273887.87009063445,
+          128849.22953736655,
+          -156139.81880319834,
+          -61287.88704318937,
+          -69800.52098831031,
+          47093.76636288318,
+          0,
+          62421.1875,
+          550625.3371374228,
+          4480485.136802974,
+          40850.61331716942
+        ],
+        "Healthy": true,
+        "InEnvelope": false,
+        "ElectricalMwe": 5.00000877081369,
+        "PumpKgS": 98.66946281105665,
+        "DrumLevel": 0.49999974054468455,
+        "Governor": 29.275874244015828,
+        "RotorTorque": 2.7392549869693994,
+        "MassClosure": -7.275957614183426e-12,
+        "EnergyClosure": 9.720458251649688e-06,
+        "StateSha256": "CA70E6F0BBE9DE703156B6C6CBFA47384A82F682CF78EB9D6CF2A031544F1FAA"
+      },
+      {
+        "Checkpoint": "1",
+        "Nodes": [
+          {
+            "Id": "control-out",
+            "Mass": 2091.124354098691,
+            "Energy": 5303183157.399235,
+            "Pressure": 3988315.189379994,
+            "Temperature": 523.3337263405323,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9567268570371107
+          },
+          {
+            "Id": "drum",
+            "Mass": 3918.179484710807,
+            "Energy": 5036347805.418287,
+            "Pressure": 6413016.392404815,
+            "Temperature": 553.1143267989158,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.04228531080098793
+          },
+          {
+            "Id": "exhaust",
+            "Mass": 65.98003696464139,
+            "Energy": 143079031.79768115,
+            "Pressure": 8461.913246359747,
+            "Temperature": 315.72791223749516,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.8827483437382946
+          },
+          {
+            "Id": "feedwater-inventory",
+            "Mass": 9891.723431768865,
+            "Energy": 1962131509.583849,
+            "Pressure": 15061.850850798395,
+            "Temperature": 320.52696416624207,
+            "Phase": "SubcooledLiquid",
+            "Quality": null
+          },
+          {
+            "Id": "header",
+            "Mass": 3238.929487667463,
+            "Energy": 8353060416.388876,
+            "Pressure": 6244328.426178708,
+            "Temperature": 551.3527511298656,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9935130477858395
+          },
+          {
+            "Id": "hotwell",
+            "Mass": 9891.85541430273,
+            "Energy": 1960487461.9295876,
+            "Pressure": 10809.147963770016,
+            "Temperature": 320.48656173055303,
+            "Phase": "SaturatedMixture",
+            "Quality": 1.8474837244067116e-10
+          },
+          {
+            "Id": "outlet",
+            "Mass": 1357.5724184274522,
+            "Energy": 2081985878.394211,
+            "Pressure": 6655049.513173966,
+            "Temperature": 555.5805907487869,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.2181324709822034
+          },
+          {
+            "Id": "pressure",
+            "Mass": 7507.1384615045745,
+            "Energy": 9220254985.233683,
+            "Pressure": 6898679.710430013,
+            "Temperature": 553.3368510393934,
+            "Phase": "SubcooledLiquid",
+            "Quality": null
+          },
+          {
+            "Id": "steam",
+            "Mass": 3319.376928596688,
+            "Energy": 8564229432.682376,
+            "Pressure": 6395408.199186249,
+            "Temperature": 552.931881019473,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9952509796646257
+          },
+          {
+            "Id": "stop-out",
+            "Mass": 3150.14710574235,
+            "Energy": 8111824599.052297,
+            "Pressure": 6066527.995853021,
+            "Temperature": 549.4565043538809,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.9896628046322213
+          },
+          {
+            "Id": "suction",
+            "Mass": 7354.6246877391995,
+            "Energy": 9029978528.359682,
+            "Pressure": 6385482.574335627,
+            "Temperature": 552.8290375113487,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.0009609699480307818
+          },
+          {
+            "Id": "turbine-inlet",
+            "Mass": 1953.7069848366814,
+            "Energy": 5017255123.993195,
+            "Pressure": 3809972.8590579974,
+            "Temperature": 520.6376739233732,
+            "Phase": "SaturatedMixture",
+            "Quality": 0.977633901868934
+          }
+        ],
+        "ScaledResiduals": [
+          -65230.19664687391,
+          1491626.0098039217,
+          -236301.15784358192,
+          -298739.9332880896,
+          -588859.9801598879,
+          -601121.861643434,
+          1654659.018957346,
+          1670063.2242990655,
+          -36720.18866517524,
+          42896.88714368819,
+          -4142371.769230769,
+          -3477921.391089109,
+          782035.6535131633,
+          -816128.5727669677,
+          -416770.8136958711,
+          -20158.891459074734,
+          -166389.5791849368,
+          -71896.39927514346,
+          -68964.32863974496,
+          47949.8314001657,
+          0,
+          58251.671875,
+          550274.4341417024,
+          4480146.950929368,
+          41122.15742731401
+        ],
+        "Healthy": true,
+        "InEnvelope": false,
+        "ElectricalMwe": 5.000017517608445,
+        "PumpKgS": 98.66978530280242,
+        "DrumLevel": 0.49999942754908144,
+        "Governor": 29.27557658894503,
+        "RotorTorque": 2.7574634910160967,
+        "MassClosure": -7.275957614183426e-12,
+        "EnergyClosure": -2.4100006612570724e-07,
+        "StateSha256": "87EE22FC36ABDE75CE159F4377A48BA4D60D4DEE95601158C2BB69BE1DF58AC4"
+      }
+    ]
+  },
+  "models": [
+    {
+      "iteration": 0,
+      "models": [
+        {
+          "damping": 0.001,
+          "iterations": 3,
+          "releases": 0,
+          "active": [
+            {
+              "index": 0,
+              "side": 1
+            },
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 2.9336661100387573e-08,
+          "tolerance": 0.0011940166055211018
+        },
+        {
+          "damping": 0.01,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 7.450580596923828e-09,
+          "tolerance": 0.0011940166055211018
+        },
+        {
+          "damping": 0.1,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 3.725290298461914e-09,
+          "tolerance": 0.0011940166055211018
+        },
+        {
+          "damping": 1,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 1.862645149230957e-09,
+          "tolerance": 0.0011940166055211018
+        },
+        {
+          "damping": 10,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 3.725290298461914e-09,
+          "tolerance": 0.0011940166055211018
+        },
+        {
+          "damping": 100,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 2.7939677238464355e-09,
+          "tolerance": 0.0011940166055211018
+        }
+      ],
+      "phase_changing_probes": [
+        "i0/probe/6/-1",
+        "i0/probe/10/1",
+        "i0/probe/10/-1",
+        "i0/probe/11/-1"
+      ]
+    },
+    {
+      "iteration": 1,
+      "models": [
+        {
+          "damping": 0.001,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 0,
+              "side": 1
+            }
+          ],
+          "free_gradient_max": 6.883055903017521e-09,
+          "tolerance": 0.0010581728560091143
+        },
+        {
+          "damping": 0.01,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 0,
+              "side": 1
+            }
+          ],
+          "free_gradient_max": 1.862645149230957e-09,
+          "tolerance": 0.0010581728560091143
+        },
+        {
+          "damping": 0.1,
+          "iterations": 3,
+          "releases": 0,
+          "active": [
+            {
+              "index": 0,
+              "side": 1
+            },
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 1.862645149230957e-09,
+          "tolerance": 0.0010581728560091143
+        },
+        {
+          "damping": 1,
+          "iterations": 3,
+          "releases": 0,
+          "active": [
+            {
+              "index": 0,
+              "side": 1
+            },
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 3.725290298461914e-09,
+          "tolerance": 0.0010581728560091143
+        },
+        {
+          "damping": 10,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 5.587935447692871e-09,
+          "tolerance": 0.0010581728560091143
+        },
+        {
+          "damping": 100,
+          "iterations": 2,
+          "releases": 0,
+          "active": [
+            {
+              "index": 21,
+              "side": -1
+            }
+          ],
+          "free_gradient_max": 3.725290298461914e-09,
+          "tolerance": 0.0010581728560091143
+        }
+      ],
+      "phase_changing_probes": []
+    }
+  ],
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false,
+  "batches": 5,
+  "maximum_physical_steps": 439
+}

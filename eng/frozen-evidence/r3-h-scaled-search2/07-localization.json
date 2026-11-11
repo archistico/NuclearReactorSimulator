@@ -1,0 +1,60 @@
+{
+  "status": "PASS-OFFLINE-LOCALIZATION",
+  "accepted_maximum": 4907140.615384615,
+  "best_observed_probe": {
+    "id": "i1/probe/6/1",
+    "maximum": 4480780.6364312265,
+    "coordinates": [
+      0.01987111548497527,
+      0.007169925742892063,
+      0.0001692301886999829,
+      -3.1230166311403503e-06,
+      -0.008589009738801279,
+      0.0017047170615532377,
+      3.6499578354298386e-07,
+      -3.275585447022438e-05,
+      0.003800166734547897,
+      0.0014135047639847495,
+      -2.6285074593374642e-06,
+      1.6418358444602183e-05,
+      -0.012786173182074579,
+      -0.010462546503828989,
+      -0.00011287342391942519,
+      3.638214847948309e-05,
+      0.0037956601354031615,
+      0.0014119801625578068,
+      0.005611601910223201,
+      0.0022119626025884835,
+      -0.019742276680473115,
+      -0.019999999840436263,
+      -0.002639114606694544,
+      -0.0020638652415018726
+    ],
+    "phase_changes": []
+  },
+  "terminal_trials": 24,
+  "terminal_phase_crossings": 24,
+  "terminal_best_maximum": 24246575.375,
+  "hotwell_at_accepted": {
+    "Id": "hotwell",
+    "Mass": 9891.857975233697,
+    "Energy": 1960488005.3637884,
+    "Pressure": 10809.148438252834,
+    "Temperature": 320.4865626018752,
+    "Phase": "SaturatedMixture",
+    "Quality": 1.6552626007242593e-10
+  },
+  "terminal_best_hotwell": {
+    "Id": "hotwell",
+    "Mass": 9891.935545390526,
+    "Energy": 1960472626.1641567,
+    "Pressure": 22816.987049380154,
+    "Temperature": 320.4858187937363,
+    "Phase": "SubcooledLiquid",
+    "Quality": null
+  },
+  "root_impossible_proven": false,
+  "controller_defect_proven": false,
+  "next_design": "TEST-ONLY-LOCAL-TRUST-REGION-AND-EXTENDED-BACKTRACKING-BEFORE-CHANGING-PHYSICS",
+  "rationale": "All 24 terminal model steps cross the hotwell liquid seam and worsen the objective; a recorded inward probe improves it without phase changes. The four-fraction search has not exhausted smaller steps."
+}

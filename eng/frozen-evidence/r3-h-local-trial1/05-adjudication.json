@@ -1,0 +1,119 @@
+{
+  "status": "PASS-EVIDENCE-COMPLETE",
+  "comparisons": [
+    {
+      "id": "baseline",
+      "reason": "VALID",
+      "actual_maximum": 7226221.379182156,
+      "predicted_maximum": 7226221.379182156,
+      "actual_reduction_percent": 0.0,
+      "actual_to_predicted_reduction_ratio": null,
+      "maximum_prediction_error": 0.0,
+      "phase_changes": [],
+      "all_in_envelope": false,
+      "strict_real_descent": false,
+      "local_model_reliable": false
+    },
+    {
+      "id": "lambda-0.001",
+      "reason": "VALID",
+      "actual_maximum": 7119605.156133829,
+      "predicted_maximum": 7119505.594613512,
+      "actual_reduction_percent": 1.4754076501928872,
+      "actual_to_predicted_reduction_ratio": 0.999067040356597,
+      "maximum_prediction_error": 55885.3201630041,
+      "phase_changes": [],
+      "all_in_envelope": false,
+      "strict_real_descent": true,
+      "local_model_reliable": true
+    },
+    {
+      "id": "lambda-0.01",
+      "reason": "VALID",
+      "actual_maximum": 6909148.735315985,
+      "predicted_maximum": 6908476.783236939,
+      "actual_reduction_percent": 4.387806949557592,
+      "actual_to_predicted_reduction_ratio": 0.9978852446662494,
+      "maximum_prediction_error": 249598.63505684584,
+      "phase_changes": [],
+      "all_in_envelope": false,
+      "strict_real_descent": true,
+      "local_model_reliable": true
+    },
+    {
+      "id": "lambda-0.1",
+      "reason": "VALID",
+      "actual_maximum": 7089971.655762082,
+      "predicted_maximum": 7089983.063530954,
+      "actual_reduction_percent": 1.8854905803549376,
+      "actual_to_predicted_reduction_ratio": 1.0000837339247561,
+      "maximum_prediction_error": 85351.53961158916,
+      "phase_changes": [
+        5
+      ],
+      "all_in_envelope": false,
+      "strict_real_descent": true,
+      "local_model_reliable": true
+    },
+    {
+      "id": "lambda-1",
+      "reason": "VALID",
+      "actual_maximum": 7131568.464684015,
+      "predicted_maximum": 7131583.687649884,
+      "actual_reduction_percent": 1.3098535116959507,
+      "actual_to_predicted_reduction_ratio": 1.000160855211308,
+      "maximum_prediction_error": 177690.59514329024,
+      "phase_changes": [
+        5
+      ],
+      "all_in_envelope": false,
+      "strict_real_descent": true,
+      "local_model_reliable": true
+    },
+    {
+      "id": "lambda-10",
+      "reason": "VALID",
+      "actual_maximum": 7128714.960594796,
+      "predicted_maximum": 7128729.324107161,
+      "actual_reduction_percent": 1.3493417025426924,
+      "actual_to_predicted_reduction_ratio": 1.0001473300809394,
+      "maximum_prediction_error": 151378.00541494973,
+      "phase_changes": [
+        5
+      ],
+      "all_in_envelope": false,
+      "strict_real_descent": true,
+      "local_model_reliable": true
+    },
+    {
+      "id": "lambda-100",
+      "reason": "VALID",
+      "actual_maximum": 7172406.657249071,
+      "predicted_maximum": 7172411.432934977,
+      "actual_reduction_percent": 0.7447145487144773,
+      "actual_to_predicted_reduction_ratio": 1.0000887509882368,
+      "maximum_prediction_error": 68600.03356769215,
+      "phase_changes": [
+        5
+      ],
+      "all_in_envelope": false,
+      "strict_real_descent": true,
+      "local_model_reliable": true
+    }
+  ],
+  "promising_directions": [
+    "lambda-0.001",
+    "lambda-0.01",
+    "lambda-0.1",
+    "lambda-1",
+    "lambda-10",
+    "lambda-100"
+  ],
+  "recipes": 14,
+  "constructor_setup_steps": 2,
+  "maximum_physical_steps": 44,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false,
+  "next_activity": "PLAN-SEPARATE-BOUNDED-SEARCH"
+}

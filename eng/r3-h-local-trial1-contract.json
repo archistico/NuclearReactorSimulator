@@ -1,0 +1,156 @@
+{
+  "schema": "r3-h-local-trial1-v1",
+  "policy": {
+    "event": 401,
+    "variables": 24,
+    "residuals": 75,
+    "fractional_bound": 0.02,
+    "damping": [
+      0.001,
+      0.01,
+      0.1,
+      1,
+      10,
+      100
+    ],
+    "repeats": 2,
+    "recipes": 14,
+    "setup_steps": 2,
+    "maximum_steps": 44,
+    "timestep_seconds": 0.01,
+    "minimum_reduction_ratio": 0.1,
+    "root_threshold": 1,
+    "optimization": false,
+    "seed_installation": false,
+    "production_change": false,
+    "r3_passed": false,
+    "bound_expansion": false,
+    "residual_reweighting": false
+  },
+  "output": "artifacts/r3-h-local-trial1",
+  "test_additions": [
+    "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HLocalModelTrial1Tests.cs"
+  ],
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 406,
+      "tree_sha256": "DA357FCC2DE77CB76AC425F260EB6E265E1CEAF4263071DA37D1794B1DFD3D19"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HLocalModelTrial1Tests.cs",
+      "sha256": "914E0EEB4D3AFF4A73CEADA36D67DBC7642C77CCB3334EF4429840A0D2112494"
+    },
+    {
+      "path": "eng/validate-r3-h-local-trial1.py",
+      "sha256": "96FFC1C19DB32D9288425FDBD704E685378940872F05D07C0CFB666969B4FAC2"
+    },
+    {
+      "path": "scripts/run-r3-h-local-trial1.cmd",
+      "sha256": "427ABF23A2A50D10831CB135C6D12DD0F68015E33DCFB04CC067AB635EB4D6EF"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-h-local-trial1.md",
+      "sha256": "73B2D196C3B95DAFE10012BC33473443F8636C19C212DE580C3A0C8090C351BD"
+    },
+    {
+      "path": "eng/contracts/r3-h-local-trial1-inputs.json",
+      "sha256": "5D8F133E52322207F2F8E41EE5E6EDC03F5D7681A0E91004D05BCFFC1F892702"
+    },
+    {
+      "path": "eng/r3-h-local-model-design1-contract.json",
+      "sha256": "3F3E367AD677603DE5AFBEC8602ABE9DDA8B86B57DAEBFC6BF749C7A25E5C5CD"
+    },
+    {
+      "path": "eng/r3-h-numerical-stop-review1-contract.json",
+      "sha256": "FA53D5EBDFE3351B74F290196E139DC392C3E4BE2A9A0D41D9BC1E52099951D9"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/13-payload-map.json",
+      "sha256": "B5813D680467CD5F500F7A41BFEE22AE3042CCC81BC763941F09F8BC0CC8BB4E"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/01-provenance.json",
+      "sha256": "7436521BFDBA72ABCE1BB7AFF44123F3AD110F23BC020586E1039CB8063AFAA4"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/02-linear-fixtures.json",
+      "sha256": "97E41FCEDF0C142BA02EF75A474635B1C273A5DA58317DE4AED693E61A832CB5"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/03-column-scales.csv",
+      "sha256": "3B4BD055CC1807A9B4192037C1A3FF71996A062FF84DDAC7D95D170BABA42BDE"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/04-model-comparison.json",
+      "sha256": "6FD0F74EB6958F4DADA9492B457F538930C4952F18F1D0BD70AF3436ADA238D0"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/05-design-summary.json",
+      "sha256": "B1406D440FAE449AA8A2E4364E02D9210E8ED19CDC2C89A8F0B59EE8956E9F11"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/06-manifest.csv",
+      "sha256": "A1ED951E0ED38F98FEA1FAA1226F5D611767B13864CA54861AFFBFA596593CC2"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/07-negative-design-cases.json",
+      "sha256": "AE548B783F654D9B7BF90A0F9D7BB1170F6F297993CB7A53E40331B254D42F4F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-local-model1/design-contract.json",
+      "sha256": "27431CEBC5E047C4081DCC712F4BC7AE3D2329CB49CA95E3752790C35E942A40"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/01-provenance.json",
+      "sha256": "B13F6589CC72B84FCAA9F856179036BFFB357CC11A5CF76609F41163D57964EB"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/02-terminal-review.json",
+      "sha256": "5EC6C85301E796C2A59FA8D2B2FA7B5FB9F6B76FDF80733B7C6C1273CE05C5A9"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/03-damping-replay.csv",
+      "sha256": "ED18C78976FB38A8CAD549E725291210AE52D7291185367BF0FEEEFEB631CA7A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/04-fractional-step-model.csv",
+      "sha256": "B5916BAC6066533E2E5DF8806424A1EF858F1BC5C83D758ECD1A65A56A580118"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/05-review-summary.json",
+      "sha256": "6628C6E93FB583461F7DE71A96A3B467B8DF2133A95E7B65E1F9D9F2BE15B856"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/06-manifest.csv",
+      "sha256": "502FED51F7C80FF519F5A4F77B7CF6E5A55E559CC39C38A22D79FC74E18D8273"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/07-negative-audit-cases.json",
+      "sha256": "FC7B16EFF7DD99E470BA971C1C83A2D213349692DA5D6C9F5A6556A872ECAC3C"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-numerics1/review-contract.json",
+      "sha256": "356148E77330D2CABB156A89BC10CF4EF9559E15E6E6D592804563FBAB61FCC3"
+    }
+  ]
+}

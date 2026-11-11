@@ -459,7 +459,9 @@ No requirement for monotonic return is imposed unless the model contract specifi
 
 The following subset records the original exact-v4 diagnostic proposal. It does
 not prescribe a new run now: the investigation has progressed to the bounded H
-and offline local-model checkpoint documented in `PROJECT.md`.
+and the returned nonlinear Local Trial 1 / bounded H2 checkpoint documented in
+`PROJECT.md`. H2 achieved real descent but stopped without a root; phase-boundary
+localization now precedes a separately frozen local-step protocol.
 
 1. test-only/headless exact-v4 residual census;
 2. per-node `dm/dt` and `dU/dt` plus 60 s/300 s slopes;

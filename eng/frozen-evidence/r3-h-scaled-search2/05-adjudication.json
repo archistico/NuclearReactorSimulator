@@ -1,0 +1,86 @@
+{
+  "status": "PASS-INDEPENDENT-REPLAY",
+  "stop": "NO-STRICT-DESCENT",
+  "evaluations": 143,
+  "accepted_updates": 1,
+  "batches": 5,
+  "maximum_physical_steps": 439,
+  "initial_maximum": 6909148.735315985,
+  "final_maximum": 4907140.615384615,
+  "all_in_envelope": false,
+  "dominant_residuals": [
+    {
+      "checkpoint": "seed-step1",
+      "node": "hotwell",
+      "quantity": "mass",
+      "scaled_residual": -4907140.615384615
+    },
+    {
+      "checkpoint": "post-seed",
+      "node": "hotwell",
+      "quantity": "mass",
+      "scaled_residual": -4487859.615384615
+    },
+    {
+      "checkpoint": "seed-step1",
+      "node": "turbine-inlet",
+      "quantity": "energy",
+      "scaled_residual": 4480780.6364312265
+    },
+    {
+      "checkpoint": "post-seed",
+      "node": "turbine-inlet",
+      "quantity": "energy",
+      "scaled_residual": 4480485.136802974
+    },
+    {
+      "checkpoint": "1",
+      "node": "turbine-inlet",
+      "quantity": "energy",
+      "scaled_residual": 4480146.950929368
+    },
+    {
+      "checkpoint": "1",
+      "node": "hotwell",
+      "quantity": "mass",
+      "scaled_residual": -4142371.769230769
+    },
+    {
+      "checkpoint": "seed-step1",
+      "node": "hotwell",
+      "quantity": "energy",
+      "scaled_residual": -4063763.5495049506
+    },
+    {
+      "checkpoint": "post-seed",
+      "node": "hotwell",
+      "quantity": "energy",
+      "scaled_residual": -3742118.2376237623
+    },
+    {
+      "checkpoint": "1",
+      "node": "hotwell",
+      "quantity": "energy",
+      "scaled_residual": -3477921.391089109
+    },
+    {
+      "checkpoint": "seed-step1",
+      "node": "feedwater-inventory",
+      "quantity": "energy",
+      "scaled_residual": 2452198.847352025
+    }
+  ],
+  "near_bounds": [
+    {
+      "index": 21,
+      "node": "suction",
+      "quantity": "energy",
+      "coordinate": -0.019999999840436263
+    }
+  ],
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false,
+  "next_activity": "REVIEW-ACTIVE-BOUNDS-AND-DOMINANT-RESIDUALS"
+}
