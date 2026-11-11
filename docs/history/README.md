@@ -6,6 +6,9 @@ Use `../PROJECT.md` for the current validated checkpoint and restart instruction
 
 ## Structure
 
+- [2026-11-11 compact archive](archives/README.md) — 74 completed notes and seven original navigation snapshots, with exact-byte SHA-256 provenance.
+- [2026-11-11 cleanup audit](DOCUMENTATION_CLEANUP_AUDIT_2026-11-11.md) — scope and verification.
+
 - `m10.9.4.1/` — detailed A–I numerical-hardening milestone notes, validation checklists, hotfix notes and static reviews.
 - `m10-validation/` — consolidated completed M10.8–M10.9 validation/checklist material that no longer participates in executable contracts.
 - `m10-final/` — consolidated completed M10 Final diagnostics and VR2/RP1 gate history.
