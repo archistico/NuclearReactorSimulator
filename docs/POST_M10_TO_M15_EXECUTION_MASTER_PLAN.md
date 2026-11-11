@@ -2,9 +2,11 @@
 
 ## Status
 
-**PLANNING — adopt only after the currently running M10 final long validation is green and M10 is explicitly CLOSED.**
+**PLANNING-NOT-ADOPTED — implementation begins only after the required M10 qualification, final long evidence and explicit M10 CLOSED.**
 
-This document is the operational execution map from the M10 closeout through M15. The immediate closure handoff is specified separately in [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](../eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md). It does not replace `PROJECT.md` as the current-state source and does not authorize changes to the active M10 long-validation candidate.
+This document is the detailed execution map from the M10 closeout through M15. The immediate closure handoff is specified separately in [`M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md`](../eng/contracts/m10/M10_FINAL_CLOSURE_AND_M11_BOOTSTRAP_PLAN.md). Use [ROADMAP.md](ROADMAP.md) for the readable forward sequence and [PROJECT.md](PROJECT.md) for the current checkpoint. This plan does not authorize changes to the active engineering investigation.
+
+The transition below is conditional on a future final long gate; it is not a statement that such a run is currently executing. R3 equilibrium work precedes the remaining repair-qualification route and final M10 closure. Reviewing these plans or improving documentation does not adopt M11 implementation.
 
 It consolidates the existing milestone plans with three pre-M11 source-driven engineering review streams:
 
@@ -18,7 +20,7 @@ The simulator remains an educational reduced-order plant model. No licensing-gra
 
 ## 1. Immediate transition: finish M10 correctly
 
-### T0-A — If the current long gate passes
+### T0-A — After the authorized final long gate passes
 
 The required order is:
 
@@ -33,7 +35,7 @@ The required order is:
 9. only then overlay the pre-M11 planning/review documentation and promote that documentation checkpoint;
 10. start M11.1 from the resulting closed/documented baseline.
 
-### T0-B — If the current long gate fails
+### T0-B — If the authorized final long gate fails
 
 Do not widen a frozen tolerance merely to obtain green evidence.
 
@@ -289,6 +291,8 @@ A packaged artifact works from a clean target environment exactly as documented.
 - close each hazard by automated evidence, representative task, explicit limitation or justified non-applicability;
 - execute the classic HMI failure-mode checklist: data overload, keyhole effect, mode error, clumsy/opaque automation, missing feedback, misleading state;
 - align README, manual, support contract, known limitations and packaged behavior;
+- check current manual labels, command increments, startup identities and scenario/mission instructions against the actual packaged release; historical textual validators keep their own frozen inputs;
+- provide a small reproducible set of documented operator demonstrations, within the qualified domain, and execute them on the package rather than infer support from a written procedure;
 - state non-claims explicitly: no hard-real-time, licensing, nuclear-grade COTS or unproven redundancy/diversity claim.
 
 ### Exit gate
@@ -371,7 +375,7 @@ Execution order:
 5. M13.5 versioned persistent mimic layout;
 6. M13.6 workspace presets;
 7. M13.7 real operating procedures;
-8. M13.8 Instructor/Fault mode;
+8. M13.8 supported scenario/mission selection and a distinct Instructor/Fault mode;
 9. **M13.9 Digital I&C Degradation & Automation Transparency**;
 10. **M13.10 Integrated UX Closure**.
 

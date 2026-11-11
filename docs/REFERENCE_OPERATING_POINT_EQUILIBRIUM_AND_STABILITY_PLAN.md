@@ -4,10 +4,17 @@
 
 **PLANNING / ENGINEERING DESIGN — not yet an implementation baseline.**
 
+This is the general M12.0 design, not the execution authority for the current
+bounded M10 H investigation. Use [PROJECT.md](PROJECT.md) and [ROADMAP.md](ROADMAP.md)
+for the live checkpoint and next work. The original exact-v4 observations below
+explain the plan's motivation; current production is Exact-V9 and subsequent
+activation decisions must remain explicit. No general runtime trimmer is authorized
+by the existence of the test-only H solver.
+
 This plan is the authoritative design proposal for adding explicit operating-point equilibrium diagnostics and, only after those diagnostics are trusted, a bounded reference operating-point trimmer. It is motivated by three converging observations:
 
 1. the current simulator already distinguishes conservation closure from inventory drift;
-2. the authoritative exact-v4 desktop reference passed 300 s qualification but that evidence was never claimed to prove asymptotic steady state;
+2. the then-authoritative exact-v4 desktop reference passed 300 s qualification but that evidence was never claimed to prove asymptotic steady state;
 3. the first M10 final long healthy leg exposed a late water/steam envelope failure on the `outlet` node, making slow operating-point drift a concrete hypothesis that must be measured rather than guessed.
 
 The plan is deliberately split into an **immediate M10 diagnostic subset** and a **formal post-M11 M12.0 implementation**. The immediate subset may be used to diagnose the current blocker, but M10 must not acquire a general-purpose runtime trimmer merely to make the long gate pass.
@@ -55,7 +62,7 @@ The current tree already contains useful but distinct concepts that must not be 
 - `FullPlantReferenceOperatingPoint` is an immutable M4.7 **fixed-input reference condition**. Its source contract explicitly says it contains no hidden controller or state correction.
 - `FullPlantSteadyStateCriteria` defines bounded drift/closure limits for a reference run. It is an acceptance object, not an equilibrium constructor.
 - `FullPlantLongRunRunner` executes the canonical `FullPlantSolver` and measures aggregate drift without correcting state.
-- authoritative desktop exact `integrated-operations-desktop-stable@4` preserves the exact-v2 physical seed and uses only a very short deterministic seed-preconditioning window before public STEP 0; that preconditioning is not a general steady-state solve.
+- historical desktop exact `integrated-operations-desktop-stable@4` preserves the exact-v2 physical seed and uses only a very short deterministic seed-preconditioning window before public STEP 0; that preconditioning is not a general steady-state solve. The production identity admitted when implementing this plan must be inventoried separately.
 - supervisory `HoldCurrentOperatingPoint` captures/holds operating objectives such as reactor power and turbine speed. It is an operator-control objective, **not proof that all plant inventories, controller memories and thermodynamic states are at equilibrium**.
 
 No existing class is to be reinterpreted. Historical names and exact-version semantics remain source-compatible.
@@ -417,13 +424,12 @@ Randomized/global black-box optimization is not planned.
 
 A trimmer result that changes a production initial condition creates a **new exact version**. It must never rewrite an already accepted exact identity.
 
-If the current M10 investigation ultimately demonstrates that exact desktop `@4` requires a repaired seed, the default route is:
-
-```text
-integrated-operations-desktop-stable@5
-```
-
-with exact `@4` preserved unchanged for replay/archive provenance. Any mission/scenario pack whose exact contract intentionally binds `@4` remains unchanged; if the production mission must move to the new seed, it receives its own new exact pack version rather than silently rebinding the old one.
+Select the next unused identity from the registry after the qualified change and
+the activation decision. The former `@5` reservation is obsolete: it and later
+identities through production `@9` have already been used. Preserve every existing
+exact version unchanged for replay/archive provenance. A mission/scenario pack
+bound to an old seed remains unchanged; moving production to a new seed requires
+its own explicit new pack identity rather than silently rebinding an old one.
 
 ## 12. Stability qualification after trimming
 
@@ -449,9 +455,11 @@ Record:
 
 No requirement for monotonic return is imposed unless the model contract specifically requires it.
 
-## 13. Immediate M10 diagnostic subset
+## 13. Historical M10 diagnostic subset
 
-If the current long run confirms LR-H1 as a production-semantic failure, implement the smallest diagnostic subset first:
+The following subset records the original exact-v4 diagnostic proposal. It does
+not prescribe a new run now: the investigation has progressed to the bounded H
+and offline local-model checkpoint documented in `PROJECT.md`.
 
 1. test-only/headless exact-v4 residual census;
 2. per-node `dm/dt` and `dU/dt` plus 60 s/300 s slopes;

@@ -1,71 +1,96 @@
-# Project — current authoritative state
+# Progetto — stato corrente e punto di ripresa
 
-## Current checkpoint - 2026-11-10 - H numerical review and offline local-model design
+## Lettura del checkpoint
+
+Il prodotto esistente usa il desktop Exact-V9, con sala controllo, missioni,
+salvataggi e replay. L'attività fisica aperta riguarda l'integrazione della nuova
+chiusura termodinamica reference-consistent, disponibile come opzione esplicita.
+Implementazione e verifica locale sono acquisite; l'equilibrio dell'impianto
+completo con quella composizione non è ancora qualificato.
+
+La [roadmap](ROADMAP.md) descrive le prossime consegne e il percorso fino a M15.
+Questa pagina conserva invece gli esiti verificati e il punto dal quale riprendere.
+
+## Checkpoint di pianificazione — 11 novembre 2026
+
+Le evidenze numeriche sottostanti restano quelle congelate il 10 novembre.
+L'aggiornamento odierno chiarisce il piano; non introduce nuove valutazioni fisiche.
 
 NRS-MARKER:R3-H-LOCAL-MODEL-DESIGN1-CURRENT
 
 NRS-MARKER:R3-H-NUMERICAL-STOP-REVIEW1-CURRENT
 
-This is the current checkpoint; earlier checkpoints are archived.
+### Che cosa è acquisito
 
-The bounded H search remains frozen as inconclusive. **Numerical Stop Review 1** is
-locally **PASS-REVIEW-EVIDENCE-COMPLETE**. It
-authenticates its complete compressed trace and reconstructs only the final local
-linear model. No plant evaluation or new seed construction is performed.
+La ricerca H sugli inventari conservati è stata eseguita con i limiti e i criteri
+congelati: 24 incognite fluide, 75 residui, 527 tentativi contabilizzati e sette
+aggiornamenti accettati. L'esito è `H-INCONCLUSIVE-NO-CANDIDATE-IN-BOUNDS`.
+Non è stato trovato uno stato iniziale qualificato e non è stata dimostrata
+l'impossibilità fisica di trovarlo.
 
-Iteration 8 contains 48 valid derivative probes and 78 trial rejections, all before
-the plant evaluator. The final half-step in every damping attempt crosses the same
-unchanged raw suction-energy bound. The six recorded full trial directions are
-bit-identical. The independent replay reproduces them with zero coordinate error;
-all six normal matrices and all diagonals versus zero damping are bit-identical.
-The first box-admissible halving on that direction is 15, beyond the frozen 12.
-Three derivative probes change phase labels; local physical smoothness is unproven.
-This localizes the final stop to the numerical direction/box handling;
-it does not demonstrate physical infeasibility or an independent controller defect.
+La **Numerical Stop Review 1** è `PASS-REVIEW-EVIDENCE-COMPLETE`. La ricostruzione
+dell'ultimo modello lineare localizza i 78 rifiuti terminali prima del valutatore
+fisico, sul limite invariato dell'energia di aspirazione. Le sei direzioni complete
+registrate sono identiche e gli smorzamenti perdono effetto nelle matrici ricostruite.
+Tre sonde di derivata cambiano etichetta di fase: la regolarità fisica locale resta
+da accertare.
 
-Review and next-design contract:
-[H Numerical Stop Review 1](../eng/contracts/m10/M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md).
+La **Local-Model Design 1** è `PASS-OFFLINE-DESIGN-EVIDENCE`. La scalatura delle
+colonne e una sola frazione globale rispetto al limite producono sei direzioni
+ammissibili, con tutte le 24 diagonali sensibili agli smorzamenti. Sei casi numerici
+indipendenti verificano la trasformazione e il trattamento dei limiti.
+
+### Che cosa significa il confronto offline
+
+Le sei previsioni riducono il massimo residuo locale da circa 7,226 milioni a valori
+fra 6,908 e 7,172 milioni: una riduzione prevista compresa fra circa 0,74% e 4,40%.
+Il valore inferiore non seleziona un candidato fisico: è una previsione lineare,
+ancora lontana dal criterio congelato di radice. Non sono state eseguite nuove
+valutazioni non lineari per verificarla.
+
+Gli input e gli output compatti sono conservati sotto
+`eng/frozen-evidence/r3-h-numerics1` e `eng/frozen-evidence/r3-h-local-model1`.
+La traccia completa H resta nel proprio archivio originale. I casi negativi
+congelati documentano il rifiuto di ampliamenti di autorità, limiti o input.
+
+### Prossima attività
+
+Completare la revisione dei sei confronti offline e dei cambi di fase, decidendo
+come usare e verificare le previsioni. Solo dopo si congela un protocollo limitato
+ai test per un'eventuale nuova indagine non lineare. La roadmap esplicita consegne,
+condizioni di uscita e arresto se l'esito resta inconclusivo.
+
+Non sono attivi una nuova ricerca H, ulteriori sonde fisiche, ampliamenti del
+dominio, nuove incognite, modifiche ai controllori o allo stato iniziale produttivo.
+Le altre famiglie C/J rimangono non selezionate. **R3 resta RED**; la
+Requalification 3 e R4 restano subordinate alle rispettive condizioni d'ingresso.
+
+## Controlli correnti e riferimenti
 
 ```powershell
 .\scripts\run-r3-h-numerical-stop-review1.cmd
-```
-
-The prescribed **offline bounded scaled local-model design** is implemented as a
-separate numerical comparison: six fixed damping values, column-normalized directions
-and one global fraction to the existing box. Six known numerical fixtures verify
-the transform/bound handling. It is locally **PASS-OFFLINE-DESIGN-EVIDENCE** and uses
-only the frozen residual/Jacobian. All six scaled dampings affect all 24 diagonals;
-all six capped directions are box-admissible and predict strict model descent.
-Predicted maxima range from about 6.908 million to 7.172 million versus 7.226 million
-at the frozen point. No physical candidate is selected; no nonlinear improvement is
-claimed. The original unscaled direction is retained as a separate model comparator.
-
-Design payloads are frozen under `eng/frozen-evidence/r3-h-local-model1`. Seven negative
-contract cases reject plant/nonlinear calls, residual reweighting, altered damping,
-wider bounds and baseline/input-digest drift. Production/tests remain unchanged.
-
-Specification: [H Local-Model Design 1](../eng/contracts/m10/M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md).
-
-```powershell
 .\scripts\run-r3-h-local-model-design1.cmd
 ```
 
-Next work is review of these local-model predictions before any separately frozen
-nonlinear plan. No new nonlinear search, extra plant probes, bound expansion, extra
-unknowns, controller/seed edits or C/J are authorized. R3 stays RED; Requalification 3
-and R4 remain blocked.
+Sono verifiche offline: autenticano gli input, controllano i 962 file di produzione
+e i 406 file di test e ricostruiscono il confronto numerico senza chiamare il modello
+fisico. Il secondo comando ripete anche la revisione numerica prerequisita.
+Non costituiscono una nuova esecuzione della ricerca fisica o della suite ordinaria.
 
-This gate proves production and all 406 test files unchanged. The inherited ordinary
-PASS in the archived checkpoint remains provenance; no new ordinary-suite execution is claimed.
-Eight negative audit cases reject authority/bounds expansion, replay-guard widening,
-baseline/digest/marker drift, physical-search continuation and output outside artifacts.
-The compact review payloads are frozen under `eng/frozen-evidence/r3-h-numerics1`;
-the complete H1 input trace stays unchanged in its original frozen archive.
+| Riferimento | Contenuto |
+| --- | --- |
+| [Ricerca H](../eng/contracts/m10/M10_FINAL_VR2_R3_H_CONSERVED_INVENTORY_FEASIBILITY1.md) | Protocollo ed evidenze della ricerca limitata già conclusa |
+| [Revisione dello stop](../eng/contracts/m10/M10_FINAL_VR2_R3_H_NUMERICAL_STOP_REVIEW1.md) | Ricostruzione offline del limite numerico terminale |
+| [Confronto locale scalato](../eng/contracts/m10/M10_FINAL_VR2_R3_H_LOCAL_MODEL_DESIGN1.md) | Sei smorzamenti, vincoli e casi numerici indipendenti |
+| [Sintesi della validazione](validation/README.md) | Risultati, campo delle conclusioni e problema aperto |
 
-## Earlier checkpoints
+## Lavori di documentazione conclusi
 
-The complete preceding state and handoff history is preserved in the
-[2026-11-11 snapshot](history/archives/README.md#snapshot-docs-project-md).
-Use the checkpoint above for continuation.
+La documentazione M10 è stata separata dagli input esatti dei validatori, raccolti
+in `eng/contracts/m10`. Il README descrive il prodotto e il manuale italiano è
+stato riscritto con spiegazioni dei componenti, delle interazioni e dei diagrammi.
+I controlli testuali storici del manuale leggono la loro copia congelata.
 
-For the consolidated engineering context, use the [validation summary](validation/README.md).
+Questi interventi non cambiano fisica, test o identità produttive e non promuovono
+R3 o M10. I checkpoint precedenti restano consultabili nel
+[registro degli archivi](history/archives/README.md#snapshot-docs-project-md).
