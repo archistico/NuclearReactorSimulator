@@ -1,0 +1,1205 @@
+{
+  "status": "PASS-EVIDENCE-COMPLETE",
+  "classification": "CONTROL-VALVE-NOT-MATERIAL-IN-LINEAR-MODEL",
+  "recipes": 22,
+  "batches": 1,
+  "maximum_physical_steps": 66,
+  "baseline_reproduced": true,
+  "baseline_metric": {
+    "maximum_scaled": 7848623.002230483,
+    "maximum_mass_rate_kg_s": {
+      "value": -0.1464813550484223,
+      "checkpoint": "1",
+      "node": "exhaust"
+    },
+    "maximum_energy_rate_w": {
+      "value": -1156615.121269226,
+      "checkpoint": "seed-step1",
+      "node": "outlet"
+    },
+    "maximum_rotor_torque_nm": {
+      "value": -0.8880340760676972,
+      "checkpoint": "1",
+      "node": "rotor"
+    },
+    "seed_step1_net_energy_rate_w": 535.0447237491626,
+    "seed_step1_gross_energy_rate_w": 2689770.228332281
+  },
+  "observations": [
+    {
+      "id": "valve/plus/1e-06",
+      "fraction": 1e-06,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7848623.002230483,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.1464813550484223,
+          "checkpoint": "1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.8880340760676972,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 535.0447237491335,
+        "seed_step1_gross_energy_rate_w": 2689770.228332281
+      },
+      "all_in_envelope": true,
+      "governor_percent": [
+        29.281358978766313,
+        29.281359239208058,
+        29.282254182844227
+      ]
+    },
+    {
+      "id": "valve/minus/1e-06",
+      "fraction": -1e-06,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7848900.375464684,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14648133289796306,
+          "checkpoint": "1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.8878616872548264,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 540.6063169240952,
+        "seed_step1_gross_energy_rate_w": 2689835.178270936
+      },
+      "all_in_envelope": true,
+      "governor_percent": [
+        29.28130041610692,
+        29.28133616798201,
+        29.282196967512284
+      ]
+    },
+    {
+      "id": "valve/plus/1e-05",
+      "fraction": 1e-05,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7848623.002230483,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14648113455137945,
+          "checkpoint": "1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.8877337484927921,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 535.0447237491626,
+        "seed_step1_gross_energy_rate_w": 2689770.228332281
+      },
+      "all_in_envelope": true,
+      "governor_percent": [
+        29.281622510733595,
+        29.28162277117534,
+        29.28251741220746
+      ]
+    },
+    {
+      "id": "valve/minus/1e-05",
+      "fraction": -1e-05,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7851415.589591078,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14653953120813412,
+          "checkpoint": "seed-step1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.8865281796431645,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 591.0389602184314,
+        "seed_step1_gross_energy_rate_w": 2690424.1427242756
+      },
+      "all_in_envelope": true,
+      "governor_percent": [
+        29.281036884139645,
+        29.281394471352932,
+        29.281946220103293
+      ]
+    },
+    {
+      "id": "valve/plus/0.0001",
+      "fraction": 0.0001,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7848623.002230483,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14647926244748533,
+          "checkpoint": "1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.8851807191144871,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 535.0447237491626,
+        "seed_step1_gross_energy_rate_w": 2689770.228332281
+      },
+      "all_in_envelope": true,
+      "governor_percent": [
+        29.28425783040636,
+        29.284258090848105,
+        29.285150210221214
+      ]
+    },
+    {
+      "id": "valve/minus/0.0001",
+      "fraction": -0.0001,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7876567.734572491,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14771205137975585,
+          "checkpoint": "seed-step1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -1.7831811821495194,
+          "checkpoint": "seed-step1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 1095.365849137279,
+        "seed_step1_gross_energy_rate_w": 2696313.7877076864
+      },
+      "all_in_envelope": true,
+      "governor_percent": [
+        29.278401564466876,
+        29.281977504966658,
+        29.27943798988546
+      ]
+    },
+    {
+      "id": "valve/plus/0.001",
+      "fraction": 0.001,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7848623.002230483,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14646027994018596,
+          "checkpoint": "1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.8593027599699782,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 535.0447237491626,
+        "seed_step1_gross_energy_rate_w": 2732632.9869687557
+      },
+      "all_in_envelope": false,
+      "governor_percent": [
+        29.31061102713405,
+        29.310611287575796,
+        29.31147728258484
+      ]
+    },
+    {
+      "id": "valve/minus/0.001",
+      "fraction": -0.001,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 8128089.17992565,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.15943725309028878,
+          "checkpoint": "seed-step1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -17.831845957339056,
+          "checkpoint": "seed-step1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 6138.631811738016,
+        "seed_step1_gross_energy_rate_w": 2755210.2374643087
+      },
+      "all_in_envelope": false,
+      "governor_percent": [
+        29.25204836773918,
+        29.287807841304456,
+        29.254355146005082
+      ]
+    },
+    {
+      "id": "valve/plus/0.01",
+      "fraction": 0.01,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 7848623.002230483,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14640934884369017,
+          "checkpoint": "seed-step1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.6005232888046521,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 535.0447237491626,
+        "seed_step1_gross_energy_rate_w": 3399540.3647840023
+      },
+      "all_in_envelope": false,
+      "governor_percent": [
+        29.574142994410984,
+        29.57414325485273,
+        29.57474841068316
+      ]
+    },
+    {
+      "id": "valve/minus/0.01",
+      "fraction": -0.01,
+      "reason": "VALID",
+      "phase_compatible": true,
+      "phase_changes": [],
+      "metric": {
+        "maximum_scaled": 10643303.63197026,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.2766892702013024,
+          "checkpoint": "seed-step1",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": 1365207.9949378967,
+          "checkpoint": "seed-step1",
+          "node": "turbine-inlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -178.31849370924172,
+          "checkpoint": "seed-step1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 56571.15058600903,
+        "seed_step1_gross_energy_rate_w": 3692176.8914729357
+      },
+      "all_in_envelope": false,
+      "governor_percent": [
+        28.988516400462252,
+        29.34611120454875,
+        29.003526907329817
+      ]
+    }
+  ],
+  "sensitivities": [
+    {
+      "amplitude": 1e-06,
+      "stencil": "central",
+      "largest_physical_sensitivities_per_unit_fraction": [
+        {
+          "checkpoint": "seed-step1",
+          "node": "rotor",
+          "quantity": "torque",
+          "value": 8849.093765093128
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -37050437.92724494
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 37050437.92724419
+        },
+        {
+          "checkpoint": "1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 36191511.15415829
+        },
+        {
+          "checkpoint": "1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -36119604.1107175
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "mass",
+          "value": -13.33924046775792
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "mass",
+          "value": 13.339240467757918
+        },
+        {
+          "checkpoint": "1",
+          "node": "control-out",
+          "quantity": "mass",
+          "value": 13.030103218625287
+        }
+      ]
+    },
+    {
+      "amplitude": 1e-05,
+      "stencil": "central",
+      "largest_physical_sensitivities_per_unit_fraction": [
+        {
+          "checkpoint": "seed-step1",
+          "node": "rotor",
+          "quantity": "torque",
+          "value": 8909.241764195029
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -37050409.31701659
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 37050409.31701639
+        },
+        {
+          "checkpoint": "1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -36094398.49853511
+        },
+        {
+          "checkpoint": "1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 36073389.05334596
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "mass",
+          "value": -13.339238194021164
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "mass",
+          "value": 13.339235920284409
+        },
+        {
+          "checkpoint": "1",
+          "node": "stop-out",
+          "quantity": "mass",
+          "value": -12.995101315027568
+        }
+      ]
+    },
+    {
+      "amplitude": 0.0001,
+      "stencil": "central",
+      "largest_physical_sensitivities_per_unit_fraction": [
+        {
+          "checkpoint": "seed-step1",
+          "node": "rotor",
+          "quantity": "torque",
+          "value": 8915.256564032461
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -37050410.27069091
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 37050409.7938538
+        },
+        {
+          "checkpoint": "1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -36092417.240142815
+        },
+        {
+          "checkpoint": "1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 36076530.45654287
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "mass",
+          "value": 13.339237284526462
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "mass",
+          "value": -13.339237057152786
+        },
+        {
+          "checkpoint": "1",
+          "node": "stop-out",
+          "quantity": "mass",
+          "value": -12.994395319765315
+        }
+      ]
+    },
+    {
+      "amplitude": 0.001,
+      "stencil": "central",
+      "largest_physical_sensitivities_per_unit_fraction": [
+        {
+          "checkpoint": "seed-step1",
+          "node": "rotor",
+          "quantity": "torque",
+          "value": 8915.858043998014
+        },
+        {
+          "checkpoint": "1",
+          "node": "rotor",
+          "quantity": "torque",
+          "value": 7641.481774513863
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 37050409.88922119
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -37050409.88922119
+        },
+        {
+          "checkpoint": "1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -36091788.00582885
+        },
+        {
+          "checkpoint": "1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 36075784.68322753
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "mass",
+          "value": 13.339237148102256
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "mass",
+          "value": -13.339237148102256
+        }
+      ]
+    },
+    {
+      "amplitude": 0.01,
+      "stencil": "central",
+      "largest_physical_sensitivities_per_unit_fraction": [
+        {
+          "checkpoint": "seed-step1",
+          "node": "rotor",
+          "quantity": "torque",
+          "value": 8915.918191994935
+        },
+        {
+          "checkpoint": "1",
+          "node": "rotor",
+          "quantity": "torque",
+          "value": 8334.919491009645
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 37050409.87968445
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -37050409.87968445
+        },
+        {
+          "checkpoint": "1",
+          "node": "stop-out",
+          "quantity": "energy",
+          "value": -36091698.451042175
+        },
+        {
+          "checkpoint": "1",
+          "node": "control-out",
+          "quantity": "energy",
+          "value": 36075775.4278183
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "control-out",
+          "quantity": "mass",
+          "value": 13.33923713900731
+        },
+        {
+          "checkpoint": "seed-step1",
+          "node": "stop-out",
+          "quantity": "mass",
+          "value": -13.33923713900731
+        }
+      ]
+    }
+  ],
+  "primary_amplitude": 0.0001,
+  "primary_column_deviation": 0.08608206755281102,
+  "linear_models": [
+    {
+      "model": "inventories-only/contract-scales",
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.03114296392273148
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.006318796722526935
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.0005581237902074356
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -0.0007825842114587062
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.010575319798135948
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.00011159767675887314
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 5.91213296572697e-06
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.0008808413510729547
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.02300505832001451
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.007705610994951516
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 7.020176265742664e-06
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.0009367646509214658
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.04248489041861513
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.035604489071879554
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": 0.00023327577277801187
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": -0.00031615892204676704
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.022940230177371283
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.007782537603984951
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.04629005936252165
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.017912748209070635
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": 0.0006156063639121215
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.0004890892240665948
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": -0.011973229224298278
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": -0.011400384186561224
+        }
+      ],
+      "coordinates_outside_bound": 6,
+      "predicted": {
+        "maximum_scaled": 1007148.5779255939,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.1360866733598961,
+          "checkpoint": "post-seed",
+          "node": "steam"
+        },
+        "maximum_energy_rate_w": {
+          "value": 463725.40800330805,
+          "checkpoint": "1",
+          "node": "stop-out"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 23.918086194401443,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 755587.3435378682,
+        "seed_step1_gross_energy_rate_w": 1032042.6635532915
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "inventories-only/physical-weights",
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.03303129294786807
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.022958183818883742
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.0001365250483969802
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -2.7069801613238033e-05
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.011147974513503661
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.0009813456760316061
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": -0.00014951605239622742
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": 0.006820588855633873
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.0111506176897606
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.005242488162089486
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 0.00018597642903764056
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.0091049230194154
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": -0.04170108296167935
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": -0.033855916598157204
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.0005660857959614626
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.0002442802250438601
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.005095422191915615
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.002055754742171333
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.028208681993824668
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.013334516560064747
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": -0.0003150998955237235
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.00013692246549266488
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": 0.00029838096235135594
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.011136937820876974
+        }
+      ],
+      "coordinates_outside_bound": 5,
+      "predicted": {
+        "maximum_scaled": 36902021.49340027,
+        "maximum_mass_rate_kg_s": {
+          "value": 0.07477485643016192,
+          "checkpoint": "post-seed",
+          "node": "control-out"
+        },
+        "maximum_energy_rate_w": {
+          "value": 302206.75341717433,
+          "checkpoint": "1",
+          "node": "stop-out"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 4.85429481169217,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 472003.24276121025,
+        "seed_step1_gross_energy_rate_w": 1106857.184846938
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "control-valve-only/contract-scales",
+      "step": [
+        {
+          "coordinate": "control-valve-percent-open",
+          "fraction": 0.0072330404721730164
+        }
+      ],
+      "coordinates_outside_bound": 0,
+      "predicted": {
+        "maximum_scaled": 7848017.297020726,
+        "maximum_mass_rate_kg_s": {
+          "value": 0.14748895363880726,
+          "checkpoint": "seed-step1",
+          "node": "hotwell"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 64.48428167810991,
+          "checkpoint": "seed-step1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": -19729.082162981278,
+        "seed_step1_gross_energy_rate_w": 3122614.7973342463
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "inventories-and-control-valve/contract-scales",
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.06100604031072348
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.03662097796368231
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.0010089594625356064
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -0.0017126615963116748
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.011138368288308368
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.0012576648141797077
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 3.6235748384612564e-06
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.0014006466571706477
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.023767839379282816
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.005545679884150552
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 4.835825232052096e-06
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.0014678452533184215
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": 0.04371805029284522
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": 0.03145536814213626
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": 0.00107920888936772
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": -0.0007500976985214315
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.023300799354101343
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.005299508209654584
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.03720961305802412
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.011533567442674543
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": 0.001896985907794274
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.0006452435764806408
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": 0.019758753181271037
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.020435155216167983
+        },
+        {
+          "coordinate": "control-valve-percent-open",
+          "fraction": 0.02765160493116215
+        }
+      ],
+      "coordinates_outside_bound": 9,
+      "predicted": {
+        "maximum_scaled": 555648.9067140479,
+        "maximum_mass_rate_kg_s": {
+          "value": 0.2523791723206471,
+          "checkpoint": "seed-step1",
+          "node": "drum"
+        },
+        "maximum_energy_rate_w": {
+          "value": 526357.7070608747,
+          "checkpoint": "1",
+          "node": "steam"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 3.7334804506340045,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 580331.4259490299,
+        "seed_step1_gross_energy_rate_w": 741887.9941654037
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "control-valve-only/physical-weights",
+      "step": [
+        {
+          "coordinate": "control-valve-percent-open",
+          "fraction": 0.00017210939634440002
+        }
+      ],
+      "coordinates_outside_bound": 0,
+      "predicted": {
+        "maximum_scaled": 7847936.50316997,
+        "maximum_mass_rate_kg_s": {
+          "value": -0.14644484371133631,
+          "checkpoint": "post-seed",
+          "node": "exhaust"
+        },
+        "maximum_energy_rate_w": {
+          "value": -1156615.121269226,
+          "checkpoint": "seed-step1",
+          "node": "outlet"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 1.5342695561480497,
+          "checkpoint": "seed-step1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 52.86207050134726,
+        "seed_step1_gross_energy_rate_w": 2684139.1880620574
+      },
+      "prediction_is_not_an_observation": true
+    },
+    {
+      "model": "inventories-and-control-valve/physical-weights",
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.08071110606918636
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.07201112928928147
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": -8.744084096445024e-06
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -9.564110558332527e-05
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": -0.01249280863109763
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.0020580866755554833
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 0.00025363452001265504
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.012216566660374342
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.010964579345084399
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.00573895669303522
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": 0.000471392527724502
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": -0.022648334759279305
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": 0.014168859150632868
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": 0.010531338072538903
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.0005557514788679368
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.00034414678069534814
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.004916487035224546
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.002147530139614578
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.02049530805942132
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.011029869725455969
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": -3.679021379844883e-05
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -2.7525230352703964e-05
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": 0.04687871798171085
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.06130392446171763
+        },
+        {
+          "coordinate": "control-valve-percent-open",
+          "fraction": 0.029139092268613248
+        }
+      ],
+      "coordinates_outside_bound": 7,
+      "predicted": {
+        "maximum_scaled": 43466656.881707095,
+        "maximum_mass_rate_kg_s": {
+          "value": 0.054710985077552184,
+          "checkpoint": "seed-step1",
+          "node": "hotwell"
+        },
+        "maximum_energy_rate_w": {
+          "value": -209337.82315504152,
+          "checkpoint": "1",
+          "node": "hotwell"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": -0.6195937871368207,
+          "checkpoint": "1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 118286.16833044066,
+        "seed_step1_gross_energy_rate_w": 662052.039409196
+      },
+      "prediction_is_not_an_observation": true
+    }
+  ],
+  "joint_to_inventory_only_energy_ratio": 0.6926973695589984,
+  "valve_and_speed_controller_output_move_together": true,
+  "linear_models_are_not_observations": true,
+  "family_selected": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

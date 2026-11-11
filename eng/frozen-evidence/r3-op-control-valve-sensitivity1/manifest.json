@@ -1,0 +1,47 @@
+{
+  "schema": "r3-op-control-valve-sensitivity1-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 1364,
+      "sha256": "9D9AFD5C21ADDCBBBEE7A57BEAE440C79062752696DB322085E18E57B375FDAF",
+      "stored_sha256": "9D9AFD5C21ADDCBBBEE7A57BEAE440C79062752696DB322085E18E57B375FDAF"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "9357DD7BF6C0B02755929BC2625325313DE91F8BEB70E75B624470F913BA4A9F",
+      "stored_sha256": "9357DD7BF6C0B02755929BC2625325313DE91F8BEB70E75B624470F913BA4A9F"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 349083,
+      "sha256": "AF48821A226D753A1D94100797A5DA3ECDDBD5DEDA417D274F25655AC7E1E2B3",
+      "stored_sha256": "CE0E9DFA134BCDBADBB1971756F8CCE60614876F1C3C5193A241A11FF30EAA86"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 34346,
+      "sha256": "75645876DC2151361FC959102C4E8EA2F2BEF067017A776819F20A84781C5E42",
+      "stored_sha256": "75645876DC2151361FC959102C4E8EA2F2BEF067017A776819F20A84781C5E42"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 4149,
+      "sha256": "EC11268424B5BED0145CE4D54187D4480BDC5F6F49969E1583E51AE0B2748768",
+      "stored_sha256": "EC11268424B5BED0145CE4D54187D4480BDC5F6F49969E1583E51AE0B2748768"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1992,
+      "sha256": "5D1E3F4E06E5F9A4D8A41ECDACF668CD76FE3F195A03341E0B9C91676457C288",
+      "stored_sha256": "5D1E3F4E06E5F9A4D8A41ECDACF668CD76FE3F195A03341E0B9C91676457C288"
+    }
+  ]
+}

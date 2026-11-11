@@ -51,6 +51,23 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   primaria a 1e-4, tre modelli lineari e soglie di classificazione dichiarate.
   Revisione statica PASS; compilazione, suite ordinaria ed esecuzione sono da fare.
 
+### Diagnostica della valvola di regolazione (eseguita)
+
+- CI ordinaria PASS con i 411 file di test: 1.560 test, 1.395 superati,
+  165 espliciti esclusi, zero fallimenti; baseline delle evidenze correnti PASS.
+- Eseguite le 22 ricette in un batch: tutte valide, ripetizioni identiche con
+  gli hash di stato, baseline del modo 2 riprodotta, fasi invariate a ogni ampiezza.
+  Da ±1e-3 l'uscita del regolatore lascia l'inviluppo 29,27–29,30%.
+- La valvola sposta energia fra `stop-out` e `control-out`, circa 3,7 kW per
+  1e-4, e la coppia del rotore; non agisce sui 1,157 MW di `outlet`. Colonna
+  primaria utilizzabile, con deviazione dell'8,6% da quella a 1e-5.
+- Con i pesi fisici il modello congiunto porta il massimo tasso di energia da
+  302 a 209 kW, il 69%: esito `CONTROL-VALVE-NOT-MATERIAL-IN-LINEAR-MODEL`. La
+  previsione richiede +2,9% di valvola e sette coordinate oltre ±2%, e sposta il
+  massimo sull'hotwell; con le scale del contratto peggiora da 464 a 526 kW.
+- Congelato il pacchetto con ricevuta; replay PASS. Nessuna famiglia, radice o
+  seed è qualificato: R3 resta RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

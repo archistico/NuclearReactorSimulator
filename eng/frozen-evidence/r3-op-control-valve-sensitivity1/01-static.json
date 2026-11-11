@@ -1,0 +1,75 @@
+{
+  "status": "PASS-STATIC",
+  "contract_sha256": "87D2E7A42A7DA7E66359A1A7D2F5EE8E7EED794249A2DB4A43E3EF0C49460206",
+  "fixtures": [
+    {
+      "case": "exact",
+      "solution": [
+        1.0,
+        2.0
+      ]
+    },
+    {
+      "case": "inconsistent",
+      "solution": [
+        0.3333333333333332,
+        0.33333333333333326
+      ]
+    },
+    {
+      "case": "rank-deficient",
+      "rejected": true
+    },
+    {
+      "case": "outside-bound-request",
+      "rejected": true
+    }
+  ],
+  "points": [
+    {
+      "id": "base",
+      "fraction": 0.0
+    },
+    {
+      "id": "valve/plus/1e-06",
+      "fraction": 1e-06
+    },
+    {
+      "id": "valve/minus/1e-06",
+      "fraction": -1e-06
+    },
+    {
+      "id": "valve/plus/1e-05",
+      "fraction": 1e-05
+    },
+    {
+      "id": "valve/minus/1e-05",
+      "fraction": -1e-05
+    },
+    {
+      "id": "valve/plus/0.0001",
+      "fraction": 0.0001
+    },
+    {
+      "id": "valve/minus/0.0001",
+      "fraction": -0.0001
+    },
+    {
+      "id": "valve/plus/0.001",
+      "fraction": 0.001
+    },
+    {
+      "id": "valve/minus/0.001",
+      "fraction": -0.001
+    },
+    {
+      "id": "valve/plus/0.01",
+      "fraction": 0.01
+    },
+    {
+      "id": "valve/minus/0.01",
+      "fraction": -0.01
+    }
+  ],
+  "requests": 22
+}
