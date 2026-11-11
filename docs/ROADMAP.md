@@ -37,8 +37,10 @@ diagnostico è 30, ma le prime due proposte combinate hanno fallito la prevision
 La ricostruzione offline attribuisce lo scarto già al primo passo al minimo
 fra le capacità delle valvole e dello stadio: cambia il limite che determina
 la portata, mentre la matrice di secanti somma risposte di tratti diversi.
-La prossima finestra deve osservare queste capacità lungo tutta la ricetta
-e verificare un modello che mantenga tale minimo, prima di una ricerca.
+La prova 8 osserva le capacità a tutti i checkpoint e riproduce esattamente
+il minimo: le proposte restano nel ramo admission, la baseline passa da stop
+a control. La prossima finestra deve verificare un modello che mantenga
+tale minimo, prima di nuove proposte o di una ricerca.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -47,7 +49,8 @@ e verificare un modello che mantenga tale minimo, prima di una ricerca.
 | Misura estesa completata | 362 ricette ripetibili, 334 nell'inviluppo; selezionate 19 colonne su 30. | Rango numerico diagnostico 19; disponibilità incompleta e nessuna sufficienza dimostrata. |
 | Base direzionale costruita | 394 ricette portano a 28 direzioni; altre 114 aggiungono due direzioni accoppiate, con rango numerico 30. | Quattro coefficienti restano non negativi. Il risultato non valida le derivate cartesiane mancanti. |
 | Prime proposte eseguite | Due frazioni del passo lineare, ripetute: sei ricette. | Evidenza PASS, ma entrambe le previsioni falliscono il 10%; nessuna ricerca avviata. |
-| Rappresentare il limite di portata | Capacità e vincitori a tutti i checkpoint; confronto con un modello del minimo o dei suoi diversi rami. | Previsioni ripetute conformi, con vincoli di ramo e verso, prima della ricerca. |
+| Capacità osservate | 38 ricette ripetute; capacità, vincitori e margini ai tre checkpoint, minimo riprodotto esattamente. | Evidenza PASS; nessun modello, proposta o ricerca. |
+| Modellare il limite di portata | Capacità linearizzate nel proprio ramo e loro minimo; confronto offline con le proposte e le sonde congelate. | Previsioni conformi prima di nuove proposte ripetute, con vincoli di ramo e verso. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
 | Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
@@ -57,8 +60,8 @@ e verificare un modello che mantenga tale minimo, prima di una ricerca.
 ```mermaid
 flowchart TD
     R["Trasporto di fase verificato"] --> M["Misura del punto riparato"]
-    M --> S["30 direzioni: prime proposte non conformi"]
-    S --> A["Rappresentare il minimo delle capacità e verificare nuove proposte"]
+    M --> S["30 direzioni e capacità osservate: prime proposte non conformi"]
+    S --> A["Modello del minimo delle capacità e nuove proposte verificate"]
     A --> B{"Previsioni e ramo verificati?"}
     B -->|"no"| S
     B -->|"sì"| C["Ricerca con criteri e budget congelati"]
@@ -79,8 +82,10 @@ Non è una prova di impossibilità della famiglia o una proposta di modifica a U
 Il successo della sonda nucleare-termica vale soltanto alle ampiezze misurate:
 non autorizza di colpo il passo necessario a compensare un deficit di circa 1 MW.
 Anche trenta direzioni disponibili non bastano a rendere affine una legge del
-minimo vicino a capacità quasi coincidenti. L'attribuzione corrente copre solo
-il primo passo; il modello dei passi successivi deve ancora essere verificato.
+minimo vicino a capacità quasi coincidenti. L'osservazione copre ora tutti
+i checkpoint delle ricette esistenti; il modello deve ancora essere verificato.
+Poiché in un punto stazionario le tre valvole portano la stessa portata dello
+stadio, una radice starebbe sul pareggio: la ricerca futura dovrà trattarlo.
 
 Le famiglie C/J, gli allargamenti dei limiti e altre modifiche fisiche richiedono
 motivazioni e protocolli distinti. Il calendario potrà essere stimato quando

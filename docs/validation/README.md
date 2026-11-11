@@ -21,6 +21,7 @@ i comandi di ripresa e la [roadmap](../ROADMAP.md) definisce il percorso futuro.
 | Base direzionale | 394 ricette recuperano nove direzioni; altre 114 aggiungono due direzioni accoppiate. Rango numerico diagnostico 30. | Quattro coefficienti unilaterali; due derivate cartesiane non sono validate. La somma delle direzioni richiede verifica. |
 | Prime proposte riparate | Sei ricette ripetibili, sane e nell'inviluppo; due passi combinati confrontati con il modello. | Entrambe le previsioni falliscono: errori 14,734 e 15,011 contro 0,10. Il PASS dell'evidenza conserva questo fallimento. |
 | Limite di portata dello stadio | Minimo delle capacità e coppia ricostruiti offline entro 1e-9 kg/s e 1e-6 N·m; cambia il vincitore fra baseline e proposte. | Attribuzione del solo primo passo. Confine non incluso nei regimi precedenti; nessun nuovo difetto fisico o modello a tratti qualificato. |
+| Capacità a tutti i checkpoint | 38 ricette ripetute, identiche alle origini; minimo delle capacità esatto in binary64 in 57 ricostruzioni. Proposte nel ramo admission ovunque. | Osservazione descrittiva: secanti delle capacità non validate, nessun modello o proposta nuova. |
 | Replay delle evidenze | Richieste, risposte, selezioni, rifiuti e arresti ricostruiti dai pacchetti congelati. | PASS attesta la coerenza dell'esperimento, non la qualificazione fisica. |
 
 ## Come leggere l'indagine di equilibrio

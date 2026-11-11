@@ -172,6 +172,15 @@ o i suoi diversi rami e osservarne i margini lungo la ricetta. Non si corregge
 retroattivamente l'esito dei vecchi controlli né si deduce un difetto fisico
 da un limite della linearizzazione.
 
+Le capacità si osservano nello stato comandato del passo, lo stesso usato da
+resolver e rete del vapore: nodi del passo precedente e valvole dopo attuatori,
+protezioni e guasti. La posizione richiesta e quella effettiva vanno registrate
+entrambe; nella prova 8 coincidono, ma il limite di corsa può separarle.
+Il pareggio è strutturale: in un punto stazionario, con il drenaggio dell'umidità
+e senza altri flussi sui nodi intermedi, le valvole portano la portata dello
+stadio. Modello e ricerca devono quindi trattare un minimo non derivabile
+anche nella radice, non soltanto lontano da essa.
+
 Il nodo che cambia fase può essere diverso da quello perturbato. La prova
 estesa riparata osserva, per esempio, una sonda di drum che porta suction
 in miscela soltanto al primo Running. Una colonna centrale richiede quindi

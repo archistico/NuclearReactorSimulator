@@ -1,0 +1,3725 @@
+{
+  "status": "PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE",
+  "fixtures": "PASS-CAPACITY-OBSERVATION-FIXTURES",
+  "recipes": 38,
+  "maximum_runtime_steps": 116,
+  "exact_repeats": true,
+  "parent_records_identical": true,
+  "first_step_attribution_reproduced": [
+    {
+      "record": "base",
+      "winner": "stop",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "proposal/0.25",
+      "winner": "admission",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "proposal/0.5",
+      "winner": "admission",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "control-out:mass/plus/3e-05",
+      "winner": "admission",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "control-out:mass/minus/3e-05",
+      "winner": "control",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "exhaust:energy/plus/0.0001",
+      "winner": "expansion",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "exhaust:energy/minus/0.0001",
+      "winner": "stop",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "exhaust:mass/plus/0.0001",
+      "winner": "stop",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "exhaust:mass/minus/0.0001",
+      "winner": "expansion",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "header:energy/plus/1e-05",
+      "winner": "expansion",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "header:energy/minus/1e-05",
+      "winner": "stop",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "outlet:energy/plus/0.0001",
+      "winner": "stop",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "outlet:energy/minus/0.0001",
+      "winner": "stop",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "stop-out:energy/plus/1e-05",
+      "winner": "stop",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "stop-out:energy/minus/1e-05",
+      "winner": "control",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "turbine-inlet:energy/plus/3e-05",
+      "winner": "admission",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "turbine-inlet:energy/minus/3e-05",
+      "winner": "expansion",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "turbine-inlet:iso-specific-internal-energy/plus/3e-05",
+      "winner": "admission",
+      "maximum_capacity_difference_kg_s": 0.0
+    },
+    {
+      "record": "turbine-inlet:iso-specific-internal-energy/minus/3e-05",
+      "winner": "expansion",
+      "maximum_capacity_difference_kg_s": 0.0
+    }
+  ],
+  "maximum_energy_ledger_error_w": 9.347498416900635e-05,
+  "maximum_torque_ledger_error_nm": 2.8351223591016605e-09,
+  "observations": {
+    "base": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.652434584950242e-08,
+        "near_tie": [
+          "admission",
+          "control",
+          "expansion",
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.339237038677473,
+        "effective_vapor_flow_kg_s": 13.028001803550866,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.339230025130275,
+          "admission": 13.339320065972037,
+          "expansion": 13.339236363621044,
+          "inventory": 97943.79464836005
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 5.927103689629121e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230025130275,
+        "effective_vapor_flow_kg_s": 13.027995798331272,
+        "inlet_quality": 0.9766677517208522,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329957878363,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132995787836,
+            "requested_positions": [
+              0.2928132995787836
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923481154264,
+          "control": 13.339230317328411,
+          "admission": 13.339402833986165,
+          "expansion": 13.339235597965752,
+          "inventory": 97943.79469338046
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 4.4942142292114795e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230317328411,
+        "effective_vapor_flow_kg_s": 13.027996929190257,
+        "inlet_quality": 0.9766678151037061,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281346450970453,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928134645097045,
+            "requested_positions": [
+              0.2928134645097045
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "proposal/0.25": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.34120978200841,
+          "control": 13.339144618146632,
+          "admission": 13.336523772857097,
+          "expansion": 13.339368648931226,
+          "inventory": 97944.52922676457
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.002620845289534657,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.336523772857097,
+        "effective_vapor_flow_kg_s": 13.025519960512488,
+        "inlet_quality": 0.9766802940825124,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.341204469042975,
+          "control": 13.342240779987893,
+          "admission": 13.336608921832376,
+          "expansion": 13.3393678779486,
+          "inventory": 97944.52922676457
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.0027589561162244536,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.336608921832376,
+        "effective_vapor_flow_kg_s": 13.025603954548803,
+        "inlet_quality": 0.9766803563704677,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28814216285044,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928814216285044,
+            "requested_positions": [
+              0.2928814216285044
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.34120153791302,
+          "control": 13.342245676819202,
+          "admission": 13.336696368207257,
+          "expansion": 13.339367112635177,
+          "inventory": 97944.52922676457
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.0026707444279203685,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.336696368207257,
+        "effective_vapor_flow_kg_s": 13.025690199343666,
+        "inlet_quality": 0.976680419177497,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.288169754084585,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29288169754084586,
+            "requested_positions": [
+              0.29288169754084586
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "proposal/0.5": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.343182233676073,
+          "control": 13.339052096987121,
+          "admission": 13.333809953517203,
+          "expansion": 13.3395001562785,
+          "inventory": 97945.26380522446
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.005242143469917693,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.333809953517203,
+        "effective_vapor_flow_kg_s": 13.023037506511153,
+        "inlet_quality": 0.9766928996221313,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.343172692150459,
+          "control": 13.345252258311646,
+          "admission": 13.333897261678768,
+          "expansion": 13.339499387593076,
+          "inventory": 97945.26380522446
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.005602125914307976,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.333897261678768,
+        "effective_vapor_flow_kg_s": 13.023123599959609,
+        "inlet_quality": 0.976692961133553,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.29495604480302,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29294956044803017,
+            "requested_positions": [
+              0.29294956044803017
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.343167967879895,
+          "control": 13.345371691468008,
+          "admission": 13.333989463597687,
+          "expansion": 13.339498622857354,
+          "inventory": 97945.26380522446
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.005509159259666774,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.333989463597687,
+        "effective_vapor_flow_kg_s": 13.023214476578298,
+        "inlet_quality": 0.9766930229045241,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.295236066711933,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2929523606671193,
+            "requested_positions": [
+              0.2929523606671193
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "control-out:mass/plus/3e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33949410661679,
+          "admission": 13.336239710340093,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.0029973283373792015,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.336239710340093,
+        "effective_vapor_flow_kg_s": 13.02507440981223,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.33923615927883,
+          "control": 13.343147225101191,
+          "admission": 13.33632635322122,
+          "expansion": 13.339236345827269,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.0029098060576089324,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.33632635322122,
+        "effective_vapor_flow_kg_s": 13.025159823707122,
+        "inlet_quality": 0.976667747828551,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28936511799401,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928936511799401,
+            "requested_positions": [
+              0.2928936511799401
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.339238072406733,
+          "control": 13.343171119184499,
+          "admission": 13.336415893248661,
+          "expansion": 13.339235558712137,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.0028196654634751184,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.336415893248661,
+        "effective_vapor_flow_kg_s": 13.025248067161947,
+        "inlet_quality": 0.9766678072596523,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.289435152470144,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29289435152470145,
+            "requested_positions": [
+              0.29289435152470145
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "control-out:mass/minus/3e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.338980175439639,
+          "admission": 13.342233802111288,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 0.0002568632378334712,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.338980175439639,
+        "effective_vapor_flow_kg_s": 13.027750933526137,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235745189097,
+          "control": 13.339287035512346,
+          "admission": 13.342310335890978,
+          "expansion": 13.339236514058623,
+          "inventory": 97943.79627511805
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 7.688695262686451e-07,
+        "near_tie": [
+          "expansion",
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.339235745189097,
+        "effective_vapor_flow_kg_s": 13.028001467774109,
+        "inlet_quality": 0.9766677579315414,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.282018550181462,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928201855018146,
+            "requested_positions": [
+              0.2928201855018146
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923465635131,
+          "control": 13.33897868359563,
+          "admission": 13.342387239382136,
+          "expansion": 13.339235886251368,
+          "inventory": 97943.7978124134
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 0.0002559727556796787,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.33897868359563,
+        "effective_vapor_flow_kg_s": 13.027751326413796,
+        "inlet_quality": 0.9766678270829997,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281356981692998,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29281356981692996,
+            "requested_positions": [
+              0.29281356981692996
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "exhaust:energy/plus/0.0001": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339235414428195,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 1.6242492772988726e-06,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.339235414428195,
+        "effective_vapor_flow_kg_s": 13.02800021719908,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.339232008719518,
+          "admission": 13.339320065972037,
+          "expansion": 13.33923464648692,
+          "inventory": 97943.79464917218
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 2.6377674018362995e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339232008719518,
+        "effective_vapor_flow_kg_s": 13.02799773552819,
+        "inlet_quality": 0.9766677517125512,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28133431211253,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928133431211253,
+            "requested_positions": [
+              0.2928133431211253
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923481154264,
+          "control": 13.339227970197468,
+          "admission": 13.339402833986165,
+          "expansion": 13.339233884456572,
+          "inventory": 97943.7946932008
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 5.914259103789732e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339227970197468,
+        "effective_vapor_flow_kg_s": 13.027994636847502,
+        "inlet_quality": 0.9766678151055426,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28134129871259,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928134129871259,
+            "requested_positions": [
+              0.2928134129871259
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "exhaust:energy/minus/0.0001": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339238856330445,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.998693784041279e-08,
+        "near_tie": [
+          "admission",
+          "control",
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.339237038677473,
+        "effective_vapor_flow_kg_s": 13.028001803550866,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.339230025130275,
+          "admission": 13.339320065972037,
+          "expansion": 13.339238081107258,
+          "inventory": 97943.79464836005
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 5.927103689629121e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230025130275,
+        "effective_vapor_flow_kg_s": 13.027995798331272,
+        "inlet_quality": 0.9766677517208522,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329957878363,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132995787836,
+            "requested_positions": [
+              0.2928132995787836
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923481154264,
+          "control": 13.339230317328411,
+          "admission": 13.339402833986165,
+          "expansion": 13.339237311824112,
+          "inventory": 97943.79469338046
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 4.4942142292114795e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230317328411,
+        "effective_vapor_flow_kg_s": 13.027996929190257,
+        "inlet_quality": 0.9766678151037061,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281346450970453,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928134645097045,
+            "requested_positions": [
+              0.2928134645097045
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "exhaust:mass/plus/0.0001": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.3392372778945,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.998693784041279e-08,
+        "near_tie": [
+          "admission",
+          "control",
+          "expansion",
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.339237038677473,
+        "effective_vapor_flow_kg_s": 13.028001803550866,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.339230025130275,
+          "admission": 13.339320065972037,
+          "expansion": 13.339236506016741,
+          "inventory": 97943.79464836005
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 5.927103689629121e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230025130275,
+        "effective_vapor_flow_kg_s": 13.027995798331272,
+        "inlet_quality": 0.9766677517208522,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329957878363,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132995787836,
+            "requested_positions": [
+              0.2928132995787836
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923481154264,
+          "control": 13.339230317328411,
+          "admission": 13.339402833986165,
+          "expansion": 13.339235740064465,
+          "inventory": 97943.79469338046
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 4.4942142292114795e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230317328411,
+        "effective_vapor_flow_kg_s": 13.027996929190257,
+        "inlet_quality": 0.9766678151037061,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281346450970453,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928134645097045,
+            "requested_positions": [
+              0.2928134645097045
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "exhaust:mass/minus/0.0001": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339236992512049,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 4.6165423484012535e-08,
+        "near_tie": [
+          "admission",
+          "control",
+          "expansion",
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.339236992512049,
+        "effective_vapor_flow_kg_s": 13.028001758462588,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.339230081507681,
+          "admission": 13.339320065972037,
+          "expansion": 13.339236221225343,
+          "inventory": 97943.79464838313
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 5.870726283774275e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230081507681,
+        "effective_vapor_flow_kg_s": 13.027995853390118,
+        "inlet_quality": 0.9766677517206162,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28133008163403,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928133008163403,
+            "requested_positions": [
+              0.2928133008163403
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923481154264,
+          "control": 13.339230250615854,
+          "admission": 13.339402833986165,
+          "expansion": 13.339235455867037,
+          "inventory": 97943.79469337537
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 4.5609267864676895e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230250615854,
+        "effective_vapor_flow_kg_s": 13.027996864034943,
+        "inlet_quality": 0.9766678151037582,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281346304527705,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29281346304527706,
+            "requested_positions": [
+              0.29281346304527706
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "header:energy/plus/1e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.34325058865583,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 3.4625919909103686e-09,
+        "near_tie": [
+          "admission",
+          "control",
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.339237135201818,
+        "effective_vapor_flow_kg_s": 13.028001897823076,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.34323916661653,
+          "control": 13.339230191277624,
+          "admission": 13.339320065972037,
+          "expansion": 13.339236363621044,
+          "inventory": 97943.79464831178
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 6.1723434203742045e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230191277624,
+        "effective_vapor_flow_kg_s": 13.02799596060861,
+        "inlet_quality": 0.9766677517213455,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28132969910783,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969910783,
+            "requested_positions": [
+              0.2928132969910783
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.34322770054606,
+          "control": 13.339230678011194,
+          "admission": 13.339402833986165,
+          "expansion": 13.339235597965752,
+          "inventory": 97943.79469324913
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 4.9199545575362436e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230678011194,
+        "effective_vapor_flow_kg_s": 13.02799728147543,
+        "inlet_quality": 0.9766678151050486,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28134599574329,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928134599574329,
+            "requested_positions": [
+              0.2928134599574329
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "header:energy/minus/1e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.335222280726478,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.004014854475340002,
+        "near_tie": [
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.335222280726478,
+        "effective_vapor_flow_kg_s": 13.024080719183393,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.335231424446366,
+          "control": 13.344132714487221,
+          "admission": 13.339316787926421,
+          "expansion": 13.339236527161443,
+          "inventory": 97943.79665573903
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.004005102715076703,
+        "near_tie": [
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.335231424446366,
+        "effective_vapor_flow_kg_s": 13.024090531854345,
+        "inlet_quality": 0.9766677545601771,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.29209261691815,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29292092616918153,
+            "requested_positions": [
+              0.29292092616918153
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.335244409443128,
+          "control": 13.34429805488888,
+          "admission": 13.339400338941681,
+          "expansion": 13.339235921581409,
+          "inventory": 97943.79869842077
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.003991512138281195,
+        "near_tie": [
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.335244409443128,
+        "effective_vapor_flow_kg_s": 13.02410409137387,
+        "inlet_quality": 0.9766678203626377,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.292473513940124,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29292473513940126,
+            "requested_positions": [
+              0.29292473513940126
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "outlet:energy/plus/0.0001": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.652434584950242e-08,
+        "near_tie": [
+          "admission",
+          "control",
+          "expansion",
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.339237038677473,
+        "effective_vapor_flow_kg_s": 13.028001803550866,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.339230025130275,
+          "admission": 13.339320065972037,
+          "expansion": 13.339236363621044,
+          "inventory": 97943.79464836005
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 5.927103689629121e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230025130275,
+        "effective_vapor_flow_kg_s": 13.027995798331272,
+        "inlet_quality": 0.9766677517208522,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329957878363,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132995787836,
+            "requested_positions": [
+              0.2928132995787836
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923481154264,
+          "control": 13.339230317328411,
+          "admission": 13.339402833986165,
+          "expansion": 13.339235597965752,
+          "inventory": 97943.79469338046
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 4.4942142292114795e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230317328411,
+        "effective_vapor_flow_kg_s": 13.027996929190257,
+        "inlet_quality": 0.9766678151037061,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281346450970453,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928134645097045,
+            "requested_positions": [
+              0.2928134645097045
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "outlet:energy/minus/0.0001": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.652434584950242e-08,
+        "near_tie": [
+          "admission",
+          "control",
+          "expansion",
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.339237038677473,
+        "effective_vapor_flow_kg_s": 13.028001803550866,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.339230025130275,
+          "admission": 13.339320065972037,
+          "expansion": 13.339236363621044,
+          "inventory": 97943.79464836005
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 5.927103689629121e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230025130275,
+        "effective_vapor_flow_kg_s": 13.027995798331272,
+        "inlet_quality": 0.9766677517208522,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329957878363,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132995787836,
+            "requested_positions": [
+              0.2928132995787836
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923481154264,
+          "control": 13.339230317328411,
+          "admission": 13.339402833986165,
+          "expansion": 13.339235597965752,
+          "inventory": 97943.79469338046
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 4.4942142292114795e-06,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.339230317328411,
+        "effective_vapor_flow_kg_s": 13.027996929190257,
+        "inlet_quality": 0.9766678151037061,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281346450970453,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928134645097045,
+            "requested_positions": [
+              0.2928134645097045
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "stop-out:energy/plus/1e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.335359249548638,
+          "control": 13.339569566385837,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.0038778856531802575,
+        "near_tie": [
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.335359249548638,
+        "effective_vapor_flow_kg_s": 13.024214492206315,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.335364643698949,
+          "control": 13.344297941339669,
+          "admission": 13.339317385110117,
+          "expansion": 13.339236520001101,
+          "inventory": 97943.79658725462
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.003871876302152799,
+        "near_tie": [
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.335364643698949,
+        "effective_vapor_flow_kg_s": 13.024220638293897,
+        "inlet_quality": 0.9766677542220739,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.291725434453017,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2929172543445302,
+            "requested_positions": [
+              0.2929172543445302
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.335373684721263,
+          "control": 13.344461502533033,
+          "admission": 13.339401309959941,
+          "expansion": 13.339235910670562,
+          "inventory": 97943.79856362533
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.0038622259492981925,
+        "near_tie": [
+          "stop"
+        ],
+        "commanded_flow_kg_s": 13.335373684721263,
+        "effective_vapor_flow_kg_s": 13.024230347985997,
+        "inlet_quality": 0.9766678201832655,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.29210248222875,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2929210248222875,
+            "requested_positions": [
+              0.2929210248222875
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "stop-out:energy/minus/1e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.34311380433176,
+          "control": 13.338904693782135,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 0.00033244141968324925,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.338904693782135,
+        "effective_vapor_flow_kg_s": 13.027677213030186,
+        "inlet_quality": 0.976667688397457,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.343106263787405,
+          "control": 13.339303778116221,
+          "admission": 13.339319323097566,
+          "expansion": 13.339236378093133,
+          "inventory": 97943.79481453249
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 6.740002308802673e-05,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.339236378093133,
+        "effective_vapor_flow_kg_s": 13.028002008103577,
+        "inlet_quality": 0.9766677520985615,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28222089945569,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928222089945569,
+            "requested_positions": [
+              0.2928222089945569
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.343098961641957,
+          "control": 13.338906098351012,
+          "admission": 13.339401978243798,
+          "expansion": 13.339235612420374,
+          "inventory": 97943.794856005
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 0.00032951406936199135,
+        "near_tie": [
+          "control"
+        ],
+        "commanded_flow_kg_s": 13.338906098351012,
+        "effective_vapor_flow_kg_s": 13.027680280471941,
+        "inlet_quality": 0.9766678155176798,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28136316604196,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29281363166041957,
+            "requested_positions": [
+              0.29281363166041957
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "turbine-inlet:energy/plus/3e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.332169552327825,
+          "expansion": 13.339567305166986,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.007067486349647822,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.332169552327825,
+        "effective_vapor_flow_kg_s": 13.021770466099051,
+        "inlet_quality": 0.9767180363998164,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.347021280913058,
+          "admission": 13.332258743829357,
+          "expansion": 13.339566524552618,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.006977208404608248,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.332258743829357,
+        "effective_vapor_flow_kg_s": 13.021858373479924,
+        "inlet_quality": 0.976718095837054,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.29843383888351,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2929843383888351,
+            "requested_positions": [
+              0.2929843383888351
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.339240867604277,
+          "control": 13.347197836546997,
+          "admission": 13.332354183647475,
+          "expansion": 13.339565746174323,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.006886683956802031,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.332354183647475,
+        "effective_vapor_flow_kg_s": 13.021952383715742,
+        "inlet_quality": 0.9767181552742988,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.298840663215845,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29298840663215847,
+            "requested_positions": [
+              0.29298840663215847
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "turbine-inlet:energy/minus/3e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.346301586150311,
+          "expansion": 13.338906929831367,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.0003301088461054036,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.338906929831367,
+        "effective_vapor_flow_kg_s": 13.027007823619442,
+        "inlet_quality": 0.9766173414468926,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.340473397365955,
+          "admission": 13.34637226438621,
+          "expansion": 13.338906465513062,
+          "inventory": 97943.79834563288
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.0003294867209024943,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.338906465513062,
+        "effective_vapor_flow_kg_s": 13.027008330268812,
+        "inlet_quality": 0.9766174134251077,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.284058250886254,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928405825088625,
+            "requested_positions": [
+              0.2928405825088625
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.339235795005806,
+          "control": 13.340512957760229,
+          "admission": 13.346443809548937,
+          "expansion": 13.338906007097124,
+          "inventory": 97943.80207853232
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.00032978790868121166,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.338906007097124,
+        "effective_vapor_flow_kg_s": 13.027008844756017,
+        "inlet_quality": 0.9766174855587738,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.28416025119796,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928416025119796,
+            "requested_positions": [
+              0.2928416025119796
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "turbine-inlet:iso-specific-internal-energy/plus/3e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.335011053352405,
+          "expansion": 13.339434583579372,
+          "inventory": 97946.73296214416
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.004225985325067683,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.335011053352405,
+        "effective_vapor_flow_kg_s": 13.02387542249388,
+        "inlet_quality": 0.9766677635576233,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.34438941376313,
+          "admission": 13.33509738352052,
+          "expansion": 13.339433822919919,
+          "inventory": 97946.73296214416
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.004138568713445423,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.33509738352052,
+        "effective_vapor_flow_kg_s": 13.023960582843447,
+        "inlet_quality": 0.976667826883546,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.292656118779817,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2929265611877982,
+            "requested_positions": [
+              0.2929265611877982
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.33923879715614,
+          "control": 13.344470226516334,
+          "admission": 13.335187853095709,
+          "expansion": 13.33943306451694,
+          "inventory": 97946.73296214416
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.00405094406043105,
+        "near_tie": [
+          "admission"
+        ],
+        "commanded_flow_kg_s": 13.335187853095709,
+        "effective_vapor_flow_kg_s": 13.024049786030034,
+        "inlet_quality": 0.9766678902094772,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.292851552522315,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.29292851552522314,
+            "requested_positions": [
+              0.29292851552522314
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ],
+    "turbine-inlet:iso-specific-internal-energy/minus/3e-05": [
+      {
+        "checkpoint": "seed-step1",
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.34346212533975,
+          "expansion": 13.339039673689387,
+          "inventory": 97940.85633446528
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.00019736498808597958,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.339039673689387,
+        "effective_vapor_flow_kg_s": 13.02780804430759,
+        "inlet_quality": 0.9766676134867726,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281329697436618,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928132969743662,
+            "requested_positions": [
+              0.2928132969743662
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "post-seed",
+        "capacities_kg_s": {
+          "stop": 13.339235952233965,
+          "control": 13.33947259447321,
+          "admission": 13.343538062287127,
+          "expansion": 13.339039069400085,
+          "inventory": 97940.85854569111
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.00019688283387964134,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.339039069400085,
+        "effective_vapor_flow_kg_s": 13.027808336528699,
+        "inlet_quality": 0.9766676796392812,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.281861791534592,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.2928186179153459,
+            "requested_positions": [
+              0.2928186179153459
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      },
+      {
+        "checkpoint": "1",
+        "capacities_kg_s": {
+          "stop": 13.339234966826302,
+          "control": 13.339474453532214,
+          "admission": 13.343614038817181,
+          "expansion": 13.339038471021818,
+          "inventory": 97940.86079518755
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.00019649580448444226,
+        "near_tie": [
+          "expansion"
+        ],
+        "commanded_flow_kg_s": 13.339038471021818,
+        "effective_vapor_flow_kg_s": 13.0278086362284,
+        "inlet_quality": 0.976667745919652,
+        "inlet_phase": "SaturatedMixture",
+        "flow_error_kg_s": 0.0,
+        "exact_minimum": true,
+        "governor_percent": 29.2818811516799,
+        "valves": {
+          "stop": {
+            "effective_position": 1,
+            "requested_positions": [],
+            "requested_minus_effective": []
+          },
+          "control": {
+            "effective_position": 0.292818811516799,
+            "requested_positions": [
+              0.292818811516799
+            ],
+            "requested_minus_effective": [
+              0.0
+            ]
+          },
+          "admission": {
+            "effective_position": 1,
+            "requested_positions": [
+              1
+            ],
+            "requested_minus_effective": [
+              0
+            ]
+          }
+        },
+        "maximum_pressure_error_pa": 0.0,
+        "maximum_valve_flow_error_kg_s": 0.0
+      }
+    ]
+  },
+  "winners_by_checkpoint": {
+    "base": [
+      "stop",
+      "control",
+      "control"
+    ],
+    "proposal/0.25": [
+      "admission",
+      "admission",
+      "admission"
+    ],
+    "proposal/0.5": [
+      "admission",
+      "admission",
+      "admission"
+    ],
+    "control-out:mass/plus/3e-05": [
+      "admission",
+      "admission",
+      "admission"
+    ],
+    "control-out:mass/minus/3e-05": [
+      "control",
+      "stop",
+      "control"
+    ],
+    "exhaust:energy/plus/0.0001": [
+      "expansion",
+      "control",
+      "control"
+    ],
+    "exhaust:energy/minus/0.0001": [
+      "stop",
+      "control",
+      "control"
+    ],
+    "exhaust:mass/plus/0.0001": [
+      "stop",
+      "control",
+      "control"
+    ],
+    "exhaust:mass/minus/0.0001": [
+      "expansion",
+      "control",
+      "control"
+    ],
+    "header:energy/plus/1e-05": [
+      "expansion",
+      "control",
+      "control"
+    ],
+    "header:energy/minus/1e-05": [
+      "stop",
+      "stop",
+      "stop"
+    ],
+    "outlet:energy/plus/0.0001": [
+      "stop",
+      "control",
+      "control"
+    ],
+    "outlet:energy/minus/0.0001": [
+      "stop",
+      "control",
+      "control"
+    ],
+    "stop-out:energy/plus/1e-05": [
+      "stop",
+      "stop",
+      "stop"
+    ],
+    "stop-out:energy/minus/1e-05": [
+      "control",
+      "expansion",
+      "control"
+    ],
+    "turbine-inlet:energy/plus/3e-05": [
+      "admission",
+      "admission",
+      "admission"
+    ],
+    "turbine-inlet:energy/minus/3e-05": [
+      "expansion",
+      "expansion",
+      "expansion"
+    ],
+    "turbine-inlet:iso-specific-internal-energy/plus/3e-05": [
+      "admission",
+      "admission",
+      "admission"
+    ],
+    "turbine-inlet:iso-specific-internal-energy/minus/3e-05": [
+      "expansion",
+      "expansion",
+      "expansion"
+    ]
+  },
+  "active_directions": [
+    {
+      "direction": "control-out:mass",
+      "amplitude": 3e-05,
+      "trial6_coefficient": -4.395023170873835e-06,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 8.565519619185835,
+            "admission": -99.90152951990794,
+            "expansion": 0.0,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": -45.67441832576217,
+          "winners": {
+            "plus": "admission",
+            "minus": "control"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": 0.006901495552824599,
+            "control": 64.33649314742478,
+            "admission": -99.73304449596061,
+            "expansion": -0.002803855903010799,
+            "inventory": -27.11355555220507
+          },
+          "commanded_flow_secant_kg_s": -48.489866131262715,
+          "winners": {
+            "plus": "admission",
+            "minus": "stop"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": 0.05693425704222932,
+            "control": 69.87392648113062,
+            "admission": -99.5224355579083,
+            "expansion": -0.005458987188215285,
+            "inventory": -52.73514470900409
+          },
+          "commanded_flow_secant_kg_s": -42.713172449489655,
+          "winners": {
+            "plus": "admission",
+            "minus": "control"
+          },
+          "same_winner": false
+        }
+      ]
+    },
+    {
+      "direction": "exhaust:energy",
+      "amplitude": 0.0001,
+      "trial6_coefficient": 0.0001,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.0,
+            "admission": 0.0,
+            "expansion": -0.017209511247173737,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": -0.008121246386494363,
+          "winners": {
+            "plus": "expansion",
+            "minus": "stop"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.009917946215409756,
+            "admission": 0.0,
+            "expansion": -0.01717310168736219,
+            "inventory": 0.004060639184899628
+          },
+          "commanded_flow_secant_kg_s": 0.009917946215409756,
+          "winners": {
+            "plus": "control",
+            "minus": "control"
+          },
+          "same_winner": true
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": -0.011735654714684074,
+            "admission": 0.0,
+            "expansion": -0.017136837699993634,
+            "inventory": -0.0008982897270470858
+          },
+          "commanded_flow_secant_kg_s": -0.011735654714684074,
+          "winners": {
+            "plus": "control",
+            "minus": "control"
+          },
+          "same_winner": true
+        }
+      ]
+    },
+    {
+      "direction": "exhaust:mass",
+      "amplitude": 0.0001,
+      "trial6_coefficient": 9.99486271805394e-05,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.0,
+            "admission": 0.0,
+            "expansion": 0.0014269122505794485,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": 0.00023082711742006268,
+          "winners": {
+            "plus": "stop",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": -0.00028188702927423037,
+            "admission": 0.0,
+            "expansion": 0.0014239569878782277,
+            "inventory": -0.00011539668776094913
+          },
+          "commanded_flow_secant_kg_s": -0.00028188702927423037,
+          "winners": {
+            "plus": "control",
+            "minus": "control"
+          },
+          "same_winner": true
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.00033356278628104974,
+            "admission": 0.0,
+            "expansion": 0.0014209871412873554,
+            "inventory": 2.546585164964199e-05
+          },
+          "commanded_flow_secant_kg_s": 0.00033356278628104974,
+          "winners": {
+            "plus": "control",
+            "minus": "control"
+          },
+          "same_winner": true
+        }
+      ]
+    },
+    {
+      "direction": "header:energy",
+      "amplitude": 1e-05,
+      "trial6_coefficient": 1e-05,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": 401.4153964675415,
+            "control": 0.0,
+            "admission": 0.0,
+            "expansion": 0.0,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": 200.74272376700006,
+          "winners": {
+            "plus": "expansion",
+            "minus": "stop"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": 400.3871085082266,
+            "control": -245.12616047989152,
+            "admission": 0.16390228081419878,
+            "expansion": -0.008177019950039721,
+            "inventory": -100.37136235041542
+          },
+          "commanded_flow_secant_kg_s": 199.93834156286636,
+          "winners": {
+            "plus": "control",
+            "minus": "stop"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": 399.16455514665824,
+            "control": -253.3688438842496,
+            "admission": 0.12475222419539021,
+            "expansion": -0.016180782846930697,
+            "inventory": -200.25858175358732
+          },
+          "commanded_flow_secant_kg_s": 199.31342840333596,
+          "winners": {
+            "plus": "control",
+            "minus": "stop"
+          },
+          "same_winner": false
+        }
+      ]
+    },
+    {
+      "direction": "outlet:energy",
+      "amplitude": 0.0001,
+      "trial6_coefficient": -1.949874411619419e-05,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.0,
+            "admission": 0.0,
+            "expansion": 0.0,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": 0.0,
+          "winners": {
+            "plus": "stop",
+            "minus": "stop"
+          },
+          "same_winner": true
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.0,
+            "admission": 0.0,
+            "expansion": 0.0,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": 0.0,
+          "winners": {
+            "plus": "control",
+            "minus": "control"
+          },
+          "same_winner": true
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.0,
+            "admission": 0.0,
+            "expansion": 0.0,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": 0.0,
+          "winners": {
+            "plus": "control",
+            "minus": "control"
+          },
+          "same_winner": true
+        }
+      ]
+    },
+    {
+      "direction": "stop-out:energy",
+      "amplitude": 1e-05,
+      "trial6_coefficient": -1e-05,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": -387.7277391560518,
+            "control": 33.243630185086914,
+            "admission": 0.0,
+            "expansion": 0.0,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": -177.27221167485038,
+          "winners": {
+            "plus": "stop",
+            "minus": "control"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": -387.08100442281784,
+            "control": 249.70816117235725,
+            "admission": -0.0968993724370648,
+            "expansion": 0.007095398402157115,
+            "inventory": 88.63610637490636
+          },
+          "commanded_flow_secant_kg_s": -193.58671970923777,
+          "winners": {
+            "plus": "stop",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": -386.2638460346623,
+            "control": 277.77020910102476,
+            "admission": -0.03341419283486857,
+            "expansion": 0.014912509360698321,
+            "inventory": 185.38101649028246
+          },
+          "commanded_flow_secant_kg_s": -176.62068148744933,
+          "winners": {
+            "plus": "stop",
+            "minus": "control"
+          },
+          "same_winner": false
+        }
+      ]
+    },
+    {
+      "direction": "turbine-inlet:energy",
+      "amplitude": 3e-05,
+      "trial6_coefficient": 2.9999999999999994e-05,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.0,
+            "admission": -235.5338970414363,
+            "expansion": 11.006255593641137,
+            "inventory": 0.0
+          },
+          "commanded_flow_secant_kg_s": -112.2896250590403,
+          "winners": {
+            "plus": "admission",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 109.13139245172232,
+            "admission": -235.22534261421293,
+            "expansion": 11.00098399258916,
+            "inventory": -61.62213612697087
+          },
+          "commanded_flow_secant_kg_s": -110.7953613950959,
+          "winners": {
+            "plus": "admission",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": 0.08454330785075588,
+            "control": 111.41464644612853,
+            "admission": -234.82709835770757,
+            "expansion": 10.995651286638264,
+            "inventory": -123.83712673909031
+          },
+          "commanded_flow_secant_kg_s": -109.19705749416289,
+          "winners": {
+            "plus": "admission",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        }
+      ]
+    },
+    {
+      "direction": "turbine-inlet:iso-specific-internal-energy",
+      "amplitude": 3e-05,
+      "trial6_coefficient": 3e-05,
+      "guards": {
+        "plus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        },
+        "minus": {
+          "available": true,
+          "healthy": true,
+          "in_envelope": true,
+          "phase_changes": [],
+          "same_hydraulic_and_cooling_regime": true,
+          "same_mechanical_regime": true
+        }
+      },
+      "checkpoints": [
+        {
+          "checkpoint": "seed-step1",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 0.0,
+            "admission": -140.85119978908267,
+            "expansion": 6.581831499759734,
+            "inventory": 97943.7946480175
+          },
+          "commanded_flow_secant_kg_s": -67.14367228302838,
+          "winners": {
+            "plus": "admission",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacity_secants_kg_s": {
+            "stop": 0.0,
+            "control": 81.94698816531935,
+            "admission": -140.67797944345983,
+            "expansion": 6.579225330553365,
+            "inventory": 97906.94088417997
+          },
+          "commanded_flow_secant_kg_s": -65.6947646594297,
+          "winners": {
+            "plus": "admission",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        },
+        {
+          "checkpoint": "1",
+          "capacity_secants_kg_s": {
+            "stop": 0.06383883063657929,
+            "control": 83.26288306867251,
+            "admission": -140.4364286912004,
+            "expansion": 6.576558252054572,
+            "inventory": 97869.44927691366
+          },
+          "commanded_flow_secant_kg_s": -64.17696543514022,
+          "winners": {
+            "plus": "admission",
+            "minus": "expansion"
+          },
+          "same_winner": false
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "exact_minimum_reconstructions": 57,
+    "reconstructions": 57,
+    "maximum_flow_error_kg_s": 0.0,
+    "maximum_pressure_error_pa": 0.0,
+    "maximum_valve_flow_error_kg_s": 0.0,
+    "winner_counts": {
+      "stop": 12,
+      "control": 20,
+      "admission": 15,
+      "expansion": 10,
+      "inventory": 0
+    },
+    "minimum_margin_by_checkpoint": {
+      "seed-step1": 3.4625919909103686e-09,
+      "post-seed": 7.688695262686451e-07,
+      "1": 4.4942142292114795e-06
+    },
+    "maximum_control_lag": {
+      "seed-step1": 0.0,
+      "post-seed": 0.0,
+      "1": 0.0
+    },
+    "records_changing_winner_between_checkpoints": [
+      "base",
+      "control-out:mass/minus/3e-05",
+      "exhaust:energy/minus/0.0001",
+      "exhaust:energy/plus/0.0001",
+      "exhaust:mass/minus/0.0001",
+      "exhaust:mass/plus/0.0001",
+      "header:energy/plus/1e-05",
+      "outlet:energy/minus/0.0001",
+      "outlet:energy/plus/0.0001",
+      "stop-out:energy/minus/1e-05"
+    ],
+    "directions_with_winner_change_between_signs": {
+      "control-out:mass": [
+        "seed-step1",
+        "post-seed",
+        "1"
+      ],
+      "exhaust:energy": [
+        "seed-step1"
+      ],
+      "exhaust:mass": [
+        "seed-step1"
+      ],
+      "header:energy": [
+        "seed-step1",
+        "post-seed",
+        "1"
+      ],
+      "outlet:energy": [],
+      "stop-out:energy": [
+        "seed-step1",
+        "post-seed",
+        "1"
+      ],
+      "turbine-inlet:energy": [
+        "seed-step1",
+        "post-seed",
+        "1"
+      ],
+      "turbine-inlet:iso-specific-internal-energy": [
+        "seed-step1",
+        "post-seed",
+        "1"
+      ]
+    }
+  },
+  "model_built": false,
+  "proposal_executed": false,
+  "search_started": false,
+  "family_selected": false,
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "limits": [
+    "Capacity secants are descriptive; a secant across different winners is not a derivative of the stage flow",
+    "No model of the minimum is fitted or validated here; trial-6 prediction failures are unchanged",
+    "Only the 38 parent recipes are observed; no new direction, amplitude or proposal"
+  ]
+}

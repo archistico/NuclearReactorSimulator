@@ -7,8 +7,9 @@ le consegne e il [changelog](../CHANGELOG.md) conserva la cronologia.
 ## Stato corrente
 
 Checkpoint dell'**11 novembre 2026**, dopo la riparazione del trasporto di fase,
-la costruzione della base direzionale, il fallimento delle prime proposte
-e l'attribuzione al minimo delle capacità di portata.
+la costruzione della base direzionale, il fallimento delle prime proposte,
+l'attribuzione al minimo delle capacità di portata e la sua osservazione
+a tutti i checkpoint.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -18,6 +19,7 @@ e l'attribuzione al minimo delle capacità di portata.
 | Diagnosi dei bilanci | Altre due ricette, sei passi totali: stati identici alla misura precedente, bilanci termici e di exhaust ricostruiti. Limite del condensatore: superficie UA. |
 | Base direzionale | 30 direzioni misurate, rango numerico diagnostico 30; quattro coefficienti unilaterali e due direzioni accoppiate. |
 | Prime proposte | Due passi ripetibili e nei controlli registrati, ma errore predittivo circa 15 volte la variazione prevista. Nessuna ricerca avviata. |
+| Capacità di portata | Minimo delle cinque capacità riprodotto esattamente in 57 ricostruzioni su 38 ricette ripetute; proposte nel ramo admission a tutti i checkpoint. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -159,9 +161,37 @@ flowchart LR
 Il diagramma mostra il tratto della legge che manca al modello affine:
 variare un ingresso può cambiare quale capacità determina l'uscita.
 La ricostruzione del minimo e della coppia riproduce le misure entro
-1e-9 kg/s e 1e-6 N·m. L'attribuzione riguarda **solo il primo passo preparatorio**;
-non è estesa agli attuatori successivi, non dimostra un nuovo difetto fisico
-e non qualifica ancora un modello a tratti.
+1e-9 kg/s e 1e-6 N·m. L'attribuzione offline riguardava solo il primo passo
+preparatorio; non dimostra un nuovo difetto fisico e non qualifica ancora
+un modello a tratti.
+
+### Le capacità lungo tutta la ricetta
+
+La prova 8 ha ripetuto le 38 richieste di origine con una console che legge
+dagli snapshot dello stesso passo le posizioni effettive e le portate delle
+tre valvole, oltre alla portata comandata dello stadio. Resolver e rete del
+vapore valutano lo stesso stato comandato. Ogni record coincide con quello
+congelato, tolto il blocco aggiunto; il minimo delle cinque capacità riproduce
+**esattamente** la portata comandata in tutte le 57 ricostruzioni.
+
+| Ricetta | Primo passo | Post-seed | Primo Running |
+| --- | --- | --- | --- |
+| Baseline | stop, margine 9,65e-8 kg/s; quattro capacità entro 1e-6 | control, 5,93e-6 kg/s | control, 4,49e-6 kg/s |
+| Proposta 0,25 | admission, 2,62e-3 kg/s | admission, 2,76e-3 kg/s | admission, 2,67e-3 kg/s |
+| Proposta 0,50 | admission, 5,24e-3 kg/s | admission, 5,60e-3 kg/s | admission, 5,51e-3 kg/s |
+
+In queste ricette la posizione effettiva della control coincide con l'uscita
+del governor: il limite di corsa non interviene. Le due proposte restano in un
+solo ramo, distinto da quello della baseline. Fra i due segni delle sonde
+attive, cinque direzioni su otto cambiano vincitore a tutti i checkpoint, due
+soltanto al primo e `outlet:energy` mai. L'inventario non vince in alcun caso.
+
+Il bilancio di massa dei nodi intermedi spiega perché il pareggio non è
+accidentale. Con il drenaggio dell'umidità lo stadio preleva da turbine-inlet
+l'intera portata comandata. In un punto stazionario, senza altri flussi su
+quei nodi, le tre valvole portano quindi la stessa portata dello stadio:
+le loro capacità coincidono con il minimo. Una radice si troverebbe sul
+pareggio. È una deduzione dalle equazioni, non una misura di una radice.
 
 ### Conservazione, portata e revisione della verifica
 
@@ -188,38 +218,42 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **rappresentare il minimo delle capacità nel modello
-locale e verificarne le proposte**. Le trenta direzioni sono misurate, ma
-la prima somma combinata non prevede la risposta reale. Non basta aumentare
+La prossima attività è **costruire e verificare offline un modello locale
+che mantenga il minimo delle capacità**. Le trenta direzioni sono misurate e
+le capacità sono ora osservate a tutti i checkpoint, ma nessun modello del
+minimo è stato ancora confrontato con le proposte. Non basta aumentare
 il budget della ricerca o dichiarare sufficiente il rango numerico.
 
 Dalla radice del repository:
 
 ```powershell
-python .\eng\run-r3-repaired-steam-directions5.py review
 python .\eng\run-r3-repaired-proposal-trial6.py review
 python .\eng\review-r3-repaired-flow-minimum7.py review
+python .\eng\run-r3-repaired-capacity-observation8.py review
 ```
 
-Gli esiti attesi sono `PASS-REPAIRED-STEAM-DIRECTIONS-EVIDENCE`,
-`PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE` e
-`PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION`. Il PASS della prova 6 riguarda la
+Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
+`PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION` e
+`PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE`. Il PASS della prova 6 riguarda la
 completezza dell'evidenza: **le due previsioni restano non conformi**.
 I replay non chiamano l'impianto; R3 e M10 restano aperti.
 
-1. Leggere la [prova combinata](../eng/frozen-evidence/r3-repaired-proposal-trial6/04-analysis.json)
-   e l'[attribuzione offline](../eng/frozen-evidence/r3-repaired-flow-minimum7/01-analysis.json).
+1. Leggere la [prova combinata](../eng/frozen-evidence/r3-repaired-proposal-trial6/04-analysis.json),
+   l'[attribuzione offline](../eng/frozen-evidence/r3-repaired-flow-minimum7/01-analysis.json)
+   e l'[osservazione delle capacità](../eng/frozen-evidence/r3-repaired-capacity-observation8/04-analysis.json).
    Non riscrivere i risultati precedenti o aggiungere retroattivamente
    un rifiuto ai controlli registrati.
-2. Congelare l'osservazione delle capacità e dei vincitori a tutti e tre i
-   checkpoint, usando le posizioni effettive delle valvole lette dai solutori.
-   L'uscita richiesta dal governor non sostituisce sempre la posizione
-   dell'attuatore. Conservare anche margini e capacità quasi coincidenti.
-3. Costruire e confrontare un modello locale che mantenga esplicitamente
-   il minimo, oppure i suoi diversi rami con i rispettivi vincoli. Non
-   usare una sola matrice di secanti miste come legge affine del passo.
+2. Dichiarare un modello che linearizzi separatamente le singole capacità,
+   lisce nel proprio ramo, e ne prenda il minimo; per le righe che dipendono
+   dalla portata, usare risposte condizionate al vincitore. Le sole secanti
+   che attraversano vincitori diversi non sono derivate della portata.
    Mantenere i quattro vincoli unilaterali e verificare tutte le fasi.
-4. Dichiarare nuove proposte piccole e ripetute prima di una ricerca.
+3. Confrontarlo offline, prima di nuove chiamate fisiche, con le due proposte
+   della prova 6, nel ramo admission a tutti i checkpoint, e con le sonde
+   già congelate, senza modificarne i criteri originali.
+4. Solo dopo, dichiarare nuove proposte piccole e ripetute prima di una ricerca.
+   Poiché una radice starebbe sul pareggio delle valvole, la ricerca dovrà
+   trattare esplicitamente un minimo non derivabile.
    Confrontare la variazione completa, le capacità attive e l'errore lungo
    il passo composto, soprattutto quando i contributi si cancellano.
    Scale, criterio di radice e inviluppo restano invariati; nessuna modifica
@@ -245,6 +279,7 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Direzioni vapore accoppiate](../eng/contracts/r3-repaired-steam-directions5.md) e [ricevuta](../eng/r3-repaired-steam-directions5-returned.json) | 114 ricette; base direzionale di rango numerico 30. |
 | [Proposte 6](../eng/contracts/r3-repaired-proposal-trial6.md) e [ricevuta](../eng/r3-repaired-proposal-trial6-returned.json) | Sei ricette; previsioni fallite, nessuna ricerca. |
 | [Attribuzione del minimo](../eng/contracts/r3-repaired-flow-minimum7.md) e [ricevuta](../eng/r3-repaired-flow-minimum7-returned.json) | Ricostruzione del primo passo senza nuove simulazioni; prima guardia errata conservata. |
+| [Capacità a tutti i checkpoint](../eng/contracts/r3-repaired-capacity-observation8.md) e [ricevuta](../eng/r3-repaired-capacity-observation8-returned.json) | 38 ricette ripetute; minimo riprodotto esattamente, vincitori e margini osservati. Nessun modello o proposta. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:
@@ -263,6 +298,9 @@ esattamente zero. Le frazioni circa 5,55e-21 e 1,11e-20 producono invece
 esattamente gli stessi ingressi in `baseline * (1 + frazione)` in binary64.
 La correzione del controllo, dichiarata dopo quel rifiuto, non ha aggiunto
 chiamate fisiche; codice, specifica, contratto e log originali restano congelati.
+La console `R3CapacityObservation` compila senza avvisi o errori; fixture,
+preflight, acquisizione e replay della prova 8 PASS, con alberi `src` e `tests`
+identici a quelli della prova 6.
 
 I vecchi replay richiedono i propri commit: H4–H9 e revisione di sufficienza
 `72b0910`; diagnostiche non fluide e revisione vincolata `ed35d9e`;

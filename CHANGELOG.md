@@ -228,6 +228,26 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   verso l'osservazione di tutte le capacità e un modello del minimo lungo
   la ricetta. Alberi produttivi e di test invariati; R3 RED e M10 aperto.
 
+### Capacità di portata a tutti i checkpoint
+
+- Aggiunta la console diagnostica `R3CapacityObservation`, copia del runner
+  riutilizzabile con il solo blocco `StageFlow`: posizioni effettive, portate
+  delle valvole, portata comandata dello stadio e pressioni dello stesso passo.
+  Il runner precedente e i suoi hash restano invariati.
+- Ripetute le 38 richieste di origine, al massimo 116 passi runtime: le sei
+  della prova 6 e le sonde centrali delle otto direzioni attive. Tutti i record,
+  tolto il blocco aggiunto, coincidono con quelli congelati; ripetizioni identiche.
+- Il minimo delle cinque capacità riproduce **esattamente in binary64** la
+  portata comandata in tutte le 57 ricostruzioni; pressioni e leggi delle
+  valvole senza scarti. Al primo passo è riprodotta l'attribuzione 7.
+- La posizione effettiva della control coincide con l'uscita del governor
+  ai tre checkpoint. Nella baseline vince stop al primo passo, poi control
+  con margini di circa 5,9e-6 e 4,5e-6 kg/s; le due proposte restano nel ramo
+  admission a tutti i checkpoint, con margini da 2,6e-3 a 5,6e-3 kg/s.
+- Cinque delle otto direzioni attive cambiano vincitore fra i due segni a tutti
+  i checkpoint, due solo al primo, una mai. Le secanti delle capacità sono
+  descrittive; nessun modello, proposta o ricerca. R3 RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto
