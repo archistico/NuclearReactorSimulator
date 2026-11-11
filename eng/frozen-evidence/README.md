@@ -13,10 +13,7 @@ usare oggi; questo indice descrive come trovare e autenticare le evidenze.
 | [large-payload-manifest.csv](large-payload-manifest.csv) | Identità SHA-256 canoniche delle tracce storiche di grandi dimensioni. |
 | [archive/](archive/README.md) | Contenitori compressi e istruzioni per ripristinare i payload storici quando un validatore li richiede. |
 | `r3-h-*/`, `r3-op-*/`, `r3-stage-*/` | Pacchetti delle indagini su inventari, punti operativi e trasporto: dati, esiti e manifest; le tracce dei batch sono compresse. |
-| `r3-repaired-raw-owner-diagnostic1/` | Due acquisizioni del punto C4 riparato, identità degli stati, scambi termici e bilanci di exhaust; confronto algebrico sul raffreddamento, senza ricerca. |
-| `r3-repaired-coupled-sensitivity1/` | 82 ricette con corpi termici e regimi ai tre checkpoint; disponibilità e linearità delle colonne, più una sonda combinata. |
-| `r3-repaired-missing-directions2/` | 70 ricette: recupero delle tre direzioni iniziali, sonda compensata e decomposizione della coppia. |
-| `r3-repaired-complete-basis3/` | Misura delle 30 direzioni con 362 ricette: 19 colonne selezionate, undici mancanti, rango numerico diagnostico. |
+| `r3-repaired-*/` | Diagnosi del punto riparato, basi centrali e unilaterali, direzioni accoppiate, proposte e attribuzione al minimo delle portate. Ogni pacchetto mantiene il proprio risultato; le previsioni della prova 6 restano fallite. |
 
 Le grandi tracce storiche descritte dal manifest non sono incluse espanse
 nei pacchetti sorgente del candidato. La vecchia directory di test

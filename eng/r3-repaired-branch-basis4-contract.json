@@ -1,0 +1,321 @@
+{
+  "schema": "r3-repaired-branch-basis4-v1",
+  "policy": {
+    "recipes": 394,
+    "repeats": 2,
+    "maximum_runtime_steps": 1184,
+    "branch_amplitudes": [
+      1e-08,
+      3e-08,
+      1e-07,
+      3e-07,
+      1e-06
+    ],
+    "central_amplitudes": [
+      1e-07,
+      3e-07,
+      1e-06,
+      3e-06,
+      1e-05,
+      3e-05,
+      0.0001
+    ],
+    "relative_linearity_tolerance": 0.1,
+    "physical_weights": {
+      "mass_kg_s": 1.0,
+      "energy_w": 1000000.0,
+      "torque_nm": 1.0,
+      "thermal_w": 1000000.0
+    },
+    "energy_ledger_tolerance_w": 0.01,
+    "mass_ledger_tolerance_kg_s": 1e-06,
+    "torque_ledger_tolerance_nm": 1e-06,
+    "normalized_rank_threshold": 1e-08,
+    "one_sided_order": 2,
+    "selection": "Prefer any validated central pair; otherwise largest validated one-sided pair, plus sign wins ties",
+    "proposals": 0,
+    "searches": 0,
+    "production_changes": 0,
+    "root_criterion_unchanged": true,
+    "r3_passed": false,
+    "m10_closed": false
+  },
+  "directions": [
+    {
+      "name": "drum:mass",
+      "index": 2,
+      "one_sided": true,
+      "amplitudes": [
+        1e-08,
+        3e-08,
+        1e-07,
+        3e-07,
+        1e-06
+      ]
+    },
+    {
+      "name": "drum:energy",
+      "index": 3,
+      "one_sided": true,
+      "amplitudes": [
+        1e-08,
+        3e-08,
+        1e-07,
+        3e-07,
+        1e-06
+      ]
+    },
+    {
+      "name": "feedwater-inventory:mass",
+      "index": 6,
+      "one_sided": true,
+      "amplitudes": [
+        1e-08,
+        3e-08,
+        1e-07,
+        3e-07,
+        1e-06
+      ]
+    },
+    {
+      "name": "hotwell:mass",
+      "index": 10,
+      "one_sided": true,
+      "amplitudes": [
+        1e-08,
+        3e-08,
+        1e-07,
+        3e-07,
+        1e-06
+      ]
+    },
+    {
+      "name": "hotwell:energy",
+      "index": 11,
+      "one_sided": true,
+      "amplitudes": [
+        1e-08,
+        3e-08,
+        1e-07,
+        3e-07,
+        1e-06
+      ]
+    },
+    {
+      "name": "suction:mass",
+      "index": 20,
+      "one_sided": true,
+      "amplitudes": [
+        1e-08,
+        3e-08,
+        1e-07,
+        3e-07,
+        1e-06
+      ]
+    },
+    {
+      "name": "suction:energy",
+      "index": 21,
+      "one_sided": true,
+      "amplitudes": [
+        1e-08,
+        3e-08,
+        1e-07,
+        3e-07,
+        1e-06
+      ]
+    },
+    {
+      "name": "control-out:mass",
+      "index": 0,
+      "one_sided": false,
+      "amplitudes": [
+        1e-07,
+        3e-07,
+        1e-06,
+        3e-06,
+        1e-05,
+        3e-05,
+        0.0001
+      ]
+    },
+    {
+      "name": "control-out:energy",
+      "index": 1,
+      "one_sided": false,
+      "amplitudes": [
+        1e-07,
+        3e-07,
+        1e-06,
+        3e-06,
+        1e-05,
+        3e-05,
+        0.0001
+      ]
+    },
+    {
+      "name": "turbine-inlet:mass",
+      "index": 22,
+      "one_sided": false,
+      "amplitudes": [
+        1e-07,
+        3e-07,
+        1e-06,
+        3e-06,
+        1e-05,
+        3e-05,
+        0.0001
+      ]
+    },
+    {
+      "name": "turbine-inlet:energy",
+      "index": 23,
+      "one_sided": false,
+      "amplitudes": [
+        1e-07,
+        3e-07,
+        1e-06,
+        3e-06,
+        1e-05,
+        3e-05,
+        0.0001
+      ]
+    }
+  ],
+  "unchanged_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "output": "artifacts/r3-repaired-branch-basis4",
+  "implementation_files": [
+    {
+      "path": "eng/diagnostics/R3ProbeRunner/R3ProbeRunner.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3ProbeRunner/Program.cs",
+      "sha256": "30B626E04CBFA059EB358CDA6071C46EDE42F2B0665F331BCECC6FB9EB22C0BC"
+    },
+    {
+      "path": "eng/run-r3-repaired-branch-basis4.py",
+      "sha256": "4A9839D8F15B85C0C354BC2DF734CDC95A39ABFF9B001F948690C7CD714E3C7A"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-branch-basis4.md",
+      "sha256": "4FA78FB3274898FBD64BBC8A151B77CDF904C6858732207AD172DFA93C845C15"
+    },
+    {
+      "path": "eng/run-r3-repaired-complete-basis3.py",
+      "sha256": "BE07099EDC076A7D9EF0F450C5A6128CE4B02A80C566866CD1526ACB2ECBC86C"
+    },
+    {
+      "path": "eng/run-r3-repaired-missing-directions2.py",
+      "sha256": "69CB4608ADD225DFEF267DCC5BDE4669441BDA8AB26CD31E3AF3245CA844410F"
+    },
+    {
+      "path": "eng/run-r3-repaired-coupled-sensitivity1.py",
+      "sha256": "7781A921C909A810F6A4432BFDEB7CA4F5D3C6AC6C18A25C3D6324C59CC35837"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "7E32B87057A13A6C15BBF2316F1E71C52487B1434FD977D50F3EC8E9EEE7B4EF"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "sha256": "57CC81E76A6B8D41E9BCC49AFF7D008A17CD60C834D10681932789D35635E109"
+    },
+    {
+      "path": "global.json",
+      "sha256": "15FC2962D00BBB3FEBAE9DDB01301F0723EBB743E1CFCD57AF3D1FDD3FB640BB"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-contract.json",
+      "sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-returned.json",
+      "sha256": "8B063F893FBE5AECC0220A2A084872AC14DE358B105A237DEEA1F15A9EC25308"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/manifest.json",
+      "sha256": "FACF8D87D14524A2E33CD3D400E4DCA5DA42540454936CF927DB326B9F266A06"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-contract.json",
+      "sha256": "DE164CE8C7829E65A10ADD4651A3D54552AE6345E064CF4CEB717FE0CFB5D7EE"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-returned.json",
+      "sha256": "1F11D5BCAC8C87F20694A365CA22107AC6E0D386D289F5C11DB9ED14A77A588A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-raw-owner-diagnostic1/manifest.json",
+      "sha256": "9DA059FF46E55559D27E13DE81CFD51433263D5FC1E9C2FF06F80FD217C80EAC"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-contract.json",
+      "sha256": "D3186F9032C932812869500DDB4D4BD581689C1C37B625776648B9AAC38A688B"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-returned.json",
+      "sha256": "8420E2504D691BDE922E038B8154247A8AB33190E4DD6AC2AD9DC763E065C6C7"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-coupled-sensitivity1/manifest.json",
+      "sha256": "E783E23788E017596C23C46570BC1E5D8861CFAE850B85A7EC40DBE4279D43F2"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-contract.json",
+      "sha256": "122B15D3116402F2F61E31AB33CB96108A3AE54A4A9DAF9F5B7974EF45B8249C"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-returned.json",
+      "sha256": "49E54BA12E4CFAB26926AFDA476571936D5EBB8536B3D0F67ACE7326C56D8312"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-missing-directions2/manifest.json",
+      "sha256": "4283E6F1A8E5ED8EBFF4437553621F454354084E5C4A439DF3705B18ACBAEFC8"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-contract.json",
+      "sha256": "EF560FFD356484F6FA51D74596841EAA133EEA3E0E06ED32E46636BCA9322978"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-returned.json",
+      "sha256": "1F95CB03259AAD12EFD79C057DDA48C2185C7E3E54EEC301FB24C7E285F480C8"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-complete-basis3/manifest.json",
+      "sha256": "D752C1FB57095A9F33F13D8EA2ABC977D8DD22DE7EAE2143443243C7367B516B"
+    }
+  ],
+  "premeasurement_correction": {
+    "previous_contract_sha256": "9D0A54D9C827771E9508C750A319028554E7380376BF52D02B020319E3AFA4A1",
+    "runtime_steps": 0,
+    "reason": "Correct fluid-inventory terminology in the specification; no algorithm, policy or request change"
+  }
+}

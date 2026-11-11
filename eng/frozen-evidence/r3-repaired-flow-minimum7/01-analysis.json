@@ -1,0 +1,413 @@
+{
+  "status": "PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION",
+  "fixtures": "PASS-FLOW-MINIMUM-FIXTURE",
+  "runtime_steps": 0,
+  "original_zero_fraction_guard": {
+    "status": "NONCONFORMING-TEXTUAL-ZERO-GUARD",
+    "rejected_record_ids": [
+      "proposal/0.25/repeat/1",
+      "proposal/0.25/repeat/2",
+      "proposal/0.5/repeat/1",
+      "proposal/0.5/repeat/2"
+    ],
+    "effective_operating_inputs_unchanged": true,
+    "correction": "Require identical effective inputs under the actual FromFractions multiplication; retain the failed textual-zero criterion"
+  },
+  "baseline": {
+    "capacities_kg_s": {
+      "stop": 13.339237038677473,
+      "control": 13.33923713866441,
+      "admission": 13.339237149349202,
+      "expansion": 13.339237135201818,
+      "inventory": 97943.79464830471
+    },
+    "winner": "stop",
+    "margin_to_next_kg_s": 9.652434584950242e-08,
+    "total_flow_kg_s": 13.339237038677473,
+    "vapor_flow_kg_s": 13.028001803550866,
+    "flow_error_kg_s": 0.0,
+    "reconstructed_net_torque_nm": -0.0001298693430271669,
+    "torque_error_nm": 0.0
+  },
+  "active_components": [
+    {
+      "direction": "control-out:mass",
+      "coefficient": -4.395023170873835e-06,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33949410661679,
+          "admission": 13.336239710340093,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.0029973283373792015,
+        "total_flow_kg_s": 13.336239710340093,
+        "vapor_flow_kg_s": 13.02507440981223,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -4.0069488507149345,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.338980175439639,
+          "admission": 13.342233802111288,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 0.0002568632378334712,
+        "total_flow_kg_s": 13.338980175439639,
+        "vapor_flow_kg_s": 13.027750933526137,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.3435038281247671,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": -61057.41704316945,
+      "linear_full_step_torque_change_nm": 0.2683487626584367
+    },
+    {
+      "direction": "exhaust:energy",
+      "coefficient": 0.0001,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339235414428195,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 1.6242492772988726e-06,
+        "total_flow_kg_s": 13.339235414428195,
+        "vapor_flow_kg_s": 13.02800021719908,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.002301160610613806,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339238856330445,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.998693784041279e-08,
+        "total_flow_kg_s": 13.339237038677473,
+        "vapor_flow_kg_s": 13.028001803550866,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.0001298693430271669,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": -10.856456337933196,
+      "linear_full_step_torque_change_nm": -0.0010856456337933196
+    },
+    {
+      "direction": "exhaust:mass",
+      "coefficient": 9.99486271805394e-05,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.3392372778945,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.998693784041279e-08,
+        "total_flow_kg_s": 13.339237038677473,
+        "vapor_flow_kg_s": 13.028001803550866,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.0001298693430271669,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339236992512049,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 4.6165423484012535e-08,
+        "total_flow_kg_s": 13.339236992512049,
+        "vapor_flow_kg_s": 13.028001758462588,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.0001915831351197994,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": 0.3085689604631625,
+      "linear_full_step_torque_change_nm": 3.084104398881923e-05
+    },
+    {
+      "direction": "header:energy",
+      "coefficient": 1e-05,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.34325058865583,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 3.4625919909103686e-09,
+        "total_flow_kg_s": 13.339237135201818,
+        "vapor_flow_kg_s": 13.028001897823076,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -8.359063485841034e-07,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.335222280726478,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.004014854475340002,
+        "total_flow_kg_s": 13.335222280726478,
+        "vapor_flow_kg_s": 13.024080719183393,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -5.367045519874182,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": 268352.23419839167,
+      "linear_full_step_torque_change_nm": 2.6835223419839167
+    },
+    {
+      "direction": "outlet:energy",
+      "coefficient": -1.949874411619419e-05,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.652434584950242e-08,
+        "total_flow_kg_s": 13.339237038677473,
+        "vapor_flow_kg_s": 13.028001803550866,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.0001298693430271669,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 9.652434584950242e-08,
+        "total_flow_kg_s": 13.339237038677473,
+        "vapor_flow_kg_s": 13.028001803550866,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.0001298693430271669,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": 0.0,
+      "linear_full_step_torque_change_nm": -0.0
+    },
+    {
+      "direction": "stop-out:energy",
+      "coefficient": -1e-05,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.335359249548638,
+          "control": 13.339569566385837,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "stop",
+        "margin_to_next_kg_s": 0.0038778856531802575,
+        "total_flow_kg_s": 13.335359249548638,
+        "vapor_flow_kg_s": 13.024214492206315,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -5.183946034362407,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.34311380433176,
+          "control": 13.338904693782135,
+          "admission": 13.339237149349202,
+          "expansion": 13.339237135201818,
+          "inventory": 97943.79464830471
+        },
+        "winner": "control",
+        "margin_to_next_kg_s": 0.00033244141968324925,
+        "total_flow_kg_s": 13.338904693782135,
+        "vapor_flow_kg_s": 13.027677213030186,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.44440746763280004,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": -236976.9283364803,
+      "linear_full_step_torque_change_nm": 2.3697692833648034
+    },
+    {
+      "direction": "turbine-inlet:energy",
+      "coefficient": 2.9999999999999994e-05,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.332169552327825,
+          "expansion": 13.339567305166986,
+          "inventory": 97943.79464830471
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.007067486349647822,
+        "total_flow_kg_s": 13.332169552327825,
+        "vapor_flow_kg_s": 13.021770466099051,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -8.529164024101874,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.346301586150311,
+          "expansion": 13.338906929831367,
+          "inventory": 97943.79464830471
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.0003301088461054036,
+        "total_flow_kg_s": 13.338906929831367,
+        "vapor_flow_kg_s": 13.027007823619442,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -1.3606225163609906,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": -119475.69179568138,
+      "linear_full_step_torque_change_nm": -3.584270753870441
+    },
+    {
+      "direction": "turbine-inlet:iso-specific-internal-energy",
+      "coefficient": 3e-05,
+      "plus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.335011053352405,
+          "expansion": 13.339434583579372,
+          "inventory": 97946.73296214416
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.004225985325067683,
+        "total_flow_kg_s": 13.335011053352405,
+        "vapor_flow_kg_s": 13.02387542249388,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -5.648041773126124,
+        "torque_error_nm": 0.0
+      },
+      "minus": {
+        "capacities_kg_s": {
+          "stop": 13.339237038677473,
+          "control": 13.33923713866441,
+          "admission": 13.34346212533975,
+          "expansion": 13.339039673689387,
+          "inventory": 97940.85633446528
+        },
+        "winner": "expansion",
+        "margin_to_next_kg_s": 0.00019736498808597958,
+        "total_flow_kg_s": 13.339039673689387,
+        "vapor_flow_kg_s": 13.02780804430759,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -0.2653344448451662,
+        "torque_error_nm": 0.0
+      },
+      "first_step_torque_derivative": -89711.78880468263,
+      "linear_full_step_torque_change_nm": -2.691353664140479
+    }
+  ],
+  "proposals": [
+    {
+      "step_fraction": 0.25,
+      "capacity_reconstruction": {
+        "capacities_kg_s": {
+          "stop": 13.34120978200841,
+          "control": 13.339144618146632,
+          "admission": 13.336523772857097,
+          "expansion": 13.339368648931226,
+          "inventory": 97944.52922676457
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.002620845289534657,
+        "total_flow_kg_s": 13.336523772857097,
+        "vapor_flow_kg_s": 13.025519960512488,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -3.397109122154461,
+        "torque_error_nm": 0.0
+      },
+      "previous_recorded_guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "first_step_predicted_torque_change_nm": -0.23875970864839186,
+      "first_step_observed_torque_change_nm": -3.396979252811434,
+      "first_step_affine_error_nm": -3.158219544163042,
+      "winning_capacity_changed": true
+    },
+    {
+      "step_fraction": 0.5,
+      "capacity_reconstruction": {
+        "capacities_kg_s": {
+          "stop": 13.343182233676073,
+          "control": 13.339052096987121,
+          "admission": 13.333809953517203,
+          "expansion": 13.3395001562785,
+          "inventory": 97945.26380522446
+        },
+        "winner": "admission",
+        "margin_to_next_kg_s": 0.005242143469917693,
+        "total_flow_kg_s": 13.333809953517203,
+        "vapor_flow_kg_s": 13.023037506511153,
+        "flow_error_kg_s": 0.0,
+        "reconstructed_net_torque_nm": -6.794924619826588,
+        "torque_error_nm": 0.0
+      },
+      "previous_recorded_guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "first_step_predicted_torque_change_nm": -0.4775194172967837,
+      "first_step_observed_torque_change_nm": -6.794794750483561,
+      "first_step_affine_error_nm": -6.317275333186777,
+      "winning_capacity_changed": true
+    }
+  ],
+  "earlier_trial_rewritten": false,
+  "later_checkpoints_attributed": false,
+  "interpretation": "Central secants span different winners of the stage-flow minimum; their affine sum fails at the first seed step while the exact minimum law reproduces the measurements",
+  "limits": [
+    "Only the first seed uses the verified common initial valve command; no claim for later actuator states",
+    "This diagnoses an omitted flow-limiter branch, not a new physics defect or a qualified piecewise model"
+  ],
+  "family_selected": false,
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false
+}

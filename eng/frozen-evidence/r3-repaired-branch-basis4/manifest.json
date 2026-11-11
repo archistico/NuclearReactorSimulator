@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-branch-basis4-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2146,
+      "sha256": "BFF1798D2F8631F3742458A20AD15D3523F4CCEB10B469754C6BE4D9A9EF6FB6",
+      "stored_sha256": "BFF1798D2F8631F3742458A20AD15D3523F4CCEB10B469754C6BE4D9A9EF6FB6"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 194205,
+      "sha256": "CC19BFFAD8C57E110B1E59C641007A6DD67068754291860C1336B217056E829C",
+      "stored_sha256": "CC19BFFAD8C57E110B1E59C641007A6DD67068754291860C1336B217056E829C"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3150,
+      "sha256": "D1DAF8594B95ADEB667F5D4857A49556973924E675A55540CAF86742A4B87EFA",
+      "stored_sha256": "D1DAF8594B95ADEB667F5D4857A49556973924E675A55540CAF86742A4B87EFA"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 9361698,
+      "sha256": "17933D1DC52D60619B3DF4486B92E5112AF14ABFF2768A3F6E0B17200B8BB356",
+      "stored_sha256": "D3B3528E9CA9B249BD08A1C0EF3D3A6F2FD1AB581AC88218E6488ADE1CEF0062"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 164850,
+      "sha256": "1FD03148ACB6E34DF94FAB77118E9BDE39C17C6319A643448E66C944CC32EC3E",
+      "stored_sha256": "1FD03148ACB6E34DF94FAB77118E9BDE39C17C6319A643448E66C944CC32EC3E"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 83,
+      "sha256": "7D47B284E88E102A80CD88F5151A0434B4CD3631BF020B7BD6FC85632DB1D819",
+      "stored_sha256": "7D47B284E88E102A80CD88F5151A0434B4CD3631BF020B7BD6FC85632DB1D819"
+    }
+  ]
+}

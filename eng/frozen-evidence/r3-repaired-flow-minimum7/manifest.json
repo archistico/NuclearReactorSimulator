@@ -1,0 +1,40 @@
+{
+  "schema": "r3-repaired-flow-minimum7-frozen-v1",
+  "files": [
+    {
+      "file": "00-original-review.py",
+      "stored": "00-original-review.py",
+      "bytes": 7478,
+      "sha256": "2F7D99F09BEE2FFDDF1983D90B66ADD4641CA911553C7C4EF14A44A7C8077E21",
+      "stored_sha256": "2F7D99F09BEE2FFDDF1983D90B66ADD4641CA911553C7C4EF14A44A7C8077E21"
+    },
+    {
+      "file": "00-original-spec.md",
+      "stored": "00-original-spec.md",
+      "bytes": 2618,
+      "sha256": "1D7F4306AC11BB36DE0A9C1214C9CEFD29BBB1B2996547939B8EACB869DAA1CB",
+      "stored_sha256": "1D7F4306AC11BB36DE0A9C1214C9CEFD29BBB1B2996547939B8EACB869DAA1CB"
+    },
+    {
+      "file": "00-original-contract.json",
+      "stored": "00-original-contract.json",
+      "bytes": 8237,
+      "sha256": "21090D0506DF4135BD5F1C31F5566E6971FEADA24005E2370AB0C10AC4404EFA",
+      "stored_sha256": "21090D0506DF4135BD5F1C31F5566E6971FEADA24005E2370AB0C10AC4404EFA"
+    },
+    {
+      "file": "00-original-failure.log",
+      "stored": "00-original-failure.log",
+      "bytes": 3518,
+      "sha256": "BE0F212433DD3008B33B6F4697D5763982D4D365D114CE6CBAB4A356BF132241",
+      "stored_sha256": "BE0F212433DD3008B33B6F4697D5763982D4D365D114CE6CBAB4A356BF132241"
+    },
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 15158,
+      "sha256": "C40FAF64850A2A9C13135363638B66ECCDF60C096D2E844067DF4FB7A3A0757D",
+      "stored_sha256": "C40FAF64850A2A9C13135363638B66ECCDF60C096D2E844067DF4FB7A3A0757D"
+    }
+  ]
+}

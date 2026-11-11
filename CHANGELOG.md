@@ -204,6 +204,30 @@ Specifiche, esiti e comandi sono raggiungibili dalle
 - Riallineati checkpoint, roadmap e handoff alle direzioni da costruire nei
   rami ammessi. R3 resta RED e M10 aperto.
 
+### Base direzionale, prime proposte e limite di portata
+
+- Eseguite 394 ricette ripetibili, tutte sane e 384 nell'inviluppo: recuperate
+  nove direzioni, quattro mediante stencil unilaterali di secondo ordine.
+  Coefficienti e vincoli del verso conservati, senza promuoverli a coordinate libere.
+- Eseguite altre 114 ricette ripetibili, tutte sane e 110 nell'inviluppo:
+  due direzioni accoppiate portano il rango numerico diagnostico a 30.
+  Le due derivate cartesiane mancanti mantengono il proprio esito precedente.
+- Eseguita la prima prova combinata, sei ricette: passi 0,25 e 0,50 di una
+  proposta lineare vincolata, con ripetizioni identiche e controlli registrati
+  rispettati. Entrambe le previsioni falliscono: errore relativo 14,734 e
+  15,011 contro 0,10. Nessuna ricerca avviata o seed installato.
+- Ricostruiti offline portata e coppia al primo passo: la legge sceglie il
+  minimo fra capacità delle valvole, espansione e inventario. La baseline
+  è quasi sul pareggio e le proposte cambiano vincitore. Le secanti miste
+  non predicono la direzione composta; nessun nuovo difetto fisico dimostrato.
+- Conservato il primo rifiuto della revisione, che richiedeva frazioni
+  esattamente zero; il controllo corretto verifica ingressi effettivi identici
+  in binary64. Codice, specifica, contratto e log originali congelati; nessuna
+  nuova chiamata fisica per la revisione.
+- Compilazione, fixture e replay PASS nei rispettivi ambiti. Handoff aggiornato
+  verso l'osservazione di tutte le capacità e un modello del minimo lungo
+  la ricetta. Alberi produttivi e di test invariati; R3 RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

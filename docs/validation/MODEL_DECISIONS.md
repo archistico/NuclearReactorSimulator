@@ -158,6 +158,20 @@ questo motivo e resta congelata come evidenza del difetto.
 
 ## Considerare il ramo lungo tutta la ricetta
 
+Il ramo non coincide soltanto con fase e limiti termodinamici o degli attuatori.
+La portata dello stadio è anche il minimo fra capacità delle valvole, espansione
+e inventario. Nel punto riparato le capacità iniziali sono quasi coincidenti:
+le sonde possono cambiare il vincitore senza cambiare le fasi o i regimi già
+registrati. Una matrice di secanti centrali che attraversano vincitori diversi
+non è automaticamente un modello affine della direzione composta.
+
+La prima prova combinata fallisce il confronto pur restando nei controlli
+registrati. L'attribuzione offline del primo passo riproduce portata e coppia
+con la legge del minimo. Un futuro modello deve rappresentare quel minimo
+o i suoi diversi rami e osservarne i margini lungo la ricetta. Non si corregge
+retroattivamente l'esito dei vecchi controlli né si deduce un difetto fisico
+da un limite della linearizzazione.
+
 Il nodo che cambia fase può essere diverso da quello perturbato. La prova
 estesa riparata osserva, per esempio, una sonda di drum che porta suction
 in miscela soltanto al primo Running. Una colonna centrale richiede quindi
@@ -188,6 +202,13 @@ esplicite e previsioni verificate. Nessuna di queste scelte introduce correzioni
 automatiche agli inventari durante il normale funzionamento.
 
 ## Separare le guide dagli input dei validatori
+
+Un controllo sulle perturbazioni deve riflettere l'aritmetica applicata agli
+ingressi. Nella ricetta attuale `baseline * (1 + frazione)` può restituire lo
+stesso valore quando la frazione è non nulla ma `1 + frazione` è esattamente
+1 in binary64. La revisione del minimo conserva il fallimento del controllo
+testuale e verifica l'identità effettiva senza tolleranza. Questa proprietà
+non autorizza a ignorare perturbazioni in altre formule o versioni della ricetta.
 
 `docs/` spiega progetto, modello e conclusioni. Gli input M10 che richiedono
 testo esatto sono in `eng/contracts/m10`, con percorsi e hash indicizzati;

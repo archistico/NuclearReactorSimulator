@@ -18,6 +18,9 @@ i comandi di ripresa e la [roadmap](../ROADMAP.md) definisce il percorso futuro.
 | Bilanci | Accumuli ricostruiti da inventari e trasferimenti registrati. | Conservazione e stazionarietà sono condizioni distinte. |
 | Diagnosi del punto riparato | Due ripetizioni con stato completo identico alla misura precedente; scambi termici e bilanci di exhaust ricostruiti. | Il trasporto netto di outlet è inferito nel pacchetto; il confronto sul raffreddamento mantiene fissi stato e ingresso. Nessuna sensibilità o ricerca eseguita. |
 | Sensibilità accoppiate riparate | Prima sonda combinata verificata entro lo 0,037%; raffinamento di 70 ricette e misura estesa di 362, tutti ripetibili. Selezionate 19 colonne su 30. | Undici colonne restano non selezionate per fase, scale non ammesse o disaccordo fra ampiezze. Il rango numerico 19 è diagnostico; nessuna base completa o proposta di equilibrio. |
+| Base direzionale | 394 ricette recuperano nove direzioni; altre 114 aggiungono due direzioni accoppiate. Rango numerico diagnostico 30. | Quattro coefficienti unilaterali; due derivate cartesiane non sono validate. La somma delle direzioni richiede verifica. |
+| Prime proposte riparate | Sei ricette ripetibili, sane e nell'inviluppo; due passi combinati confrontati con il modello. | Entrambe le previsioni falliscono: errori 14,734 e 15,011 contro 0,10. Il PASS dell'evidenza conserva questo fallimento. |
+| Limite di portata dello stadio | Minimo delle capacità e coppia ricostruiti offline entro 1e-9 kg/s e 1e-6 N·m; cambia il vincitore fra baseline e proposte. | Attribuzione del solo primo passo. Confine non incluso nei regimi precedenti; nessun nuovo difetto fisico o modello a tratti qualificato. |
 | Replay delle evidenze | Richieste, risposte, selezioni, rifiuti e arresti ricostruiti dai pacchetti congelati. | PASS attesta la coerenza dell'esperimento, non la qualificazione fisica. |
 
 ## Come leggere l'indagine di equilibrio
@@ -30,7 +33,7 @@ un'osservazione fisica, con la sua classificazione conservata.
 
 Le [evidenze correnti](../PROJECT.md#evidenze-e-verifiche) collegano specifiche,
 risultati e ricevute. Il [blocco da risolvere](../PROJECT.md#il-problema-da-risolvere)
-spiega gli accumuli ancora presenti e le direzioni da completare nella nuova base.
+spiega gli accumuli ancora presenti e il limite della previsione affine.
 La diagnosi attribuisce il limite del condensatore alla superficie UA e distingue
 gli accumuli di massa ed energia. Le vecchie derivate non si riusano dopo la
 riparazione del trasporto. Queste conclusioni non dimostrano
@@ -49,6 +52,18 @@ conforme resta locale: per l'energia di exhaust, il raffinamento trova un
 accordo del 6,15% fra 3e-5 e 1e-4, mentre altre coppie falliscono. Tutti i
 confronti e la regola di selezione restano conservati, senza reinterpretare
 come conforme il fallimento della prima prova.
+
+La legge della portata prende il minimo fra più capacità. Vicino a capacità
+quasi coincidenti, due secanti centrali possono attraversare vincitori diversi:
+anche se concordano fra scale, la loro somma può fallire. La ricostruzione del
+primo passo delle proposte mostra questo caso. I vecchi controlli registrati
+rimangono conformi nel proprio ambito; non si aggiunge retroattivamente un
+nuovo rifiuto del ramo. La verifica del modello composto resta separata.
+
+La revisione offline conserva anche il fallimento del primo controllo sulle
+frazioni esattamente zero: quelle residue dell'ottimizzatore producono ingressi
+identici in binary64. La correzione dichiara il nuovo controllo di identità
+effettiva e conserva codice, contratto e log originali, senza nuove simulazioni.
 
 Una radice richiede ancora conferme indipendenti e una verifica integrata R3.
 R4, R5, R6 e le prove finali mantengono i propri criteri di ingresso: la chiusura

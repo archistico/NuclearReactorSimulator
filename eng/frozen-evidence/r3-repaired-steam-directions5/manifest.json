@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-steam-directions5-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2146,
+      "sha256": "B1A4BBE604E63750122936D21EA0857F7FA9D00FC00BAE23B3EDE7D9385A90F8",
+      "stored_sha256": "B1A4BBE604E63750122936D21EA0857F7FA9D00FC00BAE23B3EDE7D9385A90F8"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 59421,
+      "sha256": "6B4043105D8A88E8855CD219B683426B02BEA40F48BABBDDF0288C23764DBC52",
+      "stored_sha256": "6B4043105D8A88E8855CD219B683426B02BEA40F48BABBDDF0288C23764DBC52"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3154,
+      "sha256": "FC6B0C38F5EB88CEB60D360B6E31CEB129396273391932901487143C235A51F3",
+      "stored_sha256": "FC6B0C38F5EB88CEB60D360B6E31CEB129396273391932901487143C235A51F3"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 2707544,
+      "sha256": "DB9983232520A03A39E2FCA10F7561C52F1D9383391D324A6699418371BD2F76",
+      "stored_sha256": "CD5A20E30ED161F442674D76A40AF3226BCEE46E8C8339B534EB564E73CC0828"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 96841,
+      "sha256": "9173B93B485B4FF51CB4B52F917D950BC5037DDF1FFA3C5C2995214C677C371B",
+      "stored_sha256": "9173B93B485B4FF51CB4B52F917D950BC5037DDF1FFA3C5C2995214C677C371B"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 82,
+      "sha256": "829FA76EF4615D3E0619BFDB0B38D43E12B1C13324FAA38CAF7CBE255F1B1BE7",
+      "stored_sha256": "829FA76EF4615D3E0619BFDB0B38D43E12B1C13324FAA38CAF7CBE255F1B1BE7"
+    }
+  ]
+}

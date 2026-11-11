@@ -7,7 +7,8 @@ le consegne e il [changelog](../CHANGELOG.md) conserva la cronologia.
 ## Stato corrente
 
 Checkpoint dell'**11 novembre 2026**, dopo la riparazione del trasporto di fase,
-la diagnosi dei bilanci e la misura delle trenta direzioni sul punto riparato.
+la costruzione della base direzionale, il fallimento delle prime proposte
+e l'attribuzione al minimo delle capacità di portata.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -15,7 +16,8 @@ la diagnosi dei bilanci e la misura delle trenta direzioni sul punto riparato.
 | Trasporto sotto C4 | Riparazione implementata nei quattro file previsti; saturazione pubblica e payload invariati. |
 | Nuova misura | Due ricette identiche, tre checkpoint sani e nell'inviluppo. Verifica della riparazione PASS con adjudication 2. |
 | Diagnosi dei bilanci | Altre due ricette, sei passi totali: stati identici alla misura precedente, bilanci termici e di exhaust ricostruiti. Limite del condensatore: superficie UA. |
-| Sensibilità accoppiate | Raffinate le tre direzioni inizialmente mancanti; la misura estesa seleziona 19 colonne su 30, comprese tutte le sei grandezze non fluide. |
+| Base direzionale | 30 direzioni misurate, rango numerico diagnostico 30; quattro coefficienti unilaterali e due direzioni accoppiate. |
+| Prime proposte | Due passi ripetibili e nei controlli registrati, ma errore predittivo circa 15 volte la variazione prevista. Nessuna ricerca avviata. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -98,46 +100,68 @@ nel box di ricerca. Anche aumentare soltanto la temperatura del combustibile
 sposterebbe il deficit da `outlet` al corpo termico: il prossimo confronto
 deve osservare insieme inventari, sorgente nucleare e scambi termici.
 
-### Che cosa aggiungono le sensibilità accoppiate
+### La base attuale e la sua verifica
 
-La prima prova ha misurato nove direzioni indipendenti e una combinazione
-nucleare-termica. Quest'ultima coincide con la somma delle risposte entro lo
-0,037% alla scala misurata. Includere combustibile e struttura distingue
-energia aggiunta e calore trasferito: le tre colonne non fluide, quasi
-collineari osservando i fluidi, si separano con i bilanci termici.
+Le prove precedenti hanno distinto sorgente nucleare e trasferimenti termici,
+recuperato le sensibilità di pressure ed exhaust e selezionato 19 colonne
+cartesiane su 30. Il confronto dei rami ha poi eseguito 394 ricette ripetibili,
+tutte sane, 384 nell'inviluppo, portando le direzioni disponibili a 28.
+Altre 114 ricette ripetibili, tutte sane e 110 nell'inviluppo, hanno misurato
+le direzioni accoppiate che completano la base direzionale.
 
-Il raffinamento successivo ha eseguito **70 ricette**, tutte sane,
-nell'inviluppo e identiche nelle ripetizioni, entro 212 passi runtime.
-Le due colonne di `pressure` ora rispettano i criteri a 2e-6, confrontate con
-1e-6: scarti relativi inferiori allo 0,001%. La direzione compensata di massa
-ed energia è verificata a 1e-4 con scarto dello 0,047% rispetto a 1e-5.
-
-Per l'energia di `exhaust`, 3e-5 e 1e-4 concordano entro il 6,15%. Le coppie
-di ampiezze maggiori falliscono ancora: il risultato è locale. La
-decomposizione mostra che lo scarto deriva soprattutto dalla portata dello
-stadio; il lavoro ideale resta invariato fra i due segni delle sonde.
-Le coppie di turbina, generatore e perdite ricostruiscono quella netta entro
-1e-6 N·m. Questo non dimostra un difetto fisico o una derivata uniforme.
-
-La prova estesa ha poi misurato tutte le **30 direzioni** con **362 ricette**,
-entro 1.088 passi runtime. Sono tutte sane e ripetibili; 334 restano
-nell'inviluppo. I 43 punti sovrapposti alle prove precedenti conservano
-identici inventari, residui, fasi e hash completi ai tre checkpoint.
-
-| Parte della base | Risultato della prova estesa |
+| Tipo di direzione | Contenuto e vincoli |
 | --- | --- |
-| Inventari fluidi | 13 colonne selezionate su 24. |
-| Grandezze non fluide | Tutte e sei selezionate: valvola, pompe, popolazione neutronica e temperature. |
-| Rango numerico diagnostico | 19 sulle 19 colonne selezionate, con soglia 1e-8 dopo normalizzazione. Non è un certificato di rango o sufficienza. |
-| Quattro colonne di `control-out` e `turbine-inlet` | Alle due ampiezze minori mantengono il ramo ma non rispettano il 10%; la maggiore non è ammessa. |
-| Sei colonne di drum, hotwell e suction | Almeno un segno cambia fase in un nodo della ricetta: nessuno stencil centrale ammesso. |
-| Massa di `feedwater-inventory` | Lo stencil a 1e-6 è ammesso; le ampiezze maggiori cambiano fase e, per un segno, anche regime. Manca una seconda scala ammessa. |
+| 24 direzioni centrali isolate | Inventari e tutte le sei grandezze non fluide, ammesse ai due segni alle scale selezionate. |
+| Quattro direzioni unilaterali | Massa ed energia di hotwell e suction, nel verso positivo. I coefficienti restano non negativi. |
+| Due direzioni accoppiate | Control-out con massa ed energia compensate nella pressione grezza; turbine-inlet a energia interna specifica costante. Non validano le due derivate cartesiane precedentemente mancanti. |
 
-Il nodo che cambia fase può essere diverso da quello perturbato: una sonda
-di drum, per esempio, porta suction in miscela al primo Running. Controllare
-solo il punto grezzo o il nodo variato perderebbe questa interazione.
-La base resta incompleta: le undici colonne mancanti non vengono inventate
-e le diciannove disponibili non qualificano da sole una famiglia o una proposta.
+Il rango numerico diagnostico è 30, con soglia 1e-8 dopo normalizzazione.
+Questo non dimostra fattibilità del cono, accuratezza di una somma di direzioni
+o sufficienza della famiglia. La sonda nucleare-termica iniziale, conforme
+entro lo 0,037%, rimane una verifica della propria direzione alla scala misurata.
+
+### Perché non parte ancora la ricerca
+
+La prima prova combinata ha ottimizzato il modello lineare delle 81 righe
+diagnostiche entro le ampiezze campionate, mantenendo non negativi i quattro
+coefficienti unilaterali. Il passo intero non è stato eseguito: si sono misurate
+solo le frazioni 0,25 e 0,50, ripetute due volte, più due baseline.
+
+Entrambe le proposte restano sane, nell'inviluppo e negli stessi regimi
+registrati. **Entrambe falliscono la previsione**: errore relativo 14,734 e
+15,011, contro il limite 0,10. Il denominatore è la variazione prevista di
+tutte le 81 righe, non il residuo iniziale. La riduzione del massimo originale
+da 8.582.400,421 a circa 8.464.496,729 nel secondo passo non qualifica una radice.
+
+| Primo passo preparatorio | Variazione di coppia prevista | Variazione osservata |
+| --- | --- | --- |
+| Frazione 0,25 | −0,239 N·m | −3,397 N·m |
+| Frazione 0,50 | −0,478 N·m | −6,795 N·m |
+
+La revisione offline ricostruisce questa differenza già al primo passo.
+La legge produttiva sceglie la portata minima fra le capacità di stop,
+control, admission, espansione e inventario. Nella baseline vince stop,
+con un margine di circa 9,65e-8 kg/s rispetto alla capacità successiva;
+nelle due proposte vince admission. Le secanti usate dal modello possono
+quindi attraversare vincitori diversi e la loro somma affine non conserva
+la legge del minimo. Questo confine non era incluso nei regimi registrati.
+
+```mermaid
+flowchart LR
+    S["Capacità stop"] --> M["Minimo delle capacità"]
+    C["Capacità control"] --> M
+    A["Capacità admission"] --> M
+    E["Espansione e inventario"] --> M
+    M --> V["Portata effettiva e frazione di vapore"]
+    V --> T["Lavoro dello stadio e coppia"]
+```
+
+Il diagramma mostra il tratto della legge che manca al modello affine:
+variare un ingresso può cambiare quale capacità determina l'uscita.
+La ricostruzione del minimo e della coppia riproduce le misure entro
+1e-9 kg/s e 1e-6 N·m. L'attribuzione riguarda **solo il primo passo preparatorio**;
+non è estesa agli attuatori successivi, non dimostra un nuovo difetto fisico
+e non qualifica ancora un modello a tratti.
 
 ### Conservazione, portata e revisione della verifica
 
@@ -164,41 +188,42 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **costruire direzioni compatibili con i rami osservati**.
-Le prime tre colonne mancanti sono state raffinate, ma il controllo di tutto
-il ciclo seleziona 19 direzioni su 30. Le undici restanti richiedono trattamenti
-distinti per cambi di fase e mancato accordo fra ampiezze.
+La prossima attività è **rappresentare il minimo delle capacità nel modello
+locale e verificarne le proposte**. Le trenta direzioni sono misurate, ma
+la prima somma combinata non prevede la risposta reale. Non basta aumentare
+il budget della ricerca o dichiarare sufficiente il rango numerico.
 
 Dalla radice del repository:
 
 ```powershell
-python .\eng\run-r3-repaired-missing-directions2.py review
-python .\eng\run-r3-repaired-complete-basis3.py review
-python .\eng\review-r3-stage-transport-repair-adjudication2.py review
+python .\eng\run-r3-repaired-steam-directions5.py review
+python .\eng\run-r3-repaired-proposal-trial6.py review
+python .\eng\review-r3-repaired-flow-minimum7.py review
 ```
 
-Gli esiti attesi sono `PASS-REPAIRED-MISSING-DIRECTIONS-EVIDENCE`,
-`PASS-REPAIRED-COMPLETE-BASIS-EVIDENCE` e
-`PASS-STAGE-TRANSPORT-OWNERSHIP-REPAIR-ADJUDICATION2`. I replay non chiamano
-l'impianto; `r3_passed` e `m10_closed` restano `false`. Gli altri replay
-rimangono collegati nelle specifiche e nelle ricevute sottostanti.
+Gli esiti attesi sono `PASS-REPAIRED-STEAM-DIRECTIONS-EVIDENCE`,
+`PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE` e
+`PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION`. Il PASS della prova 6 riguarda la
+completezza dell'evidenza: **le due previsioni restano non conformi**.
+I replay non chiamano l'impianto; R3 e M10 restano aperti.
 
-1. Leggere il [risultato esteso](../eng/frozen-evidence/r3-repaired-complete-basis3/04-analysis.json)
-   e la [specifica](../eng/contracts/r3-repaired-complete-basis3.md).
-   Separare disponibilità dello stencil, linearità e rango numerico.
-2. Per drum, hotwell, suction e massa di alimento, congelare un confronto
-   con ampiezze più piccole, direzioni compensate o sonde unilaterali
-   dichiarate. Una derivata unilaterale non diventa automaticamente una
-   coordinata libera nei due versi. Verificare tutti i nodi e checkpoint,
-   non solo la fase del nodo perturbato.
-3. Per `control-out` e `turbine-inlet`, localizzare le differenze di portata
-   e coppia e confrontare nuove scale. Conservare pesi, tolleranze, inviluppo
-   e rami; non riusare i Jacobiani della legge precedente o promuovere una
-   colonna cambiando il confronto dopo le misure.
-4. Solo con la base revisionata, pianificare proposte ripetute e confrontare
-   previsioni e risposta reale prima della ricerca. Il rango 19 non dimostra
-   impossibilità; la concordanza locale non autorizza un passo estrapolato.
-   Nessuna compensazione automatica degli inventari o modifica a UA.
+1. Leggere la [prova combinata](../eng/frozen-evidence/r3-repaired-proposal-trial6/04-analysis.json)
+   e l'[attribuzione offline](../eng/frozen-evidence/r3-repaired-flow-minimum7/01-analysis.json).
+   Non riscrivere i risultati precedenti o aggiungere retroattivamente
+   un rifiuto ai controlli registrati.
+2. Congelare l'osservazione delle capacità e dei vincitori a tutti e tre i
+   checkpoint, usando le posizioni effettive delle valvole lette dai solutori.
+   L'uscita richiesta dal governor non sostituisce sempre la posizione
+   dell'attuatore. Conservare anche margini e capacità quasi coincidenti.
+3. Costruire e confrontare un modello locale che mantenga esplicitamente
+   il minimo, oppure i suoi diversi rami con i rispettivi vincoli. Non
+   usare una sola matrice di secanti miste come legge affine del passo.
+   Mantenere i quattro vincoli unilaterali e verificare tutte le fasi.
+4. Dichiarare nuove proposte piccole e ripetute prima di una ricerca.
+   Confrontare la variazione completa, le capacità attive e l'errore lungo
+   il passo composto, soprattutto quando i contributi si cancellano.
+   Scale, criterio di radice e inviluppo restano invariati; nessuna modifica
+   fisica o compensazione automatica degli inventari è implicata.
 
 Una radice osservata richiede ancora revisione, conferme indipendenti di 100
 passi, R3 e la [sequenza di chiusura](ROADMAP.md#3-che-cosa-manca-dopo-r3-per-chiudere-m10).
@@ -216,6 +241,10 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Sensibilità accoppiate](../eng/contracts/r3-repaired-coupled-sensitivity1.md) e [ricevuta](../eng/r3-repaired-coupled-sensitivity1-returned.json) | 82 ricette, sei direzioni indipendenti validate e confronto della sonda combinata; nessuna proposta o ricerca. |
 | [Raffinamento delle direzioni](../eng/contracts/r3-repaired-missing-directions2.md) e [ricevuta](../eng/r3-repaired-missing-directions2-returned.json) | 70 ricette; tre colonne iniziali recuperate e decomposizione della coppia. |
 | [Misura delle trenta direzioni](../eng/contracts/r3-repaired-complete-basis3.md) e [ricevuta](../eng/r3-repaired-complete-basis3-returned.json) | 362 ricette; 19 colonne selezionate e rango numerico diagnostico 19. Base incompleta, nessuna proposta o ricerca. |
+| [Direzioni nei rami](../eng/contracts/r3-repaired-branch-basis4.md) e [ricevuta](../eng/r3-repaired-branch-basis4-returned.json) | 394 ricette; 28 direzioni, quattro unilaterali. |
+| [Direzioni vapore accoppiate](../eng/contracts/r3-repaired-steam-directions5.md) e [ricevuta](../eng/r3-repaired-steam-directions5-returned.json) | 114 ricette; base direzionale di rango numerico 30. |
+| [Proposte 6](../eng/contracts/r3-repaired-proposal-trial6.md) e [ricevuta](../eng/r3-repaired-proposal-trial6-returned.json) | Sei ricette; previsioni fallite, nessuna ricerca. |
+| [Attribuzione del minimo](../eng/contracts/r3-repaired-flow-minimum7.md) e [ricevuta](../eng/r3-repaired-flow-minimum7-returned.json) | Ricostruzione del primo passo senza nuove simulazioni; prima guardia errata conservata. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:
@@ -229,6 +258,11 @@ Le console separate di diagnosi e sensibilità e il runner riutilizzabile compil
 preflight, fixture e replay PASS. Gli alberi `src` e `tests` coincidono con
 quelli della suite completa appena citata, che non è stata rieseguita per
 queste sole aggiunte diagnostiche.
+La revisione del minimo conserva il primo rifiuto del controllo sulle frazioni
+esattamente zero. Le frazioni circa 5,55e-21 e 1,11e-20 producono invece
+esattamente gli stessi ingressi in `baseline * (1 + frazione)` in binary64.
+La correzione del controllo, dichiarata dopo quel rifiuto, non ha aggiunto
+chiamate fisiche; codice, specifica, contratto e log originali restano congelati.
 
 I vecchi replay richiedono i propri commit: H4–H9 e revisione di sufficienza
 `72b0910`; diagnostiche non fluide e revisione vincolata `ed35d9e`;

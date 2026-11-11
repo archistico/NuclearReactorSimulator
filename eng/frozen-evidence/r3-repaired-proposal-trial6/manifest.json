@@ -1,0 +1,54 @@
+{
+  "schema": "r3-repaired-proposal-trial6-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2146,
+      "sha256": "C82C3A473CFB2FB440C38F3AAB5E92C72782202CD68C8645672F653A6663D9C6",
+      "stored_sha256": "C82C3A473CFB2FB440C38F3AAB5E92C72782202CD68C8645672F653A6663D9C6"
+    },
+    {
+      "file": "01-model.json",
+      "stored": "01-model.json",
+      "bytes": 8331,
+      "sha256": "6A45376103B1507126C49D766887C0D80AFF1CBCB305A4A1F1D78AC8D168187B",
+      "stored_sha256": "6A45376103B1507126C49D766887C0D80AFF1CBCB305A4A1F1D78AC8D168187B"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 4539,
+      "sha256": "AFA182B5B81AF72BD6719710B8B1271055299217CBD8E0E7E159562C9AD6AE73",
+      "stored_sha256": "AFA182B5B81AF72BD6719710B8B1271055299217CBD8E0E7E159562C9AD6AE73"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3239,
+      "sha256": "0C4474F6C4DD5EDFA66164F604338686E4E35E72BF29A436204B5D03E8AD7029",
+      "stored_sha256": "0C4474F6C4DD5EDFA66164F604338686E4E35E72BF29A436204B5D03E8AD7029"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 143674,
+      "sha256": "4451FCC5E12796A9879625201EE4F71FA4EA8195E2C3B13B7F361ACAE904C6FB",
+      "stored_sha256": "8D22124E320854289D79AEF75B268EE9751E4FB90DA7F24A9145E21DDBB40900"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 20982,
+      "sha256": "EA6E8FC1094C9E278CDEAFC123208DE8752392F139C5989FD7F521B9DDEF96A8",
+      "stored_sha256": "EA6E8FC1094C9E278CDEAFC123208DE8752392F139C5989FD7F521B9DDEF96A8"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 79,
+      "sha256": "52D8A73B860CF7F0885881EFBDEDFBA0F9068066479DA2CBE21B4C360ADF4818",
+      "stored_sha256": "52D8A73B860CF7F0885881EFBDEDFBA0F9068066479DA2CBE21B4C360ADF4818"
+    }
+  ]
+}

@@ -29,24 +29,25 @@ il significato delle verifiche; questa roadmap definisce le consegne future.
 
 NRS-MARKER:R3-H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-NEXT
 
-Il lavoro parte dal campo di flussi della legge riparata. Il
-[checkpoint](PROJECT.md#il-problema-da-risolvere) spiega gli accumuli e collega
-le nuove misure. Le tre direzioni inizialmente mancanti sono state raffinate:
-`pressure` richiede sonde più piccole, l'energia di `exhaust` un confronto
-locale fra ampiezze dichiarate. La successiva misura di tutto il ciclo
-seleziona **19 colonne su 30**, con tutte le sei grandezze non fluide.
+Il [checkpoint](PROJECT.md#il-problema-da-risolvere) spiega gli accumuli e
+collega le nuove misure. La base attuale contiene trenta direzioni, con
+quattro vincoli unilaterali e due direzioni accoppiate. Il rango numerico
+diagnostico è 30, ma le prime due proposte combinate hanno fallito la previsione.
 
-Restano undici coordinate: sette incontrano cambi di fase o non hanno una
-seconda scala ammessa; quattro non concordano fra ampiezze. Il prossimo
-confronto deve quindi costruire direzioni compatibili con questi rami,
-mantenendo i controlli su tutti i nodi e lungo tutta la preparazione.
+La ricostruzione offline attribuisce lo scarto già al primo passo al minimo
+fra le capacità delle valvole e dello stadio: cambia il limite che determina
+la portata, mentre la matrice di secanti somma risposte di tratti diversi.
+La prossima finestra deve osservare queste capacità lungo tutta la ricetta
+e verificare un modello che mantenga tale minimo, prima di una ricerca.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
 | Diagnosi iniziale completata | Due ricette identiche; scambi termici e bilanci di exhaust ricostruiti. | PASS della diagnosi; nessuna radice o ricerca. Singole portate corrette non osservate. |
 | Raffinamento iniziale completato | 70 ricette ripetibili; recuperate le tre colonne mancanti e verificati i bilanci di coppia. | PASS dell'evidenza; accordo locale, nessuna estrapolazione. |
 | Misura estesa completata | 362 ricette ripetibili, 334 nell'inviluppo; selezionate 19 colonne su 30. | Rango numerico diagnostico 19; disponibilità incompleta e nessuna sufficienza dimostrata. |
-| Costruire le direzioni nei rami ammessi | Trattare separatamente confini di fase, assenza di una seconda scala e disaccordo delle colonne di control-out e turbine-inlet. | Sonde compensate, unilaterali o più piccole dichiarate prima delle misure; previsioni e vincoli del verso verificati. |
+| Base direzionale costruita | 394 ricette portano a 28 direzioni; altre 114 aggiungono due direzioni accoppiate, con rango numerico 30. | Quattro coefficienti restano non negativi. Il risultato non valida le derivate cartesiane mancanti. |
+| Prime proposte eseguite | Due frazioni del passo lineare, ripetute: sei ricette. | Evidenza PASS, ma entrambe le previsioni falliscono il 10%; nessuna ricerca avviata. |
+| Rappresentare il limite di portata | Capacità e vincitori a tutti i checkpoint; confronto con un modello del minimo o dei suoi diversi rami. | Previsioni ripetute conformi, con vincoli di ramo e verso, prima della ricerca. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
 | Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
@@ -56,8 +57,8 @@ mantenendo i controlli su tutti i nodi e lungo tutta la preparazione.
 ```mermaid
 flowchart TD
     R["Trasporto di fase verificato"] --> M["Misura del punto riparato"]
-    M --> S["19 colonne su 30: costruire le direzioni nei rami ammessi"]
-    S --> A["Nuova base locale e proposte ripetute"]
+    M --> S["30 direzioni: prime proposte non conformi"]
+    S --> A["Rappresentare il minimo delle capacità e verificare nuove proposte"]
     A --> B{"Previsioni e ramo verificati?"}
     B -->|"no"| S
     B -->|"sì"| C["Ricerca con criteri e budget congelati"]
@@ -77,6 +78,9 @@ energetico di exhaust non basta: annullarlo a stato fisso peggiorerebbe la massa
 Non è una prova di impossibilità della famiglia o una proposta di modifica a UA.
 Il successo della sonda nucleare-termica vale soltanto alle ampiezze misurate:
 non autorizza di colpo il passo necessario a compensare un deficit di circa 1 MW.
+Anche trenta direzioni disponibili non bastano a rendere affine una legge del
+minimo vicino a capacità quasi coincidenti. L'attribuzione corrente copre solo
+il primo passo; il modello dei passi successivi deve ancora essere verificato.
 
 Le famiglie C/J, gli allargamenti dei limiti e altre modifiche fisiche richiedono
 motivazioni e protocolli distinti. Il calendario potrà essere stimato quando

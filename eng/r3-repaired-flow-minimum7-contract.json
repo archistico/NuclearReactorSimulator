@@ -1,0 +1,211 @@
+{
+  "schema": "r3-repaired-flow-minimum7-v1",
+  "policy": {
+    "runtime_steps": 0,
+    "scope": "first seed checkpoint only",
+    "mass_tolerance_kg_s": 1e-09,
+    "torque_tolerance_nm": 1e-06,
+    "valve_resistance": 1000.0,
+    "expansion_resistance": 21400.0,
+    "dt_s": 0.01,
+    "control_valve_percent": 29.281329697436618,
+    "operating_point_guard": "all (1 + fraction) equal exactly 1 in binary64",
+    "reproduce_original_zero_guard_failure": true,
+    "previous_guards_rewritten": false,
+    "production_changes": 0,
+    "r3_passed": false,
+    "m10_closed": false
+  },
+  "unchanged_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "output": "artifacts/r3-repaired-flow-minimum7",
+  "implementation_files": [
+    {
+      "path": "eng/review-r3-repaired-flow-minimum7.py",
+      "sha256": "7C8AB558620EE4D262C5E1812453CDC7831FA7A632D0DC30FFCF1DF5C62D2510"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-flow-minimum7.md",
+      "sha256": "F0001EA74DE17EE527A7F9EE97A32697B1762174F8DD2BC843D964D879E03A9E"
+    },
+    {
+      "path": "eng/run-r3-repaired-proposal-trial6.py",
+      "sha256": "1F5B90D1357A9F80A15E5BD20C0EC9B1EE5EBD0E454771B611D1562A4F2417F6"
+    },
+    {
+      "path": "eng/run-r3-repaired-steam-directions5.py",
+      "sha256": "731F2A56A6A6FC1EB4C9BF88B1961F44382D8CB0398768DCDA0C51A7EFF00DEF"
+    },
+    {
+      "path": "eng/run-r3-repaired-branch-basis4.py",
+      "sha256": "4A9839D8F15B85C0C354BC2DF734CDC95A39ABFF9B001F948690C7CD714E3C7A"
+    },
+    {
+      "path": "eng/run-r3-repaired-complete-basis3.py",
+      "sha256": "BE07099EDC076A7D9EF0F450C5A6128CE4B02A80C566866CD1526ACB2ECBC86C"
+    },
+    {
+      "path": "eng/run-r3-repaired-missing-directions2.py",
+      "sha256": "69CB4608ADD225DFEF267DCC5BDE4669441BDA8AB26CD31E3AF3245CA844410F"
+    },
+    {
+      "path": "eng/run-r3-repaired-coupled-sensitivity1.py",
+      "sha256": "7781A921C909A810F6A4432BFDEB7CA4F5D3C6AC6C18A25C3D6324C59CC35837"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/r3_h_minimax_lp.py",
+      "sha256": "741E6A38FD8C849497E7004074CDCF599B0FB7E249851DFCA4CCE50FEAF3DD5E"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineStageMassFlowResolver.cs",
+      "sha256": "EE14A79779EDAF5C824DCC08095815748EDBB46A0C46EB50AB283BD6C1F8CE1A"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveFlowSolver.cs",
+      "sha256": "429334D65487A9FE4C516EA09DDAD7003D072BC2B6124029E223C1C080775FE7"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveCharacteristicSolver.cs",
+      "sha256": "360F45027F6D7D4017D56AF5884D35694F48B1213AA2329B684584ED7EC2866F"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/PipeFlowSolver.cs",
+      "sha256": "A9C57F3A71561D32A0278D345D2FE24627B11E32518BBF9D46F3446C82463E64"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+      "sha256": "2EF50596DBB4AB5215A484511623D569F2CAE9260962BABAE14BC789F21459F7"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+      "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-contract.json",
+      "sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-returned.json",
+      "sha256": "8B063F893FBE5AECC0220A2A084872AC14DE358B105A237DEEA1F15A9EC25308"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/manifest.json",
+      "sha256": "FACF8D87D14524A2E33CD3D400E4DCA5DA42540454936CF927DB326B9F266A06"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-contract.json",
+      "sha256": "DE164CE8C7829E65A10ADD4651A3D54552AE6345E064CF4CEB717FE0CFB5D7EE"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-returned.json",
+      "sha256": "1F11D5BCAC8C87F20694A365CA22107AC6E0D386D289F5C11DB9ED14A77A588A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-raw-owner-diagnostic1/manifest.json",
+      "sha256": "9DA059FF46E55559D27E13DE81CFD51433263D5FC1E9C2FF06F80FD217C80EAC"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-contract.json",
+      "sha256": "D3186F9032C932812869500DDB4D4BD581689C1C37B625776648B9AAC38A688B"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-returned.json",
+      "sha256": "8420E2504D691BDE922E038B8154247A8AB33190E4DD6AC2AD9DC763E065C6C7"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-coupled-sensitivity1/manifest.json",
+      "sha256": "E783E23788E017596C23C46570BC1E5D8861CFAE850B85A7EC40DBE4279D43F2"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-contract.json",
+      "sha256": "122B15D3116402F2F61E31AB33CB96108A3AE54A4A9DAF9F5B7974EF45B8249C"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-returned.json",
+      "sha256": "49E54BA12E4CFAB26926AFDA476571936D5EBB8536B3D0F67ACE7326C56D8312"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-missing-directions2/manifest.json",
+      "sha256": "4283E6F1A8E5ED8EBFF4437553621F454354084E5C4A439DF3705B18ACBAEFC8"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-contract.json",
+      "sha256": "EF560FFD356484F6FA51D74596841EAA133EEA3E0E06ED32E46636BCA9322978"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-returned.json",
+      "sha256": "1F95CB03259AAD12EFD79C057DDA48C2185C7E3E54EEC301FB24C7E285F480C8"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-complete-basis3/manifest.json",
+      "sha256": "D752C1FB57095A9F33F13D8EA2ABC977D8DD22DE7EAE2143443243C7367B516B"
+    },
+    {
+      "path": "eng/r3-repaired-branch-basis4-contract.json",
+      "sha256": "58C9734D9D5F306F12999FDCA463C41503C7A28596F456604F7727E6CA50DE15"
+    },
+    {
+      "path": "eng/r3-repaired-branch-basis4-returned.json",
+      "sha256": "6F468E7A753E2DAF0D258090974CAEEA4EE5A203AF8E599721974260CBBE2684"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-branch-basis4/manifest.json",
+      "sha256": "CD0BBF3378F1F7B6F3012A6DC6ABDD88FD604E7E2CEF1E3893C79B1AE84CD521"
+    },
+    {
+      "path": "eng/r3-repaired-steam-directions5-contract.json",
+      "sha256": "58BE0A10FE65AF9EC9B0C2E04C4F7728B6F4113EFC9EDA5D5372B618CA95E03A"
+    },
+    {
+      "path": "eng/r3-repaired-steam-directions5-returned.json",
+      "sha256": "5EFED89F0F3B02598360675896F9A0E82FA988E0178EBDEE921C75C0B902C9AA"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-steam-directions5/manifest.json",
+      "sha256": "5EEA191E76C4486EE5B8C9FBF1BBB4404DB33795AEE96212A5C7368B56119D67"
+    },
+    {
+      "path": "eng/r3-repaired-proposal-trial6-contract.json",
+      "sha256": "D18A9B71D9A8715B3C15624E8518391A1CB66C6999D8CCDDE9C257C1B94D7221"
+    },
+    {
+      "path": "eng/r3-repaired-proposal-trial6-returned.json",
+      "sha256": "92509FFB0CC54BE04D33F5887E34F1EA61C919773191A6C2B0C356321750CB52"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-proposal-trial6/manifest.json",
+      "sha256": "82B4E1CACFC7FB8D5A719FB8D858FF44F84F33EEB2DA88018A22F87C1CFAF221"
+    }
+  ],
+  "review_correction": {
+    "previous_contract_sha256": "21090D0506DF4135BD5F1C31F5566E6971FEADA24005E2370AB0C10AC4404EFA",
+    "runtime_steps": 0,
+    "reason": "Textually nonzero fractions round to identical effective operating inputs; exact binary64 identity replaces the failed zero-value assumption"
+  }
+}
