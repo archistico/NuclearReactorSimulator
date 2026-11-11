@@ -6,7 +6,7 @@ spiega il percorso futuro e il [changelog](../CHANGELOG.md) registra i cambiamen
 
 ## Stato corrente
 
-Checkpoint dell'**11 novembre 2026**, dopo la diagnostica delle grandezze non fluide.
+Checkpoint dell'**11 novembre 2026**, dopo la revisione vincolata delle grandezze non fluide.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -18,6 +18,7 @@ Checkpoint dell'**11 novembre 2026**, dopo la diagnostica delle grandezze non fl
 | Revisione di sufficienza H | PASS offline: il massimo scalato è sceso mentre lo squilibrio fisico cresceva; il modello lineare dei soli inventari non contiene una radice. |
 | Diagnostica valvola di regolazione | Eseguita e congelata, replay PASS: `CONTROL-VALVE-NOT-MATERIAL-IN-LINEAR-MODEL`. |
 | Altre grandezze non fluide | Eseguite e congelate, replay PASS: `NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`, artefatto di colonne collineari. |
+| Revisione vincolata | Offline, congelata, replay PASS: `NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`. |
 | M10 | **Aperto**. Nessuna ricerca o nuova prova lunga attualmente in corso. |
 
 ### Il problema da risolvere
@@ -127,34 +128,59 @@ non vincolava il passo del modello congiunto; l'esito resta conservato com'è,
 ma non motiva una famiglia. Le [decisioni](validation/MODEL_DECISIONS.md#classificare-i-modelli-lineari-entro-la-regione-delle-sonde)
 registrano la correzione per i protocolli successivi.
 
+### Che cosa ha mostrato la revisione vincolata
+
+La [revisione offline](../eng/contracts/r3-op-bounded-combination-review1.md)
+ripete il confronto con le stesse colonne, ma con limiti fissati prima del
+calcolo: inventari entro ±2%, grandezze non fluide entro ±1e-2, l'ampiezza
+massima sondata. Il solutore a insieme attivo certifica ogni soluzione con le
+condizioni KKT; popolazione e temperature sono raggruppate in una frazione
+comune e controllate anche separatamente.
+
+| Modello | Massimo tasso di energia | `stop-out` / `control-out` | `turbine-inlet` |
+| --- | --- | --- | --- |
+| Soli inventari, ±2% | 335 kW | 201–224 kW | 323–335 kW |
+| Con grandezze non fluide, ±1e-2 | 357 kW, il 107% | 188–213 kW | 348–357 kW |
+
+Il modello separato e quello con le grandezze non fluide fino a ±2% danno gli
+stessi valori. Entro i limiti la pompa di condensato raggiunge il proprio, le
+altre grandezze restano sotto l'1%. Nessuna combinazione sposta l'accumulo di
+energia lungo la linea vapore: l'esito è
+**`NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`**. Il residuo
+coincide per posizione con lo squilibrio su `turbine-inlet` che la revisione di
+sufficienza attribuisce allo spostamento di energia specifica introdotto da C4.
+
 ## Handoff
 
-Le sei grandezze non fluide del seam del seed sono misurate. Nessuna, da sola,
-sposta il residuo della linea vapore; la sola combinazione che lo riduce
-richiede passi fuori da ogni regione fisica. La prossima attività proposta è una
-**revisione offline vincolata**, senza chiamate all'impianto: minimi quadrati
-con le 24 coordinate degli inventari e le colonne non fluide congelate, tutte
-entro ±2%, raggruppando popolazione e temperature in un'unica direzione di
-calore del nocciolo e riportando il condizionamento. Le soglie si fissano nel
-contratto prima del calcolo.
+Inventari fluidi e grandezze non fluide sono misurati: nessuna combinazione
+entro i limiti delle sonde sposta l'accumulo di energia lungo la linea vapore.
+La condizione dell'handoff precedente è soddisfatta e gli esiti sono
+conservati. La prossima attività è la **revisione della legge di energia dello
+stadio**, cui la revisione di sufficienza attribuisce lo squilibrio su
+`turbine-inlet`: a parità di stato bersaglio, C4 assegna circa 75,5 kJ/kg in
+più alla portata di stadio.
 
-Se nemmeno entro il box una combinazione riduce materialmente il massimo
-tasso di energia, la condizione dell'handoff è soddisfatta: si conserva
-l'esito e si passa alla **revisione della legge di energia dello stadio**, cui
-la revisione di sufficienza attribuisce lo squilibrio su `turbine-inlet`
-introdotto da C4. Quella revisione tocca la fisica e richiede motivazione e
-protocollo propri.
+Seguendo le [decisioni ingegneristiche](validation/MODEL_DECISIONS.md#ricostruire-responsabilità-e-bilanci-prima-di-cambiare-la-fisica),
+il primo passo è una ricostruzione senza modifiche alla produzione: quale
+energia specifica trasporta lo stadio, da quale chiusura la ricava, e se
+Exact-V9 e C4 la valutano in modo coerente con l'energia degli inventari
+collegati. Solo un'incoerenza dimostrata motiva una proposta di modifica
+fisica, con protocollo, verifiche locali e riqualificazione propri.
 
-I replay delle due diagnostiche non fluide si eseguono sull'albero a 411 file:
+I replay delle diagnostiche non fluide e della revisione vincolata si eseguono
+sull'albero a 411 file:
 
 ```powershell
 python .\eng\run-r3-op-control-valve-sensitivity1.py review
 python .\eng\run-r3-op-remaining-quantities-sensitivity1.py review
+python .\eng\review-r3-op-bounded-combination1.py review
 ```
 
-con esito atteso `PASS-EVIDENCE-COMPLETE` e classificazioni
+con esiti attesi `PASS-EVIDENCE-COMPLETE` e classificazioni
 `CONTROL-VALVE-NOT-MATERIAL-IN-LINEAR-MODEL` e
-`NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`. I replay di H4–H9, dei Trial e
+`NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`, poi
+`PASS-BOUNDED-COMBINATION-REVIEW` con
+`NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`. I replay di H4–H9, dei Trial e
 delle revisioni restano legati all'albero a 410 file e si eseguono al commit
 `72b0910`, che lo contiene; i comandi seguenti valgono su quel commit. I
 pacchetti congelati non cambiano.
@@ -186,10 +212,11 @@ con esito atteso `PASS-FAMILY-SUFFICIENCY-REVIEW`.
    e [delle altre grandezze](../eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/05-adjudication.json):
    `sensitivities`, `linear_models`, `quantities` e `combined_model` contengono
    colonne, passi e previsioni esatte; le tracce dei batch le colonne complete.
-4. Preparare contratto e revisione statica della revisione offline vincolata,
-   eseguirla, revisionarla e congelarla. Se nessuna combinazione entro ±2%
-   riduce materialmente il residuo della linea vapore, conservare l'esito e
-   rivedere la legge di energia dello stadio prima di altre ricerche.
+4. Leggere l'[analisi vincolata](../eng/frozen-evidence/r3-op-bounded-combination-review1/01-analysis.json):
+   `models` contiene passi, certificati e `steam_path_energy_rates_w`.
+5. Preparare contratto e revisione statica della ricostruzione della legge di
+   energia dello stadio, senza modifiche alla produzione; eseguirla,
+   revisionarla e congelarla prima di proporre cambiamenti fisici.
 
 Per la famiglia H restano fissi 24 inventari fluidi, box ±2%, 75 residui e scale.
 La diagnostica varia le condizioni non fluide soltanto come sonde di test;
@@ -214,6 +241,7 @@ Un replay PASS attesta la completezza dell'evidenza; non promuove un seed.
 | [Revisione di sufficienza H](../eng/contracts/r3-h-family-sufficiency-review1.md) e [ricevuta](../eng/r3-h-family-sufficiency-review1-returned.json) | Scale, metrica fisica, attribuzione e modello lineare; nessuna chiamata fisica. |
 | [Diagnostica valvola](../eng/contracts/r3-op-control-valve-sensitivity1.md), [esito](../eng/frozen-evidence/r3-op-control-valve-sensitivity1/05-adjudication.json) e [ricevuta](../eng/r3-op-control-valve-sensitivity1-returned.json) | 22 sonde ripetute sulla valvola di regolazione; non materiale nel modello lineare. |
 | [Altre grandezze non fluide](../eng/contracts/r3-op-remaining-quantities-sensitivity1.md), [esito](../eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/05-adjudication.json) e [ricevuta](../eng/r3-op-remaining-quantities-sensitivity1-returned.json) | 102 sonde ripetute su pompe, popolazione e temperature; combinazione materiale solo fuori dal box. |
+| [Revisione vincolata](../eng/contracts/r3-op-bounded-combination-review1.md), [analisi](../eng/frozen-evidence/r3-op-bounded-combination-review1/01-analysis.json) e [ricevuta](../eng/r3-op-bounded-combination-review1-returned.json) | Minimi quadrati certificati entro i limiti delle sonde; nessuna chiamata fisica. |
 | [Sintesi della validazione](validation/README.md) | Differenza fra controlli locali, evidenza e qualificazione fisica. |
 
 I replay H sono PASS sull'albero a 410 file di test; i 962 sorgenti produttivi

@@ -1,0 +1,12 @@
+{
+  "schema": "r3-op-bounded-combination-review1-frozen-v1",
+  "files": [
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 29378,
+      "sha256": "6AAE72E54EF2D2AA50BD791B46547F9726DB5FF87A6781DDCC9E6BF7637B4B3B",
+      "stored_sha256": "6AAE72E54EF2D2AA50BD791B46547F9726DB5FF87A6781DDCC9E6BF7637B4B3B"
+    }
+  ]
+}

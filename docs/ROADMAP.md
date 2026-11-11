@@ -35,15 +35,17 @@ di energia specifica introdotto dalla nuova chiusura. La
 indica che i soli inventari fluidi non bastano, nel modello lineare, e che il
 massimo scalato non misura l'avvicinamento fisico all'equilibrio. Misuriamo
 quindi la sensibilità ai punti operativi non fluidi prima di altre ricerche.
-Le sei grandezze sono misurate: nessuna, da sola,
-[sposta il residuo della linea vapore](PROJECT.md#che-cosa-hanno-mostrato-le-altre-grandezze-non-fluide),
-e la sola combinazione che lo riduce esce dal box. Il confronto fra sonde
+Le sei grandezze sono misurate e, entro i limiti delle sonde,
+[nessuna combinazione](PROJECT.md#che-cosa-ha-mostrato-la-revisione-vincolata)
+sposta l'accumulo di energia lungo la linea vapore. Il passo successivo è
+ricostruire la legge di energia dello stadio. Il confronto fra sonde
 compensate e riserva energetica resta sospeso.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
-| Diagnostica non fluida | Completata per le sei grandezze; resta la revisione offline vincolata a ±2%, con le direzioni collineari raggruppate. | Soglie e limiti fissati prima del calcolo, condizionamento e metrica fisica riportati. |
-| Scegliere la famiglia | Decidere con un protocollo distinto fra H, C, J o revisione della legge di stadio. | Una grandezza che sposti i residui della linea vapore, o un esito negativo conservato. |
+| Diagnostica non fluida | Completata: sei grandezze misurate, revisione vincolata negativa e congelata. | — |
+| Legge di energia dello stadio | Ricostruire, senza modifiche alla produzione, l'energia specifica trasportata dallo stadio sotto Exact-V9 e C4. | Un'incoerenza dimostrata, o la sua esclusione, conservata con evidenza riproducibile. |
+| Scegliere la famiglia | Decidere con un protocollo distinto fra H, C, J o una legge di stadio corretta. | Esito della ricostruzione dello stadio revisionato e conservato. |
 | Verificare la base locale | Misurare direzioni indipendenti, compatibili con tutti i checkpoint della ricetta. | Derivate disponibili e previsioni direzionali verificate a una scala utile. |
 | Provare le proposte | Congelare le proposte e confrontarle due volte con la risposta reale. | Ripetizioni identiche, discesa, ramo ed errore del modello conformi. |
 | Eseguire una nuova ricerca | Fissare algoritmo, criteri di arresto e budget sulla base della prova. | Evidenza completa e una radice osservata prima della conferma. |

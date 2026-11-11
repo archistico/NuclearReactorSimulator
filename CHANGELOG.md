@@ -87,6 +87,21 @@ Specifiche, esiti e comandi sono raggiungibili dalle
 - Registrata la decisione di classificare i modelli lineari entro i limiti
   delle sonde, raggruppando le direzioni collineari.
 
+### Revisione vincolata della combinazione non fluida
+
+- Aggiunto un solutore ai minimi quadrati con limiti, a insieme attivo, con
+  certificato KKT e sei casi analitici; confrontato fuori dal repository con
+  il gradiente proiettato su 60 problemi casuali (eccesso massimo 1,4e-14).
+- Committati specifica e contratto prima del calcolo: inventari entro ±2%,
+  grandezze non fluide entro ±1e-2, nocciolo raggruppato e controllo separato.
+- Con i soli inventari vincolati il massimo è 335 kW su `turbine-inlet`; con le
+  grandezze non fluide sale a 357 kW, il 107%, in tutti i modelli. Certificati
+  soddisfatti, raggruppamento ininfluente, nessuna chiamata all'impianto.
+- Lungo la linea vapore restano 190–210 kW su `stop-out` e `control-out` e
+  circa 350 kW su `turbine-inlet` qualunque sia la combinazione. Esito
+  `NO-BOUNDED-NONFLUID-COMBINATION-MATERIAL-IN-LINEAR-MODEL`, congelato con
+  replay PASS: la prossima attività è la revisione della legge di energia dello stadio.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto
