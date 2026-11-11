@@ -1,0 +1,33 @@
+{
+  "schema": "r3-repaired-raw-owner-diagnostic1-frozen-v1",
+  "files": [
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 823,
+      "sha256": "EF055041E987E92299300B2C86A01AF9B0E7AAA74260C58A6537D35C2BDAE5E0",
+      "stored_sha256": "EF055041E987E92299300B2C86A01AF9B0E7AAA74260C58A6537D35C2BDAE5E0"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 40372,
+      "sha256": "B23406E760691688F35B9300AB574A6B59AE6E7AEE18164F1475F3C1DBB11F3C",
+      "stored_sha256": "696C138AC04515828049FD3D274A5C1CC607BFFA22567724C6292658D352BBA8"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 5963,
+      "sha256": "7B4225A11824E3AA61D90C47DF277887437DAA5CD6C96F96F9FE5C79C60BC4A1",
+      "stored_sha256": "7B4225A11824E3AA61D90C47DF277887437DAA5CD6C96F96F9FE5C79C60BC4A1"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 83,
+      "sha256": "53A6AB154186FCA4124BA24CFB3D214FBD995785CE6FE0B4A1995624EC1DB28A",
+      "stored_sha256": "53A6AB154186FCA4124BA24CFB3D214FBD995785CE6FE0B4A1995624EC1DB28A"
+    }
+  ]
+}

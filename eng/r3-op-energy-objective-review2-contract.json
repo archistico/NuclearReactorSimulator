@@ -1,0 +1,210 @@
+{
+  "schema": "r3-op-energy-objective-review2-v1",
+  "policy": {
+    "plant_calls": 0,
+    "inventory_bound": 0.02,
+    "nonfluid_bound": 0.01,
+    "energy_rows": 36,
+    "material_ratio": 0.5,
+    "objective": "max-absolute-energy-rate",
+    "production_change": false,
+    "root_qualification": false
+  },
+  "output": "artifacts/r3-op-energy-objective-review2",
+  "implementation_files": [
+    {
+      "path": "eng/review-r3-op-energy-objective2.py",
+      "sha256": "865668DB8F6374AC3134FDF996EE155D4E3D89A171500D7EA40354972EA00228"
+    },
+    {
+      "path": "eng/r3_h_minimax_lp.py",
+      "sha256": "741E6A38FD8C849497E7004074CDCF599B0FB7E249851DFCA4CCE50FEAF3DD5E"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-op-bounded-combination-review1.md",
+      "sha256": "6670B985F21E8EB1135C1356E47C7775626B8BDDF442504E05A6B2E27F874166"
+    },
+    {
+      "path": "eng/contracts/r3-op-control-valve-sensitivity1.md",
+      "sha256": "DE3C3DA9192D02013B8009ED36A228A0D2A6F46D176008E8B99B77350D5230E7"
+    },
+    {
+      "path": "eng/contracts/r3-op-energy-objective-review2.md",
+      "sha256": "DFDA9589985726C05C364A1604726042B651A85C3C8D22EDDD03F81FC3A4E9ED"
+    },
+    {
+      "path": "eng/contracts/r3-op-remaining-quantities-sensitivity1.md",
+      "sha256": "C8B0AF0B4CE6CA3C76E025036454F4B6208B1A033876D01DC7C32F298E7EDF89"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-family-sufficiency-review1/01-analysis.json",
+      "sha256": "ACB5231B392D1F3724005CA8648146020883AFF306D34B5A6CB65B94634742DC"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-family-sufficiency-review1/manifest.json",
+      "sha256": "EE19DEC19EEF8CCDC88D8D029F02A4BF799C76E4291A124D7CB8E967907508CA"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/04-search-trace.jsonl.gz",
+      "sha256": "3B3BD7E2EE0ED4C672A8627FAF77675B350D7FF67721AC9CF45F200AFB17AEBB"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/08-manifest.csv",
+      "sha256": "125037BC24308CAA332449351C02FD658957BC909CFABCA2DA1956243626F416"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-bounded-combination-review1/01-analysis.json",
+      "sha256": "6AAE72E54EF2D2AA50BD791B46547F9726DB5FF87A6781DDCC9E6BF7637B4B3B"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-bounded-combination-review1/manifest.json",
+      "sha256": "769971BA01FDFC731A0CE4580933A1AAB02E7D877F2F7EED32287A8151D822FA"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-control-valve-sensitivity1/01-static.json",
+      "sha256": "9D9AFD5C21ADDCBBBEE7A57BEAE440C79062752696DB322085E18E57B375FDAF"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-control-valve-sensitivity1/02-preexecution.json",
+      "sha256": "9357DD7BF6C0B02755929BC2625325313DE91F8BEB70E75B624470F913BA4A9F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-control-valve-sensitivity1/03-batches.jsonl.gz",
+      "sha256": "CE0E9DFA134BCDBADBB1971756F8CCE60614876F1C3C5193A241A11FF30EAA86"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-control-valve-sensitivity1/05-adjudication.json",
+      "sha256": "75645876DC2151361FC959102C4E8EA2F2BEF067017A776819F20A84781C5E42"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-control-valve-sensitivity1/batch-execution.xml",
+      "sha256": "5D1E3F4E06E5F9A4D8A41ECDACF668CD76FE3F195A03341E0B9C91676457C288"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-control-valve-sensitivity1/manifest.json",
+      "sha256": "BA87806134400856CAB53159F3EEA270971B230417949B164DA0EAA68601B0DE"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-control-valve-sensitivity1/preexecution.xml",
+      "sha256": "EC11268424B5BED0145CE4D54187D4480BDC5F6F49969E1583E51AE0B2748768"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/01-static.json",
+      "sha256": "0397A0F83197161AC8FC6DDD52D63D8B259276747D78F9DEE65008220D8383C8"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/02-preexecution.json",
+      "sha256": "0160F261A844E95EE70BB8BCD42A01F7B48460B1158615AC2045770F9996BCDB"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/03-batches.jsonl.gz",
+      "sha256": "72D360D512B3107CA49C0C2E6CBA587AB48AB8B737712BB9FDD79DC563EAE20F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/05-adjudication.json",
+      "sha256": "069DDA1813CA20BB27B9BA5479EE34EBDA390DEAD6C7F05B00B9122ECF12A8B5"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/batch-execution.xml",
+      "sha256": "0B75A7B057A6EFE6F78C7C1E1A43C9EBFB609DA7F9000C115877CC29B597F0E3"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/manifest.json",
+      "sha256": "4927972268A956238F27BEA7AF1E214F96ED206CC304551185F2ED449FC6BC06"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-op-remaining-quantities-sensitivity1/preexecution.xml",
+      "sha256": "3F8F6FBACDA658C82DE0D6E1A90FCB8FE75F6512176D8AE50CE458361DAD8126"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-h-family-sufficiency-review1-contract.json",
+      "sha256": "58C615DEA145E48B5A3F4BF8281251268EEA66960DBFA2BC5DB470A32772F052"
+    },
+    {
+      "path": "eng/r3-h-family-sufficiency-review1-returned.json",
+      "sha256": "34480163A2CC2527BE88527124472D9B015F401CF9A8D077A960A5F45BCC9C76"
+    },
+    {
+      "path": "eng/r3-op-bounded-combination-review1-contract.json",
+      "sha256": "8F417D977D759125728EF2752AD0055FAF823E267C4EA06E73781537B9A2C8F4"
+    },
+    {
+      "path": "eng/r3-op-bounded-combination-review1-returned.json",
+      "sha256": "2017DDB4BBEEE1329A07A2F4B0C9E3EDF07D93B08EE968C3AA6E3BB79D44A55A"
+    },
+    {
+      "path": "eng/r3-op-control-valve-sensitivity1-contract.json",
+      "sha256": "87D2E7A42A7DA7E66359A1A7D2F5EE8E7EED794249A2DB4A43E3EF0C49460206"
+    },
+    {
+      "path": "eng/r3-op-control-valve-sensitivity1-returned.json",
+      "sha256": "10231EFF93AF48930E552FDA0F83670AC229260861B5063CD64B93FEE15835B5"
+    },
+    {
+      "path": "eng/r3-op-remaining-quantities-sensitivity1-contract.json",
+      "sha256": "8C1049820AEA1550491CA126E082DFE27EC10D584A662E6B7E85D76068987034"
+    },
+    {
+      "path": "eng/r3-op-remaining-quantities-sensitivity1-returned.json",
+      "sha256": "2FAB4CD99E81864B8F4FD2CB365CB985B227E00B8C9F9978B946F2AEE5266A63"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/r3_op_protocol.py",
+      "sha256": "41D69083D82CA389745D3E63271E8C70D5603F1CFDAF2EAB4EEE0B6B867227A5"
+    },
+    {
+      "path": "eng/review-r3-h-family-sufficiency1.py",
+      "sha256": "C6B8ACF43AA534CE3295D0189F2B8C5D311FA82A60B92BA680FC34CF9FF2F8F0"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/review-r3-op-bounded-combination1.py",
+      "sha256": "DD0418F159941DF5ED7690F35F958DF0260F8C7EDCBC5706445CC7695C27167D"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-op-control-valve-sensitivity1.py",
+      "sha256": "8E3AE4AFB8C8B827E6495C2DF4EA444B95D3A9F651AE8D7DBA16DFD0C05683D2"
+    },
+    {
+      "path": "eng/run-r3-op-remaining-quantities-sensitivity1.py",
+      "sha256": "D060C21AE53A5B2DD58E2AC36FE59ACED60DBD26D6DBE50D44FA54777BE83137"
+    },
+    {
+      "path": "scripts/run-r3-op-control-valve-sensitivity1.cmd",
+      "sha256": "404C3F90A84A4F10B1ED8B0D337D3300BA5F67D639CC123791B2802C14DAB036"
+    },
+    {
+      "path": "scripts/run-r3-op-remaining-quantities-sensitivity1.cmd",
+      "sha256": "0788CC795AAE57DC1BB786FCA4E13723283D777BDB314A5F32A9C97A950807F4"
+    }
+  ]
+}

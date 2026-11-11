@@ -12,16 +12,20 @@ usare oggi; questo indice descrive come trovare e autenticare le evidenze.
 | `ordinary/` | File compatti congelati consumati direttamente dai test. |
 | [large-payload-manifest.csv](large-payload-manifest.csv) | Identità SHA-256 canoniche delle tracce storiche di grandi dimensioni. |
 | [archive/](archive/README.md) | Contenitori compressi e istruzioni per ripristinare i payload storici quando un validatore li richiede. |
-| `r3-h-*/` | Pacchetti revisionati delle indagini H: dati, esiti, rapporti dei test e manifest; le tracce dei batch sono compresse. |
+| `r3-h-*/`, `r3-op-*/`, `r3-stage-*/` | Pacchetti delle indagini su inventari, punti operativi e trasporto: dati, esiti e manifest; le tracce dei batch sono compresse. |
+| `r3-repaired-raw-owner-diagnostic1/` | Due acquisizioni del punto C4 riparato, identità degli stati, scambi termici e bilanci di exhaust; confronto algebrico sul raffreddamento, senza ricerca. |
+| `r3-repaired-coupled-sensitivity1/` | 82 ricette con corpi termici e regimi ai tre checkpoint; disponibilità e linearità delle colonne, più una sonda combinata. |
+| `r3-repaired-missing-directions2/` | 70 ricette: recupero delle tre direzioni iniziali, sonda compensata e decomposizione della coppia. |
+| `r3-repaired-complete-basis3/` | Misura delle 30 direzioni con 362 ricette: 19 colonne selezionate, undici mancanti, rango numerico diagnostico. |
 
 Le grandi tracce storiche descritte dal manifest non sono incluse espanse
 nei pacchetti sorgente del candidato. La vecchia directory di test
 `tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/Evidence`
 non è una dipendenza del pacchetto sorgente.
 
-## Identità dei pacchetti H
+## Identità dei protocolli di indagine
 
-Per un protocollo `r3-h-…`, il contratto macchina è `eng/<protocollo>-contract.json`
+Per un protocollo `r3-…`, il contratto macchina è `eng/<protocollo>-contract.json`
 e la ricevuta è `eng/<protocollo>-returned.json`. La ricevuta autentica il
 contratto e il manifest del pacchetto. Il manifest registra nome logico,
 dimensione e hash dei byte originali, oltre al nome e all'hash del file conservato.

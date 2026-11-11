@@ -1,0 +1,30 @@
+{
+  "status": "PASS-STATIC",
+  "contract_sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2",
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 412,
+      "tree_sha256": "4146A3CB95861608E60BE107BB8FEC358776FC62B08BDA53AC4B861E50EABD82"
+    }
+  },
+  "implemented_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "production_files": [
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Condenser/CondenserSystemSolver.cs"
+  ]
+}

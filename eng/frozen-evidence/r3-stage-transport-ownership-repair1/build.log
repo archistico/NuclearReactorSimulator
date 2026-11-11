@@ -1,0 +1,16 @@
+  NuclearReactorSimulator.Domain -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Domain\bin\Release\net10.0\NuclearReactorSimulator.Domain.dll
+  NuclearReactorSimulator.Simulation -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Simulation\bin\Release\net10.0\NuclearReactorSimulator.Simulation.dll
+  NuclearReactorSimulator.Domain.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Domain.Tests\bin\Release\net10.0\NuclearReactorSimulator.Domain.Tests.dll
+  NuclearReactorSimulator.Application -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Application\bin\Release\net10.0\NuclearReactorSimulator.Application.dll
+  NuclearReactorSimulator.Infrastructure -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Infrastructure\bin\Release\net10.0\NuclearReactorSimulator.Infrastructure.dll
+  NuclearReactorSimulator.Simulation.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Simulation.Tests\bin\Release\net10.0\NuclearReactorSimulator.Simulation.Tests.dll
+  NuclearReactorSimulator.Infrastructure.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Infrastructure.Tests\bin\Release\net10.0\NuclearReactorSimulator.Infrastructure.Tests.dll
+  NuclearReactorSimulator.App -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.App\bin\Release\net10.0\NuclearReactorSimulator.App.dll
+  NuclearReactorSimulator.App.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.App.Tests\bin\Release\net10.0\NuclearReactorSimulator.App.Tests.dll
+  NuclearReactorSimulator.Application.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll
+
+Compilazione completata.
+    Avvisi: 0
+    Errori: 0
+
+Tempo trascorso 00:00:03.40

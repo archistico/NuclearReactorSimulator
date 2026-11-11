@@ -1,0 +1,103 @@
+{
+  "schema": "r3-stage-transport-ownership-repair1-frozen-v1",
+  "files": [
+    {
+      "file": "00-incoming.json",
+      "stored": "00-incoming.json",
+      "bytes": 378,
+      "sha256": "CA443C8A08564D4DC46C7CDB66E2C82D08053A2C73B73D50EDA27C51D7607DB1",
+      "stored_sha256": "CA443C8A08564D4DC46C7CDB66E2C82D08053A2C73B73D50EDA27C51D7607DB1"
+    },
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 1188,
+      "sha256": "B09E886E389E531AB8E731C7EC0C899226E239EE8E0ADCC131059056D677BFD0",
+      "stored_sha256": "B09E886E389E531AB8E731C7EC0C899226E239EE8E0ADCC131059056D677BFD0"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 313,
+      "sha256": "E269FDE69490E4F879B15C110F2B76C45A90B23D50800C4A24BC86041870ADB4",
+      "stored_sha256": "E269FDE69490E4F879B15C110F2B76C45A90B23D50800C4A24BC86041870ADB4"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 29102,
+      "sha256": "9F68A2E428D5ADD6037CB2109FEBEFAD325375B623E74D93BE609DD0F8C4064F",
+      "stored_sha256": "E5F27E24E1EFF44D477E51B8E01A8F617081319F985A83EF5550FF89B92D6E4C"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 402,
+      "sha256": "2435DDB287F498F6BF215944FAAC7EFA5D7320642F9A6A945219A4683847E298",
+      "stored_sha256": "2435DDB287F498F6BF215944FAAC7EFA5D7320642F9A6A945219A4683847E298"
+    },
+    {
+      "file": "verification.json",
+      "stored": "verification.json",
+      "bytes": 474,
+      "sha256": "B747623F61BB92FFE420CBB4B97A85DE5E076561580FE806D7736302627D9CE0",
+      "stored_sha256": "B747623F61BB92FFE420CBB4B97A85DE5E076561580FE806D7736302627D9CE0"
+    },
+    {
+      "file": "build.log",
+      "stored": "build.log",
+      "bytes": 2193,
+      "sha256": "200A25480E1A81F93D375FD6D2CE075C779B2163E078A88C25973D83EDC0FEB7",
+      "stored_sha256": "200A25480E1A81F93D375FD6D2CE075C779B2163E078A88C25973D83EDC0FEB7"
+    },
+    {
+      "file": "ordinary-suite.log",
+      "stored": "ordinary-suite.log.gz",
+      "bytes": 1198754,
+      "sha256": "8CCD68F2FAC3A5F5153B446B821A6B698588909A38041B971CA2DDE8C9344221",
+      "stored_sha256": "F9AD06B76AED7F3F07F2395660E4580C17E0F7C9C29FBA6BC4CC8EAED64EDFC6"
+    },
+    {
+      "file": "current-evidence.log",
+      "stored": "current-evidence.log",
+      "bytes": 11927,
+      "sha256": "0F64CC7C5D2C15C97E24B9950ADD36169C1AF1BB0D6B2A972A67D7EC6D899286",
+      "stored_sha256": "0F64CC7C5D2C15C97E24B9950ADD36169C1AF1BB0D6B2A972A67D7EC6D899286"
+    },
+    {
+      "file": "ci-contract.log",
+      "stored": "ci-contract.log",
+      "bytes": 172,
+      "sha256": "1289458774952C7FE74827D689F91FE6F9940B62AD2D3C0D786938025FB55EBD",
+      "stored_sha256": "1289458774952C7FE74827D689F91FE6F9940B62AD2D3C0D786938025FB55EBD"
+    },
+    {
+      "file": "historical-regressions.xml",
+      "stored": "historical-regressions.xml",
+      "bytes": 6775,
+      "sha256": "D9B72EB0FEF48A1FF6D454D3B1A9153ED086E9F0B6E149FC2E9B7D08A65A972D",
+      "stored_sha256": "D9B72EB0FEF48A1FF6D454D3B1A9153ED086E9F0B6E149FC2E9B7D08A65A972D"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3538,
+      "sha256": "DE5235AFF6900F5A46D665E8ABDF46ABD241730FFBA879B87F234502F01FC264",
+      "stored_sha256": "DE5235AFF6900F5A46D665E8ABDF46ABD241730FFBA879B87F234502F01FC264"
+    },
+    {
+      "file": "execution.xml",
+      "stored": "execution.xml",
+      "bytes": 1997,
+      "sha256": "5228F578D39A6BA0EEB5C951238B88B7527627C37C5FE3CA7A4D9107179884E1",
+      "stored_sha256": "5228F578D39A6BA0EEB5C951238B88B7527627C37C5FE3CA7A4D9107179884E1"
+    },
+    {
+      "file": "initial-verification-failures.zip",
+      "stored": "initial-verification-failures.zip",
+      "bytes": 139607,
+      "sha256": "AAC77F448172D3EFDB790A8ED79324AD0C96B9D12E5A0F1CC22BD412554389ED",
+      "stored_sha256": "AAC77F448172D3EFDB790A8ED79324AD0C96B9D12E5A0F1CC22BD412554389ED"
+    }
+  ]
+}

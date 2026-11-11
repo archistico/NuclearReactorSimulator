@@ -1,0 +1,13 @@
+{
+  "build_exit_code": 0,
+  "ordinary_exit_code": 0,
+  "current_evidence_exit_code": 0,
+  "ordinary_passed": 1409,
+  "ordinary_failed": 0,
+  "ordinary_excluded": 167,
+  "sha256": {
+    "build.log": "200A25480E1A81F93D375FD6D2CE075C779B2163E078A88C25973D83EDC0FEB7",
+    "ordinary-suite.log": "8CCD68F2FAC3A5F5153B446B821A6B698588909A38041B971CA2DDE8C9344221",
+    "current-evidence.log": "0F64CC7C5D2C15C97E24B9950ADD36169C1AF1BB0D6B2A972A67D7EC6D899286"
+  }
+}

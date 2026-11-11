@@ -1,0 +1,12 @@
+{
+  "schema": "r3-stage-transport-repair-adjudication2-frozen-v1",
+  "files": [
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 8884,
+      "sha256": "F3E564C7A4AE2CA0A138B7E362C68BA9BBB3C4D2275E558540C7D5D6A8D3C4F9",
+      "stored_sha256": "F3E564C7A4AE2CA0A138B7E362C68BA9BBB3C4D2275E558540C7D5D6A8D3C4F9"
+    }
+  ]
+}

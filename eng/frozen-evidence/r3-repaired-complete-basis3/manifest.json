@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-complete-basis3-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2146,
+      "sha256": "2C050123EE5B242870703E233000F838596E6BC1E099233D71689DBD2DBADD97",
+      "stored_sha256": "2C050123EE5B242870703E233000F838596E6BC1E099233D71689DBD2DBADD97"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 178753,
+      "sha256": "D5CD5F1FB921E81ED824F638F286888A2C252BDC54C0BD4A883115803046F207",
+      "stored_sha256": "D5CD5F1FB921E81ED824F638F286888A2C252BDC54C0BD4A883115803046F207"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3152,
+      "sha256": "BE72D1ECB2C54EAE229641B05A51747DC303DD21BDE2A7BB1DAF23CF9E1FF81E",
+      "stored_sha256": "BE72D1ECB2C54EAE229641B05A51747DC303DD21BDE2A7BB1DAF23CF9E1FF81E"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 8603496,
+      "sha256": "A9C3B684A6B22AA1708649618FC476B8A7A7F5FC1B95042E4646DF824D6F7748",
+      "stored_sha256": "B28F5AF078A967CD562E87768F45B15398BD3B06A476162E84B203F28D6FEEBB"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 74491,
+      "sha256": "6FC3156A973DB13D1B3031A78F9E09102430AE5F0BC2459038E7E8198E92EDAF",
+      "stored_sha256": "6FC3156A973DB13D1B3031A78F9E09102430AE5F0BC2459038E7E8198E92EDAF"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 83,
+      "sha256": "9BEB27C21FB89715D2C570F43DFF5EAA4E2A49ADEE92BD9B96780EFA7868AB5C",
+      "stored_sha256": "9BEB27C21FB89715D2C570F43DFF5EAA4E2A49ADEE92BD9B96780EFA7868AB5C"
+    }
+  ]
+}

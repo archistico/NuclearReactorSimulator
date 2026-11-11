@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-coupled-sensitivity1-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2188,
+      "sha256": "AC8A44D2980FE2ED0A13E067D4677F5C70017D1E8CC0B246794669DE56DF87F7",
+      "stored_sha256": "AC8A44D2980FE2ED0A13E067D4677F5C70017D1E8CC0B246794669DE56DF87F7"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 42085,
+      "sha256": "750026024CF187F51E283FDCCDBA66B5601B1F8429F16FF42778B0F37B8C60CC",
+      "stored_sha256": "750026024CF187F51E283FDCCDBA66B5601B1F8429F16FF42778B0F37B8C60CC"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3164,
+      "sha256": "64D7B993D00E8DA64B1D27D0536C7B2B5D471A39CD332DAB4173FE1948069FB8",
+      "stored_sha256": "64D7B993D00E8DA64B1D27D0536C7B2B5D471A39CD332DAB4173FE1948069FB8"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 1702582,
+      "sha256": "C9B3E1D1749B4606D0DF414136B62F1084AB63CF48A2ABA6E79A599237189072",
+      "stored_sha256": "018DC4FF78A891FD7B18896251EA7CAE1E485BC03C65C11460B1E86BDFB8C0B0"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 210745,
+      "sha256": "8E5E16B1EF8E838677339A10CDC2AFB031C4ED19E4492040FE823643266DC686",
+      "stored_sha256": "8E5E16B1EF8E838677339A10CDC2AFB031C4ED19E4492040FE823643266DC686"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 81,
+      "sha256": "38594C649B45A5E5ECE258CD7B6E1DC0418C26FB10925DC14E1CB385192C3BF7",
+      "stored_sha256": "38594C649B45A5E5ECE258CD7B6E1DC0418C26FB10925DC14E1CB385192C3BF7"
+    }
+  ]
+}

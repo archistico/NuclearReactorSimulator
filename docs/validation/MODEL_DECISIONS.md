@@ -93,7 +93,60 @@ passo, al più quelli delle sonde, oppure raggruppa le direzioni collineari, e
 riporta il condizionamento. Un esito ottenuto fuori da quei limiti è
 conservato ma non motiva una famiglia.
 
+## Includere i corpi termici nel confronto delle direzioni
+
+La quasi collinearità dipende anche dalle grandezze osservate. Dopo la riparazione,
+le sonde su sorgente nucleare e temperature risultano quasi parallele osservando
+fluidi e coppia, ma si distinguono includendo i bilanci di combustibile e struttura.
+Un aumento della sorgente e un trasferimento da un corpo termico non sono la
+stessa direzione fisica. Le righe diagnostiche aggiuntive mantengono separato
+il criterio originale di radice; i pesi del confronto si dichiarano prima delle
+misure e non si cambiano per rendere utilizzabile una colonna non conforme.
+
+Una sonda sana può uscire dall'inviluppo operativo già nel primo passo preparatorio.
+Disponibilità e linearità della colonna si verificano lungo l'intera ricetta,
+non soltanto al Running. L'accordo di una piccola sonda combinata con la somma
+delle risposte indipendenti non qualifica un passo maggiore o una famiglia completa.
+
+## Usare l'obiettivo della classificazione
+
+Il massimo energetico di una soluzione ai minimi quadrati non è il minimo
+possibile di quel massimo. Per affermare un limite occorre ottimizzare la
+quantità classificata e confrontare denominatori coerenti. La revisione
+energetica separa quindi i minimi del massimo dai precedenti fit L2, riportando
+anche massa e coppia: minimizzare soltanto l'energia non qualifica l'equilibrio.
+L'esito storico resta conservato con la sua policy, senza attribuirgli una
+prova generale di inesistenza di combinazioni o radici.
+
+## Distinguere conservazione e stazionarietà nelle verifiche
+
+Il bilancio di massa di un nodo confronta dM/dt con ingressi meno uscite.
+Richiedere ingressi uguali alle uscite impone anche stazionarietà e può essere
+errato per un punto grezzo dichiarato fuori equilibrio. Una correzione del
+criterio successiva alla misura va dichiarata: dati ed esito originale non
+si riscrivono e la nuova adjudication deve riprodurre il vecchio fallimento.
+Il criterio di equilibrio dei residui resta separato dalla tolleranza del bilancio.
+
+La portata di condensazione dipende dalla differenza fra energia del vapore
+e della condensa. Correggere le proprietà attive può cambiarla anche con legge,
+capacità termica e limiti invariati. I test coprono limite termico, inventario
+e portata massima, senza imporre compensazioni per preservare il vecchio numero.
+
 ## Ricostruire una legge sullo stato letto dal solutore
+
+La capacità installata del raffreddamento non coincide necessariamente con
+quella effettiva: quest'ultima è il minimo fra installata, disponibile e
+scambio UA. Una proposta che annulla l'accumulo energetico di exhaust deve
+anche verificare la massa. Con energia specifica entrante diversa da quella
+prelevata dal nodo, modificare la sola portata di condensazione a stato fisso
+non può annullare entrambi. È un vincolo locale del bilancio, non una prova
+di inesistenza di una radice con stato variabile o un difetto del modello.
+
+Un flusso netto ricavato per differenza fra accumulo e altre sorgenti va
+dichiarato inferito. Le portate dei componenti lette sullo stato iniziale
+possono sostenere un bilancio indipendente soltanto se corrispondono a quelle
+effettivamente integrate. Controllare quindi la telemetria della correzione
+idraulica: l'assenza di correzione osservata in un passo non vale per gli altri.
 
 I solutori di stadio e condensatore leggono lo stato committato all'inizio del
 passo; il motore espone anche lo stato candidato a fine passo. Una
@@ -104,6 +157,19 @@ identità. La prima ricostruzione della legge di stadio è stata invalidata per
 questo motivo e resta congelata come evidenza del difetto.
 
 ## Considerare il ramo lungo tutta la ricetta
+
+Il nodo che cambia fase può essere diverso da quello perturbato. La prova
+estesa riparata osserva, per esempio, una sonda di drum che porta suction
+in miscela soltanto al primo Running. Una colonna centrale richiede quindi
+compatibilità di entrambi i segni su tutti i nodi e checkpoint. Se un solo
+verso resta nel ramo, una futura sonda unilaterale va dichiarata e verificata
+come tale; non diventa una coordinata libera in entrambi i versi.
+
+Un accordo fra due ampiezze adiacenti non dimostra una derivata uniforme fra
+tutte le scale. La selezione può essere locale, con regola fissata prima
+della misura e tutti i confronti conservati, ma una proposta richiede ancora
+la verifica della risposta reale. Un rango numerico delle sole colonne
+selezionate non colma quelle mancanti e non dimostra sufficienza della famiglia.
 
 Il controllo della fase include stato grezzo, primo passo preparatorio,
 post-seed e primo Running. La fase iniziale da sola non descrive la traiettoria.

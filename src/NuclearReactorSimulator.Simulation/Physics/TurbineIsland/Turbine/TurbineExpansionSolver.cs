@@ -19,6 +19,7 @@ public sealed class TurbineExpansionSolver
     private readonly TurbineExpansionSystemDefinition _definition;
     private readonly MainSteamNetworkSolver _mainSteamSolver;
     private readonly IWaterSteamSaturationPropertyProvider? _saturationPropertyProvider;
+    private readonly IWaterSteamPhaseTransportPropertyProvider? _phaseTransportPropertyProvider;
 
     public TurbineExpansionSolver(
         TurbineExpansionSystemDefinition definition,
@@ -27,6 +28,9 @@ public sealed class TurbineExpansionSolver
         _definition = definition ?? throw new ArgumentNullException(nameof(definition));
         ArgumentNullException.ThrowIfNull(thermodynamicModel);
         _saturationPropertyProvider = thermodynamicModel as IWaterSteamSaturationPropertyProvider;
+        _phaseTransportPropertyProvider = thermodynamicModel is SimplifiedWaterSteamThermodynamicModel waterSteam
+            ? waterSteam.PhaseTransportPropertyProvider
+            : thermodynamicModel as IWaterSteamPhaseTransportPropertyProvider;
         if (_definition.StageGroups.Any(static stage =>
                 stage.AdmissionPhasePolicy == TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain)
             && _saturationPropertyProvider is null)
@@ -473,6 +477,16 @@ public sealed class TurbineExpansionSolver
         if (inlet.Phase != FluidPhase.SaturatedMixture)
         {
             return (fallbackSelectedSpecificEnergy, fallbackSelectedSpecificEnergy);
+        }
+
+        if (_phaseTransportPropertyProvider is { } phaseTransport)
+        {
+            var properties = phaseTransport.GetSaturatedPhaseTransportProperties(inlet.Pressure);
+            return (
+                FluidEnergyTransport.ResolveSelectedSpecificEnergy(stage.EnergyTransportMode,
+                    properties.SaturatedVaporInternalEnergy, inlet.Pressure, properties.SaturatedVaporDensity),
+                FluidEnergyTransport.ResolveSelectedSpecificEnergy(stage.EnergyTransportMode,
+                    properties.SaturatedLiquidInternalEnergy, inlet.Pressure, properties.SaturatedLiquidDensity));
         }
 
         var saturation = _saturationPropertyProvider?.GetSaturationProperties(inlet.Pressure)

@@ -1,0 +1,383 @@
+{
+  "status": "PASS-CONSISTENT-ENERGY-OBJECTIVE-REVIEW",
+  "plant_calls": 0,
+  "fixtures": [
+    {
+      "name": "phase-one-required",
+      "passed": true
+    },
+    {
+      "name": "infeasible",
+      "passed": true
+    },
+    {
+      "name": "unbounded",
+      "passed": true
+    },
+    {
+      "name": "opposite-to-least-squares",
+      "passed": true
+    },
+    {
+      "name": "coupled-root",
+      "passed": true
+    },
+    {
+      "name": "zero-column-kept-fixed",
+      "passed": true
+    },
+    {
+      "name": "joint-descent-missed-by-single-axes",
+      "passed": true
+    }
+  ],
+  "models": [
+    {
+      "model": "inventories",
+      "maximum_energy_rate_w": 125041.65241689717,
+      "metric": {
+        "maximum_scaled": 201014613.68361697,
+        "maximum_mass_rate_kg_s": {
+          "value": 3.802691903382977,
+          "checkpoint": "seed-step1",
+          "node": "hotwell"
+        },
+        "maximum_energy_rate_w": {
+          "value": 125041.65241689717,
+          "checkpoint": "seed-step1",
+          "node": "pressure"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 91.53717668676502,
+          "checkpoint": "seed-step1",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 838461.491938176,
+        "seed_step1_gross_energy_rate_w": 1395776.1567201111
+      },
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 3.637978807091713e-12,
+        "dual_violation": 9.873456049871564e-13,
+        "duality_gap": 4.5258241598844506e-13
+      },
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.012612863003749242,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": -0.0023301502078190484,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -0.0038176097712683712,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": -0.000550730659110572,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 0.0003678562207609293,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.012102464323289236,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.002811895640851452,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": -0.0005319797522293323,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": 0.012198242376501817,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": 0.0005866567209087003,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": -0.0005634000128759786,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": 0.019999999999999997,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": 0.00573679698973673,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.007382715638340272,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": 0.00162167782661117,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.0008787287110686859,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": -0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.010137537443672281,
+          "bound": 0.02
+        }
+      ],
+      "linear_prediction_only": true,
+      "qualified_seed": false
+    },
+    {
+      "model": "all-nonfluid",
+      "maximum_energy_rate_w": 74782.58184591135,
+      "metric": {
+        "maximum_scaled": 143567233.87795845,
+        "maximum_mass_rate_kg_s": {
+          "value": -4.15674318788167,
+          "checkpoint": "1",
+          "node": "outlet"
+        },
+        "maximum_energy_rate_w": {
+          "value": 74782.58184591135,
+          "checkpoint": "1",
+          "node": "drum"
+        },
+        "maximum_rotor_torque_nm": {
+          "value": 19.790522355933913,
+          "checkpoint": "post-seed",
+          "node": "rotor"
+        },
+        "seed_step1_net_energy_rate_w": 62416.76347437301,
+        "seed_step1_gross_energy_rate_w": 798342.5632801303
+      },
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 1.5916157281026244e-12,
+        "dual_violation": 5.329261608833652e-14,
+        "duality_gap": 6.051409373597494e-13
+      },
+      "step": [
+        {
+          "coordinate": "control-out:mass",
+          "fraction": 0.020000000000000035,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "control-out:energy",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "drum:mass",
+          "fraction": 0.00017430795802922283,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "drum:energy",
+          "fraction": -0.003498687178193323,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "exhaust:mass",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "exhaust:energy",
+          "fraction": 0.0011851609835800802,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "feedwater-inventory:mass",
+          "fraction": 0.0003064881312525758,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "feedwater-inventory:energy",
+          "fraction": -0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "header:mass",
+          "fraction": 0.019999999999999997,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "header:energy",
+          "fraction": 0.0030405881005813916,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "hotwell:mass",
+          "fraction": -0.0005770926593355852,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "hotwell:energy",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "outlet:mass",
+          "fraction": 0.02000000000000008,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "outlet:energy",
+          "fraction": 0.008057699492341435,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "pressure:mass",
+          "fraction": -0.004749562651568395,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "pressure:energy",
+          "fraction": 0.002712223175082529,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "steam:mass",
+          "fraction": -0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "steam:energy",
+          "fraction": -0.016169255773633776,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "stop-out:mass",
+          "fraction": 0.02,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "stop-out:energy",
+          "fraction": 0.003665249466905123,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "suction:mass",
+          "fraction": 0.002250084418609677,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "suction:energy",
+          "fraction": -0.0015177055146261909,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "turbine-inlet:mass",
+          "fraction": -0.015113238056777521,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "turbine-inlet:energy",
+          "fraction": 0.008652802928642785,
+          "bound": 0.02
+        },
+        {
+          "coordinate": "control-valve-percent-open",
+          "fraction": 0.004918707557458961,
+          "bound": 0.01
+        },
+        {
+          "coordinate": "condensate-pump-percent",
+          "fraction": -0.01,
+          "bound": 0.01
+        },
+        {
+          "coordinate": "feedwater-pump-percent",
+          "fraction": 0.010000000000000009,
+          "bound": 0.01
+        },
+        {
+          "coordinate": "neutron-population-relative",
+          "fraction": 0.010000000000000005,
+          "bound": 0.01
+        },
+        {
+          "coordinate": "fuel-temperature-celsius",
+          "fraction": -0.01,
+          "bound": 0.01
+        },
+        {
+          "coordinate": "structure-temperature-celsius",
+          "fraction": 0.00787016339938757,
+          "bound": 0.01
+        }
+      ],
+      "linear_prediction_only": true,
+      "qualified_seed": false
+    }
+  ],
+  "energy_maximum_ratio": 0.5980613691554656,
+  "halving_observed_in_linear_model": false,
+  "interpretation": "The earlier L2 fits do not bound the energy maximum. These energy-only minima retain mass/torque residuals and are not equilibrium candidates.",
+  "nonlinear_infeasibility_proven": false,
+  "old_frozen_classification_rewritten": false,
+  "family_selected": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

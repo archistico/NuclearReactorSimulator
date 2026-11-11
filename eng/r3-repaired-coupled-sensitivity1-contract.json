@@ -1,0 +1,498 @@
+{
+  "schema": "r3-repaired-coupled-sensitivity1-v1",
+  "policy": {
+    "recipes": 82,
+    "repeats": 2,
+    "maximum_runtime_steps": 248,
+    "amplitudes": [
+      1e-05,
+      0.0001
+    ],
+    "primary_amplitude": 0.0001,
+    "reference_amplitude": 1e-05,
+    "relative_linearity_tolerance": 0.1,
+    "energy_ledger_tolerance_w": 0.01,
+    "mass_ledger_tolerance_kg_s": 1e-06,
+    "physical_weights": {
+      "mass_kg_s": 1.0,
+      "energy_w": 1000000.0,
+      "torque_nm": 1.0,
+      "thermal_w": 1000000.0
+    },
+    "require_same_phases": true,
+    "require_same_hydraulic_regime": true,
+    "require_same_cooling_limits": true,
+    "require_in_envelope": true,
+    "proposals": 0,
+    "searches": 0,
+    "production_changes": 0,
+    "root_criterion_unchanged": true,
+    "r3_passed": false,
+    "m10_closed": false
+  },
+  "directions": [
+    {
+      "name": "pressure:mass",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "pressure:energy",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "outlet:mass",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "outlet:energy",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "exhaust:mass",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "exhaust:energy",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "neutron-population",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "fuel-temperature-celsius",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "structure-temperature-celsius",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "independent": true
+    },
+    {
+      "name": "coupled-nuclear-thermal",
+      "coordinates": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "operating": [
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.07551676825425742,
+        0.02280640975868668
+      ],
+      "independent": false
+    }
+  ],
+  "unchanged_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "output": "artifacts/r3-repaired-coupled-sensitivity1",
+  "implementation_files": [
+    {
+      "path": "eng/diagnostics/R3CoupledSensitivity/R3CoupledSensitivity.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3CoupledSensitivity/Program.cs",
+      "sha256": "F72BCB52634516D09456762FE450FE4E3449E189234330B7B35804B7D02D285A"
+    },
+    {
+      "path": "eng/run-r3-repaired-coupled-sensitivity1.py",
+      "sha256": "7781A921C909A810F6A4432BFDEB7CA4F5D3C6AC6C18A25C3D6324C59CC35837"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-coupled-sensitivity1.md",
+      "sha256": "B3F37702ADCECE76EDD6A8EAB9169178BFFE95EFF98D277EB755E641E7FCFDA3"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "7E32B87057A13A6C15BBF2316F1E71C52487B1434FD977D50F3EC8E9EEE7B4EF"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "sha256": "57CC81E76A6B8D41E9BCC49AFF7D008A17CD60C834D10681932789D35635E109"
+    },
+    {
+      "path": "global.json",
+      "sha256": "15FC2962D00BBB3FEBAE9DDB01301F0723EBB743E1CFCD57AF3D1FDD3FB640BB"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-contract.json",
+      "sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-returned.json",
+      "sha256": "8B063F893FBE5AECC0220A2A084872AC14DE358B105A237DEEA1F15A9EC25308"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/manifest.json",
+      "sha256": "FACF8D87D14524A2E33CD3D400E4DCA5DA42540454936CF927DB326B9F266A06"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-contract.json",
+      "sha256": "DE164CE8C7829E65A10ADD4651A3D54552AE6345E064CF4CEB717FE0CFB5D7EE"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-returned.json",
+      "sha256": "1F11D5BCAC8C87F20694A365CA22107AC6E0D386D289F5C11DB9ED14A77A588A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-raw-owner-diagnostic1/manifest.json",
+      "sha256": "9DA059FF46E55559D27E13DE81CFD51433263D5FC1E9C2FF06F80FD217C80EAC"
+    }
+  ]
+}

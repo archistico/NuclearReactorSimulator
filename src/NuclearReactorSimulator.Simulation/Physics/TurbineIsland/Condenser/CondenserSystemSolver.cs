@@ -22,6 +22,7 @@ public sealed class CondenserSystemSolver
     private readonly TurbineExpansionSolver _turbineExpansionSolver;
     private readonly TurbineBypassSolver _turbineBypassSolver;
     private readonly IWaterSteamSaturationPropertyProvider? _saturationPropertyProvider;
+    private readonly IWaterSteamPhaseTransportPropertyProvider? _phaseTransportPropertyProvider;
 
     public CondenserSystemSolver(
         CondenserSystemDefinition definition,
@@ -30,6 +31,9 @@ public sealed class CondenserSystemSolver
         _definition = definition ?? throw new ArgumentNullException(nameof(definition));
         ArgumentNullException.ThrowIfNull(thermodynamicModel);
         _saturationPropertyProvider = thermodynamicModel as IWaterSteamSaturationPropertyProvider;
+        _phaseTransportPropertyProvider = thermodynamicModel is SimplifiedWaterSteamThermodynamicModel waterSteam
+            ? waterSteam.PhaseTransportPropertyProvider
+            : thermodynamicModel as IWaterSteamPhaseTransportPropertyProvider;
 
         if (_definition.Condensers.Any(static condenser =>
                 condenser.CondensateEnergyMode == CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure)
@@ -100,7 +104,8 @@ public sealed class CondenserSystemSolver
                 _definition.GetCoolingBoundary(condenser.CoolingBoundaryId),
                 inputs.GetCoolingBoundaryInput(condenser.CoolingBoundaryId),
                 deltaTime,
-                _saturationPropertyProvider))
+                _saturationPropertyProvider,
+                _phaseTransportPropertyProvider))
             .OrderBy(static item => item.Definition.Id, StringComparer.Ordinal)
             .ToArray();
         var bypassStep = _turbineBypassSolver.Solve(committedPlantState);
@@ -147,7 +152,8 @@ public sealed class CondenserSystemSolver
         CondenserCoolingBoundaryDefinition coolingBoundaryDefinition,
         CondenserCoolingBoundaryInput coolingBoundaryInput,
         TimeSpan deltaTime,
-        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider)
+        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider,
+        IWaterSteamPhaseTransportPropertyProvider? phaseTransportPropertyProvider)
     {
         var steamSpace = committedPlantState.GetFluidNode(definition.SteamSpaceNodeId);
         var hotwell = committedPlantState.GetFluidNode(definition.HotwellNodeId);
@@ -177,7 +183,8 @@ public sealed class CondenserSystemSolver
             definition,
             steamSpace,
             hotwell,
-            saturationPropertyProvider);
+            saturationPropertyProvider,
+            phaseTransportPropertyProvider);
         var steamSpecificFlowWork = FluidEnergyTransport.ResolveSpecificFlowWork(
             steamSpace.Pressure,
             steamSpace.Density);
@@ -343,7 +350,8 @@ public sealed class CondenserSystemSolver
         CondenserDefinition definition,
         FluidNodeState steamSpace,
         FluidNodeState hotwell,
-        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider)
+        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider,
+        IWaterSteamPhaseTransportPropertyProvider? phaseTransportPropertyProvider)
     {
         return definition.CondensateEnergyMode switch
         {
@@ -354,7 +362,8 @@ public sealed class CondenserSystemSolver
             CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure => ResolveSaturatedLiquidTransportState(
                 definition,
                 steamSpace,
-                saturationPropertyProvider),
+                saturationPropertyProvider,
+                phaseTransportPropertyProvider),
             _ => throw new InvalidOperationException(
                 $"Condenser '{definition.Id}' uses unsupported condensate-energy mode '{definition.CondensateEnergyMode}'."),
         };
@@ -363,8 +372,16 @@ public sealed class CondenserSystemSolver
     private static CondensateTransportState ResolveSaturatedLiquidTransportState(
         CondenserDefinition definition,
         FluidNodeState steamSpace,
-        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider)
+        IWaterSteamSaturationPropertyProvider? saturationPropertyProvider,
+        IWaterSteamPhaseTransportPropertyProvider? phaseTransportPropertyProvider)
     {
+        if (phaseTransportPropertyProvider is { } phaseTransport)
+        {
+            var properties = phaseTransport.GetSaturatedPhaseTransportProperties(steamSpace.Pressure);
+            return new CondensateTransportState(properties.SaturatedLiquidInternalEnergy,
+                steamSpace.Pressure, properties.SaturatedLiquidDensity);
+        }
+
         var saturation = (saturationPropertyProvider
                 ?? throw new InvalidOperationException(
                     $"Condenser '{definition.Id}' requires saturation properties for pressure-resolved condensate energy."))

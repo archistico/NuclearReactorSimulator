@@ -1,0 +1,169 @@
+{
+  "status": "PASS-REPAIRED-RAW-OWNER-DIAGNOSTIC",
+  "fixtures": "PASS-ALGEBRA-FIXTURES",
+  "recipes": 2,
+  "runtime_steps": 6,
+  "full_state_identity_with_parent": true,
+  "exact_repeats": true,
+  "rates": {
+    "control-out": {
+      "mass_rate_kg_s": -0.0001725166384858312,
+      "energy_rate_w": 195999.13578033447
+    },
+    "drum": {
+      "mass_rate_kg_s": 0.005660140141117154,
+      "energy_rate_w": -191578.86686325073
+    },
+    "exhaust": {
+      "mass_rate_kg_s": -0.14270763618640103,
+      "energy_rate_w": 955871.9487518072
+    },
+    "feedwater-inventory": {
+      "mass_rate_kg_s": -0.0051530410928535275,
+      "energy_rate_w": -1001.0231256484985
+    },
+    "header": {
+      "mass_rate_kg_s": -1.328608050243929e-05,
+      "energy_rate_w": 13152.611351013184
+    },
+    "hotwell": {
+      "mass_rate_kg_s": 0.1172639058495406,
+      "energy_rate_w": 31181.939578056335
+    },
+    "outlet": {
+      "mass_rate_kg_s": 0.0831017956670621,
+      "energy_rate_w": -1036986.6727113724
+    },
+    "pressure": {
+      "mass_rate_kg_s": -0.0523525258358859,
+      "energy_rate_w": 12883.292579650879
+    },
+    "steam": {
+      "mass_rate_kg_s": -0.005803846670460189,
+      "energy_rate_w": -14613.481712341309
+    },
+    "stop-out": {
+      "mass_rate_kg_s": 4.494222594075836e-06,
+      "energy_rate_w": 15631.519412994385
+    },
+    "suction": {
+      "mass_rate_kg_s": 0.0,
+      "energy_rate_w": -83.98170471191406
+    },
+    "turbine-inlet": {
+      "mass_rate_kg_s": 0.00017251666122319875,
+      "energy_rate_w": 19464.993381500244
+    }
+  },
+  "thermal_bodies": [
+    {
+      "id": "fuel",
+      "storage_w": -2042.0967102050781,
+      "source_w": 23079823.55459005,
+      "transfer_w": -23081865.651309498,
+      "ledger_error_w": 9.242445230484009e-06
+    },
+    {
+      "id": "structure",
+      "storage_w": -1021.4992523193359,
+      "source_w": 3297117.6506557222,
+      "transfer_w": -3298139.1499570236,
+      "ledger_error_w": 4.898197948932648e-05
+    }
+  ],
+  "heat_ports": [
+    {
+      "id": "fuel-to-coolant",
+      "source": "fuel",
+      "destination": "outlet",
+      "power_w": 23081865.651309498
+    },
+    {
+      "id": "structure-to-coolant",
+      "source": "structure",
+      "destination": "outlet",
+      "power_w": 3298139.1499570236
+    }
+  ],
+  "outlet": {
+    "storage": {
+      "mass_rate_kg_s": 0.0831017956670621,
+      "energy_rate_w": -1036986.6727113724
+    },
+    "direct_coolant_source_w": 6594235.301311446,
+    "heat_transfer_w": 26380004.80126652,
+    "total_heat_input_w": 32974240.10257797,
+    "inferred_net_advective_power_w": -34011226.77528934,
+    "interpretation": "Actual storage minus reconstructed nonhydraulic heat; individual corrected component flows are not measured",
+    "historical_channel_flow_kg_s": 100.04772974495651,
+    "historical_return_flow_kg_s": 99.96462794929421,
+    "hydraulic_numerics": {
+      "Mode": 3,
+      "UsedSemiImplicitCorrection": false,
+      "IterationCount": 1,
+      "Converged": true,
+      "PredictorMaximumFractionalSubcooledPressureChange": 0.023714332459031397,
+      "PredictorMaximumAbsoluteHydraulicFlowChangeKilogramsPerSecond": 0.01725507355723721,
+      "MaximumRelativePressureResidual": 0,
+      "MaximumAbsoluteFlowResidualKilogramsPerSecond": 0,
+      "FourNodeBranchContinuity": {
+        "TriggerObserved": false,
+        "ShadowCorrectionEvaluated": false,
+        "ProposedAuthority": 0,
+        "Reason": 0,
+        "RollbackRequired": false,
+        "ShadowCorrectedCandidateEligible": false,
+        "CorrectedCandidateCommitted": false,
+        "UntargetedBranchDisagreementDetected": false,
+        "BranchOverrideCount": 0,
+        "PreviousPhaseHoldCount": 0,
+        "HysteresisReleaseCount": 0,
+        "ShadowIterationCount": 0,
+        "ShadowConverged": true,
+        "ShadowLineSearchExhausted": false,
+        "ShadowMaximumRelativePressureResidual": 0,
+        "ShadowMaximumAbsoluteFlowResidualKilogramsPerSecond": 0,
+        "ShadowMassClosureKilogramsPerSecond": 0,
+        "ShadowEnergyOwnershipResidualWatts": 0,
+        "CorrectedCommitArmEnabled": true,
+        "CorrectedCommitAuthorized": false,
+        "CorrectedCommitReason": 1
+      }
+    }
+  },
+  "exhaust": {
+    "storage": {
+      "mass_rate_kg_s": -0.14270763618640103,
+      "energy_rate_w": 955871.9487518072
+    },
+    "incoming_mass_kg_s": 13.027996929190257,
+    "outgoing_mass_kg_s": 13.170704565375999,
+    "incoming_energy_w": 30898635.08419341,
+    "outgoing_energy_w": 29942763.135442395,
+    "mass_ledger_error_kg_s": -6.590283874174929e-13,
+    "energy_ledger_error_w": 7.934868335723877e-07,
+    "incoming_specific_energy_j_kg": 2371710.344432349,
+    "node_steam_specific_energy_j_kg": 2273436.700885226,
+    "condensate_specific_energy_j_kg": 178107.74079228716,
+    "effective_cooling_capacity_w": 27596958.700660616,
+    "installed_cooling_w": 40000000,
+    "cooling_active_limits": "SURFACE UA",
+    "fixed_state_cooling_counterfactual": {
+      "mass_balanced_condensation_kg_s": 13.027996929190257,
+      "mass_balanced_cooling_w": 27297939.257734224,
+      "energy_residual_when_mass_balanced_w": 1280308.7263522558,
+      "energy_balanced_condensation_kg_s": 13.591156979282582,
+      "energy_balanced_cooling_w": 28477944.819860063,
+      "mass_residual_when_energy_balanced_kg_s": -0.5631600500923248,
+      "required_steam_specific_energy_j_kg": 2371710.344432349
+    }
+  },
+  "root_found": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "limits": [
+    "One 10 ms Running step after the same two-step preparation; not a long confirmation",
+    "No individual corrected hydraulic ports; outlet net advection is inferred from conservation",
+    "Cooling counterfactual holds the state and stage fixed; not a feasibility proof over a search box"
+  ]
+}

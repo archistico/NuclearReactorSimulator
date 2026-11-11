@@ -1,0 +1,78 @@
+{
+  "schema": "r3-repaired-raw-owner-diagnostic1-v1",
+  "policy": {
+    "recipes": 2,
+    "runtime_steps": 6,
+    "dt_s": 0.01,
+    "energy_tolerance_w": 0.01,
+    "mass_tolerance_kg_s": 1e-06,
+    "perturbations": 0,
+    "searches": 0,
+    "production_changes": 0,
+    "r3_passed": false,
+    "m10_closed": false
+  },
+  "unchanged_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "output": "artifacts/r3-repaired-raw-owner-diagnostic1",
+  "implementation_files": [
+    {
+      "path": "eng/diagnostics/R3RepairedRawDiagnosis/R3RepairedRawDiagnosis.csproj",
+      "sha256": "F033608033000943240EEE3BF7B8DFBD59CFFD860153C65EB22FF46411E9B49B"
+    },
+    {
+      "path": "eng/diagnostics/R3RepairedRawDiagnosis/Program.cs",
+      "sha256": "0602D855EC6A9B1493CBDE61A621F2AC0E1E53E9EA4415433602980C52FC21DA"
+    },
+    {
+      "path": "eng/review-r3-repaired-raw-owner-diagnostic1.py",
+      "sha256": "D0457AF533E880B8BA8CAC7745451DF59CB3F88ECD09DBC2EE6393BCE3FA6152"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-raw-owner-diagnostic1.md",
+      "sha256": "F41C1452D7D28F8B220D25E8BE94886A41926F0C3CB8159D5203ADE5B80EAF69"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "7E32B87057A13A6C15BBF2316F1E71C52487B1434FD977D50F3EC8E9EEE7B4EF"
+    },
+    {
+      "path": "global.json",
+      "sha256": "15FC2962D00BBB3FEBAE9DDB01301F0723EBB743E1CFCD57AF3D1FDD3FB640BB"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs",
+      "sha256": "24643F49F98F905C4CE4716B6ECBEC3B35B3C0A372F3CF57E8150F618248520F"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+      "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-contract.json",
+      "sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-returned.json",
+      "sha256": "8B063F893FBE5AECC0220A2A084872AC14DE358B105A237DEEA1F15A9EC25308"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/manifest.json",
+      "sha256": "FACF8D87D14524A2E33CD3D400E4DCA5DA42540454936CF927DB326B9F266A06"
+    }
+  ]
+}

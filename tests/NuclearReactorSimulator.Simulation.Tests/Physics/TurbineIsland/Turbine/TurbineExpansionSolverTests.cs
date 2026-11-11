@@ -24,6 +24,25 @@ namespace NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Turbine
 public sealed class TurbineExpansionSolverTests
 {
     [Fact]
+    public void Step_MoistureDrainUsesActivePhaseEnergyAndPreservesMassAndWork()
+    {
+        var fixture = CreateFixture(3_000d, Torque.Zero, false,
+            thermodynamicWork: CurrentThermodynamicWork(),
+            admissionPhasePolicy: TurbineAdmissionPhasePolicy.VaporMassFractionLimitedWithMoistureDrain,
+            inletPhase: FluidPhase.SaturatedMixture, inletVaporQuality: VaporQuality.FromPercent(25d), moistureDrainNodeId: "hotwell");
+        var result = new TurbineExpansionSolver(fixture.Definition, new ActivePhasePreservingThermodynamicModel()).Step(
+            fixture.PlantState, fixture.TurbineState, fixture.Inputs, TimeSpan.FromMilliseconds(1d));
+        var stage = Assert.Single(result.Snapshot.StageGroups);
+        Assert.Equal(.25d, stage.EffectiveMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(.75d, stage.MoistureDrainMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(3_000d, stage.VaporInletAdvectedSpecificEnergy.KilojoulesPerKilogram, 12);
+        Assert.Equal(300d, stage.MoistureDrainAdvectedSpecificEnergy.KilojoulesPerKilogram, 12);
+        Assert.InRange(stage.ShaftPower.Kilowatts, 99.9d, 100.1d);
+        Assert.InRange(Math.Abs(stage.TurbineEnergyOwnershipResidual.Watts), 0d, 1e-6d);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalancePowerResidualWatts), 0d, 1e-6d);
+    }
+
+    [Fact]
     public void Step_TransfersSteamToExhaustExtractsShaftPowerAndClosesBothAudits()
     {
         var ratedSpeed = AngularSpeed.FromRevolutionsPerMinute(3_000d);
@@ -687,6 +706,21 @@ public sealed class TurbineExpansionSolverTests
         PlantState PlantState,
         TurbineExpansionState TurbineState,
         TurbineExpansionInputs Inputs);
+
+    private sealed class ActivePhasePreservingThermodynamicModel : IFluidThermodynamicModel,
+        IWaterSteamSaturationPropertyProvider, IWaterSteamPhaseTransportPropertyProvider
+    {
+        public FluidThermodynamicState Resolve(FluidNodeDefinition definition, FluidNodeInventory inventory, FluidThermodynamicState previousState) => previousState;
+        public WaterSteamSaturationProperties GetSaturationProperties(Pressure pressure) => new(
+            Temperature.FromDegreesCelsius(280d), pressure, Density.FromKilogramsPerCubicMetre(950d),
+            Density.FromKilogramsPerCubicMetre(20d), SpecificEnergy.FromKilojoulesPerKilogram(400d), SpecificEnergy.FromKilojoulesPerKilogram(2_600d));
+        public WaterSteamSaturationProperties GetSaturationProperties(Temperature temperature) => GetSaturationProperties(Pressure.FromMegapascals(5d));
+        public WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(Pressure pressure) => new(
+            Density.FromKilogramsPerCubicMetre(950d), Density.FromKilogramsPerCubicMetre(20d),
+            SpecificEnergy.FromKilojoulesPerKilogram(300d), SpecificEnergy.FromKilojoulesPerKilogram(3_000d));
+        public WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(Pressure pressure, Temperature temperature)
+            => throw new InvalidOperationException("Stage must use the pressure-indexed capability.");
+    }
 
     private sealed class PreservingThermodynamicModel : IFluidThermodynamicModel
     {

@@ -125,6 +125,85 @@ Specifiche, esiti e comandi sono raggiungibili dalle
 - CI ordinaria PASS con 412 file di test: 1.563 test, 1.397 superati, 166
   espliciti esclusi, zero fallimenti; baseline delle evidenze correnti PASS.
 
+### Riparazione del trasporto di fase e verifica revisionata
+
+- Corretto il piano del condensatore: invarianti legge e limiti termici, con
+  portata ricalcolata dalle energie attive. Aggiunta la lettura di trasporto
+  indicizzata dalla pressione e applicata a stadio e condensatore, nei quattro
+  file produttivi previsti. Modalità storiche bit per bit e payload C4 preservati.
+- Verificati fallback, ripartizione di massa, lavoro dello stadio, tre limiti
+  di condensazione, conservazione, lookup C4 e assenza di allocazioni marginali.
+- Migrato il controllo ordinario del CSV C4 pre-riparazione: dati storici
+  autenticati e confrontati, raw e ripetibilità correnti preservati, nuova
+  regressione della legge attiva. Nessun valore atteso storico aggiornato.
+- Compilazione Release senza avvisi; suite completa PASS, 1.409 superati e
+  167 espliciti esclusi. PASS anche contratto CI e baseline correnti Exact-V9.
+  I log dei primi fallimenti sono conservati nel pacchetto della misura.
+- Due ricette C4 identiche: accumulo turbine-inlet 18,963–19,465 kW, circa il
+  2% del precedente MW. L'energia passa a valle; il punto grezzo non è una radice.
+- Il primo protocollo richiedeva erroneamente stazionarietà della massa: il
+  suo esito non conforme resta congelato. Adjudication 2 PASS sui medesimi dati,
+  senza nuove chiamate, verificando accumulo contro ingressi meno uscite.
+- Congelata la revisione coerente dell'obiettivo energetico: 125,0 e 74,8 kW
+  nei due modelli lineari, rapporto 59,8%, con residui di massa non conformi.
+  I precedenti massimi dei fit L2 non erano limiti inferiori del massimo.
+- Riallineati handoff e diagramma alla nuova misura e alla prossima diagnosi.
+  R3 resta RED, M10 aperto; nessuna attivazione produttiva C4 o installazione di seed.
+
+### Diagnosi dei bilanci dopo la riparazione
+
+- Aggiunta una console separata sotto `eng/diagnostics`, senza modificare
+  `src` o `tests`: due ricette identiche, sei passi runtime totali. Gli hash
+  degli stati completi coincidono con la precedente misura riparata.
+- Ricostruiti 32,974 MW di calore verso outlet e il trasporto netto di
+  34,011 MW, coerenti con −1,037 MW di accumulo. Verificati indipendentemente
+  i bilanci di combustibile e struttura; il pacchetto distingue il trasporto
+  netto inferito dalle singole portate corrette non osservate.
+- Chiusi i bilanci di exhaust entro 1e-6 kg/s e 0,01 W: +0,956 MW e
+  −0,1427 kg/s di accumulo. Limite del condensatore attribuito a UA,
+  27,597 MW effettivi rispetto a 40 MW installati.
+- Il confronto algebrico a stato fisso mostra che variare solo il raffreddamento
+  non annulla insieme massa ed energia; non è una prova di impossibilità nel
+  box. Compilazione, fixture e replay PASS. Prossimo passo: sonde accoppiate
+  con la legge riparata; R3 resta RED e M10 aperto.
+
+### Prime sensibilità accoppiate sul punto riparato
+
+- Eseguite 82 ricette, entro 248 passi runtime, mediante console separata e
+  senza modificare gli alberi produttivi o di test. Ripetizioni identiche;
+  baseline e hash completi coincidono con la misura della riparazione.
+- Tutte le ricette sono valide, 66 nell'inviluppo. Validate sei direzioni
+  indipendenti; le sonde di pressure escono dall'inviluppo, l'energia di
+  exhaust manca il limite di linearità, con scarto pesato del 25,1%.
+- Inclusi i bilanci dei corpi termici: sorgente nucleare e temperature,
+  quasi collineari osservando i fluidi, diventano distinguibili. La sonda
+  nucleare-termica combinata coincide con la somma delle colonne entro lo
+  0,037%, alla scala misurata. Nessuna proposta o ricerca eseguita.
+- Compilazione, preflight, fixture e replay PASS; evidenza congelata. La
+  prossima prova deve completare le direzioni mancanti mantenendo invariati
+  inviluppo, scale e criterio di radice. R3 resta RED, M10 aperto.
+
+### Raffinamento e misura estesa della base riparata
+
+- Aggiunto un esecutore separato riutilizzabile per le sonde, con richieste,
+  assembly e budget autenticati prima dell'istanziazione fisica. Alberi
+  produttivi e di test invariati rispetto alla suite già verificata.
+- Eseguite 70 ricette ripetibili, tutte sane e nell'inviluppo: recuperate le
+  colonne di pressure con ampiezze ridotte e quella energetica di exhaust
+  con accordo locale del 6,15% fra 3e-5 e 1e-4. Conservati tutti i confronti.
+- Verificati i bilanci meccanici entro 1e-6 N·m; lo scarto delle sonde di
+  exhaust proviene soprattutto dalla portata dello stadio, con lavoro ideale
+  invariato. Misurata anche una direzione compensata di massa ed energia.
+- Eseguite altre 362 ricette sulle trenta coordinate: tutte sane e ripetibili,
+  334 nell'inviluppo, 43 punti sovrapposti con identici hash e residui.
+  Selezionate 19 colonne, comprese tutte le sei grandezze non fluide.
+- Restano sette colonne senza due scale nel ramo ammesso e quattro con
+  disaccordo fra ampiezze. Il rango numerico 19 sulle colonne selezionate è
+  diagnostico; nessuna famiglia, proposta o radice qualificata. Compilazione,
+  fixture, preflight e replay PASS; entrambi i pacchetti congelati.
+- Riallineati checkpoint, roadmap e handoff alle direzioni da costruire nei
+  rami ammessi. R3 resta RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

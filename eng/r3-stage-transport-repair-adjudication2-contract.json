@@ -1,0 +1,232 @@
+{
+  "schema": "r3-stage-transport-repair-adjudication2-v1",
+  "policy": {
+    "plant_calls": 0,
+    "property_relative_tolerance": 1e-09,
+    "mass_ledger_tolerance_kg_s": 1e-06,
+    "energy_ledger_tolerance_w": 0.01,
+    "maximum_inlet_ratio": 0.1,
+    "frozen_inlet_accumulation_w": 1006560.2752685547,
+    "original_measurement_not_reexecuted": true,
+    "seed_installation": false,
+    "r3_passed": false
+  },
+  "implemented_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "eng/review-r3-stage-transport-repair-adjudication2.py",
+      "sha256": "D3D0D9C3A39B0EE7328F24CAC59EA50688634C37189EFDBBA43DDEF642A3B5D4"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-stage-transport-ownership-repair-planning1.md",
+      "sha256": "634B7F497E19F7A385B58741CEAF59210ADDCEA77A8614DEDB6E3C13E443EA29"
+    },
+    {
+      "path": "eng/contracts/r3-stage-transport-ownership-repair1.md",
+      "sha256": "6CF2A89AB7B8DF81E84DA6E83D10709DA12F497ADD7B6D8D13588FA688803B8F"
+    },
+    {
+      "path": "eng/contracts/r3-stage-transport-repair-adjudication2.md",
+      "sha256": "DFC342C33EEE7D2DD59A88D67F8A78B38BD0EF775DE0E1FCB0A48DB7B4DD4CF7"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/02-baseline.json",
+      "sha256": "DA44D0687455DA7693C5620BA1C544599CDA9B91F21A5CEEF8D296483B3E8CC4"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/08-manifest.csv",
+      "sha256": "125037BC24308CAA332449351C02FD658957BC909CFABCA2DA1956243626F416"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/01-static.json",
+      "sha256": "312D0CFE70B567470166B974BAEEDFC0554967173314F83230E83877A59D82B6"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/02-preexecution.json",
+      "sha256": "E3B5065A3D4770E952257BC2618FB22B5B991F09104655C32B49C4EDCB7BA4A2"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/03-reconstruction.json",
+      "sha256": "B18A0A4000BAA7CC763296289D89C41D6111CD9E4698F3B43F0E3131A39D11B9"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/05-adjudication.json",
+      "sha256": "3BEF9D3ECC991961F767AE9E80AED2B0AA07448BD8A9566870AE9EEAA1B724ED"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/execution.xml",
+      "sha256": "E8489DE9EBD78330F02E783308A78D09FB4291C7B559D3E263D1425B8D8D30A3"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/manifest.json",
+      "sha256": "33470B4E3519765B9CDCCA219D1E8144B38DBA2C8AB22EED8FE4F90B5BAF191B"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/preexecution.xml",
+      "sha256": "2DB50440D937AD78E78E2783F0920D752FF4AFB13EFE33E32D7684C8F86CAFE3"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/00-incoming.json",
+      "sha256": "CA443C8A08564D4DC46C7CDB66E2C82D08053A2C73B73D50EDA27C51D7607DB1"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/01-static.json",
+      "sha256": "B09E886E389E531AB8E731C7EC0C899226E239EE8E0ADCC131059056D677BFD0"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/02-preexecution.json",
+      "sha256": "E269FDE69490E4F879B15C110F2B76C45A90B23D50800C4A24BC86041870ADB4"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/03-measurements.jsonl.gz",
+      "sha256": "E5F27E24E1EFF44D477E51B8E01A8F617081319F985A83EF5550FF89B92D6E4C"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/05-adjudication.json",
+      "sha256": "2435DDB287F498F6BF215944FAAC7EFA5D7320642F9A6A945219A4683847E298"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/build.log",
+      "sha256": "200A25480E1A81F93D375FD6D2CE075C779B2163E078A88C25973D83EDC0FEB7"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/ci-contract.log",
+      "sha256": "1289458774952C7FE74827D689F91FE6F9940B62AD2D3C0D786938025FB55EBD"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/current-evidence.log",
+      "sha256": "0F64CC7C5D2C15C97E24B9950ADD36169C1AF1BB0D6B2A972A67D7EC6D899286"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/execution.xml",
+      "sha256": "5228F578D39A6BA0EEB5C951238B88B7527627C37C5FE3CA7A4D9107179884E1"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/historical-regressions.xml",
+      "sha256": "D9B72EB0FEF48A1FF6D454D3B1A9153ED086E9F0B6E149FC2E9B7D08A65A972D"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/initial-verification-failures.zip",
+      "sha256": "AAC77F448172D3EFDB790A8ED79324AD0C96B9D12E5A0F1CC22BD412554389ED"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/manifest.json",
+      "sha256": "FACF8D87D14524A2E33CD3D400E4DCA5DA42540454936CF927DB326B9F266A06"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/ordinary-suite.log.gz",
+      "sha256": "F9AD06B76AED7F3F07F2395660E4580C17E0F7C9C29FBA6BC4CC8EAED64EDFC6"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/preexecution.xml",
+      "sha256": "DE5235AFF6900F5A46D665E8ABDF46ABD241730FFBA879B87F234502F01FC264"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/verification.json",
+      "sha256": "B747623F61BB92FFE420CBB4B97A85DE5E076561580FE806D7736302627D9CE0"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-stage-energy-law-reconstruction2-contract.json",
+      "sha256": "8DAF3C799FE22E8FC1957B9647EB50F3C7E4AE503BDFA181A65089DB349008C1"
+    },
+    {
+      "path": "eng/r3-stage-energy-law-reconstruction2-returned.json",
+      "sha256": "BAE9FA2134421F65FEF58472BDD5761A816C9DCFCA49F11D08FBB4A5B9DF0C5F"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-contract.json",
+      "sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-returned.json",
+      "sha256": "8B063F893FBE5AECC0220A2A084872AC14DE358B105A237DEEA1F15A9EC25308"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-stage-transport-ownership-repair1.py",
+      "sha256": "CA688942DA415F2B5AE8B7C50C6B1500834711E35D26867C03E4333E6F6501B7"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+      "sha256": "5BAC4F586987FD04B3B0265195E3BEDD6AAB023486BA102736D4D967EAA08179"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceData/NRSVR2C4.v1.bin",
+      "sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "sha256": "CFE069DC7D806D6AD2CC6613F55119C7B034219029477FDDCCCA26505FB83E5D"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Condenser/CondenserSystemSolver.cs",
+      "sha256": "68A6BFF4B12EA1224B12F6DE04E7B724C9E55A6973A7B0453A55F4BC27F3BB74"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+      "sha256": "F2ED5D846A8AF00FF39445371FB72AF133C935CDF3FD7B560B07EA8D0CD02845"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3HConservedInventoryFeasibility1Tests.cs",
+      "sha256": "D828DCCD5382B0A1AB2626BFA495750AE7354D75B627984735A0B267BEE51F8D"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3StageTransportOwnershipRepairTests.cs",
+      "sha256": "43F9FCFA2E57F837F08592594E2444D871A1E86FF5A4F5D1D6BB201F1778838A"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+      "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/StagePhaseTransportOwnershipTests.cs",
+      "sha256": "2718BD0A1677AD2BB1579E3AA68F0A5400775DA7B987FBC3B9761EFD73B9DEBF"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Condenser/CondenserSystemSolverTests.cs",
+      "sha256": "19DD0BA62ECD3E0B5F4726F7A81B8990F4FD62AD762316A5B6E9ABBCA0213B72"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Turbine/TurbineExpansionSolverTests.cs",
+      "sha256": "F43B08A9D318E925A37A8FBB027784F43BE9DFB7A968895C3A91E1915174972B"
+    }
+  ]
+}

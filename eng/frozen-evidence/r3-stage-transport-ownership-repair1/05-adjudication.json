@@ -1,0 +1,12 @@
+{
+  "status": "NONCONFORMING-ORIGINAL-MASS-STATIONARITY-CRITERION",
+  "recipes": 2,
+  "failed_criterion": "Stage mass ledger mismatch",
+  "original_allowed_difference_kg_s": 1e-06,
+  "measured_inflow_minus_outflow_kg_s": 0.00017251665775397385,
+  "original_protocol_not_passed": true,
+  "measurement_retained": true,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

@@ -1,8 +1,8 @@
 # Riparazione della proprietà del trasporto di fase nello stadio e nel condensatore
 
-Pianificazione. Questo documento non autorizza modifiche a `src/` finché non è
-approvato esplicitamente; l'approvazione autorizza soltanto l'implementazione
-descritta qui, con le sue verifiche.
+Piano aggiornato dopo la revisione del condensatore e delle conclusioni lineari.
+La prosecuzione richiesta copre l'implementazione descritta qui e le sue verifiche.
+L'attivazione produttiva C4 e l'installazione di seed restano decisioni distinte.
 
 ## Evidenza
 
@@ -77,15 +77,20 @@ ricevono; non cambia nessun punto di composizione.
 
 Restano invariati: la legge del lavoro (lavoro specifico, coppia, potenza
 all'albero), la ripartizione di massa fra vapore e condensa, le politiche di
-ammissione, la semantica pubblica di `GetSaturationProperties`, lo scambio
-termico e la portata di condensazione del condensatore, il payload C4 e i suoi
+ammissione, la semantica pubblica di `GetSaturationProperties`, la legge e i limiti
+dello scambio termico del condensatore, il payload C4 e i suoi
 hash, la chiusura predefinita, il factory canonico Exact-V9, soglie e inviluppi.
 
 ## Conseguenza attesa, da verificare
 
 A parità di stato la correzione sposta energia a valle invece di eliminarla:
 circa +979 kW verso `exhaust` con il vapore e +9 kW verso l'hotwell con la
-condensa; la condensa del condensatore cede circa 6 kW in meno all'hotwell.
+condensa. Nel condensatore la portata si ricalcola con la stessa legge
+`min(massimo, inventario/dt, potenza disponibile/(energia vapore-energia condensa))`:
+non è un invariante numerico. Sullo stato congelato, mantenendo la potenza
+termica di 27,593 MW, il controfattuale passa da 13,173831 a 13,170825 kg/s
+e il trasferimento all'hotwell diminuisce di circa 6,834 kW. Sono previsioni
+a stato fisso, da distinguere dalla nuova evoluzione della ricetta.
 L'ipotesi è che questi accumuli, diversamente dallo scarto strutturale su
 `turbine-inlet`, dipendano dallo stato e possano essere bilanciati dagli
 inventari. Il punto grezzo del modo 2 non diventa quindi un equilibrio e non si
@@ -108,12 +113,21 @@ attende che lo diventi: va rimisurato.
   contratto di determinismo Exact-V9 passano **senza modificare alcun valore
   atteso**. Un test ordinario che fallisce blocca l'implementazione.
 
+Il controllo ordinario H1 che confrontava la legge C4 corrente con il CSV
+pre-riparazione richiede una migrazione di ambito: traccia e CSV storici
+continuano a essere autenticati e confrontati esattamente, mentre una nuova
+regressione controlla il trasporto attivo e la riduzione dell'accumulo.
+Nessun test viene escluso e nessun valore atteso storico viene aggiornato.
+
 ### Trasporto sotto C4
 
 - nella modalità C4 la nuova lettura coincide con il lookup esistente e non
   alloca memoria gestita per lettura dopo il riscaldamento;
 - fuori dall'inviluppo di pressione del payload solleva l'eccezione esistente:
   il comportamento resta fail-closed, senza ripiego sulle correlazioni;
+- i test del condensatore coprono limite termico, portata massima e inventario:
+  la nuova energia può cambiare portata e potenza utilizzata, secondo le leggi
+  esistenti; i bilanci chiudono senza compensazioni;
 - valutando il punto grezzo del modo 2 con l'harness esistente: le energie di
   vapore e condensa dello stadio coincidono con la capacità di trasporto C4
   entro 1e-9 relativo, la condensa del condensatore pure; il tasso di energia
@@ -133,7 +147,7 @@ legge. Jacobiani e colonne congelati non si riusano come derivate.
 
 ## Sequenza successiva
 
-1. Approvazione di questo piano.
+1. Recepimento delle correzioni della revisione nel presente piano.
 2. Implementazione nei quattro file, con test unitari di identità e trasporto,
    suite ordinaria e baseline delle evidenze correnti.
 3. Protocollo di misura del punto grezzo del modo 2 con la legge corretta:

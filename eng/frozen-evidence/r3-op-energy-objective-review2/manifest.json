@@ -1,0 +1,12 @@
+{
+  "schema": "r3-op-energy-objective-review2-frozen-v1",
+  "files": [
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 10463,
+      "sha256": "02CF257A7317A7FAAF0233AD9FF06FA370093F165DD6CF7F3792D0853006236B",
+      "stored_sha256": "02CF257A7317A7FAAF0233AD9FF06FA370093F165DD6CF7F3792D0853006236B"
+    }
+  ]
+}

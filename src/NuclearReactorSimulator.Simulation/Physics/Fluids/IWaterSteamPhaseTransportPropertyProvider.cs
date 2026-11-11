@@ -9,6 +9,8 @@ namespace NuclearReactorSimulator.Simulation.Physics.Fluids;
 /// </summary>
 internal interface IWaterSteamPhaseTransportPropertyProvider
 {
+    WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(Pressure pressure);
+
     WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(
         Pressure pressure,
         Temperature temperature);

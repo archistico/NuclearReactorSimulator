@@ -1,0 +1,217 @@
+{
+  "schema": "r3-stage-transport-ownership-repair1-v1",
+  "policy": {
+    "repeats": 2,
+    "maximum_recipes": 2,
+    "maximum_physical_steps": 8,
+    "maximum_inlet_ratio": 0.1,
+    "frozen_inlet_accumulation_w": 1006560.2752685547,
+    "property_relative_tolerance": 1e-09,
+    "ledger_energy_tolerance_w": 0.01,
+    "ledger_mass_tolerance_kg_s": 1e-06,
+    "ordinary_passed": 1409,
+    "ordinary_explicit_excluded": 167,
+    "seed_installation": false,
+    "production_activation": false,
+    "r3_passed": false
+  },
+  "output": "artifacts/r3-stage-transport-ownership-repair1",
+  "production_files": [
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+    "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+    "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Condenser/CondenserSystemSolver.cs"
+  ],
+  "incoming_commit": "35acc9a747ec77fa913cdad19e799c36637320da",
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 412,
+      "tree_sha256": "4146A3CB95861608E60BE107BB8FEC358776FC62B08BDA53AC4B861E50EABD82"
+    }
+  },
+  "implemented_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "allowed_changes": {
+    "src": [
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+      "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+      "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Condenser/CondenserSystemSolver.cs"
+    ],
+    "tests": [
+      "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/StagePhaseTransportOwnershipTests.cs",
+      "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3StageTransportOwnershipRepairTests.cs",
+      "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Condenser/CondenserSystemSolverTests.cs",
+      "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Turbine/TurbineExpansionSolverTests.cs",
+      "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3HConservedInventoryFeasibility1Tests.cs"
+    ]
+  },
+  "unchanged_trees": {
+    "src": {
+      "file_count": 958,
+      "tree_sha256": "819B4F2BC3FA6DD5F7EA6D9F6BC14A6A4542D4F6015006B81AA683AE09BC14C4"
+    },
+    "tests": {
+      "file_count": 409,
+      "tree_sha256": "3A6B373567A1DF6B00E73E4E79B9B7D117D8C6565BA6987C4ECB4AFEC1D9CBCC"
+    }
+  },
+  "production_before_git_blob": [
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+      "sha256": "D6B06C1288084D3954780E29B55D866C7BEC0A159D8696B38B3B45FC45391899"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "sha256": "1F408DCC0E1B4AE69A9CC5A611BF252A448D4D8339E598BAB8986AD1123D6D75"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+      "sha256": "FB0C6B20C6695F780797A4EDEB75F15D28484362BCD97F759FB7752372FD0284"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Condenser/CondenserSystemSolver.cs",
+      "sha256": "3D3D8058203ACAAD89B5C36C8210738FA8CEB6D61201005589A040958152FEB6"
+    }
+  ],
+  "implementation_files": [
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/IWaterSteamPhaseTransportPropertyProvider.cs",
+      "sha256": "5BAC4F586987FD04B3B0265195E3BEDD6AAB023486BA102736D4D967EAA08179"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs",
+      "sha256": "CFE069DC7D806D6AD2CC6613F55119C7B034219029477FDDCCCA26505FB83E5D"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+      "sha256": "F2ED5D846A8AF00FF39445371FB72AF133C935CDF3FD7B560B07EA8D0CD02845"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Condenser/CondenserSystemSolver.cs",
+      "sha256": "68A6BFF4B12EA1224B12F6DE04E7B724C9E55A6973A7B0453A55F4BC27F3BB74"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/Fluids/StagePhaseTransportOwnershipTests.cs",
+      "sha256": "2718BD0A1677AD2BB1579E3AA68F0A5400775DA7B987FBC3B9761EFD73B9DEBF"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3StageTransportOwnershipRepairTests.cs",
+      "sha256": "43F9FCFA2E57F837F08592594E2444D871A1E86FF5A4F5D1D6BB201F1778838A"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Condenser/CondenserSystemSolverTests.cs",
+      "sha256": "19DD0BA62ECD3E0B5F4726F7A81B8990F4FD62AD762316A5B6E9ABBCA0213B72"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Simulation.Tests/Physics/TurbineIsland/Turbine/TurbineExpansionSolverTests.cs",
+      "sha256": "F43B08A9D318E925A37A8FBB027784F43BE9DFB7A968895C3A91E1915174972B"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10FinalVr2R3HConservedInventoryFeasibility1Tests.cs",
+      "sha256": "D828DCCD5382B0A1AB2626BFA495750AE7354D75B627984735A0B267BEE51F8D"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/run-r3-stage-transport-ownership-repair1.py",
+      "sha256": "CA688942DA415F2B5AE8B7C50C6B1500834711E35D26867C03E4333E6F6501B7"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-stage-transport-ownership-repair1.md",
+      "sha256": "6CF2A89AB7B8DF81E84DA6E83D10709DA12F497ADD7B6D8D13588FA688803B8F"
+    },
+    {
+      "path": "eng/contracts/r3-stage-transport-ownership-repair-planning1.md",
+      "sha256": "634B7F497E19F7A385B58741CEAF59210ADDCEA77A8614DEDB6E3C13E443EA29"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+      "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/02-baseline.json",
+      "sha256": "DA44D0687455DA7693C5620BA1C544599CDA9B91F21A5CEEF8D296483B3E8CC4"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-feasibility1/08-manifest.csv",
+      "sha256": "125037BC24308CAA332449351C02FD658957BC909CFABCA2DA1956243626F416"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceData/NRSVR2C4.v1.bin",
+      "sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267"
+    },
+    {
+      "path": "eng/r3-stage-energy-law-reconstruction2-contract.json",
+      "sha256": "8DAF3C799FE22E8FC1957B9647EB50F3C7E4AE503BDFA181A65089DB349008C1"
+    },
+    {
+      "path": "eng/r3-stage-energy-law-reconstruction2-returned.json",
+      "sha256": "BAE9FA2134421F65FEF58472BDD5761A816C9DCFCA49F11D08FBB4A5B9DF0C5F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/01-static.json",
+      "sha256": "312D0CFE70B567470166B974BAEEDFC0554967173314F83230E83877A59D82B6"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/02-preexecution.json",
+      "sha256": "E3B5065A3D4770E952257BC2618FB22B5B991F09104655C32B49C4EDCB7BA4A2"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/03-reconstruction.json",
+      "sha256": "B18A0A4000BAA7CC763296289D89C41D6111CD9E4698F3B43F0E3131A39D11B9"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/05-adjudication.json",
+      "sha256": "3BEF9D3ECC991961F767AE9E80AED2B0AA07448BD8A9566870AE9EEAA1B724ED"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/execution.xml",
+      "sha256": "E8489DE9EBD78330F02E783308A78D09FB4291C7B559D3E263D1425B8D8D30A3"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/manifest.json",
+      "sha256": "33470B4E3519765B9CDCCA219D1E8144B38DBA2C8AB22EED8FE4F90B5BAF191B"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-energy-law-reconstruction2/preexecution.xml",
+      "sha256": "2DB50440D937AD78E78E2783F0920D752FF4AFB13EFE33E32D7684C8F86CAFE3"
+    }
+  ]
+}

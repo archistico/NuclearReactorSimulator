@@ -8,31 +8,53 @@ namespace NuclearReactorSimulator.Application.Tests.Scenarios.Gameplay;
 public sealed class M10FinalVr2R3HConservedInventoryFeasibility1Tests
 {
     [Fact]
-    public void Preexecution_BaselineReproducesFactoryAndFrozenResiduals()
+    public void BaselineRecipe_RepeatsAndPreservesPreRepairEvidence()
     {
         var harness = new R3HFeasibilityHarness();
         var hash = harness.BaselineIdentity();
         var baseline = harness.Evaluate(new double[24]);
         var second = new R3HFeasibilityHarness().Evaluate(new double[24]);
         Assert.Equal(JsonSerializer.Serialize(baseline.Observations), JsonSerializer.Serialize(second.Observations));
-        // Recompute expected storage residuals from the immutable diagnostic, not from this harness.
+        Assert.All(baseline.Observations, static observation => Assert.True(observation.Healthy));
+        // The repaired C4 law intentionally changes the evolved inventories. The
+        // historical trace and diagnostic retain their exact pre-repair identity;
+        // current transport expectations are covered by the repair regression tests.
+        var tracePath = "eng/frozen-evidence/r3-h-feasibility1/04-search-trace.jsonl.gz";
+        var diagnosticPath = "eng/frozen-evidence/r3-dyn-eq-d1/01-node-residuals.csv";
+        var contractPath = Path.Combine(R3HFeasibilityHarness.Root, "eng", "r3-h-family-sufficiency-review1-contract.json");
+        using var contract = JsonDocument.Parse(File.ReadAllText(contractPath));
+        using var receipt = JsonDocument.Parse(File.ReadAllText(Path.Combine(R3HFeasibilityHarness.Root, "eng", "r3-h-family-sufficiency-review1-returned.json")));
+        Assert.Equal(receipt.RootElement.GetProperty("contract_sha256").GetString(), Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(contractPath))));
+        foreach (var path in new[] { tracePath, diagnosticPath })
+        {
+            var entry = Assert.Single(contract.RootElement.GetProperty("frozen_inputs").EnumerateArray(), item => item.GetProperty("path").GetString() == path);
+            Assert.Equal(entry.GetProperty("sha256").GetString(), Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(Path.Combine(R3HFeasibilityHarness.Root, path)))));
+        }
+        var historicalPath = Path.Combine(R3HFeasibilityHarness.Root, "eng", "frozen-evidence", "r3-h-feasibility1", "02-baseline.json");
+        // Original 08-manifest.csv identity; never regenerate this expectation from current physics.
+        Assert.Equal("DA44D0687455DA7693C5620BA1C544599CDA9B91F21A5CEEF8D296483B3E8CC4", Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(historicalPath))));
+        using var historical = JsonDocument.Parse(File.ReadAllText(historicalPath));
+        Assert.Equal("PASS-BASELINE-IDENTITY", historical.RootElement.GetProperty("status").GetString());
+        var raw = JsonSerializer.Deserialize<R3HFeasibilityHarness.Node[]>(historical.RootElement.GetProperty("Raw").GetRawText());
+        Assert.Equal(JsonSerializer.Serialize(raw), JsonSerializer.Serialize(baseline.Raw));
         var lines = File.ReadAllLines(Path.Combine(R3HFeasibilityHarness.Root, "eng", "frozen-evidence", "r3-dyn-eq-d1", "01-node-residuals.csv"));
         var header = lines[0].Split(',');
-        foreach (var observation in baseline.Observations)
+        foreach (var observation in historical.RootElement.GetProperty("Observations").EnumerateArray())
         {
-            var rows = lines.Skip(1).Select(static line => line.Split(',')).Where(row => row[0] == "candidate-mode2" && row[1] == observation.Checkpoint).ToArray();
+            var checkpoint = observation.GetProperty("Checkpoint").GetString();
+            var rows = lines.Skip(1).Select(static line => line.Split(',')).Where(row => row[0] == "candidate-mode2" && row[1] == checkpoint).ToArray();
             Assert.Equal(12, rows.Length);
-            foreach (var node in observation.Nodes)
+            foreach (var node in observation.GetProperty("Nodes").EnumerateArray())
             {
-                var row = Assert.Single(rows, row => row[2] == node.Id);
-                Assert.Equal(node.Mass, Parse(row[Array.IndexOf(header, "mass_kg")]));
-                Assert.Equal(node.Energy, Parse(row[Array.IndexOf(header, "energy_j")]));
-                Assert.Equal(node.Pressure, Parse(row[Array.IndexOf(header, "pressure_pa")]));
-                Assert.Equal(node.Temperature, Parse(row[Array.IndexOf(header, "temperature_k")]));
-                Assert.Equal(node.Phase, row[Array.IndexOf(header, "phase")]);
+                var row = Assert.Single(rows, row => row[2] == node.GetProperty("Id").GetString());
+                Assert.Equal(node.GetProperty("Mass").GetDouble(), Parse(row[Array.IndexOf(header, "mass_kg")]));
+                Assert.Equal(node.GetProperty("Energy").GetDouble(), Parse(row[Array.IndexOf(header, "energy_j")]));
+                Assert.Equal(node.GetProperty("Pressure").GetDouble(), Parse(row[Array.IndexOf(header, "pressure_pa")]));
+                Assert.Equal(node.GetProperty("Temperature").GetDouble(), Parse(row[Array.IndexOf(header, "temperature_k")]));
+                Assert.Equal(node.GetProperty("Phase").GetString(), row[Array.IndexOf(header, "phase")]);
             }
         }
-        R3HFeasibilityHarness.Write("02-baseline.json", new { status = "PASS-BASELINE-IDENTITY", hash, baseline.Raw, baseline.Observations });
+        R3HFeasibilityHarness.Write("02-current-recipe.json", new { status = "PASS-CURRENT-RECIPE-AND-HISTORICAL-FIXTURE-INTEGRITY", hash, baseline.Raw, baseline.Observations });
     }
 
     [Fact]

@@ -1,0 +1,24 @@
+{
+  "status": "PASS-PREEXECUTION",
+  "fixtures": "PASS-ALGEBRA-FIXTURES",
+  "contract_sha256": "DE164CE8C7829E65A10ADD4651A3D54552AE6345E064CF4CEB717FE0CFB5D7EE",
+  "assemblies": [
+    {
+      "file": "NuclearReactorSimulator.Application.dll",
+      "sha256": "06DFF305B42626EFBBFEEB57381DC016F33CE44124510AF740C867908DF65634"
+    },
+    {
+      "file": "NuclearReactorSimulator.Domain.dll",
+      "sha256": "CB7FA29ADA2058C4317F0CA0DFC8C88AC19EACD79C9CC381EF18E18AEC21BFC6"
+    },
+    {
+      "file": "NuclearReactorSimulator.Simulation.dll",
+      "sha256": "68E2099839626E3962F1981979B5FABF75535FC3A1C3E477FD8D8F10AB069F60"
+    },
+    {
+      "file": "R3RepairedRawDiagnosis.dll",
+      "sha256": "7A9BF7D085EB05261027622E1BE9C0B810413D6E40FD5AD583B7FD949A0818BD"
+    }
+  ],
+  "plant_calls": 0
+}

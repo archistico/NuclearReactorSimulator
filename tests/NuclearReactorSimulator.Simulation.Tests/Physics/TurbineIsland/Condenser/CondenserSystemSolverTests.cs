@@ -25,6 +25,28 @@ namespace NuclearReactorSimulator.Simulation.Tests.Physics.TurbineIsland.Condens
 
 public sealed class CondenserSystemSolverTests
 {
+    [Theory]
+    [InlineData(3d, 10_000d, "THERMAL")]
+    [InlineData(100d, 10_000d, "MAXIMUM FLOW")]
+    [InlineData(100d, 1d, "INVENTORY")]
+    public void Step_ActivePhaseTransportRecomputesCondensationAndClosesLedgers(double coolingMw, double exhaustMassKg, string limit)
+    {
+        var model = new ActivePhasePreservingThermodynamicModel();
+        var fixture = CreateFixture(Power.FromMegawatts(coolingMw), model,
+            condensateEnergyMode: CondenserCondensateEnergyMode.SaturatedLiquidAtSteamSpacePressure,
+            isolateMainSteamFlows: true, exhaustMassKilograms: exhaustMassKg);
+        var result = new CondenserSystemSolver(fixture.Definition, model).Step(
+            fixture.PlantState, fixture.TurbineState, fixture.Inputs, TimeSpan.FromSeconds(1d));
+        var condenser = Assert.Single(result.Snapshot.Condensers);
+        var expectedFlow = Math.Min(10d, Math.Min(.9d * exhaustMassKg, coolingMw * 1e6 / 1_700_000d));
+        Assert.Equal(300d, condenser.CondensateSpecificInternalEnergy.KilojoulesPerKilogram, 12);
+        Assert.Equal(expectedFlow, condenser.ActualCondensationMassFlowRate.KilogramsPerSecond, 12);
+        Assert.Equal(expectedFlow * 1_700_000d, condenser.HeatRejectionPower.Watts, 6);
+        Assert.Contains(limit, condenser.ActiveCondensationLimits);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalanceMassRateResidualKilogramsPerSecond), 0d, 1e-12d);
+        Assert.InRange(Math.Abs(result.Snapshot.ThermofluidAudit.BalancePowerResidualWatts), 0d, 1e-6d);
+    }
+
     [Fact]
     public void Step_CondensesSteamTransfersMassToHotwellAndRejectsHeatConservatively()
     {
@@ -444,7 +466,8 @@ public sealed class CondenserSystemSolverTests
         double exhaustPressureMegapascals = 0.1d,
         FluidPhase headerPhase = FluidPhase.SuperheatedVapor,
         VaporQuality? headerVaporQuality = null,
-        bool isolateMainSteamFlows = false)
+        bool isolateMainSteamFlows = false,
+        double exhaustMassKilograms = 10_000d)
     {
         FluidNodeDefinition Node(string id) => new(id, Volume.FromCubicMetres(10d));
         PipeDefinition Pipe(string id, string from, string to) => new(
@@ -493,7 +516,7 @@ public sealed class CondenserSystemSolverTests
             VaporQuality? vaporQuality = null,
             double temperatureCelsius = 280d)
         {
-            var mass = Mass.FromKilograms(10_000d);
+            var mass = Mass.FromKilograms(id == "exhaust" ? exhaustMassKilograms : 10_000d);
             var specificEnergy = SpecificEnergy.FromKilojoulesPerKilogram(specificEnergyKilojoulesPerKilogram);
             return new FluidNodeState(
                 plant.GetFluidNode(id),
@@ -710,6 +733,21 @@ public sealed class CondenserSystemSolverTests
                 SpecificEnergy.FromKilojoulesPerKilogram(2_600d));
     }
 
+
+    private sealed class ActivePhasePreservingThermodynamicModel : IFluidThermodynamicModel,
+        IWaterSteamSaturationPropertyProvider, IWaterSteamPhaseTransportPropertyProvider
+    {
+        public FluidThermodynamicState Resolve(FluidNodeDefinition definition, FluidNodeInventory inventory, FluidThermodynamicState previousState) => previousState;
+        public WaterSteamSaturationProperties GetSaturationProperties(Pressure pressure) => new(
+            Temperature.FromDegreesCelsius(100d), pressure, Density.FromKilogramsPerCubicMetre(950d),
+            Density.FromKilogramsPerCubicMetre(.6d), SpecificEnergy.FromKilojoulesPerKilogram(400d), SpecificEnergy.FromKilojoulesPerKilogram(2_600d));
+        public WaterSteamSaturationProperties GetSaturationProperties(Temperature temperature) => GetSaturationProperties(Pressure.FromMegapascals(.1d));
+        public WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(Pressure pressure) => new(
+            Density.FromKilogramsPerCubicMetre(950d), Density.FromKilogramsPerCubicMetre(.6d),
+            SpecificEnergy.FromKilojoulesPerKilogram(300d), SpecificEnergy.FromKilojoulesPerKilogram(3_000d));
+        public WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(Pressure pressure, Temperature temperature)
+            => throw new InvalidOperationException("Condenser must use the pressure-indexed capability.");
+    }
 
     private sealed class ExhaustMassPressureThermodynamicModel : IFluidThermodynamicModel
     {

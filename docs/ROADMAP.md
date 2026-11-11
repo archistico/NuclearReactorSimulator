@@ -29,56 +29,58 @@ il significato delle verifiche; questa roadmap definisce le consegne future.
 
 NRS-MARKER:R3-H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-NEXT
 
-L'obiettivo immediato è capire quale grandezza deve assorbire lo spostamento
-di energia specifica introdotto dalla nuova chiusura. La
-[revisione di sufficienza](PROJECT.md#che-cosa-ha-mostrato-la-revisione-di-sufficienza)
-indica che i soli inventari fluidi non bastano, nel modello lineare, e che il
-massimo scalato non misura l'avvicinamento fisico all'equilibrio. Misuriamo
-quindi la sensibilità ai punti operativi non fluidi prima di altre ricerche.
-Le sei grandezze sono misurate e, entro i limiti delle sonde,
-[nessuna combinazione](PROJECT.md#che-cosa-ha-mostrato-la-revisione-vincolata)
-sposta l'accumulo di energia lungo la linea vapore. La
-[ricostruzione dello stadio](PROJECT.md#che-cosa-ha-mostrato-la-ricostruzione-dello-stadio)
-ha individuato la causa: sotto C4 lo stadio rimuove vapore e condensa con
-energie di saturazione storiche. Il passo successivo è pianificare la modifica
-di quella legge di trasporto. Il confronto fra sonde compensate e riserva
-energetica resta sospeso.
+Il lavoro parte dal campo di flussi della legge riparata. Il
+[checkpoint](PROJECT.md#il-problema-da-risolvere) spiega gli accumuli e collega
+le nuove misure. Le tre direzioni inizialmente mancanti sono state raffinate:
+`pressure` richiede sonde più piccole, l'energia di `exhaust` un confronto
+locale fra ampiezze dichiarate. La successiva misura di tutto il ciclo
+seleziona **19 colonne su 30**, con tutte le sei grandezze non fluide.
+
+Restano undici coordinate: sette incontrano cambi di fase o non hanno una
+seconda scala ammessa; quattro non concordano fra ampiezze. Il prossimo
+confronto deve quindi costruire direzioni compatibili con questi rami,
+mantenendo i controlli su tutti i nodi e lungo tutta la preparazione.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
-| Diagnostica non fluida | Completata: sei grandezze misurate, revisione vincolata negativa e congelata. | — |
-| Legge di energia dello stadio | Completata: incoerenza dimostrata, l'1,9% dell'accumulo resta con le energie della chiusura attiva. | — |
-| Correggere il trasporto di fase | Con C4, ricavare le energie di vapore e condensa dello stadio, e da valutare del condensatore, dal provider della chiusura attiva. | Identità con la chiusura storica, test locali, suite ordinaria e nuova misura del punto grezzo. |
-| Scegliere la famiglia | Rimisurare residui e Jacobiani con la legge corretta e decidere fra H, C o J. | Evidenza nuova; le misure precedenti restano storiche. |
-| Verificare la base locale | Misurare direzioni indipendenti, compatibili con tutti i checkpoint della ricetta. | Derivate disponibili e previsioni direzionali verificate a una scala utile. |
-| Provare le proposte | Congelare le proposte e confrontarle due volte con la risposta reale. | Ripetizioni identiche, discesa, ramo ed errore del modello conformi. |
-| Eseguire una nuova ricerca | Fissare algoritmo, criteri di arresto e budget sulla base della prova. | Evidenza completa e una radice osservata prima della conferma. |
-| Confermare e integrare | Revisionare la radice, eseguire conferme indipendenti e comporre il candidato di prova. | Residui conformi e inviluppo invariato di 100 passi. |
+| Diagnosi iniziale completata | Due ricette identiche; scambi termici e bilanci di exhaust ricostruiti. | PASS della diagnosi; nessuna radice o ricerca. Singole portate corrette non osservate. |
+| Raffinamento iniziale completato | 70 ricette ripetibili; recuperate le tre colonne mancanti e verificati i bilanci di coppia. | PASS dell'evidenza; accordo locale, nessuna estrapolazione. |
+| Misura estesa completata | 362 ricette ripetibili, 334 nell'inviluppo; selezionate 19 colonne su 30. | Rango numerico diagnostico 19; disponibilità incompleta e nessuna sufficienza dimostrata. |
+| Costruire le direzioni nei rami ammessi | Trattare separatamente confini di fase, assenza di una seconda scala e disaccordo delle colonne di control-out e turbine-inlet. | Sonde compensate, unilaterali o più piccole dichiarate prima delle misure; previsioni e vincoli del verso verificati. |
+| Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
+| Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
+| Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
+| Confermare e integrare | Revisionare la radice e comporre il candidato di prova. | Residui conformi e inviluppo invariato di 100 passi indipendenti. |
 | R3 Requalification 3 | Verifica integrata di 120 secondi, 12.000 passi da 10 ms. | Solo un R3 PASS restituito e revisionato permette la pianificazione di R4. |
 
 ```mermaid
 flowchart TD
-    S["Diagnostica di sensibilità non fluida"] --> T["Scelta motivata della famiglia"]
-    T --> A["Base locale nella famiglia scelta"]
-    A --> B{"Base ammissibile e previsioni verificate?"}
-    B -->|"no"| R["Rivedere la rappresentazione locale"]
-    R --> A
-    B -->|"sì"| C["Proposte ripetute e ricerca con limiti espliciti"]
+    R["Trasporto di fase verificato"] --> M["Misura del punto riparato"]
+    M --> S["19 colonne su 30: costruire le direzioni nei rami ammessi"]
+    S --> A["Nuova base locale e proposte ripetute"]
+    A --> B{"Previsioni e ramo verificati?"}
+    B -->|"no"| S
+    B -->|"sì"| C["Ricerca con criteri e budget congelati"]
     C --> D{"Radice osservata?"}
-    D -->|"no"| R
+    D -->|"no"| S
     D -->|"sì"| E["Conferme indipendenti di 100 passi"]
     E --> F["R3: verifica integrata di 120 secondi"]
     F --> G["Revisione prima di R4"]
 ```
 
-Le frecce rappresentano risultati da dimostrare. La diagnostica non sceglie una
-famiglia: fornisce le misure con cui motivarla. Le osservazioni devono
-dimostrare l'utilità della scelta prima che si impegni una nuova ricerca.
-Un esito negativo riporta alla rappresentazione locale, conservando l'evidenza.
+Il diagramma rende espliciti riparazione e nuova misura come prerequisiti.
+Una correzione del trasporto può ridurre l'accumulo in un nodo e trasferire
+energia ad altri: il risultato locale non seleziona automaticamente un seed
+o una famiglia. Un esito negativo riporta alla diagnosi, conservando l'evidenza.
+Il confronto algebrico sul raffreddamento mostra perché il solo bilancio
+energetico di exhaust non basta: annullarlo a stato fisso peggiorerebbe la massa.
+Non è una prova di impossibilità della famiglia o una proposta di modifica a UA.
+Il successo della sonda nucleare-termica vale soltanto alle ampiezze misurate:
+non autorizza di colpo il passo necessario a compensare un deficit di circa 1 MW.
 
-Le famiglie C/J, gli allargamenti dei limiti e le modifiche fisiche richiedono
-comunque motivazioni e protocolli distinti. Il calendario di R3 e M10 potrà essere stimato
-quando il percorso verso un equilibrio qualificabile sarà sufficientemente prevedibile.
+Le famiglie C/J, gli allargamenti dei limiti e altre modifiche fisiche richiedono
+motivazioni e protocolli distinti. Il calendario potrà essere stimato quando
+il percorso verso l'equilibrio qualificabile sarà sufficientemente prevedibile.
 
 ## 3. Che cosa manca dopo R3 per chiudere M10
 

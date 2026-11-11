@@ -1,0 +1,120 @@
+[CI CURRENT EVIDENCE] Frozen Phase-I I.2 audit/CI baseline contract...
+Running M10.9.4.1-I.2 Phase-I audit consolidation / CI baseline gate...
+
+I.1 Hotfix 1 must already be validated. This gate does not execute historical H.5/H.21 numerical modes.
+It freezes I.1 evidence, separates ordinary/current/scheduled/historical audit tiers and validates CI entry points.
+No numerical mode is deleted by I.2.
+
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (788ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 1s 314ms
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (594ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 777ms
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (601ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 774ms
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (574ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 755ms
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (598ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 781ms
+
+=== 01-current-v4-phase-i-audit-consolidation-ci-baseline ===
+I.2 audit/CI contract is realigned for final Phase-I closure: current CI follows repaired exact-v4 desktop production while H.30 RQ1, I.3 exact-v3 and I.4 remain immutable historical evidence. The independent synchronization exact-v3 activation remains current. Plant physics, exact-version persistence semantics and the 10 ms fixed step are not retuned by this CI-contract update.
+audit-contract-entries=19; ordinary-required-entries=4; current-evidence-entries=3; scheduled-long-entries=4; historical-frozen-entries=11;
+ordinary-ci=clean restore|Release build warnings-as-errors|complete ordinary suite|I2 current contract|I5 synchronization-v3 activation|I5 repaired-v4 production activation;
+scheduled-long-ci=gameplay-long|operational-envelope|reference-plant-scale|I5-repaired-v4-300s-reference-requalification; H24-post-H28-rerun=False; historical-I3-v3-rerun=False;
+historical-frozen-not-ci-required=H30-RQ1|I3-v3-authoritative-reference|I4-known-limitations|H30-original|I1-compatibility|I3-HF4-continuity|I3-HF5-corrected-300s|H24-post-H28|H28-performance|H21-shadow-integration|H5-hybrid-shadow; historical-evidence-preserved=True;
+legacy-h5-h21-current-ci-dependency=False; legacy-h5-h21-source-dependencies-remaining=2; legacy-mode-retirement-authorized=False;
+authoritative-default=integrated-operations-desktop-stable@4|CorrelationConsistentInverseDomain|FourNodeBranchContinuityCorrectedCommitOptIn; historical-v3=integrated-operations-desktop-stable@3|HistoricalCorrelationTopology|FourNodeBranchContinuityCorrectedCommitOptIn; rollback-reference=integrated-operations-desktop-stable@2|HistoricalCorrelationTopology|ExplicitCommittedState; production-fixed-step=10.000 ms; frozen-I3-budgets-retuned=False;
+phase-i-audit-consolidation-passes=True; i2-audit-passes=True; phase-i-ci-baseline-established=True;
+I.2 recommendation: use ordinary CI on every push/PR and scheduled/manual current long gates separately. Preserve historical H.5/H.21 executable seams for now; a later retirement milestone may remove them only after their source-level dependencies are explicitly archived or replaced by frozen-evidence contracts.
+Detailed CSV files: "E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\artifacts\i2-phase-i-audit-consolidation-ci-baseline"
+M10.9.4.1-I.2 Phase-I audit consolidation / CI baseline gate completed.
+[CI CURRENT EVIDENCE] I.5 synchronization exact-v3 activation contract...
+Running I.5 synchronization corrected-v3 activation contract...
+
+Hotfix 5 qualification is frozen validated evidence.
+Exact @1/@2 remain loadable and unchanged; @3 is registered as supported current for sustained synchronization.
+This fast gate does not rerun the 60 s journey; gameplay-long owns that scheduled runtime regression.
+
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (1s 223ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 1s 396ms
+
+=== 01-i5-synchronization-corrected-v3-activation ===
+Validated Hotfix 5 evidence authorizes exact pre-synchronization-grid-loading@3 for supported sustained synchronization. Exact @1/@2 identities remain loadable and unchanged; @3 changes only hydraulic numerical ownership to the already-qualified corrected-commit mode.
+source-qualification=I.5 REV1 Hotfix 5 VALIDATED; selected-contract=corrected-only; physical-retuning=False; governor-retuning=False; steam-capacity-retuning=False; stop-grade-retuning=False;
+exact-v1=pre-synchronization-grid-loading@1|ExplicitCommittedState; exact-v2=pre-synchronization-grid-loading@2|ExplicitCommittedState; exact-v3=pre-synchronization-grid-loading@3|FourNodeBranchContinuityCorrectedCommitOptIn; exact-v1-v2-reinterpreted=False;
+v3-registered=True; long-journey-uses-v3=True; stabilization-checkpoint=10s|gross-positive|shaft>4.5MW|rotor=2950-3050rpm|forward-admission; sustained-window=20-60s|gross>4.0MWe|shaft>4.5MW|rotor=2990-3010rpm|forward-admission;
+synchronization-v3-activation-passes=True; gameplay-long-v3-unblocked=True; i5-cumulative-rerun-unblocked=True; runtime-physics-retuned=False; production-desktop-policy-changed=False;
+I.5 activation recommendation: run the unchanged cumulative closure matrix. The gameplay-long gate must now exercise exact synchronization @3 under the qualified stabilization/sustained contract; do not reinterpret or delete @1/@2.
+Detailed activation artifacts: "E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\artifacts\i5-synchronization-corrected-v3-activation"
+I.5 synchronization corrected-v3 activation gate completed.
+[CI CURRENT EVIDENCE] M10 Final exact-v9 authoritative desktop production and mission-v3 activation...
+Running M10 Final exact-v9 authoritative production audit...
+Exact-v9 must be the authoritative default; exact-v4 remains historical and exact-v2 remains fail-closed.
+Current production mission pack must be bounded-demand-following-5-10-5@3 while @1/@2 remain replayable.
+
+Esecuzione di test da E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64)
+E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Debug\net10.0\NuclearReactorSimulator.Application.Tests.dll (net10.0|x64) superato (2m 44s 179ms)
+
+Riepilogo esecuzione test: Superato!
+  totale: 1
+  non riuscito: 0
+  operazione completata: 1
+  ignorato: 0
+  durata: 2m 44s 355ms
+
+scope=M10 Final exact-v9 authoritative production activation decision; exact-v9 qualified by Diagnostic 11 Hotfix 2 and the separate opt-in activation candidate; exact-v4 is historical/replayable; exact-v2 remains fail-closed; replacement long is still not authorized by this gate;
+authoritative-default=integrated-operations-desktop-stable@9; historical-v4=integrated-operations-desktop-stable@4; rollback=integrated-operations-desktop-stable@2;
+health-steps=12000; trip-steps=0; breaker-open-steps=0; electrical-range-mwe=4.9999999795104797..4.999999999572232; primary-pump-range-kg-s=99.999999968963579..100.00000021068621; drum-level-range=0.49999999993197591..0.50000000007990097; governor-output-range-percent=29.281329614794107..29.281329977118531;
+minimum-moisture-drain-kg-s=0.31123523307475764; max-commanded-transfer-mismatch-kg-s=0; max-stage-energy-ownership-residual-w=1.1175870895385742E-08;
+max-network-mass-closure-kg=2.1827872842550278E-11; max-network-energy-closure-j=4.5662359334528412E-05; max-network-balance-mass-rate-kg-s=7.1054273576010019E-15; max-network-balance-power-w=3.5477569326758385E-08;
+corrected-triggered=0; corrected-committed=0; rollbacks=0; fallback-commit-violations=0; unsafe-commits=0; untargeted-disagreements=0;
+determinism-steps=128; selector-equals-direct-factory-raw-v1=True; raw-v1-host-fingerprint=7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418; historical-local-raw-v1-fingerprint=7880AD580179B936C584EB0055BE663E0A1CFA65C5191B0DB8A7F3C514DB5418; cross-host-v2-fingerprint=99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73; frozen-cross-host-v2-fingerprint=99B9D27A8F5791A194771D698E8A0740F7024058C172D645E2DF74F1B3C09E73;
+mission-steps=1200; mission-pack=bounded-demand-following-5-10-5@3; mission-scenario=integrated-normal-operations-training-m10-final-v9-production; mission-trip-steps=0; mission-breaker-open-steps=0; mission-final-score=76.97160881456481;
+exact-v9-authoritative=True; exact-v4-historical-retained=True; exact-v3-historical-retained=True; exact-v2-fail-closed-kill-preserved=True; production-mission-v3-authoritative=True; production-mission-v2-historical-retained=True; historical-identities-reinterpreted=False; production-activation=True; replacement-long-authorized=False;
+next-step=after this activation decision gate passes, freeze a new exact-v9 production baseline manifest and authorize only the redesigned replacement long campaign; do not reuse the failed exact-v4 long manifest;
+
+M10 Final exact-v9 authoritative production audit completed.
+[CI CURRENT EVIDENCE] Historical H.30 RQ1, I.3 exact-v3 reference, I.4 review and I.5 exact-v4 production activation remain frozen provenance.
+[CI CURRENT EVIDENCE] PASSED.

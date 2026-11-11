@@ -415,6 +415,22 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         return EvaluateSaturation(saturationTemperatureKelvins.Value);
     }
 
+    private WaterSteamPhaseTransportProperties ResolveSaturatedPhaseTransportProperties(Pressure pressure)
+    {
+        if (_referenceConsistentTabulatedInverseResolver is not null)
+        {
+            return _referenceConsistentTabulatedInverseResolver.ResolveSaturatedPhaseTransportProperties(pressure);
+        }
+
+        // Pressure-based consumers retain the exact historical forward lookup.
+        var saturation = GetSaturationProperties(pressure);
+        return new WaterSteamPhaseTransportProperties(
+            saturation.SaturatedLiquidDensity,
+            saturation.SaturatedVaporDensity,
+            saturation.SaturatedLiquidInternalEnergy,
+            saturation.SaturatedVaporInternalEnergy);
+    }
+
     private WaterSteamPhaseTransportProperties ResolveSaturatedPhaseTransportProperties(
         Pressure pressure,
         Temperature temperature)
@@ -440,6 +456,9 @@ public sealed class SimplifiedWaterSteamThermodynamicModel : IFluidThermodynamic
         {
             _owner = owner;
         }
+
+        public WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(Pressure pressure)
+            => _owner.ResolveSaturatedPhaseTransportProperties(pressure);
 
         public WaterSteamPhaseTransportProperties GetSaturatedPhaseTransportProperties(
             Pressure pressure,

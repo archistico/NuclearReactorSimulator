@@ -1,0 +1,288 @@
+{
+  "status": "PASS-STAGE-TRANSPORT-OWNERSHIP-REPAIR-ADJUDICATION2",
+  "plant_calls": 0,
+  "returned_recipes": 2,
+  "fixtures": [
+    {
+      "name": "stationary-closed-ledger",
+      "passed": true
+    },
+    {
+      "name": "nonstationary-closed-ledger",
+      "passed": true
+    },
+    {
+      "name": "unaccounted-mass-rejected",
+      "passed": true
+    }
+  ],
+  "original_protocol_result": {
+    "status": "NONCONFORMING-ORIGINAL-MASS-STATIONARITY-CRITERION",
+    "recipes": 2,
+    "failed_criterion": "Stage mass ledger mismatch",
+    "original_allowed_difference_kg_s": 1e-06,
+    "measured_inflow_minus_outflow_kg_s": 0.00017251665775397385,
+    "original_protocol_not_passed": true,
+    "measurement_retained": true,
+    "r3_passed": false,
+    "m10_closed": false,
+    "seed_installed": false
+  },
+  "original_result_rewritten": false,
+  "criterion_correction": "Compare mass storage with inflow minus outflow; do not require stationarity of the raw point",
+  "checkpoint_results": [
+    {
+      "checkpoint": "seed-step1",
+      "storage": [
+        {
+          "node": "control-out",
+          "mass_rate_kg_s": -1.0686562745831907e-08,
+          "energy_rate_w": 196503.0918121338
+        },
+        {
+          "node": "drum",
+          "mass_rate_kg_s": -1.087760210793931e-05,
+          "energy_rate_w": -162188.7173652649
+        },
+        {
+          "node": "exhaust",
+          "mass_rate_kg_s": -0.14340262368222056,
+          "energy_rate_w": 959643.9641594887
+        },
+        {
+          "node": "feedwater-inventory",
+          "mass_rate_kg_s": 4.5798879000358284e-05,
+          "energy_rate_w": 20.95499038696289
+        },
+        {
+          "node": "header",
+          "mass_rate_kg_s": 1.8335413187742233e-07,
+          "energy_rate_w": 13191.169929504395
+        },
+        {
+          "node": "hotwell",
+          "mass_rate_kg_s": 0.14335672804008937,
+          "energy_rate_w": 36181.16230964661
+        },
+        {
+          "node": "outlet",
+          "mass_rate_kg_s": -2.1436790120787919e-07,
+          "energy_rate_w": -1156615.121269226
+        },
+        {
+          "node": "pressure",
+          "mass_rate_kg_s": 1.1337306204950437e-05,
+          "energy_rate_w": 77699.75891113281
+        },
+        {
+          "node": "steam",
+          "mass_rate_kg_s": -3.3201104088220745e-07,
+          "energy_rate_w": 1516.9355392456055
+        },
+        {
+          "node": "stop-out",
+          "mass_rate_kg_s": -9.999894245993346e-08,
+          "energy_rate_w": 15619.030570983887
+        },
+        {
+          "node": "suction",
+          "mass_rate_kg_s": 0.0,
+          "energy_rate_w": -0.01468658447265625
+        },
+        {
+          "node": "turbine-inlet",
+          "mass_rate_kg_s": 1.1066276783822104e-07,
+          "energy_rate_w": 18962.829780578613
+        }
+      ],
+      "inlet": {
+        "node": "turbine-inlet",
+        "mass_rate_kg_s": 1.1066276783822104e-07,
+        "energy_rate_w": 18962.829780578613
+      },
+      "in_envelope": true
+    },
+    {
+      "checkpoint": "post-seed",
+      "storage": [
+        {
+          "node": "control-out",
+          "mass_rate_kg_s": -9.004083949548658e-05,
+          "energy_rate_w": 196240.6223297119
+        },
+        {
+          "node": "drum",
+          "mass_rate_kg_s": 0.020540621426334837,
+          "energy_rate_w": -172611.62309646606
+        },
+        {
+          "node": "exhaust",
+          "mass_rate_kg_s": -0.14305834518353322,
+          "energy_rate_w": 957747.48878479
+        },
+        {
+          "node": "feedwater-inventory",
+          "mass_rate_kg_s": -0.01945426283782581,
+          "energy_rate_w": -3842.9775953292847
+        },
+        {
+          "node": "header",
+          "mass_rate_kg_s": -5.389711077441461e-06,
+          "energy_rate_w": 13175.130653381348
+        },
+        {
+          "node": "hotwell",
+          "mass_rate_kg_s": 0.13059386892564362,
+          "energy_rate_w": 33737.58249282837
+        },
+        {
+          "node": "outlet",
+          "mass_rate_kg_s": 0.045109106372365204,
+          "energy_rate_w": -1092308.2738876343
+        },
+        {
+          "node": "pressure",
+          "mass_rate_kg_s": -0.03109773924734327,
+          "energy_rate_w": 39192.136573791504
+        },
+        {
+          "node": "steam",
+          "mass_rate_kg_s": -0.0026337869257986313,
+          "energy_rate_w": -5802.567481994629
+        },
+        {
+          "node": "stop-out",
+          "mass_rate_kg_s": 5.927086021983996e-06,
+          "energy_rate_w": 15635.635566711426
+        },
+        {
+          "node": "suction",
+          "mass_rate_kg_s": 0.0,
+          "energy_rate_w": -37.97492980957031
+        },
+        {
+          "node": "turbine-inlet",
+          "mass_rate_kg_s": 9.004083949548658e-05,
+          "energy_rate_w": 19224.205589294434
+        }
+      ],
+      "inlet": {
+        "node": "turbine-inlet",
+        "mass_rate_kg_s": 9.004083949548658e-05,
+        "energy_rate_w": 19224.205589294434
+      },
+      "in_envelope": true
+    },
+    {
+      "checkpoint": "1",
+      "storage": [
+        {
+          "node": "control-out",
+          "mass_rate_kg_s": -0.0001725166384858312,
+          "energy_rate_w": 195999.13578033447
+        },
+        {
+          "node": "drum",
+          "mass_rate_kg_s": 0.005660140141117154,
+          "energy_rate_w": -191578.86686325073
+        },
+        {
+          "node": "exhaust",
+          "mass_rate_kg_s": -0.14270763618640103,
+          "energy_rate_w": 955871.9487518072
+        },
+        {
+          "node": "feedwater-inventory",
+          "mass_rate_kg_s": -0.0051530410928535275,
+          "energy_rate_w": -1001.0231256484985
+        },
+        {
+          "node": "header",
+          "mass_rate_kg_s": -1.328608050243929e-05,
+          "energy_rate_w": 13152.611351013184
+        },
+        {
+          "node": "hotwell",
+          "mass_rate_kg_s": 0.1172639058495406,
+          "energy_rate_w": 31181.939578056335
+        },
+        {
+          "node": "outlet",
+          "mass_rate_kg_s": 0.0831017956670621,
+          "energy_rate_w": -1036986.6727113724
+        },
+        {
+          "node": "pressure",
+          "mass_rate_kg_s": -0.0523525258358859,
+          "energy_rate_w": 12883.292579650879
+        },
+        {
+          "node": "steam",
+          "mass_rate_kg_s": -0.005803846670460189,
+          "energy_rate_w": -14613.481712341309
+        },
+        {
+          "node": "stop-out",
+          "mass_rate_kg_s": 4.494222594075836e-06,
+          "energy_rate_w": 15631.519412994385
+        },
+        {
+          "node": "suction",
+          "mass_rate_kg_s": 0.0,
+          "energy_rate_w": -83.98170471191406
+        },
+        {
+          "node": "turbine-inlet",
+          "mass_rate_kg_s": 0.00017251666122319875,
+          "energy_rate_w": 19464.993381500244
+        }
+      ],
+      "inlet": {
+        "node": "turbine-inlet",
+        "mass_rate_kg_s": 0.00017251666122319875,
+        "energy_rate_w": 19464.993381500244
+      },
+      "in_envelope": true
+    }
+  ],
+  "stage": {
+    "VaporAdvectedJKg": 2801710.3442703253,
+    "DrainAdvectedJKg": 1073967.495952391,
+    "ExpectedVaporJKg": 2801710.3442703253,
+    "ExpectedDrainJKg": 1073967.495952391,
+    "VaporMassKgS": 13.027996929190257,
+    "DrainMassKgS": 0.31123338813815415,
+    "InletEnergyW": 36834928.30414988,
+    "ExhaustEnergyW": 30898635.08419341,
+    "DrainEnergyW": 334254.54251551203,
+    "ShaftPowerW": 5602038.67744097,
+    "OwnershipResidualW": -9.313225746154785e-09,
+    "AdmissionEnergyW": 36854393.29757665,
+    "AdmissionMassKgS": 13.339402833986165
+  },
+  "condenser": {
+    "CondensateAdvectedJKg": 178107.74079228716,
+    "ExpectedCondensateJKg": 178107.74079228716,
+    "SteamAdvectedJKg": 2273436.700885226,
+    "MassKgS": 13.170704565375999,
+    "ThermalLimitKgS": 13.170704565375999,
+    "InventoryLimitKgS": 5810.2613046317765,
+    "MaximumLimitKgS": 20,
+    "CoolingCapacityW": 27596958.700660616,
+    "HeatRejectionW": 27596958.700660612,
+    "ActiveCondensationLimits": "THERMAL"
+  },
+  "mass_ledger_error_kg_s": 3.469224907348689e-12,
+  "inlet_energy_ledger_error_w": -4.526972770690918e-05,
+  "stage_energy_ledger_error_w": -9.313225746154785e-09,
+  "condenser_energy_ledger_error_w": 3.725290298461914e-09,
+  "running_inlet_ratio": 0.019338129926006566,
+  "maximum_scaled": 8582400.421013353,
+  "all_in_envelope": true,
+  "root_observed": false,
+  "next_activity": "DIAGNOSE-REPAIRED-RAW-POINT-BEFORE-SELECTING-NEW-SEARCH-FAMILY",
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false,
+  "production_activation": false
+}

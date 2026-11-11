@@ -5,6 +5,7 @@ eng/contracts/m10/milestones/*.md -text whitespace=cr-at-eol
 eng/contracts/m10/research/*.md -text whitespace=cr-at-eol
 
 # Existing Windows tooling uses CRLF. Keep whitespace checks without flagging CR.
+*.cs whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 eng/*.ps1 whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 eng/*.json whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 scripts/*.cmd whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

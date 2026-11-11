@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-missing-directions2-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2146,
+      "sha256": "ED0350CADF693E0C9244EE666A4E66174F9C3CD5AFD14501C8BB86C641D07100",
+      "stored_sha256": "ED0350CADF693E0C9244EE666A4E66174F9C3CD5AFD14501C8BB86C641D07100"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 34617,
+      "sha256": "ACA93B96275ABC0CB277463A751148FBE89DE973553075152DF8BBE79F5077A3",
+      "stored_sha256": "ACA93B96275ABC0CB277463A751148FBE89DE973553075152DF8BBE79F5077A3"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3156,
+      "sha256": "F619C64355E1F902833EF2894D5C7216DBEF2E2C3A6A83C2D4129B2DF8566A7B",
+      "stored_sha256": "F619C64355E1F902833EF2894D5C7216DBEF2E2C3A6A83C2D4129B2DF8566A7B"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 1663168,
+      "sha256": "3D0DFA3ED46062EF5EE3709E1D17940F5291D7BAD27AE0EB87C75738010BB5FD",
+      "stored_sha256": "EFDD3C7DF35C47283AE0371B09F22CD360DC64A9DEC1A1E93EA48C825BBF6CDB"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 87930,
+      "sha256": "4B2C968D9D382B7ABB541D4B47146AA0AC40641AFB03CD9BDB66A4AC9279DB3F",
+      "stored_sha256": "4B2C968D9D382B7ABB541D4B47146AA0AC40641AFB03CD9BDB66A4AC9279DB3F"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 81,
+      "sha256": "9260FBB55C43220FED4DB913B911B9974BD63E283D015BF729C6C496FE0ED517",
+      "stored_sha256": "9260FBB55C43220FED4DB913B911B9974BD63E283D015BF729C6C496FE0ED517"
+    }
+  ]
+}
