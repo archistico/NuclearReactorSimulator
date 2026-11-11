@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Quanta acqua c'è nel corpo cilindrico e quanto dura</title>
+<desc id="desc">A sinistra un cilindro equivalente di 5 metri per 1,6 metri, pieno a metà: 5 metri cubi di liquido, circa 3750 kg, e 5 metri cubi di vapore, circa 166 kg. A destra una stima: se l'alimentazione si ferma e il vapore continua a uscire a 13,3 kg/s, il livello scende dal 50% al 25% in circa 140 secondi e al 10% in circa 225 secondi.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="499.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Quanta acqua c'è nel corpo cilindrico e quanto dura</text>
+<defs><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect x="50.0" y="90.0" width="300.0" height="96.0" rx="48" fill="#fbe0d3" stroke="#52514e" stroke-width="2"/>
+<clipPath id="dc"><rect x="50" y="90" width="300" height="96" rx="48"/></clipPath>
+<rect x="50" y="138.0" width="300" height="48.0" fill="#cde2fb" clip-path="url(#dc)"/>
+<line x1="70.0" y1="138.0" x2="330.0" y2="138.0" stroke="#2a78d6" stroke-width="2"/>
+<text x="200.0" y="120.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">5 m³ di vapore ≈ 166 kg</text>
+<text x="200.0" y="168.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">5 m³ di liquido ≈ 3 750 kg (5 000 litri)</text>
+<line x1="50.0" y1="204.0" x2="350.0" y2="204.0" stroke="#52514e" stroke-width="1.2"/>
+<text x="200.0" y="220.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">lunghezza equivalente 5 m</text>
+<line x1="364.0" y1="90.0" x2="364.0" y2="186.0" stroke="#52514e" stroke-width="1.2"/>
+<text x="370.0" y="142.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">Ø 1,6 m</text>
+<text x="50.0" y="268.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">10 m³ in tutto, 6,4 MPa, 280 °C.</text>
+<text x="50.0" y="287.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">1 punto di livello = 0,1 m³ = 100 litri ≈ 75 kg di liquido.</text>
+<text x="50.0" y="306.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">Il livello è la frazione del volume occupata dal liquido.</text>
+<text x="480.0" y="66.0" font-size="13.5" fill="#0b0b0b" text-anchor="start" font-weight="600">Se l'alimentazione si ferma del tutto</text>
+<line x1="520.0" y1="265.0" x2="860.0" y2="265.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="512.0" y="269.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">10</text>
+<line x1="520.0" y1="212.5" x2="860.0" y2="212.5" stroke="#e1e0d9" stroke-width="1"/>
+<text x="512.0" y="216.5" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">25</text>
+<line x1="520.0" y1="125.0" x2="860.0" y2="125.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="512.0" y="129.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">50</text>
+<text x="520.0" y="318.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">0</text>
+<text x="598.5" y="318.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">60</text>
+<text x="676.9" y="318.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">120</text>
+<text x="755.4" y="318.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">180</text>
+<text x="833.8" y="318.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">240</text>
+<line x1="520.0" y1="300.0" x2="860.0" y2="300.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<line x1="520.0" y1="90.0" x2="520.0" y2="300.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="690.0" y="338.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">secondi</text>
+<text transform="translate(474.0,195.0) rotate(-90)" font-size="12.5" fill="#52514e" text-anchor="middle">livello [%]</text>
+<path d="M520.0,125.0 L814.2,265.0" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="7 5"/>
+<line x1="520.0" y1="212.5" x2="860.0" y2="212.5" stroke="#fab219" stroke-width="2" stroke-dasharray="6 4"/>
+<g transform="translate(530.0,196.5)"><path d="M6,0 L12,11 L0,11 Z" fill="#fab219"/><text x="6" y="10" font-size="8" fill="#0b0b0b" text-anchor="middle" font-weight="700">!</text></g>
+<text x="546.0" y="206.5" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">avvertimento</text>
+<line x1="520.0" y1="265.0" x2="860.0" y2="265.0" stroke="#d03b3b" stroke-width="2" stroke-dasharray="6 4"/>
+<g transform="translate(530.0,249.0)"><path d="M6,0 L12,11 L0,11 Z" fill="#d03b3b"/><text x="6" y="10" font-size="8" fill="#0b0b0b" text-anchor="middle" font-weight="700">!</text></g>
+<text x="546.0" y="259.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">scatto</text>
+<circle cx="703.9" cy="212.5" r="5" fill="#fab219" stroke="#fcfcfb" stroke-width="2"/>
+<text x="713.9" y="204.5" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="600">≈ 141 s</text>
+<circle cx="814.2" cy="265.0" r="5" fill="#d03b3b" stroke="#fcfcfb" stroke-width="2"/>
+<text x="806.2" y="283.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="600">≈ 225 s</text>
+<text x="480.0" y="360.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">Stima: escono 13,3 kg/s di vapore e non entra acqua.</text>
+<text x="480.0" y="379.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">Circa 0,18 punti di livello al secondo:</text>
+<text x="480.0" y="398.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">restano pochi minuti per capire e intervenire.</text>
+<text x="40.0" y="444.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Il corpo cilindrico contiene meno di 4 t d'acqua e ne esporta 13 kg ogni secondo: senza alimentazione la riserva dura</text>
+<text x="40.0" y="462.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">pochi minuti. La stima ignora i cambi di fase e di pressione, che nel modello spostano il livello anche da soli.</text>
+<text x="24.0" y="484.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Forma equivalente illustrativa: il modello conosce solo il volume. Stima a portata costante, senza effetti di fase.</text>
+</svg>

@@ -281,6 +281,13 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   strumento, passo dei comandi, memoria e reset, protezioni temporizzate,
   percorso di avviamento, mappa della schermata, assistenza e autorità, ordine
   della diagnosi. Valori e soglie verificati sul manuale e sul codice.
+- Aggiunte al capitolo 5 del manuale 22 schede tecniche dei componenti: com'è
+  fatto il componente reale e nel modello, volume e litri, contenuto e masse al
+  punto iniziale, campo di funzionamento, semplificazioni e conseguenze di guasti
+  e blocchi. Nuova introduzione con i mattoni del modello, la tabella dei volumi
+  e il catalogo dei guasti; sette figure SVG (volumi in scala, mattoni, scala
+  delle pressioni, calore nel nocciolo, riserva del corpo cilindrico, inerzia del
+  rotore, condensatore in sezione). Valori dai parametri del profilo Exact-V9.
 - Archiviati 74 documenti conclusi o superati, preservandone byte e SHA-256;
   separati 174 input esatti dei validatori dalla documentazione leggibile.
 - Consolidati risultati e ripresa in `docs/PROJECT.md`, con handoff operativo.

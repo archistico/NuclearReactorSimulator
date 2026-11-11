@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="900" height="560" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">La pressione lungo il giro completo dell'acqua</title>
+<desc id="desc">Pressione assoluta in scala logaritmica nei nodi del ciclo, dal collettore di aspirazione al ritorno nel corpo cilindrico: circa 6,4-6,9 MPa nel circuito caldo, caduta di 2,1 MPa nella valvola CONTROL, espansione in turbina fino a 8,4 kPa, poi risalita con la pompa del condensato e con la pompa di alimentazione fino a 6,4 MPa.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="559.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">La pressione lungo il giro completo dell'acqua</text>
+<defs><marker id="a6250d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6250d6"/></marker><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<line x1="120.0" y1="374.5" x2="820.0" y2="374.5" stroke="#e1e0d9" stroke-width="1"/>
+<text x="112.0" y="378.5" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">10 kPa</text>
+<line x1="120.0" y1="290.0" x2="820.0" y2="290.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="112.0" y="294.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">100 kPa</text>
+<line x1="120.0" y1="205.5" x2="820.0" y2="205.5" stroke="#e1e0d9" stroke-width="1"/>
+<text x="112.0" y="209.5" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">1 MPa</text>
+<line x1="120.0" y1="120.9" x2="820.0" y2="120.9" stroke="#e1e0d9" stroke-width="1"/>
+<text x="112.0" y="124.9" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">10 MPa</text>
+<line x1="120.0" y1="400.0" x2="820.0" y2="400.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<line x1="120.0" y1="70.0" x2="120.0" y2="400.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="470.0" y="438.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal"></text>
+<text transform="translate(74.0,235.0) rotate(-90)" font-size="12.5" fill="#52514e" text-anchor="middle">pressione assoluta (scala log.)</text>
+<path d="M106.0,137.2 L134.0,137.2 L164.3,134.4 L192.3,134.4 L222.7,135.8 L250.7,135.8 L281.0,137.2 L309.0,137.2 L339.3,137.3 L367.3,137.3 L397.7,138.2 L425.7,138.2 L456.0,139.2 L484.0,139.2 L514.3,154.6 L542.3,154.6 L572.7,156.3 L600.7,156.3 L631.0,380.8 L659.0,380.8 L689.3,371.7 L717.3,371.7 L747.7,354.0 L775.7,354.0 L806.0,137.2 L834.0,137.2" fill="none" stroke="#52514e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<line x1="106.0" y1="137.2" x2="134.0" y2="137.2" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(124.0,412.0) rotate(40)" font-size="11.5" fill="#52514e">aspirazione</text>
+<line x1="164.3" y1="134.4" x2="192.3" y2="134.4" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(182.3,412.0) rotate(40)" font-size="11.5" fill="#52514e">mandata</text>
+<line x1="222.7" y1="135.8" x2="250.7" y2="135.8" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(240.7,412.0) rotate(40)" font-size="11.5" fill="#52514e">uscita canali</text>
+<line x1="281.0" y1="137.2" x2="309.0" y2="137.2" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(299.0,412.0) rotate(40)" font-size="11.5" fill="#52514e">corpo cil.</text>
+<line x1="339.3" y1="137.3" x2="367.3" y2="137.3" stroke="#eb6834" stroke-width="5"/>
+<text transform="translate(357.3,412.0) rotate(40)" font-size="11.5" fill="#52514e">partenza linea</text>
+<line x1="397.7" y1="138.2" x2="425.7" y2="138.2" stroke="#eb6834" stroke-width="5"/>
+<text transform="translate(415.7,412.0) rotate(40)" font-size="11.5" fill="#52514e">collettore</text>
+<line x1="456.0" y1="139.2" x2="484.0" y2="139.2" stroke="#eb6834" stroke-width="5"/>
+<text transform="translate(474.0,412.0) rotate(40)" font-size="11.5" fill="#52514e">dopo STOP</text>
+<line x1="514.3" y1="154.6" x2="542.3" y2="154.6" stroke="#eb6834" stroke-width="5"/>
+<text transform="translate(532.3,412.0) rotate(40)" font-size="11.5" fill="#52514e">dopo CONTROL</text>
+<line x1="572.7" y1="156.3" x2="600.7" y2="156.3" stroke="#eb6834" stroke-width="5"/>
+<text transform="translate(590.7,412.0) rotate(40)" font-size="11.5" fill="#52514e">ingr. turbina</text>
+<line x1="631.0" y1="380.8" x2="659.0" y2="380.8" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(649.0,412.0) rotate(40)" font-size="11.5" fill="#52514e">scarico</text>
+<line x1="689.3" y1="371.7" x2="717.3" y2="371.7" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(707.3,412.0) rotate(40)" font-size="11.5" fill="#52514e">vasca</text>
+<line x1="747.7" y1="354.0" x2="775.7" y2="354.0" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(765.7,412.0) rotate(40)" font-size="11.5" fill="#52514e">alimentaz.</text>
+<line x1="806.0" y1="137.2" x2="834.0" y2="137.2" stroke="#2a78d6" stroke-width="5"/>
+<text transform="translate(824.0,412.0) rotate(40)" font-size="11.5" fill="#52514e">corpo cil.</text>
+<path d="M142.0,135.2 L156.3,138.4" fill="none" stroke="#6250d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a6250d6)"/>
+<path d="M725.3,369.7 L739.7,358.0" fill="none" stroke="#6250d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a6250d6)"/>
+<path d="M783.7,352.0 L798.0,141.2" fill="none" stroke="#6250d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a6250d6)"/>
+<text x="114.0" y="159.3" font-size="12" fill="#6250d6" text-anchor="start" font-weight="600">MCP +0,5 MPa</text>
+<text x="673.3" y="338.0" font-size="12" fill="#6250d6" text-anchor="end" font-weight="600">pompa condensato +7 kPa</text>
+<text x="731.7" y="198.8" font-size="12" fill="#6250d6" text-anchor="end" font-weight="600">pompa di alimentazione</text>
+<text x="731.7" y="213.8" font-size="12" fill="#6250d6" text-anchor="end" font-weight="600">+6,4 MPa</text>
+<text x="532.3" y="177.5" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">CONTROL −2,1 MPa</text>
+<text x="641.0" y="264.5" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="600">turbina:</text>
+<text x="641.0" y="279.5" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">da 3,8 MPa a 8,4 kPa</text>
+<text x="240.7" y="118.5" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">canali e ritorno: −0,25 MPa ciascuno</text>
+<text x="40.0" y="488.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Le pompe (frecce viola) alzano la pressione; ogni tubo, valvola e la turbina la abbassano. La caduta più grande</text>
+<text x="40.0" y="506.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">prima della turbina è nella valvola CONTROL, che è il punto di regolazione. Dallo scarico alla vasca la massa passa</text>
+<text x="40.0" y="524.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">per condensazione, non spinta da una differenza di pressione: per questo la vasca può stare un po' sopra lo scarico.</text>
+<text x="24.0" y="544.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Pressioni del punto iniziale Exact-V9, arrotondate.</text>
+</svg>

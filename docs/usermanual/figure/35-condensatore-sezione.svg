@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" width="900" height="530" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Il condensatore e la vasca, in sezione</title>
+<desc id="desc">Sezione schematica: il vapore di scarico entra dall'alto, condensa sul fascio di tubi dove scorre acqua di raffreddamento a 20 gradi, che porta via circa 27 MW. Le gocce cadono nella vasca del condensato da 10 metri cubi con circa 9,9 tonnellate a 47 gradi. Lo spazio vapore da 1000 metri cubi contiene solo circa 67 kg, pari a circa 5 secondi di scarico.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="529.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Il condensatore e la vasca, in sezione</text>
+<defs><marker id="aeb6834" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#eb6834"/></marker><marker id="a2a78d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/></marker><marker id="a1baf7a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1baf7a"/></marker><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect x="120.0" y="110.0" width="360.0" height="230.0" rx="24" fill="#fbe0d3" stroke="#52514e" stroke-width="2"/>
+<path d="M300.0,50.0 L300.0,106.0" fill="none" stroke="#eb6834" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#aeb6834)"/>
+<text x="312.0" y="66.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">scarico della turbina: ≈ 13 kg/s,</text>
+<text x="312.0" y="82.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">quasi 200 m³ di vapore al secondo</text>
+<circle cx="180.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="210.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="240.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="270.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="300.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="330.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="360.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="390.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="420.0" cy="170.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="195.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="225.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="255.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="285.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="315.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="345.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="375.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="405.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="435.0" cy="196.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="180.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="210.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="240.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="270.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="300.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="330.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="360.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="390.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="420.0" cy="222.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="195.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="225.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="255.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="285.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="315.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="345.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="375.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="405.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<circle cx="435.0" cy="248.0" r="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<path d="M40.0,209.0 L160.0,209.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<text x="30.0" y="190.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">acqua di</text>
+<text x="30.0" y="206.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">raffreddamento 20 °C</text>
+<path d="M440.0,209.0 L540.0,209.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<text x="490.0" y="234.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">porta via il calore:</text>
+<text x="490.0" y="250.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">≈ 27 MW, al massimo 40 MW</text>
+<rect x="150.0" y="300.0" width="300.0" height="30.0" rx="4" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="300.0" y="320.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">gocce di condensato</text>
+<rect x="200.0" y="358.0" width="200.0" height="56.0" rx="6" fill="#cde2fb" stroke="#2a78d6" stroke-width="2"/>
+<path d="M300.0,332.0 L300.0,356.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<text x="300.0" y="380.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="normal">vasca del condensato</text>
+<text x="300.0" y="397.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="normal">10 m³ · ≈ 9,9 t · 47 °C</text>
+<path d="M400.0,386.0 L540.0,386.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<text x="488.0" y="406.0" font-size="11.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">alla pompa del condensato</text>
+<rect x="655.0" y="140.0" width="220.0" height="200.0" rx="8" fill="#f6f5f2" stroke="none" stroke-width="1.5"/>
+<text x="669.0" y="166.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">Spazio vapore: 1000 m³</text>
+<text x="669.0" y="184.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">contiene solo ≈ 67 kg</text>
+<text x="669.0" y="202.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">= circa 5 s di scarico</text>
+<text x="669.0" y="220.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal"></text>
+<text x="669.0" y="238.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">pressione ≈ 8,4 kPa assoluti</text>
+<text x="669.0" y="256.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">condensa a ≈ 42 °C</text>
+<text x="669.0" y="274.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal"></text>
+<text x="669.0" y="292.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">limiti: 40 MW, 1,225 MW/K,</text>
+<text x="669.0" y="310.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="normal">20 kg/s di condensazione</text>
+<text x="40.0" y="470.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Il vapore condensa sui tubi freddi e cade nella vasca. Lo spazio vapore è enorme ma quasi vuoto: contiene vapore per</text>
+<text x="40.0" y="488.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">circa 5 secondi di scarico. Se la condensazione rallenta, la massa si accumula subito e la contropressione sale in fretta.</text>
+<text x="24.0" y="514.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Disegno tipico di un condensatore a fascio tubiero; nel modello il fascio non è geometrico: lo rappresentano i limiti di scambio.</text>
+</svg>

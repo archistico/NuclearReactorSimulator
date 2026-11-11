@@ -423,7 +423,60 @@ Il capitolo 11 spiega chi può regolare che cosa. Per ora basta tenere separati 
 
 # 5. I componenti, uno per uno
 
-Questo capitolo segue l'impianto dal nocciolo fino al ritorno dell'acqua, poi introduce gli strumenti che ne governano il comportamento. Per ogni componente cerca tre collegamenti: che cosa riceve, che cosa restituisce e quale effetto può produrre sugli altri. I valori numerici sono raccolti nel capitolo 6, così la spiegazione del funzionamento non diventa una sequenza di targhe.
+Questo capitolo segue l'impianto dal nocciolo fino al ritorno dell'acqua, poi introduce gli strumenti che ne governano il comportamento. Per ogni componente cerca tre collegamenti: che cosa riceve, che cosa restituisce e quale effetto può produrre sugli altri. Ogni sezione si chiude con una **scheda tecnica**: com'è fatto il componente in un impianto reale e nel modello, quanto è grande, entro quali valori lavora, come è stato semplificato e che cosa succede se si guasta o si blocca. I riferimenti generali restano raccolti nel capitolo 6.
+
+### Come sono costruiti i componenti nel modello
+
+Un impianto reale è fatto di serbatoi, tubi, valvole e macchine con forme precise. Il simulatore ne conserva il comportamento, non la geometria: ogni componente diventa uno di pochi «mattoni» con pochi numeri. Conoscerli ti permette di prevedere come risponderà un componente anche senza averlo mai visto.
+
+La figura presenta i cinque mattoni. Per ognuno trovi la regola che lo governa e un esempio con i numeri del punto iniziale del desktop.
+
+![Cinque mattoni del modello: volume con massa ed energia; tubo con caduta di pressione proporzionale al quadrato della portata; valvola come resistenza variabile; pompa con spinta proporzionale al quadrato della velocità; corpo termico con capacità e conduttanza](figure/30-mattoni-del-modello.svg)
+
+Quasi tutto ciò che vedi sullo schermo nasce da questi mattoni. Un livello o una pressione appartengono a un volume; una portata nasce da una differenza di pressione attraverso un tubo, una valvola o una pompa; una temperatura che cambia lentamente indica un corpo termico. Il modello non conosce diametri, lunghezze o altezze: quando nelle schede trovi una forma, per esempio «un cilindro di 1,6 m per 5 m», è una forma equivalente con lo stesso volume, utile solo a immaginarlo.
+
+La seconda figura mette in scala tutti i volumi del modello. L'area di ogni quadrato è proporzionale al volume; l'azzurro indica liquido, l'arancione vapore.
+
+![Volumi del modello in scala: lo spazio di scarico del condensatore da 1000 metri cubi con circa 67 kg di vapore, cinque volumi da 100 metri cubi lungo il percorso del vapore con 2-3,3 tonnellate ciascuno, sei volumi da 10 metri cubi per il circuito dell'acqua](figure/29-volumi-in-scala.svg)
+
+Il quadrato più grande è anche il più leggero: lo spazio di scarico del condensatore occupa un milione di litri ma contiene circa 67 kg di vapore. I piccoli volumi da 10 m³ pieni di liquido pesano invece diverse tonnellate. Quando leggi un inventario chiediti sempre che cosa c'è dentro, oltre a quanto spazio occupa.
+
+La tabella riassume i volumi al punto iniziale del desktop. Le masse sono calcolate da volume, pressione e titolo; i litri si riferiscono al volume del componente, non all'acqua contenuta.
+
+| Volume del modello | Componente | Volume | Contenuto al punto iniziale | Massa |
+| --- | --- | ---: | --- | ---: |
+| `suction` | Collettore di aspirazione | 10 m³ (10 000 L) | Liquido a 280 °C, 6,42 MPa | ≈ 7,5 t |
+| `pressure` | Collettore di mandata | 10 m³ | Liquido a 280 °C, 6,92 MPa | ≈ 7,5 t |
+| `outlet` | Uscita dei canali e ritorno | 10 m³ | Miscela a 282,5 °C, titolo ≈ 0,22 | ≈ 1,4 t |
+| `drum` | Corpo cilindrico | 10 m³ | Metà liquido e metà vapore, 6,42 MPa | ≈ 3,9 t |
+| `steam`, `header` | Partenza della linea e collettore del vapore | 100 m³ ciascuno | Vapore saturo a 6,40 e 6,25 MPa | ≈ 3,3 e 3,2 t |
+| `stop-out`, `control-out`, `turbine-inlet` | Tratti fra le valvole e ingresso turbina | 100 m³ ciascuno | Vapore umido da 6,07 a 3,82 MPa | da ≈ 3,1 a ≈ 2,0 t |
+| `exhaust` | Spazio vapore del condensatore | 1000 m³ | Vapore a 8,4 kPa, ≈ 42 °C | ≈ 67 kg |
+| `hotwell` | Vasca del condensato | 10 m³ | Liquido a ≈ 47 °C | ≈ 9,9 t |
+| `feedwater-inventory` | Volume intermedio di alimentazione | 10 m³ | Liquido a ≈ 47 °C | ≈ 9,9 t |
+
+La terza figura segue la pressione lungo l'intero giro dell'acqua. La scala è logaritmica; le frecce viola indicano le pompe, che sono gli unici punti in cui la pressione sale.
+
+![Pressione assoluta nei nodi del ciclo: circa 6,4-6,9 MPa nel circuito caldo, caduta di 2,1 MPa nella valvola CONTROL, espansione in turbina fino a 8,4 kPa, risalita con la pompa del condensato e con la pompa di alimentazione fino a 6,4 MPa](figure/31-scala-delle-pressioni.svg)
+
+Il giro ha due livelli di pressione molto distanti: circa 6,4 MPa nella parte calda, meno di 20 kPa dopo la turbina. Le pompe principali aggiungono appena 0,5 MPa, perché devono solo far girare l'acqua nel ricircolo; la pompa di alimentazione deve invece riportare l'acqua da pochi kilopascal fino alla pressione del corpo cilindrico. Lungo il vapore, la caduta più grande è nella valvola CONTROL: per questo è il punto naturale di regolazione.
+
+### Che cosa può guastarsi nel simulatore
+
+I guasti non compaiono durante l'esercizio ordinario del desktop: appartengono a scenari dedicati del progetto, deterministici e ripetibili. Conoscerne il catalogo aiuta a capire che cosa il modello sa rappresentare e che cosa invece resta fuori.
+
+| Famiglia | Guasti disponibili | Che cosa cambia nel modello |
+| --- | --- | --- |
+| Pompe | Arresto; degrado a una frazione della capacità | La spinta si annulla o si riduce; la portata segue l'idraulica |
+| Valvole | Guasto in apertura, in chiusura, bloccata nella posizione raggiunta | La posizione non segue più il comando |
+| Percorsi con valvola | Restrizione a un'apertura massima; blocco completo | La capacità di passaggio si riduce o si annulla |
+| Volumi | Perdita con portata fissata; rottura guidata dalla pressione verso l'atmosfera | Massa ed energia escono dal ciclo e non ritornano |
+| Misure | Errore costante (`bias`), valore congelato, guasto al minimo o al massimo, indisponibile | Regolatori, protezioni e operatore leggono un valore diverso da quello fisico |
+| Regolatori e attuatori | Uscita o comando congelati, forzati al minimo o al massimo | La richiesta non dipende più dalla misura |
+| Ciclo secondario | Scatto turbina, scatto generatore, raffreddamento del condensatore ridotto o perso | Si perde una funzione e il resto dell'impianto ne subisce le conseguenze |
+| Rete | Perdita del collegamento esterno | Il gruppo resta senza rete; gli effetti sulle pompe sono dichiarati come guasti separati |
+
+Nelle schede che seguono, la voce «Se si guasta o si blocca» descrive le conseguenze ragionando con i bilanci e i parametri del modello. Quando compare un tempo, è una stima di ordine di grandezza, non la registrazione di una prova. Il simulatore non rappresenta danni permanenti: fusione, rotture meccaniche, incendi o usura restano fuori dal modello, come spiega il capitolo 16.
 
 ## 5.1 Nocciolo e zone del core
 
@@ -432,6 +485,21 @@ Il nocciolo è la zona in cui il modello deposita la potenza di fissione e la di
 Nel riferimento aggregato si usa un gruppo equivalente di 100 canali. La calibrazione neutronica associa 100 MWth alla popolazione relativa unitaria; quel numero è un fattore di conversione del modello, non l'ordine di portare il desktop a 100 MWth. Il punto iniziale attuale di generazione si trova su una potenza termica diversa, dell'ordine di alcune decine di megawatt.
 
 Il collegamento da osservare è quello fra produzione e rimozione del calore. Se la potenza cresce ma la circolazione non sostiene il trasferimento, cambiano le temperature dei materiali e del refrigerante. Quelle variazioni possono a loro volta influenzare la reattività, quando i relativi contributi sono composti nello scenario. La lettura del nocciolo deve quindi coinvolgere anche il circuito primario.
+
+### Scheda tecnica — nocciolo
+
+**Com'è fatto.** In un reattore a canali, come quelli a cui il simulatore si ispira, il nocciolo è un grande blocco di moderatore attraversato da centinaia di canali verticali. Ogni canale contiene un fascio di combustibile ed è percorso dalla propria acqua. Nel modello tutto questo diventa una sola zona con un gruppo equivalente di 100 canali.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Zone | Una zona nel riferimento desktop |
+| Canali | 100 canali equivalenti, 1 kg/s ciascuno al punto iniziale |
+| Potenza | 100 MWth × popolazione relativa; ≈ 33 MWth all'avvio del desktop |
+| Destinazione della fissione | 70% combustibile, 10% strutture, 20% direttamente al refrigerante |
+
+**Semplificazioni e scelte.** Non c'è una distribuzione di potenza nello spazio: tutti i canali equivalenti si comportano allo stesso modo. Questa scelta rende leggibile il legame fra fissione e rimozione del calore, ma non permette di studiare punti caldi locali o differenze fra canali.
+
+**Se si guasta o si blocca.** Il nocciolo non ha guasti propri nel catalogo. Il rischio nasce quando il calore non viene portato via: se la circolazione cala, salgono temperature e titolo all'uscita. Nel profilo desktop non esiste uno SCRAM per bassa portata o per alta temperatura del combustibile: le protezioni automatiche sono quelle del paragrafo 6.3. Se la circolazione viene meno, la decisione di ridurre la potenza o di usare `SCRAM` spetta a te.
 
 ## 5.2 Barre di controllo
 
@@ -449,6 +517,22 @@ Più la barra è estratta, minore è la parte che assorbe neutroni nella zona at
 
 La protezione può impedire l'estrazione o imporre l'inserzione di arresto. Se il pannello mostra `MIXED`, un gruppo può contenere elementi con stati diversi; la media della posizione non descrive da sola ogni elemento. Un pulsante evidenziato rappresenta lo stato confermato del comando di movimento e va letto insieme agli eventuali interblocchi.
 
+### Scheda tecnica — barre di controllo
+
+**Com'è fatto.** Nelle macchine reali le barre sono elementi di materiale assorbente, mossi dall'alto da meccanismi di azionamento e organizzati in gruppi con funzioni diverse. Nel modello un'unica barra equivalente rappresenta il gruppo di regolazione.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Elementi | Un gruppo di regolazione con una barra equivalente |
+| Velocità di corsa | 10 punti percentuali al secondo: corsa completa in circa 10 s |
+| Effetto sulla reattività | Da −0,1% a +0,1% di Δk/k fra tutta inserita e tutta estratta |
+| Posizione iniziale del desktop | Circa 50% estratta |
+| Regolazione automatica | Il regolatore di potenza agisce sulle barre secondo l'autorità scelta |
+
+**Semplificazioni e scelte.** L'escursione totale della barra (0,2% di Δk/k) è molto più piccola della frazione di neutroni ritardati del modello (0,65%). Da sola, quindi, la barra non può portare il reattore in una risposta dominata dai neutroni pronti: la conseguenza è una potenza che cambia con ritmi leggibili.
+
+**Se si guasta o si blocca.** Il catalogo non contiene una barra meccanicamente incastrata. Un regolatore con l'uscita congelata o forzata al minimo o al massimo produce però un effetto simile sul movimento richiesto. Se la barra non risponde come previsto, confronta comando confermato, interblocchi e autorità prima di ripetere la richiesta.
+
 ## 5.3 Cinetica neutronica
 
 La cinetica è il collegamento fra reattività e andamento della popolazione neutronica. Conserva anche lo stato dei precursori ritardati: non è una tabella che converte istantaneamente una posizione delle barre in megawatt.
@@ -456,6 +540,20 @@ La cinetica è il collegamento fra reattività e andamento della popolazione neu
 Il riferimento desktop è ridotto e aggregato. Può fornire una risposta temporale deterministica e utile allo studio, senza risolvere tutti i dettagli spaziali del trasporto neutronico. Il periodo del reattore e la potenza di fissione sono modi diversi di leggere quella risposta: il primo ne descrive il ritmo relativo, la seconda la scala energetica.
 
 Una manovra delle barre va pertanto valutata dopo aver lasciato emergere la sua conseguenza. Se continui a modificare l'ingresso prima di aver osservato la risposta, diventa difficile distinguere la memoria della cinetica dall'effetto dell'ultimo movimento.
+
+### Scheda tecnica — cinetica neutronica
+
+**Com'è fatta.** Un reattore reale ha sei o più gruppi di precursori dei neutroni ritardati e un tempo di generazione dei neutroni pronti molto breve. Il modello usa una cinetica puntiforme con un solo gruppo equivalente.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Gruppi di neutroni ritardati | 1, con frazione β = 0,65% |
+| Costante di decadimento | 0,08 al secondo: vita media di circa 12,5 s |
+| Tempo di generazione dei neutroni pronti | 0,1 s |
+
+**Semplificazioni e scelte.** Il tempo di generazione di 0,1 s è molto più lungo di quello di un reattore reale e rende la risposta più lenta e graduale. Il gruppo unico riproduce la forma generale della risposta, cioè un salto rapido e poi una variazione lenta, ma non le sue sfumature.
+
+**Se si guasta o si blocca.** La cinetica è un calcolo, non un oggetto che possa rompersi. Ciò che può degradarsi è la misura della potenza o del periodo: in quel caso leggi qualità e disponibilità del segnale prima di decidere.
 
 ## 5.4 Iodio e xeno
 
@@ -479,11 +577,46 @@ Combustibile e strutture hanno capacità termica. Una parte dell'energia può es
 
 Nel pannello `REACTOR` cerca una relazione fra temperatura del combustibile, temperatura del refrigerante e potenza; nel pannello `PRIMARY` completa la lettura con la portata. Una temperatura crescente con portata in calo racconta una situazione diversa da una temperatura crescente durante un riscaldamento deliberato. I limiti del modello non permettono di trasformare automaticamente queste osservazioni in una diagnosi di ebollizione critica o danno al combustibile reale.
 
+La figura segue il calore dalla fissione al refrigerante. Le frecce verdi sono calore; i riquadri arancioni sono i corpi che lo accumulano prima di cederlo.
+
+![La fissione, circa 33 MWth, va per il 70% al combustibile, per il 10% alle strutture e per il 20% direttamente al refrigerante; combustibile e strutture hanno capacità di 10 e 20 MJ/K e tempi tipici di circa 10 e 40 secondi](figure/32-nocciolo-calore.svg)
+
+Il combustibile riceve la parte più grande del calore e lo cede al fluido con un ritardo di circa 10 secondi; le strutture, più pesanti e meno collegate, impiegano circa 40 secondi. Al punto iniziale combustibile e strutture sono più caldi del refrigerante di circa 23 e 7 K: insieme conservano circa 370 MJ in più, che dopo uno SCRAM devono ancora essere portati via.
+
+### Scheda tecnica — canali e materiali termici
+
+**Com'è fatto.** Nei reattori a canali ogni canale è un tubo in pressione che contiene barrette di combustibile; l'acqua entra liquida dal basso ed esce in alto come miscela di acqua e vapore. Nel modello i canali sono un unico percorso idraulico e due corpi termici, il combustibile e le strutture.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Combustibile | Capacità 10 MJ/K, scambio 1 MW/K, ≈ 306 °C al punto iniziale |
+| Strutture | Capacità 20 MJ/K, scambio 0,5 MW/K, ≈ 289 °C |
+| Refrigerante | Entra liquido a 280 °C, esce miscela a ≈ 282,5 °C con titolo ≈ 0,22 |
+| Caduta di pressione | ≈ 0,25 MPa a 100 kg/s |
+
+**Semplificazioni e scelte.** Le temperature sono valori medi: non esiste una temperatura al centro della barretta o una mappa lungo il canale. La crisi termica e il danneggiamento del combustibile non sono rappresentati.
+
+**Se si guasta o si blocca.** Se la portata nei canali cala, l'energia ricevuta resta nel fluido: il titolo all'uscita sale e combustibile e strutture si scaldano con i loro ritmi di 10 e 40 secondi. Il catalogo dei guasti non contiene un'ostruzione del singolo canale, perché i 100 canali sono un solo percorso equivalente.
+
 ## 5.6 Collettore di aspirazione
 
 Il collettore di aspirazione raccoglie il ritorno liquido e alimenta le pompe principali. È un punto di collegamento comune fra disponibilità di fluido, pressione a monte delle pompe e chiusura del ricircolo.
 
 Una pressione o una condizione di fase sfavorevole in questo punto può cambiare ciò che la pompa riesce a trasferire. Se stai indagando una riduzione di circolazione, osserva l'aspirazione prima di attribuire tutto al comando della pompa. La presenza di una pressione bassa, però, non dimostra che il software stia simulando una cavitazione dettagliata: NPSH e cavitazione non hanno ancora una rappresentazione completa.
+
+### Scheda tecnica — collettore di aspirazione
+
+**Com'è fatto.** Nell'impianto reale è una grande tubazione, sotto i separatori, che raccoglie l'acqua scesa dai separatori e la distribuisce alle aspirazioni delle pompe. Nel modello è il volume `suction`.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Volume | 10 m³: come un tubo di 0,8 m di diametro lungo 20 m |
+| Contenuto | ≈ 7,5 t di liquido a 280 °C |
+| Pressione | ≈ 6,42 MPa |
+
+**Semplificazioni e scelte.** Al punto iniziale il liquido è praticamente alla temperatura di ebollizione della propria pressione. In un impianto reale questa condizione sarebbe critica per la cavitazione delle pompe; il modello non rappresenta NPSH e cavitazione, quindi non ne mostra gli effetti.
+
+**Se si guasta o si blocca.** Questo volume non ha guasti dedicati nel desktop. Se perde massa, per una perdita o perché il corpo cilindrico non lo rifornisce, la pompa trova meno liquido disponibile e la circolazione cambia. In quel caso parti dalla riserva del corpo cilindrico.
 
 ## 5.7 Pompe principali di circolazione — MCP
 
@@ -495,17 +628,62 @@ Il calore rimosso dal nocciolo dipende dal fluido che circola e dallo scambio, q
 
 Nel profilo operativo attuale la portata di riferimento è vicina a 100 kg/s. È un riferimento di quella composizione, non una portata universale per tutti gli scenari e tanto meno per un impianto RBMK reale.
 
+### Scheda tecnica — pompe principali di circolazione
+
+**Com'è fatto.** Negli impianti a canali le pompe principali sono grandi pompe centrifughe con motori elettrici, in più unità in parallelo. Nel modello una sola pompa equivalente le rappresenta tutte.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Spinta nominale | 1 MPa a velocità piena; cresce con il quadrato della velocità |
+| Aumento netto di pressione | ≈ 0,5 MPa a 100 kg/s, perché metà della spinta si perde nella resistenza interna |
+| Portata iniziale | ≈ 100 kg/s, cioè circa 133 litri al secondo |
+| Rendimento | 80% |
+| Regolazione | Regolatore di portata sulla velocità della pompa |
+| Tempo di un giro completo dell'acqua | ≈ 200 s per le circa 20 t del circuito caldo |
+
+**Semplificazioni e scelte.** Non sono rappresentati motori, alimentazione elettrica, inerzia meccanica della girante, cavitazione o il comportamento di più pompe che si dividono la portata.
+
+**Se si guasta o si blocca.** Gli scenari di guasto possono fermare la pompa o ridurne la capacità a una frazione. Con la pompa ferma la spinta si annulla e la portata cala. Il calore del nocciolo resta nei canali, il titolo sale e le temperature di combustibile e strutture crescono. La circolazione naturale non è qualificata nel modello, come ricorda il capitolo 16. Poiché nel profilo desktop non c'è uno SCRAM per bassa portata, la reazione corretta è ridurre subito la sorgente di calore.
+
 ## 5.8 Collettore di mandata
 
 La mandata distribuisce il fluido proveniente dalle pompe ai canali del nocciolo. La differenza di pressione fra mandata e aspirazione contribuisce a spiegare la circolazione, ma il valore deve essere letto con le resistenze e con gli altri percorsi della rete.
 
 Se una pompa aumenta la propria spinta mentre il circuito non riesce a far passare la massa corrispondente, pressione e portata possono rispondere in modo diverso. Per questo `HEADER ΔP` e `TOTAL MCP FLOW` sono complementari: il primo descrive una differenza di pressione, il secondo il trasferimento di massa che ne risulta nel sistema modellato.
 
+### Scheda tecnica — collettore di mandata
+
+**Com'è fatto.** Nell'impianto reale la mandata delle pompe alimenta collettori di distribuzione da cui partono le tubazioni verso ogni canale. Nel modello è il volume `pressure`, il punto a pressione più alta del ricircolo.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Volume | 10 m³ |
+| Contenuto | ≈ 7,5 t di liquido a 280 °C |
+| Pressione | ≈ 6,92 MPa: circa 5 °C sotto l'ebollizione |
+
+**Semplificazioni e scelte.** Le centinaia di tubazioni di distribuzione diventano un unico volume e un unico percorso verso i canali equivalenti.
+
+**Se si guasta o si blocca.** Su questo volume è definita la piccola perdita del primario negli scenari di perdita di refrigerante, con una portata di riferimento di 0,5 kg/s verso l'atmosfera. L'acqua persa non ritorna; il regolatore di livello prova a compensare con l'alimentazione, spostando la perdita sulle riserve del ciclo secondario. Come ordine di grandezza, 0,5 kg/s corrispondono a un punto di livello del corpo cilindrico ogni due minuti e mezzo circa, se nessuno compensa.
+
 ## 5.9 Linee di ritorno
 
 Le linee di ritorno riportano verso il corpo cilindrico il fluido che ha raccolto calore nei canali. Partecipano al ricircolo con la loro resistenza e con i bilanci di massa ed energia. Un collegamento che sembra soltanto «un tubo» può quindi influire su pressioni e distribuzione delle portate.
 
 Durante una variazione di potenza, la risposta del ritorno va confrontata con ciò che succede nel nocciolo e nel separatore. Un segnale di livello cambiato a valle può essere la conseguenza di condizioni di fase e inventario maturate lungo questo percorso, non di un singolo errore del regolatore di alimentazione.
+
+### Scheda tecnica — uscita dei canali e linee di ritorno
+
+**Com'è fatto.** Nell'impianto reale da ogni canale sale una tubazione che porta la miscela al separatore. Nel modello c'è un volume di uscita, `outlet`, e un tubo di ritorno verso il corpo cilindrico.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Volume di uscita | 10 m³ con ≈ 1,4 t di miscela |
+| Composizione | Titolo ≈ 0,22 in massa; il vapore occupa circa l'85% del volume |
+| Caduta di pressione del ritorno | ≈ 0,25 MPa a 100 kg/s |
+
+**Semplificazioni e scelte.** Il fatto che il 22% della massa occupi l'85% del volume spiega perché la frazione di vuoto sia una grandezza così diversa dal titolo. Le velocità diverse di acqua e vapore nella stessa tubazione non sono rappresentate.
+
+**Se si guasta o si blocca.** Il catalogo non contiene un'ostruzione delle linee di ritorno: restrizioni e blocchi agiscono sui percorsi dotati di valvola. Una variazione qui nasce di solito da un cambiamento di potenza o di portata a monte.
 
 ## 5.10 Corpo cilindrico di separazione acqua-vapore
 
@@ -533,6 +711,34 @@ La pressione racconta un altro aspetto dello stesso volume. Aumentare il calore 
 
 Il regolatore di livello agisce sulla pompa di alimentazione. Non può creare acqua né correggere istantaneamente uno squilibrio di tutto il ciclo. Il basso livello è annunciato separatamente dal livello molto basso, che nel profilo attuale provoca uno scatto coordinato di reattore, turbina e generatore.
 
+La figura dà una forma al volume e mostra quanto dura la sua riserva. A sinistra un cilindro equivalente; a destra una stima nel caso in cui l'alimentazione si fermi del tutto.
+
+![Cilindro equivalente di 5 metri per 1,6 metri pieno a metà: 5 metri cubi di liquido, circa 3750 kg, e 5 metri cubi di vapore, circa 166 kg; senza alimentazione il livello scende al 25% in circa 140 secondi e al 10% in circa 225 secondi](figure/33-corpo-cilindrico-riserva.svg)
+
+Il corpo cilindrico contiene poco meno di 4 tonnellate d'acqua e ne esporta circa 13 kg ogni secondo. Senza alimentazione il livello scende di circa 0,18 punti al secondo: l'avvertimento arriva dopo poco più di due minuti, lo scatto dopo meno di quattro. È il tempo a disposizione per capire che cosa succede alla pompa di alimentazione e decidere.
+
+### Scheda tecnica — corpo cilindrico
+
+**Com'è fatto.** Negli impianti a canali i separatori sono grandi cilindri orizzontali, lunghi decine di metri, con dispositivi interni che separano le gocce dal vapore. Nel modello sono un solo volume, `drum`, con una separazione ideale.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Volume | 10 m³: come un cilindro di 1,6 m di diametro lungo 5 m |
+| Contenuto iniziale | 5 m³ di liquido (≈ 3750 kg) e 5 m³ di vapore (≈ 166 kg) |
+| Pressione e temperatura | ≈ 6,42 MPa, 280 °C |
+| Significato del livello | Frazione del volume occupata dal liquido: 1 punto = 100 litri ≈ 75 kg |
+| Regolazione | Il livello agisce sulla pompa di alimentazione |
+| Soglie | Livello: avvertimento 25%, scatto ≤ 10%, reset ≥ 20%. Pressione: avvertimento 20 MPa, SCRAM 25 MPa |
+
+Bilancio energetico del punto iniziale: l'acqua di alimentazione entra a circa 47 °C. Per portarla a 280 °C servono circa 14 MW; per trasformarla in vapore ne servono circa altri 20. Il primo numero spiega perché più alimentazione «fredda» può far scendere la pressione.
+
+**Semplificazioni e scelte.** Il modello non ha schiuma, gocce trascinate o onde sulla superficie. Le soglie di pressione di 20 e 25 MPa sono molto lontane dai 6,4 MPa normali: prima intervengono il bypass verso il condensatore (da 6,4 a 6,5 MPa) e lo scarico in atmosfera (da 6,5 a 6,7 MPa).
+
+**Se si guasta o si blocca.**
+- **Perdita dell'alimentazione:** vedi la figura; il livello scende fino allo scatto coordinato.
+- **Perdita dal volume:** negli scenari di guasto il corpo cilindrico può perdere massa con una portata fissata; la riserva si consuma più in fretta di quanto l'alimentazione possa compensare.
+- **Misura di livello guasta:** nel modello il regolatore di livello e la protezione di livello molto basso leggono lo stesso canale di misura. Un valore congelato o guasto al massimo inganna entrambi, e il livello vero può scendere senza che nessuno dei due reagisca. Confronta allora portata di alimentazione ed esportazione di vapore.
+
 ## 5.11 Linea e collettore principale del vapore
 
 La linea vapore trasferisce massa ed energia dal separatore al treno di ammissione. Ha resistenza e inventari propri, quindi non trasporta una pressione identica e immutabile da un'estremità all'altra. La graduazione delle pressioni permette di sostenere la portata attraverso le diverse restrizioni.
@@ -540,6 +746,22 @@ La linea vapore trasferisce massa ed energia dal separatore al treno di ammissio
 Un collo di bottiglia a monte può limitare la risposta anche con la valvola di regolazione abbastanza aperta. In quel caso, continuare ad aprire una valvola a valle non garantisce un aumento proporzionale del vapore utile. Devi confrontare pressione a monte, pressione all'ingresso della turbina e portata effettiva.
 
 Dal collettore partono anche il bypass e lo scarico di sovrapressione spiegati nel capitolo 4. Nel profilo descritto sono percorsi automatici: il manuale non presuppone l'esistenza di un comando grafico dedicato a ogni componente che compare nel modello fisico. La loro attivazione deve essere interpretata come una modifica ai bilanci di scarico, non come energia che scompare.
+
+### Scheda tecnica — linea e collettore del vapore, bypass e scarico
+
+**Com'è fatto.** Nell'impianto reale sono tubazioni d'acciaio di grande diametro con valvole di sicurezza e un collettore che distribuisce il vapore. Nel modello ci sono due volumi, la partenza della linea e il collettore, collegati da un tubo; dal collettore partono il bypass e lo scarico.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Volumi | 100 m³ ciascuno, con ≈ 3,3 e 3,2 t di vapore saturo |
+| Pressioni | ≈ 6,40 MPa alla partenza, ≈ 6,25 MPa nel collettore |
+| Caduta nella linea | ≈ 0,15 MPa a 13,3 kg/s |
+| Bypass verso il condensatore | Apre da 6,4 MPa, tutto aperto a 6,5 MPa; sezione 1600 mm² (un foro di circa 45 mm) |
+| Scarico in atmosfera | Apre da 6,5 MPa, tutto aperto a 6,7 MPa; stessa sezione |
+
+**Semplificazioni e scelte.** I volumi da 100 m³ sono capacità ampie del modello, molto più grandi dell'interno di una linea reale per questa portata. La conseguenza è una pressione che lungo il percorso cambia in modo lento e regolare.
+
+**Se si guasta o si blocca.** Gli scenari di perdita contengono una rottura dello spazio vapore, guidata dalla pressione verso l'atmosfera. In ogni caso ricorda una differenza importante: il bypass manda il vapore al condensatore, quindi l'acqua resta nel ciclo. Lo scarico in atmosfera invece la porta fuori, e nel profilo descritto non esiste un reintegro che la restituisca. Ogni apertura dello scarico riduce quindi la massa totale disponibile.
 
 ## 5.12 Il treno di valvole: intercettazione, regolazione e ammissione
 
@@ -556,6 +778,27 @@ Ogni valvola e l'espansione dello stadio lasciano passare al massimo una certa p
 `CONTROL AUTO` restituisce la regolazione al governor. `CONTROL MANUAL` abilita la richiesta manuale della valvola di regolazione. Il cursore prepara il valore e `APPLY` lo invia: trascinare il cursore senza applicarlo non deve essere interpretato come una manovra già eseguita sul fluido.
 
 Durante uno scatto può rimanere leggibile la richiesta normale dell'operatore mentre la protezione impone una posizione effettiva diversa. Questa separazione permette di capire perché la turbina non riceva il vapore richiesto. Prima di ripetere il comando, leggi l'autorità attiva e l'eventuale apertura inibita.
+
+### Scheda tecnica — valvole STOP, CONTROL e ADMISSION
+
+**Com'è fatto.** Nelle turbine reali la valvola di arresto è a chiusura rapida, spesso spinta da molle, e le valvole di regolazione sono mosse da servomotori comandati dal regolatore. Nel modello le tre valvole sono resistenze variabili in serie.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Caratteristica | Lineare; in mancanza di comando vanno in chiusura |
+| Caduta a tutta apertura | ≈ 0,18 MPa ciascuna a 13,3 kg/s |
+| Posizioni iniziali | STOP 100%, CONTROL ≈ 29%, ADMISSION 100% |
+| Caduta nella CONTROL al 29% | ≈ 2,1 MPa: è la restrizione principale |
+| Corsa | 50 punti percentuali al secondo: da 29% a 0% in circa 0,6 s |
+| Regolazione | CONTROL dal regolatore di velocità; ADMISSION dal regolatore di pressione |
+
+**Semplificazioni e scelte.** Non sono rappresentati isteresi, attriti, trafilamenti o la forma interna della valvola.
+
+**Se si guasta o si blocca.**
+- **STOP chiusa per guasto con interruttore chiuso:** il vapore non arriva più alla turbina e la potenza all'albero cala. Il generatore comincia ad assorbire potenza dalla rete e la protezione di potenza inversa interviene sotto −0,30 MWe per 2 s. Il vapore non consumato fa salire la pressione: si aprono prima il bypass, poi lo scarico in atmosfera.
+- **CONTROL bloccata:** il regolatore di velocità perde il suo strumento. In parallelo le richieste di carico non cambiano più la potenza. Se in quel momento si apre l'interruttore, il rotore accelera verso 3300 giri/min in circa 2 secondi (vedi la scheda del rotore).
+- **Valvola guasta in apertura:** non può più chiudere su comando. Se è la STOP, lo scatto non può contare su quella chiusura.
+- **Restrizione o blocco del percorso:** la capacità massima si riduce o si annulla e la portata segue la capacità più piccola del treno, come nella figura qui sopra.
 
 ## 5.13 Turbina, vapore utile e drenaggio dell'umidità
 
@@ -584,6 +827,23 @@ Il nastro di ammissione si divide in due: quasi tutto il vapore attraversa gli s
 
 Se la pressione del condensatore aumenta, il salto utile di espansione si riduce. Può quindi scendere la potenza pur senza una chiusura comandata della valvola. Questo è uno degli esempi più chiari di componente «vittima» di un problema nato altrove.
 
+### Scheda tecnica — turbina
+
+**Com'è fatta.** Una turbina reale ha un rotore con molte file di palette, spesso divise in corpi ad alta e bassa pressione, con separatori di umidità fra i due. Con vapore saturo, come in questo tipo di impianto, il vapore diventa umido durante l'espansione. Nel modello c'è un solo gruppo di stadi equivalente.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Ingresso | ≈ 3,82 MPa, 247,6 °C, titolo ≈ 0,977 |
+| Scarico | ≈ 8,4 kPa, ≈ 42 °C, titolo ≈ 0,87 |
+| Portate | 13,34 kg/s di ammissione; 13,03 kg/s di vapore agli stadi; 0,31 kg/s di drenaggio |
+| Rendimento degli stadi | 86% |
+| Potenza all'albero | ≈ 5,6 MW: 5,1 MW al generatore e 0,5 MW di perdite |
+| Volume allo scarico | Quasi 200 m³ di vapore al secondo |
+
+**Semplificazioni e scelte.** Non sono rappresentati palette, spillamenti, separatori intermedi, erosione o vibrazioni. L'umidità all'ingresso viene separata in modo ideale e mandata alla vasca del condensato.
+
+**Se si guasta o si blocca.** Lo scatto della turbina chiude l'arrivo del vapore e la potenza all'albero scende. Se l'interruttore resta chiuso, il generatore assorbe potenza dalla rete fino all'intervento della potenza inversa. Il vapore non più consumato fa salire la pressione a monte, con l'apertura di bypass e scarico. Se invece sale la contropressione, la turbina produce meno lavoro anche con le valvole aperte.
+
 ## 5.14 Rotore e albero
 
 Il rotore collega la turbina al generatore e conserva energia cinetica. La sua velocità cambia in risposta alla coppia netta, cioè al risultato della coppia motrice, del carico elettrico e delle perdite. `NET TORQUE` aiuta a leggere la direzione del cambiamento prima che lo spostamento dei giri diventi grande.
@@ -591,6 +851,28 @@ Il rotore collega la turbina al generatore e conserva energia cinetica. La sua v
 Nel modello di riferimento il momento d'inerzia è 1000 kg·m² e la velocità nominale 3000 giri/min. Questi numeri appartengono alla macchina educativa e non costituiscono una legge di scala di un gruppo RBMK reale. Le perdite meccaniche sono esplicite; alla velocità nominale il riferimento di perdita è 0,5 MW.
 
 Quando apri l'interruttore, controlla ciò che rimane della coppia turbina. Quando riduci il vapore, osserva la decelerazione senza aspettarti un arresto istantaneo. La sovravelocità può provocare scatti memorizzati che richiedono un reset separato anche dopo il rientro dei giri.
+
+La figura mostra quanto in fretta cambia la velocità del rotore quando la coppia non è bilanciata. È un calcolo dalla sola inerzia, senza regolatore.
+
+![Velocità del rotore nei primi 4 secondi: con 5 MW di squilibrio sale di circa 150 giri/min al secondo e raggiunge 3300 in circa 2 secondi; con le sole perdite di 0,5 MW scende di circa 15 giri/min al secondo](figure/34-rotore-inerzia.svg)
+
+Il rotore immagazzina circa 49 MJ: basterebbero a fornire 5 MW per una decina di secondi. Ecco perché un eccesso di potenza lo accelera in fretta, mentre togliere il vapore lo fa rallentare piano. Dopo una perdita improvvisa del carico, il regolatore ha circa due secondi per chiudere la valvola CONTROL, la cui corsa ne richiede circa 0,6.
+
+### Scheda tecnica — rotore e albero
+
+**Com'è fatto.** Nell'impianto reale turbina e generatore formano una linea d'albero lunga decine di metri, appoggiata su cuscinetti. Nel modello è un unico rotore con un'inerzia.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Inerzia | 1000 kg·m² |
+| Velocità nominale | 3000 giri/min, cioè 50 Hz con una coppia polare |
+| Energia cinetica a 3000 giri/min | ≈ 49 MJ |
+| Perdite meccaniche | 0,5 MW alla velocità nominale |
+| Protezione | Scatto turbina e generatore da 3300 giri/min; reset sotto 3150 |
+
+**Semplificazioni e scelte.** Non sono rappresentati vibrazioni, dilatazioni, cuscinetti, viratore o velocità critiche.
+
+**Se si guasta o si blocca.** Il rotore non ha guasti meccanici nel catalogo. Il suo pericolo è la sovravelocità: nasce quando sparisce il carico elettrico mentre il vapore continua ad arrivare, per uno scatto del generatore, un'apertura dell'interruttore o una valvola CONTROL bloccata.
 
 ## 5.15 Condensatore
 
@@ -610,6 +892,28 @@ Il condensato viene caratterizzato con lo stato di liquido saturo alla pressione
 
 Per leggere il componente confronta pressione assoluta, portata condensata e potenza termica rimossa. Le diagnostiche come `CONDENSATE ENERGY · MODEL`, `PHASE-CHANGE Δu · MODEL` e `ACTIVE CONDENSATION LIMIT · MODEL` spiegano il meccanismo scelto dal modello. Il nome di una diagnostica non sostituisce la lettura della convenzione energetica attiva e non introduce un nuovo attuatore.
 
+La figura mostra il condensatore in sezione, con il disegno tipico di uno scambiatore a fascio tubiero. I cerchi sono i tubi dell'acqua di raffreddamento; il vapore li avvolge dall'esterno.
+
+![Sezione del condensatore: il vapore di scarico entra dall'alto e condensa sul fascio di tubi raffreddati da acqua a 20 gradi; le gocce cadono nella vasca del condensato da 10 metri cubi; lo spazio vapore da 1000 metri cubi contiene solo circa 67 kg](figure/35-condensatore-sezione.svg)
+
+Il vapore arriva occupando quasi 200 m³ ogni secondo, tocca i tubi freddi e diventa acqua, che occupa circa mille volte meno spazio: è questo crollo di volume che mantiene la pressione bassa. Lo spazio vapore contiene vapore per circa 5 secondi di scarico. Se la condensazione rallenta, la massa si accumula e la contropressione sale in pochi secondi.
+
+### Scheda tecnica — condensatore
+
+**Com'è fatto.** Nell'impianto reale è un grande scambiatore con migliaia di tubi in cui scorre acqua di fiume, di mare o di torre. Pompe del vuoto o eiettori estraggono i gas che non condensano. Nel modello ci sono un volume di vapore, un limite di scambio termico e una condizione di raffreddamento esterna.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Spazio vapore | 1000 m³, cioè un cubo di 10 m di lato, con ≈ 67 kg di vapore |
+| Pressione e temperatura | ≈ 8,4 kPa assoluti, ≈ 42 °C |
+| Acqua di raffreddamento | 20 °C |
+| Limiti | 40 MW di capacità installata, 1,225 MW/K di conduttanza, 20 kg/s di condensazione |
+| Calore rimosso al punto iniziale | ≈ 27 MW |
+
+**Semplificazioni e scelte.** In una versione precedente lo spazio vapore era di 10 m³: a circa 40 °C conteneva circa mezzo chilogrammo di vapore, e un solo passo di 10 ms ne spostava una parte rilevante. Il volume è stato portato a 1000 m³ per rendere stabile il bilancio; resta un'inerzia del modello, non la misura di un condensatore reale. Gas incondensabili, pompe del vuoto e geometria dei tubi non sono rappresentati.
+
+**Se si guasta o si blocca.** Gli scenari secondari possono ridurre o togliere il raffreddamento. La condensazione cala, la massa nello spazio vapore cresce e la pressione sale: avvertimento a 20 kPa, scatto di turbina e generatore da 30 kPa. Il bypass, se si apre, manda altro vapore proprio qui: aiuta il corpo cilindrico ma aggrava il condensatore.
+
 ## 5.16 Vasca del condensato — hotwell
 
 La vasca raccoglie la massa condensata e, nel profilo attuale, anche il drenaggio liquido separato all'ingresso della turbina. Da essa aspira la pompa del condensato. È quindi una riserva materiale ed energetica, non soltanto una casella con un livello da mantenere verde.
@@ -617,6 +921,24 @@ La vasca raccoglie la massa condensata e, nel profilo attuale, anche il drenaggi
 La sua massa cresce quando gli ingressi superano ciò che la pompa estrae, e diminuisce nella situazione opposta. Anche la temperatura può cambiare perché gli ingressi portano energia propria. Un buon andamento della pressione del condensatore non garantisce da solo un inventario sano nella vasca: sono due parti collegate del componente, con bilanci distinti.
 
 `HOTWELL MASS · MEASURED` è l'indicatore operativo principale. Va letto insieme alla portata della pompa e alla condensazione, soprattutto quando il ciclo cambia carico o riceve bypass.
+
+### Scheda tecnica — vasca del condensato
+
+**Com'è fatta.** Nell'impianto reale è il fondo del condensatore, o un serbatoio sotto di esso, con un indicatore di livello. Nel modello è il volume `hotwell`.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Volume | 10 m³: come una vasca di 2,5 × 2 × 2 m |
+| Contenuto | ≈ 9,9 t di liquido a ≈ 47 °C |
+| Ingressi | ≈ 13 kg/s di condensato e 0,31 kg/s di drenaggio della turbina |
+| Tempo di ricambio | Circa 12 minuti alla portata del punto iniziale |
+| Regolazione | La massa agisce sulla pompa del condensato per restare vicina al valore iniziale |
+
+È un po' più calda dello scarico, che è a circa 42 °C, perché vi arriva anche il drenaggio caldo della turbina.
+
+**Semplificazioni e scelte.** Il volume è interamente pieno di liquido: non c'è un pelo libero da guardare, e l'indicatore operativo è la massa, `HOTWELL MASS`. Se la massa cala si forma vapore a bassa pressione; se cresce, il liquido viene compresso. Per questo conviene seguire la tendenza della massa e non cercare un livello in metri.
+
+**Se si guasta o si blocca.** La vasca non ha guasti propri nel desktop e non ha una protezione dedicata nell'elenco del paragrafo 6.3. I problemi le arrivano dai vicini: se la pompa del condensato si ferma la massa cresce, se il condensatore perde raffreddamento arriva meno condensato.
 
 ## 5.17 Pompa del condensato
 
@@ -626,6 +948,22 @@ Nel modello di riferimento la spinta nominale semplificata è circa 1 MPa e il p
 
 La schermata standard non offre necessariamente un comando diretto per ogni parametro della pompa. Il componente rimane osservabile attraverso il treno condensato-alimentazione e i suoi controlli locali. È importante non inventare una manovra da un parametro che compare soltanto nella definizione tecnica.
 
+### Scheda tecnica — pompa del condensato
+
+**Com'è fatta.** Nell'impianto reale è una pompa centrifuga, spesso verticale, progettata per aspirare acqua quasi in ebollizione. Nel modello è una pompa con spinta, resistenza e ritegno.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Spinta | 1 MPa a velocità piena; ≈ 0,18 MPa al 43% del punto iniziale |
+| Portata | ≈ 13 kg/s, circa 800 litri al minuto |
+| Ritegno allo scarico | Sì: impedisce il ritorno dal volume di alimentazione |
+| Corsa dell'attuatore | 25 punti percentuali al secondo |
+| Comandata da | Regolatore della massa della vasca |
+
+**Semplificazioni e scelte.** Non sono rappresentati motore, cavitazione o più pompe in parallelo.
+
+**Se si guasta o si blocca.** Arresto, degrado o comando forzato al minimo (come nello scenario di perdita dell'alimentazione elettrica) interrompono il rifornimento del volume intermedio. La vasca si riempie mentre il volume di alimentazione si svuota. Le sue 9,9 t, a 13 kg/s, corrispondono a circa 12 minuti come ordine di grandezza, ma lo stato dell'aspirazione della pompa di alimentazione cambia prima. Alla fine cala l'alimentazione del corpo cilindrico.
+
 ## 5.18 Volume intermedio dell'acqua di alimentazione
 
 Questo inventario si trova fra la pompa del condensato e la pompa di alimentazione. Riceve la prima portata e fornisce la seconda: una differenza persistente fra le due si manifesta come accumulo o svuotamento.
@@ -633,6 +971,20 @@ Questo inventario si trova fra la pompa del condensato e la pompa di alimentazio
 La sua presenza impedisce di trattare le due pompe come se dovessero trasferire esattamente la stessa massa a ogni singolo istante. Un transitorio può essere assorbito temporaneamente dal volume intermedio. Se però lo squilibrio non rientra, la riserva si sposta e alla fine cambia ciò che il resto del ciclo può sostenere.
 
 Quando il corpo cilindrico riceve poca acqua, controllare solo il suo regolatore può essere insufficiente. Devi verificare anche da dove la pompa di alimentazione dovrebbe prendere la massa e che cosa stia succedendo alla vasca del condensato.
+
+### Scheda tecnica — volume intermedio di alimentazione
+
+**Com'è fatto.** Negli impianti reali una funzione simile è svolta dal degasatore e dai serbatoi di alimentazione: l'acqua viene liberata dai gas e preriscaldata con vapore spillato dalla turbina. Nel modello è il volume `feedwater-inventory`.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Volume | 10 m³ |
+| Contenuto | ≈ 9,9 t di liquido a ≈ 47 °C, ≈ 17,5 kPa |
+| Ingresso e uscita | Pompa del condensato e pompa di alimentazione, ≈ 13,3 kg/s |
+
+**Semplificazioni e scelte.** Non ci sono degasazione né preriscaldo: l'acqua arriva al corpo cilindrico a circa 47 °C, molto più fredda che in un impianto reale. Per questo una parte importante della potenza del nocciolo, circa 14 MW, serve solo a riscaldarla.
+
+**Se si guasta o si blocca.** Non ha guasti propri nel desktop. È però il cuscinetto fra le due pompe: se una delle due cambia portata, la differenza si accumula o si consuma qui prima di arrivare alla vasca o al corpo cilindrico.
 
 ## 5.19 Pompa di alimentazione
 
@@ -642,6 +994,22 @@ Il regolatore di livello ne modifica la richiesta. Se il livello del corpo cilin
 
 L'acqua introdotta modifica anche il bilancio energetico. Portare più massa nel separatore non è un'azione neutra dal punto di vista termico: si mescola con uno stato già caldo e può cambiare produzione di vapore, pressioni e risposta del controllo. Per questo alimentazione e potenza non sono due manopole indipendenti.
 
+### Scheda tecnica — pompa di alimentazione
+
+**Com'è fatta.** Nell'impianto reale è una pompa ad alta pressione, a più stadi, mossa da motore elettrico o da una piccola turbina. Nel modello è una pompa con spinta, resistenza e ritegno.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Spinta | 7 MPa a velocità piena; ≈ 6,6 MPa al 97% del punto iniziale |
+| Portata | ≈ 13,3 kg/s, circa 13,5 litri al secondo |
+| Ritegno allo scarico | Sì: impedisce che il corpo cilindrico a 6,4 MPa si svuoti all'indietro |
+| Corsa dell'attuatore | 25 punti percentuali al secondo |
+| Comandata da | Regolatore di livello del corpo cilindrico |
+
+**Semplificazioni e scelte.** Al punto iniziale la pompa lavora già al 97% della velocità: il margine per aumentare la portata è piccolo. Una richiesta del regolatore al 100% non significa quindi che il livello sarà recuperato.
+
+**Se si guasta o si blocca.** Negli scenari secondari la pompa viene prima degradata al 35% della capacità e poi fermata. Il livello del corpo cilindrico scende come nella figura del paragrafo 5.10, fino allo scatto coordinato in pochi minuti. Nello scenario di perdita dell'alimentazione elettrica si fermano insieme le tre pompe del modello.
+
 ## 5.20 Generatore sincrono
 
 Il generatore converte lavoro meccanico in scambio elettrico. Il modello attuale considera il segno di quello scambio: positivo quando esporta verso la rete, negativo quando importa e motorizza il gruppo. La richiesta normale dell'operatore rimane non negativa; una potenza misurata negativa nasce dalla dinamica del gruppo collegato.
@@ -649,6 +1017,21 @@ Il generatore converte lavoro meccanico in scambio elettrico. Il modello attuale
 La targa elettrica del riferimento attuale è 10 MWe e l'efficienza semplificata è 98%. Il punto di avvio ordinario richiede 5 MWe. La calibrazione neutronica da 100 MWth del nocciolo e la targa elettrica da 10 MWe sono due definizioni diverse: confrontarle senza passare dai bilanci del ciclo non fornisce un rendimento della centrale.
 
 `REQUESTED LOAD · MODEL` mostra l'intenzione di carico; `GRID EXCHANGE · MEASURED` mostra lo scambio calcolato. Se si allontanano, cerca il motivo nel bilancio di potenza, nella velocità, nella fase o nello stato dell'interruttore. Il carico richiesto non permette di esportare indefinitamente energia che la turbina non fornisce: può comparire una risposta transitoria del rotore e delle protezioni.
+
+### Scheda tecnica — generatore
+
+**Com'è fatto.** Un turboalternatore reale ha un rotore con due poli che gira a 3000 giri/min, un sistema di eccitazione e un trasformatore elevatore. Nel modello è una macchina sincrona con una coppia polare collegata direttamente alla rete di riferimento.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Targa | 10 MWe, rendimento 98% |
+| Tensione di riferimento | 400 kV |
+| Accoppiamento con la rete | Correzione sincronizzante fino a 0,5 MW; smorzamento 2 MW per 1 Hz di scarto |
+| Protezioni | Sovrafrequenza 53 Hz; sottofrequenza 48,8 Hz per 1 s; potenza inversa −0,30 MWe per 2 s; perdita di sincronismo 1,5 Hz per 0,5 s |
+
+**Semplificazioni e scelte.** Non sono rappresentati eccitazione, potenza reattiva, trasformatori, raffreddamento a idrogeno o cortocircuiti.
+
+**Se si guasta o si blocca.** Lo scatto del generatore toglie il carico all'albero mentre il vapore continua ad arrivare: il rotore accelera e il regolatore deve ridurre subito l'ammissione (vedi la scheda del rotore). Se non basta, a 3300 giri/min interviene lo scatto di turbina e generatore.
 
 ## 5.21 Interruttore di gruppo e rete
 
@@ -658,6 +1041,19 @@ Prima del collegamento il sistema confronta frequenza, fase e tensione. Dopo il 
 
 L'apertura elimina il percorso normale di scambio con la rete e cambia il carico visto dall'albero. Per una manovra deliberata occorre coordinare questo effetto con l'ammissione vapore. Uno scatto del generatore usa il percorso di protezione e conserva una memoria; una normale apertura e uno scatto non hanno quindi lo stesso significato procedurale.
 
+### Scheda tecnica — interruttore e rete
+
+**Com'è fatto.** Nell'impianto reale l'interruttore è un apparecchio di potenza capace di aprire correnti molto elevate, e la rete è un sistema esteso con molte centrali. Nel modello la rete è un riferimento a 50 Hz e 400 kV, e l'interruttore è uno stato aperto o chiuso.
+
+| Caratteristica | Nel modello |
+| --- | --- |
+| Finestre di parallelo | Scarto di frequenza ≤ 0,2 Hz, di fase ≤ 10°, di tensione ≤ 10 kV |
+| Scambio | Può essere positivo (esportazione) o negativo (importazione) |
+
+**Semplificazioni e scelte.** Non sono rappresentati archi elettrici, tempi di apertura dei contatti, sbarre, servizi ausiliari o generatori diesel.
+
+**Se si guasta o si blocca.** Lo scenario di perdita dell'alimentazione esterna isola il gruppo dalla rete. Il modello non deriva da solo le conseguenze sulle pompe: negli scenari che le studiano, l'arresto delle pompe e la perdita dei comandi sono dichiarati come guasti separati.
+
 ## 5.22 Strumenti, misure e diagnostiche
 
 La strumentazione rende disponibili ai controlli e all'operatore grandezze del processo, con validità e qualità proprie. La dicitura `MEASURED` indica quel percorso nel simulatore: non si riferisce a un sensore esterno collegato a un impianto reale. I guasti configurati possono degradare una misura e rendere necessario cambiare il modo di interpretarla.
@@ -666,6 +1062,20 @@ La strumentazione rende disponibili ai controlli e all'operatore grandezze del p
 
 Un'indicazione filtrata può rispondere più lentamente di una diagnostica grezza, senza che vi siano due impianti diversi. Per esempio, alcune presentazioni operative della portata hanno un ritardo di visualizzazione distinto dal calcolo del flusso. Confrontare segnali con ruoli e filtri diversi richiede quindi attenzione alla loro provenienza.
 
+### Scheda tecnica — guasti delle misure
+
+Una misura può guastarsi in cinque modi, e ognuno si riconosce in modo diverso:
+
+| Guasto | Che cosa vedi | Come riconoscerlo |
+| --- | --- | --- |
+| Errore costante (`bias`) | Il valore è spostato di una quantità fissa | Il valore è plausibile ma non torna con i bilanci vicini |
+| Valore congelato | Il numero non cambia più | Resta immobile mentre le grandezze collegate si muovono |
+| Guasto al minimo | Il valore va al fondo scala inferiore | Il salto è improvviso e senza causa fisica |
+| Guasto al massimo | Il valore va al fondo scala superiore | Il salto è improvviso e senza causa fisica |
+| Indisponibile | `UNAVAILABLE` | È dichiarato: non va letto come zero |
+
+Il guasto peggiore è il più silenzioso: un valore congelato o con un piccolo errore sembra normale. Ogni misura usata da un regolatore o da una protezione trasmette loro lo stesso errore. Per questo conviene confermare una lettura importante con un secondo percorso fisico: livello con portate, pressione con temperatura, potenza elettrica con potenza all'albero.
+
 ## 5.23 Regolatori e attuatori
 
 Un regolatore confronta la misura con un riferimento e produce una richiesta. L'attuatore converte quella richiesta nell'azione sul componente, rispettando eventuali limiti di corsa e di autorità. La separazione spiega perché possano essere diversi valore desiderato, uscita del controllo, posizione reale e variabile di processo.
@@ -673,6 +1083,21 @@ Un regolatore confronta la misura con un riferimento e produce una richiesta. L'
 Nel riferimento composto esistono collegamenti fra potenza e barre, portata principale e pompa di circolazione, velocità e valvola di regolazione, pressione e ammissione, livello del corpo cilindrico e pompa di alimentazione, massa della vasca e pompa del condensato. La tabella del capitolo 11 collega queste azioni alle modalità di autorità.
 
 In automatico il regolatore corregge lo scostamento nel tempo; un integratore può conservare memoria delle correzioni precedenti. In manuale l'uscita segue la richiesta prevista dal relativo comando. Cambiare modalità non dovrebbe introdurre un salto artificiale di richiesta, ma non cancella l'inerzia fisica né garantisce che ogni transitorio scompaia.
+
+### Scheda tecnica — regolatori e attuatori
+
+La tabella elenca gli anelli di regolazione del profilo desktop e l'attuatore che ciascuno muove.
+
+| Grandezza regolata | Attuatore | Corsa dell'attuatore |
+| --- | --- | --- |
+| Potenza del reattore | Barre di regolazione | 10 punti % al secondo |
+| Portata principale | Pompa di circolazione | — |
+| Velocità della turbina | Valvola CONTROL | 50 punti % al secondo |
+| Pressione del vapore | Valvola ADMISSION | 50 punti % al secondo |
+| Livello del corpo cilindrico | Pompa di alimentazione | 25 punti % al secondo |
+| Massa della vasca | Pompa del condensato | 25 punti % al secondo |
+
+Un regolatore o un attuatore può guastarsi congelando l'uscita o forzandola al minimo o al massimo. In tutti questi casi la richiesta smette di dipendere dalla misura: il componente resta fermo o va a fondo corsa mentre il processo cambia. Se un'uscita resta ferma con la variabile in deriva, oppure va a un estremo senza ragione fisica, sospetta il controllo prima del processo. Lo scenario di perdita dell'alimentazione elettrica, per esempio, forza al minimo i comandi delle pompe di alimentazione e del condensato.
 
 ## 5.24 Protezioni e interblocchi
 

@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="900" height="520" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Dove va il calore prodotto nel nocciolo</title>
+<desc id="desc">La fissione, circa 33 MWth all'avvio desktop, deposita il 70% nel combustibile, il 10% nelle strutture e il 20% direttamente nel refrigerante. Combustibile e strutture hanno capacità termiche di 10 e 20 MJ/K e cedono calore con conduttanze di 1 e 0,5 MW/K, con tempi tipici di circa 10 e 40 secondi. Il refrigerante passa in 100 canali equivalenti.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="519.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Dove va il calore prodotto nel nocciolo</text>
+<defs><marker id="a1baf7a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1baf7a"/></marker><marker id="aeb6834" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#eb6834"/></marker><marker id="a2a78d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/></marker><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect x="40.0" y="80.0" width="180.0" height="120.0" rx="8" fill="#e3defb" stroke="#6250d6" stroke-width="1.5"/>
+<text x="130.0" y="112.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="normal">Fissione</text>
+<text x="130.0" y="132.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="normal">circa 33 MWth</text>
+<text x="130.0" y="152.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="normal">all'avvio desktop</text>
+<path d="M222.0,140.0 L300.0,110.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<text x="262.0" y="117.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">70%</text>
+<rect x="310.0" y="60.0" width="200.0" height="100.0" rx="6" fill="#f6d5c6" stroke="#eb6834" stroke-width="1.5"/>
+<text x="322.0" y="82.0" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="600">Combustibile</text>
+<text x="322.0" y="102.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">C = 10 MJ/K</text>
+<text x="322.0" y="118.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">G = 1 MW/K</text>
+<text x="322.0" y="134.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">τ ≈ 10 s · ≈ 306 °C</text>
+<path d="M512.0,110.0 L600.0,260.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<path d="M222.0,140.0 L300.0,250.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<text x="262.0" y="187.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">10%</text>
+<rect x="310.0" y="200.0" width="200.0" height="100.0" rx="6" fill="#f6d5c6" stroke="#eb6834" stroke-width="1.5"/>
+<text x="322.0" y="222.0" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="600">Strutture</text>
+<text x="322.0" y="242.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">C = 20 MJ/K</text>
+<text x="322.0" y="258.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">G = 0,5 MW/K</text>
+<text x="322.0" y="274.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">τ ≈ 40 s · ≈ 289 °C</text>
+<path d="M512.0,250.0 L600.0,290.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<path d="M130.0,202.0 L130.0,360.0 L600.0,360.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<text x="150.0" y="352.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">20% direttamente al refrigerante</text>
+<rect x="610.0" y="230.0" width="250.0" height="150.0" rx="8" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="622.0" y="254.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">Refrigerante nei canali</text>
+<text x="622.0" y="272.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">100 canali equivalenti</text>
+<text x="622.0" y="290.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">100 kg/s → 1 kg/s per canale</text>
+<text x="622.0" y="308.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">entra liquido a 280 °C</text>
+<text x="622.0" y="326.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">esce miscela ≈ 282,5 °C</text>
+<text x="622.0" y="344.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">con titolo ≈ 0,22</text>
+<path d="M735.0,384.0 L735.0,430.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#aeb6834)"/>
+<text x="750.0" y="418.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">verso il corpo cilindrico</text>
+<text x="40.0" y="456.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Il 70% della fissione scalda prima il combustibile, il 10% le strutture: il calore arriva al fluido con un ritardo</text>
+<text x="40.0" y="474.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">di circa 10 e 40 secondi. Ecco perché, dopo una variazione di potenza o uno SCRAM, le temperature si spostano gradualmente.</text>
+<text x="24.0" y="504.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Temperature e potenze del punto iniziale Exact-V9, arrotondate; i tempi tipici sono C/G.</text>
+</svg>
