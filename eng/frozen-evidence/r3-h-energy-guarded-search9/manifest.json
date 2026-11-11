@@ -1,0 +1,61 @@
+{
+  "schema": "r3-h-energy-guarded-search9-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 1191,
+      "sha256": "2F494798792407F7E6149D5D39C2F45039C178D2C9A8FF34BF895B90F8CCD4E5",
+      "stored_sha256": "2F494798792407F7E6149D5D39C2F45039C178D2C9A8FF34BF895B90F8CCD4E5"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "B1EFDB254BB79203043001E37BA43D6EC032EDE57F933F0BD014271CAAC7DC33",
+      "stored_sha256": "B1EFDB254BB79203043001E37BA43D6EC032EDE57F933F0BD014271CAAC7DC33"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 7933516,
+      "sha256": "B985295ED82E08287EA0C3A0E06FC189836C124D7585434FEEE77741288C842D",
+      "stored_sha256": "BD5D6D4B4BFF5EAAACD4D143EE4CF381297226A35638AC6926D124A2E102CEAE"
+    },
+    {
+      "file": "04-result.json",
+      "stored": "04-result.json",
+      "bytes": 72106,
+      "sha256": "C3C3C8BB80EE6C21AA8AB4AF1D3A88A83181AE1E643444892D6A31A65716B28C",
+      "stored_sha256": "C3C3C8BB80EE6C21AA8AB4AF1D3A88A83181AE1E643444892D6A31A65716B28C"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 450,
+      "sha256": "B7DCE4DD11254B412BD09E20909468CAF416AA5B858F293F60AB9AB2D2C67975",
+      "stored_sha256": "B7DCE4DD11254B412BD09E20909468CAF416AA5B858F293F60AB9AB2D2C67975"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3981,
+      "sha256": "35EFEB7C4487B278FA43FB6924757C63B757EF5E2CE2C68D487E818E0BD89D01",
+      "stored_sha256": "35EFEB7C4487B278FA43FB6924757C63B757EF5E2CE2C68D487E818E0BD89D01"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "85B0066025105B5C2A7DC6A9734005CBA452488EE6B7DD8FDDE400E69A770B80",
+      "stored_sha256": "85B0066025105B5C2A7DC6A9734005CBA452488EE6B7DD8FDDE400E69A770B80"
+    },
+    {
+      "file": "progress.log",
+      "stored": "progress.log",
+      "bytes": 3064,
+      "sha256": "E20AB4163C5F8A5F5F3DE430CCA8AB8F75064BD2613A644ABDE563F33AB1130E",
+      "stored_sha256": "E20AB4163C5F8A5F5F3DE430CCA8AB8F75064BD2613A644ABDE563F33AB1130E"
+    }
+  ]
+}

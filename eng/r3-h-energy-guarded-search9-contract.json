@@ -1,0 +1,157 @@
+{
+  "schema": "r3-h-energy-guarded-search9-v1",
+  "policy": {
+    "variables": 24,
+    "residuals": 75,
+    "fractional_bound": 0.02,
+    "radius_initial": 1e-05,
+    "radius_minimum": 1e-07,
+    "radius_maximum": 1e-05,
+    "derivative_widths": [
+      1e-07,
+      1e-08
+    ],
+    "maximum_halvings": 4,
+    "maximum_iterations": 32,
+    "maximum_recipes": 3233,
+    "maximum_batches": 97,
+    "maximum_physical_steps": 9893,
+    "energy_margin_fraction": 0.1,
+    "minimum_reduction_to_Trial9_error": 10.0,
+    "maximum_prediction_error_fraction": 0.25,
+    "minimum_reduction_ratio": 0.1,
+    "production_change": false,
+    "bound_expansion": false,
+    "residual_reweighting": false,
+    "seed_installation": false,
+    "r3_passed": false
+  },
+  "output": "artifacts/r3-h-energy-guarded-search9",
+  "test_additions": [],
+  "incoming_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "21C3BE986049F235DDD7F66ACCF967C2BFA802AB8489FDF7A812E0A78EF543FA"
+    },
+    "tests": {
+      "file_count": 410,
+      "tree_sha256": "DB6DB96BD54D13B26D7D4795A6D9415EAEBFAF7514BC8B0C014D6FED31BE5AF2"
+    }
+  },
+  "implementation_files": [
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/M10R3HProtocolBatchTests.cs",
+      "sha256": "E73DC89313EFED673608B14C8D0C15796666046BDDCEDA66D552CCD88C0D1D8F"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/r3_h_phase_trajectory.py",
+      "sha256": "256B982174E673AA249619358E820DBD18C55ACD4A00A3D400365C5C2F78C625"
+    },
+    {
+      "path": "eng/r3_h_minimax_lp.py",
+      "sha256": "741E6A38FD8C849497E7004074CDCF599B0FB7E249851DFCA4CCE50FEAF3DD5E"
+    },
+    {
+      "path": "eng/r3_h_phase_minimax.py",
+      "sha256": "662537BBB3F861B9571EFD21D5500573F7355BEA72B0AB0BB9083D9E57EE4E9F"
+    },
+    {
+      "path": "eng/r3_h_multiscale_derivatives.py",
+      "sha256": "DDE473C52A18B02304122D45A877791181C0D05BA545D2E578010811EB279FA3"
+    },
+    {
+      "path": "eng/r3_h_c4_phase_margin.py",
+      "sha256": "A26041A08F2676A048CF930EC61E0030ADFB75DC749EAD7169BF8030DDFB100D"
+    },
+    {
+      "path": "eng/r3_h_c4_energy_margin.py",
+      "sha256": "A884738E349B6F223272793CCAE0417DC40D966D84A68FBA950C31832D6C9AE7"
+    },
+    {
+      "path": "eng/run-r3-h-energy-guarded-search9.py",
+      "sha256": "981DA44AAB4578BC6D013882DBE396BE4C94D812A428117ED9EDD7D55FBC8CCF"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/contracts/r3-h-energy-guarded-search9.md",
+      "sha256": "44650A3DB0941A6179C77FE0EC231D9A6390C774AB1F24AAF29D1576C507BDAC"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/review-r3-h-numerics1.py",
+      "sha256": "11E1EBF53460B8B1EE1C61A73261882633C33A670F59BD6C29756F9C56FAA177"
+    },
+    {
+      "path": "eng/design-r3-h-local-model1.py",
+      "sha256": "CC139CFFFCCF7AFBDBA2DF11EE86CADFA4F219D8AE829EA326C2768F81E5CE32"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceData/NRSVR2C4.v1.bin",
+      "sha256": "EF49B1D097FC63F1F1254E425F46C6ACA837B82C58EFBA9C7774727C51C82267"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ReferenceConsistentTabulatedInverseResolver.cs",
+      "sha256": "EED188B6B8C8C9BF447E7F6E3CC0F050AB755B75F883BF5B672FA183A273DF81"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+      "sha256": "2EF50596DBB4AB5215A484511623D569F2CAE9260962BABAE14BC789F21459F7"
+    },
+    {
+      "path": "eng/r3-h-energy-guarded-trial10-contract.json",
+      "sha256": "87B34F32FA322E25A0561BBE91ADE4A6ACE7F64B0DF48AE973C56846A7542837"
+    },
+    {
+      "path": "eng/r3-h-energy-guarded-trial10-returned.json",
+      "sha256": "6D7FD96FA4932B08551F3026ABDD9A7E657477F03B1493DC5ABCA0B36173565A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/01-static.json",
+      "sha256": "B61975EB5284E93A77618E9451F89A4056192EA958F24A174BDAA7439C638428"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/02-preexecution.json",
+      "sha256": "8CCE00B1976ECE142098A975413BAC23A12E65EEBC9185842ADE53E0C8A7DC4F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/03-batches.jsonl.gz",
+      "sha256": "149269D71850308AE402795F01FFDBD09A8DCF8EEA4F7EA38B7EFBE3A3D726CA"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/05-adjudication.json",
+      "sha256": "CFF64BEC9CA47D5B6D81C155EDDCAD04B8D02667AD370CBE9CEA363574CC0954"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/batch-execution.xml",
+      "sha256": "B974ADF8902E7CD121B9D5483EE8ABEA0DC5381777A1904BB7B46E7FD6302529"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/manifest.json",
+      "sha256": "4B2DB5DBA238FEAB380735E5E7C1657D71B3BA017775875870D786E437EA8D12"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/preexecution.xml",
+      "sha256": "F91E6CB822C901A1949C0254F0247D694B920FF12A69A065E87F263B2CAEE313"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-h-energy-guarded-trial10/progress.log",
+      "sha256": "357A638E525B5E925FAD78E22C95E93A153F997C6E5249BD064AE92A8D862581"
+    }
+  ]
+}

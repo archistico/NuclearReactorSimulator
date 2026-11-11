@@ -1,0 +1,54 @@
+{
+  "schema": "r3-h-multiscale-derivative-trial9-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 458228,
+      "sha256": "E7A2CFC477820596BCF822992FA310FBAA15697853C321388C0B4ACF6454BB72",
+      "stored_sha256": "E7A2CFC477820596BCF822992FA310FBAA15697853C321388C0B4ACF6454BB72"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "53BBBB1DF38C641690DCEAC9BCDDE9B91EB57C0AAE0FF68A580CA5DA85F57C17",
+      "stored_sha256": "53BBBB1DF38C641690DCEAC9BCDDE9B91EB57C0AAE0FF68A580CA5DA85F57C17"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 9234689,
+      "sha256": "75EF164E92BC09D0727E233F2FA3C2007ECCB6384035B823E37A4B543BFF575F",
+      "stored_sha256": "F3154E783D81697FA9B8E049DE31605080666E9F043F199977D52961ECF08342"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 909983,
+      "sha256": "FDC2392218BFC14755CB412C7BBE4609BB81C98FDFFEA7E7401B75B6413AA8E8",
+      "stored_sha256": "FDC2392218BFC14755CB412C7BBE4609BB81C98FDFFEA7E7401B75B6413AA8E8"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3979,
+      "sha256": "E9A84FB791C1B008075B6576ABB0EE2218DA2870FC50EAEC459BD4531DB1CEE5",
+      "stored_sha256": "E9A84FB791C1B008075B6576ABB0EE2218DA2870FC50EAEC459BD4531DB1CEE5"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "0FB57D3C2E82B03FF21F941B72D03A4540F29F430CA64E6035F55F41574CD1D6",
+      "stored_sha256": "0FB57D3C2E82B03FF21F941B72D03A4540F29F430CA64E6035F55F41574CD1D6"
+    },
+    {
+      "file": "progress.log",
+      "stored": "progress.log",
+      "bytes": 964,
+      "sha256": "FC7A9F8991E54015F7E9DB9D279BA61C56E9F8A5C9E25AEFF7DFF2C51BF95365",
+      "stored_sha256": "FC7A9F8991E54015F7E9DB9D279BA61C56E9F8A5C9E25AEFF7DFF2C51BF95365"
+    }
+  ]
+}

@@ -1,0 +1,112 @@
+{
+  "status": "PASS-REPEATED-ENERGY-GUARDED-TRIAL",
+  "recipes": 6,
+  "batches": 1,
+  "maximum_physical_steps": 20,
+  "diagnosis": {
+    "width": 1e-07,
+    "observed_directional_error": 6.712488193996251,
+    "error_is_not_a_bound_for_new_directions": true,
+    "subproblems": [
+      {
+        "radius": 1e-06,
+        "status": "NUMERICAL-REJECTION",
+        "reason": "LP-CERTIFICATE-FAILED",
+        "plant_calls": 0
+      },
+      {
+        "radius": 1e-05,
+        "status": "PASS-NUMERICAL-CERTIFICATES-AND-ERROR-SCREEN",
+        "predicted_reduction": 1574.4179797694087
+      },
+      {
+        "radius": 0.0001,
+        "status": "PASS-NUMERICAL-CERTIFICATES-AND-ERROR-SCREEN",
+        "predicted_reduction": 15461.209540342912
+      }
+    ]
+  },
+  "comparisons": [
+    {
+      "id": "base",
+      "reason": "VALID",
+      "phase_compatible": true,
+      "actual_maximum": 3337270.0676579927,
+      "predicted_maximum": 3337270.0676579927,
+      "actual_reduction": 0.0,
+      "reduction_ratio": null,
+      "maximum_residual_error": 0.0,
+      "maximum_residual_error_limit": 0.0,
+      "actual_energy_margin_j_kg": [
+        1.7386277844662237,
+        1.158491538764675,
+        0.5800867775512407,
+        3.609917759906913e-05
+      ],
+      "predicted_energy_margin_j_kg": [
+        1.7386277844662237,
+        1.158491538764675,
+        0.5800867775512407,
+        3.609917759906913e-05
+      ],
+      "all_in_envelope": false,
+      "promising": false
+    },
+    {
+      "id": "energy/radius/1e-05",
+      "reason": "VALID",
+      "phase_compatible": true,
+      "actual_maximum": 3335732.4330312186,
+      "predicted_maximum": 3335695.6496782233,
+      "actual_reduction": 1537.6346267741174,
+      "reduction_ratio": 0.9766368566238817,
+      "maximum_residual_error": 155.19950537057593,
+      "maximum_residual_error_limit": 393.6044949423522,
+      "actual_energy_margin_j_kg": [
+        1.7364890618107305,
+        1.1566115226774591,
+        0.5791664894062726,
+        4.544371431041718e-06
+      ],
+      "predicted_energy_margin_j_kg": [
+        1.736488857939232,
+        1.156613590545779,
+        0.5791687378617058,
+        3.934810567628077e-06
+      ],
+      "all_in_envelope": false,
+      "promising": true
+    },
+    {
+      "id": "energy/radius/0.0001",
+      "reason": "VALID",
+      "phase_compatible": false,
+      "actual_maximum": 3322975.0384615385,
+      "predicted_maximum": 3321808.85811765,
+      "actual_reduction": 14295.029196454212,
+      "reduction_ratio": 0.9245737960638987,
+      "maximum_residual_error": 1405.224612967737,
+      "maximum_residual_error_limit": 3865.302385085728,
+      "actual_energy_margin_j_kg": [
+        1.7179115390681694,
+        1.1401168329947529,
+        0.5706365227103893,
+        -0.00041720159188979674
+      ],
+      "predicted_energy_margin_j_kg": [
+        1.7179094731465987,
+        1.1403294283561967,
+        0.570974832907766,
+        3.934867164742517e-06
+      ],
+      "all_in_envelope": false,
+      "promising": false
+    }
+  ],
+  "promising": [
+    "energy/radius/1e-05"
+  ],
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

@@ -1,24 +1,27 @@
-# Top-level document index
+# Indice dei documenti tecnici
 
-This index lists every live `docs/*.md` document. The [technical guide](README.md)
-introduces the subsystem references. The [validation summary](validation/README.md)
-and [engineering decisions](validation/MODEL_DECISIONS.md) consolidate M10.
-Exact-text validator inputs have their own [engineering catalog](../eng/contracts/m10/README.md);
-completed chronology remains under [history](history/README.md).
+Questo indice elenca tutti i documenti attivi `docs/*.md`. La
+[guida alla documentazione](README.md) offre un ingresso ragionato; il
+[checkpoint](PROJECT.md) e l'[handoff](PROJECT.md#handoff) mantengono stato e ripresa.
+Le [verifiche](validation/README.md) e le [decisioni](validation/MODEL_DECISIONS.md)
+spiegano la validazione. Gli [input dei validatori](../eng/contracts/m10/README.md)
+e la [storia](history/README.md) hanno indici dedicati.
 
-## Navigation and project references
+## Navigazione e riferimenti del progetto
 
-| Document | Purpose/title |
+| Documento | Scopo |
 | --- | --- |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Architecture |
-| [CHANGE_IMPACT_REVALIDATION_POLICY.md](CHANGE_IMPACT_REVALIDATION_POLICY.md) | Change Impact and Revalidation Policy |
-| [KNOWN_MODEL_LIMITATIONS.md](KNOWN_MODEL_LIMITATIONS.md) | Known model limitations |
-| [PROJECT.md](PROJECT.md) | Project — current authoritative state |
-| [README.md](README.md) | Technical documentation |
-| [ROADMAP.md](ROADMAP.md) | Roadmap |
-| [TOP_LEVEL_DOCUMENT_INDEX.md](TOP_LEVEL_DOCUMENT_INDEX.md) | Top-level document index |
+| [ARCHITECTURE.md](ARCHITECTURE.md) | Responsabilità stabili dei livelli e dei sottosistemi |
+| [CHANGE_IMPACT_REVALIDATION_POLICY.md](CHANGE_IMPACT_REVALIDATION_POLICY.md) | Impatto delle modifiche e rivalidazione |
+| [KNOWN_MODEL_LIMITATIONS.md](KNOWN_MODEL_LIMITATIONS.md) | Campo e limiti del modello |
+| [PROJECT.md](PROJECT.md) | Stato verificato, [handoff](PROJECT.md#handoff), comandi ed evidenze correnti |
+| [README.md](README.md) | Guida alla documentazione |
+| [ROADMAP.md](ROADMAP.md) | Consegne future e condizioni per avanzare |
+| [TOP_LEVEL_DOCUMENT_INDEX.md](TOP_LEVEL_DOCUMENT_INDEX.md) | Indice completo dei documenti tecnici |
 
-## Subsystem and technical references
+La cronologia generale è nel [changelog](../CHANGELOG.md).
+
+## Riferimenti tecnici e sottosistemi
 
 | Document | Purpose/title |
 | --- | --- |
@@ -139,7 +142,7 @@ completed chronology remains under [history](history/README.md).
 | [VOID_FEEDBACK.md](VOID_FEEDBACK.md) | Void Feedback |
 | [WATER_STEAM_MODEL.md](WATER_STEAM_MODEL.md) | Simplified Water/Steam Model |
 
-## Future plans and reference reviews
+## Piani futuri e revisioni dei riferimenti
 
 | Document | Purpose/title |
 | --- | --- |

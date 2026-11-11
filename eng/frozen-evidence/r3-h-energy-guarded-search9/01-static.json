@@ -1,0 +1,54 @@
+{
+  "status": "PASS-STATIC",
+  "contract_sha256": "8A862843C704ADBD3EAB104FADBE6DA88B16B9AFE0EA4C9AF28B2D5DD1B3ABAF",
+  "fixtures": [
+    {
+      "name": "analytic-central-quadratic-and-linear",
+      "passed": true
+    },
+    {
+      "name": "negative-one-sided-orientation",
+      "passed": true
+    },
+    {
+      "name": "unavailable-is-not-zero",
+      "passed": true
+    },
+    {
+      "name": "duplicate-stencil-rejected",
+      "passed": true
+    },
+    {
+      "name": "affine-convexity-error-bound",
+      "passed": true
+    },
+    {
+      "name": "coordinate-rounding-allowance",
+      "passed": true
+    },
+    {
+      "name": "ordinary-margin",
+      "passed": true
+    },
+    {
+      "name": "tiny-quality-normalized",
+      "passed": true
+    },
+    {
+      "name": "simultaneous-coordinates-respect-shared-margin",
+      "passed": true
+    },
+    {
+      "name": "zero-quality-is-not-fictitious-mixture-interior",
+      "passed": true
+    },
+    {
+      "name": "known-coupled-root-with-error-check",
+      "passed": true
+    },
+    {
+      "name": "budget-stops-before-unfunded-probes",
+      "passed": true
+    }
+  ]
+}

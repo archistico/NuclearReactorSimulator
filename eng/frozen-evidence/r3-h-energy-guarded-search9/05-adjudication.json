@@ -1,0 +1,16 @@
+{
+  "status": "PASS-INDEPENDENT-ENERGY-GUARDED-REPLAY",
+  "stop": "MINIMUM-RADIUS-NO-ELIGIBLE-DESCENT",
+  "recipes": 476,
+  "batches": 22,
+  "maximum_physical_steps": 1472,
+  "accepted_updates": 2,
+  "accepted_model_steps": 1,
+  "initial_maximum": 3335732.4330312186,
+  "final_maximum": 3334923.8557620817,
+  "all_in_envelope": false,
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "seed_installed": false
+}

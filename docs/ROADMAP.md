@@ -7,77 +7,65 @@ diciture «current» o «next» non sostituiscono il checkpoint attuale.
 
 ## 1. Quale obiettivo stiamo perseguendo
 
-Il simulatore dispone già di una sala controllo, regolazione e protezioni, missioni,
-salvataggi e replay. Il desktop ordinario usa la propria configurazione Exact-V9.
-Il lavoro fisico immediato riguarda invece l'integrazione di una chiusura
-termodinamica più coerente con il riferimento indipendente acqua-vapore.
+Il percorso verso la chiusura M10 richiede di qualificare l'integrazione di una
+chiusura termodinamica più coerente con il riferimento indipendente acqua-vapore.
+Le attività successive prepareranno distribuzione, ampliamento della fisica e
+nuove superfici operative.
 
 La «chiusura termodinamica» è il calcolo che ricava pressione, temperatura e fase
 del fluido da massa, energia e volume. Se quel calcolo cambia, il vecchio insieme
 di inventari può non produrre più pressioni e portate compatibili fra loro.
 
-La nuova chiusura è implementata come opzione esplicita e ha superato le verifiche
-locali. Quando la si collega all'impianto completo, però, non basta sostituire una
-funzione: occorre che massa, energia, pressioni, portate e controlli descrivano un
-punto iniziale compatibile. È questo il problema ancora aperto in R3, la verifica
-integrata breve. Giri e potenza elettrica quasi costanti non dimostrano che tutti
-gli inventari siano in equilibrio.
+L'integrazione della nuova chiusura richiede che massa, energia, pressioni,
+portate e controlli descrivano un punto iniziale compatibile. Le verifiche locali
+della funzione non sostituiscono la verifica integrata breve R3. Giri e potenza
+elettrica quasi costanti non dimostrano che tutti gli inventari siano in equilibrio.
 
-La pulizia della documentazione e la riscrittura del
-[manuale italiano](usermanual/MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md) sono
-concluse. Migliorano comprensione e manutenzione; non costituiscono una nuova
-qualificazione della fisica. Il [riepilogo della validazione](validation/README.md)
-separa i risultati già acquisiti dal problema di integrazione ancora aperto.
+Il [checkpoint e l'handoff](PROJECT.md) mantengono risultati, blocco osservato
+e comandi di ripresa. La [sintesi della validazione](validation/README.md) spiega
+il significato delle verifiche; questa roadmap definisce le consegne future.
 
 ## 2. La prossima finestra di lavoro
 
 NRS-MARKER:R3-H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-NEXT
 
-La ricerca H8 riduce il miglior massimo accettato a 3.337.270,068, contro il
-criterio 1, e accetta 16 passi accoppiati. Il vincolo sulla traiettoria di fase
-ha quindi prodotto un miglioramento reale. La ricerca arriva però a qualità
-riportata zero nell'hotwell e si arresta al raggio minimo: nessun equilibrio
-o inviluppo operativo è ancora qualificato.
+L'obiettivo immediato è rendere misurabili direzioni locali compatibili con
+il confine liquido/miscela. Confronteremo due ipotesi: sonde che compensano
+fra loro variazioni di inventario e un punto di prova con maggiore margine
+energetico interno. Il [problema osservato](PROJECT.md#il-problema-da-risolvere)
+definisce l'ingresso del confronto.
 
-La diagnosi successiva distingue volume ed energia al confine C4. Il margine
-energetico ricostruisce le fasi dei campioni esaminati; Trial 8 mostra però
-che, anche restando miscela, l'errore della previsione può superare il piccolo
-guadagno osservato. Il passo immediato è verificare l'affidabilità delle
-derivate prima di progettare un'altra ricerca.
-
-| Passo | Stato e consegna | Condizione per avanzare |
+| Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
-| Ricerche H–H8 e prove ripetute | Concluse senza radice; replay delle evidenze correnti PASS. | La riduzione del residuo non promuove un seed. |
-| Diagnosi della traiettoria e del confine C4 | Conclusa sui campioni dei Trial 6–8: qualità troncata e margine di volume da soli non bastano. | Il margine energetico è una spiegazione locale, non un vincolo di ricerca già qualificato. |
-| Derivate su più ampiezze — prossima | Confrontare residui, margine energetico e fasi da H8, con differenze centrali/unilaterali e direzione fissa di Trial 8. | Individuare passi per cui l'errore del modello consenta di giudicare la discesa; altrimenti rivedere la rappresentazione. |
-| Nuova prova e ricerca | Solo dopo la revisione delle derivate, congelare proposte e confrontarle due volte con la risposta reale. | Accordo misurato, ramo e discesa coerenti prima di impegnare una nuova ricerca. |
-| Conferma e integrazione | Dopo una radice osservata e revisione, conferme indipendenti e composizione di prova. | Residui conformi e inviluppo invariato di 100 passi. |
+| Progettare il confronto | Definire direzioni, ampiezze e budget per le due ipotesi. | Coordinate esplicite nel box H, residui e scale invariati. |
+| Verificare la base locale | Misurare direzioni indipendenti, compatibili con tutti i checkpoint della ricetta. | Derivate disponibili e previsioni direzionali verificate a una scala utile. |
+| Provare le proposte | Congelare le proposte e confrontarle due volte con la risposta reale. | Ripetizioni identiche, discesa, ramo ed errore del modello conformi. |
+| Eseguire una nuova ricerca | Fissare algoritmo, criteri di arresto e budget sulla base della prova. | Evidenza completa e una radice osservata prima della conferma. |
+| Confermare e integrare | Revisionare la radice, eseguire conferme indipendenti e comporre il candidato di prova. | Residui conformi e inviluppo invariato di 100 passi. |
 | R3 Requalification 3 | Verifica integrata di 120 secondi, 12.000 passi da 10 ms. | Solo un R3 PASS restituito e revisionato permette la pianificazione di R4. |
 
 ```mermaid
 flowchart TD
-    A["H8 e Trial 6-8: miglioramento, nessuna radice"] --> B["Prossimo: affidabilità delle derivate"]
-    B --> C{"Previsioni verificate su più passi?"}
-    C -->|"no"| R["Rivedere la rappresentazione locale"]
-    R --> B
-    C -->|"sì"| D["Nuova prova ripetuta prima della ricerca"]
-    D --> E{"Radice osservata?"}
-    E -->|"no"| R
-    E -->|"sì"| F["Conferme indipendenti di 100 passi"]
-    F --> G["R3: verifica integrata di 120 secondi"]
-    G --> H["Revisione prima di R4"]
+    A["Confronto: sonde compensate o riserva energetica"] --> B{"Base ammissibile e previsioni verificate?"}
+    B -->|"no"| R["Rivedere la rappresentazione locale"]
+    R --> A
+    B -->|"sì"| C["Proposte ripetute e ricerca con limiti espliciti"]
+    C --> D{"Radice osservata?"}
+    D -->|"no"| R
+    D -->|"sì"| E["Conferme indipendenti di 100 passi"]
+    E --> F["R3: verifica integrata di 120 secondi"]
+    F --> G["Revisione prima di R4"]
 ```
 
-Le frecce indicano condizioni da dimostrare. La diagnosi del confine è progredita,
-ma un certificato del programma lineare non garantisce l'accuratezza della sua
-previsione fisica. Ridurre ancora il passo o aggiungere soltanto il margine
-energetico non basta a superare il limite osservato in Trial 8.
+Le frecce rappresentano risultati da dimostrare. Una sonda compensata muove
+insieme più inventari per restare sul ramo; una riserva energetica cerca invece
+un punto abbastanza interno da permettere le sonde. Le osservazioni devono
+dimostrare l'utilità della scelta prima che si impegni una nuova ricerca.
+Un esito negativo riporta alla rappresentazione locale, conservando l'evidenza.
 
-Restano fissi residui, scale, incognite e box H finché una decisione distinta
-non motivi diversamente. Le altre famiglie C/J, gli allargamenti dei limiti e
-le modifiche fisiche non sono conseguenze automatiche di un esito inconclusivo.
-Non è stata dimostrata l'impossibilità di una radice né un difetto dei controllori.
-Nessuna ricerca è in corso e non c'è ancora una data attendibile per R3 o M10.
+Le altre famiglie C/J, gli allargamenti dei limiti e le modifiche fisiche richiedono
+motivazioni e protocolli distinti. Il calendario di R3 e M10 potrà essere stimato
+quando il percorso verso un equilibrio qualificabile sarà sufficientemente prevedibile.
 
 ## 3. Che cosa manca dopo R3 per chiudere M10
 
@@ -90,8 +78,8 @@ non diventa «abbiamo qualificato tutto».
 | R4 | La nuova composizione regge il ricontrollo lungo di materialità equivalente a P1B? | Confronto lungo completo e revisionato. Non è ancora la campagna finale di chiusura. |
 | R5 | Il candidato soddisfa il rientro nella valutazione fisica acqua-vapore VR2? | Risultato non bloccante nel dominio e nei criteri dichiarati. |
 | R6 | È giustificato attivare una nuova versione produttiva? | Decisione esplicita; Exact-V9 e vecchi archivi mantengono il proprio significato. |
-| Valutazioni rimanenti | Quali conclusioni sono sostenute dai riferimenti di xeno, calore di decadimento e dalla valutazione consolidata? | Benchmark e applicabilità espliciti; non introduzione automatica di nuovi modelli nel desktop. |
-| Decisione integrata e P4 | Restano interventi necessari e il ciclo sostiene la manovra breve 5→10→5? | Decisione motivata e verifica breve qualificata, prima di una nuova campagna lunga. |
+| VR3–VR5 | Quali conclusioni sono sostenute dai riferimenti di xeno, calore di decadimento e dalla valutazione consolidata? | Benchmark e applicabilità espliciti; non introduzione automatica di nuovi modelli nel desktop. |
+| P3-R1/P3-R2 e P4 | Quali componenti richiedono interventi e il ciclo sostiene la manovra breve 5→10→5? | Localizzazione dei responsabili, decisione di riparazione e verifica breve qualificata, prima di una nuova campagna lunga. |
 | P5 | Il candidato supera la campagna lunga finale sul carico congelato? | Baseline della prova, artefatti completi e risultati conformi. |
 | P6 | Tutte le evidenze richieste consentono di chiudere M10? | Chiusura esplicita, matrice di verifica aggiornata e accettazione HMI applicabile. |
 

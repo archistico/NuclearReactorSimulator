@@ -458,12 +458,10 @@ No requirement for monotonic return is imposed unless the model contract specifi
 ## 13. Historical M10 diagnostic subset
 
 The following subset records the original exact-v4 diagnostic proposal. It does
-not prescribe a new run now: the investigation has progressed to the bounded H
-and the returned H8 / local C4 energy-boundary review checkpoint documented in `PROJECT.md`.
-The minimax trials and searches are complete without a qualified root. Primary
-and secondary numerical certificates are distinct from the plant's nonlinear
-phase path through preconditioning. The next bounded diagnostic must address
-that path before another search; production remains unchanged.
+not prescribe a new run. Use the [current checkpoint and handoff](PROJECT.md)
+for the active M10 investigation, applicable commands and the next bounded
+comparison. This general equilibrium plan does not replace that checkpoint or
+promote a historical diagnostic to a current qualification.
 
 1. test-only/headless exact-v4 residual census;
 2. per-node `dm/dt` and `dU/dt` plus 60 s/300 s slopes;

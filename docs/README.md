@@ -1,36 +1,45 @@
-# Technical documentation
+# Documentazione del progetto
 
-## Using the simulator
+## Usare il simulatore
 
-- [User manual (Italian)](usermanual/MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md)
-- [Model scope and limitations](KNOWN_MODEL_LIMITATIONS.md)
-- [Control room application](CONTROL_ROOM_APPLICATION_SHELL.md)
-- [Operator computer interface](OPERATOR_COMPUTER_INTEGRATED_UI.md)
-- [Sessions, checkpoints, replay and saving](OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md)
+Il [manuale utente italiano](usermanual/MANUALE_UTENTE_NUCLEAR_REACTOR_SIMULATOR.md)
+spiega impianto, componenti, interazioni e operazioni di sala controllo.
+I [limiti del modello](KNOWN_MODEL_LIMITATIONS.md) ne definiscono il campo educativo.
+Per approfondire l'interfaccia sono disponibili la [sala controllo](CONTROL_ROOM_APPLICATION_SHELL.md),
+il [computer operatore](OPERATOR_COMPUTER_INTEGRATED_UI.md) e la guida a
+[sessioni, checkpoint, replay e salvataggi](OPERATOR_COMPUTER_SESSION_CHECKPOINT_REPLAY_SAVE.md).
 
-## Understanding the model
+## Riprendere il lavoro sul progetto
 
-- [Architecture and ownership](ARCHITECTURE.md)
-- [Physical quantities and units](PHYSICAL_QUANTITIES.md)
-- [Plant composition](PLANT_COMPOSITION.md)
-- [Plant network orchestration](PLANT_NETWORK_ORCHESTRATION.md)
-- [Reactor and primary control loops](REACTOR_PRIMARY_CONTROL_LOOPS.md)
-- [Turbine, steam and feedwater control loops](TURBINE_STEAM_FEEDWATER_CONTROL_LOOPS.md)
-- [Instrumentation, control and faults](INSTRUMENTATION_CONTROL_FAULTS.md)
+| Esigenza | Riferimento |
+| --- | --- |
+| Conoscere baseline, risultato verificato e blocco | [Stato corrente](PROJECT.md#stato-corrente) |
+| Riprendere il lavoro da dati e comandi esatti | [Handoff](PROJECT.md#handoff) |
+| Capire le prossime consegne e le condizioni per avanzare | [Roadmap](ROADMAP.md) |
+| Sapere che cosa è cambiato | [Changelog](../CHANGELOG.md) |
+| Capire che cosa dimostrano i controlli | [Sintesi della validazione](validation/README.md) |
+| Consultare i vincoli ingegneristici durevoli | [Decisioni sul modello](validation/MODEL_DECISIONS.md) |
 
-## Finding a reference
+Il checkpoint e l'handoff appartengono alla stessa pagina, `PROJECT.md`.
+Le diciture di stato nei documenti storici mantengono il loro significato originario.
 
-The [document index](TOP_LEVEL_DOCUMENT_INDEX.md) lists every live top-level
-reference. [Architectural decisions](adr/README.md) explain design choices;
-[historical records](history/README.md) retain completed investigations and archived
-documentation. Subsystem references remain separate so each model has a clear owner.
+## Comprendere il modello
 
-Engineering records have their own entry points: [PROJECT.md](PROJECT.md) holds the
-current checkpoint and validation commands; [ROADMAP.md](ROADMAP.md) holds future
-sequencing. Milestone plans are under `milestones/` and source reviews under `research/`.
+L'[architettura](ARCHITECTURE.md) descrive le responsabilità dei livelli; la
+[composizione dell'impianto](PLANT_COMPOSITION.md) collega i sottosistemi.
+Le [grandezze fisiche](PHYSICAL_QUANTITIES.md) chiariscono le unità, mentre
+l'[orchestrazione della rete](PLANT_NETWORK_ORCHESTRATION.md) spiega come avanza il modello.
+Per la regolazione, partire dai [circuiti reattore e primario](REACTOR_PRIMARY_CONTROL_LOOPS.md),
+da [turbina, vapore e alimento](TURBINE_STEAM_FEEDWATER_CONTROL_LOOPS.md) e da
+[strumentazione, controllo e guasti](INSTRUMENTATION_CONTROL_FAULTS.md).
 
-## Validation and engineering decisions
+## Trovare un riferimento
 
-Start with the [validation summary](validation/README.md) and
-[model decisions](validation/MODEL_DECISIONS.md). Exact-text M10 inputs
-used by validators are indexed under [engineering contracts](../eng/contracts/m10/README.md).
+L'[indice completo](TOP_LEVEL_DOCUMENT_INDEX.md) elenca i documenti tecnici attivi.
+Le [decisioni architetturali](adr/README.md) conservano le motivazioni del progetto;
+i [piani di milestone](ROADMAP.md#4-la-direzione-successiva-m11m15) dettagliano il percorso futuro.
+Gli [input dei validatori](../eng/contracts/m10/README.md), le
+[evidenze congelate](../eng/frozen-evidence/README.md) e gli
+[archivi storici](history/README.md) hanno indici dedicati.
+Le [regole documentali](DOCUMENTATION_ARCHITECTURE_AND_INDEXING.md) definiscono
+dove mantenere ogni tipo di informazione.

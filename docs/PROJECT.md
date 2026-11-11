@@ -1,149 +1,112 @@
-# Progetto — stato corrente e punto di ripresa
+# Progetto — stato corrente e handoff
 
-Il desktop ordinario resta Exact-V9, con sala controllo, missioni, salvataggi
-e replay. La nuova chiusura termodinamica reference-consistent è un'opzione
-esplicita: implementazione e verifiche locali sono acquisite, l'equilibrio
-dell'impianto completo non è ancora qualificato. La [roadmap](ROADMAP.md)
-mantiene il percorso fino alla chiusura M10 e alle milestone successive.
+Questa pagina mantiene il checkpoint verificato e le istruzioni per riprendere
+il lavoro. Il [README](../README.md) descrive il simulatore; la [roadmap](ROADMAP.md)
+spiega il percorso futuro e il [changelog](../CHANGELOG.md) registra i cambiamenti.
 
-## Checkpoint di esecuzione — 11 novembre 2026
+## Stato corrente
 
-La ricerca H8, che vincola la traiettoria dell'hotwell al ramo miscela, migliora
-il massimo residuo accettato da 3.537.690,124 di H6 a **3.337.270,068**, circa
-il 5,67% in meno. Su 1.552 ricette e 30 iterazioni accetta 21 aggiornamenti,
-16 dei quali sono passi del modello accoppiato. Si arresta al raggio minimo
-senza ulteriore discesa ammessa dal protocollo.
+Checkpoint dell'**11 novembre 2026**, al termine della ricerca H9.
 
-**Nessuna radice è stata trovata: R3 resta RED e M10 rimane aperto.** Il punto
-è ancora fuori dall'inviluppo e la soglia di radice resta massimo assoluto
-dei 75 residui scalati ≤1. Le 24 incognite fluidodinamiche e il box ±2% sono
-invariati. Non sono cambiati leggi fisiche, controllori o seed produttivo.
+| Ambito | Stato verificato |
+| --- | --- |
+| Desktop ordinario | Exact-V9; nessuna nuova attivazione termodinamica o installazione di seed. |
+| Chiusura termodinamica C4 | Opzione esplicita reference-consistent; implementazione R1 e verifiche locali R2 acquisite. |
+| Equilibrio integrato R3 | **RED**: nessuna radice osservata e punto fuori dall'inviluppo. |
+| Miglior massimo residuo accettato | **3.334.923,856**; il criterio resta massimo assoluto dei 75 residui scalati ≤1. |
+| Ultima ricerca | H9: 476 ricette, due aggiornamenti accettati, arresto al raggio minimo senza discesa ammissibile. |
+| M10 | **Aperto**. Nessuna ricerca o nuova prova lunga attualmente in corso. |
 
-### Che cosa abbiamo capito e verificato
+### Il problema da risolvere
 
-La diagnosi parte da un'apparente contraddizione di H6: il modello lineare
-prevede discesa, mentre tutti i nove tentativi reali peggiorano. Ricostruendo
-anche la qualità lungo la ricetta, il cambio di fase risulta già prevedibile.
-Il passo minimo allora provato, 1/256 della direzione, conserva la miscela
-nello stato grezzo e nel primo passo preparatorio, ma attraversa il confine
-al post-seed e al primo Running. Il modello non imponeva quel vincolo.
-
-Trial 6 verifica sia un ulteriore dimezzamento sia tre proposte vincolate:
-tutte migliorano, restano miscela nei quattro checkpoint e si ripetono
-identicamente. H8 usa questa informazione e ottiene una discesa reale.
-La partenza liquida H7 resta un confronto storico; non aveva isolato quel ramo.
+La massa di `control-out`, coordinata 0, è al limite superiore del box +2%.
+Le sonde ammesse verso l'interno, alle ampiezze 1e-7 e 1e-8, producono risposte
+sane ma fanno diventare liquido l'hotwell al primo Running. La colonna richiesta
+dal modello locale diventa quindi indisponibile. In questo arresto il programma
+lineare non viene costruito: manca una derivata compatibile con il ramo.
 
 ```mermaid
 flowchart LR
-    A["Inventari grezzi"] --> B["Primo passo preparatorio"]
-    B --> C["Post-seed"]
-    C --> D["Primo Running"]
-    D --> E["H8: miscela con qualità riportata zero"]
+    A["Massa control-out al limite +2%"] --> B["Sonde verso l'interno"]
+    B --> C["Cambio di fase al primo Running"]
+    C --> D["Derivata mancante"]
 ```
 
-Il diagramma rappresenta i quattro stati attraversati da ogni ricetta. Il
-vincolo deve essere compatibile con tutti, perché una piccola variazione
-iniziale può cambiare fase soltanto negli ultimi passi. Nel punto finale H8
-il resolver riporta qualità zero al primo Running: questo non equivale a uno
-stato fisicamente irrisolvibile, ma invalida il vincolo di interno strettamente
-positivo usato dal modello di ricerca.
+La figura collega il vincolo sugli inventari alla risposta dell'intera ricetta.
+Il punto finale resta miscela con un margine energetico hotwell di appena
+1,766e-7 J/kg. Ridurre il raggio mantenendo le stesse sonde non ripristina la
+derivata. Questo esito non dimostra l'impossibilità di una radice nel box.
 
-Le verifiche successive distinguono il margine geometrico di volume dal
-criterio energetico con cui C4 accetta una radice al confine liquido. Il solo
-volume non basta: in un punto di Trial 8 è ancora ammissibile mentre il resolver
-restituisce liquido. Ricostruendo il prefisso tabulato e la tolleranza energetica
-già esistente, il segno del margine energetico concorda con **120 osservazioni**,
-ossia quattro checkpoint per 15 punti ripetuti due volte, nei Trial 6–8.
-È una verifica locale sui campioni osservati, non una prova di equivalenza
-con l'intero resolver né un nuovo criterio fisico.
+Anche i bilanci chiariscono perché il punto non è stazionario: al primo Running
+l'ingresso turbina accumula circa 427,8 kW e `control-out` circa 1,168 MW.
+Gli accumuli coincidono con i trasferimenti registrati, con errore energetico
+inferiore a 0,01 W. Questa verifica riguarda la coerenza delle registrazioni;
+conservazione ed equilibrio restano condizioni distinte.
 
-| Verifica recente | Esito | Limite |
-| --- | --- | --- |
-| Trial 6, 10 ricette | Quattro proposte migliorative, ripetizioni identiche e traiettoria miscela. | Giustifica la ricerca H8, non un seed qualificato. |
-| H8, 1.552 ricette | 21 aggiornamenti, 16 passi accoppiati; massimo 3.337.270,068. | Arresto al raggio minimo; radice e inviluppo non conformi. |
-| Trial 7, 8 ricette | Tre proposte basate sul margine di volume confrontate due volte. | Nessuna soddisfa insieme discesa, accordo del modello e ramo richiesto. |
-| Trial 8, 12 ricette | Direzione fissa a cinque frazioni, tutte ripetute identicamente. | A 0,001 il guadagno è 0,135 ma l'errore massimo della previsione è 6,059; a 0,0001 il massimo peggiora. |
-| Revisione energetica | Fasi osservate ricostruite sui 120 campioni, senza nuove chiamate fisiche. | Il vincolo energetico per un nuovo ottimizzatore non è ancora qualificato. |
+## Handoff
 
-La prova direzionale mostra quindi un secondo limite: restare miscela non
-garantisce una derivata abbastanza accurata per decidere la discesa. Anche
-Trial 7 contiene errori importanti su altri inventari. Un nuovo vincolo di
-fase, da solo, non risolve l'affidabilità del modello locale.
+La prossima attività è un confronto limitato fra **sonde compensate tra inventari**
+e **maggiore riserva energetica interna alla miscela**. Una sonda compensata
+varia insieme più coordinate per misurare una direzione che rimanga nel ramo;
+la seconda ipotesi cerca un punto di prova abbastanza interno da consentire
+le perturbazioni. Entrambe richiedono misure sull'intera ricetta.
 
-### Che cosa dicono i bilanci
-
-Nel punto finale H8, al primo Running, l'ingresso turbina riceve circa
-35,893 MW e cede 35,465 MW: la differenza è **428,1 kW di accumulo**. La massa
-è bilanciata, ma l'energia non è stazionaria. `control-out` accumula circa
-1,169 MW e 0,2675 kg/s.
-
-La revisione ricostruisce questi accumuli sia dagli inventari sia dai
-trasferimenti registrati, con errore energetico inferiore a 0,01 W. Anche
-il bilancio dello stadio turbina si chiude. Questa tolleranza verifica le
-registrazioni: conservare l'energia non significa avere un punto stazionario.
-
-### Prossima attività
-
-Verificare le derivate dei residui e del margine energetico su più ampiezze
-di perturbazione, partendo dal punto H8 e dalla direzione congelata di Trial 8.
-Occorre confrontare differenze centrali e unilaterali ammissibili, traiettorie
-di fase e previsioni lungo combinazioni di coordinate. Il criterio di uscita
-è un intervallo di passi nel quale l'errore osservato permetta di distinguere
-la discesa prevista dalla risposta reale.
-
-Solo dopo questo confronto si può motivare una nuova prova ripetuta e poi
-un'eventuale ricerca. Aumentare il budget dello stesso algoritmo non risolve
-il limite misurato. Box, scale e criteri fisici restano fissi; altre famiglie
-di trim o modifiche fisiche richiedono motivazioni e protocolli distinti.
-
-Una radice osservata richiederebbe ancora conferme indipendenti di 100 passi
-prima di R3 Requalification 3. R4, R5, R6 e la chiusura M10 conservano tutte
-le dipendenze della roadmap. Nessuna ricerca è attualmente in corso.
-
-## Controlli correnti e riferimenti
+Per riprendere dalla radice del repository:
 
 ```powershell
 python .\eng\review-r3-h-current-equilibrium.py
 ```
 
-Il controllo legge gli archivi congelati, riproduce H8 e i Trial 6–8, verifica
-la revisione energetica e ricostruisce i bilanci senza chiamare l'impianto.
-Funziona anche senza gli artefatti locali delle esecuzioni precedenti.
-Per la sola diagnosi energetica:
-`python eng/review-r3-h-energy-boundary1.py review`.
+Il comando ricostruisce H9 e i suoi prerequisiti dalle evidenze congelate,
+senza nuove chiamate fisiche. L'esito atteso è `PASS-CURRENT-EQUILIBRIUM-REVIEW`;
+`r3_passed` e `m10_closed` devono restare `false`. Il rapporto completo è scritto
+in `artifacts/r3-h-current-equilibrium-review/01-current-review.json`.
+Per il solo replay H9: `python eng/run-r3-h-energy-guarded-search9.py review`.
 
-I 962 sorgenti produttivi e i 410 file di test sono invariati rispetto alla
-baseline delle nuove prove. Il batch riutilizza l'esecutore già verificato.
-Ogni esperimento conserva contratto, hash ed evidenze; i vecchi gate con
-baseline diverse restano riferimenti storici.
+1. Leggere il [risultato H9](../eng/frozen-evidence/r3-h-energy-guarded-search9/04-result.json):
+   `final` contiene coordinate, residui e osservazioni esatti. Usare questi dati
+   come ingresso, evitando di ricostruirli dai numeri arrotondati della guida.
+2. Definire e congelare il confronto delle due ipotesi, con budget esplicito.
+   La consegna è una base di direzioni indipendenti e ammissibili, accompagnata
+   da previsioni direzionali verificate a passi che distinguano discesa ed errore.
+3. Verificare le proposte con ripetizioni identiche prima di un'altra ricerca.
+   Se il confronto non riesce, conservare l'esito e rivedere la rappresentazione
+   locale, senza estendere automaticamente il budget dello stesso algoritmo.
 
-L'ultima compilazione Release con avvisi come errori e la suite ordinaria
-hanno dato PASS: **1.392 superati, 164 espliciti esclusi, zero fallimenti**.
-Queste verifiche precedono H8, che non cambia C#; i quattro nuovi protocolli
-fisici hanno ciascuno superato i controlli preliminari dedicati, tre test
-ordinari e uno esplicito escluso, prima dell'esecuzione esplicita.
-I replay delle evidenze correnti passano. Exact-V9 è invariato.
+Restano fissi 24 inventari fluidi, box ±2%, 75 residui e scale; le condizioni
+non fluide e i controllori mantengono la baseline. Una colonna mancante resta
+indisponibile. Cambiamenti di box, famiglia di trim o fisica richiedono una
+motivazione e un protocollo distinti. Le [decisioni ingegneristiche](validation/MODEL_DECISIONS.md)
+raccolgono questi vincoli durevoli.
 
-| Riferimento | Contenuto |
+La [sequenza verso R3 e la chiusura M10](ROADMAP.md#3-che-cosa-manca-dopo-r3-per-chiudere-m10)
+mantiene revisione, conferme indipendenti di 100 passi, R3 e le verifiche successive.
+Un replay PASS attesta la completezza dell'evidenza; non promuove un seed.
+
+## Evidenze e verifiche
+
+| Riferimento | Cosa leggere |
 | --- | --- |
-| [H6](../eng/contracts/r3-h-secondary-minimax-search6.md) e [H7](../eng/contracts/r3-h-liquid-branch-search7.md) | Precedenti limiti numerici e confronto con la partenza liquida |
-| [Trial 6](../eng/contracts/r3-h-phase-trajectory-trial6.md) e [H8](../eng/contracts/r3-h-phase-constrained-search8.md) | Traiettoria di fase e ricerca vincolata |
-| [Trial 7](../eng/contracts/r3-h-c4-margin-trial7.md) e [Trial 8](../eng/contracts/r3-h-directional-derivative-trial8.md) | Confine C4 e verifica della previsione lungo una direzione |
-| [Revisione energetica](../eng/contracts/r3-h-energy-boundary-review1.md) | Ricostruzione locale del criterio energetico, limiti e prossimo confronto |
-| [Sintesi della validazione](validation/README.md) | Risultati acquisiti e limiti delle conclusioni |
+| [Trial 9](../eng/contracts/r3-h-multiscale-derivative-trial9.md) | Confronto su sei ampiezze; 554 ricette ripetute. |
+| [Trial 10](../eng/contracts/r3-h-energy-guarded-trial10.md) | Prova energetica ripetuta; 6 ricette e una proposta favorevole. |
+| [H9](../eng/contracts/r3-h-energy-guarded-search9.md) | Regole della ricerca, filtri e arresto; 476 ricette. |
+| [Esito H9](../eng/frozen-evidence/r3-h-energy-guarded-search9/05-adjudication.json) e [ricevuta](../eng/r3-h-energy-guarded-search9-returned.json) | Risultato indipendente e identità del manifest congelato. |
+| [Revisione energetica C4](../eng/contracts/r3-h-energy-boundary-review1.md) | Ricostruzione locale del confine e limiti di applicabilità. |
+| [Sintesi della validazione](validation/README.md) | Differenza fra controlli locali, evidenza e qualificazione fisica. |
 
-I seguenti indicatori restano riferimenti delle revisioni numeriche precedenti.
+I replay correnti sono PASS. I 962 sorgenti produttivi e i 410 file di test
+mantengono la baseline delle prove. L'ultima compilazione Release con avvisi
+come errori e la suite ordinaria hanno dato PASS: **1.392 superati, 164 espliciti
+esclusi, zero fallimenti**. Precedono Trial 9, Trial 10 e H9, che non cambiano C#.
+Ciascuno dei tre protocolli ha superato tre controlli preliminari, con uno
+esplicito escluso, prima dell'esecuzione fisica esplicita. Passano anche i casi
+analitici e i replay indipendenti; la cronologia è nel [changelog](../CHANGELOG.md).
+
+Gli input esatti storici restano in [eng/contracts/m10](../eng/contracts/m10/README.md)
+e le evidenze in [eng/frozen-evidence](../eng/frozen-evidence/README.md).
+Le vecchie diciture «current» o «next» descrivono i rispettivi checkpoint storici.
+I seguenti marcatori conservano riferimenti delle revisioni precedenti:
 
 NRS-MARKER:R3-H-LOCAL-MODEL-DESIGN1-CURRENT
 
 NRS-MARKER:R3-H-NUMERICAL-STOP-REVIEW1-CURRENT
-
-## Lavori di documentazione conclusi
-
-La documentazione M10 è stata separata dagli input esatti dei validatori, raccolti
-in `eng/contracts/m10`. Il README descrive il prodotto e il manuale italiano è
-stato riscritto con spiegazioni dei componenti, delle interazioni e dei diagrammi.
-I controlli testuali storici del manuale leggono la loro copia congelata.
-
-Questi interventi non promuovono R3 o M10. I checkpoint precedenti restano
-consultabili nel [registro degli archivi](history/archives/README.md#snapshot-docs-project-md).

@@ -1,0 +1,54 @@
+{
+  "schema": "r3-h-energy-guarded-trial10-frozen-v1",
+  "files": [
+    {
+      "file": "01-static.json",
+      "stored": "01-static.json",
+      "bytes": 11861,
+      "sha256": "B61975EB5284E93A77618E9451F89A4056192EA958F24A174BDAA7439C638428",
+      "stored_sha256": "B61975EB5284E93A77618E9451F89A4056192EA958F24A174BDAA7439C638428"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 219,
+      "sha256": "8CCE00B1976ECE142098A975413BAC23A12E65EEBC9185842ADE53E0C8A7DC4F",
+      "stored_sha256": "8CCE00B1976ECE142098A975413BAC23A12E65EEBC9185842ADE53E0C8A7DC4F"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 100169,
+      "sha256": "C9A384E4337F8C95DCE5F0F31CA51FB52805D363BBF10EF7651687813A26AB7D",
+      "stored_sha256": "149269D71850308AE402795F01FFDBD09A8DCF8EEA4F7EA38B7EFBE3A3D726CA"
+    },
+    {
+      "file": "05-adjudication.json",
+      "stored": "05-adjudication.json",
+      "bytes": 3264,
+      "sha256": "CFF64BEC9CA47D5B6D81C155EDDCAD04B8D02667AD370CBE9CEA363574CC0954",
+      "stored_sha256": "CFF64BEC9CA47D5B6D81C155EDDCAD04B8D02667AD370CBE9CEA363574CC0954"
+    },
+    {
+      "file": "preexecution.xml",
+      "stored": "preexecution.xml",
+      "bytes": 3979,
+      "sha256": "F91E6CB822C901A1949C0254F0247D694B920FF12A69A065E87F263B2CAEE313",
+      "stored_sha256": "F91E6CB822C901A1949C0254F0247D694B920FF12A69A065E87F263B2CAEE313"
+    },
+    {
+      "file": "batch-execution.xml",
+      "stored": "batch-execution.xml",
+      "bytes": 1941,
+      "sha256": "B974ADF8902E7CD121B9D5483EE8ABEA0DC5381777A1904BB7B46E7FD6302529",
+      "stored_sha256": "B974ADF8902E7CD121B9D5483EE8ABEA0DC5381777A1904BB7B46E7FD6302529"
+    },
+    {
+      "file": "progress.log",
+      "stored": "progress.log",
+      "bytes": 78,
+      "sha256": "357A638E525B5E925FAD78E22C95E93A153F997C6E5249BD064AE92A8D862581",
+      "stored_sha256": "357A638E525B5E925FAD78E22C95E93A153F997C6E5249BD064AE92A8D862581"
+    }
+  ]
+}

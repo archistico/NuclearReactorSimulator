@@ -1,115 +1,100 @@
-# Model and validation decisions
+# Decisioni sul modello e sulla validazione
 
-These decisions summarize the enduring engineering constraints from M10. They do
-not replace executable contracts or the current checkpoint in [PROJECT.md](../PROJECT.md).
+Questi principi raccolgono i vincoli durevoli emersi da M10. Il
+[checkpoint](../PROJECT.md) mantiene lo stato e i contratti eseguibili fissano
+le regole di ciascuna prova.
 
-## Preserve exact-version identities
+## Conservare le identità esatte
 
-Recorded scenarios, sessions and replay fingerprints retain their original meaning.
-Canonical Exact-V9 is preserved independently of experiments with other closures
-or operating-point seeds. A later model option cannot silently reinterpret an
-existing exact version or activate itself as the default.
+Scenari, sessioni e replay registrati mantengono la propria versione e il proprio
+significato. Exact-V9 resta distinto dagli esperimenti su chiusure o inventari
+iniziali. Una nuova opzione richiede un'attivazione esplicita e non reinterpreta
+gli archivi precedenti.
 
-## Separate implementation, evidence and physical qualification
+La chiusura termodinamica C4 è un'opzione esplicita. Identità del payload,
+determinismo, equivalenza e vincoli di allocazione sono verificati separatamente
+da quelli dei modi storici. Sostituire una chiusura non dimostra che gli
+inventari iniziali siano un punto stazionario.
 
-A successful implementation gate establishes the behaviour covered by that gate.
-An evidence gate establishes that its observations and accounting are complete.
-A physical qualification additionally requires its own acceptance conditions.
-R1/R2 success and the completed H evidence gate therefore do not establish R3 PASS.
+## Separare implementazione, evidenza e qualificazione fisica
 
-## Use independent references and explicit applicability
+Un controllo d'implementazione verifica il comportamento che copre. Un replay
+di evidenze ricostruisce osservazioni, conteggi e decisioni dell'esperimento.
+La qualificazione fisica richiede i propri criteri di accettazione. Di conseguenza
+R1/R2 e un replay H PASS non stabiliscono R3 PASS o la chiusura M10.
 
-Production implementations may be compared with independent reference calculations;
-they do not generate their own expected reference values. Reference equations,
-parameter sets and tolerances are fixed before comparison. Generic solver accuracy,
-plant-specific parameterization and whether a subsystem participates in the tested
-operating point are separate questions.
+I confronti fisici usano riferimenti indipendenti dall'implementazione di
+produzione. Equazioni, parametri, dominio e tolleranze vanno fissati prima del
+confronto. Accuratezza generica del solutore, parametrizzazione dell'impianto
+e partecipazione di un sottosistema al punto provato sono questioni distinte.
 
-## Keep thermodynamic options explicit
+## Ricostruire responsabilità e bilanci prima di cambiare la fisica
 
-The reference-consistent C4 closure is an explicit opt-in mode. Its payload identity,
-deterministic lookup, equivalence checks and allocation constraints are qualified
-separately from historical modes. Changing a closure does not by itself establish
-that the authored plant inventory is a stationary operating point.
+Conservazione, accumuli, proprietà trasportate, accoppiamento idraulico e risposta
+dei controllori devono essere attribuiti ai componenti che li governano. Un
+inviluppo integrato non conforme non dimostra da solo un difetto del controllo.
+Analogamente, un rifiuto numerico prima della chiamata fisica non dimostra
+che l'impianto sia privo di stati ammissibili.
 
-## Diagnose ownership before changing physics
+Gli inventari possono accumulare massa o energia mentre i bilanci di proprietà
+si chiudono. La ricostruzione dei trasferimenti verifica la coerenza delle
+registrazioni; l'equilibrio richiede anche stazionarietà.
 
-Conservation, storage rates, transport properties, hydraulic coupling and controller
-responses must be traced to their owners. A failed integrated envelope does not
-independently prove a controller defect. Numerical rejection before a plant call
-does not demonstrate that the plant has no feasible state.
+## Mantenere le indagini entro il dominio dichiarato
 
-## Keep equilibrium investigations bounded
+La famiglia H varia soltanto le 24 coordinate di massa ed energia fluide,
+con condizioni iniziali non fluide fisse. Residui, scale, box, conteggi e
+condizioni di conferma restano quelli del protocollo congelato. Un esito
+inconclusivo richiede motivazioni e prove distinte prima di cambiare box,
+famiglia di trim, coefficienti, controllori o seed produttivo.
 
-The H investigation fixes non-fluid initial conditions and varies only its authored
-24 fluid mass/energy coordinates. Residual definitions, scales, coordinate bounds,
-search accounting and confirmation conditions remain fixed. Its inconclusive result
-does not authorize a wider box, altered gains, another trim family or production
-seed installation.
+Normalizzare le colonne o le disequazioni ausiliarie non equivale a ripesare
+i residui. La conversione di unità dei margini e il cap di un obiettivo numerico
+secondario restano separati dalle tolleranze fisiche. La frazione verso il
+limite si applica globalmente al passo, secondo il contratto; non taglia
+indipendentemente le coordinate.
 
-## Distinguish linear predictions from plant observations
+## Verificare le previsioni sulla risposta reale
 
-The offline scaled comparison reuses the frozen residual and Jacobian. Column
-normalization and one global fraction to the bound are numerical design choices;
-they do not reweight the residual, clip coordinates independently or execute a
-nonlinear trial. Phase-change caveats remain attached to the predictions.
+Diminuire la somma dei quadrati può aumentare il massimo residuo usato per
+l'accettazione. Il sottoproblema deve affrontare l'obiettivo effettivo.
+Certificato primario, stabilità della scelta secondaria e validità del modello
+locale nella risposta non lineare richiedono verifiche separate.
 
-Local Trial 1 subsequently compared all six frozen directions with nonlinear
-plant observations, repeated identically twice. H2 then used a bounded active-set
-subproblem and achieved further real descent. Its terminal phase crossings and
-an improving small derivative probe show why failure of four tested step fractions
-is not evidence of physical infeasibility. A further investigation needs its own
-step-size policy and bounded protocol; returned evidence is never rewritten to
-make an executed method appear to have tried more than it did.
+Le previsioni di una direzione devono essere confrontate con prove fisiche.
+L'errore osservato su una direzione non costituisce un limite universale per
+le altre. Ripetizioni identiche dimostrano determinismo, non accuratezza delle
+derivate. Un modello può sostenere una proposta più grande verificata senza
+risolvere le variazioni più piccole. Anche il confronto affine deve considerare
+che coordinate arrotondate non sono perfettamente collineari.
 
-H3 added controlled local radii, phase-compatible derivative stencils and deeper
-backtracking, achieving further real descent without a root. Its terminal model
-also demonstrates that decreasing the sum of squared residuals can increase the
-maximum residual used for acceptance. A new numerical design must address the
-actual acceptance objective; smaller steps alone do not fix this conflict.
-The minimax review optimizes along fixed local directions and retains the original
-residual scales. Its linear improvements still require separate physical trials.
+## Considerare il ramo lungo tutta la ricetta
 
-The H4–H7 evidence separates three further questions: whether a primary minimax
-LP passes numerical certificates, whether a secondary choice of smaller changes
-is numerically stable, and whether the resulting direction follows the actual
-phase path of the plant recipe. A change to the secondary optimization cap is
-recorded separately from unchanged physical residual and envelope criteria.
-H6 certificates passed while proposed plant steps worsened after a phase change
-during preconditioning. Raw-state phase checks alone are insufficient.
+Il controllo della fase include stato grezzo, primo passo preparatorio,
+post-seed e primo Running. La fase iniziale da sola non descrive la traiettoria.
+La qualità troncata a zero non è una distanza con segno dal confine; il solo
+margine di volume non include il criterio energetico usato dal resolver C4.
+L'accordo locale di un margine ricostruito con campioni osservati non dimostra
+equivalenza globale con il resolver né qualifica da solo un vincolo di ricerca.
+Una ricerca partita dal liquido che rientra nella miscela non esaurisce
+l'esplorazione del ramo liquido.
 
-Node ownership can close while equilibrium fails: the recorded control-out and
-turbine-inlet energy accumulations equal their incoming-minus-outgoing transfers.
-These closure checks verify evidence consistency; they do not replace stationarity
-criteria. A liquid initial point that returns to mixture during an unconstrained
-search does not establish infeasibility of the liquid branch.
+Al confine del box, una sonda verso l'interno può lasciare il ramo a tutte le
+ampiezze provate. La colonna resta indisponibile, senza valori fittizi. Ridurre
+il raggio di fiducia mantenendo quelle sonde non ripristina la derivata.
+Una base compensata o una riserva energetica interna richiedono osservazioni
+esplicite e previsioni verificate. Nessuna di queste scelte introduce correzioni
+automatiche agli inventari durante il normale funzionamento.
 
-The subsequent phase-trajectory trial verified that constraining all four
-hotwell checkpoints can produce actual descent. H8 accepted coupled steps but
-eventually reached a reported zero quality, where a strictly interior-quality
-guard no longer applies. A clipped quality is not a signed distance from the
-resolver's domain boundary. Volume reachability alone is also insufficient:
-the existing energy-root tolerance participates in boundary acceptance.
+## Separare le guide dagli input dei validatori
 
-The local energy-boundary review reproduces the observed phases in frozen
-Trials 6–8 using the authenticated prefix and the resolver's existing tolerance.
-This sampled agreement is not global equivalence to the inverse resolver and
-does not qualify an optimizer guard. Unit conversion or auxiliary inequality
-normalization must never be presented as residual reweighting or a relaxed
-physical criterion.
+`docs/` spiega progetto, modello e conclusioni. Gli input M10 che richiedono
+testo esatto sono in `eng/contracts/m10`, con percorsi e hash indicizzati;
+i validatori storici leggono le proprie copie congelate. I risultati restituiti
+conservano la propria identità e non vengono riscritti per attribuire al metodo
+eseguito tentativi o regole che non aveva.
 
-Repeated directional observations at the H8 boundary also show that preserving
-phase labels does not establish a useful first-order residual model. At small
-steps, prediction error exceeds the observed improvement and the smallest
-tested step reverses the descent. Before another search, compare admissible
-derivative stencils at several widths, together with energy margins and joint
-directional predictions. Identical repeats establish deterministic observations;
-they do not establish derivative accuracy.
-
-## Separate readable documentation from validator inputs
-
-`docs/` explains the project, model and current conclusions. Exact-text M10 inputs
-belong under `eng/contracts/m10`, where their hashes and original paths are indexed.
-Historical validators read frozen navigation snapshots there; current validation
-uses the current checkpoint. This lets guides evolve without carrying old status
-phrases solely to satisfy earlier scripts.
+La [cronologia](../../CHANGELOG.md) registra l'evoluzione e
+l'[handoff](../PROJECT.md#handoff) indica da dove riprendere. Una nuova guida
+può evolvere mantenendo distinti riferimenti storici, risultati correnti e
+sequenza futura.
