@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">L'impianto in un colpo d'occhio</title>
+<desc id="desc">Schema funzionale del ciclo a produzione diretta di vapore: ricircolo fra corpo cilindrico, pompe e nocciolo; vapore verso collettore, valvole STOP, CONTROL e ADMISSION, turbina, albero, generatore e rete; scarico al condensatore raffreddato da acqua esterna; ritorno tramite vasca del condensato, pompa del condensato, volume e pompa di alimentazione; bypass e sfioro automatici dal collettore.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="599.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">L'impianto in un colpo d'occhio</text>
+<defs><marker id="a2a78d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/></marker><marker id="aeb6834" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#eb6834"/></marker><marker id="a1baf7a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1baf7a"/></marker><marker id="a6250d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6250d6"/></marker><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<rect x="60.0" y="92.0" width="230.0" height="66.0" rx="30" fill="#f0efec" stroke="#52514e" stroke-width="1.5"/>
+<path d="M62,125 L288,125 L288,140 Q288,156 270,156 L80,156 Q62,156 62,140 Z" fill="#cde2fb" stroke="none"/>
+<text x="175.0" y="118.0" font-size="13.5" fill="#0b0b0b" text-anchor="middle" font-weight="600">Corpo cilindrico</text>
+<text x="175.0" y="146.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">acqua · livello ≈ 50%</text>
+<rect x="150.0" y="300.0" width="140.0" height="140.0" rx="6" fill="#f0efec" stroke="#52514e" stroke-width="1.5"/>
+<line x1="168.0" y1="318.0" x2="168.0" y2="400.0" stroke="#c3c2b7" stroke-width="5"/>
+<line x1="189.0" y1="318.0" x2="189.0" y2="400.0" stroke="#c3c2b7" stroke-width="5"/>
+<line x1="210.0" y1="318.0" x2="210.0" y2="400.0" stroke="#c3c2b7" stroke-width="5"/>
+<line x1="231.0" y1="318.0" x2="231.0" y2="400.0" stroke="#c3c2b7" stroke-width="5"/>
+<line x1="252.0" y1="318.0" x2="252.0" y2="400.0" stroke="#c3c2b7" stroke-width="5"/>
+<line x1="273.0" y1="318.0" x2="273.0" y2="400.0" stroke="#c3c2b7" stroke-width="5"/>
+<text x="220.0" y="418.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">Nocciolo e canali</text>
+<text x="220.0" y="433.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">fissione → calore</text>
+<path d="M80.0,158.0 L80.0,483.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="80.0" cy="500.0" r="17" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/><path d="M73.0,491.0 L90.0,500.0 L73.0,509.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="80.0" y="534.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="normal">Pompe MCP</text>
+<path d="M97.0,500.0 L220.0,500.0 L220.0,446.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<text x="114.0" y="488.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">mandata</text>
+<text x="90.0" y="240.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">aspirazione</text>
+<text x="90.0" y="255.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">ricircolo</text>
+<text x="90.0" y="270.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">≈ 100 kg/s</text>
+<path d="M220.0,300.0 L220.0,164.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#aeb6834)"/>
+<text x="228.0" y="236.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">miscela</text>
+<text x="228.0" y="251.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">acqua-vapore</text>
+<path d="M260.0,92.0 L260.0,64.0 L356.0,64.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#aeb6834)"/>
+<text x="268.0" y="56.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">vapore</text>
+<rect x="360.0" y="50.0" width="66.0" height="28.0" rx="6" fill="#fbe0d3" stroke="#eb6834" stroke-width="1.5"/>
+<text x="393.0" y="69.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">Collettore</text>
+<path d="M426.0,64.0 L612.0,64.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M440,55.0 L464,73.0 L464,55.0 L440,73.0 Z" fill="#fcfcfb" stroke="#52514e" stroke-width="1.6" stroke-linejoin="round"/><line x1="452.0" y1="55.0" x2="452.0" y2="44.8" stroke="#52514e" stroke-width="1.6"/><line x1="446.0" y1="44.8" x2="458.0" y2="44.8" stroke="#52514e" stroke-width="1.6"/><text x="452.0" y="92.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">STOP</text>
+<path d="M502,55.0 L526,73.0 L526,55.0 L502,73.0 Z" fill="#fcfcfb" stroke="#52514e" stroke-width="1.6" stroke-linejoin="round"/><line x1="514.0" y1="55.0" x2="514.0" y2="44.8" stroke="#52514e" stroke-width="1.6"/><line x1="508.0" y1="44.8" x2="520.0" y2="44.8" stroke="#52514e" stroke-width="1.6"/><text x="514.0" y="92.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">CONTROL</text>
+<path d="M572,55.0 L596,73.0 L596,55.0 L572,73.0 Z" fill="#fcfcfb" stroke="#52514e" stroke-width="1.6" stroke-linejoin="round"/><line x1="584.0" y1="55.0" x2="584.0" y2="44.8" stroke="#52514e" stroke-width="1.6"/><line x1="578.0" y1="44.8" x2="590.0" y2="44.8" stroke="#52514e" stroke-width="1.6"/><text x="584.0" y="92.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">ADMISSION</text>
+<path d="M624,52 L700,30 L700,98 L624,76 Z" fill="#fbe0d3" stroke="#eb6834" stroke-width="2"/>
+<path d="M612.0,64.0 L624.0,64.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="662.0" y="122.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">Turbina</text>
+<path d="M700.0,64.0 L752.0,64.0" fill="none" stroke="#6250d6" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="726.0" y="54.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">albero</text>
+<circle cx="780.0" cy="64.0" r="26" fill="#fcfcfb" stroke="#6250d6" stroke-width="2.5"/>
+<text x="780.0" y="69.0" font-size="15" fill="#6250d6" text-anchor="middle" font-weight="700">G</text>
+<path d="M806.0,64.0 L852.0,64.0" fill="none" stroke="#6250d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a6250d6)"/>
+<text x="838.0" y="96.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">Rete</text>
+<text x="838.0" y="112.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">50 Hz</text>
+<text x="780.0" y="112.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">Generatore</text>
+<path d="M680.0,98.0 L680.0,244.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#aeb6834)"/>
+<text x="688.0" y="176.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">scarico</text>
+<rect x="600.0" y="250.0" width="180.0" height="76.0" rx="6" fill="#fbe0d3" stroke="#eb6834" stroke-width="1.5"/>
+<text x="690.0" y="278.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">Condensatore</text>
+<text x="690.0" y="296.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">≈ 8,4 kPa assoluti</text>
+<path d="M872.0,272.0 L786.0,272.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<path d="M780.0,306.0 L866.0,306.0" fill="none" stroke="#1baf7a" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a1baf7a)"/>
+<text x="812.0" y="262.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">acqua 20 °C</text>
+<text x="800.0" y="324.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">calore</text>
+<text x="800.0" y="339.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">all'esterno</text>
+<rect x="616.0" y="352.0" width="148.0" height="40.0" rx="6" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="690.0" y="377.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="normal">Vasca del condensato</text>
+<path d="M690.0,326.0 L690.0,346.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<path d="M616.0,64.0 L616.0,210.0 L590.0,210.0 L590.0,372.0 L610.0,372.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#a2a78d6)"/>
+<text x="474.0" y="196.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">umidità drenata</text>
+<text x="474.0" y="211.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">≈ 0,31 kg/s</text>
+<path d="M690.0,392.0 L690.0,452.0 L580.0,452.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<circle cx="562.0" cy="452.0" r="17" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/><path d="M555.0,443.0 L572.0,452.0 L555.0,461.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="562.0" y="486.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="normal">Pompa condensato</text>
+<path d="M545.0,452.0 L506.0,452.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<rect x="390.0" y="434.0" width="112.0" height="36.0" rx="6" fill="#cde2fb" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="446.0" y="448.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">Volume di</text>
+<text x="446.0" y="462.0" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">alimentazione</text>
+<path d="M390.0,452.0 L362.0,452.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="345.0" cy="452.0" r="17" fill="#fcfcfb" stroke="#2a78d6" stroke-width="2"/><path d="M338.0,443.0 L355.0,452.0 L338.0,461.0" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><text x="345.0" y="486.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="normal">Pompa alimentazione</text>
+<path d="M345.0,435.0 L345.0,130.0 L296.0,130.0" fill="none" stroke="#2a78d6" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<text x="353.0" y="300.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">alimentazione</text>
+<path d="M400.0,78.0 L400.0,288.0 L594.0,288.0" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#aeb6834)"/>
+<text x="410.0" y="262.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">bypass automatico</text>
+<text x="410.0" y="277.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">oltre 6,4 MPa</text>
+<path d="M410.0,50.0 L410.0,26.0" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4" marker-end="url(#aeb6834)"/>
+<text x="420.0" y="30.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">sfioro al ricevitore atmosferico, oltre 6,5 MPa</text>
+<line x1="24.0" y1="548.0" x2="54.0" y2="548.0" stroke="#2a78d6" stroke-width="3"/>
+<text x="62.0" y="552.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">acqua liquida</text>
+<line x1="176.0" y1="548.0" x2="206.0" y2="548.0" stroke="#eb6834" stroke-width="3"/>
+<text x="214.0" y="552.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">vapore o miscela</text>
+<line x1="342.0" y1="548.0" x2="372.0" y2="548.0" stroke="#6250d6" stroke-width="3"/>
+<text x="380.0" y="552.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">lavoro ed elettricità</text>
+<line x1="514.0" y1="548.0" x2="544.0" y2="548.0" stroke="#1baf7a" stroke-width="3"/>
+<text x="552.0" y="552.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">calore all'esterno</text>
+<line x1="684.0" y1="548.0" x2="714.0" y2="548.0" stroke="#52514e" stroke-width="3" stroke-dasharray="6 4"/>
+<text x="722.0" y="552.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">automatico o drenaggio</text>
+<text x="24.0" y="584.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Schema funzionale, non disegno costruttivo. Valori del punto iniziale desktop descritti nel capitolo 6.</text>
+</svg>

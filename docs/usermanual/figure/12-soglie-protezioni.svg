@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" width="900" height="500" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Soglie, scatti e condizioni di reset</title>
+<desc id="desc">Tre scale verticali. Livello del corpo cilindrico: normale circa 50%, avvertimento al 25%, scatto coordinato al 10% o meno, reset con almeno 20%. Contropressione del condensatore: iniziale circa 8,4 kPa, avvertimento a 20, scatto da 30, reset non oltre 20. Velocità del rotore: nominale 3000 giri/min, scatto da 3300, reset non oltre 3150.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="499.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Soglie, scatti e condizioni di reset</text>
+<text x="40.0" y="66.0" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="600">Livello corpo cilindrico</text>
+<rect x="116.0" y="90.0" width="34.0" height="310.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="133.0" y="420.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">0</text>
+<text x="133.0" y="82.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">100 %</text>
+<line x1="110.0" y1="245.0" x2="156.0" y2="245.0" stroke="#0ca30c" stroke-width="3"/>
+<text x="162.0" y="249.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">normale ≈ 50%</text>
+<line x1="110.0" y1="322.5" x2="156.0" y2="322.5" stroke="#fab219" stroke-width="3"/>
+<g transform="translate(162.0,311.5)"><path d="M6,0 L12,11 L0,11 Z" fill="#fab219"/><text x="6" y="10" font-size="8" fill="#0b0b0b" text-anchor="middle" font-weight="700">!</text></g>
+<text x="180.0" y="321.5" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">avvertimento</text>
+<text x="180.0" y="336.5" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">≤ 25%</text>
+<line x1="110.0" y1="369.0" x2="156.0" y2="369.0" stroke="#d03b3b" stroke-width="3"/>
+<g transform="translate(162.0,358.0)"><path d="M6,0 L12,11 L0,11 Z" fill="#d03b3b"/><text x="6" y="10" font-size="8" fill="#0b0b0b" text-anchor="middle" font-weight="700">!</text></g>
+<text x="180.0" y="368.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">scatto coordinato</text>
+<text x="180.0" y="383.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">≤ 10%</text>
+<line x1="106.0" y1="338.0" x2="150.0" y2="338.0" stroke="#52514e" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="102.0" y="336.0" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal" font-style="italic">reset</text>
+<text x="102.0" y="351.0" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal" font-style="italic">almeno 20%</text>
+<text x="330.0" y="66.0" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="600">Contropressione condensatore</text>
+<rect x="406.0" y="90.0" width="34.0" height="310.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="423.0" y="420.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">0</text>
+<text x="423.0" y="82.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">36 kPa ass.</text>
+<line x1="400.0" y1="327.7" x2="446.0" y2="327.7" stroke="#0ca30c" stroke-width="3"/>
+<text x="452.0" y="331.7" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">iniziale ≈ 8,4 kPa</text>
+<line x1="400.0" y1="227.8" x2="446.0" y2="227.8" stroke="#fab219" stroke-width="3"/>
+<g transform="translate(452.0,216.8)"><path d="M6,0 L12,11 L0,11 Z" fill="#fab219"/><text x="6" y="10" font-size="8" fill="#0b0b0b" text-anchor="middle" font-weight="700">!</text></g>
+<text x="470.0" y="226.8" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">avvertimento</text>
+<text x="470.0" y="241.8" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">20 kPa</text>
+<line x1="400.0" y1="141.7" x2="446.0" y2="141.7" stroke="#d03b3b" stroke-width="3"/>
+<g transform="translate(452.0,130.7)"><path d="M6,0 L12,11 L0,11 Z" fill="#d03b3b"/><text x="6" y="10" font-size="8" fill="#0b0b0b" text-anchor="middle" font-weight="700">!</text></g>
+<text x="470.0" y="140.7" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">scatto turbina</text>
+<text x="470.0" y="155.7" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">e generatore · ≥ 30 kPa</text>
+<line x1="396.0" y1="227.8" x2="440.0" y2="227.8" stroke="#52514e" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="392.0" y="225.8" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal" font-style="italic">reset</text>
+<text x="392.0" y="240.8" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal" font-style="italic">non oltre 20</text>
+<text x="620.0" y="66.0" font-size="14" fill="#0b0b0b" text-anchor="start" font-weight="600">Velocità del rotore</text>
+<rect x="696.0" y="90.0" width="34.0" height="310.0" rx="6" fill="#f0efec" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="713.0" y="420.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">2800</text>
+<text x="713.0" y="82.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">3400 giri/min</text>
+<line x1="690.0" y1="296.7" x2="736.0" y2="296.7" stroke="#0ca30c" stroke-width="3"/>
+<text x="742.0" y="300.7" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">nominale 3000</text>
+<line x1="690.0" y1="141.7" x2="736.0" y2="141.7" stroke="#d03b3b" stroke-width="3"/>
+<g transform="translate(742.0,130.7)"><path d="M6,0 L12,11 L0,11 Z" fill="#d03b3b"/><text x="6" y="10" font-size="8" fill="#0b0b0b" text-anchor="middle" font-weight="700">!</text></g>
+<text x="760.0" y="140.7" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">scatto turbina</text>
+<text x="760.0" y="155.7" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">e generatore · ≥ 3300</text>
+<line x1="686.0" y1="219.2" x2="730.0" y2="219.2" stroke="#52514e" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="682.0" y="217.2" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal" font-style="italic">reset</text>
+<text x="682.0" y="232.2" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal" font-style="italic">non oltre 3150</text>
+<text x="60.0" y="446.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">L'avvertimento chiede attenzione; lo scatto impone un'azione e resta memorizzato. Il rientro sotto o sopra</text>
+<text x="60.0" y="464.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">la soglia di reset è una condizione per il reset, non lo esegue da solo.</text>
+<text x="24.0" y="484.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Valori del profilo desktop descritti nella tabella 6.3; le soglie di reset non cancellano automaticamente la memoria.</text>
+</svg>

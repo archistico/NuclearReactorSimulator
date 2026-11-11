@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" width="900" height="430" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Criticità: un bilancio, non un livello di potenza</title>
+<desc id="desc">Tre grafici della popolazione neutronica su sei generazioni: con k minore di 1 scende da 100 a 59, con k uguale a 1 resta costante sia ad alta sia a bassa potenza, con k maggiore di 1 sale da 100 a 161.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="429.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Criticità: un bilancio, non un livello di potenza</text>
+<defs><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<text x="180.0" y="66.0" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="600">k &lt; 1 · sottocritico</text>
+<line x1="70.0" y1="280.0" x2="290.0" y2="280.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="62.0" y="284.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="70.0" y1="224.4" x2="290.0" y2="224.4" stroke="#e1e0d9" stroke-width="1"/>
+<text x="62.0" y="228.4" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">50</text>
+<line x1="70.0" y1="168.9" x2="290.0" y2="168.9" stroke="#e1e0d9" stroke-width="1"/>
+<text x="62.0" y="172.9" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">100</text>
+<line x1="70.0" y1="113.3" x2="290.0" y2="113.3" stroke="#e1e0d9" stroke-width="1"/>
+<text x="62.0" y="117.3" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">150</text>
+<text x="70.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">1</text>
+<text x="114.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">2</text>
+<text x="158.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">3</text>
+<text x="202.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">4</text>
+<text x="246.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">5</text>
+<text x="290.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">6</text>
+<line x1="70.0" y1="280.0" x2="290.0" y2="280.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<line x1="70.0" y1="80.0" x2="70.0" y2="280.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="180.0" y="318.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">generazione di neutroni</text>
+<text transform="translate(24.0,180.0) rotate(-90)" font-size="12.5" fill="#52514e" text-anchor="middle">popolazione relativa</text>
+<path d="M70.0,168.9 L114.0,180.0 L158.0,190.0 L202.0,199.0 L246.0,207.1 L290.0,214.4" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="70.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="114.0" cy="180.0" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="158.0" cy="190.0" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="202.0" cy="199.0" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="246.0" cy="207.1" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="290.0" cy="214.4" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="292.0" y="204.4" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">59</text>
+<text x="180.0" y="336.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">la popolazione diminuisce</text>
+<text x="465.0" y="66.0" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="600">k = 1 · critico</text>
+<line x1="355.0" y1="280.0" x2="575.0" y2="280.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="347.0" y="284.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="355.0" y1="224.4" x2="575.0" y2="224.4" stroke="#e1e0d9" stroke-width="1"/>
+<text x="347.0" y="228.4" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">50</text>
+<line x1="355.0" y1="168.9" x2="575.0" y2="168.9" stroke="#e1e0d9" stroke-width="1"/>
+<text x="347.0" y="172.9" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">100</text>
+<line x1="355.0" y1="113.3" x2="575.0" y2="113.3" stroke="#e1e0d9" stroke-width="1"/>
+<text x="347.0" y="117.3" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">150</text>
+<text x="355.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">1</text>
+<text x="399.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">2</text>
+<text x="443.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">3</text>
+<text x="487.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">4</text>
+<text x="531.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">5</text>
+<text x="575.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">6</text>
+<line x1="355.0" y1="280.0" x2="575.0" y2="280.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<line x1="355.0" y1="80.0" x2="355.0" y2="280.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="465.0" y="318.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">generazione di neutroni</text>
+<text transform="translate(309.0,180.0) rotate(-90)" font-size="12.5" fill="#52514e" text-anchor="middle"></text>
+<path d="M355.0,168.9 L399.0,168.9 L443.0,168.9 L487.0,168.9 L531.0,168.9 L575.0,168.9" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="355.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="399.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="443.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="487.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="531.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="575.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="577.0" y="158.9" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">100</text>
+<path d="M355.0,235.6 L399.0,235.6 L443.0,235.6 L487.0,235.6 L531.0,235.6 L575.0,235.6" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="355.0" cy="235.6" r="5" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="399.0" cy="235.6" r="5" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="443.0" cy="235.6" r="5" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="487.0" cy="235.6" r="5" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="531.0" cy="235.6" r="5" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="575.0" cy="235.6" r="5" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<text x="465.0" y="158.9" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">alta potenza</text>
+<text x="465.0" y="225.6" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">bassa potenza</text>
+<text x="465.0" y="336.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">la popolazione resta costante</text>
+<text x="750.0" y="66.0" font-size="14" fill="#0b0b0b" text-anchor="middle" font-weight="600">k &gt; 1 · supercritico</text>
+<line x1="640.0" y1="280.0" x2="860.0" y2="280.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="632.0" y="284.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="640.0" y1="224.4" x2="860.0" y2="224.4" stroke="#e1e0d9" stroke-width="1"/>
+<text x="632.0" y="228.4" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">50</text>
+<line x1="640.0" y1="168.9" x2="860.0" y2="168.9" stroke="#e1e0d9" stroke-width="1"/>
+<text x="632.0" y="172.9" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">100</text>
+<line x1="640.0" y1="113.3" x2="860.0" y2="113.3" stroke="#e1e0d9" stroke-width="1"/>
+<text x="632.0" y="117.3" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">150</text>
+<text x="640.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">1</text>
+<text x="684.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">2</text>
+<text x="728.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">3</text>
+<text x="772.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">4</text>
+<text x="816.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">5</text>
+<text x="860.0" y="298.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">6</text>
+<line x1="640.0" y1="280.0" x2="860.0" y2="280.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<line x1="640.0" y1="80.0" x2="640.0" y2="280.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="750.0" y="318.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">generazione di neutroni</text>
+<text transform="translate(594.0,180.0) rotate(-90)" font-size="12.5" fill="#52514e" text-anchor="middle"></text>
+<path d="M640.0,168.9 L684.0,157.8 L728.0,145.6 L772.0,132.1 L816.0,117.3 L860.0,101.1" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="640.0" cy="168.9" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="684.0" cy="157.8" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="728.0" cy="145.6" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="772.0" cy="132.1" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="816.0" cy="117.3" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="860.0" cy="101.1" r="5" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="862.0" y="91.1" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">161</text>
+<text x="750.0" y="336.0" font-size="12.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">la popolazione cresce</text>
+<text x="450.0" y="370.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">k è il rapporto fra i neutroni di una generazione e quelli della precedente.</text>
+<text x="450.0" y="388.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">Critico significa bilancio in pareggio, a qualunque livello di potenza: non «massima potenza».</text>
+<text x="24.0" y="414.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Valori illustrativi con k = 0,9 e k = 1,1; nel reattore le generazioni si susseguono in frazioni di secondo.</text>
+</svg>

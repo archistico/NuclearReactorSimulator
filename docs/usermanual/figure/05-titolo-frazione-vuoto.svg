@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 370" width="900" height="370" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Titolo e frazione di vuoto non sono lo stesso numero</title>
+<desc id="desc">Due barre per la stessa miscela: in massa il vapore è il 10%, in volume occupa circa il 71%. Un recipiente mostra la stessa ripartizione dei volumi.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="369.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Titolo e frazione di vuoto non sono lo stesso numero</text>
+<text x="24.0" y="107.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Titolo</text>
+<text x="24.0" y="124.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">quota in massa</text>
+<rect x="250.0" y="92.0" width="49.0" height="34.0" rx="4" fill="#eb6834" stroke="none" stroke-width="1.5"/>
+<rect x="301.0" y="92.0" width="449.0" height="34.0" rx="4" fill="#2a78d6" stroke="none" stroke-width="1.5"/>
+<text x="260.0" y="114.0" font-size="13" fill="#ffffff" text-anchor="start" font-weight="600">10%</text>
+<text x="740.0" y="114.0" font-size="13" fill="#ffffff" text-anchor="end" font-weight="600">90%</text>
+<text x="24.0" y="199.0" font-size="13" fill="#0b0b0b" text-anchor="start" font-weight="600">Frazione di vuoto</text>
+<text x="24.0" y="216.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">quota in volume</text>
+<rect x="250.0" y="184.0" width="355.2" height="34.0" rx="4" fill="#eb6834" stroke="none" stroke-width="1.5"/>
+<rect x="607.2" y="184.0" width="142.8" height="34.0" rx="4" fill="#2a78d6" stroke="none" stroke-width="1.5"/>
+<text x="260.0" y="206.0" font-size="13" fill="#ffffff" text-anchor="start" font-weight="600">71%</text>
+<text x="740.0" y="206.0" font-size="13" fill="#ffffff" text-anchor="end" font-weight="600">29%</text>
+<text x="250.0" y="82.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">vapore</text>
+<text x="750.0" y="82.0" font-size="11.5" fill="#52514e" text-anchor="end" font-weight="normal">liquido</text>
+<rect x="790.0" y="70.0" width="80.0" height="200.0" rx="6" fill="#fbe0d3" stroke="#52514e" stroke-width="1.5"/>
+<rect x="791.0" y="212.5" width="78.0" height="56.5" rx="0" fill="#cde2fb" stroke="none" stroke-width="1.5"/>
+<text x="830.0" y="145.2" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">vapore</text>
+<text x="830.0" y="245.2" font-size="11.5" fill="#0b0b0b" text-anchor="middle" font-weight="normal">liquido</text>
+<text x="830.0" y="288.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">1 kg di miscela</text>
+<text x="24.0" y="300.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">A circa 6,5 MPa il liquido saturo ha densità di circa 749 kg/m³ e il vapore di circa 34 kg/m³: ogni kg di vapore</text>
+<text x="24.0" y="318.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">occupa circa 22 volte il volume di un kg di liquido. Il 10% della massa riempie così circa il 71% del volume.</text>
+<text x="24.0" y="354.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Stima omogenea senza scorrimento fra le fasi, a circa 6,5 MPa; valori indicativi, non una lettura del simulatore.</text>
+</svg>

@@ -12,6 +12,8 @@ Le spiegazioni sono in italiano; i nomi tra apici inversi, come `CONTROL AUTO`, 
 
 I diagrammi sono schemi funzionali, non disegni costruttivi. Ogni figura specifica se le frecce rappresentano un trasferimento di materia, di energia o di informazione. I percorsi principali sono verticali, con etichette leggibili; i collegamenti tratteggiati indicano segnali o influenze, quando la spiegazione della figura li definisce in questo modo.
 
+Accanto ai diagrammi di flusso compaiono figure illustrate, conservate come file SVG nella cartella `figure/` accanto al manuale. Ciascuna ha una legenda o etichette dirette che spiegano colori, frecce e tratteggi; le curve indicate come illustrative o qualitative mostrano un principio e non sono letture del simulatore. I valori numerici del profilo desktop riportati nelle figure sono gli stessi del capitolo 6.
+
 ## Percorso di lettura
 
 Per costruire la visione d'insieme conviene leggere i capitoli 1–4 e poi seguire il viaggio del fluido nel capitolo 5. I capitoli 6–8 collegano quei concetti a valori, protezioni e manovre. I capitoli 9–13 spiegano l'interfaccia, l'assistenza, le missioni e le sessioni registrate. Diagnosi, glossario, limiti e schede di consultazione completano il percorso.
@@ -103,6 +105,12 @@ La configurazione è ispirata a un reattore a canali con ricircolo e separazione
 
 Per orientarsi nell'interfaccia, il software usa comunque i nomi «primario» e «ciclo secondario». Qui identificano zone funzionali del modello: da una parte nocciolo e ricircolo, dall'altra linea vapore, turbina, condensatore e alimentazione. Non implicano che quelle zone contengano due acque di processo indipendenti. L'acqua di raffreddamento del condensatore, invece, è rappresentata come una sorgente esterna di capacità termica e non viene mescolata al condensato.
 
+La figura segue l'acqua lungo tutto il ciclo. Le linee blu sono acqua liquida, quelle arancioni vapore o miscela, quelle viola lavoro meccanico ed energia elettrica, quelle verdi il calore ceduto all'acqua di raffreddamento esterna; i tratteggi indicano i percorsi automatici e il drenaggio dell'umidità.
+
+![Schema dell'impianto: corpo cilindrico, pompe MCP e nocciolo nel ricircolo; collettore, valvole STOP, CONTROL e ADMISSION, turbina, generatore e rete; condensatore, vasca del condensato, pompa del condensato, volume e pompa di alimentazione; bypass e sfioro dal collettore](figure/01-impianto-panoramica.svg)
+
+Il ricircolo a sinistra e il ciclo del vapore a destra condividono il corpo cilindrico: l'acqua di alimentazione rientra lì, e da lì parte il vapore. Una variazione in un punto qualunque dell'anello, per esempio una contropressione più alta al condensatore, si propaga quindi verso la turbina, la vasca del condensato e infine il livello del corpo cilindrico. Il bypass e lo sfioro partono dal collettore prima delle valvole della turbina, perciò possono scaricare vapore anche quando la turbina non lo riceve.
+
 Il fatto che l'impianto sia ispirato a caratteristiche RBMK non lo rende una riproduzione geometrica o dinamica di un RBMK reale. Nel modello educativo molti canali, zone e apparecchiature sono aggregati. Il suo valore didattico è mostrare gli accoppiamenti, con i limiti illustrati nel capitolo 16.
 
 ## 2.3 I punti in cui il sistema accumula qualcosa
@@ -146,6 +154,12 @@ La parola «potenza del reattore» va quindi letta nel contesto dell'indicatore.
 
 La criticità riguarda il bilancio neutronico, non una particolare percentuale di potenza. In condizioni stazionarie, un reattore critico sostiene la propria popolazione neutronica senza crescita o diminuzione sistematica. Può farlo a livelli di potenza differenti. «Critico» non significa quindi «alla massima potenza» né indica, da solo, un incidente.
 
+La figura confronta tre bilanci neutronici. Ogni punto è una generazione di neutroni; l'altezza indica quanti neutroni restano rispetto alla prima generazione.
+
+![Popolazione neutronica su sei generazioni: decresce con k minore di 1, resta costante con k uguale a 1 sia ad alta sia a bassa potenza, cresce con k maggiore di 1](figure/02-criticita.svg)
+
+Nel pannello centrale le due linee orizzontali sono entrambe critiche: una a potenza alta, l'altra a potenza bassa. Ciò che le rende critiche è il rapporto costante fra generazioni successive, non la loro altezza. Per passare da un livello all'altro serve un breve intervallo in cui il bilancio non è in pareggio, seguito dal ritorno a k = 1 al nuovo livello.
+
 La reattività esprime lo scostamento da quel bilancio. Un contributo positivo favorisce la crescita della popolazione; un contributo negativo la riduce. La risposta temporale dipende anche dai precursori dei neutroni ritardati: portare la reattività istantanea vicino a zero non annulla magicamente la storia precedente.
 
 Le barre modificano l'assorbimento neutronico. La convenzione dell'interfaccia è **0% estratto per una barra completamente inserita** e **100% estratto per una barra completamente fuori**. `WITHDRAW` comanda l'estrazione, `INSERT` l'inserzione e `HOLD` ferma il movimento. Il comando di movimento persiste fino a una nuova richiesta, a un limite di corsa o all'intervento di una logica superiore.
@@ -157,6 +171,12 @@ Fermare le barre non ferma necessariamente la variazione di potenza: temperature
 Una frazione dei neutroni compare attraverso il decadimento di precursori, anziché immediatamente nella fissione. Il modello conserva questa dinamica e la sua memoria. È una delle ragioni per cui lo stesso piccolo movimento delle barre non produce sempre la stessa curva di potenza.
 
 Il periodo del reattore riassume il ritmo relativo di variazione della popolazione neutronica. Quando la crescita è approssimativamente esponenziale, un periodo positivo breve significa una crescita rapida; un periodo positivo lungo indica una crescita più lenta. Un periodo negativo descrive una diminuzione. Vicino a una variazione nulla il valore può diventare molto grande o non essere rappresentabile in modo utile.
+
+Il grafico usa un asse verticale logaritmico, sul quale una crescita esponenziale a periodo costante appare come una retta. Le tre curve sono esempi ideali, non risposte registrate dal simulatore.
+
+![Potenza relativa su scala logaritmica nei primi 60 secondi per periodi di più 20, più 60 e meno 30 secondi](figure/04-periodo-reattore.svg)
+
+Il periodo è il tempo in cui la potenza si moltiplica per e, circa 2,72: con +20 s questo accade dopo 20 s, e in circa 46 s la potenza diventa dieci volte quella iniziale. Con +60 s, nello stesso minuto, arriva soltanto a circa 2,7 volte. Un periodo negativo descrive la diminuzione con la stessa logica. Più la retta è ripida, più il periodo è breve e meno tempo resta per osservare la risposta prima della manovra successiva.
 
 `REACTOR PERIOD · MODEL` è una diagnostica del modello: non è un cronometro che annunci quando scatterà una protezione. Va interpretato insieme a reattività, potenza e movimento delle barre. Se il periodo si accorcia mentre stai ancora estraendo, continuare senza una pausa di osservazione sovrappone la manovra alla risposta già in corso.
 
@@ -182,7 +202,13 @@ Il fluido può essere liquido sottoraffreddato, miscela liquido-vapore o vapore 
 
 Il **titolo**, o qualità del vapore, è la frazione di massa che si trova nella fase vapore. La **frazione di vuoto** è invece la frazione di volume occupata dal vapore. Poiché il vapore è molto meno denso del liquido, una piccola quota di massa può occupare una grande quota di volume. Un titolo del 10% non autorizza quindi a leggere una frazione di vuoto del 10%.
 
-Il diagramma mostra due strade energetiche della stessa sostanza. Le frecce superiori indicano aggiunta di energia; quelle inferiori la sua rimozione. È uno schema concettuale a condizioni compatibili con il cambiamento di fase, non una tabella numerica valida a qualunque pressione.
+La figura misura la stessa miscela in due modi diversi: la barra superiore divide la massa, quella inferiore il volume. Arancione è il vapore, blu il liquido.
+
+![Con titolo del 10% in massa il vapore occupa circa il 71% del volume a circa 6,5 MPa](figure/05-titolo-frazione-vuoto.svg)
+
+A una pressione vicina a quella del corpo cilindrico, un chilogrammo di vapore saturo occupa circa 22 volte il volume di un chilogrammo di liquido saturo. Il 10% della massa riempie così circa il 71% del volume, secondo una stima omogenea che ignora lo scorrimento fra le fasi. Per questo una frazione di vuoto elevata può comparire con un titolo ancora modesto, e per questo le due grandezze vanno lette separatamente.
+
+Il diagramma che segue mostra due strade energetiche della stessa sostanza. Le frecce superiori indicano aggiunta di energia; quelle inferiori la sua rimozione. È uno schema concettuale a condizioni compatibili con il cambiamento di fase, non una tabella numerica valida a qualunque pressione.
 
 ```mermaid
 flowchart LR
@@ -200,6 +226,12 @@ La portata massica misura quanta massa attraversa un collegamento in un secondo.
 
 Se la pressione a valle contrasta la spinta disponibile, una pompa in marcia può trasferire meno acqua del previsto. Se un ritegno impedisce il flusso inverso, il risultato può essere portata nulla senza che il comando `RUN` sia stato ignorato. Per comprendere il fenomeno occorre leggere insieme stato operativo, pressione di aspirazione, pressione di mandata e disponibilità del fluido.
 
+Il grafico qualitativo mette sullo stesso asse ciò che la pompa fornisce e ciò che il circuito richiede, in funzione della portata. Non ha una scala numerica e non riproduce le caratteristiche delle pompe del modello.
+
+![Curva decrescente della pompa che incrocia la curva del circuito aperto nel punto A e quella di un circuito più resistente nel punto B; una curva con contropressione superiore alla spinta a portata nulla non incrocia la pompa](figure/06-pompa-circuito.svg)
+
+La portata effettiva è quella dell'incrocio. Se il circuito diventa più resistente, per esempio per una valvola più chiusa, il punto si sposta da A a B e la portata scende anche se la pompa resta in marcia. Se la pressione a valle supera la spinta che la pompa offre a portata nulla, l'incrocio scompare: il ritegno impedisce il flusso inverso e la portata vale zero.
+
 Il modello usa resistenze e dinamiche semplificate. Non bisogna dedurre da un'oscillazione qualsiasi la presenza di colpo d'ariete o di cavitazione fisica: questi fenomeni richiedono rappresentazioni specifiche che il solo bilancio di pressione non contiene.
 
 ## 3.8 Coppia, velocità e potenza meccanica
@@ -208,6 +240,12 @@ La coppia è l'azione che tende a far ruotare l'albero; la potenza meccanica è 
 
 La turbina fornisce coppia motrice; il generatore, durante l'esportazione elettrica, oppone una coppia resistente. Si aggiungono le perdite meccaniche modellate. Se viene aperto l'interruttore e scompare il carico elettrico mentre l'ammissione resta significativa, può comparire un eccesso di coppia che accelera il gruppo.
 
+La figura mostra le tre coppie che agiscono sull'albero: le frecce indicano il verso dell'azione, non un flusso di materia. In basso un esempio numerico traduce uno squilibrio di potenza in variazione di velocità.
+
+![Albero con turbina, rotore e generatore: la coppia motrice della turbina è contrastata dalla coppia resistente del generatore e dalle perdite; la coppia netta divisa per l'inerzia dà l'accelerazione](figure/07-coppie-rotore.svg)
+
+Con il momento d'inerzia di riferimento, 1000 kg·m², uno squilibrio di 1 MW a 3000 giri/min fa variare la velocità di circa 30 giri/min al secondo. Se l'interruttore si apre mentre arrivano alcuni megawatt di vapore utile, i 300 giri/min che separano la velocità nominale dalla soglia di sovravelocità si consumano in pochi secondi. È un ordine di grandezza: regolatore, valvole e protezioni cambiano la risposta reale.
+
 La decelerazione con vapore ridotto non è istantanea. Le perdite passive permettono al rotore disconnesso di rallentare; un eventuale scatto memorizzato, invece, richiede anche le condizioni e il comando di reset. La meccanica può essere tornata accettabile mentre la memoria della protezione è ancora attiva.
 
 ## 3.9 Frequenza, fase e sincronizzazione
@@ -215,6 +253,12 @@ La decelerazione con vapore ridotto non è istantanea. Le perdite passive permet
 La frequenza elettrica del generatore è legata alla velocità del rotore e al numero di coppie polari. Nel gruppo di riferimento, a una coppia polare, 3000 giri/min corrispondono a 50 Hz. Questo spiega il numero che cerchi sul tachimetro prima del parallelo, ma non esaurisce le condizioni per collegare il generatore.
 
 Occorre anche che tensione e fase siano compatibili con quelle della rete. La fase descrive la posizione relativa delle onde elettriche: due macchine possono avere quasi la stessa frequenza e, in quell'istante, una differenza di fase ancora troppo grande. Una piccola differenza di frequenza fa inoltre scorrere la fase nel tempo.
+
+A sinistra le onde di tensione della rete e del generatore nei primi 40 ms; a destra un sincronoscopio, la cui lancetta indica lo sfasamento e il cui settore verde è la finestra di fase ammessa.
+
+![Onda della rete a 50 Hz e del generatore a 50,2 Hz con 30 gradi di sfasamento; sincronoscopio con finestra di più o meno 10 gradi e lancetta fuori finestra](figure/08-sincronizzazione.svg)
+
+Con 0,2 Hz di differenza, il massimo ammesso, la fase scorre di 72° al secondo e la lancetta compie un giro ogni 5 s. La finestra di ±10° resta quindi aperta per circa 0,28 s a ogni giro. Avere la frequenza giusta è necessario ma non sufficiente: serve anche il momento giusto, insieme a una tensione entro 10 kV da quella di rete.
 
 L'indicazione `SYNC READY` riassume i consensi previsti. Dopo `CLOSE BREAKER` devi verificare lo stato effettivo dell'interruttore, senza dedurre il parallelo dal solo comando inviato. Il capitolo 6 raccoglie le finestre numeriche della configurazione descritta.
 
@@ -361,6 +405,12 @@ Quando premi `WITHDRAW`, osserva prima lo stato di movimento confermato e poi il
 
 Nel gruppo di riferimento il movimento normale procede a circa 10 punti percentuali di corsa al secondo. Il punto iniziale caldo usa una posizione intorno al 50% estratto; quel valore appartiene alla curva e alla composizione adottate e non rappresenta una posizione di criticità universale.
 
+La figura mostra la convenzione della percentuale di estrazione. Le barre scure sono la stessa barra in tre posizioni; il riquadro chiaro è la zona attiva del nocciolo.
+
+![Una barra a 0% estratto è completamente inserita nella zona attiva, a 50% è a metà corsa, a 100% è completamente fuori; WITHDRAW estrae e INSERT inserisce](figure/03-barre-posizione.svg)
+
+Più la barra è estratta, minore è la parte che assorbe neutroni nella zona attiva. Alla velocità di riferimento una corsa completa richiede circa 10 s, ma l'effetto sulla reattività dipende dalla curva di efficacia: lo stesso spostamento percentuale può contare di più a metà corsa che vicino agli estremi.
+
 La protezione può impedire l'estrazione o imporre l'inserzione di arresto. Se il pannello mostra `MIXED`, un gruppo può contenere elementi con stati diversi; la media della posizione non descrive da sola ogni elemento. Un pulsante evidenziato rappresenta lo stato confermato del comando di movimento e va letto insieme agli eventuali interblocchi.
 
 ## 5.3 Cinetica neutronica
@@ -376,6 +426,12 @@ Una manovra delle barre va pertanto valutata dopo aver lasciato emergere la sua 
 La catena iodio-xeno descrive un assorbitore neutronico che dipende dalla storia di funzionamento. Il suo interesse didattico è mostrare che il reattore ricorda anche ciò che è accaduto prima della schermata che stai guardando.
 
 Non esiste un comando che «tolga lo xeno». Negli scenari che compongono questo modello, la concentrazione evolve attraverso produzione, decadimento e assorbimento neutronico. La risposta può quindi continuare a cambiare dopo una manovra già conclusa, rendendo differente una successiva risalita di potenza.
+
+La figura applica un modello generale iodio-xeno, con costanti tipiche, a due manovre eseguite dopo 4 ore di funzionamento stabile. Non è una lettura del simulatore, che nel desktop ordinario non rende disponibile questa diagnostica.
+
+![Potenza ridotta al 50% oppure azzerata dopo 4 ore; lo xeno relativo all'equilibrio iniziale sale verso un picco e poi diminuisce, molto di più dopo l'arresto](figure/09-xeno-riduzione.svg)
+
+Dopo la riduzione lo iodio già accumulato continua a decadere in xeno, mentre il flusso neutronico più basso ne consuma di meno. Lo xeno cresce quindi per alcune ore con le barre ferme, aggiungendo reattività negativa, e solo dopo rientra verso un nuovo equilibrio. Dopo un arresto il picco è più alto e più tardivo: in un modello che lo rappresenta, una risalita eseguita in quelle ore richiede più reattività positiva di una eseguita prima o molto dopo.
 
 La disponibilità dei valori va controllata nell'interfaccia. Se `XENON REACTIVITY` o gli inventari sono `UNAVAILABLE`, non devi interpretarli come zero né ricostruirli da una temperatura. Nel normale esercizio desktop la diagnostica quantitativa dello xeno rimane esplicitamente non disponibile; gli scenari specifici di xeno hanno una composizione propria.
 
@@ -449,6 +505,12 @@ La valvola di intercettazione, `STOP`, consente di isolare il percorso della tur
 
 Nella stazione valvole puoi confrontare posizione reale e `TARGET`. `STOP OPEN` o `STOP CLOSE` cambiano una richiesta persistente; `ADMISSION OPEN` e `ADMISSION CLOSE` fanno lo stesso per la relativa valvola. La corsa richiede tempo: nei componenti secondari descritti il limite è di circa 50 punti percentuali al secondo. Una richiesta al 100% non equivale quindi a una posizione al 100% nello stesso istante.
 
+La figura segue il vapore dal collettore allo scarico. In alto i passaggi in serie, al centro la pressione nei nodi, in basso la capacità di ciascun passaggio e il ritardo fra richiesta e posizione. Altezze e capacità sono qualitative.
+
+![Treno di valvole STOP, CONTROL e ADMISSION seguito dallo stadio: la pressione scende a ogni passaggio, la capacità più piccola fissa la portata e la posizione effettiva raggiunge una richiesta al 100% in circa 1,4 secondi](figure/10-treno-valvole.svg)
+
+Ogni valvola e l'espansione dello stadio lasciano passare al massimo una certa portata, che dipende dalla posizione effettiva e dalla differenza di pressione ai suoi capi. La portata della turbina è limitata dalla più piccola di queste capacità, qui quella di `CONTROL`: aprire di più un'altra valvola non la aumenta. Il riquadro in basso ricorda che la capacità segue la posizione raggiunta, non il valore di `TARGET`.
+
 `CONTROL AUTO` restituisce la regolazione al governor. `CONTROL MANUAL` abilita la richiesta manuale della valvola di regolazione. Il cursore prepara il valore e `APPLY` lo invia: trascinare il cursore senza applicarlo non deve essere interpretato come una manovra già eseguita sul fluido.
 
 Durante uno scatto può rimanere leggibile la richiesta normale dell'operatore mentre la protezione impone una posizione effettiva diversa. Questa separazione permette di capire perché la turbina non riceva il vapore richiesto. Prima di ripetere il comando, leggi l'autorità attiva e l'eventuale apertura inibita.
@@ -489,6 +551,12 @@ Il condensatore riceve lo scarico della turbina e gli eventuali flussi di bypass
 La quantità condensata in un passo dipende da più limiti. Deve esistere vapore disponibile; la portata massima del componente non deve essere superata; e deve esserci abbastanza capacità termica per rimuovere l'energia necessaria al cambiamento di fase. La capacità effettiva di trasferimento del calore è a sua volta limitata dalla potenza installata, da quella disponibile e dalla legge di superficie `UA × ΔT`.
 
 Nel profilo descritto la capacità installata è 40 MW, la conduttanza è 1,225 MW/K e la portata massima di condensazione è 20 kg/s. Queste tre quantità hanno unità e ruoli diversi. I 40 MW non significano che il condensatore stia rimuovendo sempre 40 MW; i 20 kg/s non garantiscono di condensare quella massa se il salto termico disponibile non basta.
+
+Il grafico mostra quanta potenza termica il condensatore può rimuovere al variare della sua pressione assoluta, con acqua di raffreddamento a 20 °C. La linea arancione continua è il limite effettivo; quella blu tratteggiata è la legge di superficie senza tetto; le linee verticali sono le soglie di contropressione.
+
+![Potenza rimovibile in funzione della pressione del condensatore: cresce con UA per ΔT fino al tetto di 40 MW, raggiunto a circa 14 kPa; il punto iniziale a 8,4 kPa rimuove circa 27 MW; avvertimento a 20 kPa e scatto a 30 kPa](figure/11-condensatore-limiti.svg)
+
+A 8,4 kPa la saturazione è a circa 42 °C: con 22 K di differenza verso l'acqua esterna e 1,225 MW/K, il condensatore può rimuovere circa 27 MW. Se arriva più energia, la pressione sale, la temperatura di saturazione la segue e lo scambio aumenta: è il modo in cui il condensatore trova un nuovo equilibrio. Oltre circa 14 kPa il tetto di 40 MW impedisce questo recupero, e un ulteriore eccesso di energia spinge la pressione verso le soglie di 20 e 30 kPa.
 
 Il condensato viene caratterizzato con lo stato di liquido saturo alla pressione dello spazio vapore. La sua energia d'ingresso nella vasca può quindi essere diversa da quella dell'acqua che la vasca già contiene. Nei percorsi attuali il bilancio del trasferimento tiene conto della convenzione entalpica; la differenza energetica fra ciò che lascia lo spazio vapore e ciò che entra nella vasca è collegata al calore rigettato.
 
@@ -628,6 +696,12 @@ La tabella raccoglie i valori definiti per il profilo dotato delle protezioni se
 | Sincronizzazione: frequenza | Scarto non superiore a 0,2 Hz | Consenso alla chiusura, non soglia di reset |
 | Sincronizzazione: fase | Scarto non superiore a 10° | Consenso alla chiusura |
 | Sincronizzazione: tensione | Scarto non superiore a 10 kV | Consenso alla chiusura |
+
+La figura riporta tre righe della tabella su scale verticali. Il verde indica il valore normale, il giallo l'avvertimento, il rosso lo scatto; la linea grigia tratteggiata è la condizione di rientro richiesta per il reset.
+
+![Scale di livello del corpo cilindrico, contropressione del condensatore e velocità del rotore con valore normale, avvertimento, scatto e condizione di reset](figure/12-soglie-protezioni.svg)
+
+Per il livello il pericolo sta in basso, per contropressione e velocità in alto. In tutti e tre i casi la condizione di reset non coincide con la soglia di scatto: lascia un margine, così che il ritorno appena oltre il limite non basti a rimuovere la memoria. Anche dopo il rientro serve il comando di reset; nessuna scala, da sola, riavvia la turbina o il reattore.
 
 Le soglie elevate di pressione del corpo cilindrico non descrivono la pressione normale del ciclo, che parte attorno ai valori della tabella precedente. I percorsi automatici del collettore hanno inoltre soglie proprie: il bypass inizia ad aprire sopra 6,4 MPa e raggiunge l'apertura completa a 6,5 MPa; lo scarico verso il ricevitore atmosferico inizia sopra 6,5 MPa e raggiunge la piena apertura a 6,7 MPa. Sono condizioni di apertura, non garanzie che la pressione non possa salire ulteriormente.
 

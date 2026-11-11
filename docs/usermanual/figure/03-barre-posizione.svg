@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 530" width="900" height="530" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Barre di controllo: che cosa significa la percentuale</title>
+<desc id="desc">Tre barre nella zona attiva: a 0% estratto la barra è completamente inserita, a 50% è a metà corsa, a 100% è completamente fuori. WITHDRAW estrae e riduce l'assorbimento, INSERT inserisce e lo aumenta.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="529.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Barre di controllo: che cosa significa la percentuale</text>
+<defs><marker id="a2a78d6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a78d6"/></marker><marker id="aeb6834" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#eb6834"/></marker></defs>
+<line x1="150.0" y1="70.0" x2="650.0" y2="70.0" stroke="#e1e0d9" stroke-width="1" stroke-dasharray="4 4"/>
+<text x="655.0" y="74.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal">fine corsa</text>
+<rect x="140.0" y="230.0" width="520.0" height="160.0" rx="6" fill="#f0efec" stroke="#52514e" stroke-width="1.5"/>
+<text x="400.0" y="378.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">zona attiva del nocciolo</text>
+<rect x="230.0" y="230.0" width="20.0" height="160.0" rx="3" fill="#52514e" stroke="#0b0b0b" stroke-width="1.5"/>
+<text x="240.0" y="416.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">0% estratto</text>
+<text x="240.0" y="434.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">completamente inserita</text>
+<rect x="390.0" y="150.0" width="20.0" height="160.0" rx="3" fill="#52514e" stroke="#0b0b0b" stroke-width="1.5"/>
+<text x="400.0" y="416.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">50% estratto</text>
+<text x="400.0" y="434.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">a metà corsa</text>
+<rect x="550.0" y="70.0" width="20.0" height="160.0" rx="3" fill="#52514e" stroke="#0b0b0b" stroke-width="1.5"/>
+<text x="560.0" y="416.0" font-size="13" fill="#0b0b0b" text-anchor="middle" font-weight="600">100% estratto</text>
+<text x="560.0" y="434.0" font-size="12" fill="#52514e" text-anchor="middle" font-weight="normal">completamente fuori</text>
+<path d="M712.0,380.0 L712.0,240.0" fill="none" stroke="#eb6834" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#aeb6834)"/>
+<text x="724.0" y="300.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">WITHDRAW</text>
+<text x="724.0" y="316.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">estrae:</text>
+<text x="724.0" y="331.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">assorbe meno</text>
+<path d="M88.0,240.0 L88.0,380.0" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" marker-end="url(#a2a78d6)"/>
+<text x="28.0" y="300.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">INSERT</text>
+<text x="28.0" y="316.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">inserisce:</text>
+<text x="28.0" y="331.0" font-size="11.5" fill="#52514e" text-anchor="start" font-weight="normal">assorbe di più</text>
+<text x="450.0" y="482.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">HOLD ferma il movimento normale. Corsa a circa 10 punti percentuali al secondo:</text>
+<text x="450.0" y="500.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">da 0% a 100% servono circa 10 s. La posizione non è una potenza né un punto di criticità universale.</text>
+</svg>

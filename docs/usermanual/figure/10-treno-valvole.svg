@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 770" width="900" height="770" role="img" aria-labelledby="title desc" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="title">Il treno di ammissione: la restrizione più stretta comanda</title>
+<desc id="desc">In alto il percorso dal collettore alle valvole STOP, CONTROL e ADMISSION, allo stadio e allo scarico, con la pressione che scende a ogni passaggio. Al centro le capacità dei quattro passaggi: la più piccola, qui CONTROL, fissa la portata dello stadio. In basso una richiesta al 100% raggiunta dalla posizione effettiva in circa 1,4 s.</desc>
+<rect x="0.5" y="0.5" width="899.0" height="769.0" rx="10" fill="#fcfcfb" stroke="#e1e0d9" stroke-width="1"/>
+<text x="24.0" y="34.0" font-size="17" fill="#0b0b0b" text-anchor="start" font-weight="600">Il treno di ammissione: la restrizione più stretta comanda</text>
+<defs><marker id="aeb6834" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#eb6834"/></marker><marker id="a52514e" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#52514e"/></marker></defs>
+<path d="M60.0,100.0 L800.0,100.0" fill="none" stroke="#eb6834" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M157,90.25 L183,109.75 L183,90.25 L157,109.75 Z" fill="#fcfcfb" stroke="#52514e" stroke-width="1.6" stroke-linejoin="round"/><line x1="170.0" y1="90.2" x2="170.0" y2="79.2" stroke="#52514e" stroke-width="1.6"/><line x1="164.0" y1="79.2" x2="176.0" y2="79.2" stroke="#52514e" stroke-width="1.6"/><text x="170.0" y="129.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">STOP</text>
+<path d="M317,90.25 L343,109.75 L343,90.25 L317,109.75 Z" fill="#fcfcfb" stroke="#52514e" stroke-width="1.6" stroke-linejoin="round"/><line x1="330.0" y1="90.2" x2="330.0" y2="79.2" stroke="#52514e" stroke-width="1.6"/><line x1="324.0" y1="79.2" x2="336.0" y2="79.2" stroke="#52514e" stroke-width="1.6"/><text x="330.0" y="129.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">CONTROL</text>
+<path d="M477,90.25 L503,109.75 L503,90.25 L477,109.75 Z" fill="#fcfcfb" stroke="#52514e" stroke-width="1.6" stroke-linejoin="round"/><line x1="490.0" y1="90.2" x2="490.0" y2="79.2" stroke="#52514e" stroke-width="1.6"/><line x1="484.0" y1="79.2" x2="496.0" y2="79.2" stroke="#52514e" stroke-width="1.6"/><text x="490.0" y="129.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">ADMISSION</text>
+<path d="M640,88 L700,68 L700,132 L640,112 Z" fill="#fbe0d3" stroke="#eb6834" stroke-width="2"/>
+<text x="670.0" y="150.0" font-size="12" fill="#0b0b0b" text-anchor="middle" font-weight="600">stadio</text>
+<circle cx="90.0" cy="100.0" r="5" fill="#fcfcfb" stroke="#52514e" stroke-width="1.5"/>
+<text x="90.0" y="78.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">collettore</text>
+<circle cx="250.0" cy="100.0" r="5" fill="#fcfcfb" stroke="#52514e" stroke-width="1.5"/>
+<text x="250.0" y="78.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">dopo STOP</text>
+<circle cx="410.0" cy="100.0" r="5" fill="#fcfcfb" stroke="#52514e" stroke-width="1.5"/>
+<text x="410.0" y="78.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">dopo CONTROL</text>
+<circle cx="570.0" cy="100.0" r="5" fill="#fcfcfb" stroke="#52514e" stroke-width="1.5"/>
+<text x="570.0" y="78.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">ingresso turbina</text>
+<circle cx="760.0" cy="100.0" r="5" fill="#fcfcfb" stroke="#52514e" stroke-width="1.5"/>
+<text x="760.0" y="78.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">scarico</text>
+<text x="60.0" y="174.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">pressione nei nodi lungo il percorso (qualitativa)</text>
+<line x1="60.0" y1="330.0" x2="800.0" y2="330.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<rect x="60.0" y="196.0" width="60.0" height="134.0" rx="3" fill="#fbe0d3" stroke="#eb6834" stroke-width="1.2"/>
+<rect x="220.0" y="202.7" width="60.0" height="127.3" rx="3" fill="#fbe0d3" stroke="#eb6834" stroke-width="1.2"/>
+<rect x="380.0" y="241.6" width="60.0" height="88.4" rx="3" fill="#fbe0d3" stroke="#eb6834" stroke-width="1.2"/>
+<rect x="540.0" y="246.9" width="60.0" height="83.1" rx="3" fill="#fbe0d3" stroke="#eb6834" stroke-width="1.2"/>
+<rect x="730.0" y="326.0" width="60.0" height="4.0" rx="3" fill="#fbe0d3" stroke="#eb6834" stroke-width="1.2"/>
+<text x="170.0" y="320.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">ΔP stop</text>
+<text x="330.0" y="320.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">ΔP control</text>
+<text x="490.0" y="320.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">ΔP admission</text>
+<text x="665.0" y="320.0" font-size="11.5" fill="#52514e" text-anchor="middle" font-weight="normal">ΔP espansione</text>
+<text x="60.0" y="368.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">capacità di ciascun passaggio nello stesso passo, con la posizione effettiva delle valvole</text>
+<text x="150.0" y="395.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">STOP</text>
+<rect x="162.0" y="382.0" width="483.6" height="18.0" rx="4" fill="#e1e0d9" stroke="none" stroke-width="1.5"/>
+<text x="150.0" y="425.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">CONTROL</text>
+<rect x="162.0" y="412.0" width="416.0" height="18.0" rx="4" fill="#6250d6" stroke="none" stroke-width="1.5"/>
+<text x="588.0" y="426.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">la più piccola fissa la portata dello stadio</text>
+<text x="150.0" y="455.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">ADMISSION</text>
+<rect x="162.0" y="442.0" width="504.4" height="18.0" rx="4" fill="#e1e0d9" stroke="none" stroke-width="1.5"/>
+<text x="150.0" y="485.0" font-size="12" fill="#0b0b0b" text-anchor="end" font-weight="normal">espansione</text>
+<rect x="162.0" y="472.0" width="468.0" height="18.0" rx="4" fill="#e1e0d9" stroke="none" stroke-width="1.5"/>
+<line x1="578.0" y1="378.0" x2="578.0" y2="500.0" stroke="#0b0b0b" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="60.0" y="540.0" font-size="12.5" fill="#0b0b0b" text-anchor="start" font-weight="600">richiesta e posizione: la corsa richiede tempo (circa 50 punti % al secondo)</text>
+<line x1="120.0" y1="680.0" x2="480.0" y2="680.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="112.0" y="684.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">0</text>
+<line x1="120.0" y1="620.0" x2="480.0" y2="620.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="112.0" y="624.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">50</text>
+<line x1="120.0" y1="560.0" x2="480.0" y2="560.0" stroke="#e1e0d9" stroke-width="1"/>
+<text x="112.0" y="564.0" font-size="11.5" fill="#898781" text-anchor="end" font-weight="normal">100</text>
+<text x="120.0" y="698.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">0</text>
+<text x="210.0" y="698.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">0,5</text>
+<text x="300.0" y="698.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">1</text>
+<text x="390.0" y="698.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">1,5</text>
+<text x="480.0" y="698.0" font-size="11.5" fill="#898781" text-anchor="middle" font-weight="normal">2</text>
+<line x1="120.0" y1="680.0" x2="480.0" y2="680.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<line x1="120.0" y1="560.0" x2="120.0" y2="680.0" stroke="#c3c2b7" stroke-width="1.5"/>
+<text x="300.0" y="718.0" font-size="12.5" fill="#52514e" text-anchor="middle" font-weight="normal">secondi dalla richiesta</text>
+<text transform="translate(74.0,620.0) rotate(-90)" font-size="12.5" fill="#52514e" text-anchor="middle">apertura %</text>
+<path d="M120.0,644.0 L120.0,560.0 L480.0,560.0" fill="none" stroke="#52514e" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 4"/>
+<path d="M120.0,644.0 L372.0,560.0 L480.0,560.0" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+<text x="399.0" y="578.0" font-size="12" fill="#52514e" text-anchor="start" font-weight="normal">TARGET 100%</text>
+<text x="270.0" y="616.0" font-size="12" fill="#0b0b0b" text-anchor="start" font-weight="normal">posizione effettiva</text>
+<text x="520.0" y="600.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Da 30% a 100% servono circa 1,4 s.</text>
+<text x="520.0" y="620.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">Prima di quel momento la capacità</text>
+<text x="520.0" y="638.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">dipende dalla posizione raggiunta,</text>
+<text x="520.0" y="656.0" font-size="12.5" fill="#52514e" text-anchor="start" font-weight="normal">non dal valore richiesto.</text>
+<text x="24.0" y="754.0" font-size="11.5" fill="#898781" text-anchor="start" font-weight="normal" font-style="italic">Altezze e capacità qualitative. Anche metà inventario per passo all'ingresso turbina è un limite, lontano nel punto iniziale.</text>
+</svg>

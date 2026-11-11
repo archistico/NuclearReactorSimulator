@@ -252,6 +252,10 @@ Specifiche, esiti e comandi sono raggiungibili dalle
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto
   il manuale italiano con spiegazioni dei componenti, delle interazioni e dei diagrammi.
+- Aggiunte al manuale dodici figure SVG in `docs/usermanual/figure/`: panoramica
+  dell'impianto, criticità, periodo, barre, titolo e vuoto, pompa e circuito,
+  coppie, sincronizzazione, xeno, treno di valvole, condensatore e soglie. Ogni
+  figura ha introduzione, legenda e spiegazione; le curve qualitative sono dichiarate tali.
 - Archiviati 74 documenti conclusi o superati, preservandone byte e SHA-256;
   separati 174 input esatti dei validatori dalla documentazione leggibile.
 - Consolidati risultati e ripresa in `docs/PROJECT.md`, con handoff operativo.
