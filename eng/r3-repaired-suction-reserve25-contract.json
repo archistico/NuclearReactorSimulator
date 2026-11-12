@@ -1,0 +1,689 @@
+{
+  "schema": "r3-repaired-suction-reserve25-v1",
+  "policy": {
+    "maximum_recipes": 8,
+    "maximum_batches": 1,
+    "maximum_batch_recipes": 8,
+    "maximum_runtime_steps": 26,
+    "repeats": 2,
+    "step_fractions": [
+      0.5,
+      1.0
+    ],
+    "objective": "maximum absolute original 75 scaled residuals with unchanged scales; secondary normalized L1",
+    "operational_envelope": {
+      "ElectricalMwe": [
+        4.99,
+        5.01
+      ],
+      "PumpKgS": [
+        99.9,
+        100.1
+      ],
+      "DrumLevel": [
+        0.49,
+        0.51
+      ],
+      "Governor": [
+        29.27,
+        29.3
+      ]
+    },
+    "predicted_envelope_buffer_fraction": 0.1,
+    "envelope_derivatives": "same selected stencils of observations20-21; physical derivatives normalized by envelope width for the comparison only",
+    "envelope_derivative_relative_tolerance": 0.1,
+    "envelope_derivative_norm_floor": 1.0,
+    "unavailable_envelope_derivative": "freeze that direction coefficient at zero; do not fabricate a column",
+    "thermal_constraint": "each of six predicted rates within max(abs(center rate)-10 W,1 W); measured original limit max(abs(center rate),1 W) plus 1 W",
+    "thermal_headroom_w": 10.0,
+    "thermal_floor_w": 1.0,
+    "thermal_measurement_allowance_w": 1.0,
+    "initial_suction_reserve": "fix both suction normalized coefficients to one; full-step mass and energy fractions +1e-6, no runtime reinjection",
+    "fixed_variable_handling": "eliminate fixed coefficients algebraically before the two certified LPs; restore them in the reported step",
+    "capacity_constraint": "each predicted and measured expansion-to-other gap retains at least half its center margin",
+    "secondary_objective_allowance": 1e-09,
+    "numerical_cleanup_tolerance": 1e-12,
+    "relative_prediction_tolerance": 0.1,
+    "capacity_relative_tolerance": 0.1,
+    "capacity_prediction_norm_floor_kg_s": 1e-09,
+    "envelope_prediction_absolute_tolerance_in_range_units": 0.01,
+    "measured_minimum_margin_fraction": 0.5,
+    "original_maximum_must_decrease": true,
+    "neighbourhood_absolute_fraction_radius": 0.0002,
+    "binary64_domain_tolerance": 1e-15,
+    "energy_ledger_tolerance_w": 0.01,
+    "mass_ledger_tolerance_kg_s": 1e-06,
+    "torque_ledger_tolerance_nm": 1e-06,
+    "searches": 0,
+    "production_changes": 0,
+    "old_domains_unchanged": true,
+    "root_criterion_unchanged": true,
+    "seed_installation": false,
+    "r3_passed": false,
+    "m10_closed": false
+  },
+  "unchanged_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "output": "artifacts/r3-repaired-suction-reserve25",
+  "incoming_commit": "ef8ec1964cbb46a4d05140b6af466512321b720a",
+  "implementation_files": [
+    {
+      "path": "Directory.Build.props",
+      "sha256": "7E32B87057A13A6C15BBF2316F1E71C52487B1434FD977D50F3EC8E9EEE7B4EF"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "sha256": "57CC81E76A6B8D41E9BCC49AFF7D008A17CD60C834D10681932789D35635E109"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-capacity-minimum-model12.md",
+      "sha256": "22A9D1E69A055D61E0942F93F1114A0AF55B8097435720DC46C74D3926FD145C"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-capacity-minimum-model9.md",
+      "sha256": "45E7CBF9F1F24FE6033D762907D7D66E999454DE1AE8E6ACBFFA70402ACDBBEA"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-capacity-observation11.md",
+      "sha256": "B9DAFA2B576F668E6D6D1A659A9682D1B4D908234DCE4C151F864268079112DF"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-capacity-observation8.md",
+      "sha256": "11391E265FE836144AD0BA0EB4DB0A5826699D7FD338FFDC6484AC4E8F264265"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-cycle-power19.md",
+      "sha256": "B60EEF10B8D88CFB3102C5FE534030FAE4FB11A7B846FB593B3741C2E87FA0FD"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-envelope-objective24.md",
+      "sha256": "9A837DB3AB17A79C43BFEABFBD09C111867C55260D8128CBE213F7B489D069DA"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-exhaust-balance17.md",
+      "sha256": "C0CC14DEF46954D869FBE4A2983739413AB67D1031ED48CB6BC21A0F58C4BDA4"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-exhaust-branch18.md",
+      "sha256": "DE67EFF57D692B2718A61FF1D800E4B58D26B368050BEA986F1886843B22819C"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-exhaust-domain16.md",
+      "sha256": "4354A75BA4ED2E903BAB1D10B94A377172BE7703B27C13B624D96959E197C6F7"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-exhaust-lever15.md",
+      "sha256": "6A004B422ABF0229B3A73ADE05E8FD8637D2A046CA9DF4899CBF56B09CE50E9B"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-flow-minimum7.md",
+      "sha256": "F0001EA74DE17EE527A7F9EE97A32697B1762174F8DD2BC843D964D879E03A9E"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-local-basis20.md",
+      "sha256": "2007FB24E0B2FC7C3B80F53CE507E8966FF2968465C62A5B48EC4E25649F2CDE"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-local-proposals22.md",
+      "sha256": "E31E8EF732C8273D6B56689A5098AF4072480BFB485B1CE9EE1530E36D2D5172"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-local-refinement21.md",
+      "sha256": "F98EABCCDAF87B3FF2ABDB24C59E85A2BA79CFE5BCB1AA2EDCBA8DE0EDC1F459"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-minimum-proposals10.md",
+      "sha256": "860B5FA0C87263CDD2781D8EF2158E56F97455AAD04D7FAEB9162081EBE4653F"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-minimum-proposals13.md",
+      "sha256": "6664C07F0090780EB2A19974B93F4C3928BDCDE5EDAE998EBB10C5F03A656893"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-root-objective23.md",
+      "sha256": "7F23D68129BEA896DDA3F628CD446DF5E744B9CC0975784933485BD3290FDE89"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-step-limit14.md",
+      "sha256": "46F6FDEAAD7177E4E20BD69D9D7070FAB733A77F4042E5DE649FE3E00F5E8A14"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-suction-reserve25.md",
+      "sha256": "A4E812899776ACDE241DDD596C0605C4550EB171C511C8498730BD4A194BAE9D"
+    },
+    {
+      "path": "eng/diagnostics/R3CapacityObservation/Program.cs",
+      "sha256": "55231E7B97A51CDDBCA43C22A2122C81FFD4EE253D73E33084A33E91DD17CF6C"
+    },
+    {
+      "path": "eng/diagnostics/R3CapacityObservation/R3CapacityObservation.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3CyclePowerObservation/Program.cs",
+      "sha256": "D0F833958CB6A603EE096C4C78EFA38195C9E7F6258B1A9255D2795E055C934F"
+    },
+    {
+      "path": "eng/diagnostics/R3CyclePowerObservation/R3CyclePowerObservation.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3ExhaustBalanceObservation/Program.cs",
+      "sha256": "220FA90EE0D00E5A4DBD26AB5823790295B11F928BE94A7310491E4B5FCF1B70"
+    },
+    {
+      "path": "eng/diagnostics/R3ExhaustBalanceObservation/R3ExhaustBalanceObservation.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3ExhaustBranchObservation/Program.cs",
+      "sha256": "0958E35C7EA9367F825208AA2AC358ECC574D257372A112AECCF218EA1BF25BA"
+    },
+    {
+      "path": "eng/diagnostics/R3ExhaustBranchObservation/R3ExhaustBranchObservation.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3ExhaustDomainObservation/Program.cs",
+      "sha256": "D0B0119DBE518270D478A26C35BC63A1D9608FA22354C4FC11BA925F3B713FAD"
+    },
+    {
+      "path": "eng/diagnostics/R3ExhaustDomainObservation/R3ExhaustDomainObservation.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3LocalBasisObservation/Program.cs",
+      "sha256": "DD8D2EF1CBC3E96AD7D57701B290676ECD861FC2CACFE3778F91C5E61646956B"
+    },
+    {
+      "path": "eng/diagnostics/R3LocalBasisObservation/R3LocalBasisObservation.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/r3_h_minimax_lp.py",
+      "sha256": "741E6A38FD8C849497E7004074CDCF599B0FB7E249851DFCA4CCE50FEAF3DD5E"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/review-r3-repaired-capacity-minimum-model12.py",
+      "sha256": "96843D551A27B1F5A63A09AA20F32E265ED9C352BD12C65C6AEC483FFD47B397"
+    },
+    {
+      "path": "eng/review-r3-repaired-capacity-minimum-model9.py",
+      "sha256": "B3FEC84F7420093169F95B4CE46B0763DE88EBF4C8A59EE7DF76B7ECF8EF4F6A"
+    },
+    {
+      "path": "eng/review-r3-repaired-flow-minimum7.py",
+      "sha256": "7C8AB558620EE4D262C5E1812453CDC7831FA7A632D0DC30FFCF1DF5C62D2510"
+    },
+    {
+      "path": "eng/review-r3-repaired-step-limit14.py",
+      "sha256": "A390DF05F9AC6A89FC9491086539490C8570D8376CBDC57C1B695B050C63F083"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-repaired-branch-basis4.py",
+      "sha256": "4A9839D8F15B85C0C354BC2DF734CDC95A39ABFF9B001F948690C7CD714E3C7A"
+    },
+    {
+      "path": "eng/run-r3-repaired-capacity-observation11.py",
+      "sha256": "FFC0ECD962C5CEBBD29FAB6763F987EC9345D6646A67A1C5494E81F0A1F55866"
+    },
+    {
+      "path": "eng/run-r3-repaired-capacity-observation8.py",
+      "sha256": "0A17DCA66D86488BB7224B7099E117EDBA356F4F199F8079EF5BB0385BC6015A"
+    },
+    {
+      "path": "eng/run-r3-repaired-complete-basis3.py",
+      "sha256": "BE07099EDC076A7D9EF0F450C5A6128CE4B02A80C566866CD1526ACB2ECBC86C"
+    },
+    {
+      "path": "eng/run-r3-repaired-coupled-sensitivity1.py",
+      "sha256": "7781A921C909A810F6A4432BFDEB7CA4F5D3C6AC6C18A25C3D6324C59CC35837"
+    },
+    {
+      "path": "eng/run-r3-repaired-cycle-power19.py",
+      "sha256": "7F4E7F8EE0D712B56CDF0837612D3218E60C1BC29006E46A210E6959223351E3"
+    },
+    {
+      "path": "eng/run-r3-repaired-envelope-objective24.py",
+      "sha256": "00737F57689B75CC76C4C8B1A6E8243181B6A2640577136D9D9B72C2DD7016F8"
+    },
+    {
+      "path": "eng/run-r3-repaired-exhaust-balance17.py",
+      "sha256": "870057BEFF9F31A7907F49DECD5514C737A819291331655D693B5531410ABF1E"
+    },
+    {
+      "path": "eng/run-r3-repaired-exhaust-branch18.py",
+      "sha256": "1B5BA6327AC1BB09BE8D21550F87C840D0AE17215F41359877537B928B0F3208"
+    },
+    {
+      "path": "eng/run-r3-repaired-exhaust-domain16.py",
+      "sha256": "D7F16E157EFCE5F6EF29A84D865F2F68DE77C01A287DFA30E8A5D29D82A6744B"
+    },
+    {
+      "path": "eng/run-r3-repaired-exhaust-lever15.py",
+      "sha256": "5503014ED93199C8B6A5D14776AFCE9636A9F085222E7E134617675AAADDE3E6"
+    },
+    {
+      "path": "eng/run-r3-repaired-local-basis20.py",
+      "sha256": "6888CFEE6357F9A106DF47BC5FE7B6DA3AEAFFC4F21D712FFBBD086BB91B64F3"
+    },
+    {
+      "path": "eng/run-r3-repaired-local-proposals22.py",
+      "sha256": "EE46FF49C1ADEE5EAD44DA56A83E6A3D7BC8C304FF4BF1F84F13C55B4EBE34AF"
+    },
+    {
+      "path": "eng/run-r3-repaired-local-refinement21.py",
+      "sha256": "8C60CE1043853F170F5AFD67EEF7E70A5BC2B0B9AC7F5AB054A2C00EDF24769D"
+    },
+    {
+      "path": "eng/run-r3-repaired-minimum-proposals10.py",
+      "sha256": "329D0AB99BAFBBD111F7D7225681417389C1A2AC5431C36445B880C5F7A98A54"
+    },
+    {
+      "path": "eng/run-r3-repaired-minimum-proposals13.py",
+      "sha256": "19092BEB45B4447BF17051583C1190FD705D520462696C9F716EC74580FEF8F4"
+    },
+    {
+      "path": "eng/run-r3-repaired-missing-directions2.py",
+      "sha256": "69CB4608ADD225DFEF267DCC5BDE4669441BDA8AB26CD31E3AF3245CA844410F"
+    },
+    {
+      "path": "eng/run-r3-repaired-proposal-trial6.py",
+      "sha256": "1F5B90D1357A9F80A15E5BD20C0EC9B1EE5EBD0E454771B611D1562A4F2417F6"
+    },
+    {
+      "path": "eng/run-r3-repaired-root-objective23.py",
+      "sha256": "4725BC7D68A45995D681347ADC265D42B7C912783CF94E80BDE5987538FF7648"
+    },
+    {
+      "path": "eng/run-r3-repaired-steam-directions5.py",
+      "sha256": "731F2A56A6A6FC1EB4C9BF88B1961F44382D8CB0398768DCDA0C51A7EFF00DEF"
+    },
+    {
+      "path": "eng/run-r3-repaired-suction-reserve25.py",
+      "sha256": "85C9FE59BF8E924AA018A5213007443427E8B9C608718DC938D46B0812A94879"
+    },
+    {
+      "path": "global.json",
+      "sha256": "15FC2962D00BBB3FEBAE9DDB01301F0723EBB743E1CFCD57AF3D1FDD3FB640BB"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+      "sha256": "2EF50596DBB4AB5215A484511623D569F2CAE9260962BABAE14BC789F21459F7"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Control/Protection/ProtectedAutomaticFullPlantSolver.cs",
+      "sha256": "316DE6004C6A0A7332B1A3A12C804049AFB767EC8C367B919BFBAECA86429FF8"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Control/TurbineSecondary/TurbineSecondaryControlSolver.cs",
+      "sha256": "877C2FE3731CE0B7307E67C48C58701CA10170BD1094E8F23D89626C4CA93B4E"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/PipeFlowSolver.cs",
+      "sha256": "A9C57F3A71561D32A0278D345D2FE24627B11E32518BBF9D46F3446C82463E64"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveCharacteristicSolver.cs",
+      "sha256": "360F45027F6D7D4017D56AF5884D35694F48B1213AA2329B684584ED7EC2866F"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveFlowSolver.cs",
+      "sha256": "429334D65487A9FE4C516EA09DDAD7003D072BC2B6124029E223C1C080775FE7"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/MainSteam/MainSteamNetworkSolver.cs",
+      "sha256": "0A443A85B2140D0B7F33F2DD504EEB52457BBC0DAB45DF890F222DE6D5BC1C99"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+      "sha256": "F2ED5D846A8AF00FF39445371FB72AF133C935CDF3FD7B560B07EA8D0CD02845"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineStageMassFlowResolver.cs",
+      "sha256": "EE14A79779EDAF5C824DCC08095815748EDBB46A0C46EB50AB283BD6C1F8CE1A"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+      "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/frozen-evidence/r3-repaired-branch-basis4/manifest.json",
+      "sha256": "CD0BBF3378F1F7B6F3012A6DC6ABDD88FD604E7E2CEF1E3893C79B1AE84CD521"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-capacity-minimum-model12/manifest.json",
+      "sha256": "7A18086E424EB3263CE4C7CE38FE6CFD5F4836004A2E2CBFC3115D0CF7C5DB19"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-capacity-minimum-model9/manifest.json",
+      "sha256": "F3984A08F96599B1AFE57BA82488498D2FACD4CCA07A6248D074B12A9AA1CBB2"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-capacity-observation11/manifest.json",
+      "sha256": "9F133E60CDC2BD007AC7CED286BB7DBF5BC5D2E77F3FEF2EFA1525C9C9469D14"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-capacity-observation8/manifest.json",
+      "sha256": "EFE8DFA35EACC2ADA6588BEC6A58DC28CD0D61C9A93F82FAD6DC53A4528D3071"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-complete-basis3/manifest.json",
+      "sha256": "D752C1FB57095A9F33F13D8EA2ABC977D8DD22DE7EAE2143443243C7367B516B"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-coupled-sensitivity1/manifest.json",
+      "sha256": "E783E23788E017596C23C46570BC1E5D8861CFAE850B85A7EC40DBE4279D43F2"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-cycle-power19/manifest.json",
+      "sha256": "718155F66F730B69EE8BDD189B85047A383BE347FBED39A0C3649907FAD0AC48"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-envelope-objective24/manifest.json",
+      "sha256": "4D182DB037BFB45CBF7FFC73D75527B60029DA8696728800F8D1F726857EC80E"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-exhaust-balance17/manifest.json",
+      "sha256": "1F90D204C85E41B73C0297EE34017DDCB14EEA3CD8F81A64C29A133324837D65"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-exhaust-branch18/manifest.json",
+      "sha256": "4629FDE16C77BC8099524449237EBDD6C265146371DA53EA98992ABB2EB40F39"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-exhaust-domain16/manifest.json",
+      "sha256": "3C51BD9E1C8A713B955874CA849D19CEA409BF0A2CA36A8D6EC264C7A3C5779A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-exhaust-lever15/manifest.json",
+      "sha256": "55DD85C7A2D47EF93B7297C8B525BE0D59C3A5FF53E2D51E3038450245D9AFFC"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-flow-minimum7/manifest.json",
+      "sha256": "4BA83DF5DB97DDC53C59598D4AD2DA90750D6E08FDF830CB36F7AA24BA05D393"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-local-basis20/manifest.json",
+      "sha256": "6E2808EA7CB854998023128D7A8AE9FF08869BEA308D179677BBCA7E7F1905ED"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-local-proposals22/manifest.json",
+      "sha256": "401FDFC4EFD879DC64E5A0EE409205E938B7E7E686164E1AAE0CCA3F2A4B290A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-local-refinement21/manifest.json",
+      "sha256": "E1093809B23A6FADFC0FD9E702D2170C4A2CC8E5AE47FF1F8148D306E927EB78"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-minimum-proposals10/manifest.json",
+      "sha256": "76E514304C1E8C2C9C7FBA04940630B3810D1B9423560EAE0F4EE56986FDD1F3"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-minimum-proposals13/manifest.json",
+      "sha256": "52D0359EB910D5D653F6CFC820205112BDD2E054B08FED0E86A1A81C826CDF69"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-missing-directions2/manifest.json",
+      "sha256": "4283E6F1A8E5ED8EBFF4437553621F454354084E5C4A439DF3705B18ACBAEFC8"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-proposal-trial6/manifest.json",
+      "sha256": "82B4E1CACFC7FB8D5A719FB8D858FF44F84F33EEB2DA88018A22F87C1CFAF221"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-raw-owner-diagnostic1/manifest.json",
+      "sha256": "9DA059FF46E55559D27E13DE81CFD51433263D5FC1E9C2FF06F80FD217C80EAC"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-root-objective23/manifest.json",
+      "sha256": "A036F52758FD1651BD4C1125879309ECE75F9A1CDE874985938BF5525931CBF0"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-steam-directions5/manifest.json",
+      "sha256": "5EEA191E76C4486EE5B8C9FBF1BBB4404DB33795AEE96212A5C7368B56119D67"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-step-limit14/manifest.json",
+      "sha256": "1084AFBCAAE853EE5F68D80702DE258442DCA2792A85D04A074ECF89C0C4D91E"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/manifest.json",
+      "sha256": "FACF8D87D14524A2E33CD3D400E4DCA5DA42540454936CF927DB326B9F266A06"
+    },
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-repaired-branch-basis4-contract.json",
+      "sha256": "58C9734D9D5F306F12999FDCA463C41503C7A28596F456604F7727E6CA50DE15"
+    },
+    {
+      "path": "eng/r3-repaired-branch-basis4-returned.json",
+      "sha256": "6F468E7A753E2DAF0D258090974CAEEA4EE5A203AF8E599721974260CBBE2684"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-minimum-model12-contract.json",
+      "sha256": "A05F1596AA6F47B9264802111A4F0E455D55968D7F983DCA4121EEB105701EB3"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-minimum-model12-returned.json",
+      "sha256": "4CCF733A71E311BE7A59DA881F85D9FECF3708714D0B9734019674113642AB89"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-minimum-model9-contract.json",
+      "sha256": "8E123AFD33A16D1055015DACE005AE9FCBA5D2E8AC5FA2605FBCB96A32016FD6"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-minimum-model9-returned.json",
+      "sha256": "4FDEB9A7F3DCAFBEEA62EEF3B9BF768AE37880382D3B86A743752B4C37307368"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-observation11-contract.json",
+      "sha256": "9476EF1CE13854ED1587DE1C6397F8323D541FBB5938769AD6F92017643DF96F"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-observation11-returned.json",
+      "sha256": "ECC7E1D300CBFC31BB7400A18C3144C6A0F6B325FC2B7F31815106C2AB7203C4"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-observation8-contract.json",
+      "sha256": "8C4489D80C50684CA7DF5B55640E977C14A12D5FA7761EB0A390F307589439B0"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-observation8-returned.json",
+      "sha256": "795DA5D267BA6693E8BB184B1819CCE844D397D22DC43BD303718E1F0A471BF0"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-contract.json",
+      "sha256": "EF560FFD356484F6FA51D74596841EAA133EEA3E0E06ED32E46636BCA9322978"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-returned.json",
+      "sha256": "1F95CB03259AAD12EFD79C057DDA48C2185C7E3E54EEC301FB24C7E285F480C8"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-contract.json",
+      "sha256": "D3186F9032C932812869500DDB4D4BD581689C1C37B625776648B9AAC38A688B"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-returned.json",
+      "sha256": "8420E2504D691BDE922E038B8154247A8AB33190E4DD6AC2AD9DC763E065C6C7"
+    },
+    {
+      "path": "eng/r3-repaired-cycle-power19-contract.json",
+      "sha256": "B1C8B1EF9A93F3CD7A4E23F732A8D792A0FC615E9A57FC1C542B427316461847"
+    },
+    {
+      "path": "eng/r3-repaired-cycle-power19-returned.json",
+      "sha256": "3D2719ED7F75F7B7F6832CE14D856CC24791756FE9E25CDF7EAF28BDC8C88F48"
+    },
+    {
+      "path": "eng/r3-repaired-envelope-objective24-contract.json",
+      "sha256": "7A2997ACF55222D3C8B8C90C5EB6A8ACDD6C4C7020CD4D1A17E02A59E16A329C"
+    },
+    {
+      "path": "eng/r3-repaired-envelope-objective24-returned.json",
+      "sha256": "4947D5E83007C084612B022971B466FF88B079E6665AEF73A379DA9BAB63D38D"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-balance17-contract.json",
+      "sha256": "35DDC7983B96FF223311184C128D61282306491037F0D908CBA5C6FB9CEE976B"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-balance17-returned.json",
+      "sha256": "AE1712165AA0B93B6D9AEC68FDE62C6BB6996D443CBB9A483860D7C77C552FD2"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-branch18-contract.json",
+      "sha256": "5F38D8849ADF8B8864FFF737B0E0669036D19ABD7D20EBFD624302DCC880E883"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-branch18-returned.json",
+      "sha256": "BA7C1C660673222E0BD31289DA6C575B0F10BAF10B335600FB6EE161B285F645"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-domain16-contract.json",
+      "sha256": "2135C7FD31852123655A17440AD6C7F7D311A051C226B3AF7CD5295DB655CEA0"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-domain16-returned.json",
+      "sha256": "DB8606EAF2B48885DCA37A57AB31A8CFCC42A106CC032F26BCC4A5E19AAB1B72"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-lever15-contract.json",
+      "sha256": "A64794293A49F9910052A0B1BB70005523BF5B7B8604F04C804FE825C66A8FCB"
+    },
+    {
+      "path": "eng/r3-repaired-exhaust-lever15-returned.json",
+      "sha256": "14DFA104E6B0C40E990A40CB1E421062FB91DD28CC74229ED254EF6BE3A0C4CD"
+    },
+    {
+      "path": "eng/r3-repaired-flow-minimum7-contract.json",
+      "sha256": "85641A7DEFE97E10867E1C2E8D05D8FF007C1670E605EA2F1A99FB49D8661FFC"
+    },
+    {
+      "path": "eng/r3-repaired-flow-minimum7-returned.json",
+      "sha256": "CC20D1AC9F76471ED7DE1796BC3FC9C0EEA308AAEFDCA71063E12B1F04FA3D83"
+    },
+    {
+      "path": "eng/r3-repaired-local-basis20-contract.json",
+      "sha256": "350B93178BBFBBA9FB78A5670188EFFE1D90BA482EEC4A8F2645AEB36CA4345E"
+    },
+    {
+      "path": "eng/r3-repaired-local-basis20-returned.json",
+      "sha256": "CACB675330670B8126BFE82BAD8075D1EA2D8C90C508B39F38369085C414B5F0"
+    },
+    {
+      "path": "eng/r3-repaired-local-proposals22-contract.json",
+      "sha256": "BEE31823F80A9E39033999926072579FB85004E7C1E110E8637F008F52358BAC"
+    },
+    {
+      "path": "eng/r3-repaired-local-proposals22-returned.json",
+      "sha256": "F2E82230B291FD234638EB4CF511CAC4FF707ECE090DBF52DF8E1D42EF77B1DA"
+    },
+    {
+      "path": "eng/r3-repaired-local-refinement21-contract.json",
+      "sha256": "E4FE4ECB438DAB3B0FA0856F17DA162720E39D47CBF3303A8FC168864E7904DE"
+    },
+    {
+      "path": "eng/r3-repaired-local-refinement21-returned.json",
+      "sha256": "32102527E26FE4BFC2C18DD79F2C6AD316584BCE7B147D1AB1DC0566B5ABD765"
+    },
+    {
+      "path": "eng/r3-repaired-minimum-proposals10-contract.json",
+      "sha256": "B22BD0EBC14BA11CD9571DB230D82AC6526F9B7B6B83621DFEF3411B7F0AD0D8"
+    },
+    {
+      "path": "eng/r3-repaired-minimum-proposals10-returned.json",
+      "sha256": "B6F0ECE9EDA85BED56F0D6328B6F975E651EA5CE1EB63339C92939BDA0CE7D9F"
+    },
+    {
+      "path": "eng/r3-repaired-minimum-proposals13-contract.json",
+      "sha256": "B45DFCC55839A72B500D9DFF8B33D7A11889E56DEA0DA5E6159206E524786E83"
+    },
+    {
+      "path": "eng/r3-repaired-minimum-proposals13-returned.json",
+      "sha256": "4B93EF80B9640951C20A0AD6ADF40575663BEF33007AF07284266AA3CA0BD8D8"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-contract.json",
+      "sha256": "122B15D3116402F2F61E31AB33CB96108A3AE54A4A9DAF9F5B7974EF45B8249C"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-returned.json",
+      "sha256": "49E54BA12E4CFAB26926AFDA476571936D5EBB8536B3D0F67ACE7326C56D8312"
+    },
+    {
+      "path": "eng/r3-repaired-proposal-trial6-contract.json",
+      "sha256": "D18A9B71D9A8715B3C15624E8518391A1CB66C6999D8CCDDE9C257C1B94D7221"
+    },
+    {
+      "path": "eng/r3-repaired-proposal-trial6-returned.json",
+      "sha256": "92509FFB0CC54BE04D33F5887E34F1EA61C919773191A6C2B0C356321750CB52"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-contract.json",
+      "sha256": "DE164CE8C7829E65A10ADD4651A3D54552AE6345E064CF4CEB717FE0CFB5D7EE"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-returned.json",
+      "sha256": "1F11D5BCAC8C87F20694A365CA22107AC6E0D386D289F5C11DB9ED14A77A588A"
+    },
+    {
+      "path": "eng/r3-repaired-root-objective23-contract.json",
+      "sha256": "334E9907B16545808F05210989DD506C28A3311E92FD1DB4F615ED2906A428B7"
+    },
+    {
+      "path": "eng/r3-repaired-root-objective23-returned.json",
+      "sha256": "9DE03C4CB29E1E105C4DC1EA51D61031512E57DC4312F264244E590D770E54A9"
+    },
+    {
+      "path": "eng/r3-repaired-steam-directions5-contract.json",
+      "sha256": "58BE0A10FE65AF9EC9B0C2E04C4F7728B6F4113EFC9EDA5D5372B618CA95E03A"
+    },
+    {
+      "path": "eng/r3-repaired-steam-directions5-returned.json",
+      "sha256": "5EFED89F0F3B02598360675896F9A0E82FA988E0178EBDEE921C75C0B902C9AA"
+    },
+    {
+      "path": "eng/r3-repaired-step-limit14-contract.json",
+      "sha256": "17FF6C52AEA4F138C45C68CC7B9F16C8734311BA7D90646B203A98C180CC90B0"
+    },
+    {
+      "path": "eng/r3-repaired-step-limit14-returned.json",
+      "sha256": "A5E526C7217A7B1AFC60EAA4BC64E1722E1F1CC707FC6675C72E600C25B53EAA"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-contract.json",
+      "sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-returned.json",
+      "sha256": "8B063F893FBE5AECC0220A2A084872AC14DE358B105A237DEEA1F15A9EC25308"
+    }
+  ]
+}

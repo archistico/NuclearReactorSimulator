@@ -1,0 +1,54 @@
+{
+  "schema": "r3-repaired-local-basis20-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2026,
+      "sha256": "9A01FDFDECCED1789E9852C377144D1767DC7FC0075006DAB8BEE522ACCD2843",
+      "stored_sha256": "9A01FDFDECCED1789E9852C377144D1767DC7FC0075006DAB8BEE522ACCD2843"
+    },
+    {
+      "file": "00-domain-fixtures.log",
+      "stored": "00-domain-fixtures.log",
+      "bytes": 58,
+      "sha256": "E000A21B2EBDBBBEEA75FA4B417A52B632F11051819C178A05CD1DA9E0360298",
+      "stored_sha256": "E000A21B2EBDBBBEEA75FA4B417A52B632F11051819C178A05CD1DA9E0360298"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 151321,
+      "sha256": "B452C559FD61B7F5B91FED3B8BD8959B10D97FCDEF9923D79725E7035950B297",
+      "stored_sha256": "B452C559FD61B7F5B91FED3B8BD8959B10D97FCDEF9923D79725E7035950B297"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3181,
+      "sha256": "4976E99C1FCAFB4B6271B01401B1F6AE6446F698BA81775C06E6809DB63D3322",
+      "stored_sha256": "4976E99C1FCAFB4B6271B01401B1F6AE6446F698BA81775C06E6809DB63D3322"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 7891252,
+      "sha256": "D74C53C8F24153F78991FD444FEDBF67626D2032594F112F9F6C1A722FF08E54",
+      "stored_sha256": "FFBB657073103E22C8EF36DCF1E946DE63854C39D242642E04066CDA2A6AC141"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 727929,
+      "sha256": "7DC2C78637F4890F0E05FD97874937675A4C6BC8AA4613D8FB6C0B5C74FC2D06",
+      "stored_sha256": "7DC2C78637F4890F0E05FD97874937675A4C6BC8AA4613D8FB6C0B5C74FC2D06"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 98,
+      "sha256": "B525CAF5699FBC12FFDDCD0195E27018920C2AE14ADBA93C7D74B7B5BDBC0630",
+      "stored_sha256": "B525CAF5699FBC12FFDDCD0195E27018920C2AE14ADBA93C7D74B7B5BDBC0630"
+    }
+  ]
+}

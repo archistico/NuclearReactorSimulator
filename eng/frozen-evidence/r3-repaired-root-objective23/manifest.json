@@ -1,0 +1,54 @@
+{
+  "schema": "r3-repaired-root-objective23-frozen-v1",
+  "files": [
+    {
+      "file": "00-domain-fixtures.log",
+      "stored": "00-domain-fixtures.log",
+      "bytes": 58,
+      "sha256": "E000A21B2EBDBBBEEA75FA4B417A52B632F11051819C178A05CD1DA9E0360298",
+      "stored_sha256": "E000A21B2EBDBBBEEA75FA4B417A52B632F11051819C178A05CD1DA9E0360298"
+    },
+    {
+      "file": "01-predictions.json",
+      "stored": "01-predictions.json",
+      "bytes": 29442,
+      "sha256": "7F4ED7E534F852B59902D9694FE71C7B8297AA50479D402D1308A23CDDBF5C1B",
+      "stored_sha256": "7F4ED7E534F852B59902D9694FE71C7B8297AA50479D402D1308A23CDDBF5C1B"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 4787,
+      "sha256": "BC02393AE6FEFB9DE9650DED83376598B11111A6434DCB9CD00CAFD22F42B816",
+      "stored_sha256": "BC02393AE6FEFB9DE9650DED83376598B11111A6434DCB9CD00CAFD22F42B816"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3275,
+      "sha256": "7F11360CB1D8F4C5852CF248A0408745652EA9B7129D6FB88521BEF55985C579",
+      "stored_sha256": "7F11360CB1D8F4C5852CF248A0408745652EA9B7129D6FB88521BEF55985C579"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 243492,
+      "sha256": "AFC0581B5BBF4D59E94CFBD2311EB2F39DC12C1484B3E418FE50B2B6D2BD158E",
+      "stored_sha256": "6A2DCEAE139ABDAE8FA8192DAF3DACB779550395437D0A76B1D1D784A1349AA5"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 61878,
+      "sha256": "65259795ACE7FFE4621E8D038A8E2AA9D6C376DA5B8EA900A89EE09DFEF5B6BA",
+      "stored_sha256": "65259795ACE7FFE4621E8D038A8E2AA9D6C376DA5B8EA900A89EE09DFEF5B6BA"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 95,
+      "sha256": "41EB623F5E985BEC45854A599FBAF6D2F2D5F2044BFCAB00DA1D0793F1E49B47",
+      "stored_sha256": "41EB623F5E985BEC45854A599FBAF6D2F2D5F2044BFCAB00DA1D0793F1E49B47"
+    }
+  ]
+}

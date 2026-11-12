@@ -13,7 +13,7 @@ usare oggi; questo indice descrive come trovare e autenticare le evidenze.
 | [large-payload-manifest.csv](large-payload-manifest.csv) | Identità SHA-256 canoniche delle tracce storiche di grandi dimensioni. |
 | [archive/](archive/README.md) | Contenitori compressi e istruzioni per ripristinare i payload storici quando un validatore li richiede. |
 | `r3-h-*/`, `r3-op-*/`, `r3-stage-*/` | Pacchetti delle indagini su inventari, punti operativi e trasporto: dati, esiti e manifest; le tracce dei batch sono compresse. |
-| `r3-repaired-*/` | Diagnosi del punto riparato, basi e modelli del minimo, proposte, limiti del passo, sonde di exhaust e verifica della potenza globale. Il checkpoint collega i protocolli correnti; ogni pacchetto conserva il proprio ambito e risultato, comprese le previsioni affini fallite della prova 6 e il rifiuto di fase della prova 17. |
+| `r3-repaired-*/` | Diagnosi del punto riparato, modelli, bilanci e proposte fino al criterio originale e alle riserve iniziali. Il checkpoint collega i protocolli correnti; ogni pacchetto conserva ambito, risultati e rifiuti. Un PASS dell'evidenza non promuove le proposte non conformi né qualifica R3. |
 
 Le grandi tracce storiche descritte dal manifest non sono incluse espanse
 nei pacchetti sorgente del candidato. La vecchia directory di test

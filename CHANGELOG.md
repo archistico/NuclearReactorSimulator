@@ -47,6 +47,53 @@ Lo [stato corrente](docs/PROJECT.md), l'[handoff](docs/PROJECT.md#handoff) e la
   rimisurare il modello e le capacità attorno al nuovo punto diagnostico,
   prima di dichiarare la ricerca integrata. R3 RED, M10 aperto.
 
+### Nuova base locale e prime previsioni attorno al punto diagnostico 19
+
+- Prova 20: 260 ricette ripetibili, osservazione di tutte le capacità e
+  recupero di 22 direzioni su 30. Il centro è limitato da expansion ai tre
+  checkpoint; otto direzioni falliscono il confronto fra ampiezze.
+- Prova 21: 196 ricette sulle otto direzioni mancanti, con ampiezze ridotte
+  e vincolo del medesimo vincitore del centro. Recuperata la base di rango
+  diagnostico 30: 28 direzioni centrali, incluse quelle di hotwell, e due
+  unilaterali in suction. Le vecchie derivate non sono riutilizzate.
+- Prova 22: otto ricette; due previsioni congelate prima della misura e
+  conformi. Errore massimo circa 0,0330% sulle variazioni delle 81 righe
+  pesate; capacità previste entro 8e-7 e expansion ancora limitante.
+  Le proposte muovono a scala utile quattro direzioni del vapore.
+- Il massimo diagnostico scende da 0,81043 a 0,79454, ma il massimo dei
+  75 residui originali cresce da 8.365.513,134 a 8.369.112,639. Nessuna
+  proposta accettata come aggiornamento di una ricerca integrata.
+- Compilazione della console senza avvisi o errori, riusata senza modifiche
+  nelle prove successive; fixture e replay PASS. Complessivamente 464
+  ricette e 1.398 passi runtime; errore energetico globale sotto 0,0035 W.
+  Produzione, test, payload C4 e vecchie evidenze invariati; suite ordinaria
+  non rieseguita per queste aggiunte diagnostiche.
+- Checkpoint, roadmap e handoff puntano ora a proposte sul massimo originale,
+  con vincoli termici separati e verifica delle combinazioni di hotwell e
+  feedwater. Nessun nuovo seed, R3 RED e M10 aperto.
+
+### Proposte sul criterio originale, inviluppo e riserva di suction
+
+- Prova 23: obiettivo sul massimo dei 75 residui originali, con vincoli
+  termici e margini delle capacità separati. Passo al 25%: massimo
+  7.917.982,871, −5,35%, con previsioni e controlli conformi. Il passo
+  al 50% resta escluso per portata primaria e margine termico.
+- Prova 24: ricavate e confrontate le derivate dei valori operativi sulle
+  trenta direzioni; previsione interna del 10% all'inviluppo e margine
+  termico di 10 W. Le due proposte rispettano inviluppo e limiti termici,
+  ma cambiano fase in suction al primo Running: rifiuti conservati.
+- Prova 25: dichiarata una riserva iniziale accoppiata di massa ed energia
+  di suction, fino a +1e-6 ciascuna, entro le ampiezze già misurate. Nessun
+  reintegro durante il runtime. Il passo completo riduce il massimo a
+  6.578.689,455, −21,36%, con salute, fasi, inviluppo e limiti termici conservati.
+- La previsione operativa della prova 25 manca però la soglia: errore massimo
+  circa 0,0134 kg/s, pari al 6,71% dell'intervallo contro 1%. Il punto rimane
+  diagnostico. Prossima attività: misura isolata della direzione accoppiata
+  di suction e revisione del modello prima di altre proposte.
+- Fixture, preflight, bilanci e replay PASS: 24 ricette e 78 passi runtime.
+  Console riusata senza modifiche; produzione, test, payload C4 e vecchie
+  evidenze invariati. Suite ordinaria non rieseguita. R3 RED, M10 aperto.
+
 ## 2026-11-11
 
 ### Indagine sull'equilibrio integrato R3

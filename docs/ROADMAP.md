@@ -60,9 +60,17 @@ per cambio di fase di hotwell; con una riserva iniziale dichiarata di circa
 10 g, la seconda annulla massa ed energia di exhaust al primo checkpoint.
 La terza verifica due previsioni nucleari-termiche e annulla la potenza netta
 globale iniziale. Il maggiore residuo originale resta però circa 8,37 milioni:
-hotwell accumula energia mentre perde massa. La prossima finestra deve
-quindi rimisurare il modello locale attorno a questo punto diagnostico,
-includendo tutti gli inventari e le capacità, prima della ricerca integrata.
+hotwell accumula energia mentre perde massa. Le prove 20–21 hanno rimisurato
+il modello: trenta direzioni, con due coefficienti unilaterali in suction.
+La prova 22 conferma due previsioni nuove nel ramo expansion; le proposte
+muovono a scala utile quattro direzioni del vapore. Migliora la metrica
+diagnostica, ma il massimo originale aumenta leggermente. Le prove 23–25
+passano quindi al criterio originale con vincoli termici e operativi separati.
+Il passo al 25% della prova 23 riduce il massimo del 5,35% con tutti i
+controlli conformi. La riserva iniziale accoppiata di suction nella prova 25
+consente una riduzione misurata del 21,36%, con salute, fasi e inviluppo
+conservati, ma la previsione operativa manca la soglia. La prossima finestra
+deve isolare questa risposta accoppiata prima di una ricerca a più passi.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -81,7 +89,11 @@ includendo tutti gli inventari e le capacità, prima della ricerca integrata.
 | Dominio diagnostico esplorato | 12 ricette sane, nell'inviluppo e ripetibili, solo energia positiva di exhaust fino al 4%. | Cambio di segno fra +3,5% e +4%; non è una radice e non amplia la ricerca precedente. |
 | Bilanci accoppiati ricostruiti | Prova 17 rifiutata per fase; prova 18, con riserva iniziale esplicita, bilancia exhaust al primo checkpoint. | 28 ricette complessive; rifiuto conservato, nessuna permanenza di fase o stazionarietà dimostrata su 100 passi. |
 | Potenza globale verificata | Prova 19: otto ricette, due previsioni conformi; incremento neutronico e temperature accoppiate annullano la potenza netta iniziale. | Dominio diagnostico dichiarato; al primo Running restano +284 W e importanti accumuli locali. Nessuna radice. |
-| Rimisurare nel nuovo punto | Nuova base locale, capacità e vincitori ai tre checkpoint, con attenzione a hotwell e feedwater. | Dominio e budget dichiarati prima della misura; bilanci di tutti i nodi, dei corpi termici e del rotore; proposte nuove conformi prima della ricerca. |
+| Base rimisurata nel nuovo punto | Prove 20–21: 456 ricette, trenta direzioni, 28 centrali e due unilaterali. Capacità e bilanci osservati ai tre checkpoint. | Rango diagnostico 30; recupero delle otto direzioni mancanti a scale inferiori e nel ramo expansion. |
+| Prime previsioni nel nuovo punto | Prova 22: otto ricette, due previsioni conformi, errore massimo circa 3,30e-4; quattro direzioni effettive. | Fasi e ramo conservati; massimo diagnostico ridotto, massimo originale in lieve aumento. Nessuna radice o ricerca. |
+| Riduzione originale verificata | Prova 23: −5,35% sul massimo con il passo al 25%, previsioni e controlli conformi. | Passo al 50% escluso per portata primaria e margine termico; rifiuto conservato. |
+| Inviluppo e riserva osservati | Prova 24: vincoli operativi nel modello, ma cambio di fase in suction. Prova 25: riserva iniziale accoppiata, −21,36% misurato con fase e inviluppo conservati. | Previsione operativa della prova 25 non conforme: errore massimo 6,71% dell'intervallo contro 1%. Nessun punto promosso o installato. |
+| Isolare la risposta accoppiata | Misura della sola coppia massa/energia iniziali di suction; confronto con la somma delle colonne separate. | Attribuzione dello scarto, modello rimisurato e nuove previsioni conformi senza rilassare le soglie o ampliare il dominio. |
 | Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Famiglia e limiti motivati dopo i bilanci congiunti; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
@@ -95,8 +107,10 @@ flowchart TD
     M --> S["30 direzioni e capacità osservate: prime proposte non conformi"]
     S --> A["Modello del minimo verificato su proposte nuove; estensione a 30 direzioni"]
     A --> P["Exhaust e potenza globale bilanciati al primo checkpoint"]
-    P --> L["Nuovo punto: rimisurare inventari e capacità"]
-    L --> B{"Previsioni, ramo e bilanci accoppiati verificati?"}
+    P --> L["Nuova base misurata; due previsioni conformi"]
+    L --> O["Massimo originale ridotto; riserva di suction osservata"]
+    O --> J["Isolare la risposta accoppiata e verificare la previsione operativa"]
+    J --> B{"Previsioni, ramo e bilanci accoppiati verificati?"}
     B -->|"no"| S
     B -->|"sì"| C["Ricerca con criteri e budget congelati"]
     C --> D{"Radice osservata?"}
@@ -115,11 +129,16 @@ energetico di exhaust non basta: annullarlo a stato fisso peggiorerebbe la massa
 Non è una prova di impossibilità della famiglia o una proposta di modifica a UA.
 La nuova prova nucleare-termica verifica il passo che compensa circa 0,942 MW
 al primo checkpoint. Questo riscontro riguarda la potenza globale iniziale,
-mentre il modello di tutti i residui deve essere ristimato nel nuovo punto.
+e le prove 20–21 hanno poi ristimato il modello locale nel nuovo punto.
 Anche trenta direzioni disponibili non bastano a rendere affine una legge del
 minimo vicino a capacità quasi coincidenti. Il modello del minimo prevede ora
 anche proposte nuove su trenta direzioni, entro le ampiezze campionate;
-questa validità non si trasferisce automaticamente al nuovo punto diagnostico.
+questa validità non si trasferisce automaticamente al nuovo punto diagnostico,
+dove la prova 22 verifica finora due piccoli passi su quattro direzioni.
+Il suo miglioramento della metrica diagnostica non è una riduzione del
+criterio originale. Le prove 23–25 lo affrontano direttamente, mantenendo
+distinte riduzione misurata e conformità delle previsioni: l'errore operativo
+della prova 25 resta un motivo di esclusione anche se il punto è nell'inviluppo.
 Poiché in un punto stazionario le tre valvole portano la stessa portata dello
 stadio, una radice starebbe sul pareggio: la ricerca futura dovrà trattarlo.
 Il cambio di segno misurato sulla sola combinazione di exhaust non risolve

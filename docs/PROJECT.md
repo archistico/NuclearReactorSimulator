@@ -6,12 +6,13 @@ le consegne e il [changelog](../CHANGELOG.md) conserva la cronologia.
 
 ## Stato corrente
 
-Checkpoint del **12 novembre 2026**. Le prove 17–19 hanno ricostruito insieme
-massa ed energia di exhaust e verificato una previsione della potenza netta
-dell'intero ciclo. Il nuovo punto diagnostico annulla questi bilanci al primo
-checkpoint, ma lascia accumuli nei singoli inventari: il maggiore residuo
-scalato è ancora circa 8,37 milioni. Il passo successivo è rimisurare il modello
-locale attorno a questo punto, prima di dichiarare una ricerca integrata.
+Checkpoint del **12 novembre 2026**, dopo le prove 23–25. Le proposte ora
+minimizzano direttamente il massimo dei 75 residui originali, con vincoli
+termici e operativi separati. La prova 23 ottiene una riduzione del **5,35%**
+con tutti i controlli conformi. La prova 25 misura una riduzione del **21,36%**,
+con salute, fase e inviluppo conservati, ma manca la soglia di previsione
+operativa. Prima della ricerca serve isolare e misurare la risposta
+accoppiata della riserva iniziale in suction.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -32,6 +33,11 @@ locale attorno a questo punto, prima di dichiarare una ricerca integrata.
 | Bilanci accoppiati di exhaust | Prova 17 arrestata per cambio di fase di hotwell; rifiuto conservato. Prova 18: riserva iniziale dichiarata di circa 10 g in hotwell, 24 ricette e due aggiornamenti; massa ed energia di exhaust entro 1e-6 kg/s e 0,01 W al primo checkpoint. |
 | Potenza globale | Prova 19: otto ricette; previsioni a metà e intero incremento nucleare-termico entrambe conformi. Al punto intero la potenza netta globale iniziale è numericamente nulla; dopo il seed e al primo Running restano +266 W e +284 W. |
 | Nuovo punto diagnostico | Massimo assoluto dei 75 residui scalati **8.365.513,134**, contro ≤1. Domina l'energia di hotwell: +40,3 kW al primo checkpoint, con massa −0,0619 kg/s. Nessuna conferma di 100 passi. |
+| Nuova base locale | Prova 20: 260 ricette, 22 direzioni recuperate. Prova 21: 196 ricette sulle otto mancanti; base di rango diagnostico 30, con 28 direzioni centrali e due unilaterali in suction. Nel centro limita expansion ai tre checkpoint. |
+| Proposte nel nuovo punto | Prova 22: otto ricette, due previsioni conformi; errore massimo sulle variazioni circa 3,30e-4 contro 0,10. Quattro direzioni mosse a scala utile; expansion resta limitante. Massimo pesato da 0,81043 a 0,79454, ma massimo originale da 8.365.513,134 a **8.369.112,639**. |
+| Criterio originale | Prova 23: otto ricette; passo al 25% conforme, massimo originale **7.917.982,871**, −5,35% rispetto al punto 19. Il passo al 50% è escluso per inviluppo della pompa primaria e margine termico. |
+| Inviluppo nella proposta | Prova 24: otto ricette; derivate operative disponibili sulle trenta direzioni, previsione più interna alle soglie e margine termico di 10 W. Entrambe le proposte rispettano inviluppo e limiti termici, ma cambiano fase in suction al primo Running e restano escluse. |
+| Riserva accoppiata di suction | Prova 25: otto ricette, riserva iniziale di massa ed energia fino a +1e-6 ciascuna. Fasi, inviluppo e limiti termici conservati; massimo originale **6.578.689,455**, −21,36%. Errore operativo 6,71% dell'intervallo contro 1%: previsione non conforme, nessun aggiornamento di ricerca. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -470,7 +476,7 @@ flowchart LR
     E["Exhaust bilanciato al primo checkpoint"] --> G["Deficit globale misurato: 0,942 MW"]
     G --> N["Incremento nucleare e temperature: previsione confermata"]
     N --> H["Potenza netta nulla; inventari ancora in deriva"]
-    H --> M["Rimisurare il modello locale e le capacità"]
+    H --> M["Base locale rimisurata; ora ridurre i residui originali"]
 ```
 
 Il diagramma distingue un bilancio locale da quello complessivo. La somma
@@ -479,6 +485,73 @@ la perdono. Nel nuovo punto domina hotwell: al primo checkpoint accumula
 40,3 kW e perde 0,0619 kg/s; al primo Running perde 0,0838 kg/s. Il massimo
 dei 75 residui originali è **8.365.513,134**. Queste misure motivano la nuova
 base locale, senza qualificare una radice, un box di ricerca o un seed.
+
+### La nuova base locale e le prime previsioni
+
+La [prova 20](../eng/contracts/r3-repaired-local-basis20.md) ripete i vettori
+delle trenta direzioni nel nuovo centro, senza importare le vecchie derivate.
+Su 260 ricette recupera 22 direzioni. Le otto mancanti falliscono il confronto
+fra ampiezze; molte sonde cambiano il limite attivo della portata. Il centro
+è invece limitato dall'espansione della turbina a tutti e tre i checkpoint.
+La [prova 21](../eng/contracts/r3-repaired-local-refinement21.md) riduce le
+ampiezze soltanto su quelle otto: 196 ricette e recupero completo, mantenendo
+anche il vincitore expansion. La base ha rango numerico diagnostico 30;
+hotwell diventa osservabile ai due segni, mentre le due direzioni di suction
+restano unilaterali. Il rango non dimostra sufficienza della famiglia.
+
+La [prova 22](../eng/contracts/r3-repaired-local-proposals22.md) congela poi
+un modello affine e due proposte prima di misurarle. Un limite calcolato
+sulle capacità mantiene margine rispetto ai concorrenti di expansion:
+i passi effettivi sono l'11,38% e il 22,76% del passo lineare completo.
+Le otto ricette, comprese le ripetizioni del centro e della baseline storica,
+confermano entrambe le previsioni. L'errore massimo sulle variazioni delle
+81 righe pesate è circa 0,0330%; quello sulle capacità è inferiore a 8e-7.
+Fasi, inviluppo e regimi sono conservati; limita ancora expansion.
+
+Il risultato convalida due piccoli passi che muovono a scala utile soltanto
+quattro direzioni, tutte nel percorso del vapore. Non verifica la composizione
+delle altre 26 né qualifica una ricerca. Il massimo pesato diagnostico scende
+da 0,81043 a 0,79454, mentre il massimo originale cresce da 8.365.513,134
+a 8.369.112,639. La previsione è affidabile su questi passi, ma l'obiettivo
+diagnostico favorisce la coppia e non riduce il residuo dominante di hotwell.
+Il passo successivo deve affrontare direttamente i 75 residui originali,
+affiancando i controlli termici senza cambiarne scale o tolleranze.
+
+### Ridurre il criterio originale senza spostare i limiti
+
+La [prova 23](../eng/contracts/r3-repaired-root-objective23.md) minimizza
+direttamente il massimo dei 75 residui, mantenendo scale e soglia originali.
+I sei tassi termici e i margini delle capacità sono vincoli separati, che
+evitano di trasferire lo squilibrio ai corpi solidi o attraversare il limite
+di expansion. Il passo al 25% porta il massimo da 8.365.513,134 a
+7.917.982,871: −5,35%, con previsioni e controlli conformi. Il passo al 50%
+riduce di più, ma supera 100,1 kg/s nella pompa primaria e il margine termico
+dichiarato; resta escluso.
+
+La [prova 24](../eng/contracts/r3-repaired-envelope-objective24.md) ricava
+dagli stencil congelati anche le derivate dei quattro valori operativi
+ai tre checkpoint. Tutte le trenta direzioni passano il confronto tra
+ampiezze. La proposta prevede un margine interno del 10% rispetto agli
+estremi operativi e 10 W di margine sui corpi termici. I due punti misurati
+rispettano inviluppo e limiti termici, ma suction diventa miscela satura
+al primo Running. I rifiuti sono conservati, senza modificare le soglie.
+
+La [prova 25](../eng/contracts/r3-repaired-suction-reserve25.md) dichiara
+una riserva iniziale accoppiata: massa ed energia di suction aumentano
+entrambe dello 0,5e-6 o di 1e-6 rispetto alla baseline, senza cambiare
+l'energia interna specifica. La massa aggiunta è circa 3,75 o 7,50 g;
+non avvengono reintegri durante il runtime. Il passo completo porta il
+massimo a **6.578.689,455**, −21,36%, mantenendo salute, fase, inviluppo,
+vincoli termici e oltre il 97% dei margini iniziali delle capacità.
+
+Questo punto resta diagnostico: la previsione della portata manca la soglia
+operativa dell'1% dell'intervallo, con errore massimo circa 0,0134 kg/s,
+pari al 6,71%. I residui originali sono previsti entro il 2,08%, ma il
+giudizio richiede anche le altre condizioni. Domina ancora l'energia di
+hotwell al primo Running, +31,68 kW, seguita dalla sua perdita di massa
+al primo checkpoint, −0,1243 kg/s. La composizione delle due variazioni di
+suction deve essere osservata separatamente prima di attribuire lo scarto
+o rimisurare un modello per la ricerca.
 
 ### Conservazione, portata e revisione della verifica
 
@@ -505,39 +578,42 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **rimisurare il modello locale attorno al punto
-diagnostico della prova 19**, includendo tutti gli inventari, i corpi termici,
-la coppia e le capacità di portata. Le prove 18–19 hanno bilanciato exhaust
-e la potenza globale soltanto al primo checkpoint. Il massimo residuo resta
-in hotwell; le vecchie secanti non sono una base validata nel nuovo punto.
+La prossima attività è **misurare isolatamente la direzione accoppiata di
+massa ed energia iniziali di suction e verificarne la composizione**.
+La prova 23 ha una proposta interamente conforme con −5,35% sul massimo
+originale. La prova 25 misura −21,36%, ma la previsione operativa non è
+conforme. Il centro del modello resta il punto 19: nessuna proposta è
+stata accettata come aggiornamento di una ricerca integrata.
 
 Dalla radice del repository:
 
 ```powershell
-python .\eng\run-r3-repaired-exhaust-balance17.py review
-python .\eng\run-r3-repaired-exhaust-branch18.py review
-python .\eng\run-r3-repaired-cycle-power19.py review
+python .\eng\run-r3-repaired-root-objective23.py review
+python .\eng\run-r3-repaired-envelope-objective24.py review
+python .\eng\run-r3-repaired-suction-reserve25.py review
 ```
 
-I replay devono confermare l'evidenza congelata, compreso il rifiuto iniziale
-della prova 17; non chiamano l'impianto. PASS dell'evidenza non equivale a
+I replay devono confermare l'evidenza congelata, compresi i rifiuti delle
+prove 23–25; non chiamano l'impianto. PASS dell'evidenza non equivale a
 PASS dell'equilibrio. R3 resta RED e M10 aperto.
 
-1. Riprendere il [punto locale e l'arresto](../eng/frozen-evidence/r3-repaired-exhaust-branch18/04-local-result.json)
-   e le [previsioni verificate](../eng/frozen-evidence/r3-repaired-cycle-power19/04-analysis.json).
-   Conservare la riserva iniziale di hotwell e le eccezioni diagnostiche
-   come condizioni esplicite, senza estenderle automaticamente alla ricerca.
-2. Dichiarare coordinate, limiti, ampiezze, budget e controlli della nuova
-   osservazione. Rimisurare derivate e capacità nel nuovo punto, lungo tutti
-   e tre i checkpoint, con particolare attenzione a hotwell e feedwater.
-   La riserva iniziale non dimostra la permanenza di fase per 100 passi.
-3. Verificare proposte nuove sul modello ristimato, riportando i 75 residui
-   originali e le grandezze fisiche, inclusi corpi termici e rotore. Trattare
-   i cambi di vincitore e i vincoli unilaterali; il bilancio globale nullo
-   non sostituisce l'annullamento degli accumuli di ciascun nodo.
-4. Solo dopo tale verifica motivare famiglia e limiti della ricerca per rami,
-   congelando algoritmo e arresti. Scale, criterio di radice e inviluppo
-   restano invariati; nessun seed o nuovo guadagno dei controllori è implicato.
+1. Leggere i [risultati sul criterio originale](../eng/frozen-evidence/r3-repaired-root-objective23/04-analysis.json)
+   e quelli [con riserva accoppiata](../eng/frozen-evidence/r3-repaired-suction-reserve25/04-analysis.json).
+   Distinguere riduzione misurata, permanenza nei controlli e conformità
+   di tutte le previsioni; il punto al 25% della prova 23 è il solo nuovo
+   punto conforme all'intero giudizio dichiarato in queste tre prove.
+2. Dichiarare una misura della sola coppia suction:mass/suction:energy,
+   alle ampiezze già usate, con ripetizioni di centro e baseline. Osservare
+   portata primaria, inventari, tassi termici, capacità e fase lungo tutta
+   la ricetta; il confronto con la somma delle colonne deve isolare lo scarto.
+3. Ristimare la parte del modello giustificata dalla nuova misura e congelare
+   altre previsioni prima di eseguirle. Conservare obiettivo sui 75 residui,
+   scale, vincoli termici e operativi, margini delle capacità e soglie di
+   previsione: non promuovere il punto 25 rilassando il controllo operativo.
+4. Solo dopo tale riscontro motivare una ricerca a più passi, con dominio,
+   budget, arresti e rimisura dichiarati. Le riserve iniziali di hotwell e
+   suction non dimostrano permanenza di fase per 100 passi. Nessun seed
+   o nuovo guadagno dei controllori è implicato.
 
 Una radice osservata richiede ancora revisione, conferme indipendenti di 100
 passi, R3 e la [sequenza di chiusura](ROADMAP.md#3-che-cosa-manca-dopo-r3-per-chiudere-m10).
@@ -571,6 +647,12 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Bilanci accoppiati](../eng/contracts/r3-repaired-exhaust-balance17.md) e [ricevuta](../eng/r3-repaired-exhaust-balance17-returned.json) | Quattro ricette; arresto iniziale per cambio di fase di hotwell, conservato. |
 | [Riserva iniziale e bilanci locali](../eng/contracts/r3-repaired-exhaust-branch18.md) e [ricevuta](../eng/r3-repaired-exhaust-branch18-returned.json) | 24 ricette, due aggiornamenti: exhaust bilanciato solo al primo checkpoint. |
 | [Potenza globale](../eng/contracts/r3-repaired-cycle-power19.md) e [ricevuta](../eng/r3-repaired-cycle-power19-returned.json) | Otto ricette; due previsioni conformi, potenza netta iniziale annullata al punto intero. Nessuna radice integrata. |
+| [Nuova base locale](../eng/contracts/r3-repaired-local-basis20.md) e [ricevuta](../eng/r3-repaired-local-basis20-returned.json) | 260 ricette, 22 direzioni; 390 minimi ricostruiti esattamente. |
+| [Raffinamento locale](../eng/contracts/r3-repaired-local-refinement21.md) e [ricevuta](../eng/r3-repaired-local-refinement21-returned.json) | 196 ricette, recuperate le otto direzioni mancanti: 28 centrali e due unilaterali; rango diagnostico 30. |
+| [Nuove proposte](../eng/contracts/r3-repaired-local-proposals22.md) e [ricevuta](../eng/r3-repaired-local-proposals22-returned.json) | Otto ricette; due previsioni conformi, quattro direzioni effettive. Metrica diagnostica ridotta, massimo originale in lieve aumento. |
+| [Obiettivo originale](../eng/contracts/r3-repaired-root-objective23.md) e [ricevuta](../eng/r3-repaired-root-objective23-returned.json) | Otto ricette; −5,35% con giudizio completo conforme, passo al 50% escluso per inviluppo e termica. |
+| [Vincoli operativi](../eng/contracts/r3-repaired-envelope-objective24.md) e [ricevuta](../eng/r3-repaired-envelope-objective24-returned.json) | Otto ricette; inviluppo e termica conformi, cambio di fase di suction al primo Running. |
+| [Riserva accoppiata](../eng/contracts/r3-repaired-suction-reserve25.md) e [ricevuta](../eng/r3-repaired-suction-reserve25-returned.json) | Otto ricette; −21,36% con fasi e inviluppo conservati, previsione operativa non conforme. Nessun aggiornamento di ricerca. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:
@@ -611,6 +693,19 @@ bilanci e replay PASS; 36 ricette complessive e 122 passi runtime effettivi.
 La suite ordinaria completa non è stata rieseguita per queste aggiunte.
 Il rifiuto della prova 17 è conservato; le prove successive dichiarano prima
 della misura le proprie eccezioni, senza alterarne il risultato.
+
+Le prove 20–22 aggiungono 464 ricette e 1.398 passi runtime. Compilazione
+della nuova console senza avvisi o errori, riusata senza modifiche nelle
+prove 21–22; fixture, replay e bilanci PASS. Errore energetico globale
+massimo inferiore a 0,0035 W, contro 0,01 W. Gli alberi `src` e `tests`,
+il payload C4 e le vecchie evidenze rimangono invariati; la suite ordinaria
+non è stata rieseguita per queste sole aggiunte diagnostiche.
+
+Le prove 23–25 usano senza modifiche la console già compilata e gli stessi
+alberi produttivi e di test: 24 ricette e 78 passi runtime, con fixture,
+preflight e replay PASS. I bilanci energetici chiudono entro 0,00224 W,
+contro 0,01 W. I giudizi negativi delle singole proposte restano congelati;
+la suite ordinaria non è stata rieseguita per queste aggiunte Python.
 
 I vecchi replay richiedono i propri commit: H4–H9 e revisione di sufficienza
 `72b0910`; diagnostiche non fluide e revisione vincolata `ed35d9e`;

@@ -1,0 +1,54 @@
+{
+  "schema": "r3-repaired-local-proposals22-frozen-v1",
+  "files": [
+    {
+      "file": "00-domain-fixtures.log",
+      "stored": "00-domain-fixtures.log",
+      "bytes": 58,
+      "sha256": "E000A21B2EBDBBBEEA75FA4B417A52B632F11051819C178A05CD1DA9E0360298",
+      "stored_sha256": "E000A21B2EBDBBBEEA75FA4B417A52B632F11051819C178A05CD1DA9E0360298"
+    },
+    {
+      "file": "01-predictions.json",
+      "stored": "01-predictions.json",
+      "bytes": 16472,
+      "sha256": "34963164AF01AFC5557D7CA1E73F2B3E79A7FA47BC86B4D0703F5416070A90B3",
+      "stored_sha256": "34963164AF01AFC5557D7CA1E73F2B3E79A7FA47BC86B4D0703F5416070A90B3"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 5827,
+      "sha256": "F4FE77B64B0DDDB0C49744744F7F47881CB386945BAE950064C141C6C494E615",
+      "stored_sha256": "F4FE77B64B0DDDB0C49744744F7F47881CB386945BAE950064C141C6C494E615"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3276,
+      "sha256": "3D1563129959BE7BAB1DAD4BE79E9B254E522C66F03972A452C812C78F77D8B6",
+      "stored_sha256": "3D1563129959BE7BAB1DAD4BE79E9B254E522C66F03972A452C812C78F77D8B6"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 244362,
+      "sha256": "1A198886C98AD93C9368627AC5A13239620A1F38C63AAD34FABBA15BF8FC184C",
+      "stored_sha256": "7B94B3F303B9C5B017E877DC358AB031E638F76804253B2BEFFF505252AAC940"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 34543,
+      "sha256": "40D725463E0ED7D046C355732F1498B004A80A4BAE35EF023FC50BF0E10FBDA2",
+      "stored_sha256": "40D725463E0ED7D046C355732F1498B004A80A4BAE35EF023FC50BF0E10FBDA2"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 95,
+      "sha256": "41EB623F5E985BEC45854A599FBAF6D2F2D5F2044BFCAB00DA1D0793F1E49B47",
+      "stored_sha256": "41EB623F5E985BEC45854A599FBAF6D2F2D5F2044BFCAB00DA1D0793F1E49B47"
+    }
+  ]
+}

@@ -109,6 +109,26 @@ Un modello lineare che non contiene una radice nella famiglia di trim scelta
 motiva la misura di altre grandezze prima di estendere budget o limiti. Resta
 una previsione locale: non dimostra l'assenza di una radice non lineare.
 
+## Conservare il criterio anche con previsioni conformi
+
+Le prove 20–22 mostrano anche che un modello rimisurato e una previsione
+conforme possono sostenere un passo che peggiora il criterio di equilibrio.
+Nel nuovo punto la metrica diagnostica delle 81 righe favorisce la coppia,
+mentre il massimo dei 75 residui originali rimane nell'energia di hotwell
+e aumenta leggermente. La ricerca deve affrontare quel massimo conservando
+le sue scale; i vincoli dei corpi termici si dichiarano separatamente.
+Una prova che muove quattro direzioni non valida la composizione delle
+altre 26, anche se l'intera base ha rango numerico diagnostico 30.
+
+Le prove 23–25 distinguono inoltre un punto fisicamente ammesso nei controlli
+dalla conformità del suo modello predittivo. La riserva iniziale accoppiata
+di massa ed energia di suction mantiene l'energia interna specifica, ma la
+previsione operativa ottenuta dalle colonne separate manca la soglia anche
+quando la portata misurata resta nell'inviluppo. Il rifiuto rimane tale:
+si misura la composizione prima di sostituire le colonne o avviare una
+ricerca. La nuova riserva non è un reintegro durante il runtime; i controlli
+di fase lungo la ricetta rimangono necessari.
+
 ## Classificare i modelli lineari entro la regione delle sonde
 
 Una classificazione basata su minimi quadrati non vincolati può premiare
