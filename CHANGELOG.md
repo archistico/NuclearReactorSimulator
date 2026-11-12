@@ -4,6 +4,30 @@ La cronologia registra le modifiche e gli esiti al momento della loro verifica.
 Lo [stato corrente](docs/PROJECT.md), l'[handoff](docs/PROJECT.md#handoff) e la
 [roadmap](docs/ROADMAP.md) mantengono rispettivamente checkpoint, ripresa e passi futuri.
 
+## 2026-11-13
+
+### Chiarezza del percorso R3 e revisione del manuale
+
+- Esplicitati nel checkpoint i passaggi ancora necessari: modello accoppiato,
+  radice dei 75 residui, conferme indipendenti, contratto d'integrazione coerente,
+  qualifica di 120 secondi e revisione delle evidenze. Le riduzioni percentuali
+  non sono percentuali di completamento di R3.
+- Compattata la roadmap attorno alle consegne future; ricostruzione tecnica
+  conservata in una sezione espandibile del checkpoint. Chiarito che i punti
+  con condizioni non fluide modificate non rientrano implicitamente nel vecchio
+  piano di seed che le manteneva fisse.
+- Corretto il registro dei limiti che indicava ancora Exact @4 come desktop
+  attuale e la riparazione come non ancora avviata: Exact-V9 resta produttivo,
+  C4 è un'opzione distinta e R3 rimane aperto.
+- Manuale italiano: chiariti il legame massa/energia/volume e il cambio di fase,
+  le riserve separate del ritorno dell'acqua e la differenza fra conservazione
+  globale e stazionarietà dei singoli nodi. Aggiornata la descrizione delle
+  prove brevi senza promuoverle a equilibrio o nuovo stato iniziale.
+- Aggiunte tre figure SVG accessibili, spiegate nel testo: inventari e stato
+  del fluido, accumuli interni con bilancio globale nullo e riserve del ritorno
+  dell'acqua. Revisione del rendering e controlli documentali; nessuna nuova
+  simulazione, modifica produttiva o attivazione di C4.
+
 ## 2026-11-12
 
 ### Misura della leva energetica e sonda del dominio di exhaust

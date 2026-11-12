@@ -16,6 +16,13 @@ determinismo, equivalenza e vincoli di allocazione sono verificati separatamente
 da quelli dei modi storici. Sostituire una chiusura non dimostra che gli
 inventari iniziali siano un punto stazionario.
 
+La famiglia del candidato e il contratto d'integrazione devono descrivere
+le stesse condizioni iniziali. Un piano che mantiene fisse le grandezze
+non fluide non può essere riusato implicitamente per un punto che modifica
+popolazione neutronica, temperature o bias. Le eccezioni diagnostiche
+giustificano le proprie misure; il passaggio a una nuova famiglia richiede
+provenienza, confronto con la baseline e gate coerenti, conservando Exact-V9.
+
 ## Separare implementazione, evidenza e qualificazione fisica
 
 Un controllo d'implementazione verifica il comportamento che copre. Un replay

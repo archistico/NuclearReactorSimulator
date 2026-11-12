@@ -5,6 +5,11 @@ confronto con riferimenti indipendenti. Il [checkpoint](../PROJECT.md#stato-corr
 mantiene risultati e stato verificato; l'[handoff](../PROJECT.md#handoff) contiene
 i comandi di ripresa e la [roadmap](../ROADMAP.md) definisce il percorso futuro.
 
+I [passaggi mancanti per chiudere R3](../PROJECT.md#che-cosa-manca-per-chiudere-r3)
+separano modello predittivo, radice, conferme indipendenti, integrazione e
+qualifica di 120 secondi. Le percentuali di riduzione dei residui non misurano
+la percentuale di completamento di questa sequenza.
+
 ## Che cosa dimostrano le verifiche
 
 | Ambito | Evidenza acquisita | Limite della conclusione |

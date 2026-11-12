@@ -14,6 +14,7 @@ il [computer operatore](OPERATOR_COMPUTER_INTEGRATED_UI.md) e la guida a
 | Esigenza | Riferimento |
 | --- | --- |
 | Conoscere baseline, risultato verificato e blocco | [Stato corrente](PROJECT.md#stato-corrente) |
+| Sapere che cosa manca alla qualifica integrata | [Passaggi per chiudere R3](PROJECT.md#che-cosa-manca-per-chiudere-r3) |
 | Riprendere il lavoro da dati e comandi esatti | [Handoff](PROJECT.md#handoff) |
 | Capire le prossime consegne e le condizioni per avanzare | [Roadmap](ROADMAP.md) |
 | Sapere che cosa è cambiato | [Changelog](../CHANGELOG.md) |

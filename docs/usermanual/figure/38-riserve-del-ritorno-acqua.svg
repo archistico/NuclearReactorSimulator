@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="800" viewBox="0 0 1000 800" role="img" aria-labelledby="title desc">
+<title id="title">Il ritorno dell’acqua ha due riserve distinte</title><desc id="desc">Condensa e drenaggi alimentano la vasca hotwell. La pompa del condensato C trasferisce massa al volume intermedio, da cui la pompa di alimentazione A la porta al corpo cilindrico. Le masse delle due riserve dipendono dalle differenze di portata. I segnali tratteggiati regolano C dalla massa della vasca e A dal livello del corpo cilindrico.</desc>
+<defs><marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2a78d6"/></marker><marker id="orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#d45a28"/></marker><marker id="purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#6250d6"/></marker><marker id="gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#58635f"/></marker></defs>
+<g font-family="Segoe UI, Arial, sans-serif">
+<rect width="1000" height="800" fill="#faf9f5"/>
+<text x="36" y="44" font-size="25" fill="#202523" text-anchor="start" font-weight="650"><tspan x="36" dy="0">Il ritorno dell’acqua ha due riserve distinte</tspan></text>
+<text x="36" y="78" font-size="16" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="36" dy="0">Percorso normale di ritorno: ricircolo, linea vapore e altri rami non sono disegnati.</tspan></text>
+<text x="170" y="126" font-size="18" fill="#2a78d6" text-anchor="middle" font-weight="600"><tspan x="170" dy="0">Condensa e drenaggi</tspan></text>
+<text x="170" y="151" font-size="18" fill="#2a78d6" text-anchor="middle" font-weight="400"><tspan x="170" dy="0">m_R</tspan></text>
+<path d="M170,161 L170,200" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<rect x="40" y="200" width="260" height="215" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="170" y="236" font-size="20" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="170" dy="0">Vasca del condensato</tspan></text>
+<text x="170" y="263" font-size="15" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="170" dy="0">hotwell</tspan></text>
+<rect x="84" y="283" width="172" height="104" rx="12" fill="#dceafa" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="170" y="328" font-size="21" fill="#2a78d6" text-anchor="middle" font-weight="600"><tspan x="170" dy="0">massa M_H</tspan></text>
+<text x="170" y="360" font-size="14" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="170" dy="0">inventario osservabile</tspan></text>
+<rect x="370" y="200" width="260" height="215" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="500" y="236" font-size="20" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="500" dy="0">Volume intermedio</tspan></text>
+<text x="500" y="263" font-size="15" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="500" dy="0">feedwater-inventory</tspan></text>
+<rect x="414" y="283" width="172" height="104" rx="12" fill="#dceafa" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="500" y="328" font-size="21" fill="#2a78d6" text-anchor="middle" font-weight="600"><tspan x="500" dy="0">massa M_F</tspan></text>
+<text x="500" y="360" font-size="14" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="500" dy="0">inventario osservabile</tspan></text>
+<rect x="700" y="200" width="260" height="215" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="830" y="236" font-size="20" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="830" dy="0">Corpo cilindrico</tspan></text>
+<text x="830" y="263" font-size="15" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="830" dy="0">drum</tspan></text>
+<rect x="744" y="283" width="172" height="104" rx="12" fill="#dceafa" stroke="#2a78d6" stroke-width="1.5"/>
+<text x="830" y="328" font-size="21" fill="#2a78d6" text-anchor="middle" font-weight="600"><tspan x="830" dy="0">livello</tspan></text>
+<text x="830" y="360" font-size="14" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="830" dy="0">anche ricircolo e vapore</tspan></text>
+<path d="M300,301 L370,301" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<circle cx="335" cy="301" r="17" fill="#2a78d6"/>
+<text x="335" y="307" font-size="17" fill="#fff" text-anchor="middle" font-weight="650"><tspan x="335" dy="0">C</tspan></text>
+<text x="335" y="281" font-size="17" fill="#2a78d6" text-anchor="middle" font-weight="600"><tspan x="335" dy="0">m_C</tspan></text>
+<path d="M630,301 L700,301" fill="none" stroke="#2a78d6" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#blue)"/>
+<circle cx="665" cy="301" r="17" fill="#2a78d6"/>
+<text x="665" y="307" font-size="17" fill="#fff" text-anchor="middle" font-weight="650"><tspan x="665" dy="0">A</tspan></text>
+<text x="665" y="281" font-size="17" fill="#2a78d6" text-anchor="middle" font-weight="600"><tspan x="665" dy="0">m_A</tspan></text>
+<text x="40" y="577" font-size="17" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="40" dy="0">C: pompa del condensato</tspan></text>
+<text x="520" y="577" font-size="17" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="520" dy="0">A: pompa di alimentazione</tspan></text>
+<path d="M170,415 L170,494 L335,494 L335,320" fill="none" stroke="#6250d6" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#purple)" stroke-dasharray="6 5"/>
+<text x="182" y="463" font-size="15" fill="#6250d6" text-anchor="start" font-weight="400"><tspan x="182" dy="0">massa →</tspan><tspan x="182" dy="21.75">regolazione C</tspan></text>
+<path d="M830,415 L830,548 L665,548 L665,320" fill="none" stroke="#6250d6" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#purple)" stroke-dasharray="6 5"/>
+<text x="680" y="500" font-size="15" fill="#6250d6" text-anchor="start" font-weight="400"><tspan x="680" dy="0">livello →</tspan><tspan x="680" dy="21.75">regolazione A</tspan></text>
+<rect x="40" y="590" width="440" height="105" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="60" y="621" font-size="21" fill="#202523" text-anchor="start" font-weight="600"><tspan x="60" dy="0">Vasca: dM_H/dt = m_R − m_C</tspan></text>
+<text x="60" y="658" font-size="17" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="60" dy="0">Se m_C &gt; m_R, la massa della vasca scende.</tspan></text>
+<rect x="520" y="590" width="440" height="105" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="540" y="621" font-size="20" fill="#202523" text-anchor="start" font-weight="600"><tspan x="540" dy="0">Intermedio: dM_F/dt = m_C − m_A</tspan></text>
+<text x="540" y="658" font-size="17" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="540" dy="0">Se m_A &gt; m_C, questa riserva diminuisce.</tspan></text>
+<text x="40" y="736" font-size="17" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="40" dy="0">Blu: portate di massa [kg/s]. Viola tratteggiato: segnali di regolazione, non acqua.</tspan></text>
+<text x="40" y="772" font-size="17" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="40" dy="0">Le pompe possono trasferire portate diverse durante un transitorio: la differenza cambia gli inventari.</tspan></text>
+</g>
+</svg>

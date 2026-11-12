@@ -1,12 +1,22 @@
-# Known model limitations
+# Limiti del modello
 
-This register contains **current** limitations only. Resolved investigations and milestone chronology belong under `history/`, milestone records and ADRs.
+Il desktop corrente usa `integrated-operations-desktop-stable@9` e la chiusura
+`CorrelationConsistentInverseDomain`. La variante C4 è implementata come
+opzione esplicita e verificata nel proprio ambito locale, ma l'integrazione
+R3 resta aperta. Lo [stato corrente](PROJECT.md#stato-corrente) e i
+[passaggi di qualifica](PROJECT.md#che-cosa-manca-per-chiudere-r3) distinguono
+questi risultati dalla selezione produttiva.
+
+Questo registro raccoglie i limiti di applicabilità. I richiami alle versioni
+Exact @2, @3 e @4 descrivono la provenienza storica delle rispettive verifiche:
+non identificano il profilo desktop corrente e non trasferiscono automaticamente
+una qualifica da una versione all'altra.
 
 ## Thermodynamics and fluid mechanics
 
 - Water/steam properties remain reduced-order educational correlations, not an industrial IAPWS/steam-table implementation across the full operating envelope.
-- Authoritative desktop exact `@4` uses `CorrelationConsistentInverseDomain`. Its superheated branch is anchored to the same correlated saturated-vapor boundary used by the saturated branch, and its saturated inverse search is interval-aware around the water-density maximum. The validated repair census resolved the three observed historical no-root states, 7/7 two-sided seam probes and 231/231 low-temperature probes; the repaired 7000-step load journey, 30,000-interval cross-profile run, replay/protection/off-design matrix and performance/soak gates are green. The former vapor seam gap/overlap and 4–8 °C inverse-search blind spot are therefore **resolved for authoritative exact @4 within the validated domain**, not current production blockers.
-- Historical exact desktop `@2` and `@3` deliberately retain `HistoricalCorrelationTopology` for exact-version replay compatibility. Their old gap/overlap and low-temperature inverse-search behavior is historical compatibility semantics, not the authoritative production thermodynamic closure. Old saves/scenarios must not be silently reinterpreted through @4.
+- La versione storica Exact `@4` usa `CorrelationConsistentInverseDomain`. Le sue verifiche della riparazione risolsero i tre stati senza radice osservati, le 7/7 sonde ai due lati del raccordo e le 231/231 sonde a bassa temperatura; completarono inoltre i percorsi di carico, replay, protezione e prestazioni previsti da quella versione. Il vuoto o la sovrapposizione al raccordo del vapore e il punto cieco dell'inversa fra 4 e 8 °C sono quindi risolti nel dominio qualificato di @4. Questa è una prova storica delimitata, non l'identificazione del desktop attuale né una qualifica IAPWS-IF97.
+- Le versioni storiche desktop Exact `@2` e `@3` conservano `HistoricalCorrelationTopology` per la compatibilità dei replay esatti. Il loro comportamento storico ai raccordi e alle basse temperature appartiene a quelle identità; salvataggi e scenari non vengono reinterpretati attraverso una versione successiva.
 - `CorrelationConsistentInverseDomain` is still a simplified closure. Matching the phase boundary removes an internal inverse-map inconsistency; it does not make the model a complete high-fidelity steam-table implementation, nor does it validate arbitrary metastable/supercritical states outside the declared envelope. Genuinely unsupported states continue to fail closed.
 - Fluid nodes and most components are zero-dimensional lumped control volumes.
 - Pipe/valve hydraulics use reduced resistance laws; general distributed pressure loss, elevation/static head, acoustic waves and water hammer are not modeled.
@@ -22,7 +32,7 @@ This register contains **current** limitations only. Resolved investigations and
 
 ## Validated reference drift / inventory redistribution
 
-Historical validated I.3 was continuously healthy over 300 s on the then-authoritative exact-v3 production path, but the final 60 s are **not a claim of asymptotic steady state**. Exact @3 is now frozen provenance; exact @4 is current authoritative production and has separately passed the final repaired-v4 300 s reference requalification against all 19 unchanged I.3 budgets rather than inheriting exact-v3 evidence. The frozen regression observations include:
+La verifica storica I.3 mantenne lo stato sano per 300 s sul percorso Exact-V3 allora produttivo, ma i 60 s finali **non dimostrano equilibrio asintotico**. Exact @3 resta una provenienza congelata; Exact @4 superò separatamente la riqualifica di 300 s rispetto ai 19 budget I.3 invariati, senza ereditare l'esito di @3. Questi riferimenti storici non descrivono una nuova prova di Exact-V9. Le osservazioni di regressione congelate comprendono:
 
 - drum inventory slope: approximately **+8.245 kg/s**;
 - main-steam-header inventory slope: approximately **-0.3529 kg/s**;
@@ -55,8 +65,8 @@ Exact regression values are frozen in `../eng/frozen-evidence/ordinary/I3_Valida
 
 ## Numerical coupling
 
-- Historical H.30 RQ1 promoted exact desktop `@3` corrected-commit because exact `@2` explicit showed targeted steam-train reverse-flow/shaft-drop discontinuities. Exact `@3` remains immutable replay provenance. Authoritative desktop production is now exact `@4`, which preserves corrected-commit ownership while using the repaired thermodynamic closure.
-- `pre-synchronization-grid-loading@2` is retained as an exact explicit compatibility/reference identity, but it is not the supported sustained low-load synchronization journey: the I.5 long diagnostic reproduced late rotor/export instability and reverse-admission steps. Synchronization exact `@3` preserves the @2 physical/control/grid seed and uses corrected-commit for the supported sustained journey. This synchronization version family is independent from desktop exact `@4`.
+- La promozione storica H.30 RQ1 portò il desktop Exact `@3` a corrected-commit dopo le discontinuità osservate nel percorso esplicito @2. Exact @3 rimane una provenienza di replay immutabile. La successiva @4 conservò quella responsabilità con la chiusura riparata; il profilo desktop corrente è @9, come indicato all'inizio del registro.
+- `pre-synchronization-grid-loading@2` is retained as an exact explicit compatibility/reference identity, but it is not the supported sustained low-load synchronization journey: the I.5 long diagnostic reproduced late rotor/export instability and reverse-admission steps. Synchronization exact `@3` preserves the @2 physical/control/grid seed and uses corrected-commit for the supported sustained journey. This synchronization version family is independent from the desktop version family.
 - Historical H.28 remains `bounded-but-costly` provenance for the old closure. Repaired Stage 4 compares repaired explicit vs repaired corrected on the same thermodynamic closure and passed the original relative ceilings (approximately median wall ratio **0.977**, p95 **0.834**, allocation ratio **1.116**); the validated repaired classification is `bounded-at-or-below-explicit` on that machine-local benchmark. Exact values remain in the corresponding frozen Phase-I/H.28 evidence rather than being treated as human-facing calibration targets.
 - Repaired Stage 2 observed zero branch overrides but 3,720 previous-phase holds across 58 trigger steps, including 50 post-startup continuity-active steps. Branch override machinery may now be topologically obsolete, but previous-phase hysteresis remains materially exercised and must not be removed merely because the vapor seam became single-root. Any retirement requires separately scoped evidence after Phase-I closure.
 - `DeterministicHybridSemiImplicit` and `FourNodeBranchContinuityShadowIntegrated` are **source-retained historical modes**. They are not production choices, not exact-version compatibility requirements and not current-CI dependencies. I.4 defers physical deletion because historical executable seams still preserve provenance.
@@ -128,4 +138,9 @@ Independent IAPWS-IF97 assessment of the authoritative exact-v9 water/steam clos
 
 The limitation is not confined to absolute compressed-liquid pressure magnitude. The same conserved `(v,u)` inventories are classified differently at the hot primary boundary: all 72 sampled `pressure` states are production `SubcooledLiquid` but IF97 Region-4 `SaturatedMixture`, with the same reinterpretation in 55 of 72 `suction` samples. Current exact-v9 thermodynamic pressure/phase outputs in this domain therefore remain educational reduced-model behavior and must not be described as IF97-qualified.
 
-Repair is not yet authorized. `CorrelationConsistentInverseDomain` and exact-v9 remain immutable until VR2 Engineering Repair Planning 1 and its later selection/requalification gates explicitly authorize a new versioned repair path.
+Il percorso di riparazione C4 è stato implementato come opzione distinta e
+verificato nei confronti locali R1/R2; questo non risolve la qualifica integrata
+R3 e non sostituisce il profilo Exact-V9. La discrepanza del percorso ordinario
+rispetto a IF97 resta un limite dichiarato. Un'eventuale nuova versione
+produttiva richiede i successivi gate di selezione e qualifica; non riscrive
+la semantica storica di `CorrelationConsistentInverseDomain` o di Exact-V9.

@@ -16,36 +16,60 @@ accoppiata della riserva iniziale in suction.
 
 | Ambito | Stato verificato |
 | --- | --- |
-| Desktop ordinario | Exact-V9 e missione v3 invariati; controlli di identità e determinismo PASS. |
-| Trasporto sotto C4 | Riparazione implementata nei quattro file previsti; saturazione pubblica e payload invariati. |
-| Nuova misura | Due ricette identiche, tre checkpoint sani e nell'inviluppo. Verifica della riparazione PASS con adjudication 2. |
-| Diagnosi dei bilanci | Altre due ricette, sei passi totali: stati identici alla misura precedente, bilanci termici e di exhaust ricostruiti. Limite del condensatore: superficie UA. |
-| Base direzionale | 30 direzioni misurate, rango numerico diagnostico 30; quattro coefficienti unilaterali e due direzioni accoppiate. |
-| Prime proposte | Due passi ripetibili e nei controlli registrati, ma errore predittivo circa 15 volte la variazione prevista. Nessuna ricerca avviata. |
-| Capacità di portata | Minimo delle cinque capacità riprodotto esattamente in 57 ricostruzioni su 38 ricette ripetute; proposte nel ramo admission a tutti i checkpoint. |
-| Modello del minimo | Offline, senza passi runtime: errori delle proposte 1,78e-4 e 1,50e-4 contro 14,734 e 15,011 del modello affine; vincitori previsti in 16 sonde su 16. Confronto retrospettivo. |
-| Proposte prospettiche | Sei previsioni congelate prima della misura, su tre rami: tutte conformi, errore massimo 4,7e-4 contro 0,10; vincitori corretti. Massimo pesato osservato da 1,157 a 1,056. Solo otto direzioni. |
-| Altre 22 direzioni | Capacità osservate in 90 ricette ripetute, minimo esatto in 135 ricostruzioni. 17 direzioni, incluse le quattro unilaterali, non cambiano la portata dello stadio; cinque cambiano portata e vincitore. Nessun modello ristimato. |
-| Modello sulle 30 direzioni | Ristimato offline; otto proposte congelate e quattro sonde doppie previste entro 2,4e-3. Poi otto previsioni nuove su quattro sequenze, con 26 direzioni mosse insieme: tutte conformi, errore massimo 1,8e-3. Verificati anche il ramo control e una sequenza mista. Ottimo previsto ancora circa 0,955. |
-| Limite del passo | Diagnosi offline: accumulo di energia in exhaust (0,96 MW) e coppia si muovono insieme con la portata; la sola leva diretta vale 2,8 kW per ampiezza campionata. Per estrapolazione lineare servirebbe il 3,4% su exhaust:energy, oltre il limite del 2%. Nessuna ricerca dichiarata. |
-| Leva di exhaust al 2% | 22 ricette sane, nell'inviluppo e ripetibili; secanti entro il 2,22% del riferimento. A +2% restano circa 0,412 MW nella combinazione energia-coppia. |
-| Sonda positiva fino al 4% | 12 ricette sane, nell'inviluppo e ripetibili; cambio di segno della combinazione fra +3,5% e +4%. Solo dominio diagnostico: non un nuovo box di ricerca. A +3,5% energia del nodo quasi stazionaria, massa ancora in calo. |
-| Bilanci accoppiati di exhaust | Prova 17 arrestata per cambio di fase di hotwell; rifiuto conservato. Prova 18: riserva iniziale dichiarata di circa 10 g in hotwell, 24 ricette e due aggiornamenti; massa ed energia di exhaust entro 1e-6 kg/s e 0,01 W al primo checkpoint. |
-| Potenza globale | Prova 19: otto ricette; previsioni a metà e intero incremento nucleare-termico entrambe conformi. Al punto intero la potenza netta globale iniziale è numericamente nulla; dopo il seed e al primo Running restano +266 W e +284 W. |
-| Nuovo punto diagnostico | Massimo assoluto dei 75 residui scalati **8.365.513,134**, contro ≤1. Domina l'energia di hotwell: +40,3 kW al primo checkpoint, con massa −0,0619 kg/s. Nessuna conferma di 100 passi. |
-| Nuova base locale | Prova 20: 260 ricette, 22 direzioni recuperate. Prova 21: 196 ricette sulle otto mancanti; base di rango diagnostico 30, con 28 direzioni centrali e due unilaterali in suction. Nel centro limita expansion ai tre checkpoint. |
-| Proposte nel nuovo punto | Prova 22: otto ricette, due previsioni conformi; errore massimo sulle variazioni circa 3,30e-4 contro 0,10. Quattro direzioni mosse a scala utile; expansion resta limitante. Massimo pesato da 0,81043 a 0,79454, ma massimo originale da 8.365.513,134 a **8.369.112,639**. |
-| Criterio originale | Prova 23: otto ricette; passo al 25% conforme, massimo originale **7.917.982,871**, −5,35% rispetto al punto 19. Il passo al 50% è escluso per inviluppo della pompa primaria e margine termico. |
-| Inviluppo nella proposta | Prova 24: otto ricette; derivate operative disponibili sulle trenta direzioni, previsione più interna alle soglie e margine termico di 10 W. Entrambe le proposte rispettano inviluppo e limiti termici, ma cambiano fase in suction al primo Running e restano escluse. |
-| Riserva accoppiata di suction | Prova 25: otto ricette, riserva iniziale di massa ed energia fino a +1e-6 ciascuna. Fasi, inviluppo e limiti termici conservati; massimo originale **6.578.689,455**, −21,36%. Errore operativo 6,71% dell'intervallo contro 1%: previsione non conforme, nessun aggiornamento di ricerca. |
-| Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
-| Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
+| Desktop ordinario | Exact-V9 e missione v3 invariati; nessun nuovo seed installato o default C4 attivato. |
+| Base diagnostica | Trasporto di fase riparato; nuovo punto 19 e trenta direzioni rimisurate, 28 centrali e due unilaterali. |
+| Proposta interamente conforme | Prova 23, passo al 25%: massimo originale **7.917.982,871**, riduzione del 5,35% rispetto al punto 19. Tutti i controlli dichiarati conformi; nessun aggiornamento di ricerca. |
+| Punto 25 con fasi conservate | Prova 25, passo completo: massimo originale **6.578.689,455**, riduzione del 21,36%, con salute, fase, inviluppo e limiti termici conservati. Previsione operativa non conforme: 6,71% dell'intervallo contro 1%. |
+| Blocco immediato | Misurare separatamente la risposta accoppiata di massa ed energia iniziali di suction; verificarne la composizione con le altre direzioni. |
+| Equilibrio R3 | **RED**: il massimo dei 75 residui deve essere **≤1**; nessuna radice o conferma di 100 passi acquisita nel nuovo percorso. |
+| Chiusura M10 | **Aperta**: R3 precede R4–R6 e le successive verifiche di chiusura. |
 
-Il valore H9 di 3.334.923,856 appartiene alla legge precedente. Restano storici
-quel candidato, i suoi Jacobiani e le altre sonde già congelate: non sono una
-baseline di equilibrio della legge riparata.
+Revisione documentale del **13 novembre 2026**. Le percentuali sopra misurano
+riduzioni del residuo, non l'avanzamento percentuale di R3. I risultati H9
+appartengono alla legge precedente e restano storici. Specifiche e ricevute
+sono raccolte nelle [evidenze](#evidenze-e-verifiche).
+
+## Che cosa manca per chiudere R3
+
+R3 verifica se la nuova chiusura acqua–vapore può essere composta nel runtime
+senza perdere i contratti di salute, conservazione, controllo e identità.
+L'accuratezza locale della proprietà e un punto sano per tre checkpoint
+non rispondono ancora a questa domanda. La sequenza da completare è questa:
+
+| Passaggio | Risultato necessario | Situazione attuale |
+| --- | --- | --- |
+| 1. Rendere predittivo il modello accoppiato | Isolare la direzione massa/energia di suction e verificare nuove proposte con tutte le soglie dichiarate. | Il punto 25 resta nell'inviluppo, ma manca la previsione operativa. |
+| 2. Dichiarare la ricerca e trovare una radice | Motivare famiglia, incognite, limiti, budget e arresti; ottenere massimo assoluto dei **75 residui originali ≤1**, senza compensazioni fra nodi o checkpoint. | Le riduzioni sono reali, ma i residui restano nell'ordine dei milioni. |
+| 3. Confermare la ricetta congelata | Tre ricette fresche indipendenti, identità ripetibile e **100 passi Running** ciascuna, cioè 1 s a 10 ms; residui e inviluppo verificati lungo la traiettoria prevista dal contratto. | Da eseguire dopo una radice; non sono un nuovo periodo di assestamento o taratura. |
+| 4. Integrare un candidato esplicito | Contratto d'integrazione coerente con la famiglia scelta, vettore congelato, 12 nodi risolti con fasi previste, due passi preparatori invariati da 10 ms, controllo breve di 100 passi e regressioni ordinarie. | Nessun punto delle nuove prove è installato o promosso a candidato produttivo. |
+| 5. Eseguire la qualifica R3 completa | Equivalenza canonical Exact-V9/baseline di confronto per **128 passi**, ripetizione deterministica del candidato per **128 passi**, poi **120 s / 12.000 passi** con inviluppo, ownership e conservazione conformi a ogni passo. | Non sostituita dalle sonde o dai loro replay offline. |
+| 6. Revisionare l'esito restituito | Provenienza e artefatti completi, classificazione e revisione esplicita del PASS R3. | Solo allora si pianifica R4; R3 non attiva C4 per default e non chiude M10. |
+
+Il passaggio d'integrazione richiede particolare attenzione. Il vecchio
+[piano di seed](../eng/contracts/m10/M10_FINAL_VR2_R3_REFERENCE_CONSISTENT_SEED_INTEGRATION_PLANNING1.md)
+manteneva fisse le condizioni non fluide di Exact-V9, mentre le sonde correnti
+variano anche popolazione neutronica, temperature e alcuni bias iniziali.
+Non si può installare il punto 25 sotto quel vecchio contratto: la famiglia
+ammessa, il confronto con la baseline e la provenienza del candidato vanno
+definiti e revisionati prima dell'integrazione. Le eccezioni diagnostiche
+non autorizzano da sole un nuovo dominio di ricerca o una nuova identità.
+
+Il [contratto della ricostruzione](../eng/contracts/m10/M10_FINAL_VR2_R3_EQUILIBRIUM_RECONSTRUCTION_PLANNING1.md)
+esplicita residui e conferme; il
+[contratto della qualifica breve](../eng/contracts/m10/M10_FINAL_VR2_R3_SHORT_EXACT_V9_EQUIVALENT_SHADOW_COMPOSITION_REQUALIFICATION_PLANNING1.md)
+definisce i controlli ereditati del gate completo. Questi documenti conservano
+i propri ambiti storici: la tabella indica le prove ancora necessarie,
+senza riaprire automaticamente un vecchio protocollo di esecuzione.
 
 ### Il problema da risolvere
+
+Il trasporto di fase è stato corretto, ma manca un punto in cui i bilanci
+dei singoli inventari siano contemporaneamente stazionari. La risposta
+accoppiata di suction è il blocco immediato del modello; la distanza dalla
+radice e la successiva qualifica integrata restano problemi distinti.
+
+<details>
+<summary>Ricostruzione tecnica delle prove, delle decisioni e dei rifiuti conservati</summary>
 
 Lo stadio usava energie di vapore e condensa storiche mentre il fluido era
 risolto da C4. Ora le ricava dal provider della chiusura attiva, indicizzato
@@ -575,6 +599,8 @@ ottimizza direttamente quel massimo e trova 125,0 kW con i soli inventari e
 oltre la soglia diagnostica del 50%; i residui di massa restano importanti.
 Sono previsioni lineari storiche, non ricette o prove di impossibilità fisica.
 L'esito congelato precedente non viene riscritto.
+
+</details>
 
 ## Handoff
 

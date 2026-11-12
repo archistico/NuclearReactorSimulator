@@ -2,7 +2,7 @@
 
 Questo manuale accompagna la lettura e l'uso di un impianto nucleare simulato: spiega da dove arriva l'energia, come attraversa i componenti, perché una manovra produce conseguenze anche lontano dal punto in cui viene eseguita e quali indicazioni permettono di riconoscere uno squilibrio. L'obiettivo è arrivare a comprendere la sala controllo, non soltanto imparare una sequenza di pulsanti.
 
-La descrizione è riferita al codice del progetto verificato l'11 novembre 2026. L'avvio desktop ordinario usa il profilo `integrated-operations-desktop-stable@9`, già predisposto per la generazione a basso carico. Il percorso da arresto a freddo appartiene invece a scenari dedicati: non è la condizione iniziale di ogni sessione. Quando una funzione o un valore dipendono dalla configurazione, il testo lo indica esplicitamente.
+Revisione del 13 novembre 2026. L'avvio desktop ordinario usa il profilo `integrated-operations-desktop-stable@9`, già predisposto per la generazione a basso carico. Il percorso da arresto a freddo appartiene invece a scenari dedicati: non è la condizione iniziale di ogni sessione. Quando una funzione o un valore dipendono dalla configurazione, il testo lo indica esplicitamente.
 
 Il simulatore è educativo e usa modelli fisici ridotti. Non riproduce le procedure di una centrale specifica e non costituisce una guida per condurre, progettare o valutare la sicurezza di un impianto reale. Le istruzioni operative che seguono riguardano esclusivamente il software.
 
@@ -12,7 +12,7 @@ Le spiegazioni sono in italiano; i nomi tra apici inversi, come `CONTROL AUTO`, 
 
 I diagrammi sono schemi funzionali, non disegni costruttivi. Ogni figura specifica se le frecce rappresentano un trasferimento di materia, di energia o di informazione. I percorsi principali sono verticali, con etichette leggibili; i collegamenti tratteggiati indicano segnali o influenze, quando la spiegazione della figura li definisce in questo modo.
 
-Accanto ai diagrammi di flusso compaiono figure illustrate, conservate come file SVG nella cartella `figure/` accanto al manuale. Ciascuna ha una legenda o etichette dirette che spiegano colori, frecce e tratteggi; le curve indicate come illustrative o qualitative mostrano un principio e non sono letture del simulatore. I valori numerici del profilo desktop riportati nelle figure sono gli stessi del capitolo 6.
+Accanto ai diagrammi di flusso compaiono figure illustrate, conservate come file SVG nella cartella `figure/` accanto al manuale. Ciascuna ha una legenda o etichette dirette che spiegano colori, frecce e tratteggi; le curve indicate come illustrative o qualitative mostrano un principio e non sono letture del simulatore. I valori riferiti al profilo desktop vanno letti insieme al capitolo 6; gli esempi aritmetici hanno invece valori scelti per spiegare un bilancio e sono indicati come tali.
 
 ## Percorso di lettura
 
@@ -215,6 +215,12 @@ La conseguenza pratica è leggere l'arresto attraverso temperature, circolazione
 ## 3.5 Temperatura, pressione, massa ed energia
 
 La temperatura indica lo stato termico; la pressione partecipa sia all'equilibrio di fase sia alla spinta idraulica; massa ed energia descrivono quanto materiale e quanta energia siano presenti. Nel modello di un volume fluido queste grandezze devono essere coerenti con il suo volume geometrico e con la relazione termodinamica scelta.
+
+La figura mostra come il modello passa dalle quantità contenute allo stato del fluido. Le frecce rappresentano un calcolo: massa ed energia interna totale appartengono all'inventario, mentre il volume geometrico appartiene alla definizione del nodo.
+
+![Massa M, energia interna U e volume V determinano u uguale U diviso M e v uguale V diviso M; la chiusura termodinamica attiva ricava pressione, temperatura, fase e titolo quando definito](figure/36-inventari-e-stato.svg)
+
+Leggi lo schema dall'alto verso il basso. Il modello ricava prima l'energia interna per chilogrammo e il volume occupato da un chilogrammo, poi cerca uno stato compatibile con entrambi. Se massa ed energia totale aumentano nella stessa proporzione, l'energia specifica rimane uguale; a volume geometrico fisso, però, il volume specifico diminuisce. Pressione e fase possono quindi cambiare. Questo spiega perché modificare soltanto un inventario, o assumere che una temperatura quasi ferma descriva tutto il nodo, possa dare una lettura incompleta del sistema.
 
 Nella figura la linea nera separa il liquido (zona azzurra) dal vapore (zona arancione). La pressione è in scala logaritmica, così condensatore e corpo cilindrico stanno nello stesso grafico.
 
@@ -934,9 +940,9 @@ La sua massa cresce quando gli ingressi superano ciò che la pompa estrae, e dim
 | Tempo di ricambio | Circa 12 minuti alla portata del punto iniziale |
 | Regolazione | La massa agisce sulla pompa del condensato per restare vicina al valore iniziale |
 
-È un po' più calda dello scarico, che è a circa 42 °C, perché vi arriva anche il drenaggio caldo della turbina.
+La temperatura iniziale della vasca è un po' più alta di quella dello spazio di scarico, che è circa 42 °C. Sono due inventari distinti: la vasca riceve anche il drenaggio caldo della turbina e il suo stato dipende dalla propria massa, energia e geometria. Le due temperature non devono quindi essere trattate come la stessa lettura.
 
-**Semplificazioni e scelte.** Il volume è interamente pieno di liquido: non c'è un pelo libero da guardare, e l'indicatore operativo è la massa, `HOTWELL MASS`. Se la massa cala si forma vapore a bassa pressione; se cresce, il liquido viene compresso. Per questo conviene seguire la tendenza della massa e non cercare un livello in metri.
+**Semplificazioni e scelte.** Nel punto iniziale il nodo è liquido; il modello non risolve un pelo libero geometrico da osservare e l'indicatore operativo è la massa, `HOTWELL MASS`. Una perdita di massa può portarlo verso una miscela a bassa pressione, mentre un aumento può comprimere il liquido: la risposta dipende anche dall'energia contenuta. Il passaggio di fase deriva dalla combinazione di massa, energia e volume, non dal solo segno della variazione di massa. Per questo conviene seguire insieme inventario, temperatura e pressione, senza tradurre automaticamente la massa in un livello in metri.
 
 **Se si guasta o si blocca.** La vasca non ha guasti propri nel desktop e non ha una protezione dedicata nell'elenco del paragrafo 6.3. I problemi le arrivano dai vicini: se la pompa del condensato si ferma la massa cresce, se il condensatore perde raffreddamento arriva meno condensato.
 
@@ -962,7 +968,7 @@ La schermata standard non offre necessariamente un comando diretto per ogni para
 
 **Semplificazioni e scelte.** Non sono rappresentati motore, cavitazione o più pompe in parallelo.
 
-**Se si guasta o si blocca.** Arresto, degrado o comando forzato al minimo (come nello scenario di perdita dell'alimentazione elettrica) interrompono il rifornimento del volume intermedio. La vasca si riempie mentre il volume di alimentazione si svuota. Le sue 9,9 t, a 13 kg/s, corrispondono a circa 12 minuti come ordine di grandezza, ma lo stato dell'aspirazione della pompa di alimentazione cambia prima. Alla fine cala l'alimentazione del corpo cilindrico.
+**Se si guasta o si blocca.** Arresto, degrado o comando forzato al minimo (come nello scenario di perdita dell'alimentazione elettrica) riducono o interrompono il rifornimento del volume intermedio. Finché arriva condensato, la massa della vasca può crescere; se la pompa di alimentazione continua a prelevare, quella del volume intermedio diminuisce. Le sue 9,9 t, a 13 kg/s, corrispondono a circa 12 minuti come ordine di grandezza, ma pressioni e portate cambiano durante lo svuotamento: non è un tempo di funzionamento garantito. Quando il ritorno non sostiene più il prelievo, cala anche l'alimentazione del corpo cilindrico.
 
 ## 5.18 Volume intermedio dell'acqua di alimentazione
 
@@ -971,6 +977,12 @@ Questo inventario si trova fra la pompa del condensato e la pompa di alimentazio
 La sua presenza impedisce di trattare le due pompe come se dovessero trasferire esattamente la stessa massa a ogni singolo istante. Un transitorio può essere assorbito temporaneamente dal volume intermedio. Se però lo squilibrio non rientra, la riserva si sposta e alla fine cambia ciò che il resto del ciclo può sostenere.
 
 Quando il corpo cilindrico riceve poca acqua, controllare solo il suo regolatore può essere insufficiente. Devi verificare anche da dove la pompa di alimentazione dovrebbe prendere la massa e che cosa stia succedendo alla vasca del condensato.
+
+La figura mette a confronto queste due riserve. Le frecce blu trasportano acqua; quelle viola tratteggiate rappresentano segnali di regolazione. Il corpo cilindrico è mostrato come destinazione del ritorno: il suo ricircolo e il percorso del vapore proseguono fuori dallo schema.
+
+![La pompa C trasferisce acqua dalla vasca del condensato al volume intermedio, la pompa A dal volume intermedio al corpo cilindrico; la massa della vasca regola C e il livello del corpo cilindrico regola A; le differenze delle portate cambiano le due masse contenute](figure/38-riserve-del-ritorno-acqua.svg)
+
+La portata `m_R` riunisce condensazione e drenaggi in arrivo alla vasca; `m_C` è il trasferimento della pompa del condensato e `m_A` quello della pompa di alimentazione. Se quest'ultima preleva più di quanto la prima porti, il volume intermedio perde massa anche mentre il livello del corpo cilindrico appare ancora regolare. Le due pompe rispondono a riserve diverse: una portata identica a ogni istante non è una condizione imposta dal collegamento. È la differenza fra le portate a spiegare quale riserva stia cambiando e quanto a lungo il transitorio possa essere sostenuto.
 
 ### Scheda tecnica — volume intermedio di alimentazione
 
@@ -1891,6 +1903,12 @@ Questo ragionamento vale per pompe con ruoli differenti, ma non autorizza a scam
 
 Una coppia di numeri rassicuranti, come 5 MWe e quasi 3000 giri/min, non certifica un equilibrio completo. Un regolatore può sostenere temporaneamente una variabile mentre un inventario si sposta lentamente. Il punto di equilibrio richiede che anche le variabili conservate e le memorie rilevanti non abbiano una deriva incompatibile con l'esercizio.
 
+La figura mostra un esempio energetico volutamente semplice. Le frecce arancioni sono potenze trasferite fra due volumi ideali; il confine tratteggiato li comprende entrambi. I numeri servono a rendere visibile il conto e non rappresentano una misura della centrale simulata.
+
+![Entrano ed escono complessivamente 5 MW da due volumi, ma fra loro passano 4,9 MW: A accumula 0,1 MW e B perde 0,1 MW; dopo 60 secondi le variazioni sono più 6 e meno 6 MJ, con somma nulla](figure/37-bilancio-globale-e-inventari.svg)
+
+Il totale rimane invariato perché gli accumuli si compensano, non perché i due volumi siano stazionari. Con queste potenze mantenute per un minuto, A guadagna 6 MJ e B ne perde altrettanti. Un bilancio globale corretto verifica che l'energia sia contabilizzata; per giudicare l'equilibrio occorre poi guardare dove venga immagazzinata o consumata. Lo stesso ragionamento si applica alla massa nelle riserve del ritorno dell'acqua: una somma rassicurante può nascondere spostamenti interni importanti.
+
 Osserva quindi livello del corpo cilindrico, massa della vasca, disponibilità d'alimentazione e pressioni per un intervallo coerente con la dinamica che stai studiando. Una verifica brevissima non dimostra l'assenza di una deriva lenta, e una lunga durata a computer fermo in pausa non aggiunge osservazione fisica.
 
 Quando confronti configurazioni termodinamiche diverse, considera anche lo stato iniziale. Lo stesso inventario di massa ed energia può essere interpretato diversamente da due chiusure; sostituire una correlazione non garantisce automaticamente che il vecchio punto sia ancora stazionario.
@@ -1991,7 +2009,7 @@ L'interfaccia espone una tensione di riferimento da 400 kV perché quella è la 
 
 Il punto desktop attuale è stato verificato nei propri percorsi di regressione e attivazione. Questo non qualifica qualsiasi nuova rampa, durata o sostituzione termodinamica. La lettura deve restare legata alle condizioni effettivamente provate.
 
-La ricerca di un equilibrio per l'integrazione fisica successiva è ancora inconclusiva. Alle previsioni numeriche offline sono seguite prove nel modello fisico: il residuo diminuisce, ma non soddisfa ancora i criteri di equilibrio e l'inviluppo operativo. Queste prove non hanno installato un nuovo stato iniziale produttivo. Per questo il manuale non propone una ricetta di ritocco dei limiti o di modifica arbitraria degli inventari.
+La ricerca di un equilibrio per l'integrazione fisica successiva è ancora inconclusiva. Le prove nel modello fisico hanno ridotto i residui e alcuni punti rispettano salute, fase e inviluppo nella ricetta breve. Il criterio completo di equilibrio resta però lontano dalla conformità; una riduzione misurata e una previsione affidabile di tutte le grandezze sono condizioni distinte. Queste prove non hanno installato un nuovo stato iniziale produttivo. Il [checkpoint di validazione R3](../PROJECT.md#che-cosa-manca-per-chiudere-r3) distingue il lavoro ancora necessario dalle funzioni già disponibili nel desktop.
 
 Per lo studio operativo la lezione è concreta: guarda le tendenze degli accumuli e non giudicare un equilibrio dal solo fatto che per qualche istante rimangano fermi giri e potenza. Il significato dell'esperimento dipende anche dalla sua durata simulata.
 
@@ -2177,6 +2195,7 @@ Le descrizioni operative di questa revisione sono state confrontate con i seguen
 | Scenario desktop e identità produttiva | [Programma desktop](../../src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopIntegratedOperationsProductionProgram.cs) |
 | Scelta del profilo predefinito | [Politica di selezione](../../src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopHydraulicProductionPolicy.cs) |
 | Composizione del punto iniziale e percorsi termici | [Condizioni di generazione](../../src/NuclearReactorSimulator.Application/Scenarios/Training/DesktopSustainedGenerationInitialConditionFactory.cs) |
+| Da massa, energia e volume a pressione, temperatura e fase | [Chiusura termodinamica attiva](../../src/NuclearReactorSimulator.Simulation/Physics/Fluids/SimplifiedWaterSteamThermodynamicModel.cs) |
 | Soglie, pompe, condensatore e protezioni | [Definizioni dell'impianto composto](../../src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs) |
 | Incrementi dei comandi SPEED e LOAD | [Politica dei comandi](../../src/NuclearReactorSimulator.Application/ControlRoom/ControlRoomRuntimeCommandPolicy.cs) |
 | Missione corrente e versioni storiche | [Pacchetti produttivi](../../src/NuclearReactorSimulator.Application/Scenarios/Challenges/Packs/ProductionOperationalChallengePack.cs) |

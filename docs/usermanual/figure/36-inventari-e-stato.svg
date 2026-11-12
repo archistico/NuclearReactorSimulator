@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="800" viewBox="0 0 1000 800" role="img" aria-labelledby="title desc">
+<title id="title">Dagli inventari allo stato del fluido</title><desc id="desc">Massa M, energia interna totale U e volume geometrico V determinano energia specifica u e volume specifico v. La chiusura attiva ricava pressione, temperatura e fase. Aumentare M e U nella stessa proporzione conserva u ma cambia v se V resta fisso.</desc>
+<defs><marker id="blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#2a78d6"/></marker><marker id="orange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#d45a28"/></marker><marker id="purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#6250d6"/></marker><marker id="gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#58635f"/></marker></defs>
+<g font-family="Segoe UI, Arial, sans-serif">
+<rect width="1000" height="800" fill="#faf9f5"/>
+<text x="36" y="44" font-size="25" fill="#202523" text-anchor="start" font-weight="650"><tspan x="36" dy="0">Dagli inventari allo stato del fluido</tspan></text>
+<text x="36" y="78" font-size="16" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="36" dy="0">Le frecce indicano un calcolo di stato, non tubazioni o comandi.</tspan></text>
+<rect x="40" y="112" width="280" height="100" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="180" y="145" font-size="18" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="180" dy="0">Massa contenuta</tspan></text>
+<text x="180" y="184" font-size="25" fill="#2a78d6" text-anchor="middle" font-weight="650"><tspan x="180" dy="0">M  [kg]</tspan></text>
+<path d="M180,212 L180,235 L500,235 L500,255" fill="none" stroke="#58635f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gray)"/>
+<rect x="360" y="112" width="280" height="100" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="500" y="145" font-size="18" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="500" dy="0">Energia interna totale</tspan></text>
+<text x="500" y="184" font-size="25" fill="#d45a28" text-anchor="middle" font-weight="650"><tspan x="500" dy="0">U  [J]</tspan></text>
+<path d="M500,212 L500,235 L500,235 L500,255" fill="none" stroke="#58635f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gray)"/>
+<rect x="680" y="112" width="280" height="100" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="820" y="145" font-size="18" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="820" dy="0">Volume geometrico</tspan></text>
+<text x="820" y="184" font-size="25" fill="#6250d6" text-anchor="middle" font-weight="650"><tspan x="820" dy="0">V  [m³]</tspan></text>
+<path d="M820,212 L820,235 L500,235 L500,255" fill="none" stroke="#58635f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gray)"/>
+<rect x="170" y="255" width="660" height="92" rx="12" fill="#edf3f0" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="500" y="286" font-size="17" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="500" dy="0">Grandezze per unità di massa</tspan></text>
+<text x="500" y="321" font-size="24" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="500" dy="0">u = U / M [J/kg]     ·     v = V / M [m³/kg]</tspan></text>
+<path d="M500,347 L500,385" fill="none" stroke="#58635f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gray)"/>
+<rect x="250" y="385" width="500" height="98" rx="12" fill="#eeebfb" stroke="#6250d6" stroke-width="1.5"/>
+<text x="500" y="422" font-size="21" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="500" dy="0">Chiusura termodinamica acqua–vapore</tspan></text>
+<text x="500" y="454" font-size="16" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="500" dy="0">Usa le proprietà della configurazione attiva</tspan></text>
+<path d="M500,483 L500,506 L180,506 L180,530" fill="none" stroke="#58635f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gray)"/>
+<rect x="40" y="530" width="280" height="94" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="180" y="560" font-size="19" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="180" dy="0">Pressione</tspan></text>
+<text x="180" y="590" font-size="16" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="180" dy="0">p [Pa]</tspan></text>
+<path d="M500,483 L500,506 L500,506 L500,530" fill="none" stroke="#58635f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gray)"/>
+<rect x="360" y="530" width="280" height="94" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="500" y="560" font-size="19" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="500" dy="0">Temperatura</tspan></text>
+<text x="500" y="590" font-size="16" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="500" dy="0">T [K]</tspan></text>
+<path d="M500,483 L500,506 L820,506 L820,530" fill="none" stroke="#58635f" stroke-width="2.5" stroke-linejoin="round" marker-end="url(#gray)"/>
+<rect x="680" y="530" width="280" height="94" rx="12" fill="#ffffff" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="820" y="560" font-size="19" fill="#202523" text-anchor="middle" font-weight="600"><tspan x="820" dy="0">Fase e titolo</tspan></text>
+<text x="820" y="590" font-size="16" fill="#58635f" text-anchor="middle" font-weight="400"><tspan x="820" dy="0">liquido / miscela / vapore</tspan><tspan x="820" dy="23.2">titolo, quando definito</tspan></text>
+<rect x="40" y="659" width="920" height="105" rx="12" fill="#f3f0e5" stroke="#d6dcd8" stroke-width="1.5"/>
+<text x="62" y="689" font-size="20" fill="#202523" text-anchor="start" font-weight="600"><tspan x="62" dy="0">Stessa energia specifica non significa stesso stato</tspan></text>
+<text x="62" y="719" font-size="17" fill="#58635f" text-anchor="start" font-weight="400"><tspan x="62" dy="0">Se M e U crescono dello stesso fattore, u resta uguale; con V fisso, v diminuisce.</tspan><tspan x="62" dy="24.65">Pressione e fase possono quindi cambiare: la sola temperatura non basta a descrivere il nodo.</tspan></text>
+</g>
+</svg>

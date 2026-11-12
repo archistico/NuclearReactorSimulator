@@ -29,125 +29,48 @@ il significato delle verifiche; questa roadmap definisce le consegne future.
 
 NRS-MARKER:R3-H-BOUNDED-SCALED-LOCAL-MODEL-DESIGN1-NEXT
 
-Il [checkpoint](PROJECT.md#il-problema-da-risolvere) spiega gli accumuli e
-collega le nuove misure. La base attuale contiene trenta direzioni, con
-quattro vincoli unilaterali e due direzioni accoppiate. Il rango numerico
-diagnostico è 30, ma le prime due proposte combinate hanno fallito la previsione.
+La priorità è chiudere il divario fra una riduzione misurata dei residui e
+un candidato di equilibrio qualificabile. La prova 23 riduce il massimo
+originale del 5,35% con tutti i controlli conformi; la prova 25 misura
+−21,36%, ma manca la soglia di previsione della portata. Non sono percentuali
+di completamento di R3: i residui restano nell'ordine dei milioni contro ≤1.
+La cronologia delle prove e i loro rifiuti restano nel
+[checkpoint](PROJECT.md#il-problema-da-risolvere), senza duplicarli qui.
 
-La ricostruzione offline attribuisce lo scarto già al primo passo al minimo
-fra le capacità delle valvole e dello stadio: cambia il limite che determina
-la portata, mentre la matrice di secanti somma risposte di tratti diversi.
-La prova 8 osserva le capacità a tutti i checkpoint e riproduce esattamente
-il minimo: le proposte restano nel ramo admission, la baseline passa da stop
-a control. La revisione 9 linearizza ogni capacità e ne prende il minimo:
-riproduce offline le due proposte con errori di circa 1,8e-4 e 1,5e-4.
-La prova 10 lo verifica in modo prospettico: sei previsioni su tre rami,
-congelate prima della misura, sono tutte conformi con errore massimo 4,7e-4.
-L'osservazione 11 misura le capacità nelle altre 22 direzioni: 17 non
-cambiano la portata dello stadio, cinque la cambiano insieme al vincitore.
-La revisione 12 ristima il modello su tutte le 30 e la prova 13 lo verifica
-con otto previsioni nuove, tutte conformi, anche nel ramo control. L'ottimo
-previsto entro le ampiezze campionate resta però circa 0,955. La revisione
-14 ne trova la causa: l'accumulo di energia in exhaust si riduce con la
-portata solo al prezzo della coppia. La prova 15 misura la leva diretta
-fino al 2%: è quasi lineare, ma non annulla la combinazione. La sonda 16
-esplora solo l'energia positiva di exhaust fino al 4% e osserva un cambio
-di segno fra +3,5% e +4%, con tutti gli altri input fissi. È un dominio
-diagnostico distinto, non il nuovo box della ricerca.
-
-Le prove 17–19 hanno poi affrontato i bilanci accoppiati. La prima si arresta
-per cambio di fase di hotwell; con una riserva iniziale dichiarata di circa
-10 g, la seconda annulla massa ed energia di exhaust al primo checkpoint.
-La terza verifica due previsioni nucleari-termiche e annulla la potenza netta
-globale iniziale. Il maggiore residuo originale resta però circa 8,37 milioni:
-hotwell accumula energia mentre perde massa. Le prove 20–21 hanno rimisurato
-il modello: trenta direzioni, con due coefficienti unilaterali in suction.
-La prova 22 conferma due previsioni nuove nel ramo expansion; le proposte
-muovono a scala utile quattro direzioni del vapore. Migliora la metrica
-diagnostica, ma il massimo originale aumenta leggermente. Le prove 23–25
-passano quindi al criterio originale con vincoli termici e operativi separati.
-Il passo al 25% della prova 23 riduce il massimo del 5,35% con tutti i
-controlli conformi. La riserva iniziale accoppiata di suction nella prova 25
-consente una riduzione misurata del 21,36%, con salute, fasi e inviluppo
-conservati, ma la previsione operativa manca la soglia. La prossima finestra
-deve isolare questa risposta accoppiata prima di una ricerca a più passi.
-
-| Passo | Consegna prevista | Condizione per avanzare |
+| Ordine | Consegna da ottenere | Condizione per avanzare |
 | --- | --- | --- |
-| Diagnosi iniziale completata | Due ricette identiche; scambi termici e bilanci di exhaust ricostruiti. | PASS della diagnosi; nessuna radice o ricerca. Singole portate corrette non osservate. |
-| Raffinamento iniziale completato | 70 ricette ripetibili; recuperate le tre colonne mancanti e verificati i bilanci di coppia. | PASS dell'evidenza; accordo locale, nessuna estrapolazione. |
-| Misura estesa completata | 362 ricette ripetibili, 334 nell'inviluppo; selezionate 19 colonne su 30. | Rango numerico diagnostico 19; disponibilità incompleta e nessuna sufficienza dimostrata. |
-| Base direzionale costruita | 394 ricette portano a 28 direzioni; altre 114 aggiungono due direzioni accoppiate, con rango numerico 30. | Quattro coefficienti restano non negativi. Il risultato non valida le derivate cartesiane mancanti. |
-| Prime proposte eseguite | Due frazioni del passo lineare, ripetute: sei ricette. | Evidenza PASS, ma entrambe le previsioni falliscono il 10%; nessuna ricerca avviata. |
-| Capacità osservate | 38 ricette ripetute; capacità, vincitori e margini ai tre checkpoint, minimo riprodotto esattamente. | Evidenza PASS; nessun modello, proposta o ricerca. |
-| Modello del limite di portata | Capacità linearizzate e loro minimo; confronto offline con le proposte e le 16 sonde congelate. | Evidenza PASS: proposte entro 1,8e-4, vincitori corretti; retrospettivo, otto direzioni. |
-| Proposte prospettiche completate | Sei proposte su tre rami, ripetute: 14 ricette; previsioni congelate prima della misura. | Evidenza PASS: tutte conformi, errore massimo 4,7e-4, vincitori corretti. Massimo pesato da 1,157 a 1,056; nessuna radice. |
-| Altre direzioni osservate | 90 ricette ripetute sulle 22 direzioni mancanti; capacità, vincitori e variazioni di portata. | Evidenza PASS: 17 direzioni non cambiano la portata, cinque cambiano vincitore; nessun modello ristimato. |
-| Modello esteso e verificato | Modello ristimato offline sulle 30 direzioni; 18 ricette con otto previsioni nuove su quattro sequenze. | Evidenza PASS: tutte conformi, errore massimo 1,8e-3; ramo control e una sequenza mista verificati. Ottimo previsto invariato, circa 0,955. |
-| Limite del passo diagnosticato | Programmi lineari certificati e combinazione senza portata, offline. | Evidenza PASS: limite dovuto a energia di exhaust e coppia, uguale in ogni ramo; 0,39 MW in estrapolazione entro il 2%. |
-| Leva misurata entro il vecchio limite | 22 ricette sane, nell'inviluppo e ripetibili fino a ±2%. | Secanti entro il 2,22% del riferimento; restano 0,412 MW nella combinazione al +2%. |
-| Dominio diagnostico esplorato | 12 ricette sane, nell'inviluppo e ripetibili, solo energia positiva di exhaust fino al 4%. | Cambio di segno fra +3,5% e +4%; non è una radice e non amplia la ricerca precedente. |
-| Bilanci accoppiati ricostruiti | Prova 17 rifiutata per fase; prova 18, con riserva iniziale esplicita, bilancia exhaust al primo checkpoint. | 28 ricette complessive; rifiuto conservato, nessuna permanenza di fase o stazionarietà dimostrata su 100 passi. |
-| Potenza globale verificata | Prova 19: otto ricette, due previsioni conformi; incremento neutronico e temperature accoppiate annullano la potenza netta iniziale. | Dominio diagnostico dichiarato; al primo Running restano +284 W e importanti accumuli locali. Nessuna radice. |
-| Base rimisurata nel nuovo punto | Prove 20–21: 456 ricette, trenta direzioni, 28 centrali e due unilaterali. Capacità e bilanci osservati ai tre checkpoint. | Rango diagnostico 30; recupero delle otto direzioni mancanti a scale inferiori e nel ramo expansion. |
-| Prime previsioni nel nuovo punto | Prova 22: otto ricette, due previsioni conformi, errore massimo circa 3,30e-4; quattro direzioni effettive. | Fasi e ramo conservati; massimo diagnostico ridotto, massimo originale in lieve aumento. Nessuna radice o ricerca. |
-| Riduzione originale verificata | Prova 23: −5,35% sul massimo con il passo al 25%, previsioni e controlli conformi. | Passo al 50% escluso per portata primaria e margine termico; rifiuto conservato. |
-| Inviluppo e riserva osservati | Prova 24: vincoli operativi nel modello, ma cambio di fase in suction. Prova 25: riserva iniziale accoppiata, −21,36% misurato con fase e inviluppo conservati. | Previsione operativa della prova 25 non conforme: errore massimo 6,71% dell'intervallo contro 1%. Nessun punto promosso o installato. |
-| Isolare la risposta accoppiata | Misura della sola coppia massa/energia iniziali di suction; confronto con la somma delle colonne separate. | Attribuzione dello scarto, modello rimisurato e nuove previsioni conformi senza rilassare le soglie o ampliare il dominio. |
-| Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Famiglia e limiti motivati dopo i bilanci congiunti; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
-| Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
-| Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
-| Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
-| Confermare e integrare | Revisionare la radice e comporre il candidato di prova. | Residui conformi e inviluppo invariato di 100 passi indipendenti. |
-| R3 Requalification 3 | Verifica integrata di 120 secondi, 12.000 passi da 10 ms. | Solo un R3 PASS restituito e revisionato permette la pianificazione di R4. |
+| Adesso | Misurare isolatamente la coppia massa/energia iniziali di suction e confrontarla con la somma delle colonne separate. | Modello ristimato dove giustificato, nuove previsioni conformi anche sui valori operativi, senza rilassare soglie. |
+| Poi | Dichiarare la famiglia e la ricerca a più passi, con dominio, budget, arresti e rimisura. | Ambito delle variazioni motivato; le vecchie famiglie H/C/J o le eccezioni diagnostiche non vengono estese implicitamente. |
+| Obiettivo numerico | Trovare una radice dei 75 residui originali, con vincoli termici e capacità osservati separatamente. | Massimo assoluto ≤1, criteri e scale invariati, ricetta congelata. Una previsione lineare o un residuo ridotto non bastano. |
+| Conferma | Ripetere tre ricette fresche e verificare 100 passi Running per ciascuna. | Stessa ricetta e traiettoria, residui e inviluppo conformi; niente assestamento aggiunto o reintegri durante il runtime. |
+| Integrazione | Comporre un candidato interno esplicito e verificarne inizializzazione e regressioni. | Contratto coerente con la nuova famiglia; identità Exact-V9 conservata, due passi preparatori invariati e controllo breve conforme. |
+| R3 completo | Eseguire equivalenza della baseline, determinismo e prova integrata di 120 s / 12.000 passi. | Controlli ereditati conformi e revisione delle evidenze restituite: solo un PASS R3 revisionato consente R4. |
 
 ```mermaid
 flowchart TD
-    R["Trasporto di fase verificato"] --> M["Misura del punto riparato"]
-    M --> S["30 direzioni e capacità osservate: prime proposte non conformi"]
-    S --> A["Modello del minimo verificato su proposte nuove; estensione a 30 direzioni"]
-    A --> P["Exhaust e potenza globale bilanciati al primo checkpoint"]
-    P --> L["Nuova base misurata; due previsioni conformi"]
-    L --> O["Massimo originale ridotto; riserva di suction osservata"]
-    O --> J["Isolare la risposta accoppiata e verificare la previsione operativa"]
-    J --> B{"Previsioni, ramo e bilanci accoppiati verificati?"}
-    B -->|"no"| S
-    B -->|"sì"| C["Ricerca con criteri e budget congelati"]
-    C --> D{"Radice osservata?"}
-    D -->|"no"| S
-    D -->|"sì"| E["Conferme indipendenti di 100 passi"]
-    E --> F["R3: verifica integrata di 120 secondi"]
-    F --> G["Revisione prima di R4"]
+    M["Misurare la risposta accoppiata di suction"] --> P["Verificare tutte le previsioni del modello"]
+    P --> R["Dichiarare ricerca e famiglia del candidato"]
+    R --> Z{"75 residui originali entro soglia?"}
+    Z -->|"no"| M
+    Z -->|"sì"| C["Tre conferme indipendenti di 100 passi"]
+    C --> I["Candidato integrato e controllo breve"]
+    I --> Q["Equivalenza, determinismo e R3 di 120 secondi"]
+    Q --> V["Revisione dell'esito prima di R4"]
 ```
 
-Il diagramma rende espliciti riparazione e nuova misura come prerequisiti.
-Una correzione del trasporto può ridurre l'accumulo in un nodo e trasferire
-energia ad altri: il risultato locale non seleziona automaticamente un seed
-o una famiglia. Un esito negativo riporta alla diagnosi, conservando l'evidenza.
-Il confronto algebrico sul raffreddamento mostra perché il solo bilancio
-energetico di exhaust non basta: annullarlo a stato fisso peggiorerebbe la massa.
-Non è una prova di impossibilità della famiglia o una proposta di modifica a UA.
-La nuova prova nucleare-termica verifica il passo che compensa circa 0,942 MW
-al primo checkpoint. Questo riscontro riguarda la potenza globale iniziale,
-e le prove 20–21 hanno poi ristimato il modello locale nel nuovo punto.
-Anche trenta direzioni disponibili non bastano a rendere affine una legge del
-minimo vicino a capacità quasi coincidenti. Il modello del minimo prevede ora
-anche proposte nuove su trenta direzioni, entro le ampiezze campionate;
-questa validità non si trasferisce automaticamente al nuovo punto diagnostico,
-dove la prova 22 verifica finora due piccoli passi su quattro direzioni.
-Il suo miglioramento della metrica diagnostica non è una riduzione del
-criterio originale. Le prove 23–25 lo affrontano direttamente, mantenendo
-distinte riduzione misurata e conformità delle previsioni: l'errore operativo
-della prova 25 resta un motivo di esclusione anche se il punto è nell'inviluppo.
-Poiché in un punto stazionario le tre valvole portano la stessa portata dello
-stadio, una radice starebbe sul pareggio: la ricerca futura dovrà trattarlo.
-Il cambio di segno misurato sulla sola combinazione di exhaust non risolve
-gli altri residui. L'eccezione diagnostica al 4% non diventa automaticamente
-un limite di ricerca, né si estende alle altre coordinate.
+Il diagramma separa la validità di una previsione, l'esistenza di una radice
+e la qualifica del runtime composto. Una riserva iniziale può mantenere
+una fase nella ricetta breve, ma questo non dimostra permanenza su 100
+passi né sulla prova di 120 secondi. Se una misura manca i controlli, si
+torna a un modello giustificato dai dati, conservando l'esito negativo.
 
-Le famiglie C/J, gli allargamenti dei limiti e altre modifiche fisiche richiedono
-motivazioni e protocolli distinti. Il calendario potrà essere stimato quando
-il percorso verso l'equilibrio qualificabile sarà sufficientemente prevedibile.
+La definizione del candidato è una consegna tecnica ancora aperta. Il vecchio
+piano d'integrazione manteneva fisse le condizioni non fluide di Exact-V9;
+i punti diagnostici correnti variano anche popolazione neutronica,
+temperature e bias. Occorre rendere coerenti famiglia, baseline di confronto
+e contratto d'integrazione prima di comporre il candidato. Il dettaglio dei
+[passaggi mancanti per R3](PROJECT.md#che-cosa-manca-per-chiudere-r3) è mantenuto
+nel checkpoint. Non è ancora giustificata una data di chiusura.
 
 ## 3. Che cosa manca dopo R3 per chiudere M10
 
