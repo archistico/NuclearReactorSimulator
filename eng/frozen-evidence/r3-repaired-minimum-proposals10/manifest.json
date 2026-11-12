@@ -1,0 +1,54 @@
+{
+  "schema": "r3-repaired-minimum-proposals10-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 1201,
+      "sha256": "7A501C5F2BDDA65A84A9F57166BF6C0FCE5B3290E7D6B5E891DD64BE99FAD376",
+      "stored_sha256": "7A501C5F2BDDA65A84A9F57166BF6C0FCE5B3290E7D6B5E891DD64BE99FAD376"
+    },
+    {
+      "file": "01-model.json",
+      "stored": "01-model.json",
+      "bytes": 37117,
+      "sha256": "9166053C33FB88D634D05210E1F007B23F205AED618F11082BC8D90FBF2BF6A4",
+      "stored_sha256": "9166053C33FB88D634D05210E1F007B23F205AED618F11082BC8D90FBF2BF6A4"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 8349,
+      "sha256": "A1F21C1E3C358BED60939EEC30124B9A9C66AA43A6C1E10DEB4400010AC17DBF",
+      "stored_sha256": "A1F21C1E3C358BED60939EEC30124B9A9C66AA43A6C1E10DEB4400010AC17DBF"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3249,
+      "sha256": "A17E61D4784675BC70359F7F04E115502F644EAA75341CB4C5945AF3893B32F0",
+      "stored_sha256": "A17E61D4784675BC70359F7F04E115502F644EAA75341CB4C5945AF3893B32F0"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 396738,
+      "sha256": "8F74C37B2CC9663A2534ADD9907732A730F40A6D781FA2ED1EF13E2641BF30A1",
+      "stored_sha256": "D3292D5DC0C864BCBF3C1ED4B6BD51C6D3D2AC10B9554F0EC6741B8C7AAF6289"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 65311,
+      "sha256": "CEF9D35CAAB8D93B36F40D726ECD0BB836A53F97B5F1ECD9C57EA8C49C746EAE",
+      "stored_sha256": "CEF9D35CAAB8D93B36F40D726ECD0BB836A53F97B5F1ECD9C57EA8C49C746EAE"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 80,
+      "sha256": "F8609DD5E9D46F3AB91BC7EDFED84FB532602CC76033F1D777A7BF2423A82D49",
+      "stored_sha256": "F8609DD5E9D46F3AB91BC7EDFED84FB532602CC76033F1D777A7BF2423A82D49"
+    }
+  ]
+}

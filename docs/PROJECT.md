@@ -6,10 +6,11 @@ le consegne e il [changelog](../CHANGELOG.md) conserva la cronologia.
 
 ## Stato corrente
 
-Checkpoint dell'**11 novembre 2026**, dopo la riparazione del trasporto di fase,
+Checkpoint del **12 novembre 2026**, dopo la riparazione del trasporto di fase,
 la costruzione della base direzionale, il fallimento delle prime proposte,
 l'attribuzione al minimo delle capacità di portata, la sua osservazione
-a tutti i checkpoint e la verifica offline di un modello che lo conserva.
+a tutti i checkpoint, la verifica offline di un modello che lo conserva e la
+sua prima verifica prospettica.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -21,6 +22,7 @@ a tutti i checkpoint e la verifica offline di un modello che lo conserva.
 | Prime proposte | Due passi ripetibili e nei controlli registrati, ma errore predittivo circa 15 volte la variazione prevista. Nessuna ricerca avviata. |
 | Capacità di portata | Minimo delle cinque capacità riprodotto esattamente in 57 ricostruzioni su 38 ricette ripetute; proposte nel ramo admission a tutti i checkpoint. |
 | Modello del minimo | Offline, senza passi runtime: errori delle proposte 1,78e-4 e 1,50e-4 contro 14,734 e 15,011 del modello affine; vincitori previsti in 16 sonde su 16. Confronto retrospettivo. |
+| Proposte prospettiche | Sei previsioni congelate prima della misura, su tre rami: tutte conformi, errore massimo 4,7e-4 contro 0,10; vincitori corretti. Massimo pesato osservato da 1,157 a 1,056. Solo otto direzioni. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -231,6 +233,41 @@ limiti precisi:
 Il primo replay è fallito per le chiavi intere di un dizionario serializzato in
 JSON. Quel tentativo resta congelato nel pacchetto.
 
+### La prima verifica prospettica
+
+La prova 10 usa il modello per scegliere proposte nuove e ne congela le
+previsioni prima di misurarle. Dentro una sequenza di vincitori fissata il
+modello è affine: per ciascuna delle 125 sequenze un programma lineare cerca
+il passo che minimizza il massimo delle 81 righe pesate, con ogni coefficiente
+entro l'ampiezza campionata e il vincitore in vantaggio di almeno 1e-3 kg/s.
+Tre sequenze sono realizzabili, con vincitore costante stop, admission ed
+expansion. Di ciascun passo si misurano le frazioni 0,25 e 0,50, ripetute:
+14 ricette con le baseline, al massimo 44 passi runtime.
+
+| Ramo | Frazione | Errore relativo | Massimo pesato previsto | Massimo pesato osservato |
+| --- | ---: | ---: | ---: | ---: |
+| stop | 0,25 | 4,2e-4 | 1,10626 | 1,10626 |
+| stop | 0,50 | 3,5e-4 | 1,05590 | 1,05589 |
+| admission | 0,25 | 3,6e-4 | 1,10626 | 1,10626 |
+| admission | 0,50 | 4,7e-4 | 1,05590 | 1,05589 |
+| expansion | 0,25 | 1,0e-4 | 1,15662 | 1,15662 |
+| expansion | 0,50 | 1,1e-4 | 1,15662 | 1,15662 |
+
+Tutte e sei le previsioni sono conformi: vincitori osservati uguali ai
+previsti a ogni checkpoint, nessun cambio di fase o di regime, errore di
+portata entro 1e-7 kg/s. Il criterio era severo, perché la variazione prevista
+è solo l'8–13% della somma dei contributi delle singole direzioni. La baseline
+coincide con il record congelato della prova 8 e le ripetizioni sono identiche.
+
+Per la prima volta un passo previsto migliora la misura: il massimo delle
+righe pesate scende da 1,157 a 1,056 nei rami stop e admission. Il massimo dei
+75 residui originali resta però circa 8,56 milioni, contro 8,58: non è una
+radice né un avvicinamento sufficiente. Limiti:
+- otto direzioni su 30; con queste il modello prevede al più circa 0,955;
+- il ramo control e le sequenze miste non hanno un passo con il margine
+  richiesto e non sono verificati;
+- sono misurate solo frazioni del passo, entro le ampiezze campionate.
+
 ### Conservazione, portata e revisione della verifica
 
 Nel condensatore resta la stessa legge di limite termico, inventario e portata
@@ -256,11 +293,12 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **dichiarare e misurare nuove proposte piccole e
-ripetute con il modello del minimo**, per una verifica prospettica. Il
-modello riproduce ora le proposte della prova 6 e le sonde congelate, ma
-quel confronto è retrospettivo. Non basta aumentare il budget della ricerca o
-dichiarare sufficiente il rango numerico.
+La prossima attività è **estendere il modello del minimo alle 22 direzioni
+ancora senza capacità osservate e poi dichiarare una ricerca**. La prova 10
+ha verificato in modo prospettico il modello su tre rami, ma solo con le otto
+direzioni attive: lì il modello prevede al più un massimo pesato di circa
+0,955 contro 1,157, lontano da una radice. Non basta aumentare il budget
+della ricerca o dichiarare sufficiente il rango numerico.
 
 Dalla radice del repository:
 
@@ -269,34 +307,35 @@ python .\eng\run-r3-repaired-proposal-trial6.py review
 python .\eng\review-r3-repaired-flow-minimum7.py review
 python .\eng\run-r3-repaired-capacity-observation8.py review
 python .\eng\review-r3-repaired-capacity-minimum-model9.py review
+python .\eng\run-r3-repaired-minimum-proposals10.py review
 ```
 
 Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
 `PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION`,
-`PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE` e
-`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE`. Il PASS della prova 6 riguarda
+`PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE`,
+`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE` e
+`PASS-REPAIRED-MINIMUM-PROPOSAL-EVIDENCE`. Il PASS della prova 6 riguarda
 la completezza dell'evidenza: **le due previsioni affini restano non conformi**.
 I replay non chiamano l'impianto; R3 e M10 restano aperti.
 
-1. Leggere l'[analisi del modello](../eng/frozen-evidence/r3-repaired-capacity-minimum-model9/01-analysis.json)
-   insieme alla [prova combinata](../eng/frozen-evidence/r3-repaired-proposal-trial6/04-analysis.json)
-   e all'[osservazione delle capacità](../eng/frozen-evidence/r3-repaired-capacity-observation8/04-analysis.json).
-   Non riscrivere i risultati precedenti o aggiungere retroattivamente
-   un rifiuto ai controlli registrati.
-2. Scegliere le direzioni delle nuove proposte. Le otto direzioni attive
-   hanno capacità osservate. Le altre 22 vanno prima osservate con la console
-   `R3CapacityObservation` sulle loro sonde congelate, oppure escluse.
-   I quattro vincoli unilaterali restano non negativi.
-3. Prima dell'esecuzione congelare, per ogni proposta:
-   - la variazione delle 81 righe;
-   - le capacità previste, i vincitori e i margini a ogni checkpoint;
-   - il rapporto di cancellazione.
+1. Leggere l'[analisi delle proposte prospettiche](../eng/frozen-evidence/r3-repaired-minimum-proposals10/04-analysis.json)
+   insieme all'[analisi del modello](../eng/frozen-evidence/r3-repaired-capacity-minimum-model9/01-analysis.json).
+   Non riscrivere i risultati precedenti.
+2. Osservare le capacità delle altre 22 direzioni con la console
+   `R3CapacityObservation`, ripetendo le loro sonde congelate come nella
+   prova 8, oppure escluderle con una motivazione. I quattro vincoli
+   unilaterali restano non negativi: per quelle direzioni manca la sonda
+   opposta, quindi la stima dei termini di portata va dichiarata a parte.
+3. Ristimare il modello sulle direzioni osservate e ripetere una verifica
+   prospettica breve prima di usarlo oltre le otto direzioni.
+4. Solo allora dichiarare una ricerca. Deve:
+   - trattare esplicitamente il minimo non derivabile, anche nella radice,
+     che starebbe sul pareggio delle valvole;
+   - procedere per rami, con margine dichiarato, e rimisurare il modello
+     quando il passo esce dalle ampiezze campionate;
+   - coprire il ramo control e le sequenze miste, oggi non verificati;
+   - congelare budget, arresti e criteri prima della prima chiamata.
 
-   Criteri invariati: errore relativo ≤0,10 sulle 81 righe, accordo dei
-   vincitori, guardie di fase e regime, ripetizioni identiche.
-4. Solo dopo un accordo prospettico, dichiarare una ricerca. Poiché una radice
-   starebbe sul pareggio delle valvole, la ricerca dovrà trattare
-   esplicitamente un minimo non derivabile, anche nella radice.
    Scale, criterio di radice e inviluppo restano invariati; nessuna modifica
    fisica o compensazione automatica degli inventari è implicata.
 
@@ -322,6 +361,7 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Attribuzione del minimo](../eng/contracts/r3-repaired-flow-minimum7.md) e [ricevuta](../eng/r3-repaired-flow-minimum7-returned.json) | Ricostruzione del primo passo senza nuove simulazioni; prima guardia errata conservata. |
 | [Capacità a tutti i checkpoint](../eng/contracts/r3-repaired-capacity-observation8.md) e [ricevuta](../eng/r3-repaired-capacity-observation8-returned.json) | 38 ricette ripetute; minimo riprodotto esattamente, vincitori e margini osservati. Nessun modello o proposta. |
 | [Modello del minimo](../eng/contracts/r3-repaired-capacity-minimum-model9.md) e [ricevuta](../eng/r3-repaired-capacity-minimum-model9-returned.json) | Zero passi runtime; proposte della prova 6 previste entro 1,8e-4, confronto retrospettivo. Primo replay fallito conservato. |
+| [Proposte prospettiche](../eng/contracts/r3-repaired-minimum-proposals10.md) e [ricevuta](../eng/r3-repaired-minimum-proposals10-returned.json) | 14 ricette ripetute; sei previsioni su tre rami tutte conformi, errore massimo 4,7e-4. Nessuna ricerca. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:
@@ -344,6 +384,11 @@ La console `R3CapacityObservation` compila senza avvisi o errori; fixture,
 preflight, acquisizione e replay della prova 8 PASS, con alberi `src` e `tests`
 identici a quelli della prova 6. Fixture, analisi e replay della revisione 9
 PASS, senza compilazione né passi runtime; i replay 6–8 restano PASS.
+Per la prova 10 la console è stata ricompilata senza avvisi o errori: gli hash
+degli assembly differiscono da quelli della prova 8, ma la baseline misurata
+coincide esattamente con il suo record congelato. Fixture, preflight,
+acquisizione e replay PASS, con alberi `src` e `tests` invariati; i replay 6–9
+restano PASS.
 
 I vecchi replay richiedono i propri commit: H4–H9 e revisione di sufficienza
 `72b0910`; diagnostiche non fluide e revisione vincolata `ed35d9e`;

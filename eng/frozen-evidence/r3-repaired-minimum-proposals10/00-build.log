@@ -1,0 +1,13 @@
+  Individuazione dei progetti da ripristinare...
+  Tutti i progetti sono aggiornati per il ripristino.
+  NuclearReactorSimulator.Domain -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Domain\bin\Release\net10.0\NuclearReactorSimulator.Domain.dll
+  NuclearReactorSimulator.Simulation -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Simulation\bin\Release\net10.0\NuclearReactorSimulator.Simulation.dll
+  NuclearReactorSimulator.Application -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Application\bin\Release\net10.0\NuclearReactorSimulator.Application.dll
+  NuclearReactorSimulator.Application.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll
+  R3CapacityObservation -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\eng\diagnostics\R3CapacityObservation\bin\Release\net10.0\R3CapacityObservation.dll
+
+Compilazione completata.
+    Avvisi: 0
+    Errori: 0
+
+Tempo trascorso 00:00:11.06

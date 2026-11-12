@@ -267,6 +267,24 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   tentativo resta congelato come `00-original-*` e il contratto dichiara la
   correzione. Handoff verso proposte prospettiche. R3 RED e M10 aperto.
 
+### Verifica prospettica del modello del minimo
+
+- Aggiunta la prova `r3-repaired-minimum-proposals10`: 14 ricette ripetute, al
+  massimo 44 passi runtime, con la console `R3CapacityObservation` invariata.
+- Per ogni sequenza di vincitori un programma lineare sceglie il passo che
+  minimizza il massimo delle 81 righe pesate, entro le ampiezze campionate e
+  con margine di 1e-3 kg/s. Tre rami realizzabili: stop, admission, expansion.
+  Previsioni, vincitori, margini e rapporti di cancellazione congelati prima
+  della prima chiamata fisica.
+- Sei previsioni su sei conformi alle frazioni 0,25 e 0,50: errore relativo
+  massimo 4,7e-4 contro 0,10, vincitori corretti, errore di portata entro
+  1e-7 kg/s, nessun cambio di fase o regime. Rapporti di cancellazione 0,08–0,13.
+- Massimo delle righe pesate osservato da 1,157 a 1,056 nei rami stop e
+  admission, come previsto. Massimo dei 75 residui originali circa 8,56
+  milioni: nessuna radice, nessun seed, nessuna ricerca.
+- Limiti: otto direzioni su 30; ramo control e sequenze miste non verificati.
+  Handoff verso l'osservazione delle altre 22 direzioni. R3 RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

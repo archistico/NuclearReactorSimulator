@@ -23,6 +23,7 @@ i comandi di ripresa e la [roadmap](../ROADMAP.md) definisce il percorso futuro.
 | Limite di portata dello stadio | Minimo delle capacità e coppia ricostruiti offline entro 1e-9 kg/s e 1e-6 N·m; cambia il vincitore fra baseline e proposte. | Attribuzione del solo primo passo. Confine non incluso nei regimi precedenti; nessun nuovo difetto fisico o modello a tratti qualificato. |
 | Capacità a tutti i checkpoint | 38 ricette ripetute, identiche alle origini; minimo delle capacità esatto in binary64 in 57 ricostruzioni. Proposte nel ramo admission ovunque. | Osservazione descrittiva: secanti delle capacità non validate, nessun modello o proposta nuova. |
 | Modello del minimo | Errori delle proposte 1,78e-4 e 1,50e-4 contro 14,7 e 15,0; vincitori corretti nelle 16 sonde; controlli strutturali di coppia e inventario. | Retrospettivo e limitato alle otto direzioni attive; nessuna proposta nuova o ricerca. |
+| Proposte prospettiche | Sei previsioni su tre rami congelate prima della misura: tutte conformi, errore massimo 4,7e-4 contro 0,10, vincitori corretti. Massimo pesato da 1,157 a 1,056. | Otto direzioni su 30; ramo control e sequenze miste non verificati; solo frazioni del passo. Nessuna radice o ricerca. |
 | Replay delle evidenze | Richieste, risposte, selezioni, rifiuti e arresti ricostruiti dai pacchetti congelati. | PASS attesta la coerenza dell'esperimento, non la qualificazione fisica. |
 
 ## Come leggere l'indagine di equilibrio

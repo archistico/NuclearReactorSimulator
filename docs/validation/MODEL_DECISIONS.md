@@ -189,6 +189,14 @@ salto del minimo e le differenze le risposte lisce. Un accordo ottenuto sugli
 stessi record usati per scegliere la forma resta retrospettivo: per avanzare
 servono proposte nuove con vincitori e margini congelati prima della misura.
 
+Dentro una sequenza di vincitori fissata il modello è affine: una proposta si
+sceglie per ramo, con un margine dichiarato sul vincitore, e si prevede con il
+modello completo, non scalando il passo. La verifica prospettica vale per i
+rami, le direzioni e le ampiezze misurati. Un ramo senza passo con margine,
+come control dalla baseline attuale, resta non verificato: non lo si deduce
+dagli altri. Un rapporto di cancellazione basso rende severo il criterio
+relativo e va registrato insieme all'errore.
+
 Il nodo che cambia fase può essere diverso da quello perturbato. La prova
 estesa riparata osserva, per esempio, una sonda di drum che porta suction
 in miscela soltanto al primo Running. Una colonna centrale richiede quindi
