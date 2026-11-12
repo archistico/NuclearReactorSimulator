@@ -197,6 +197,13 @@ come control dalla baseline attuale, resta non verificato: non lo si deduce
 dagli altri. Un rapporto di cancellazione basso rende severo il criterio
 relativo e va registrato insieme all'errore.
 
+Una direzione entra nei termini di portata del modello solo se le sue sonde
+cambiano la portata comandata. Se portata e vincitore restano identici a
+tutti i checkpoint, basta la risposta diretta; questo vale entro le ampiezze
+osservate e va rimisurato fuori da esse. Per una direzione unilaterale la
+risposta è una differenza in avanti sul lato ammesso e il coefficiente resta
+non negativo: la sonda opposta non si usa, perché cambia fase.
+
 Il nodo che cambia fase può essere diverso da quello perturbato. La prova
 estesa riparata osserva, per esempio, una sonda di drum che porta suction
 in miscela soltanto al primo Running. Una colonna centrale richiede quindi

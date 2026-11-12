@@ -285,6 +285,22 @@ Specifiche, esiti e comandi sono raggiungibili dalle
 - Limiti: otto direzioni su 30; ramo control e sequenze miste non verificati.
   Handoff verso l'osservazione delle altre 22 direzioni. R3 RED e M10 aperto.
 
+### Capacità di portata nelle altre 22 direzioni
+
+- Aggiunta l'osservazione `r3-repaired-capacity-observation11`: 90 ricette
+  ripetute, al massimo 272 passi runtime, console `R3CapacityObservation`
+  invariata. Ripete le sonde congelate delle 18 direzioni centrali mancanti e
+  il lato positivo, a scala selezionata e doppia, delle quattro unilaterali.
+- Record identici alle origini tolto il blocco aggiunto; baseline uguale alla
+  prova 8; minimo delle capacità esatto in 135 ricostruzioni su 135; guardie
+  disponibili per tutte le sonde.
+- 17 direzioni, incluse le quattro unilaterali, non cambiano la portata dello
+  stadio né il vincitore. Cinque cambiano entrambi: control-valve, header:mass
+  e stop-out:mass a tutti i checkpoint (fino a 1,8e-3 kg/s),
+  control-out:raw-isobaric e steam:energy a un solo checkpoint.
+- Nessun coefficiente stimato, nessuna proposta o ricerca. Handoff verso la
+  ristima del modello sulle 30 direzioni. R3 RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

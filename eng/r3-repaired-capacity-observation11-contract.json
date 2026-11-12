@@ -1,0 +1,332 @@
+{
+  "schema": "r3-repaired-capacity-observation11-v1",
+  "policy": {
+    "recipes": 90,
+    "repeats": 2,
+    "maximum_runtime_steps": 272,
+    "central_directions": 18,
+    "one_sided_directions": 4,
+    "parents": "frozen probes of the 22 working directions without observed capacities, identical requests: both signs at the sampled amplitude for the 18 central directions; the positive sign at the sampled and at the doubled amplitude for the four one-sided directions; plus the baseline",
+    "one_sided_negative_probes": "not repeated: their frozen records change the phase of hotwell or suction",
+    "one_sided_amplitude_factors": [
+      1.0,
+      2.0
+    ],
+    "parent_record_identity": "exact after removing only the additive StageFlow block",
+    "baseline": "identical to the frozen observation-8 baseline record, StageFlow included",
+    "reconstruction": "observation-8 reconstruction and tolerances, unchanged; a record outside its scope is reported, not repaired",
+    "near_flow_change_kg_s": 1e-09,
+    "capacity_differences": "descriptive only; no model, prediction, proposal or validation",
+    "models": 0,
+    "proposals": 0,
+    "searches": 0,
+    "production_changes": 0,
+    "root_criterion_unchanged": true,
+    "previous_results_rewritten": false,
+    "r3_passed": false,
+    "m10_closed": false
+  },
+  "unchanged_baseline": {
+    "src": {
+      "file_count": 962,
+      "tree_sha256": "68092E7A6F2FDFE30C7A32D94B4109E31F06CF88FED1676F9744039066EFADF7"
+    },
+    "tests": {
+      "file_count": 414,
+      "tree_sha256": "C295C3AB2EC4638A85B78BCD682191D4E215A37DD6C68B73A5ED2DA8D0EDF833"
+    }
+  },
+  "output": "artifacts/r3-repaired-capacity-observation11",
+  "implementation_files": [
+    {
+      "path": "eng/run-r3-repaired-capacity-observation11.py",
+      "sha256": "FFC0ECD962C5CEBBD29FAB6763F987EC9345D6646A67A1C5494E81F0A1F55866"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-capacity-observation11.md",
+      "sha256": "B9DAFA2B576F668E6D6D1A659A9682D1B4D908234DCE4C151F864268079112DF"
+    },
+    {
+      "path": "eng/run-r3-repaired-minimum-proposals10.py",
+      "sha256": "329D0AB99BAFBBD111F7D7225681417389C1A2AC5431C36445B880C5F7A98A54"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-minimum-proposals10.md",
+      "sha256": "860B5FA0C87263CDD2781D8EF2158E56F97455AAD04D7FAEB9162081EBE4653F"
+    },
+    {
+      "path": "eng/review-r3-repaired-capacity-minimum-model9.py",
+      "sha256": "B3FEC84F7420093169F95B4CE46B0763DE88EBF4C8A59EE7DF76B7ECF8EF4F6A"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-capacity-minimum-model9.md",
+      "sha256": "45E7CBF9F1F24FE6033D762907D7D66E999454DE1AE8E6ACBFFA70402ACDBBEA"
+    },
+    {
+      "path": "eng/diagnostics/R3CapacityObservation/R3CapacityObservation.csproj",
+      "sha256": "8C2F431B01D808F1CF05F083C3B3E5391058F35344EC5C5BE5B0E1006714286C"
+    },
+    {
+      "path": "eng/diagnostics/R3CapacityObservation/Program.cs",
+      "sha256": "55231E7B97A51CDDBCA43C22A2122C81FFD4EE253D73E33084A33E91DD17CF6C"
+    },
+    {
+      "path": "eng/run-r3-repaired-capacity-observation8.py",
+      "sha256": "0A17DCA66D86488BB7224B7099E117EDBA356F4F199F8079EF5BB0385BC6015A"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-capacity-observation8.md",
+      "sha256": "11391E265FE836144AD0BA0EB4DB0A5826699D7FD338FFDC6484AC4E8F264265"
+    },
+    {
+      "path": "eng/review-r3-repaired-flow-minimum7.py",
+      "sha256": "7C8AB558620EE4D262C5E1812453CDC7831FA7A632D0DC30FFCF1DF5C62D2510"
+    },
+    {
+      "path": "eng/contracts/r3-repaired-flow-minimum7.md",
+      "sha256": "F0001EA74DE17EE527A7F9EE97A32697B1762174F8DD2BC843D964D879E03A9E"
+    },
+    {
+      "path": "eng/run-r3-repaired-proposal-trial6.py",
+      "sha256": "1F5B90D1357A9F80A15E5BD20C0EC9B1EE5EBD0E454771B611D1562A4F2417F6"
+    },
+    {
+      "path": "eng/run-r3-repaired-steam-directions5.py",
+      "sha256": "731F2A56A6A6FC1EB4C9BF88B1961F44382D8CB0398768DCDA0C51A7EFF00DEF"
+    },
+    {
+      "path": "eng/run-r3-repaired-branch-basis4.py",
+      "sha256": "4A9839D8F15B85C0C354BC2DF734CDC95A39ABFF9B001F948690C7CD714E3C7A"
+    },
+    {
+      "path": "eng/run-r3-repaired-complete-basis3.py",
+      "sha256": "BE07099EDC076A7D9EF0F450C5A6128CE4B02A80C566866CD1526ACB2ECBC86C"
+    },
+    {
+      "path": "eng/run-r3-repaired-missing-directions2.py",
+      "sha256": "69CB4608ADD225DFEF267DCC5BDE4669441BDA8AB26CD31E3AF3245CA844410F"
+    },
+    {
+      "path": "eng/run-r3-repaired-coupled-sensitivity1.py",
+      "sha256": "7781A921C909A810F6A4432BFDEB7CA4F5D3C6AC6C18A25C3D6324C59CC35837"
+    },
+    {
+      "path": "eng/r3_h_protocol.py",
+      "sha256": "FE85C30B2FFBF4EC9F0FFAA061522E76D14B07E863263DA1ECE2AA97BB14B556"
+    },
+    {
+      "path": "eng/r3_h_minimax_lp.py",
+      "sha256": "741E6A38FD8C849497E7004074CDCF599B0FB7E249851DFCA4CCE50FEAF3DD5E"
+    },
+    {
+      "path": "eng/run-r3-h-trust-search3.py",
+      "sha256": "89F2FF137CA87A19F59600B7F3DE7A06C5472E472F8C80A26B3E9EF7461BF88C"
+    },
+    {
+      "path": "eng/run-r3-h-scaled-search2.py",
+      "sha256": "DA3EE0067AB73C5B8DD295C1CB44A558AB85D1D1F71592EC8ECF92BA704176D5"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineStageMassFlowResolver.cs",
+      "sha256": "EE14A79779EDAF5C824DCC08095815748EDBB46A0C46EB50AB283BD6C1F8CE1A"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveFlowSolver.cs",
+      "sha256": "429334D65487A9FE4C516EA09DDAD7003D072BC2B6124029E223C1C080775FE7"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/ValveCharacteristicSolver.cs",
+      "sha256": "360F45027F6D7D4017D56AF5884D35694F48B1213AA2329B684584ED7EC2866F"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Fluids/PipeFlowSolver.cs",
+      "sha256": "A9C57F3A71561D32A0278D345D2FE24627B11E32518BBF9D46F3446C82463E64"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Application/Scenarios/PreStartup/ColdShutdownInitialConditionFactory.cs",
+      "sha256": "2EF50596DBB4AB5215A484511623D569F2CAE9260962BABAE14BC789F21459F7"
+    },
+    {
+      "path": "tests/NuclearReactorSimulator.Application.Tests/Scenarios/Gameplay/R3HFeasibilityHarness.cs",
+      "sha256": "A173442EC09028CDC97EF92486A9C1A2C89204CB48CD5489ADAA1D9294A949BC"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Control/Protection/ProtectedAutomaticFullPlantSolver.cs",
+      "sha256": "316DE6004C6A0A7332B1A3A12C804049AFB767EC8C367B919BFBAECA86429FF8"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/Control/TurbineSecondary/TurbineSecondaryControlSolver.cs",
+      "sha256": "877C2FE3731CE0B7307E67C48C58701CA10170BD1094E8F23D89626C4CA93B4E"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/MainSteam/MainSteamNetworkSolver.cs",
+      "sha256": "0A443A85B2140D0B7F33F2DD504EEB52457BBC0DAB45DF890F222DE6D5BC1C99"
+    },
+    {
+      "path": "src/NuclearReactorSimulator.Simulation/Physics/TurbineIsland/Turbine/TurbineExpansionSolver.cs",
+      "sha256": "F2ED5D846A8AF00FF39445371FB72AF133C935CDF3FD7B560B07EA8D0CD02845"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "7E32B87057A13A6C15BBF2316F1E71C52487B1434FD977D50F3EC8E9EEE7B4EF"
+    },
+    {
+      "path": "Directory.Packages.props",
+      "sha256": "57CC81E76A6B8D41E9BCC49AFF7D008A17CD60C834D10681932789D35635E109"
+    },
+    {
+      "path": "global.json",
+      "sha256": "15FC2962D00BBB3FEBAE9DDB01301F0723EBB743E1CFCD57AF3D1FDD3FB640BB"
+    }
+  ],
+  "frozen_inputs": [
+    {
+      "path": "eng/r3-equilibrium-reconstruction-planning1-contract.json",
+      "sha256": "FDDAA218CD81587DF222603ECC7F49381E9DF4E189F4F85F34038B8AA6224E3C"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-contract.json",
+      "sha256": "E75DA7C28BD231088D2B186E637F7A8EF4C375EA488DB6ECB0A31171C1A5E7D2"
+    },
+    {
+      "path": "eng/r3-stage-transport-ownership-repair1-returned.json",
+      "sha256": "8B063F893FBE5AECC0220A2A084872AC14DE358B105A237DEEA1F15A9EC25308"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-stage-transport-ownership-repair1/manifest.json",
+      "sha256": "FACF8D87D14524A2E33CD3D400E4DCA5DA42540454936CF927DB326B9F266A06"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-contract.json",
+      "sha256": "DE164CE8C7829E65A10ADD4651A3D54552AE6345E064CF4CEB717FE0CFB5D7EE"
+    },
+    {
+      "path": "eng/r3-repaired-raw-owner-diagnostic1-returned.json",
+      "sha256": "1F11D5BCAC8C87F20694A365CA22107AC6E0D386D289F5C11DB9ED14A77A588A"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-raw-owner-diagnostic1/manifest.json",
+      "sha256": "9DA059FF46E55559D27E13DE81CFD51433263D5FC1E9C2FF06F80FD217C80EAC"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-contract.json",
+      "sha256": "D3186F9032C932812869500DDB4D4BD581689C1C37B625776648B9AAC38A688B"
+    },
+    {
+      "path": "eng/r3-repaired-coupled-sensitivity1-returned.json",
+      "sha256": "8420E2504D691BDE922E038B8154247A8AB33190E4DD6AC2AD9DC763E065C6C7"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-coupled-sensitivity1/manifest.json",
+      "sha256": "E783E23788E017596C23C46570BC1E5D8861CFAE850B85A7EC40DBE4279D43F2"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-contract.json",
+      "sha256": "122B15D3116402F2F61E31AB33CB96108A3AE54A4A9DAF9F5B7974EF45B8249C"
+    },
+    {
+      "path": "eng/r3-repaired-missing-directions2-returned.json",
+      "sha256": "49E54BA12E4CFAB26926AFDA476571936D5EBB8536B3D0F67ACE7326C56D8312"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-missing-directions2/manifest.json",
+      "sha256": "4283E6F1A8E5ED8EBFF4437553621F454354084E5C4A439DF3705B18ACBAEFC8"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-contract.json",
+      "sha256": "EF560FFD356484F6FA51D74596841EAA133EEA3E0E06ED32E46636BCA9322978"
+    },
+    {
+      "path": "eng/r3-repaired-complete-basis3-returned.json",
+      "sha256": "1F95CB03259AAD12EFD79C057DDA48C2185C7E3E54EEC301FB24C7E285F480C8"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-complete-basis3/manifest.json",
+      "sha256": "D752C1FB57095A9F33F13D8EA2ABC977D8DD22DE7EAE2143443243C7367B516B"
+    },
+    {
+      "path": "eng/r3-repaired-branch-basis4-contract.json",
+      "sha256": "58C9734D9D5F306F12999FDCA463C41503C7A28596F456604F7727E6CA50DE15"
+    },
+    {
+      "path": "eng/r3-repaired-branch-basis4-returned.json",
+      "sha256": "6F468E7A753E2DAF0D258090974CAEEA4EE5A203AF8E599721974260CBBE2684"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-branch-basis4/manifest.json",
+      "sha256": "CD0BBF3378F1F7B6F3012A6DC6ABDD88FD604E7E2CEF1E3893C79B1AE84CD521"
+    },
+    {
+      "path": "eng/r3-repaired-steam-directions5-contract.json",
+      "sha256": "58BE0A10FE65AF9EC9B0C2E04C4F7728B6F4113EFC9EDA5D5372B618CA95E03A"
+    },
+    {
+      "path": "eng/r3-repaired-steam-directions5-returned.json",
+      "sha256": "5EFED89F0F3B02598360675896F9A0E82FA988E0178EBDEE921C75C0B902C9AA"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-steam-directions5/manifest.json",
+      "sha256": "5EEA191E76C4486EE5B8C9FBF1BBB4404DB33795AEE96212A5C7368B56119D67"
+    },
+    {
+      "path": "eng/r3-repaired-proposal-trial6-contract.json",
+      "sha256": "D18A9B71D9A8715B3C15624E8518391A1CB66C6999D8CCDDE9C257C1B94D7221"
+    },
+    {
+      "path": "eng/r3-repaired-proposal-trial6-returned.json",
+      "sha256": "92509FFB0CC54BE04D33F5887E34F1EA61C919773191A6C2B0C356321750CB52"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-proposal-trial6/manifest.json",
+      "sha256": "82B4E1CACFC7FB8D5A719FB8D858FF44F84F33EEB2DA88018A22F87C1CFAF221"
+    },
+    {
+      "path": "eng/r3-repaired-flow-minimum7-contract.json",
+      "sha256": "85641A7DEFE97E10867E1C2E8D05D8FF007C1670E605EA2F1A99FB49D8661FFC"
+    },
+    {
+      "path": "eng/r3-repaired-flow-minimum7-returned.json",
+      "sha256": "CC20D1AC9F76471ED7DE1796BC3FC9C0EEA308AAEFDCA71063E12B1F04FA3D83"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-flow-minimum7/manifest.json",
+      "sha256": "4BA83DF5DB97DDC53C59598D4AD2DA90750D6E08FDF830CB36F7AA24BA05D393"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-observation8-contract.json",
+      "sha256": "8C4489D80C50684CA7DF5B55640E977C14A12D5FA7761EB0A390F307589439B0"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-observation8-returned.json",
+      "sha256": "795DA5D267BA6693E8BB184B1819CCE844D397D22DC43BD303718E1F0A471BF0"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-capacity-observation8/manifest.json",
+      "sha256": "EFE8DFA35EACC2ADA6588BEC6A58DC28CD0D61C9A93F82FAD6DC53A4528D3071"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-minimum-model9-contract.json",
+      "sha256": "8E123AFD33A16D1055015DACE005AE9FCBA5D2E8AC5FA2605FBCB96A32016FD6"
+    },
+    {
+      "path": "eng/r3-repaired-capacity-minimum-model9-returned.json",
+      "sha256": "4FDEB9A7F3DCAFBEEA62EEF3B9BF768AE37880382D3B86A743752B4C37307368"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-capacity-minimum-model9/manifest.json",
+      "sha256": "F3984A08F96599B1AFE57BA82488498D2FACD4CCA07A6248D074B12A9AA1CBB2"
+    },
+    {
+      "path": "eng/r3-repaired-minimum-proposals10-contract.json",
+      "sha256": "B22BD0EBC14BA11CD9571DB230D82AC6526F9B7B6B83621DFEF3411B7F0AD0D8"
+    },
+    {
+      "path": "eng/r3-repaired-minimum-proposals10-returned.json",
+      "sha256": "B6F0ECE9EDA85BED56F0D6328B6F975E651EA5CE1EB63339C92939BDA0CE7D9F"
+    },
+    {
+      "path": "eng/frozen-evidence/r3-repaired-minimum-proposals10/manifest.json",
+      "sha256": "76E514304C1E8C2C9C7FBA04940630B3810D1B9423560EAE0F4EE56986FDD1F3"
+    }
+  ]
+}

@@ -9,8 +9,9 @@ le consegne e il [changelog](../CHANGELOG.md) conserva la cronologia.
 Checkpoint del **12 novembre 2026**, dopo la riparazione del trasporto di fase,
 la costruzione della base direzionale, il fallimento delle prime proposte,
 l'attribuzione al minimo delle capacità di portata, la sua osservazione
-a tutti i checkpoint, la verifica offline di un modello che lo conserva e la
-sua prima verifica prospettica.
+a tutti i checkpoint, la verifica offline di un modello che lo conserva, la
+sua prima verifica prospettica e l'osservazione delle capacità nelle altre
+22 direzioni.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -23,6 +24,7 @@ sua prima verifica prospettica.
 | Capacità di portata | Minimo delle cinque capacità riprodotto esattamente in 57 ricostruzioni su 38 ricette ripetute; proposte nel ramo admission a tutti i checkpoint. |
 | Modello del minimo | Offline, senza passi runtime: errori delle proposte 1,78e-4 e 1,50e-4 contro 14,734 e 15,011 del modello affine; vincitori previsti in 16 sonde su 16. Confronto retrospettivo. |
 | Proposte prospettiche | Sei previsioni congelate prima della misura, su tre rami: tutte conformi, errore massimo 4,7e-4 contro 0,10; vincitori corretti. Massimo pesato osservato da 1,157 a 1,056. Solo otto direzioni. |
+| Altre 22 direzioni | Capacità osservate in 90 ricette ripetute, minimo esatto in 135 ricostruzioni. 17 direzioni, incluse le quattro unilaterali, non cambiano la portata dello stadio; cinque cambiano portata e vincitore. Nessun modello ristimato. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -268,6 +270,36 @@ radice né un avvicinamento sufficiente. Limiti:
   richiesto e non sono verificati;
 - sono misurate solo frazioni del passo, entro le ampiezze campionate.
 
+### Le capacità nelle altre 22 direzioni
+
+L'[osservazione 11](../eng/contracts/r3-repaired-capacity-observation11.md)
+ripete, con la stessa console, le sonde congelate delle 22 direzioni che la
+prova 8 non copriva: 90 ricette, al massimo 272 passi runtime. Per le quattro
+direzioni unilaterali ripete solo il lato positivo, alla scala selezionata e a
+scala doppia; le sonde negative cambiano la fase di hotwell o suction. Non
+stima alcun coefficiente.
+
+Ogni record coincide con la propria origine congelata, tolto il blocco
+aggiunto; la baseline coincide con quella della prova 8. Il minimo delle
+capacità riproduce la portata comandata esattamente in 135 ricostruzioni su
+135. Tutte le sonde restano sane, nell'inviluppo, nelle stesse fasi e regimi.
+
+| Gruppo | Direzioni | Effetto sulla portata dello stadio |
+| --- | --- | --- |
+| Non cambiano la portata | 17: pompe, drum, feedwater, hotwell, suction, pressure, neutroni, temperature, massa di outlet e di steam | Variazione esattamente zero ai tre checkpoint; stesso vincitore della baseline. Capacità variate al più di 3,8e-6 kg/s. |
+| Cambiano portata e vincitore ovunque | control-valve, header:mass, stop-out:mass | Fino a 1,3–1,8e-3 kg/s. |
+| Cambiano portata e vincitore a un checkpoint | control-out:raw-isobaric (primo), steam:energy (ultimo) | 1,5e-6 e 3,4e-6 kg/s. |
+
+Le quattro direzioni unilaterali stanno tutte nel primo gruppo, e la loro
+differenza seconda delle capacità è zero: entro tre checkpoint non toccano il
+limite di portata. Il loro trattamento a parte si riduce quindi alla risposta
+diretta sul lato ammesso. Alla baseline il margine fra stop e control è circa
+9,7e-8 kg/s al primo checkpoint e 4–6e-6 kg/s ai successivi: per questo sonde
+piccole bastano a cambiare vincitore.
+
+Sono differenze descrittive, non derivate. Il modello resta quello delle otto
+direzioni finché non viene ristimato e verificato con proposte nuove.
+
 ### Conservazione, portata e revisione della verifica
 
 Nel condensatore resta la stessa legge di limite termico, inventario e portata
@@ -293,12 +325,11 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **estendere il modello del minimo alle 22 direzioni
-ancora senza capacità osservate e poi dichiarare una ricerca**. La prova 10
-ha verificato in modo prospettico il modello su tre rami, ma solo con le otto
-direzioni attive: lì il modello prevede al più un massimo pesato di circa
-0,955 contro 1,157, lontano da una radice. Non basta aumentare il budget
-della ricerca o dichiarare sufficiente il rango numerico.
+La prossima attività è **ristimare il modello del minimo su tutte le 30
+direzioni e verificarlo con proposte nuove, prima di dichiarare una ricerca**.
+L'osservazione 11 ha misurato le capacità nelle 22 direzioni mancanti: 17 non
+cambiano la portata dello stadio, cinque la cambiano insieme al vincitore.
+Il modello e le proposte verificate coprono ancora soltanto otto direzioni.
 
 Dalla radice del repository:
 
@@ -308,26 +339,32 @@ python .\eng\review-r3-repaired-flow-minimum7.py review
 python .\eng\run-r3-repaired-capacity-observation8.py review
 python .\eng\review-r3-repaired-capacity-minimum-model9.py review
 python .\eng\run-r3-repaired-minimum-proposals10.py review
+python .\eng\run-r3-repaired-capacity-observation11.py review
 ```
 
 Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
 `PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION`,
 `PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE`,
-`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE` e
-`PASS-REPAIRED-MINIMUM-PROPOSAL-EVIDENCE`. Il PASS della prova 6 riguarda
-la completezza dell'evidenza: **le due previsioni affini restano non conformi**.
-I replay non chiamano l'impianto; R3 e M10 restano aperti.
+`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE`,
+`PASS-REPAIRED-MINIMUM-PROPOSAL-EVIDENCE` e
+`PASS-REPAIRED-CAPACITY-OBSERVATION-11-EVIDENCE`. Il PASS della prova 6
+riguarda la completezza dell'evidenza: **le due previsioni affini restano non
+conformi**. I replay non chiamano l'impianto; R3 e M10 restano aperti.
 
-1. Leggere l'[analisi delle proposte prospettiche](../eng/frozen-evidence/r3-repaired-minimum-proposals10/04-analysis.json)
-   insieme all'[analisi del modello](../eng/frozen-evidence/r3-repaired-capacity-minimum-model9/01-analysis.json).
+1. Leggere l'[analisi dell'osservazione 11](../eng/frozen-evidence/r3-repaired-capacity-observation11/04-analysis.json)
+   insieme all'[analisi delle proposte prospettiche](../eng/frozen-evidence/r3-repaired-minimum-proposals10/04-analysis.json)
+   e all'[analisi del modello](../eng/frozen-evidence/r3-repaired-capacity-minimum-model9/01-analysis.json).
    Non riscrivere i risultati precedenti.
-2. Osservare le capacità delle altre 22 direzioni con la console
-   `R3CapacityObservation`, ripetendo le loro sonde congelate come nella
-   prova 8, oppure escluderle con una motivazione. I quattro vincoli
-   unilaterali restano non negativi: per quelle direzioni manca la sonda
-   opposta, quindi la stima dei termini di portata va dichiarata a parte.
-3. Ristimare il modello sulle direzioni osservate e ripetere una verifica
-   prospettica breve prima di usarlo oltre le otto direzioni.
+2. Ristimare offline il modello sulle 30 direzioni, con un contratto proprio:
+   - le 13 direzioni che cambiano la portata (le otto della prova 8 e le
+     cinque nuove) stimano insieme i termini di portata;
+   - le 17 direzioni che non la cambiano entrano con la sola risposta diretta;
+     per le quattro unilaterali è una differenza in avanti, e il coefficiente
+     resta non negativo;
+   - le proposte congelate delle prove 6 e 10 non entrano nella stima e
+     servono da confronto retrospettivo.
+3. Ripetere una verifica prospettica breve con passi che usano anche le nuove
+   direzioni, congelando previsioni, vincitori e margini prima della misura.
 4. Solo allora dichiarare una ricerca. Deve:
    - trattare esplicitamente il minimo non derivabile, anche nella radice,
      che starebbe sul pareggio delle valvole;
@@ -362,6 +399,7 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Capacità a tutti i checkpoint](../eng/contracts/r3-repaired-capacity-observation8.md) e [ricevuta](../eng/r3-repaired-capacity-observation8-returned.json) | 38 ricette ripetute; minimo riprodotto esattamente, vincitori e margini osservati. Nessun modello o proposta. |
 | [Modello del minimo](../eng/contracts/r3-repaired-capacity-minimum-model9.md) e [ricevuta](../eng/r3-repaired-capacity-minimum-model9-returned.json) | Zero passi runtime; proposte della prova 6 previste entro 1,8e-4, confronto retrospettivo. Primo replay fallito conservato. |
 | [Proposte prospettiche](../eng/contracts/r3-repaired-minimum-proposals10.md) e [ricevuta](../eng/r3-repaired-minimum-proposals10-returned.json) | 14 ricette ripetute; sei previsioni su tre rami tutte conformi, errore massimo 4,7e-4. Nessuna ricerca. |
+| [Capacità nelle altre 22 direzioni](../eng/contracts/r3-repaired-capacity-observation11.md) e [ricevuta](../eng/r3-repaired-capacity-observation11-returned.json) | 90 ricette ripetute; 17 direzioni senza effetto sulla portata, cinque con cambio di vincitore. Nessun modello o proposta. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:

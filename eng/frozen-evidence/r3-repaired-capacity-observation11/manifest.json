@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-capacity-observation11-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 1201,
+      "sha256": "859DD814D7E0F6FB8F409349FAF4ADD507FF80BBB52A65D8816D32DC6CFFE1C4",
+      "stored_sha256": "859DD814D7E0F6FB8F409349FAF4ADD507FF80BBB52A65D8816D32DC6CFFE1C4"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 39287,
+      "sha256": "51B2624E9B2A877DCB5D6DD30202EED3168AA665E0B41FEB452700716B476639",
+      "stored_sha256": "51B2624E9B2A877DCB5D6DD30202EED3168AA665E0B41FEB452700716B476639"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3205,
+      "sha256": "EE7F6382887C68608589C3622282191446D95F1CCECBC2A611B37B57E0996941",
+      "stored_sha256": "EE7F6382887C68608589C3622282191446D95F1CCECBC2A611B37B57E0996941"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 2544786,
+      "sha256": "A7E087CD5AE6C97F2C749D73AA1C31FCC22D926C69719147160DE58AD30E36C9",
+      "stored_sha256": "379A679492A42AFD902E969F3072CE750D6AE8FC87B9B114583434AF91E24938"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 294535,
+      "sha256": "A4E608071570FDE375A6D5FC0B11ECD38B5DE1531134A4780B4DFF335EDB2E75",
+      "stored_sha256": "A4E608071570FDE375A6D5FC0B11ECD38B5DE1531134A4780B4DFF335EDB2E75"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 81,
+      "sha256": "6CC98B830DF1D37B9EE7FD01237438895169DF6321869E6CFF82077F08CC374E",
+      "stored_sha256": "6CC98B830DF1D37B9EE7FD01237438895169DF6321869E6CFF82077F08CC374E"
+    }
+  ]
+}

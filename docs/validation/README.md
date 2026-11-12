@@ -24,6 +24,7 @@ i comandi di ripresa e la [roadmap](../ROADMAP.md) definisce il percorso futuro.
 | Capacità a tutti i checkpoint | 38 ricette ripetute, identiche alle origini; minimo delle capacità esatto in binary64 in 57 ricostruzioni. Proposte nel ramo admission ovunque. | Osservazione descrittiva: secanti delle capacità non validate, nessun modello o proposta nuova. |
 | Modello del minimo | Errori delle proposte 1,78e-4 e 1,50e-4 contro 14,7 e 15,0; vincitori corretti nelle 16 sonde; controlli strutturali di coppia e inventario. | Retrospettivo e limitato alle otto direzioni attive; nessuna proposta nuova o ricerca. |
 | Proposte prospettiche | Sei previsioni su tre rami congelate prima della misura: tutte conformi, errore massimo 4,7e-4 contro 0,10, vincitori corretti. Massimo pesato da 1,157 a 1,056. | Otto direzioni su 30; ramo control e sequenze miste non verificati; solo frazioni del passo. Nessuna radice o ricerca. |
+| Capacità nelle altre 22 direzioni | 90 ricette ripetute, identiche alle origini; minimo esatto in 135 ricostruzioni. 17 direzioni non cambiano la portata dello stadio, cinque cambiano portata e vincitore. | Osservazione descrittiva: nessun coefficiente stimato; unilaterali osservate solo sul lato positivo; modello ancora su otto direzioni. |
 | Replay delle evidenze | Richieste, risposte, selezioni, rifiuti e arresti ricostruiti dai pacchetti congelati. | PASS attesta la coerenza dell'esperimento, non la qualificazione fisica. |
 
 ## Come leggere l'indagine di equilibrio

@@ -43,8 +43,10 @@ a control. La revisione 9 linearizza ogni capacità e ne prende il minimo:
 riproduce offline le due proposte con errori di circa 1,8e-4 e 1,5e-4.
 La prova 10 lo verifica in modo prospettico: sei previsioni su tre rami,
 congelate prima della misura, sono tutte conformi con errore massimo 4,7e-4.
-Il modello copre però otto direzioni su 30; la prossima finestra lo estende
-alle altre e poi dichiara una ricerca.
+L'osservazione 11 misura le capacità nelle altre 22 direzioni: 17 non
+cambiano la portata dello stadio, cinque la cambiano insieme al vincitore.
+Il modello copre ancora otto direzioni su 30; la prossima finestra lo
+ristima su tutte, lo verifica con proposte nuove e poi dichiara una ricerca.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -56,7 +58,8 @@ alle altre e poi dichiara una ricerca.
 | Capacità osservate | 38 ricette ripetute; capacità, vincitori e margini ai tre checkpoint, minimo riprodotto esattamente. | Evidenza PASS; nessun modello, proposta o ricerca. |
 | Modello del limite di portata | Capacità linearizzate e loro minimo; confronto offline con le proposte e le 16 sonde congelate. | Evidenza PASS: proposte entro 1,8e-4, vincitori corretti; retrospettivo, otto direzioni. |
 | Proposte prospettiche completate | Sei proposte su tre rami, ripetute: 14 ricette; previsioni congelate prima della misura. | Evidenza PASS: tutte conformi, errore massimo 4,7e-4, vincitori corretti. Massimo pesato da 1,157 a 1,056; nessuna radice. |
-| Estendere il modello | Capacità osservate per le altre 22 direzioni, modello ristimato e breve verifica prospettica. | Direzioni osservate o escluse con motivazione; trattamento dichiarato delle quattro unilaterali. |
+| Altre direzioni osservate | 90 ricette ripetute sulle 22 direzioni mancanti; capacità, vincitori e variazioni di portata. | Evidenza PASS: 17 direzioni non cambiano la portata, cinque cambiano vincitore; nessun modello ristimato. |
+| Estendere il modello | Modello ristimato offline sulle 30 direzioni e breve verifica prospettica con le nuove. | Termini di portata stimati sulle 13 direzioni che la cambiano; unilaterali con differenza in avanti e coefficiente non negativo; previsioni nuove conformi. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
 | Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
