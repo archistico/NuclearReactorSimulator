@@ -55,9 +55,14 @@ esplora solo l'energia positiva di exhaust fino al 4% e osserva un cambio
 di segno fra +3,5% e +4%, con tutti gli altri input fissi. È un dominio
 diagnostico distinto, non il nuovo box della ricerca.
 
-La prossima finestra deve ricostruire insieme massa ed energia del nodo e
-il bilancio dell'intero ciclo. A +3,5% l'energia di exhaust è quasi stazionaria,
-ma la massa diminuisce ancora e la perdita energetica di outlet resta.
+Le prove 17–19 hanno poi affrontato i bilanci accoppiati. La prima si arresta
+per cambio di fase di hotwell; con una riserva iniziale dichiarata di circa
+10 g, la seconda annulla massa ed energia di exhaust al primo checkpoint.
+La terza verifica due previsioni nucleari-termiche e annulla la potenza netta
+globale iniziale. Il maggiore residuo originale resta però circa 8,37 milioni:
+hotwell accumula energia mentre perde massa. La prossima finestra deve
+quindi rimisurare il modello locale attorno a questo punto diagnostico,
+includendo tutti gli inventari e le capacità, prima della ricerca integrata.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -74,7 +79,9 @@ ma la massa diminuisce ancora e la perdita energetica di outlet resta.
 | Limite del passo diagnosticato | Programmi lineari certificati e combinazione senza portata, offline. | Evidenza PASS: limite dovuto a energia di exhaust e coppia, uguale in ogni ramo; 0,39 MW in estrapolazione entro il 2%. |
 | Leva misurata entro il vecchio limite | 22 ricette sane, nell'inviluppo e ripetibili fino a ±2%. | Secanti entro il 2,22% del riferimento; restano 0,412 MW nella combinazione al +2%. |
 | Dominio diagnostico esplorato | 12 ricette sane, nell'inviluppo e ripetibili, solo energia positiva di exhaust fino al 4%. | Cambio di segno fra +3,5% e +4%; non è una radice e non amplia la ricerca precedente. |
-| Ricostruire i bilanci accoppiati | Massa ed energia di exhaust e accumuli del resto del ciclo nel nuovo dominio osservato. | Verifica congiunta: quasi annullare un accumulo non deve essere confuso con equilibrio o compensazione della sorgente. |
+| Bilanci accoppiati ricostruiti | Prova 17 rifiutata per fase; prova 18, con riserva iniziale esplicita, bilancia exhaust al primo checkpoint. | 28 ricette complessive; rifiuto conservato, nessuna permanenza di fase o stazionarietà dimostrata su 100 passi. |
+| Potenza globale verificata | Prova 19: otto ricette, due previsioni conformi; incremento neutronico e temperature accoppiate annullano la potenza netta iniziale. | Dominio diagnostico dichiarato; al primo Running restano +284 W e importanti accumuli locali. Nessuna radice. |
+| Rimisurare nel nuovo punto | Nuova base locale, capacità e vincitori ai tre checkpoint, con attenzione a hotwell e feedwater. | Dominio e budget dichiarati prima della misura; bilanci di tutti i nodi, dei corpi termici e del rotore; proposte nuove conformi prima della ricerca. |
 | Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Famiglia e limiti motivati dopo i bilanci congiunti; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
@@ -87,7 +94,9 @@ flowchart TD
     R["Trasporto di fase verificato"] --> M["Misura del punto riparato"]
     M --> S["30 direzioni e capacità osservate: prime proposte non conformi"]
     S --> A["Modello del minimo verificato su proposte nuove; estensione a 30 direzioni"]
-    A --> B{"Previsioni, ramo e bilanci accoppiati verificati?"}
+    A --> P["Exhaust e potenza globale bilanciati al primo checkpoint"]
+    P --> L["Nuovo punto: rimisurare inventari e capacità"]
+    L --> B{"Previsioni, ramo e bilanci accoppiati verificati?"}
     B -->|"no"| S
     B -->|"sì"| C["Ricerca con criteri e budget congelati"]
     C --> D{"Radice osservata?"}
@@ -104,11 +113,13 @@ o una famiglia. Un esito negativo riporta alla diagnosi, conservando l'evidenza.
 Il confronto algebrico sul raffreddamento mostra perché il solo bilancio
 energetico di exhaust non basta: annullarlo a stato fisso peggiorerebbe la massa.
 Non è una prova di impossibilità della famiglia o una proposta di modifica a UA.
-Il successo della sonda nucleare-termica vale soltanto alle ampiezze misurate:
-non autorizza di colpo il passo necessario a compensare un deficit di circa 1 MW.
+La nuova prova nucleare-termica verifica il passo che compensa circa 0,942 MW
+al primo checkpoint. Questo riscontro riguarda la potenza globale iniziale,
+mentre il modello di tutti i residui deve essere ristimato nel nuovo punto.
 Anche trenta direzioni disponibili non bastano a rendere affine una legge del
 minimo vicino a capacità quasi coincidenti. Il modello del minimo prevede ora
-anche proposte nuove, ma solo con otto direzioni e in rami con vincitore robusto.
+anche proposte nuove su trenta direzioni, entro le ampiezze campionate;
+questa validità non si trasferisce automaticamente al nuovo punto diagnostico.
 Poiché in un punto stazionario le tre valvole portano la stessa portata dello
 stadio, una radice starebbe sul pareggio: la ricerca futura dovrà trattarlo.
 Il cambio di segno misurato sulla sola combinazione di exhaust non risolve

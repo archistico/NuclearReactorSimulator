@@ -30,6 +30,8 @@ i comandi di ripresa e la [roadmap](../ROADMAP.md) definisce il percorso futuro.
 | Leva di exhaust al percento | Prova 15: 22 ricette sane, nell'inviluppo e ripetibili fino a ±2%; secanti entro il 2,22% del riferimento. | A +2% la combinazione vale ancora +0,4116 MW. È una misura della sola coordinata, non impossibilità dell'intera famiglia. |
 | Sonda di dominio di exhaust | Prova 16: 12 ricette sane, nell'inviluppo e ripetibili, solo energia positiva fino al 4%; cambio di segno fra +3,5% e +4%. | Quasi stazionarietà energetica del nodo al +3,5%, massa ancora in calo e squilibrio degli altri inventari. Il 4% è diagnostico, non un nuovo box o un equilibrio. |
 | Replay delle evidenze | Richieste, risposte, selezioni, rifiuti e arresti ricostruiti dai pacchetti congelati. | PASS attesta la coerenza dell'esperimento, non la qualificazione fisica. |
+| Bilanci accoppiati di exhaust | Prova 17 arrestata per fase di hotwell; prova 18 con riserva iniziale esplicita di circa 10 g: 24 ricette, due aggiornamenti, tassi entro 1e-6 kg/s e 0,01 W al primo checkpoint. | Rifiuto originale conservato; al primo Running energia +6,33 W e massa +2,56e-6 kg/s. Nessuna conferma di 100 passi. |
+| Potenza dell'intero ciclo | Prova 19: otto ricette; due previsioni conformi entro l'1% della variazione. Al punto intero la potenza netta iniziale è numericamente nulla; bilancio energetico ricostruito entro 0,01 W. | Eccezione diagnostica per neutroni e temperature; al primo Running potenza netta +284 W. Massimo originale 8.365.513,134, dominato da hotwell: nessuna radice integrata. |
 
 ## Come leggere l'indagine di equilibrio
 

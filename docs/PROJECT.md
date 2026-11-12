@@ -6,14 +6,12 @@ le consegne e il [changelog](../CHANGELOG.md) conserva la cronologia.
 
 ## Stato corrente
 
-Checkpoint del **12 novembre 2026**, dopo la riparazione del trasporto di fase,
-la costruzione della base direzionale, il fallimento delle prime proposte,
-l'attribuzione al minimo delle capacità di portata, la sua osservazione
-a tutti i checkpoint, la verifica offline di un modello che lo conserva, la
-sua prima verifica prospettica, l'osservazione delle capacità nelle altre
-22 direzioni, la ristima del modello su tutte le 30, la sua verifica
-prospettica, la diagnosi del limite del passo e la misura della leva di
-exhaust fino al 2%, seguita da una sonda positiva di dominio fino al 4%.
+Checkpoint del **12 novembre 2026**. Le prove 17–19 hanno ricostruito insieme
+massa ed energia di exhaust e verificato una previsione della potenza netta
+dell'intero ciclo. Il nuovo punto diagnostico annulla questi bilanci al primo
+checkpoint, ma lascia accumuli nei singoli inventari: il maggiore residuo
+scalato è ancora circa 8,37 milioni. Il passo successivo è rimisurare il modello
+locale attorno a questo punto, prima di dichiarare una ricerca integrata.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -31,6 +29,9 @@ exhaust fino al 2%, seguita da una sonda positiva di dominio fino al 4%.
 | Limite del passo | Diagnosi offline: accumulo di energia in exhaust (0,96 MW) e coppia si muovono insieme con la portata; la sola leva diretta vale 2,8 kW per ampiezza campionata. Per estrapolazione lineare servirebbe il 3,4% su exhaust:energy, oltre il limite del 2%. Nessuna ricerca dichiarata. |
 | Leva di exhaust al 2% | 22 ricette sane, nell'inviluppo e ripetibili; secanti entro il 2,22% del riferimento. A +2% restano circa 0,412 MW nella combinazione energia-coppia. |
 | Sonda positiva fino al 4% | 12 ricette sane, nell'inviluppo e ripetibili; cambio di segno della combinazione fra +3,5% e +4%. Solo dominio diagnostico: non un nuovo box di ricerca. A +3,5% energia del nodo quasi stazionaria, massa ancora in calo. |
+| Bilanci accoppiati di exhaust | Prova 17 arrestata per cambio di fase di hotwell; rifiuto conservato. Prova 18: riserva iniziale dichiarata di circa 10 g in hotwell, 24 ricette e due aggiornamenti; massa ed energia di exhaust entro 1e-6 kg/s e 0,01 W al primo checkpoint. |
+| Potenza globale | Prova 19: otto ricette; previsioni a metà e intero incremento nucleare-termico entrambe conformi. Al punto intero la potenza netta globale iniziale è numericamente nulla; dopo il seed e al primo Running restano +266 W e +284 W. |
+| Nuovo punto diagnostico | Massimo assoluto dei 75 residui scalati **8.365.513,134**, contro ≤1. Domina l'energia di hotwell: +40,3 kW al primo checkpoint, con massa −0,0619 kg/s. Nessuna conferma di 100 passi. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -430,6 +431,55 @@ Non si introduce una compensazione del raffreddamento o dei controllori.
 Un eventuale nuovo dominio di ricerca richiederà una motivazione distinta
 e un modello rimisurato nel nuovo punto.
 
+### Dal bilancio di exhaust alla potenza dell'intero ciclo
+
+La [prova 17](../eng/contracts/r3-repaired-exhaust-balance17.md) tenta di
+annullare insieme i due tassi di exhaust al primo checkpoint, variandone
+massa ed energia. Si ferma già alla verifica del punto iniziale: hotwell
+passa a miscela satura. Le quattro ricette e il rifiuto restano congelati.
+La [prova 18](../eng/contracts/r3-repaired-exhaust-branch18.md) dichiara prima
+della misura una riserva iniziale fissa di massa in hotwell, pari a 1e-6
+del valore di riferimento, circa 10 g. Non è una correzione durante il runtime.
+
+Con questa sola aggiunta, due aggiornamenti del metodo di Newton portano
+exhaust a −0,757042% di massa e +3,518927% di energia rispetto alla baseline.
+Le 24 ricette sono ripetibili e mantengono fase e inviluppo. Al primo checkpoint
+i tassi sono −8,37e-10 kg/s e −0,00212 W, entro le tolleranze dichiarate.
+Al primo Running tornano +2,56e-6 kg/s e +6,33 W: il risultato riguarda il
+primo checkpoint e non dimostra una traiettoria stazionaria. Il ciclo perde
+ancora circa 0,942 MW netti e outlet continua a cedere energia immagazzinata.
+
+La [prova 19](../eng/contracts/r3-repaired-cycle-power19.md) usa quel deficit
+per congelare una previsione prima dell'acquisizione. Dichiara un dominio
+diagnostico distinto: popolazione neutronica fino a +3%, con temperature
+iniziali di combustibile e struttura accoppiate e limitate a +0,3% ciascuna.
+Il punto intero richiede +2,855786% di popolazione neutronica, circa +0,659 K
+al combustibile e +0,188 K alla struttura. Le temperature mantengono il
+piccolo accumulo iniziale dei corpi termici, mentre aumenta la potenza ceduta.
+La console separata applica questi limiti senza modificare quelli storici.
+
+Le otto ricette ripetono baseline, punto della prova 18 e due proposte nuove.
+Entrambe confermano la previsione sulla variazione di potenza globale entro
+l'1% richiesto; al punto intero la sorgente vale 33,913 MW e la potenza netta
+iniziale è numericamente nulla. Dopo il seed e al primo Running restano
+rispettivamente +266 W e +284 W. La ricostruzione indipendente del bilancio
+energetico globale chiude entro 0,01 W in tutte le tre prove.
+
+```mermaid
+flowchart LR
+    E["Exhaust bilanciato al primo checkpoint"] --> G["Deficit globale misurato: 0,942 MW"]
+    G --> N["Incremento nucleare e temperature: previsione confermata"]
+    N --> H["Potenza netta nulla; inventari ancora in deriva"]
+    H --> M["Rimisurare il modello locale e le capacità"]
+```
+
+Il diagramma distingue un bilancio locale da quello complessivo. La somma
+degli accumuli può annullarsi mentre alcuni nodi acquistano energia e altri
+la perdono. Nel nuovo punto domina hotwell: al primo checkpoint accumula
+40,3 kW e perde 0,0619 kg/s; al primo Running perde 0,0838 kg/s. Il massimo
+dei 75 residui originali è **8.365.513,134**. Queste misure motivano la nuova
+base locale, senza qualificare una radice, un box di ricerca o un seed.
+
 ### Conservazione, portata e revisione della verifica
 
 Nel condensatore resta la stessa legge di limite termico, inventario e portata
@@ -455,44 +505,39 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **ricostruire insieme massa ed energia del ricevitore
-e verificare il bilancio dell'intero ciclo**. Il modello del minimo resta
-verificato alle piccole ampiezze; le prove 15–16 hanno misurato la leva di
-exhaust e trovato un cambio di segno, senza trovare un equilibrio.
+La prossima attività è **rimisurare il modello locale attorno al punto
+diagnostico della prova 19**, includendo tutti gli inventari, i corpi termici,
+la coppia e le capacità di portata. Le prove 18–19 hanno bilanciato exhaust
+e la potenza globale soltanto al primo checkpoint. Il massimo residuo resta
+in hotwell; le vecchie secanti non sono una base validata nel nuovo punto.
 
 Dalla radice del repository:
 
 ```powershell
-python .\eng\run-r3-repaired-minimum-proposals13.py review
-python .\eng\review-r3-repaired-step-limit14.py review
-python .\eng\run-r3-repaired-exhaust-lever15.py review
-python .\eng\run-r3-repaired-exhaust-domain16.py review
+python .\eng\run-r3-repaired-exhaust-balance17.py review
+python .\eng\run-r3-repaired-exhaust-branch18.py review
+python .\eng\run-r3-repaired-cycle-power19.py review
 ```
 
-Gli esiti attesi sono `PASS-REPAIRED-MINIMUM-PROPOSAL-13-EVIDENCE`,
-`PASS-REPAIRED-STEP-LIMIT-14-EVIDENCE`, `PASS-REPAIRED-EXHAUST-LEVER-15-EVIDENCE`
-e `PASS-REPAIRED-EXHAUST-DOMAIN-16-EVIDENCE`. I replay non chiamano l'impianto.
-I risultati affini non conformi della prova 6 restano conservati; R3 e M10
-restano aperti.
+I replay devono confermare l'evidenza congelata, compreso il rifiuto iniziale
+della prova 17; non chiamano l'impianto. PASS dell'evidenza non equivale a
+PASS dell'equilibrio. R3 resta RED e M10 aperto.
 
-1. Leggere le [misure entro il 2%](../eng/frozen-evidence/r3-repaired-exhaust-lever15/04-analysis.json)
-   e la [sonda di dominio](../eng/frozen-evidence/r3-repaired-exhaust-domain16/04-analysis.json),
-   con la [decisione dichiarata prima della sonda](../eng/contracts/r3-repaired-exhaust-domain16.md).
-   Il 4% è un limite diagnostico di una sola coordinata, non il box della ricerca.
-2. Congelare un confronto accoppiato degli inventari di exhaust. Verificare
-   contemporaneamente massa, energia e coppia ai tre checkpoint; mantenere
-   l'osservazione di tutte le capacità e dei loro vincitori. Un intervallo
-   di cambio di segno della combinazione non sostituisce queste condizioni.
-3. Ricostruire il bilancio energetico complessivo nei punti ammessi, comprese
-   sorgente, corpi termici, potenze e accumuli degli altri inventari. La quasi
-   stazionarietà energetica di exhaust a +3,5% non compensa l'energia persa
-   da outlet. Motivare ogni ulteriore grandezza o dominio prima di misurarli;
-   non attribuire lo scarto ai controllori senza prova.
-4. Solo dopo questa revisione decidere famiglia e limiti di una ricerca per
-   rami. Rimisurare il modello a ogni nuovo punto, trattare il pareggio delle
-   capacità e i vincoli unilaterali, congelare budget, arresti e previsioni.
-   Scale, criterio di radice e inviluppo restano invariati. Nessun seed è
-   installato e nessuna modifica fisica è implicata.
+1. Riprendere il [punto locale e l'arresto](../eng/frozen-evidence/r3-repaired-exhaust-branch18/04-local-result.json)
+   e le [previsioni verificate](../eng/frozen-evidence/r3-repaired-cycle-power19/04-analysis.json).
+   Conservare la riserva iniziale di hotwell e le eccezioni diagnostiche
+   come condizioni esplicite, senza estenderle automaticamente alla ricerca.
+2. Dichiarare coordinate, limiti, ampiezze, budget e controlli della nuova
+   osservazione. Rimisurare derivate e capacità nel nuovo punto, lungo tutti
+   e tre i checkpoint, con particolare attenzione a hotwell e feedwater.
+   La riserva iniziale non dimostra la permanenza di fase per 100 passi.
+3. Verificare proposte nuove sul modello ristimato, riportando i 75 residui
+   originali e le grandezze fisiche, inclusi corpi termici e rotore. Trattare
+   i cambi di vincitore e i vincoli unilaterali; il bilancio globale nullo
+   non sostituisce l'annullamento degli accumuli di ciascun nodo.
+4. Solo dopo tale verifica motivare famiglia e limiti della ricerca per rami,
+   congelando algoritmo e arresti. Scale, criterio di radice e inviluppo
+   restano invariati; nessun seed o nuovo guadagno dei controllori è implicato.
 
 Una radice osservata richiede ancora revisione, conferme indipendenti di 100
 passi, R3 e la [sequenza di chiusura](ROADMAP.md#3-che-cosa-manca-dopo-r3-per-chiudere-m10).
@@ -523,6 +568,9 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Limite del passo](../eng/contracts/r3-repaired-step-limit14.md) e [ricevuta](../eng/r3-repaired-step-limit14-returned.json) | Zero passi runtime; 30 programmi lineari certificati e limite inferiore calcolato a mano. Oltre le ampiezze campionate è estrapolazione. |
 | [Leva di exhaust](../eng/contracts/r3-repaired-exhaust-lever15.md) e [ricevuta](../eng/r3-repaired-exhaust-lever15-returned.json) | 22 ricette entro ±2%, nessun annullamento della combinazione al limite positivo. |
 | [Dominio positivo di exhaust](../eng/contracts/r3-repaired-exhaust-domain16.md) e [ricevuta](../eng/r3-repaired-exhaust-domain16-returned.json) | 12 ricette fino a +4%; cambio di segno fra +3,5% e +4%, massa e ciclo non in equilibrio. |
+| [Bilanci accoppiati](../eng/contracts/r3-repaired-exhaust-balance17.md) e [ricevuta](../eng/r3-repaired-exhaust-balance17-returned.json) | Quattro ricette; arresto iniziale per cambio di fase di hotwell, conservato. |
+| [Riserva iniziale e bilanci locali](../eng/contracts/r3-repaired-exhaust-branch18.md) e [ricevuta](../eng/r3-repaired-exhaust-branch18-returned.json) | 24 ricette, due aggiornamenti: exhaust bilanciato solo al primo checkpoint. |
+| [Potenza globale](../eng/contracts/r3-repaired-cycle-power19.md) e [ricevuta](../eng/r3-repaired-cycle-power19-returned.json) | Otto ricette; due previsioni conformi, potenza netta iniziale annullata al punto intero. Nessuna radice integrata. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:
@@ -556,6 +604,13 @@ delle console senza avvisi o errori; fixture, preflight, bilanci e replay
 PASS nei rispettivi ambiti. La nuova console modifica solo la convalida
 del dominio diagnostico delle richieste; la suite ordinaria citata sopra
 non è stata rieseguita per queste sole aggiunte a `eng/`.
+
+Anche le prove 17–19 mantengono identici gli alberi `src` e `tests`: solo
+console e protocolli in `eng/`, compilati senza avvisi o errori. Fixture,
+bilanci e replay PASS; 36 ricette complessive e 122 passi runtime effettivi.
+La suite ordinaria completa non è stata rieseguita per queste aggiunte.
+Il rifiuto della prova 17 è conservato; le prove successive dichiarano prima
+della misura le proprie eccezioni, senza alterarne il risultato.
 
 I vecchi replay richiedono i propri commit: H4–H9 e revisione di sufficienza
 `72b0910`; diagnostiche non fluide e revisione vincolata `ed35d9e`;

@@ -25,6 +25,28 @@ Lo [stato corrente](docs/PROJECT.md), l'[handoff](docs/PROJECT.md#handoff) e la
   PASS. Evidenze congelate, baseline e punto +2% riprodotti esattamente.
   R3 resta RED e M10 aperto.
 
+### Bilanci accoppiati di exhaust e previsione della potenza globale
+
+- Eseguita la prova 17 su massa ed energia di exhaust: quattro ricette,
+  arresto iniziale per cambio di fase di hotwell. Il rifiuto è conservato.
+- Dichiarata prima della prova 18 una riserva iniziale fissa di circa 10 g
+  in hotwell. Su 24 ricette ripetibili, due aggiornamenti bilanciano exhaust
+  al primo checkpoint: −8,37e-10 kg/s e −0,00212 W. Al primo Running restano
+  +2,56e-6 kg/s e +6,33 W; nessuna conferma di 100 passi.
+- Prova 19: dichiarato un dominio diagnostico per popolazione neutronica e
+  temperature accoppiate. Otto ricette verificano due previsioni nuove entro
+  l'1% della variazione richiesta. Il punto intero, +2,855786% di neutroni,
+  annulla la potenza netta globale iniziale; al primo Running restano +284 W.
+- Ricostruiti indipendentemente i bilanci energetici globali entro 0,01 W.
+  Il massimo dei 75 residui originali resta 8.365.513,134, dominato da hotwell:
+  il risultato locale e globale iniziale non è un equilibrio integrato.
+- Console diagnostiche compilate senza avvisi o errori, fixture e replay
+  PASS; 36 ricette e 122 passi runtime complessivi. Alberi produttivi e test
+  invariati, suite ordinaria non rieseguita. Evidenze e rifiuti congelati.
+- Aggiornati checkpoint, roadmap, handoff e decisioni: prossima attività,
+  rimisurare il modello e le capacità attorno al nuovo punto diagnostico,
+  prima di dichiarare la ricerca integrata. R3 RED, M10 aperto.
+
 ## 2026-11-11
 
 ### Indagine sull'equilibrio integrato R3

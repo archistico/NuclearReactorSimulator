@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-exhaust-branch18-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2039,
+      "sha256": "2C9CDF577ECBF9C53FEB7C44ECBE4B17F97B72A5AC5382C3CA65D35478C9C62C",
+      "stored_sha256": "2C9CDF577ECBF9C53FEB7C44ECBE4B17F97B72A5AC5382C3CA65D35478C9C62C"
+    },
+    {
+      "file": "00-domain-fixtures.log",
+      "stored": "00-domain-fixtures.log",
+      "bytes": 58,
+      "sha256": "A0D02C8EABB745188269E252FC2A024E3CB0D6F0558A1B9561344445A7EAA3DA",
+      "stored_sha256": "A0D02C8EABB745188269E252FC2A024E3CB0D6F0558A1B9561344445A7EAA3DA"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3112,
+      "sha256": "714060898F548277532C1360AF33157BBDCF93393A798DBE798B2934F4D24840",
+      "stored_sha256": "714060898F548277532C1360AF33157BBDCF93393A798DBE798B2934F4D24840"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 782611,
+      "sha256": "91EB775000B3553D73D4798423511004528E21F8436DA8150F7ED6B7FCE33ED3",
+      "stored_sha256": "C26514316CBBA558738A218EC14C1712B296E5BD45CCA10A94FD0BD42BA91FAD"
+    },
+    {
+      "file": "04-local-result.json",
+      "stored": "04-local-result.json",
+      "bytes": 2369,
+      "sha256": "D4C33F608E5FE4E8A9E80BFAB37D5FDD3E9FD1BE38408A7DA441E1495B2FFC9D",
+      "stored_sha256": "D4C33F608E5FE4E8A9E80BFAB37D5FDD3E9FD1BE38408A7DA441E1495B2FFC9D"
+    },
+    {
+      "file": "05-analysis.json",
+      "stored": "05-analysis.json",
+      "bytes": 15967,
+      "sha256": "6F81D0D9D9D862ADE0E5D2A58938B7D4E7582767783DE659440DE3A747FCFEFB",
+      "stored_sha256": "6F81D0D9D9D862ADE0E5D2A58938B7D4E7582767783DE659440DE3A747FCFEFB"
+    }
+  ]
+}

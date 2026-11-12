@@ -67,6 +67,21 @@ secondario restano separati dalle tolleranze fisiche. La frazione verso il
 limite si applica globalmente al passo, secondo il contratto; non taglia
 indipendentemente le coordinate.
 
+## Dichiarare le riserve iniziali e distinguere i bilanci locali
+
+Le prove 17–19 rendono esplicite altre due condizioni. Una piccola riserva
+di massa può conservare la fase lungo la ricetta breve, ma deve appartenere
+alla condizione iniziale dichiarata: non può diventare una proiezione o
+un reintegro durante l'esecuzione. Il rifiuto precedente resta conservato,
+e la stabilità su 100 passi richiede ancora la propria verifica.
+
+Una potenza netta globale nulla non impone stazionarietà ai singoli nodi.
+La prova 19 verifica una previsione sulla variazione di potenza al primo
+checkpoint, senza annullare gli accumuli di hotwell o degli altri inventari.
+La sua eccezione per popolazione neutronica e temperature viene dichiarata
+prima della misura; non modifica i vecchi limiti né i guadagni dei controllori.
+I 75 residui e il criterio di radice originali restano il riferimento.
+
 ## Verificare le previsioni sulla risposta reale
 
 Diminuire la somma dei quadrati può aumentare il massimo residuo usato per

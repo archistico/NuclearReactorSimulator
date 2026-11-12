@@ -1,0 +1,17 @@
+  Individuazione dei progetti da ripristinare...
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Application\NuclearReactorSimulator.Application.csproj ripristinato (in 92 ms).
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Domain\NuclearReactorSimulator.Domain.csproj ripristinato (in 85 ms).
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Simulation\NuclearReactorSimulator.Simulation.csproj ripristinato (in 92 ms).
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\NuclearReactorSimulator.Application.Tests.csproj ripristinato (in 497 ms).
+  E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\eng\diagnostics\R3CyclePowerObservation\R3CyclePowerObservation.csproj ripristinato (in 497 ms).
+  NuclearReactorSimulator.Domain -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Domain\bin\Release\net10.0\NuclearReactorSimulator.Domain.dll
+  NuclearReactorSimulator.Simulation -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Simulation\bin\Release\net10.0\NuclearReactorSimulator.Simulation.dll
+  NuclearReactorSimulator.Application -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\src\NuclearReactorSimulator.Application\bin\Release\net10.0\NuclearReactorSimulator.Application.dll
+  NuclearReactorSimulator.Application.Tests -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\tests\NuclearReactorSimulator.Application.Tests\bin\Release\net10.0\NuclearReactorSimulator.Application.Tests.dll
+  R3CyclePowerObservation -> E:\sviluppo\2026 NuclearReactorSimulator\NuclearReactorSimulator\eng\diagnostics\R3CyclePowerObservation\bin\Release\net10.0\R3CyclePowerObservation.dll
+
+Compilazione completata.
+    Avvisi: 0
+    Errori: 0
+
+Tempo trascorso 00:00:06.26

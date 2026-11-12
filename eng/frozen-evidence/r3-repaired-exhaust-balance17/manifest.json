@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-exhaust-balance17-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2230,
+      "sha256": "9F669241C70DEE4916322047DF7AE76A9322D913B1FFA95F1DEB88BF944F1E17",
+      "stored_sha256": "9F669241C70DEE4916322047DF7AE76A9322D913B1FFA95F1DEB88BF944F1E17"
+    },
+    {
+      "file": "00-domain-fixtures.log",
+      "stored": "00-domain-fixtures.log",
+      "bytes": 56,
+      "sha256": "782358B3FD6A77FBEC074ED0D8B824B308C0906FCA8A9EA1D8ECDD40B92FB3B9",
+      "stored_sha256": "782358B3FD6A77FBEC074ED0D8B824B308C0906FCA8A9EA1D8ECDD40B92FB3B9"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3080,
+      "sha256": "50B610628DB3B5266E1107F704D270D86601FA7DE8E80E44B8577E4FA840CD68",
+      "stored_sha256": "50B610628DB3B5266E1107F704D270D86601FA7DE8E80E44B8577E4FA840CD68"
+    },
+    {
+      "file": "03-batches.jsonl",
+      "stored": "03-batches.jsonl.gz",
+      "bytes": 130311,
+      "sha256": "3EFAD7424C227C66FF48EAA27E5AD86337620C3464BD42DDC9328906F4191A3F",
+      "stored_sha256": "7CB0BAF9BDD1D268712E056A987B27811C8F6C3CD38E463201C8BBF6398FE3A1"
+    },
+    {
+      "file": "04-local-result.json",
+      "stored": "04-local-result.json",
+      "bytes": 137,
+      "sha256": "D961EB7846CED770E23DD1673EDE4584D4497D39BEC01C08913571512B6E26FE",
+      "stored_sha256": "D961EB7846CED770E23DD1673EDE4584D4497D39BEC01C08913571512B6E26FE"
+    },
+    {
+      "file": "05-analysis.json",
+      "stored": "05-analysis.json",
+      "bytes": 13226,
+      "sha256": "4FC5623CC3EE5B61CB9C67D69D26F0850CCA64815CE3E1916AD4F3BAFF42BDE9",
+      "stored_sha256": "4FC5623CC3EE5B61CB9C67D69D26F0850CCA64815CE3E1916AD4F3BAFF42BDE9"
+    }
+  ]
+}

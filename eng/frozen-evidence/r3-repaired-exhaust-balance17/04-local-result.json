@@ -1,0 +1,9 @@
+{
+  "stop": "INITIAL-GUARD-REJECTION",
+  "point": [
+    -0.008,
+    0.035
+  ],
+  "current": "start/repeat/1",
+  "history": []
+}

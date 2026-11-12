@@ -1,0 +1,61 @@
+{
+  "schema": "r3-repaired-cycle-power19-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2024,
+      "sha256": "AA8C335A63371AD0EBDF50003A8EC59E067A65BB3B484DA1FDCE0B1EF271EB36",
+      "stored_sha256": "AA8C335A63371AD0EBDF50003A8EC59E067A65BB3B484DA1FDCE0B1EF271EB36"
+    },
+    {
+      "file": "00-domain-fixtures.log",
+      "stored": "00-domain-fixtures.log",
+      "bytes": 55,
+      "sha256": "54A9E81AC51E03B8834D0F72B5E94F13F10A29E58DD174E119725363E9388DA8",
+      "stored_sha256": "54A9E81AC51E03B8834D0F72B5E94F13F10A29E58DD174E119725363E9388DA8"
+    },
+    {
+      "file": "01-prediction.json",
+      "stored": "01-prediction.json",
+      "bytes": 332,
+      "sha256": "76E0641F69F52E62EBB9D96BA0ACBD7F550DF5DC41A77C23C0BA0668F925BAF8",
+      "stored_sha256": "76E0641F69F52E62EBB9D96BA0ACBD7F550DF5DC41A77C23C0BA0668F925BAF8"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 3949,
+      "sha256": "42A5948BCCA6E45CA26566C8AA98FA0E86A1F7A702246640A4A8C293FB9C2906",
+      "stored_sha256": "42A5948BCCA6E45CA26566C8AA98FA0E86A1F7A702246640A4A8C293FB9C2906"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3179,
+      "sha256": "BB2F2C0B45A0AC96D5FED260780C06CA3CB0016C29B58D70105B2F080B3FC9A6",
+      "stored_sha256": "BB2F2C0B45A0AC96D5FED260780C06CA3CB0016C29B58D70105B2F080B3FC9A6"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 242402,
+      "sha256": "D43FC1386F6B6F79D46A740736C778CC8261BE0D7CD89D857CEAC6074B5AFB02",
+      "stored_sha256": "25DCF332D2FE48A74704779FAD05B4DABEE82621A96455EF61A1C90CFFF825C5"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 15012,
+      "sha256": "A4ED820AE3AD95CDBADE0E1E2A3D052A07B6ACAFF1BE000DF2F11D26F0A6DB87",
+      "stored_sha256": "A4ED820AE3AD95CDBADE0E1E2A3D052A07B6ACAFF1BE000DF2F11D26F0A6DB87"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 95,
+      "sha256": "41EB623F5E985BEC45854A599FBAF6D2F2D5F2044BFCAB00DA1D0793F1E49B47",
+      "stored_sha256": "41EB623F5E985BEC45854A599FBAF6D2F2D5F2044BFCAB00DA1D0793F1E49B47"
+    }
+  ]
+}
