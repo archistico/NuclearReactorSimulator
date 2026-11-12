@@ -11,8 +11,8 @@ la costruzione della base direzionale, il fallimento delle prime proposte,
 l'attribuzione al minimo delle capacità di portata, la sua osservazione
 a tutti i checkpoint, la verifica offline di un modello che lo conserva, la
 sua prima verifica prospettica, l'osservazione delle capacità nelle altre
-22 direzioni, la ristima del modello su tutte le 30 e la sua verifica
-prospettica.
+22 direzioni, la ristima del modello su tutte le 30, la sua verifica
+prospettica e la diagnosi di che cosa ne limita il passo.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -27,6 +27,7 @@ prospettica.
 | Proposte prospettiche | Sei previsioni congelate prima della misura, su tre rami: tutte conformi, errore massimo 4,7e-4 contro 0,10; vincitori corretti. Massimo pesato osservato da 1,157 a 1,056. Solo otto direzioni. |
 | Altre 22 direzioni | Capacità osservate in 90 ricette ripetute, minimo esatto in 135 ricostruzioni. 17 direzioni, incluse le quattro unilaterali, non cambiano la portata dello stadio; cinque cambiano portata e vincitore. Nessun modello ristimato. |
 | Modello sulle 30 direzioni | Ristimato offline; otto proposte congelate e quattro sonde doppie previste entro 2,4e-3. Poi otto previsioni nuove su quattro sequenze, con 26 direzioni mosse insieme: tutte conformi, errore massimo 1,8e-3. Verificati anche il ramo control e una sequenza mista. Ottimo previsto ancora circa 0,955. |
+| Limite del passo | Diagnosi offline: accumulo di energia in exhaust (0,96 MW) e coppia si muovono insieme con la portata; la sola leva diretta vale 2,8 kW per ampiezza campionata. Per estrapolazione lineare servirebbe il 3,4% su exhaust:energy, oltre il limite del 2%. Nessuna ricerca dichiarata. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -348,6 +349,45 @@ ripetizioni identiche. Limiti:
   sono verificate in combinazione;
 - un solo passo per sequenza, solo frazioni, entro le ampiezze campionate.
 
+### Che cosa limita il passo
+
+La [revisione 14](../eng/contracts/r3-repaired-step-limit14.md) cerca offline
+la causa del limite a 0,955. Nelle righe pesate le energie sono in MW e la
+coppia in N·m. Alla baseline il nodo exhaust accumula circa 0,96 MW e la
+coppia del rotore è quasi in equilibrio.
+
+La portata dello stadio muove le due righe insieme, in proporzione fissa:
+2,32 MW e 1.337 N·m per kg/s. Ridurre l'accumulo di exhaust con la portata
+sbilancia quindi la coppia, in qualunque ramo. La combinazione «energia di
+exhaust meno 0,00173 volte la coppia» non dipende dalla portata né dalla
+sequenza di vincitori. La muove quasi soltanto la direzione `exhaust:energy`
+(99% dell'effetto disponibile), con circa −28 MW per unità di coordinata:
+2,8 kW alla sua ampiezza campionata di 1e-4.
+
+| Limiti sui coefficienti | Ottimo certificato | Limite inferiore dalla combinazione |
+| --- | ---: | ---: |
+| Ampiezze campionate | 0,9552 | 0,9552 |
+| 0,1% uniforme | 0,930 | 0,929 |
+| 0,5% uniforme | 0,817 | 0,815 |
+| 1% uniforme | 0,676 | 0,673 |
+| 2% uniforme, limite ereditato | 0,394 | 0,388 |
+
+Il limite è lo stesso nei tre rami verificati e senza vincoli di ramo; i
+moltiplicatori duali indicano sempre le stesse due righe. Nelle ampiezze
+campionate il limite calcolato a mano coincide con l'ottimo entro 4e-9. Per
+annullare la combinazione servirebbe, per estrapolazione lineare, una
+coordinata di exhaust:energy del 3,4%: oltre il limite ereditato del 2% e 342
+volte la più grande ampiezza misurata. Le sei sonde congelate di quella
+direzione danno secanti fra −28,06 e −28,02: lineare, ma solo fino a 1e-4.
+
+Lettura prudente:
+- dentro le ampiezze campionate il limite è una proprietà del modello
+  verificato; oltre è un'estrapolazione lineare, non una previsione;
+- allargare soltanto le ampiezze non basta, in estrapolazione, entro il 2%;
+- la diagnosi riguarda le 30 direzioni della famiglia attuale. Il lato di
+  raffreddamento del condensatore, dove il limite attivo è la superficie UA,
+  non ne fa parte e non è stato esaminato.
+
 ### Conservazione, portata e revisione della verifica
 
 Nel condensatore resta la stessa legge di limite termico, inventario e portata
@@ -373,13 +413,14 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **dichiarare una ricerca per rami con il modello del
-minimo, congelandone budget, arresti e criteri prima della prima chiamata**.
-Il modello sulle 30 direzioni è stato verificato in modo prospettico (prova
-13), anche nel ramo control e in una sequenza mista. Resta però un modello
-locale: entro le ampiezze campionate prevede al più un massimo pesato di circa
-0,955 contro 1,157, con o senza le 22 direzioni aggiunte. Una ricerca deve
-quindi fare più passi e rimisurare il modello.
+La prossima attività è **misurare la leva dell'energia di exhaust alla scala
+del percento, prima di dichiarare qualsiasi ricerca**. La revisione 14 mostra
+che il passo del modello non è limitato dalle ampiezze campionate ma da un
+conflitto: l'accumulo di energia nel nodo exhaust, circa 0,96 MW, si riduce
+con la portata dello stadio solo al prezzo della coppia, e la sola leva
+diretta è debole. Per estrapolazione lineare servirebbe una coordinata del
+3,4%, oltre il limite ereditato del 2%. Una ricerca nella famiglia attuale
+non è quindi giustificata finché questo punto non è misurato.
 
 Dalla radice del repository:
 
@@ -392,6 +433,7 @@ python .\eng\run-r3-repaired-minimum-proposals10.py review
 python .\eng\run-r3-repaired-capacity-observation11.py review
 python .\eng\review-r3-repaired-capacity-minimum-model12.py review
 python .\eng\run-r3-repaired-minimum-proposals13.py review
+python .\eng\review-r3-repaired-step-limit14.py review
 ```
 
 Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
@@ -400,32 +442,33 @@ Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
 `PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE`,
 `PASS-REPAIRED-MINIMUM-PROPOSAL-EVIDENCE`,
 `PASS-REPAIRED-CAPACITY-OBSERVATION-11-EVIDENCE`,
-`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-12-EVIDENCE` e
-`PASS-REPAIRED-MINIMUM-PROPOSAL-13-EVIDENCE`. Il PASS della prova 6
+`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-12-EVIDENCE`,
+`PASS-REPAIRED-MINIMUM-PROPOSAL-13-EVIDENCE` e
+`PASS-REPAIRED-STEP-LIMIT-14-EVIDENCE`. Il PASS della prova 6
 riguarda la completezza dell'evidenza: **le due previsioni affini restano non
 conformi**. I replay non chiamano l'impianto; R3 e M10 restano aperti.
 
-1. Leggere l'[analisi della prova 13](../eng/frozen-evidence/r3-repaired-minimum-proposals13/04-analysis.json)
-   insieme all'[analisi del modello 12](../eng/frozen-evidence/r3-repaired-capacity-minimum-model12/01-analysis.json)
-   e all'[analisi dell'osservazione 11](../eng/frozen-evidence/r3-repaired-capacity-observation11/04-analysis.json).
+1. Leggere l'[analisi del limite del passo](../eng/frozen-evidence/r3-repaired-step-limit14/01-analysis.json)
+   insieme all'[analisi della prova 13](../eng/frozen-evidence/r3-repaired-minimum-proposals13/04-analysis.json).
    Non riscrivere i risultati precedenti.
-2. Prima di scrivere il contratto, capire che cosa limita il passo. All'ottimo
-   previsto tre righe del primo checkpoint stanno insieme al valore 0,955:
-   energia di outlet, energia di exhaust e coppia del rotore. La riga di
-   exhaust parte da 0,960 e quasi non scende. Va deciso se il limite viene
-   dalle ampiezze campionate o da un conflitto fra queste righe che nessuna
-   direzione risolve: nel secondo caso allargare il passo non basta.
-3. Dichiarare la ricerca. Deve:
-   - procedere per rami, con margine dichiarato sul vincitore, e scegliere
-     fra i rami con una regola fissata prima;
-   - rimisurare sonde e capacità al nuovo punto prima di ogni passo
-     successivo: il modello vale solo entro le ampiezze campionate attorno
-     alla baseline dove è stato stimato;
-   - trattare esplicitamente il minimo non derivabile, anche nella radice,
-     che starebbe sul pareggio delle valvole;
-   - dichiarare come usa le quattro direzioni unilaterali, mai verificate in
-     combinazione, e le sequenze miste diverse da quella misurata;
-   - congelare budget, arresti e criteri prima della prima chiamata.
+2. Misurare `exhaust:energy` a poche ampiezze fra 1e-3 e 2e-2, ai due segni,
+   con ricette ripetute e la console `R3CapacityObservation`. Registrare
+   salute, inviluppo, fasi e regimi, la riga di energia di exhaust, la coppia
+   e il limite attivo del condensatore. La domanda è una sola: la risposta di
+   circa −28 MW per unità di coordinata resta lineare, si piega o cambia fase?
+3. Decidere la famiglia in base alla misura, con una revisione scritta:
+   - se la leva regge e basta entro il 2%, dichiarare la ricerca per rami nella
+     famiglia attuale;
+   - se serve più del 2% su exhaust, motivare un limite diverso per quella
+     sola coordinata oppure una grandezza del lato condensatore, senza
+     cambiare la legge fisica;
+   - in ogni caso distinguere fra ridurre l'accumulo e trasferirlo a un altro
+     nodo.
+4. Solo allora dichiarare una ricerca. Deve procedere per rami con margine
+   dichiarato, rimisurare sonde e capacità a ogni nuovo punto, trattare il
+   minimo non derivabile anche nella radice, dichiarare l'uso delle quattro
+   direzioni unilaterali e congelare budget, arresti e criteri prima della
+   prima chiamata.
 
    Scale, criterio di radice e inviluppo restano invariati; nessuna modifica
    fisica o compensazione automatica degli inventari è implicata.
@@ -456,6 +499,7 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Capacità nelle altre 22 direzioni](../eng/contracts/r3-repaired-capacity-observation11.md) e [ricevuta](../eng/r3-repaired-capacity-observation11-returned.json) | 90 ricette ripetute; 17 direzioni senza effetto sulla portata, cinque con cambio di vincitore. Nessun modello o proposta. |
 | [Modello sulle 30 direzioni](../eng/contracts/r3-repaired-capacity-minimum-model12.md) e [ricevuta](../eng/r3-repaired-capacity-minimum-model12-returned.json) | Zero passi runtime; 12 confronti con record non usati nella stima entro 2,4e-3. Retrospettivo. |
 | [Proposte sulle 30 direzioni](../eng/contracts/r3-repaired-minimum-proposals13.md) e [ricevuta](../eng/r3-repaired-minimum-proposals13-returned.json) | 18 ricette ripetute; otto previsioni su quattro sequenze tutte conformi, errore massimo 1,8e-3. Nessuna ricerca. |
+| [Limite del passo](../eng/contracts/r3-repaired-step-limit14.md) e [ricevuta](../eng/r3-repaired-step-limit14-returned.json) | Zero passi runtime; 30 programmi lineari certificati e limite inferiore calcolato a mano. Oltre le ampiezze campionate è estrapolazione. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:

@@ -320,6 +320,23 @@ Specifiche, esiti e comandi sono raggiungibili dalle
   30 direzioni; residuo originale circa 8,56 milioni. Nessuna radice o ricerca.
   Handoff verso la dichiarazione di una ricerca a più passi. R3 RED e M10 aperto.
 
+### Diagnosi del limite del passo
+
+- Aggiunta la revisione offline `r3-repaired-step-limit14`, zero passi
+  runtime: 30 programmi lineari certificati sul modello 12, in tre rami, con e
+  senza vincoli di ramo, nelle ampiezze campionate e con limiti uniformi fino
+  al 2%.
+- Il limite a 0,955 viene da due righe del primo checkpoint: energia di
+  exhaust (0,96 MW di accumulo) e coppia del rotore. La portata dello stadio le
+  muove in proporzione fissa; la loro combinazione senza portata risponde
+  quasi solo a exhaust:energy, 2,8 kW per ampiezza campionata.
+- Limite inferiore calcolato a mano uguale all'ottimo certificato entro 4e-9
+  nelle ampiezze campionate. In estrapolazione lineare: 0,39 MW al limite
+  ereditato del 2%; 3,4% di exhaust:energy per annullare la combinazione.
+- Nessuna ricerca dichiarata: la famiglia attuale non la giustifica finché la
+  leva non è misurata alla scala del percento. Handoff verso quella misura.
+  R3 RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

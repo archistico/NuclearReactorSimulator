@@ -47,8 +47,10 @@ L'osservazione 11 misura le capacità nelle altre 22 direzioni: 17 non
 cambiano la portata dello stadio, cinque la cambiano insieme al vincitore.
 La revisione 12 ristima il modello su tutte le 30 e la prova 13 lo verifica
 con otto previsioni nuove, tutte conformi, anche nel ramo control. L'ottimo
-previsto entro le ampiezze campionate resta però circa 0,955: la prossima
-finestra dichiara una ricerca a più passi, con rimisura del modello.
+previsto entro le ampiezze campionate resta però circa 0,955. La revisione
+14 ne trova la causa: l'accumulo di energia in exhaust si riduce con la
+portata solo al prezzo della coppia, e la leva diretta è debole. La prossima
+finestra misura quella leva alla scala del percento e poi decide la famiglia.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -62,7 +64,9 @@ finestra dichiara una ricerca a più passi, con rimisura del modello.
 | Proposte prospettiche completate | Sei proposte su tre rami, ripetute: 14 ricette; previsioni congelate prima della misura. | Evidenza PASS: tutte conformi, errore massimo 4,7e-4, vincitori corretti. Massimo pesato da 1,157 a 1,056; nessuna radice. |
 | Altre direzioni osservate | 90 ricette ripetute sulle 22 direzioni mancanti; capacità, vincitori e variazioni di portata. | Evidenza PASS: 17 direzioni non cambiano la portata, cinque cambiano vincitore; nessun modello ristimato. |
 | Modello esteso e verificato | Modello ristimato offline sulle 30 direzioni; 18 ricette con otto previsioni nuove su quattro sequenze. | Evidenza PASS: tutte conformi, errore massimo 1,8e-3; ramo control e una sequenza mista verificati. Ottimo previsto invariato, circa 0,955. |
-| Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Capito che cosa limita il passo; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
+| Limite del passo diagnosticato | Programmi lineari certificati e combinazione senza portata, offline. | Evidenza PASS: limite dovuto a energia di exhaust e coppia, uguale in ogni ramo; 0,39 MW in estrapolazione entro il 2%. |
+| Misurare la leva di exhaust | Poche ricette ripetute su exhaust:energy fra 1e-3 e 2e-2. | Risposta lineare, piegata o con cambio di fase; limite attivo del condensatore registrato. |
+| Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Famiglia decisa dopo la misura della leva; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
 | Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |

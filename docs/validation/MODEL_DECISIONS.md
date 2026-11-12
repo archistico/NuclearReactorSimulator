@@ -212,6 +212,13 @@ garantisce un ottimo migliore: se le righe che limitano il passo non
 cambiano, l'ottimo previsto resta lo stesso e va cercata la causa del limite
 prima di aumentare il budget.
 
+Quando una stessa grandezza interna muove due righe in proporzione fissa, la
+loro combinazione che la cancella è un invariante di quella grandezza: solo le
+leve dirette la spostano. Il suo valore meno la portata delle leve dà un
+limite inferiore del massimo, verificabile a mano e indipendente dal ramo.
+Dentro le ampiezze campionate è un risultato del modello; fuori indica quale
+leva misurare, e non sostituisce la misura.
+
 Il nodo che cambia fase può essere diverso da quello perturbato. La prova
 estesa riparata osserva, per esempio, una sonda di drum che porta suction
 in miscela soltanto al primo Running. Una colonna centrale richiede quindi

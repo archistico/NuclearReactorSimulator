@@ -1,0 +1,855 @@
+{
+  "status": "PASS-REPAIRED-STEP-LIMIT-14-EVIDENCE",
+  "fixtures": "PASS-CAPACITY-MINIMUM-MODEL-FIXTURES; PASS-CAPACITY-MINIMUM-MODEL-12-FIXTURES; PASS-STEP-LIMIT-14-FIXTURES",
+  "runtime_steps": 0,
+  "baseline_maximum_weighted_81": 1.1566151212692262,
+  "programs": [
+    {
+      "box": "sampled amplitudes",
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.9551796824254337,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982692683725259,
+        "seed-step1 rotor torque": -0.0017307316274740052
+      },
+      "directions_at_bound": 18,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.0650148258027912e-14,
+        "dual_violation": 8.236396549546164e-11,
+        "duality_gap": 2.220446049250313e-16,
+        "pivots": 13
+      }
+    },
+    {
+      "box": "sampled amplitudes",
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.9551687042731938,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982703073663194,
+        "seed-step1 rotor torque": -0.0017296926336806064
+      },
+      "directions_at_bound": 24,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.220446049250313e-16,
+        "dual_violation": 8.634986822797508e-11,
+        "duality_gap": 1.1102230246251565e-16,
+        "pivots": 10
+      }
+    },
+    {
+      "box": "sampled amplitudes",
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.9551782877374849,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982692681906878,
+        "seed-step1 rotor torque": -0.00173073180929596
+      },
+      "directions_at_bound": 20,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 3.774758283725532e-14,
+        "dual_violation": 1.5318739651749236e-16,
+        "duality_gap": 2.4802382370125997e-13,
+        "pivots": 16
+      }
+    },
+    {
+      "box": "sampled amplitudes",
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.9551782877374849,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.998269268190688,
+        "seed-step1 rotor torque": -0.0017307318092960162
+      },
+      "directions_at_bound": 22,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 3.68594044175552e-14,
+        "dual_violation": 7.098744902921876e-18,
+        "duality_gap": 2.498001805406602e-13,
+        "pivots": 14
+      }
+    },
+    {
+      "box": "sampled amplitudes",
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.9551873310269654,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982775178552986,
+        "seed-step1 rotor torque": -0.0017224821447015086
+      },
+      "directions_at_bound": 19,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 4.440892098500626e-16,
+        "dual_violation": 1.4269036429452198e-11,
+        "duality_gap": 2.220446049250313e-16,
+        "pivots": 13
+      }
+    },
+    {
+      "box": "sampled amplitudes",
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.9551873297879256,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982775188178369,
+        "seed-step1 rotor torque": -0.001722481182163134
+      },
+      "directions_at_bound": 24,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 0.0,
+        "dual_violation": 1.8550021544869177e-19,
+        "duality_gap": 1.1102230246251565e-16,
+        "pivots": 10
+      }
+    },
+    {
+      "box": 0.001,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.9298150068801427,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982692683902534,
+        "seed-step1 rotor torque": -0.0017307316097427273
+      },
+      "directions_at_bound": 16,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.7711166694643907e-13,
+        "dual_violation": 5.2707826991154445e-12,
+        "duality_gap": 3.410605131648481e-13,
+        "pivots": 30
+      }
+    },
+    {
+      "box": 0.001,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.9296577708051748,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982703073848997,
+        "seed-step1 rotor torque": -0.0017296926150961293
+      },
+      "directions_at_bound": 15,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.5579538487363607e-13,
+        "dual_violation": 5.279561072634906e-12,
+        "duality_gap": 3.427258477017858e-13,
+        "pivots": 28
+      }
+    },
+    {
+      "box": 0.001,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.9298135253504483,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982691902385397,
+        "seed-step1 rotor torque": -0.0017307316741261062
+      },
+      "directions_at_bound": 15,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 6.810003949642152e-14,
+        "dual_violation": 2.9263418026696487e-12,
+        "duality_gap": 6.205258529234925e-12,
+        "pivots": 29
+      }
+    },
+    {
+      "box": 0.001,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.9298135253504486,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982691902385399,
+        "seed-step1 rotor torque": -0.0017307316741261062
+      },
+      "directions_at_bound": 17,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 6.732288337918391e-14,
+        "dual_violation": 2.9263953012779204e-12,
+        "duality_gap": 6.2051475069324624e-12,
+        "pivots": 26
+      }
+    },
+    {
+      "box": 0.001,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.9298597844945662,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982774097235546,
+        "seed-step1 rotor torque": -0.0017224809939868303
+      },
+      "directions_at_bound": 16,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 6.750155989720952e-14,
+        "dual_violation": 2.0744929078981115e-14,
+        "duality_gap": 6.59472476627343e-14,
+        "pivots": 29
+      }
+    },
+    {
+      "box": 0.001,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.9298597844945563,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982774097235455,
+        "seed-step1 rotor torque": -0.0017224809939868216
+      },
+      "directions_at_bound": 16,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.842170943040401e-14,
+        "dual_violation": 2.081190848218405e-14,
+        "duality_gap": 6.672440377997191e-14,
+        "pivots": 22
+      }
+    },
+    {
+      "box": 0.005,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.8171362810845796,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982692380308223,
+        "seed-step1 rotor torque": -0.0017307314164905776
+      },
+      "directions_at_bound": 10,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 6.536993168992922e-13,
+        "dual_violation": 6.297729416077974e-11,
+        "duality_gap": 2.5609514509028486e-12,
+        "pivots": 45
+      }
+    },
+    {
+      "box": 0.005,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.816713995378131,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9977666770679658,
+        "seed-step1 turbine-inlet energy": -0.0005034327230537728,
+        "seed-step1 rotor torque": -0.0017298597079502237
+      },
+      "directions_at_bound": 11,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.2737367544323206e-13,
+        "dual_violation": 6.486033523654193e-11,
+        "duality_gap": 1.1975975766631564e-12,
+        "pivots": 38
+      }
+    },
+    {
+      "box": 0.005,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.8171347684118394,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982690756521654,
+        "seed-step1 rotor torque": -0.0017307310109415945
+      },
+      "directions_at_bound": 10,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 1.0459189070388675e-11,
+        "dual_violation": 2.3695850446030087e-13,
+        "duality_gap": 1.6187051699034782e-13,
+        "pivots": 46
+      }
+    },
+    {
+      "box": 0.005,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.8171347684118598,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982690756522408,
+        "seed-step1 rotor torque": -0.0017307310109415752
+      },
+      "directions_at_bound": 11,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 6.366462912410498e-12,
+        "dual_violation": 2.424644615264325e-13,
+        "duality_gap": 4.014566457044566e-13,
+        "pivots": 38
+      }
+    },
+    {
+      "box": 0.005,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.8173344630413215,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982772502457836,
+        "seed-step1 rotor torque": -0.0017224823625916529
+      },
+      "directions_at_bound": 10,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 1.7053025658242404e-13,
+        "dual_violation": 5.940166562067765e-13,
+        "duality_gap": 9.974243653232406e-13,
+        "pivots": 44
+      }
+    },
+    {
+      "box": 0.005,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.8173344630413226,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.998277250245785,
+        "seed-step1 rotor torque": -0.0017224823625916466
+      },
+      "directions_at_bound": 10,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.2737367544323206e-13,
+        "dual_violation": 6.31221574386486e-13,
+        "duality_gap": 1.02828856540782e-12,
+        "pivots": 41
+      }
+    },
+    {
+      "box": 0.01,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.6762879167324438,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982691986309369,
+        "seed-step1 rotor torque": -0.0017307311657058194
+      },
+      "directions_at_bound": 8,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.8262547857593745e-10,
+        "dual_violation": 1.3979862164824836e-10,
+        "duality_gap": 1.4332979247910771e-11,
+        "pivots": 56
+      }
+    },
+    {
+      "box": 0.01,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.6759365373365877,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9977666770679919,
+        "seed-step1 turbine-inlet energy": -0.0005034327230774721,
+        "seed-step1 rotor torque": -0.0017298597079443033
+      },
+      "directions_at_bound": 8,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 8.384404281969182e-13,
+        "dual_violation": 1.410849297291582e-10,
+        "duality_gap": 1.411848415955319e-11,
+        "pivots": 41
+      }
+    },
+    {
+      "box": 0.01,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.676286420242932,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982690398008015,
+        "seed-step1 rotor torque": -0.0017307307847947335
+      },
+      "directions_at_bound": 7,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 1.8189894035458565e-12,
+        "dual_violation": 8.435411165127412e-13,
+        "duality_gap": 2.10864659067056e-12,
+        "pivots": 45
+      }
+    },
+    {
+      "box": 0.01,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.6762864202429084,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.998269039800781,
+        "seed-step1 rotor torque": -0.0017307307847947988
+      },
+      "directions_at_bound": 7,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 3.637978807091713e-12,
+        "dual_violation": 7.996562699296991e-13,
+        "duality_gap": 3.3015812306302905e-12,
+        "pivots": 42
+      }
+    },
+    {
+      "box": 0.01,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.6766779343484108,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982772500820877,
+        "seed-step1 rotor torque": -0.001722482347886284
+      },
+      "directions_at_bound": 7,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.2737367544323206e-13,
+        "dual_violation": 1.6506128716456756e-12,
+        "duality_gap": 2.4564794642856214e-12,
+        "pivots": 47
+      }
+    },
+    {
+      "box": 0.01,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.6766779343483994,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982772500820727,
+        "seed-step1 rotor torque": -0.0017224823478863384
+      },
+      "directions_at_bound": 7,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 5.115907697472721e-13,
+        "dual_violation": 1.556717336512207e-12,
+        "duality_gap": 2.3088198020104755e-12,
+        "pivots": 45
+      }
+    },
+    {
+      "box": 0.02,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.39459122869413427,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982682033549659,
+        "seed-step1 rotor torque": -0.0017306409467477296
+      },
+      "directions_at_bound": 6,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.1827872842550278e-10,
+        "dual_violation": 2.742560468035938e-10,
+        "duality_gap": 1.541239358360258e-11,
+        "pivots": 99
+      }
+    },
+    {
+      "box": 0.02,
+      "pattern": [
+        "stop",
+        "stop",
+        "stop"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.39438169583892024,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9977662399734947,
+        "seed-step1 turbine-inlet energy": -0.00037520226613751924,
+        "seed-step1 rotor torque": -0.00172958495767561,
+        "1 turbine-inlet energy": -0.0001283726929563506
+      },
+      "directions_at_bound": 7,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 3.183231456205249e-12,
+        "dual_violation": 2.7812524932322557e-10,
+        "duality_gap": 2.4730495429281518e-11,
+        "pivots": 82
+      }
+    },
+    {
+      "box": 0.02,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.3945897643183003,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982680221365962,
+        "seed-step1 rotor torque": -0.0017307287683318783
+      },
+      "directions_at_bound": 6,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 2.3646862246096134e-11,
+        "dual_violation": 1.7883175209321173e-11,
+        "duality_gap": 9.932554778657732e-12,
+        "pivots": 103
+      }
+    },
+    {
+      "box": 0.02,
+      "pattern": [
+        "admission",
+        "admission",
+        "admission"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.39458976431829523,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.998268022136582,
+        "seed-step1 rotor torque": -0.001730728768334153
+      },
+      "directions_at_bound": 7,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 1.8189894035458565e-12,
+        "dual_violation": 1.475827421149819e-11,
+        "duality_gap": 3.050976138396777e-11,
+        "pivots": 98
+      }
+    },
+    {
+      "box": 0.02,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": true,
+      "optimum": 0.395613324429264,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9954126107527865,
+        "seed-step1 rotor torque": -0.0017211232253233383,
+        "post-seed turbine-inlet energy": 0.0028657918454681845
+      },
+      "directions_at_bound": 5,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 1.1368683772161603e-11,
+        "dual_violation": 5.516895480815846e-11,
+        "duality_gap": 2.6597501978642413e-11,
+        "pivots": 74
+      }
+    },
+    {
+      "box": 0.02,
+      "pattern": [
+        "expansion",
+        "expansion",
+        "expansion"
+      ],
+      "branch_constraints": false,
+      "optimum": 0.3953649996461291,
+      "row_multipliers": {
+        "seed-step1 exhaust energy": 0.9982768990431108,
+        "seed-step1 rotor torque": -0.001722477518286774
+      },
+      "directions_at_bound": 7,
+      "certificate": {
+        "status": "OPTIMAL-CERTIFIED",
+        "primal_violation": 9.094947017729282e-13,
+        "dual_violation": 4.806105790123651e-12,
+        "duality_gap": 6.3834493246872626e-12,
+        "pivots": 75
+      }
+    }
+  ],
+  "best_optimum_by_box": {
+    "sampled amplitudes": 0.9551687042731938,
+    "0.001": 0.9296577708051748,
+    "0.005": 0.816713995378131,
+    "0.01": 0.6759365373365877,
+    "0.02": 0.39438169583892024
+  },
+  "invariant": {
+    "exhaust_energy_per_stage_flow": 2.3162988556895328,
+    "torque_per_stage_flow_nm": 1336.8225486708886,
+    "ratio_per_nm": 0.0017326898457783126,
+    "baseline_exhaust_energy_row": 0.9596439641594887,
+    "baseline_torque_row_nm": -0.0001298693430271669,
+    "baseline_value": 0.9596441891827806,
+    "maximum_pattern_dependence": 9.400466516318318e-14,
+    "direction_effects": {
+      "control-out:mass": {
+        "exhaust_energy_per_amplitude": 6.186975465803657e-08,
+        "torque_per_amplitude": 3.525816408811444e-05,
+        "flow_free_part_per_amplitude": 7.782917617751156e-10
+      },
+      "control-valve": {
+        "exhaust_energy_per_amplitude": -3.012433060921478e-08,
+        "torque_per_amplitude": -1.7160652311942748e-05,
+        "flow_free_part_per_amplitude": -3.9024260137945715e-10
+      },
+      "exhaust:energy": {
+        "exhaust_energy_per_amplitude": -0.0028025163612889785,
+        "torque_per_amplitude": 2.089548444429018e-08,
+        "flow_free_part_per_amplitude": -0.0028025163974943726
+      },
+      "exhaust:mass": {
+        "exhaust_energy_per_amplitude": -2.2235687569876975e-06,
+        "torque_per_amplitude": -5.934948680172913e-10,
+        "flow_free_part_per_amplitude": -2.223567728645166e-06
+      },
+      "header:energy": {
+        "exhaust_energy_per_amplitude": -9.062864258797128e-08,
+        "torque_per_amplitude": -5.1654149455515615e-05,
+        "flow_free_part_per_amplitude": -1.1280223340840238e-09
+      },
+      "header:mass": {
+        "exhaust_energy_per_amplitude": 4.061434294953815e-08,
+        "torque_per_amplitude": 2.313823271404836e-05,
+        "flow_free_part_per_amplitude": 5.229620766509895e-10
+      },
+      "stop-out:energy": {
+        "exhaust_energy_per_amplitude": 8.002928101550483e-08,
+        "torque_per_amplitude": 4.561483218434859e-05,
+        "flow_free_part_per_amplitude": 9.929244728022757e-10
+      },
+      "stop-out:mass": {
+        "exhaust_energy_per_amplitude": -3.5641327866689845e-08,
+        "torque_per_amplitude": -2.0305282130594904e-05,
+        "flow_free_part_per_amplitude": -4.585717033442306e-10
+      },
+      "turbine-inlet:energy": {
+        "exhaust_energy_per_amplitude": 0.0015826151753455453,
+        "torque_per_amplitude": 0.9190683289513011,
+        "flow_free_part_per_amplitude": -9.845185804816055e-06
+      },
+      "turbine-inlet:iso-specific-internal-energy": {
+        "exhaust_energy_per_amplitude": -3.4247151561358352e-06,
+        "torque_per_amplitude": 0.0014215891151483362,
+        "flow_free_part_per_amplitude": -5.887888180822334e-06
+      }
+    },
+    "sampled_reach_share": {
+      "exhaust:energy": 0.9936319597344413,
+      "turbine-inlet:energy": 0.003490609822634846,
+      "turbine-inlet:iso-specific-internal-energy": 0.0020875502734037073
+    },
+    "sampled_box": {
+      "reach": 0.0028204773105762167,
+      "largest_row_lower_bound": 0.9551687007633863
+    },
+    "uniform_boxes": {
+      "0.001": {
+        "reach": 0.028572175548820987,
+        "largest_row_lower_bound": 0.9294615450528052
+      },
+      "0.005": {
+        "reach": 0.1428608777441049,
+        "largest_row_lower_bound": 0.8153705272056395
+      },
+      "0.01": {
+        "reach": 0.2857217554882098,
+        "largest_row_lower_bound": 0.6727567548966825
+      },
+      "0.02": {
+        "reach": 0.5714435109764197,
+        "largest_row_lower_bound": 0.3875292102787684
+      }
+    },
+    "lever": "exhaust:energy",
+    "lever_response_per_unit": -28.025163974943723,
+    "lever_coordinate_to_cancel": 0.034242232803374975
+  },
+  "invariant_bound_by_box": {
+    "sampled amplitudes": 0.9551687007633863,
+    "0.001": 0.9294615450528052,
+    "0.005": 0.8153705272056395,
+    "0.01": 0.6727567548966825,
+    "0.02": 0.3875292102787684
+  },
+  "optimum_minus_bound": {
+    "sampled amplitudes": 3.509807444679325e-09,
+    "0.001": 0.00019622575236954987,
+    "0.005": 0.0013434681724915354,
+    "0.01": 0.003179782439905132,
+    "0.02": 0.006852485560151833
+  },
+  "bound_never_exceeds_optimum": true,
+  "bound_tight_in_sampled_box": true,
+  "lever_probes": [
+    {
+      "record": "exhaust:energy/minus/0.0001",
+      "coordinate": -0.0001,
+      "exhaust_energy_row": 0.9624467936903238,
+      "secant_per_unit": -28.028295308351048
+    },
+    {
+      "record": "exhaust:energy/minus/3e-05",
+      "coordinate": -3e-05,
+      "exhaust_energy_row": 0.9604847483426332,
+      "secant_per_unit": -28.02613943814943
+    },
+    {
+      "record": "exhaust:energy/minus/1e-06",
+      "coordinate": -1e-06,
+      "exhaust_energy_row": 0.9596719918459655,
+      "secant_per_unit": -28.02768647680587
+    },
+    {
+      "record": "exhaust:energy/plus/1e-06",
+      "coordinate": 1e-06,
+      "exhaust_energy_row": 0.959615941619873,
+      "secant_per_unit": -28.022539615757402
+    },
+    {
+      "record": "exhaust:energy/plus/3e-05",
+      "coordinate": 3e-05,
+      "exhaust_energy_row": 0.9588022642076015,
+      "secant_per_unit": -28.056665062906973
+    },
+    {
+      "record": "exhaust:energy/plus/0.0001",
+      "coordinate": 0.0001,
+      "exhaust_energy_row": 0.9568379987210035,
+      "secant_per_unit": -28.059654384852138
+    }
+  ],
+  "lever_secant_range_per_unit": [
+    -28.059654384852138,
+    -28.022539615757402
+  ],
+  "largest_probed_lever_coordinate": 0.0001,
+  "conclusion": {
+    "limiting_rows": [
+      "seed-step1 exhaust energy",
+      "seed-step1 rotor torque"
+    ],
+    "same_limit_in_every_pattern_and_without_branch_constraints": true,
+    "sampled_box_optimum": 0.9551687042731938,
+    "inherited_limit_optimum": 0.39438169583892024,
+    "lever_coordinate_to_cancel": 0.034242232803374975,
+    "lever_coordinate_exceeds_inherited_limit": true,
+    "lever_coordinate_over_largest_probe": 342.42232803374975,
+    "wider_sampling_alone_sufficient_in_linear_extrapolation": false
+  },
+  "proposal_executed": false,
+  "search_started": false,
+  "family_selected": false,
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "limits": [
+    "Inside the sampled amplitudes the bound is a property of the verified model; beyond them it is a linear extrapolation, not a prediction",
+    "The exhaust-energy lever is measured only up to a coordinate of 1e-4: its response at the percent scale is unknown and may bend or change phase",
+    "The diagnosis concerns the 30 working directions of family H; quantities outside it, such as the condenser cooling side, are not examined",
+    "No recipe, proposal, search or seed; the root criterion and the inherited 2% limit are unchanged"
+  ]
+}
