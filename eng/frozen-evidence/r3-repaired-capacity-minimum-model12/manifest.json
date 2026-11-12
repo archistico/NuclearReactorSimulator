@@ -1,0 +1,12 @@
+{
+  "schema": "r3-repaired-capacity-minimum-model12-frozen-v1",
+  "files": [
+    {
+      "file": "01-analysis.json",
+      "stored": "01-analysis.json",
+      "bytes": 108116,
+      "sha256": "E2418FF6B1F8A9D99F4B7403E3F39F912FC73B36CF9C7D6CE411C4E5535B0B44",
+      "stored_sha256": "E2418FF6B1F8A9D99F4B7403E3F39F912FC73B36CF9C7D6CE411C4E5535B0B44"
+    }
+  ]
+}

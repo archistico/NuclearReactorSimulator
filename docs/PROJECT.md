@@ -10,8 +10,9 @@ Checkpoint del **12 novembre 2026**, dopo la riparazione del trasporto di fase,
 la costruzione della base direzionale, il fallimento delle prime proposte,
 l'attribuzione al minimo delle capacità di portata, la sua osservazione
 a tutti i checkpoint, la verifica offline di un modello che lo conserva, la
-sua prima verifica prospettica e l'osservazione delle capacità nelle altre
-22 direzioni.
+sua prima verifica prospettica, l'osservazione delle capacità nelle altre
+22 direzioni, la ristima del modello su tutte le 30 e la sua verifica
+prospettica.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -25,6 +26,7 @@ sua prima verifica prospettica e l'osservazione delle capacità nelle altre
 | Modello del minimo | Offline, senza passi runtime: errori delle proposte 1,78e-4 e 1,50e-4 contro 14,734 e 15,011 del modello affine; vincitori previsti in 16 sonde su 16. Confronto retrospettivo. |
 | Proposte prospettiche | Sei previsioni congelate prima della misura, su tre rami: tutte conformi, errore massimo 4,7e-4 contro 0,10; vincitori corretti. Massimo pesato osservato da 1,157 a 1,056. Solo otto direzioni. |
 | Altre 22 direzioni | Capacità osservate in 90 ricette ripetute, minimo esatto in 135 ricostruzioni. 17 direzioni, incluse le quattro unilaterali, non cambiano la portata dello stadio; cinque cambiano portata e vincitore. Nessun modello ristimato. |
+| Modello sulle 30 direzioni | Ristimato offline; otto proposte congelate e quattro sonde doppie previste entro 2,4e-3. Poi otto previsioni nuove su quattro sequenze, con 26 direzioni mosse insieme: tutte conformi, errore massimo 1,8e-3. Verificati anche il ramo control e una sequenza mista. Ottimo previsto ancora circa 0,955. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -300,6 +302,52 @@ piccole bastano a cambiare vincitore.
 Sono differenze descrittive, non derivate. Il modello resta quello delle otto
 direzioni finché non viene ristimato e verificato con proposte nuove.
 
+### Il modello sulle 30 direzioni e la sua verifica
+
+La [revisione 12](../eng/contracts/r3-repaired-capacity-minimum-model12.md)
+ristima offline il modello, con la stessa forma, su tutte le direzioni. Le 13
+che cambiano la portata stimano insieme i termini di portata. Le altre 17
+entrano con la sola risposta diretta: differenza centrale per 13, differenza
+in avanti per le quattro unilaterali. Nessuna proposta entra nella stima.
+
+| Confronto retrospettivo | Esito |
+| --- | --- |
+| Vincitori nelle 26 sonde che stimano i termini di portata | 26 su 26 |
+| Sonda a scala doppia delle quattro unilaterali, non usata nella stima | Errore massimo 2,4e-3 |
+| Due proposte della prova 6 | Errori 1,5e-4 e 1,2e-4 |
+| Sei proposte della prova 10 | Errore massimo 6,4e-4 |
+| Parte non lineare delle 13 direzioni centrali senza termine di portata | Al più 1,9e-3 della parte lineare |
+
+La [prova 13](../eng/contracts/r3-repaired-minimum-proposals13.md) lo verifica
+con proposte nuove. Usa la regola della prova 10, ma prende il vertice del
+programma primario senza ridurre il numero di direzioni: ogni passo muove 26
+direzioni, 18 delle quali fra le 22 aggiunte, quasi tutte al limite
+dell'ampiezza. Le sequenze ammesse sono quattro. Tre hanno vincitore costante
+(stop, admission, expansion). La quarta, control–expansion–control, peggiora
+il massimo previsto: è stata misurata lo stesso, perché è il primo passo
+ammesso con il ramo control e con una sequenza mista.
+
+| Sequenza | Frazione | Errore relativo (soglia 0,10) | Massimo pesato previsto | Osservato |
+| --- | ---: | ---: | ---: | ---: |
+| stop | 0,25 | 3,3e-4 | 1,10626 | 1,10624 |
+| stop | 0,50 | 4,6e-4 | 1,05590 | 1,05581 |
+| admission | 0,25 | 1,8e-3 | 1,10626 | 1,10624 |
+| admission | 0,50 | 1,8e-3 | 1,05590 | 1,05581 |
+| expansion | 0,25 | 2,0e-4 | 1,10626 | 1,10624 |
+| expansion | 0,50 | 4,1e-4 | 1,05590 | 1,05582 |
+| control–expansion–control | 0,25 | 1,2e-4 | 1,20505 | 1,20506 |
+| control–expansion–control | 0,50 | 1,9e-4 | 1,48977 | 1,48965 |
+
+Tutte e otto le previsioni sono conformi: vincitori osservati uguali ai
+previsti, nessun cambio di fase o regime, errore di portata entro 8e-7 kg/s,
+ripetizioni identiche. Limiti:
+- le 22 direzioni aggiunte non migliorano l'ottimo previsto, che resta circa
+  0,955: il massimo dei 75 residui originali osservato resta circa 8,56
+  milioni, nessuna radice;
+- i coefficienti unilaterali sono zero in tutti i passi: quelle direzioni non
+  sono verificate in combinazione;
+- un solo passo per sequenza, solo frazioni, entro le ampiezze campionate.
+
 ### Conservazione, portata e revisione della verifica
 
 Nel condensatore resta la stessa legge di limite termico, inventario e portata
@@ -325,11 +373,13 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **ristimare il modello del minimo su tutte le 30
-direzioni e verificarlo con proposte nuove, prima di dichiarare una ricerca**.
-L'osservazione 11 ha misurato le capacità nelle 22 direzioni mancanti: 17 non
-cambiano la portata dello stadio, cinque la cambiano insieme al vincitore.
-Il modello e le proposte verificate coprono ancora soltanto otto direzioni.
+La prossima attività è **dichiarare una ricerca per rami con il modello del
+minimo, congelandone budget, arresti e criteri prima della prima chiamata**.
+Il modello sulle 30 direzioni è stato verificato in modo prospettico (prova
+13), anche nel ramo control e in una sequenza mista. Resta però un modello
+locale: entro le ampiezze campionate prevede al più un massimo pesato di circa
+0,955 contro 1,157, con o senza le 22 direzioni aggiunte. Una ricerca deve
+quindi fare più passi e rimisurare il modello.
 
 Dalla radice del repository:
 
@@ -340,37 +390,41 @@ python .\eng\run-r3-repaired-capacity-observation8.py review
 python .\eng\review-r3-repaired-capacity-minimum-model9.py review
 python .\eng\run-r3-repaired-minimum-proposals10.py review
 python .\eng\run-r3-repaired-capacity-observation11.py review
+python .\eng\review-r3-repaired-capacity-minimum-model12.py review
+python .\eng\run-r3-repaired-minimum-proposals13.py review
 ```
 
 Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
 `PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION`,
 `PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE`,
 `PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE`,
-`PASS-REPAIRED-MINIMUM-PROPOSAL-EVIDENCE` e
-`PASS-REPAIRED-CAPACITY-OBSERVATION-11-EVIDENCE`. Il PASS della prova 6
+`PASS-REPAIRED-MINIMUM-PROPOSAL-EVIDENCE`,
+`PASS-REPAIRED-CAPACITY-OBSERVATION-11-EVIDENCE`,
+`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-12-EVIDENCE` e
+`PASS-REPAIRED-MINIMUM-PROPOSAL-13-EVIDENCE`. Il PASS della prova 6
 riguarda la completezza dell'evidenza: **le due previsioni affini restano non
 conformi**. I replay non chiamano l'impianto; R3 e M10 restano aperti.
 
-1. Leggere l'[analisi dell'osservazione 11](../eng/frozen-evidence/r3-repaired-capacity-observation11/04-analysis.json)
-   insieme all'[analisi delle proposte prospettiche](../eng/frozen-evidence/r3-repaired-minimum-proposals10/04-analysis.json)
-   e all'[analisi del modello](../eng/frozen-evidence/r3-repaired-capacity-minimum-model9/01-analysis.json).
+1. Leggere l'[analisi della prova 13](../eng/frozen-evidence/r3-repaired-minimum-proposals13/04-analysis.json)
+   insieme all'[analisi del modello 12](../eng/frozen-evidence/r3-repaired-capacity-minimum-model12/01-analysis.json)
+   e all'[analisi dell'osservazione 11](../eng/frozen-evidence/r3-repaired-capacity-observation11/04-analysis.json).
    Non riscrivere i risultati precedenti.
-2. Ristimare offline il modello sulle 30 direzioni, con un contratto proprio:
-   - le 13 direzioni che cambiano la portata (le otto della prova 8 e le
-     cinque nuove) stimano insieme i termini di portata;
-   - le 17 direzioni che non la cambiano entrano con la sola risposta diretta;
-     per le quattro unilaterali è una differenza in avanti, e il coefficiente
-     resta non negativo;
-   - le proposte congelate delle prove 6 e 10 non entrano nella stima e
-     servono da confronto retrospettivo.
-3. Ripetere una verifica prospettica breve con passi che usano anche le nuove
-   direzioni, congelando previsioni, vincitori e margini prima della misura.
-4. Solo allora dichiarare una ricerca. Deve:
+2. Prima di scrivere il contratto, capire che cosa limita il passo. All'ottimo
+   previsto tre righe del primo checkpoint stanno insieme al valore 0,955:
+   energia di outlet, energia di exhaust e coppia del rotore. La riga di
+   exhaust parte da 0,960 e quasi non scende. Va deciso se il limite viene
+   dalle ampiezze campionate o da un conflitto fra queste righe che nessuna
+   direzione risolve: nel secondo caso allargare il passo non basta.
+3. Dichiarare la ricerca. Deve:
+   - procedere per rami, con margine dichiarato sul vincitore, e scegliere
+     fra i rami con una regola fissata prima;
+   - rimisurare sonde e capacità al nuovo punto prima di ogni passo
+     successivo: il modello vale solo entro le ampiezze campionate attorno
+     alla baseline dove è stato stimato;
    - trattare esplicitamente il minimo non derivabile, anche nella radice,
      che starebbe sul pareggio delle valvole;
-   - procedere per rami, con margine dichiarato, e rimisurare il modello
-     quando il passo esce dalle ampiezze campionate;
-   - coprire il ramo control e le sequenze miste, oggi non verificati;
+   - dichiarare come usa le quattro direzioni unilaterali, mai verificate in
+     combinazione, e le sequenze miste diverse da quella misurata;
    - congelare budget, arresti e criteri prima della prima chiamata.
 
    Scale, criterio di radice e inviluppo restano invariati; nessuna modifica
@@ -400,6 +454,8 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Modello del minimo](../eng/contracts/r3-repaired-capacity-minimum-model9.md) e [ricevuta](../eng/r3-repaired-capacity-minimum-model9-returned.json) | Zero passi runtime; proposte della prova 6 previste entro 1,8e-4, confronto retrospettivo. Primo replay fallito conservato. |
 | [Proposte prospettiche](../eng/contracts/r3-repaired-minimum-proposals10.md) e [ricevuta](../eng/r3-repaired-minimum-proposals10-returned.json) | 14 ricette ripetute; sei previsioni su tre rami tutte conformi, errore massimo 4,7e-4. Nessuna ricerca. |
 | [Capacità nelle altre 22 direzioni](../eng/contracts/r3-repaired-capacity-observation11.md) e [ricevuta](../eng/r3-repaired-capacity-observation11-returned.json) | 90 ricette ripetute; 17 direzioni senza effetto sulla portata, cinque con cambio di vincitore. Nessun modello o proposta. |
+| [Modello sulle 30 direzioni](../eng/contracts/r3-repaired-capacity-minimum-model12.md) e [ricevuta](../eng/r3-repaired-capacity-minimum-model12-returned.json) | Zero passi runtime; 12 confronti con record non usati nella stima entro 2,4e-3. Retrospettivo. |
+| [Proposte sulle 30 direzioni](../eng/contracts/r3-repaired-minimum-proposals13.md) e [ricevuta](../eng/r3-repaired-minimum-proposals13-returned.json) | 18 ricette ripetute; otto previsioni su quattro sequenze tutte conformi, errore massimo 1,8e-3. Nessuna ricerca. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:

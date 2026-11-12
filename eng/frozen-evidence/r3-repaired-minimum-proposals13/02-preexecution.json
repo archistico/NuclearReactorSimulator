@@ -1,0 +1,86 @@
+{
+  "status": "PASS-PREEXECUTION",
+  "contract_sha256": "B45DFCC55839A72B500D9DFF8B33D7A11889E56DEA0DA5E6159206E524786E83",
+  "requests_sha256": "F1C4578FF433A315BB08ED31A2439AA4A3AD46B2977E33C40C913BAFBD604F02",
+  "model_sha256": "CF833E4A0BE6C3F0BBF20B88E84B625012B1F49839EC9F74FF9379D35DB15E2F",
+  "fixtures": "PASS-MINIMUM-PROPOSAL-13-FIXTURES",
+  "runtime_steps": 0,
+  "assemblies": [
+    {
+      "file": "Microsoft.ApplicationInsights.dll",
+      "sha256": "BF9A4B88C7F94267E1CC7ED0700C575D3EB3266FF25BCB76E4F40F1B0FBA022D"
+    },
+    {
+      "file": "Microsoft.Bcl.AsyncInterfaces.dll",
+      "sha256": "5705D245072D3EB78400547B32147DBB6E2C8B02BA8BDA76729798F5EFDEAECB"
+    },
+    {
+      "file": "Microsoft.Testing.Extensions.MSBuild.dll",
+      "sha256": "F6EF5EF03B5C22F7900FB67FE741847E75CF3CE26F652106A27D8CFCC834BB7F"
+    },
+    {
+      "file": "Microsoft.Testing.Extensions.Telemetry.dll",
+      "sha256": "548751AE749BCA1E823F1BC3698AC751A0DC0CA47C396A9D32B432BD828848DF"
+    },
+    {
+      "file": "Microsoft.Testing.Extensions.TrxReport.Abstractions.dll",
+      "sha256": "ACAE6C525EAD26F77CEAB1B1D640FE7E8C07FEC2ACDFC78BF753B220A49EF3E6"
+    },
+    {
+      "file": "Microsoft.Testing.Platform.dll",
+      "sha256": "519744D3B6321320E366495FBED0D8C37F9B0E11207667EB89EB5C0C425A7462"
+    },
+    {
+      "file": "NuclearReactorSimulator.Application.dll",
+      "sha256": "F2ACEF32BA3283F55DA405AD8389A4108AAB449D47DE7531C511683A0743875E"
+    },
+    {
+      "file": "NuclearReactorSimulator.Application.Tests.dll",
+      "sha256": "AEC1AA77C866A4744D9DDCA39AB97E5909A5F1D5AF51A8D8B9D6407F9F710923"
+    },
+    {
+      "file": "NuclearReactorSimulator.Domain.dll",
+      "sha256": "AC17FA259F7DC767E1834070EBC5EA6D189CA271CAF4FAFF881F2F1B76789144"
+    },
+    {
+      "file": "NuclearReactorSimulator.Simulation.dll",
+      "sha256": "0F64ED92031D7920E8925AADFDDBFF78250CC29135F0808A78DE88415EC789CE"
+    },
+    {
+      "file": "R3CapacityObservation.dll",
+      "sha256": "68EA7D9E4263E72814E9C2082C450DE9DD0FC5FEE6CEB59D30A3BF6684708CD4"
+    },
+    {
+      "file": "xunit.abstractions.dll",
+      "sha256": "3166DC70323FB30CCF1CEDB0FE86F2AD122C46D254542342D90386EFC4C9285C"
+    },
+    {
+      "file": "xunit.v3.assert.dll",
+      "sha256": "483AEC8A5B7FAEA0A92D0AE4F11A3479045F8F5E3F551DFC4DAC6BEDEAAFA9CE"
+    },
+    {
+      "file": "xunit.v3.common.dll",
+      "sha256": "E4175BC165D01B9828ACDC996776370ADF4F8D0A5865E75EC9DED17FB70258A9"
+    },
+    {
+      "file": "xunit.v3.core.dll",
+      "sha256": "B3641E9E80CD8175E2D9995D6FA9750B8FB31740C87BA121E56CFE515F7F06CC"
+    },
+    {
+      "file": "xunit.v3.mtp-v1.dll",
+      "sha256": "69903F4E48E5794350154D97BC911909974469780CD1931E23DA3AF419A1F2E7"
+    },
+    {
+      "file": "xunit.v3.runner.common.dll",
+      "sha256": "8D9B157EBD8D9240D292ED922F5F26BA4011DE5FD07812CEAAC7BACCFC5E6BC4"
+    },
+    {
+      "file": "xunit.v3.runner.inproc.console.dll",
+      "sha256": "360EF1613C7D4148A715B8495D9F7AD95E4126F75ED86DDA6CF81139C28B1431"
+    },
+    {
+      "file": "xunit.v3.runner.utility.netcore.dll",
+      "sha256": "ABCE062185B0D72B665AAE07D76C681AFF1CD794525A34CFA1B3B0137AF76AFF"
+    }
+  ]
+}

@@ -204,6 +204,14 @@ osservate e va rimisurato fuori da esse. Per una direzione unilaterale la
 risposta è una differenza in avanti sul lato ammesso e il coefficiente resta
 non negativo: la sonda opposta non si usa, perché cambia fase.
 
+Una proposta di verifica non deve essere una proposta buona. Per provare il
+modello su molte direzioni si usa un passo che le muove insieme, anche se un
+passo più parsimonioso avrebbe lo stesso valore previsto; per provare un ramo
+si misura anche un passo che peggiora il massimo. Aggiungere direzioni non
+garantisce un ottimo migliore: se le righe che limitano il passo non
+cambiano, l'ottimo previsto resta lo stesso e va cercata la causa del limite
+prima di aumentare il budget.
+
 Il nodo che cambia fase può essere diverso da quello perturbato. La prova
 estesa riparata osserva, per esempio, una sonda di drum che porta suction
 in miscela soltanto al primo Running. Una colonna centrale richiede quindi

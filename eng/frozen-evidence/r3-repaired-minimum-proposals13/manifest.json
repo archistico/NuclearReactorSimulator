@@ -1,0 +1,54 @@
+{
+  "schema": "r3-repaired-minimum-proposals13-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 1201,
+      "sha256": "DB52FDC89BBF0CF9390D7235458A626E72EF01052C55590C69AF5A85F725740A",
+      "stored_sha256": "DB52FDC89BBF0CF9390D7235458A626E72EF01052C55590C69AF5A85F725740A"
+    },
+    {
+      "file": "01-model.json",
+      "stored": "01-model.json",
+      "bytes": 55636,
+      "sha256": "CF833E4A0BE6C3F0BBF20B88E84B625012B1F49839EC9F74FF9379D35DB15E2F",
+      "stored_sha256": "CF833E4A0BE6C3F0BBF20B88E84B625012B1F49839EC9F74FF9379D35DB15E2F"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 11973,
+      "sha256": "F1C4578FF433A315BB08ED31A2439AA4A3AD46B2977E33C40C913BAFBD604F02",
+      "stored_sha256": "F1C4578FF433A315BB08ED31A2439AA4A3AD46B2977E33C40C913BAFBD604F02"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3252,
+      "sha256": "96909EEFFC5BEDCA6EE5BE19EB9E6DF2EB96CEB7B4F83E10583E6E75FE5B2DE5",
+      "stored_sha256": "96909EEFFC5BEDCA6EE5BE19EB9E6DF2EB96CEB7B4F83E10583E6E75FE5B2DE5"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 512194,
+      "sha256": "6C82D536D6667759EA84B896E2C645DFA87F18B7C5C7A4DABA98DC034F51658C",
+      "stored_sha256": "3D81BABA4B0FC7FC53F826BE46BC33A801B61547884E211B4353A70885BAAEE8"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 94554,
+      "sha256": "0B17A027B7CF325EC33350EBC92D54C6A293309ACB341B5636730DC12D8F2C7B",
+      "stored_sha256": "0B17A027B7CF325EC33350EBC92D54C6A293309ACB341B5636730DC12D8F2C7B"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 80,
+      "sha256": "DC62D9063A585F8BB8DB1F8ED14305A17C813FC7C4EA0A47830176346DAC789B",
+      "stored_sha256": "DC62D9063A585F8BB8DB1F8ED14305A17C813FC7C4EA0A47830176346DAC789B"
+    }
+  ]
+}

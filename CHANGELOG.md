@@ -301,6 +301,25 @@ Specifiche, esiti e comandi sono raggiungibili dalle
 - Nessun coefficiente stimato, nessuna proposta o ricerca. Handoff verso la
   ristima del modello sulle 30 direzioni. R3 RED e M10 aperto.
 
+### Modello del minimo sulle 30 direzioni
+
+- Aggiunta la revisione offline `r3-repaired-capacity-minimum-model12`, zero
+  passi runtime: termini di portata stimati sulle 13 direzioni che la cambiano,
+  risposta diretta per le altre 17, differenza in avanti per le unilaterali.
+- Confronti con record non usati nella stima: proposte delle prove 6 e 10 e
+  sonde doppie unilaterali, 12 su 12 conformi con errore massimo 2,4e-3;
+  vincitori corretti in 26 sonde su 26.
+- Aggiunta la prova `r3-repaired-minimum-proposals13`: 18 ricette ripetute, al
+  massimo 56 passi runtime. Quattro sequenze ammesse (stop, admission, expansion
+  e control–expansion–control); ogni passo muove 26 direzioni, 18 fra le 22
+  aggiunte. Previsioni congelate prima della misura.
+- Otto previsioni su otto conformi: errore relativo massimo 1,8e-3 contro
+  0,10, vincitori corretti, nessun cambio di fase o regime. Primo ramo control
+  e prima sequenza mista verificati.
+- L'ottimo previsto entro le ampiezze campionate resta circa 0,955 anche con
+  30 direzioni; residuo originale circa 8,56 milioni. Nessuna radice o ricerca.
+  Handoff verso la dichiarazione di una ricerca a più passi. R3 RED e M10 aperto.
+
 ### Documentazione
 
 - Riscritto il README intorno al simulatore e alle istruzioni d'uso; riscritto

@@ -45,8 +45,10 @@ La prova 10 lo verifica in modo prospettico: sei previsioni su tre rami,
 congelate prima della misura, sono tutte conformi con errore massimo 4,7e-4.
 L'osservazione 11 misura le capacità nelle altre 22 direzioni: 17 non
 cambiano la portata dello stadio, cinque la cambiano insieme al vincitore.
-Il modello copre ancora otto direzioni su 30; la prossima finestra lo
-ristima su tutte, lo verifica con proposte nuove e poi dichiara una ricerca.
+La revisione 12 ristima il modello su tutte le 30 e la prova 13 lo verifica
+con otto previsioni nuove, tutte conformi, anche nel ramo control. L'ottimo
+previsto entro le ampiezze campionate resta però circa 0,955: la prossima
+finestra dichiara una ricerca a più passi, con rimisura del modello.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -59,7 +61,8 @@ ristima su tutte, lo verifica con proposte nuove e poi dichiara una ricerca.
 | Modello del limite di portata | Capacità linearizzate e loro minimo; confronto offline con le proposte e le 16 sonde congelate. | Evidenza PASS: proposte entro 1,8e-4, vincitori corretti; retrospettivo, otto direzioni. |
 | Proposte prospettiche completate | Sei proposte su tre rami, ripetute: 14 ricette; previsioni congelate prima della misura. | Evidenza PASS: tutte conformi, errore massimo 4,7e-4, vincitori corretti. Massimo pesato da 1,157 a 1,056; nessuna radice. |
 | Altre direzioni osservate | 90 ricette ripetute sulle 22 direzioni mancanti; capacità, vincitori e variazioni di portata. | Evidenza PASS: 17 direzioni non cambiano la portata, cinque cambiano vincitore; nessun modello ristimato. |
-| Estendere il modello | Modello ristimato offline sulle 30 direzioni e breve verifica prospettica con le nuove. | Termini di portata stimati sulle 13 direzioni che la cambiano; unilaterali con differenza in avanti e coefficiente non negativo; previsioni nuove conformi. |
+| Modello esteso e verificato | Modello ristimato offline sulle 30 direzioni; 18 ricette con otto previsioni nuove su quattro sequenze. | Evidenza PASS: tutte conformi, errore massimo 1,8e-3; ramo control e una sequenza mista verificati. Ottimo previsto invariato, circa 0,955. |
+| Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Capito che cosa limita il passo; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
 | Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
