@@ -1,0 +1,47 @@
+{
+  "schema": "r3-repaired-exhaust-lever15-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2194,
+      "sha256": "E97FF40FA6487695F3BF12DB4EAB0BA7E7B128C022648D6BCA251CEC64D6B53D",
+      "stored_sha256": "E97FF40FA6487695F3BF12DB4EAB0BA7E7B128C022648D6BCA251CEC64D6B53D"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 10773,
+      "sha256": "04A8519EC98CD21682D94F11B3BF055CA187FBAC05C574FDC2A84579F3F6A3C1",
+      "stored_sha256": "04A8519EC98CD21682D94F11B3BF055CA187FBAC05C574FDC2A84579F3F6A3C1"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3162,
+      "sha256": "219F4637EC7DE7E05E8FC78C36E4865000C6C6DFBB5467867DBE526EC9D40FE7",
+      "stored_sha256": "219F4637EC7DE7E05E8FC78C36E4865000C6C6DFBB5467867DBE526EC9D40FE7"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 622098,
+      "sha256": "8D173AC52FFC5878BAB3D535270D7A54AD5769DF6C07303FA85655A3556CDF26",
+      "stored_sha256": "5B048F4F25D5722DFE5AC727148C67052E46B79EE42F670C530341237641EE3A"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 88079,
+      "sha256": "FC49E437D30B490F8907F79051FD5D96B5CDA177F6E7030562613F057C0BCB7F",
+      "stored_sha256": "FC49E437D30B490F8907F79051FD5D96B5CDA177F6E7030562613F057C0BCB7F"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 80,
+      "sha256": "BFC36450AF824EE0126CCDAAB9A17496AA9F3D1E93F86BCCC307F6EC9E9CA242",
+      "stored_sha256": "BFC36450AF824EE0126CCDAAB9A17496AA9F3D1E93F86BCCC307F6EC9E9CA242"
+    }
+  ]
+}

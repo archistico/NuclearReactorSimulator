@@ -48,6 +48,19 @@ condizioni di conferma restano quelli del protocollo congelato. Un esito
 inconclusivo richiede motivazioni e prove distinte prima di cambiare box,
 famiglia di trim, coefficienti, controllori o seed produttivo.
 
+Una sonda può esplorare un dominio diverso solo con motivazione, coordinate
+e limiti dichiarati prima della misura. Nella prova 16 la sola energia positiva
+di exhaust arriva al 4%, dopo la misura della leva entro il 2%; tutte le altre
+variabili restano fisse. L'eccezione non riscrive il vecchio box né definisce
+automaticamente quello della ricerca. Il rifiuto delle altre variazioni è
+verificato nella console diagnostica.
+
+Un cambio di segno di una combinazione di righe non è un equilibrio. Al +3,5%
+di energia di exhaust il suo accumulo energetico è quasi annullato, ma la
+massa diminuisce e la perdita di energia di outlet rimane. Il confronto deve
+quindi includere gli inventari e la sorgente dell'intero ciclo prima di
+aggiungere grandezze, allargare altri limiti o qualificare una famiglia.
+
 Normalizzare le colonne o le disequazioni ausiliarie non equivale a ripesare
 i residui. La conversione di unità dei margini e il cap di un obiettivo numerico
 secondario restano separati dalle tolleranze fisiche. La frazione verso il

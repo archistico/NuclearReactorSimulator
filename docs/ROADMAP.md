@@ -49,8 +49,15 @@ La revisione 12 ristima il modello su tutte le 30 e la prova 13 lo verifica
 con otto previsioni nuove, tutte conformi, anche nel ramo control. L'ottimo
 previsto entro le ampiezze campionate resta però circa 0,955. La revisione
 14 ne trova la causa: l'accumulo di energia in exhaust si riduce con la
-portata solo al prezzo della coppia, e la leva diretta è debole. La prossima
-finestra misura quella leva alla scala del percento e poi decide la famiglia.
+portata solo al prezzo della coppia. La prova 15 misura la leva diretta
+fino al 2%: è quasi lineare, ma non annulla la combinazione. La sonda 16
+esplora solo l'energia positiva di exhaust fino al 4% e osserva un cambio
+di segno fra +3,5% e +4%, con tutti gli altri input fissi. È un dominio
+diagnostico distinto, non il nuovo box della ricerca.
+
+La prossima finestra deve ricostruire insieme massa ed energia del nodo e
+il bilancio dell'intero ciclo. A +3,5% l'energia di exhaust è quasi stazionaria,
+ma la massa diminuisce ancora e la perdita energetica di outlet resta.
 
 | Passo | Consegna prevista | Condizione per avanzare |
 | --- | --- | --- |
@@ -65,8 +72,10 @@ finestra misura quella leva alla scala del percento e poi decide la famiglia.
 | Altre direzioni osservate | 90 ricette ripetute sulle 22 direzioni mancanti; capacità, vincitori e variazioni di portata. | Evidenza PASS: 17 direzioni non cambiano la portata, cinque cambiano vincitore; nessun modello ristimato. |
 | Modello esteso e verificato | Modello ristimato offline sulle 30 direzioni; 18 ricette con otto previsioni nuove su quattro sequenze. | Evidenza PASS: tutte conformi, errore massimo 1,8e-3; ramo control e una sequenza mista verificati. Ottimo previsto invariato, circa 0,955. |
 | Limite del passo diagnosticato | Programmi lineari certificati e combinazione senza portata, offline. | Evidenza PASS: limite dovuto a energia di exhaust e coppia, uguale in ogni ramo; 0,39 MW in estrapolazione entro il 2%. |
-| Misurare la leva di exhaust | Poche ricette ripetute su exhaust:energy fra 1e-3 e 2e-2. | Risposta lineare, piegata o con cambio di fase; limite attivo del condensatore registrato. |
-| Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Famiglia decisa dopo la misura della leva; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
+| Leva misurata entro il vecchio limite | 22 ricette sane, nell'inviluppo e ripetibili fino a ±2%. | Secanti entro il 2,22% del riferimento; restano 0,412 MW nella combinazione al +2%. |
+| Dominio diagnostico esplorato | 12 ricette sane, nell'inviluppo e ripetibili, solo energia positiva di exhaust fino al 4%. | Cambio di segno fra +3,5% e +4%; non è una radice e non amplia la ricerca precedente. |
+| Ricostruire i bilanci accoppiati | Massa ed energia di exhaust e accumuli del resto del ciclo nel nuovo dominio osservato. | Verifica congiunta: quasi annullare un accumulo non deve essere confuso con equilibrio o compensazione della sorgente. |
+| Dichiarare la ricerca | Contratto di una ricerca per rami a più passi, con rimisura del modello a ogni nuovo punto. | Famiglia e limiti motivati dopo i bilanci congiunti; budget, arresti, scelta del ramo e uso delle unilaterali congelati prima della prima chiamata. |
 | Scegliere la famiglia | Motivare H, C o J e fissarne incognite, box e budget. | Misure nuove e distinzione fra riduzione e trasferimento degli accumuli; le vecchie derivate restano storiche. |
 | Verificare la base locale | Misurare direzioni indipendenti compatibili con tutta la ricetta. | Disponibilità delle derivate e previsioni verificate a una scala utile. |
 | Provare proposte e ricerca | Confrontare proposte ripetute, poi congelare algoritmo e arresti. | Accordo misurato prima della ricerca; radice osservata prima della conferma. |
@@ -78,7 +87,7 @@ flowchart TD
     R["Trasporto di fase verificato"] --> M["Misura del punto riparato"]
     M --> S["30 direzioni e capacità osservate: prime proposte non conformi"]
     S --> A["Modello del minimo verificato su proposte nuove; estensione a 30 direzioni"]
-    A --> B{"Previsioni e ramo verificati?"}
+    A --> B{"Previsioni, ramo e bilanci accoppiati verificati?"}
     B -->|"no"| S
     B -->|"sì"| C["Ricerca con criteri e budget congelati"]
     C --> D{"Radice osservata?"}
@@ -102,6 +111,9 @@ minimo vicino a capacità quasi coincidenti. Il modello del minimo prevede ora
 anche proposte nuove, ma solo con otto direzioni e in rami con vincitore robusto.
 Poiché in un punto stazionario le tre valvole portano la stessa portata dello
 stadio, una radice starebbe sul pareggio: la ricerca futura dovrà trattarlo.
+Il cambio di segno misurato sulla sola combinazione di exhaust non risolve
+gli altri residui. L'eccezione diagnostica al 4% non diventa automaticamente
+un limite di ricerca, né si estende alle altre coordinate.
 
 Le famiglie C/J, gli allargamenti dei limiti e altre modifiche fisiche richiedono
 motivazioni e protocolli distinti. Il calendario potrà essere stimato quando

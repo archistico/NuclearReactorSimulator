@@ -1,0 +1,54 @@
+{
+  "schema": "r3-repaired-exhaust-domain16-frozen-v1",
+  "files": [
+    {
+      "file": "00-build.log",
+      "stored": "00-build.log",
+      "bytes": 2224,
+      "sha256": "56C46B3D95382A2266033A3AC74BB34F6F9B99B946EB30BA7B06BFA672791F58",
+      "stored_sha256": "56C46B3D95382A2266033A3AC74BB34F6F9B99B946EB30BA7B06BFA672791F58"
+    },
+    {
+      "file": "00-domain-fixtures.log",
+      "stored": "00-domain-fixtures.log",
+      "bytes": 56,
+      "sha256": "76C6029FE93951B76370173ACAD50C76C7535F9F2015414D66636BD931736346",
+      "stored_sha256": "76C6029FE93951B76370173ACAD50C76C7535F9F2015414D66636BD931736346"
+    },
+    {
+      "file": "01-requests.json",
+      "stored": "01-requests.json",
+      "bytes": 5839,
+      "sha256": "80B60FFC77B706F3C7E7D75A91DB07B77188EDDE6238B3C21F62FC670315D358",
+      "stored_sha256": "80B60FFC77B706F3C7E7D75A91DB07B77188EDDE6238B3C21F62FC670315D358"
+    },
+    {
+      "file": "02-preexecution.json",
+      "stored": "02-preexecution.json",
+      "bytes": 3233,
+      "sha256": "B299006A9C9461F66598FF6E458250C632A5A0B0906B797E02AA7F620E017421",
+      "stored_sha256": "B299006A9C9461F66598FF6E458250C632A5A0B0906B797E02AA7F620E017421"
+    },
+    {
+      "file": "03-measurements.jsonl",
+      "stored": "03-measurements.jsonl.gz",
+      "bytes": 339174,
+      "sha256": "D30845679E0ECC6E8575BFAC8D00725D609788E0648670A23BEE9AD454508EC3",
+      "stored_sha256": "397F822D962DF68D873EB7CD5EB065F6D70570DD3DEFD2B85F11AA4D4016DB9B"
+    },
+    {
+      "file": "04-analysis.json",
+      "stored": "04-analysis.json",
+      "bytes": 46172,
+      "sha256": "B3F908A59CDDE1B56441245F67D4ABD94B8DD397E4F1079777D2D543979AC83F",
+      "stored_sha256": "B3F908A59CDDE1B56441245F67D4ABD94B8DD397E4F1079777D2D543979AC83F"
+    },
+    {
+      "file": "execution.log",
+      "stored": "execution.log",
+      "bytes": 80,
+      "sha256": "A598CB0644A0CB2F85A6788DE1E7A446688535FAB1DAAFDA2D91D61A36F77167",
+      "stored_sha256": "A598CB0644A0CB2F85A6788DE1E7A446688535FAB1DAAFDA2D91D61A36F77167"
+    }
+  ]
+}

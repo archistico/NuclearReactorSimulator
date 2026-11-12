@@ -1,0 +1,2461 @@
+{
+  "status": "PASS-REPAIRED-EXHAUST-LEVER-15-EVIDENCE",
+  "fixtures": "PASS-EXHAUST-LEVER-15-FIXTURES",
+  "recipes": 22,
+  "maximum_runtime_steps": 68,
+  "exact_repeats": true,
+  "parent_records_reproduced": [
+    "base/repeat/1",
+    "base/repeat/2",
+    "exhaust:energy/plus/0.0001/repeat/1",
+    "exhaust:energy/plus/0.0001/repeat/2",
+    "exhaust:energy/minus/0.0001/repeat/1",
+    "exhaust:energy/minus/0.0001/repeat/2"
+  ],
+  "baseline_physical": [
+    {
+      "checkpoint": "seed-step1",
+      "exhaust_energy_w": 959643.9641594887,
+      "exhaust_mass_kg_s": -0.14340262368222056,
+      "rotor_torque_nm": -0.0001298693430271669,
+      "condenser": {
+        "SteamSpaceNodeId": "exhaust",
+        "MassKgS": 13.171404427232966,
+        "SteamEnergyW": 29939002.70338353,
+        "SteamAdvectedJKg": 2273030.402246413,
+        "CondensateAdvectedJKg": 178094.93529357942,
+        "HeatRejectionW": 27593242.28418991,
+        "EffectiveCoolingW": 27593242.28418991,
+        "ActiveCondensationLimits": "THERMAL",
+        "CoolingActiveLimits": "SURFACE UA"
+      },
+      "stage_vapor_kg_s": 13.028001803550866,
+      "pressure_pa": 8438.344971163331,
+      "temperature_k": 315.6750957421958,
+      "quality": 0.8729051078953289
+    },
+    {
+      "checkpoint": "post-seed",
+      "exhaust_energy_w": 957747.48878479,
+      "exhaust_mass_kg_s": -0.14305834518353322,
+      "rotor_torque_nm": -0.008348143030843858,
+      "condenser": {
+        "SteamSpaceNodeId": "exhaust",
+        "MassKgS": 13.171054143514597,
+        "SteamEnergyW": 29940884.924484342,
+        "SteamAdvectedJKg": 2273233.759290799,
+        "CondensateAdvectedJKg": 178101.34485150783,
+        "HeatRejectionW": 27595102.46841237,
+        "EffectiveCoolingW": 27595102.46841237,
+        "ActiveCondensationLimits": "THERMAL",
+        "CoolingActiveLimits": "SURFACE UA"
+      },
+      "stage_vapor_kg_s": 13.027995798331272,
+      "pressure_pa": 8439.022578482974,
+      "temperature_k": 315.67661425992844,
+      "quality": 0.872988428871881
+    },
+    {
+      "checkpoint": "1",
+      "exhaust_energy_w": 955871.9487518072,
+      "exhaust_mass_kg_s": -0.14270763618640103,
+      "rotor_torque_nm": -0.0067189227786457195,
+      "condenser": {
+        "SteamSpaceNodeId": "exhaust",
+        "MassKgS": 13.170704565375999,
+        "SteamEnergyW": 29942763.135442395,
+        "SteamAdvectedJKg": 2273436.700885226,
+        "CondensateAdvectedJKg": 178107.74079228716,
+        "HeatRejectionW": 27596958.700660612,
+        "EffectiveCoolingW": 27596958.700660616,
+        "ActiveCondensationLimits": "THERMAL",
+        "CoolingActiveLimits": "SURFACE UA"
+      },
+      "stage_vapor_kg_s": 13.027996929190257,
+      "pressure_pa": 8439.698746221198,
+      "temperature_k": 315.67812955155966,
+      "quality": 0.8730715807195052
+    }
+  ],
+  "first_step_ratio_per_nm": 0.0017326898457783126,
+  "baseline_first_combination_mw": 0.9596441891827806,
+  "reference_lever_response_per_fraction": -28.025163974943723,
+  "observations": [
+    {
+      "record": "exhaust:energy/plus/0.0001",
+      "coordinate": 0.0001,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 956837.9987210035,
+          "exhaust_mass_kg_s": -0.1433078176077629,
+          "rotor_torque_nm": -0.002301160610613806,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.171308034807529,
+            "SteamEnergyW": 29941804.90664885,
+            "SteamAdvectedJKg": 2273259.787678057,
+            "CondensateAdvectedJKg": 178104.22813364834,
+            "HeatRejectionW": 27595939.255598933,
+            "EffectiveCoolingW": 27595939.255598933,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.02800021719908,
+          "pressure_pa": 8439.32739405756,
+          "temperature_k": 315.6772973515093,
+          "quality": 0.8729986390628187
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 954955.8082431555,
+          "exhaust_mass_kg_s": -0.1429602345055514,
+          "rotor_torque_nm": -0.0056754785034627275,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.1709579700339,
+            "SteamEnergyW": 29943681.199644,
+            "SteamAdvectedJKg": 2273462.6644296343,
+            "CondensateAdvectedJKg": 178110.61803633842,
+            "HeatRejectionW": 27597793.735470623,
+            "EffectiveCoolingW": 27597793.735470623,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.02799773552819,
+          "pressure_pa": 8440.00292345945,
+          "temperature_k": 315.67881121262906,
+          "quality": 0.873081765560292
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 953076.1404961348,
+          "exhaust_mass_kg_s": -0.1426139781486313,
+          "rotor_torque_nm": -0.009861067396514045,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.170608614996146,
+            "SteamEnergyW": 29945553.507113952,
+            "SteamAdvectedJKg": 2273665.126835349,
+            "CondensateAdvectedJKg": 178116.99440050023,
+            "HeatRejectionW": 27599644.286185503,
+            "EffectiveCoolingW": 27599644.286185503,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027994636847502,
+          "pressure_pa": 8440.677021591584,
+          "temperature_k": 315.68032186627386,
+          "quality": 0.873164723186712
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.339235414428195,
+            "inventory": 97943.79464830471
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 1.6242492772988726e-06,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339235414428195,
+          "effective_vapor_flow_kg_s": 13.02800021719908,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339232008719518,
+            "admission": 13.339320065972037,
+            "expansion": 13.33923464648692,
+            "inventory": 97943.79464917218
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 2.6377674018362995e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339232008719518,
+          "effective_vapor_flow_kg_s": 13.02799773552819,
+          "inlet_quality": 0.9766677517125512,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.28133431211253,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928133431211253,
+              "requested_positions": [
+                0.2928133431211253
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.33923481154264,
+            "control": 13.339227970197468,
+            "admission": 13.339402833986165,
+            "expansion": 13.339233884456572,
+            "inventory": 97943.7946932008
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 5.914259103789732e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339227970197468,
+          "effective_vapor_flow_kg_s": 13.027994636847502,
+          "inlet_quality": 0.9766678151055426,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.28134129871259,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928134129871259,
+              "requested_positions": [
+                0.2928134129871259
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 0.956841985918627,
+      "combination_secant_per_fraction": -28.02203264153591,
+      "relative_secant_deviation": 0.00011173292012189862,
+      "energy_secant_mw_per_fraction": -28.059654384851452,
+      "linear_reference_prediction_mw": 0.9568416727852862,
+      "inferred_cancel_coordinate": 0.0342460592155738
+    },
+    {
+      "record": "exhaust:energy/minus/0.0001",
+      "coordinate": -0.0001,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 962446.7936903238,
+          "exhaust_mass_kg_s": -0.14349877767756425,
+          "rotor_torque_nm": -0.0001298693430271669,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.171500581227779,
+            "SteamEnergyW": 29936199.873853445,
+            "SteamAdvectedJKg": 2272801.01376748,
+            "CondensateAdvectedJKg": 178085.6405351608,
+            "HeatRejectionW": 27590544.75603625,
+            "EffectiveCoolingW": 27590544.75603625,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.028001803550866,
+          "pressure_pa": 8437.36234546432,
+          "temperature_k": 315.6728936783969,
+          "quality": 0.8728115774654134
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 960544.3850457668,
+          "exhaust_mass_kg_s": -0.14315428239655148,
+          "rotor_torque_nm": -0.008348143030843858,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.171150080728346,
+            "SteamEnergyW": 29938088.028222833,
+            "SteamAdvectedJKg": 2273004.851112235,
+            "CondensateAdvectedJKg": 178092.06976405194,
+            "HeatRejectionW": 27592410.64917296,
+            "EffectiveCoolingW": 27592410.64917296,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027995798331272,
+          "pressure_pa": 8438.042032364066,
+          "temperature_k": 315.6744168564677,
+          "quality": 0.8728950931703261
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 958662.9364192486,
+          "exhaust_mass_kg_s": -0.1428033521349903,
+          "rotor_torque_nm": -0.0067189227786457195,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.17080028132468,
+            "SteamEnergyW": 29939972.147773556,
+            "SteamAdvectedJKg": 2273208.271954928,
+            "CondensateAdvectedJKg": 178098.48529717285,
+            "HeatRejectionW": 27594272.56751805,
+            "EffectiveCoolingW": 27594272.567518055,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027996929190257,
+          "pressure_pa": 8438.72027137071,
+          "temperature_k": 315.67593678981063,
+          "quality": 0.8729784390269687
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.339238856330445,
+            "inventory": 97943.79464830471
+          },
+          "winner": "stop",
+          "margin_to_next_kg_s": 9.998693784041279e-08,
+          "near_tie": [
+            "admission",
+            "control",
+            "stop"
+          ],
+          "commanded_flow_kg_s": 13.339237038677473,
+          "effective_vapor_flow_kg_s": 13.028001803550866,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339230025130275,
+            "admission": 13.339320065972037,
+            "expansion": 13.339238081107258,
+            "inventory": 97943.79464836005
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 5.927103689629121e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230025130275,
+          "effective_vapor_flow_kg_s": 13.027995798331272,
+          "inlet_quality": 0.9766677517208522,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329957878363,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132995787836,
+              "requested_positions": [
+                0.2928132995787836
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.33923481154264,
+            "control": 13.339230317328411,
+            "admission": 13.339402833986165,
+            "expansion": 13.339237311824112,
+            "inventory": 97943.79469338046
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 4.4942142292114795e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230317328411,
+          "effective_vapor_flow_kg_s": 13.027996929190257,
+          "inlet_quality": 0.9766678151037061,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281346450970453,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928134645097045,
+              "requested_positions": [
+                0.2928134645097045
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 0.9624470187136157,
+      "combination_secant_per_fraction": -28.028295308351048,
+      "relative_secant_deviation": 0.00011173292010435709,
+      "energy_secant_mw_per_fraction": -28.028295308351513,
+      "linear_reference_prediction_mw": 0.962446705580275,
+      "inferred_cancel_coordinate": 0.03423840724615364
+    },
+    {
+      "record": "exhaust:energy/plus/0.001",
+      "coordinate": 0.001,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 931610.6966495514,
+          "exhaust_mass_kg_s": -0.1424445927128204,
+          "rotor_torque_nm": -0.022982898667351037,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.170429699773846,
+            "SteamEnergyW": 29966996.373691015,
+            "SteamAdvectedJKg": 2275324.1205338645,
+            "CondensateAdvectedJKg": 178187.74949815092,
+            "HeatRejectionW": 27620187.145564705,
+            "EffectiveCoolingW": 27620187.145564705,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027985107060395,
+          "pressure_pa": 8448.160147033566,
+          "temperature_k": 315.69709154739974,
+          "quality": 0.8738404587528442
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 929787.9872739315,
+          "exhaust_mass_kg_s": -0.1420963904195105,
+          "rotor_torque_nm": -0.022587267734252237,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.170081622890795,
+            "SteamEnergyW": 29968819.372180916,
+            "SteamAdvectedJKg": 2275522.6755840597,
+            "CondensateAdvectedJKg": 178193.95732585792,
+            "HeatRejectionW": 27621990.40949345,
+            "EffectiveCoolingW": 27621990.409493446,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027985232470702,
+          "pressure_pa": 8448.817020058623,
+          "temperature_k": 315.69856359958646,
+          "quality": 0.8739218340510118
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 927969.1570520401,
+          "exhaust_mass_kg_s": -0.14174888998468305,
+          "rotor_torque_nm": -0.02217535690533623,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.169734259904947,
+            "SteamEnergyW": 29970638.51984151,
+            "SteamAdvectedJKg": 2275720.825369017,
+            "CondensateAdvectedJKg": 178200.15206712412,
+            "HeatRejectionW": 27623789.872042835,
+            "EffectiveCoolingW": 27623789.872042835,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027985369919598,
+          "pressure_pa": 8449.472508359284,
+          "temperature_k": 315.7000325486064,
+          "quality": 0.8740030439458619
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.33921994331262,
+            "inventory": 97943.79464830471
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 1.7095364851726913e-05,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.33921994331262,
+          "effective_vapor_flow_kg_s": 13.027985107060395,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339250902627734,
+            "admission": 13.339320065972037,
+            "expansion": 13.339219208048279,
+            "inventory": 97943.79465690773
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 1.6744185685979573e-05,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339219208048279,
+          "effective_vapor_flow_kg_s": 13.027985232470702,
+          "inlet_quality": 0.9766677516334844,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.28137578667737,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928137578667737,
+              "requested_positions": [
+                0.2928137578667737
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.339234863303826,
+            "control": 13.339244315660704,
+            "admission": 13.339402797563661,
+            "expansion": 13.339218480315358,
+            "inventory": 97943.79470733668
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 1.6382988468066628e-05,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339218480315358,
+          "effective_vapor_flow_kg_s": 13.027985369919598,
+          "inlet_quality": 0.9766678152205809,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281377188873485,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.29281377188873486,
+              "requested_positions": [
+                0.29281377188873486
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 0.9316505188846989,
+      "combination_secant_per_fraction": -27.993670298081753,
+      "relative_secant_deviation": 0.0011237642316785923,
+      "energy_secant_mw_per_fraction": -28.033267509937286,
+      "linear_reference_prediction_mw": 0.9316190252078369,
+      "inferred_cancel_coordinate": 0.03428075629112984
+    },
+    {
+      "record": "exhaust:energy/minus/0.001",
+      "coordinate": -0.001,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 987701.1888176203,
+          "exhaust_mass_kg_s": -0.1443530885936184,
+          "rotor_torque_nm": -0.0001298693430271669,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.172354892144476,
+            "SteamEnergyW": 29910945.478726547,
+            "SteamAdvectedJKg": 2270736.3811283563,
+            "CondensateAdvectedJKg": 178001.8381488274,
+            "HeatRejectionW": 27566242.09517613,
+            "EffectiveCoolingW": 27566242.09517613,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.028001803550866,
+          "pressure_pa": 8428.509641153141,
+          "temperature_k": 315.65305477157233,
+          "quality": 0.8719698428237553
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 985745.1673001051,
+          "exhaust_mass_kg_s": -0.14400672830419126,
+          "rotor_torque_nm": -0.008348143030843858,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.172002526635573,
+            "SteamEnergyW": 29912887.24596954,
+            "SteamAdvectedJKg": 2270944.542068044,
+            "CondensateAdvectedJKg": 178008.45077277196,
+            "HeatRejectionW": 27568159.482628107,
+            "EffectiveCoolingW": 27568159.482628107,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027995798331272,
+          "pressure_pa": 8429.208085832095,
+          "temperature_k": 315.65461998581884,
+          "quality": 0.872055109720309
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 983810.235401988,
+          "exhaust_mass_kg_s": -0.14365393075053134,
+          "rotor_torque_nm": -0.0067189227786457195,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.171650859940677,
+            "SteamEnergyW": 29914824.848790403,
+            "SteamAdvectedJKg": 2271152.2774849148,
+            "CondensateAdvectedJKg": 178015.0492636481,
+            "HeatRejectionW": 27570072.77207449,
+            "EffectiveCoolingW": 27570072.77207449,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027996929190257,
+          "pressure_pa": 8429.905037734938,
+          "temperature_k": 315.65618185475466,
+          "quality": 0.872140203172146
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.339254362370017,
+            "inventory": 97943.79464830471
+          },
+          "winner": "stop",
+          "margin_to_next_kg_s": 9.998693784041279e-08,
+          "near_tie": [
+            "admission",
+            "control",
+            "stop"
+          ],
+          "commanded_flow_kg_s": 13.339237038677473,
+          "effective_vapor_flow_kg_s": 13.028001803550866,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339230025130275,
+            "admission": 13.339320065972037,
+            "expansion": 13.339253554292378,
+            "inventory": 97943.79464836005
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 5.927103689629121e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230025130275,
+          "effective_vapor_flow_kg_s": 13.027995798331272,
+          "inlet_quality": 0.9766677517208522,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329957878363,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132995787836,
+              "requested_positions": [
+                0.2928132995787836
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.33923481154264,
+            "control": 13.339230317328411,
+            "admission": 13.339402833986165,
+            "expansion": 13.339252752233387,
+            "inventory": 97943.79469338046
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 4.4942142292114795e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230317328411,
+          "effective_vapor_flow_kg_s": 13.027996929190257,
+          "inlet_quality": 0.9766678151037061,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281346450970453,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928134645097045,
+              "requested_positions": [
+                0.2928134645097045
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 0.9877014138409121,
+      "combination_secant_per_fraction": -28.057224658131542,
+      "relative_secant_deviation": 0.0011439962747936683,
+      "energy_secant_mw_per_fraction": -28.0572246581316,
+      "linear_reference_prediction_mw": 0.9876693531577243,
+      "inferred_cancel_coordinate": 0.034203104579150045
+    },
+    {
+      "record": "exhaust:energy/plus/0.005",
+      "coordinate": 0.005,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 820109.0272575617,
+          "exhaust_mass_kg_s": -0.13837300530497032,
+          "rotor_torque_nm": -0.11444234388977748,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.166291291825646,
+            "SteamEnergyW": 30078339.572273724,
+            "SteamAdvectedJKg": 2284495.983386605,
+            "CondensateAdvectedJKg": 178556.20198755083,
+            "HeatRejectionW": 27727416.604943573,
+            "EffectiveCoolingW": 27727416.604943573,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027918286520576,
+          "pressure_pa": 8487.220507657974,
+          "temperature_k": 315.7846257999539,
+          "quality": 0.8775827168752005
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 818519.7623759508,
+          "exhaust_mass_kg_s": -0.13803494436217534,
+          "rotor_torque_nm": -0.11295642275922546,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.165953501668076,
+            "SteamEnergyW": 30079929.48716483,
+            "SteamAdvectedJKg": 2284675.354759062,
+            "CondensateAdvectedJKg": 178561.6179414367,
+            "HeatRejectionW": 27728995.528165255,
+            "EffectiveCoolingW": 27728995.52816525,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027918557306426,
+          "pressure_pa": 8487.795660333311,
+          "temperature_k": 315.78591471686957,
+          "quality": 0.8776563090934836
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 816933.8084191084,
+          "exhaust_mass_kg_s": -0.13769759252255653,
+          "rotor_torque_nm": -0.11145773537759851,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.165616427214989,
+            "SteamEnergyW": 30081516.106418014,
+            "SteamAdvectedJKg": 2284854.360805752,
+            "CondensateAdvectedJKg": 178567.02267179728,
+            "HeatRejectionW": 27730571.179371327,
+            "EffectiveCoolingW": 27730571.179371327,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.02791883469186,
+          "pressure_pa": 8488.369621115024,
+          "temperature_k": 315.7872009627521,
+          "quality": 0.8777297520485616
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.339151526449227,
+            "inventory": 97943.79464830471
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 8.551222824593196e-05,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339151526449227,
+          "effective_vapor_flow_kg_s": 13.027918286520576,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.33933445587837,
+            "admission": 13.339319993126594,
+            "expansion": 13.339150937724241,
+            "inventory": 97943.79469111617
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 8.501450972353553e-05,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339150937724241,
+          "effective_vapor_flow_kg_s": 13.027918557306426,
+          "inlet_quality": 0.976667751802881,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281559196836454,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.29281559196836454,
+              "requested_positions": [
+                0.29281559196836454
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.339234863303826,
+            "control": 13.339330846653887,
+            "admission": 13.33940276354448,
+            "expansion": 13.339150354490958,
+            "inventory": 97943.79477564387
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 8.450881286847789e-05,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339150354490958,
+          "effective_vapor_flow_kg_s": 13.02791883469186,
+          "inlet_quality": 0.9766678153009712,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281567149827087,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.29281567149827087,
+              "requested_positions": [
+                0.29281567149827087
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 0.8203073203447465,
+      "combination_secant_per_fraction": -27.867373767606818,
+      "relative_secant_deviation": 0.005630304517681983,
+      "energy_secant_mw_per_fraction": -27.9069873803854,
+      "linear_reference_prediction_mw": 0.819518369308062,
+      "inferred_cancel_coordinate": 0.03443611863771232
+    },
+    {
+      "record": "exhaust:energy/minus/0.005",
+      "coordinate": -0.005,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 1097220.4661250114,
+          "exhaust_mass_kg_s": -0.14922570523339118,
+          "rotor_torque_nm": -0.0001298693430271669,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.177227508784762,
+            "SteamEnergyW": 29801426.201416768,
+            "SteamAdvectedJKg": 2261585.4648900367,
+            "CondensateAdvectedJKg": 177644.4279020473,
+            "HeatRejectionW": 27460565.15928358,
+            "EffectiveCoolingW": 27460565.15928358,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.028001803550866,
+          "pressure_pa": 8390.843330509137,
+          "temperature_k": 315.56678788512943,
+          "quality": 0.8682278868076799
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 1095097.405153513,
+          "exhaust_mass_kg_s": -0.14884310490685948,
+          "rotor_torque_nm": -0.008348143030843858,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.176838903238714,
+            "SteamEnergyW": 29803535.008117367,
+            "SteamAdvectedJKg": 2261812.2014675313,
+            "CondensateAdvectedJKg": 177651.48924174422,
+            "HeatRejectionW": 27462649.95345846,
+            "EffectiveCoolingW": 27462649.95345846,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027995798331272,
+          "pressure_pa": 8391.585811304347,
+          "temperature_k": 315.56848975792525,
+          "quality": 0.8683209413922098
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 1092995.7790136337,
+          "exhaust_mass_kg_s": -0.14845414652171485,
+          "rotor_torque_nm": -0.0067189227786457195,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.176451075712137,
+            "SteamEnergyW": 29805639.305179276,
+            "SteamAdvectedJKg": 2262038.475604357,
+            "CondensateAdvectedJKg": 177658.5321260137,
+            "HeatRejectionW": 27464730.348438025,
+            "EffectiveCoolingW": 27464730.348438025,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027996929190257,
+          "pressure_pa": 8392.326725365503,
+          "temperature_k": 315.5701880395412,
+          "quality": 0.8684138073773814
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.339320336958009,
+            "inventory": 97943.79464830471
+          },
+          "winner": "stop",
+          "margin_to_next_kg_s": 9.998693784041279e-08,
+          "near_tie": [
+            "admission",
+            "control",
+            "stop"
+          ],
+          "commanded_flow_kg_s": 13.339237038677473,
+          "effective_vapor_flow_kg_s": 13.028001803550866,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339230025130275,
+            "admission": 13.339320065972037,
+            "expansion": 13.339319451752905,
+            "inventory": 97943.79464836005
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 5.927103689629121e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230025130275,
+          "effective_vapor_flow_kg_s": 13.027995798331272,
+          "inlet_quality": 0.9766677517208522,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329957878363,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132995787836,
+              "requested_positions": [
+                0.2928132995787836
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.33923481154264,
+            "control": 13.339230317328411,
+            "admission": 13.339402833986165,
+            "expansion": 13.33931857269595,
+            "inventory": 97943.79469338046
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 4.4942142292114795e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230317328411,
+          "effective_vapor_flow_kg_s": 13.027996929190257,
+          "inlet_quality": 0.9766678151037061,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281346450970453,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928134645097045,
+              "requested_positions": [
+                0.2928134645097045
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 1.0972206911483033,
+      "combination_secant_per_fraction": -27.515300393104546,
+      "relative_secant_deviation": 0.018193063287516464,
+      "energy_secant_mw_per_fraction": -27.515300393104553,
+      "linear_reference_prediction_mw": 1.099770009057499,
+      "inferred_cancel_coordinate": 0.034876747681201824
+    },
+    {
+      "record": "exhaust:energy/plus/0.01",
+      "coordinate": 0.01,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 682140.0150150061,
+          "exhaust_mass_kg_s": -0.13275520752671355,
+          "rotor_torque_nm": -0.2277220432777085,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.160590731564916,
+            "SteamEnergyW": 30216112.305981945,
+            "SteamAdvectedJKg": 2295954.10436329,
+            "CondensateAdvectedJKg": 179010.5332062854,
+            "HeatRejectionW": 27860227.94181481,
+            "EffectiveCoolingW": 27860227.94181481,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027835524038856,
+          "pressure_pa": 8535.599551469719,
+          "temperature_k": 315.893043217808,
+          "quality": 0.8822624427847541
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 680834.1265439987,
+          "exhaust_mass_kg_s": -0.13243300596457175,
+          "rotor_torque_nm": -0.22489321507782734,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.160268975366622,
+            "SteamEnergyW": 30217419.27848848,
+            "SteamAdvectedJKg": 2296109.550272066,
+            "CondensateAdvectedJKg": 179014.98862007767,
+            "HeatRejectionW": 27861533.87762606,
+            "EffectiveCoolingW": 27861533.87762606,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027835969402092,
+          "pressure_pa": 8536.07526331267,
+          "temperature_k": 315.894109287858,
+          "quality": 0.8823263077325736
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 679530.895113945,
+          "exhaust_mass_kg_s": -0.1321114999996098,
+          "rotor_torque_nm": -0.22204718859234163,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.159947920991659,
+            "SteamEnergyW": 30218723.60811411,
+            "SteamAdvectedJKg": 2296264.6804940393,
+            "CondensateAdvectedJKg": 179019.43500381487,
+            "HeatRejectionW": 27862837.166618552,
+            "EffectiveCoolingW": 27862837.166618556,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.02783642099244,
+          "pressure_pa": 8536.55001100178,
+          "temperature_k": 315.8951731972396,
+          "quality": 0.8823900435732691
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.3390667867955,
+            "inventory": 97943.79464830471
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 0.00017025188197195007,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.3390667867955,
+          "effective_vapor_flow_kg_s": 13.027835524038856,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.33943794313265,
+            "admission": 13.33931992028115,
+            "expansion": 13.339066375649738,
+            "inventory": 97943.794733486
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 0.00016957658422711575,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339066375649738,
+          "effective_vapor_flow_kg_s": 13.027835969402092,
+          "inlet_quality": 0.9766677518888585,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281786364703958,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928178636470396,
+              "requested_positions": [
+                0.2928178636470396
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.339234966826302,
+            "control": 13.339438021589864,
+            "admission": 13.339402693102798,
+            "expansion": 13.339065969596817,
+            "inventory": 97943.7948602583
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 0.00016899722948515716,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.339065969596817,
+          "effective_vapor_flow_kg_s": 13.02783642099244,
+          "inlet_quality": 0.9766678154742057,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.28180244640612,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.29281802446406124,
+              "requested_positions": [
+                0.29281802446406124
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 0.6825345866870532,
+      "combination_secant_per_fraction": -27.710960249572736,
+      "relative_secant_deviation": 0.011211485708055302,
+      "energy_secant_mw_per_fraction": -27.75039491444826,
+      "linear_reference_prediction_mw": 0.6793925494333434,
+      "inferred_cancel_coordinate": 0.03463049207028389
+    },
+    {
+      "record": "exhaust:energy/minus/0.01",
+      "coordinate": -0.01,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 1235382.3124676943,
+          "exhaust_mass_kg_s": -0.15484226727124906,
+          "rotor_torque_nm": -0.0001298693430271669,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.182844070822112,
+            "SteamEnergyW": 29663264.355075847,
+            "SteamAdvectedJKg": 2250141.4865954625,
+            "CondensateAdvectedJKg": 177192.31827180352,
+            "HeatRejectionW": 27327365.652751178,
+            "EffectiveCoolingW": 27327365.652751178,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.028001803550866,
+          "pressure_pa": 8343.405517834968,
+          "temperature_k": 315.45805359408257,
+          "quality": 0.8635522756756643
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 1232965.731588006,
+          "exhaust_mass_kg_s": -0.15444747073303233,
+          "rotor_torque_nm": -0.008348143030843858,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.182443269064656,
+            "SteamEnergyW": 29665666.681682643,
+            "SteamAdvectedJKg": 2250392.137191995,
+            "CondensateAdvectedJKg": 177200.3723456035,
+            "HeatRejectionW": 27329732.82597959,
+            "EffectiveCoolingW": 27329732.82597959,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027995798331272,
+          "pressure_pa": 8344.248565403988,
+          "temperature_k": 315.4599859803915,
+          "quality": 0.8636550246702769
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 1230571.2595492601,
+          "exhaust_mass_kg_s": -0.15404632421791575,
+          "rotor_torque_nm": -0.0067189227786457195,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.182043253408114,
+            "SteamEnergyW": 29668063.824643627,
+            "SteamAdvectedJKg": 2250642.2755799396,
+            "CondensateAdvectedJKg": 177208.40910703017,
+            "HeatRejectionW": 27332094.910927117,
+            "EffectiveCoolingW": 27332094.910927117,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027996929190257,
+          "pressure_pa": 8345.08980082729,
+          "temperature_k": 315.4619142130017,
+          "quality": 0.8637575653012762
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.339403426398047,
+            "inventory": 97943.79464830471
+          },
+          "winner": "stop",
+          "margin_to_next_kg_s": 9.998693784041279e-08,
+          "near_tie": [
+            "admission",
+            "control",
+            "stop"
+          ],
+          "commanded_flow_kg_s": 13.339237038677473,
+          "effective_vapor_flow_kg_s": 13.028001803550866,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339230025130275,
+            "admission": 13.339320065972037,
+            "expansion": 13.339402365051813,
+            "inventory": 97943.79464836005
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 5.927103689629121e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230025130275,
+          "effective_vapor_flow_kg_s": 13.027995798331272,
+          "inlet_quality": 0.9766677517208522,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329957878363,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132995787836,
+              "requested_positions": [
+                0.2928132995787836
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.33923481154264,
+            "control": 13.339230317328411,
+            "admission": 13.339402833986165,
+            "expansion": 13.339401310283511,
+            "inventory": 97943.79469338046
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 4.4942142292114795e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230317328411,
+          "effective_vapor_flow_kg_s": 13.027996929190257,
+          "inlet_quality": 0.9766678151037061,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281346450970453,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928134645097045,
+              "requested_positions": [
+                0.2928134645097045
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 1.2353825374909864,
+      "combination_secant_per_fraction": -27.573834830820577,
+      "relative_secant_deviation": 0.016104424742230394,
+      "energy_secant_mw_per_fraction": -27.57383483082056,
+      "linear_reference_prediction_mw": 1.2398958289322177,
+      "inferred_cancel_coordinate": 0.03480271043439127
+    },
+    {
+      "record": "exhaust:energy/plus/0.02",
+      "coordinate": 0.02,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 410802.55649387836,
+          "exhaust_mass_kg_s": -0.11982915780919257,
+          "rotor_torque_nm": -0.4508630566240299,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.147501654367192,
+            "SteamEnergyW": 30487063.130432274,
+            "SteamAdvectedJKg": 2318848.3965929314,
+            "CondensateAdvectedJKg": 179899.027732765,
+            "HeatRejectionW": 28121840.3656967,
+            "EffectiveCoolingW": 28121840.3656967,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027672496557871,
+          "pressure_pa": 8630.89682966028,
+          "temperature_k": 316.10660438016055,
+          "quality": 0.8916281231951353
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 410036.0837697983,
+          "exhaust_mass_kg_s": -0.11954872069566136,
+          "rotor_torque_nm": -0.44540186078438637,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.147221997061669,
+            "SteamEnergyW": 30487831.51975316,
+            "SteamAdvectedJKg": 2318956.1662963494,
+            "CondensateAdvectedJKg": 179901.67802826886,
+            "HeatRejectionW": 28122624.2210716,
+            "EffectiveCoolingW": 28122624.2210716,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027673276366706,
+          "pressure_pa": 8631.182363820375,
+          "temperature_k": 316.10724426209924,
+          "quality": 0.8916725397011
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 409271.10339701176,
+          "exhaust_mass_kg_s": -0.11926889812485797,
+          "rotor_torque_nm": -0.43992152391660966,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.146942954742233,
+            "SteamEnergyW": 30488598.416742597,
+            "SteamAdvectedJKg": 2319063.7185920896,
+            "CondensateAdvectedJKg": 179904.32313942842,
+            "HeatRejectionW": 28123406.543117017,
+            "EffectiveCoolingW": 28123406.543117017,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027674056617867,
+          "pressure_pa": 8631.467339436174,
+          "temperature_k": 316.1078828923404,
+          "quality": 0.8917168665474557
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.338899864634646,
+            "inventory": 97943.79464830471
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 0.00033717404282640473,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.338899864634646,
+          "effective_vapor_flow_kg_s": 13.027672496557871,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339641794757714,
+            "admission": 13.339319774590244,
+            "expansion": 13.338899793408157,
+            "inventory": 97943.79481694708
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 0.00033615882580839695,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.338899793408157,
+          "effective_vapor_flow_kg_s": 13.027673276366706,
+          "inlet_quality": 0.9766677520738815,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.282233845307015,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.29282233845307015,
+              "requested_positions": [
+                0.29282233845307015
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.339235122109962,
+            "control": 13.339649149854033,
+            "admission": 13.339402626266082,
+            "expansion": 13.338899724862069,
+            "inventory": 97943.79502693767
+          },
+          "winner": "expansion",
+          "margin_to_next_kg_s": 0.00033539724789299896,
+          "near_tie": [
+            "expansion"
+          ],
+          "commanded_flow_kg_s": 13.338899724862069,
+          "effective_vapor_flow_kg_s": 13.027674056617867,
+          "inlet_quality": 0.9766678155872095,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.28226596505672,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928226596505672,
+              "requested_positions": [
+                0.2928226596505672
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 0.4115837623339274,
+      "combination_secant_per_fraction": -27.403021342442656,
+      "relative_secant_deviation": 0.022199428808241883,
+      "energy_secant_mw_per_fraction": -27.442070383280512,
+      "linear_reference_prediction_mw": 0.39914090968390614,
+      "inferred_cancel_coordinate": 0.035019649008427176
+    },
+    {
+      "record": "exhaust:energy/minus/0.02",
+      "coordinate": -0.02,
+      "guards": {
+        "available": true,
+        "healthy": true,
+        "in_envelope": true,
+        "phase_changes": [],
+        "same_hydraulic_and_cooling_regime": true,
+        "same_mechanical_regime": true
+      },
+      "classification": "WITHIN-REFERENCE-TOLERANCE",
+      "physical": [
+        {
+          "checkpoint": "seed-step1",
+          "exhaust_energy_w": 1516509.751790762,
+          "exhaust_mass_kg_s": -0.16422437147554092,
+          "rotor_torque_nm": -0.0001298693430271669,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.192226175025873,
+            "SteamEnergyW": 29382136.91575316,
+            "SteamAdvectedJKg": 2227231.137939123,
+            "CondensateAdvectedJKg": 176267.04383079035,
+            "HeatRejectionW": 27056782.206334174,
+            "EffectiveCoolingW": 27056782.206334174,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.028001803550866,
+          "pressure_pa": 8247.03964398139,
+          "temperature_k": 315.2371691480279,
+          "quality": 0.8542075477376536
+        },
+        {
+          "checkpoint": "post-seed",
+          "exhaust_energy_w": 1513476.3974934816,
+          "exhaust_mass_kg_s": -0.16381695525211626,
+          "rotor_torque_nm": -0.008348143030843858,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.191812753583738,
+            "SteamEnergyW": 29385156.01577712,
+            "SteamAdvectedJKg": 2227529.799329075,
+            "CondensateAdvectedJKg": 176277.20837391904,
+            "HeatRejectionW": 27059740.090183914,
+            "EffectiveCoolingW": 27059740.090183914,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027995798331272,
+          "pressure_pa": 8248.093067853808,
+          "temperature_k": 315.2395837470889,
+          "quality": 0.8543296889773616
+        },
+        {
+          "checkpoint": "1",
+          "exhaust_energy_w": 1510466.7523682117,
+          "exhaust_mass_kg_s": -0.16340309700666467,
+          "rotor_torque_nm": -0.0067189227786457195,
+          "condenser": {
+            "SteamSpaceNodeId": "exhaust",
+            "MassKgS": 13.191400026196366,
+            "SteamEnergyW": 29388168.33182525,
+            "SteamAdvectedJKg": 2227827.8479512604,
+            "CondensateAdvectedJKg": 176287.35024079913,
+            "HeatRejectionW": 27062691.375240684,
+            "EffectiveCoolingW": 27062691.375240684,
+            "ActiveCondensationLimits": "THERMAL",
+            "CoolingActiveLimits": "SURFACE UA"
+          },
+          "stage_vapor_kg_s": 13.027996929190257,
+          "pressure_pa": 8249.144141625147,
+          "temperature_k": 315.2419929593801,
+          "quality": 0.8544515823039928
+        }
+      ],
+      "capacities": [
+        {
+          "checkpoint": "seed-step1",
+          "capacities_kg_s": {
+            "stop": 13.339237038677473,
+            "control": 13.33923713866441,
+            "admission": 13.339237149349202,
+            "expansion": 13.339572213921157,
+            "inventory": 97943.79464830471
+          },
+          "winner": "stop",
+          "margin_to_next_kg_s": 9.998693784041279e-08,
+          "near_tie": [
+            "admission",
+            "control",
+            "stop"
+          ],
+          "commanded_flow_kg_s": 13.339237038677473,
+          "effective_vapor_flow_kg_s": 13.028001803550866,
+          "inlet_quality": 0.976667688397457,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329697436618,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132969743662,
+              "requested_positions": [
+                0.2928132969743662
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "post-seed",
+          "capacities_kg_s": {
+            "stop": 13.339235952233965,
+            "control": 13.339230025130275,
+            "admission": 13.339320065972037,
+            "expansion": 13.339570784110672,
+            "inventory": 97943.79464836005
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 5.927103689629121e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230025130275,
+          "effective_vapor_flow_kg_s": 13.027995798331272,
+          "inlet_quality": 0.9766677517208522,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281329957878363,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928132995787836,
+              "requested_positions": [
+                0.2928132995787836
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        },
+        {
+          "checkpoint": "1",
+          "capacities_kg_s": {
+            "stop": 13.33923481154264,
+            "control": 13.339230317328411,
+            "admission": 13.339402833986165,
+            "expansion": 13.339569361820203,
+            "inventory": 97943.79469338046
+          },
+          "winner": "control",
+          "margin_to_next_kg_s": 4.4942142292114795e-06,
+          "near_tie": [
+            "control"
+          ],
+          "commanded_flow_kg_s": 13.339230317328411,
+          "effective_vapor_flow_kg_s": 13.027996929190257,
+          "inlet_quality": 0.9766678151037061,
+          "inlet_phase": "SaturatedMixture",
+          "flow_error_kg_s": 0.0,
+          "exact_minimum": true,
+          "governor_percent": 29.281346450970453,
+          "valves": {
+            "stop": {
+              "effective_position": 1,
+              "requested_positions": [],
+              "requested_minus_effective": []
+            },
+            "control": {
+              "effective_position": 0.2928134645097045,
+              "requested_positions": [
+                0.2928134645097045
+              ],
+              "requested_minus_effective": [
+                0.0
+              ]
+            },
+            "admission": {
+              "effective_position": 1,
+              "requested_positions": [
+                1
+              ],
+              "requested_minus_effective": [
+                0
+              ]
+            }
+          },
+          "maximum_pressure_error_pa": 0.0,
+          "maximum_valve_flow_error_kg_s": 0.0
+        }
+      ],
+      "reconstruction_failure": null,
+      "first_combination_mw": 1.516509976814054,
+      "combination_secant_per_fraction": -27.843289381563668,
+      "relative_secant_deviation": 0.006489688821898154,
+      "energy_secant_mw_per_fraction": -27.84328938156366,
+      "linear_reference_prediction_mw": 1.520147468681655,
+      "inferred_cancel_coordinate": 0.034465905807027436
+    }
+  ],
+  "valid_recipes": 22,
+  "in_envelope_recipes": 22,
+  "maximum_energy_ledger_error_w": 9.347498416900635e-05,
+  "maximum_torque_ledger_error_nm": 2.742353899520822e-09,
+  "summary": {
+    "admitted_probe_points": 10,
+    "all_admitted_within_reference_tolerance": true,
+    "positive_endpoint_admitted": true,
+    "positive_endpoint_first_combination_mw": 0.4115837623339274,
+    "positive_endpoint_sign_crossed": false,
+    "cancel_coordinate_secant_range": [
+      0.034203104579150045,
+      0.035019649008427176
+    ]
+  },
+  "family_selected": false,
+  "proposal_executed": false,
+  "search_started": false,
+  "root_observed": false,
+  "r3_passed": false,
+  "m10_closed": false,
+  "limits": [
+    "Only exhaust internal energy is perturbed; no general infeasibility claim for the complete family",
+    "The flow-free combination and frozen cancellation ratio concern the first checkpoint only",
+    "Secant cancellation coordinates beyond 2% are extrapolations, not observed roots or an enlarged search bound"
+  ]
+}

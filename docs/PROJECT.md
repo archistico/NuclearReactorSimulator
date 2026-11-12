@@ -12,7 +12,8 @@ l'attribuzione al minimo delle capacità di portata, la sua osservazione
 a tutti i checkpoint, la verifica offline di un modello che lo conserva, la
 sua prima verifica prospettica, l'osservazione delle capacità nelle altre
 22 direzioni, la ristima del modello su tutte le 30, la sua verifica
-prospettica e la diagnosi di che cosa ne limita il passo.
+prospettica, la diagnosi del limite del passo e la misura della leva di
+exhaust fino al 2%, seguita da una sonda positiva di dominio fino al 4%.
 
 | Ambito | Stato verificato |
 | --- | --- |
@@ -28,6 +29,8 @@ prospettica e la diagnosi di che cosa ne limita il passo.
 | Altre 22 direzioni | Capacità osservate in 90 ricette ripetute, minimo esatto in 135 ricostruzioni. 17 direzioni, incluse le quattro unilaterali, non cambiano la portata dello stadio; cinque cambiano portata e vincitore. Nessun modello ristimato. |
 | Modello sulle 30 direzioni | Ristimato offline; otto proposte congelate e quattro sonde doppie previste entro 2,4e-3. Poi otto previsioni nuove su quattro sequenze, con 26 direzioni mosse insieme: tutte conformi, errore massimo 1,8e-3. Verificati anche il ramo control e una sequenza mista. Ottimo previsto ancora circa 0,955. |
 | Limite del passo | Diagnosi offline: accumulo di energia in exhaust (0,96 MW) e coppia si muovono insieme con la portata; la sola leva diretta vale 2,8 kW per ampiezza campionata. Per estrapolazione lineare servirebbe il 3,4% su exhaust:energy, oltre il limite del 2%. Nessuna ricerca dichiarata. |
+| Leva di exhaust al 2% | 22 ricette sane, nell'inviluppo e ripetibili; secanti entro il 2,22% del riferimento. A +2% restano circa 0,412 MW nella combinazione energia-coppia. |
+| Sonda positiva fino al 4% | 12 ricette sane, nell'inviluppo e ripetibili; cambio di segno della combinazione fra +3,5% e +4%. Solo dominio diagnostico: non un nuovo box di ricerca. A +3,5% energia del nodo quasi stazionaria, massa ancora in calo. |
 | Punto grezzo riparato | Massimo assoluto dei 75 residui scalati **8.582.400,421**, contro il criterio ≤1. |
 | Equilibrio R3 e M10 | **R3 RED, M10 aperto**. Nessun seed installato, nessuna attivazione produttiva C4. |
 
@@ -388,6 +391,45 @@ Lettura prudente:
   raffreddamento del condensatore, dove il limite attivo è la superficie UA,
   non ne fa parte e non è stato esaminato.
 
+### La leva misurata e il suo dominio
+
+La prova 15 misura soltanto l'energia interna di exhaust, ai due segni fino
+al limite precedente del 2%: 22 ricette, tutte sane, nell'inviluppo e identiche
+nelle ripetizioni. La secante della combinazione del primo checkpoint resta
+entro il 2,22% del riferimento della revisione 14. A +2% la combinazione
+vale ancora +0,4116 MW: quella singola leva non la annulla nel punto misurato.
+
+La prova 16 dichiara quindi una **eccezione diagnostica per il solo inventario
+energetico positivo di exhaust**, fino al 4%, con tutte le altre variabili
+alla baseline. Non cambia i vecchi box o i parametri fisici. Una console
+separata rifiuta variazioni di qualunque altra coordinata; le fixture
+verificano questo vincolo prima di ogni passo runtime. Le dodici ricette
+sono tutte sane, nell'inviluppo e ripetibili, con fasi e regimi conservati.
+Il punto +2% e la baseline coincidono con la prova 15. Restano attivi il
+limite termico di condensazione e lo scambio UA.
+
+| Variazione di energia di exhaust | Combinazione del primo checkpoint | Accumulo energetico del nodo | Accumulo di massa del nodo |
+| --- | ---: | ---: | ---: |
+| +2% | +0,4116 MW | +410,8 kW | −0,1198 kg/s |
+| +3% | +0,1400 MW | +138,8 kW | −0,1073 kg/s |
+| +3,5% | +0,0055 MW | +4,14 kW | −0,1005 kg/s |
+| +4% | −0,1275 MW | −129,0 kW | −0,0933 kg/s |
+
+Il cambio di segno fra +3,5% e +4% è osservato, ma riguarda una sola
+combinazione di energia e coppia. Non è una radice dei 75 residui: la massa
+di exhaust continua a diminuire e outlet mantiene −1,157 MW al primo passo.
+La somma dei tassi di energia dei dodici inventari fluidi passa da circa
++0,0005 MW nella baseline a −0,920 MW al punto +3,5%. La sorgente nucleare
+iniziale resta 32,971 MW; il condensatore rigetta circa 0,921 MW in più.
+Correggere il solo ricevitore sposta quindi il bilancio del ciclo e non
+autorizza a installare il punto o ad allargare automaticamente la ricerca.
+
+La decisione è continuare la ricostruzione degli inventari, esaminando
+insieme massa ed energia di exhaust e il bilancio energetico complessivo.
+Non si introduce una compensazione del raffreddamento o dei controllori.
+Un eventuale nuovo dominio di ricerca richiederà una motivazione distinta
+e un modello rimisurato nel nuovo punto.
+
 ### Conservazione, portata e revisione della verifica
 
 Nel condensatore resta la stessa legge di limite termico, inventario e portata
@@ -413,65 +455,44 @@ L'esito congelato precedente non viene riscritto.
 
 ## Handoff
 
-La prossima attività è **misurare la leva dell'energia di exhaust alla scala
-del percento, prima di dichiarare qualsiasi ricerca**. La revisione 14 mostra
-che il passo del modello non è limitato dalle ampiezze campionate ma da un
-conflitto: l'accumulo di energia nel nodo exhaust, circa 0,96 MW, si riduce
-con la portata dello stadio solo al prezzo della coppia, e la sola leva
-diretta è debole. Per estrapolazione lineare servirebbe una coordinata del
-3,4%, oltre il limite ereditato del 2%. Una ricerca nella famiglia attuale
-non è quindi giustificata finché questo punto non è misurato.
+La prossima attività è **ricostruire insieme massa ed energia del ricevitore
+e verificare il bilancio dell'intero ciclo**. Il modello del minimo resta
+verificato alle piccole ampiezze; le prove 15–16 hanno misurato la leva di
+exhaust e trovato un cambio di segno, senza trovare un equilibrio.
 
 Dalla radice del repository:
 
 ```powershell
-python .\eng\run-r3-repaired-proposal-trial6.py review
-python .\eng\review-r3-repaired-flow-minimum7.py review
-python .\eng\run-r3-repaired-capacity-observation8.py review
-python .\eng\review-r3-repaired-capacity-minimum-model9.py review
-python .\eng\run-r3-repaired-minimum-proposals10.py review
-python .\eng\run-r3-repaired-capacity-observation11.py review
-python .\eng\review-r3-repaired-capacity-minimum-model12.py review
 python .\eng\run-r3-repaired-minimum-proposals13.py review
 python .\eng\review-r3-repaired-step-limit14.py review
+python .\eng\run-r3-repaired-exhaust-lever15.py review
+python .\eng\run-r3-repaired-exhaust-domain16.py review
 ```
 
-Gli esiti attesi sono `PASS-REPAIRED-PROPOSAL-TRIAL-EVIDENCE`,
-`PASS-REPAIRED-FLOW-MINIMUM-ATTRIBUTION`,
-`PASS-REPAIRED-CAPACITY-OBSERVATION-EVIDENCE`,
-`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-EVIDENCE`,
-`PASS-REPAIRED-MINIMUM-PROPOSAL-EVIDENCE`,
-`PASS-REPAIRED-CAPACITY-OBSERVATION-11-EVIDENCE`,
-`PASS-REPAIRED-CAPACITY-MINIMUM-MODEL-12-EVIDENCE`,
-`PASS-REPAIRED-MINIMUM-PROPOSAL-13-EVIDENCE` e
-`PASS-REPAIRED-STEP-LIMIT-14-EVIDENCE`. Il PASS della prova 6
-riguarda la completezza dell'evidenza: **le due previsioni affini restano non
-conformi**. I replay non chiamano l'impianto; R3 e M10 restano aperti.
+Gli esiti attesi sono `PASS-REPAIRED-MINIMUM-PROPOSAL-13-EVIDENCE`,
+`PASS-REPAIRED-STEP-LIMIT-14-EVIDENCE`, `PASS-REPAIRED-EXHAUST-LEVER-15-EVIDENCE`
+e `PASS-REPAIRED-EXHAUST-DOMAIN-16-EVIDENCE`. I replay non chiamano l'impianto.
+I risultati affini non conformi della prova 6 restano conservati; R3 e M10
+restano aperti.
 
-1. Leggere l'[analisi del limite del passo](../eng/frozen-evidence/r3-repaired-step-limit14/01-analysis.json)
-   insieme all'[analisi della prova 13](../eng/frozen-evidence/r3-repaired-minimum-proposals13/04-analysis.json).
-   Non riscrivere i risultati precedenti.
-2. Misurare `exhaust:energy` a poche ampiezze fra 1e-3 e 2e-2, ai due segni,
-   con ricette ripetute e la console `R3CapacityObservation`. Registrare
-   salute, inviluppo, fasi e regimi, la riga di energia di exhaust, la coppia
-   e il limite attivo del condensatore. La domanda è una sola: la risposta di
-   circa −28 MW per unità di coordinata resta lineare, si piega o cambia fase?
-3. Decidere la famiglia in base alla misura, con una revisione scritta:
-   - se la leva regge e basta entro il 2%, dichiarare la ricerca per rami nella
-     famiglia attuale;
-   - se serve più del 2% su exhaust, motivare un limite diverso per quella
-     sola coordinata oppure una grandezza del lato condensatore, senza
-     cambiare la legge fisica;
-   - in ogni caso distinguere fra ridurre l'accumulo e trasferirlo a un altro
-     nodo.
-4. Solo allora dichiarare una ricerca. Deve procedere per rami con margine
-   dichiarato, rimisurare sonde e capacità a ogni nuovo punto, trattare il
-   minimo non derivabile anche nella radice, dichiarare l'uso delle quattro
-   direzioni unilaterali e congelare budget, arresti e criteri prima della
-   prima chiamata.
-
-   Scale, criterio di radice e inviluppo restano invariati; nessuna modifica
-   fisica o compensazione automatica degli inventari è implicata.
+1. Leggere le [misure entro il 2%](../eng/frozen-evidence/r3-repaired-exhaust-lever15/04-analysis.json)
+   e la [sonda di dominio](../eng/frozen-evidence/r3-repaired-exhaust-domain16/04-analysis.json),
+   con la [decisione dichiarata prima della sonda](../eng/contracts/r3-repaired-exhaust-domain16.md).
+   Il 4% è un limite diagnostico di una sola coordinata, non il box della ricerca.
+2. Congelare un confronto accoppiato degli inventari di exhaust. Verificare
+   contemporaneamente massa, energia e coppia ai tre checkpoint; mantenere
+   l'osservazione di tutte le capacità e dei loro vincitori. Un intervallo
+   di cambio di segno della combinazione non sostituisce queste condizioni.
+3. Ricostruire il bilancio energetico complessivo nei punti ammessi, comprese
+   sorgente, corpi termici, potenze e accumuli degli altri inventari. La quasi
+   stazionarietà energetica di exhaust a +3,5% non compensa l'energia persa
+   da outlet. Motivare ogni ulteriore grandezza o dominio prima di misurarli;
+   non attribuire lo scarto ai controllori senza prova.
+4. Solo dopo questa revisione decidere famiglia e limiti di una ricerca per
+   rami. Rimisurare il modello a ogni nuovo punto, trattare il pareggio delle
+   capacità e i vincoli unilaterali, congelare budget, arresti e previsioni.
+   Scale, criterio di radice e inviluppo restano invariati. Nessun seed è
+   installato e nessuna modifica fisica è implicata.
 
 Una radice osservata richiede ancora revisione, conferme indipendenti di 100
 passi, R3 e la [sequenza di chiusura](ROADMAP.md#3-che-cosa-manca-dopo-r3-per-chiudere-m10).
@@ -500,6 +521,8 @@ Nessuna nuova ricerca o prova lunga è attualmente in corso.
 | [Modello sulle 30 direzioni](../eng/contracts/r3-repaired-capacity-minimum-model12.md) e [ricevuta](../eng/r3-repaired-capacity-minimum-model12-returned.json) | Zero passi runtime; 12 confronti con record non usati nella stima entro 2,4e-3. Retrospettivo. |
 | [Proposte sulle 30 direzioni](../eng/contracts/r3-repaired-minimum-proposals13.md) e [ricevuta](../eng/r3-repaired-minimum-proposals13-returned.json) | 18 ricette ripetute; otto previsioni su quattro sequenze tutte conformi, errore massimo 1,8e-3. Nessuna ricerca. |
 | [Limite del passo](../eng/contracts/r3-repaired-step-limit14.md) e [ricevuta](../eng/r3-repaired-step-limit14-returned.json) | Zero passi runtime; 30 programmi lineari certificati e limite inferiore calcolato a mano. Oltre le ampiezze campionate è estrapolazione. |
+| [Leva di exhaust](../eng/contracts/r3-repaired-exhaust-lever15.md) e [ricevuta](../eng/r3-repaired-exhaust-lever15-returned.json) | 22 ricette entro ±2%, nessun annullamento della combinazione al limite positivo. |
+| [Dominio positivo di exhaust](../eng/contracts/r3-repaired-exhaust-domain16.md) e [ricevuta](../eng/r3-repaired-exhaust-domain16-returned.json) | 12 ricette fino a +4%; cambio di segno fra +3,5% e +4%, massa e ciclo non in equilibrio. |
 | [Sintesi](validation/README.md) e [decisioni](validation/MODEL_DECISIONS.md) | Ambito delle conclusioni e vincoli durevoli. |
 
 Compilazione Release: **zero avvisi e zero errori**. Suite ordinaria completa:
@@ -527,6 +550,12 @@ degli assembly differiscono da quelli della prova 8, ma la baseline misurata
 coincide esattamente con il suo record congelato. Fixture, preflight,
 acquisizione e replay PASS, con alberi `src` e `tests` invariati; i replay 6–9
 restano PASS.
+
+Le prove 15–16 usano gli stessi alberi produttivi e di test. Compilazione
+delle console senza avvisi o errori; fixture, preflight, bilanci e replay
+PASS nei rispettivi ambiti. La nuova console modifica solo la convalida
+del dominio diagnostico delle richieste; la suite ordinaria citata sopra
+non è stata rieseguita per queste sole aggiunte a `eng/`.
 
 I vecchi replay richiedono i propri commit: H4–H9 e revisione di sufficienza
 `72b0910`; diagnostiche non fluide e revisione vincolata `ed35d9e`;

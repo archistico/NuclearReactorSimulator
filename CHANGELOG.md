@@ -4,6 +4,27 @@ La cronologia registra le modifiche e gli esiti al momento della loro verifica.
 Lo [stato corrente](docs/PROJECT.md), l'[handoff](docs/PROJECT.md#handoff) e la
 [roadmap](docs/ROADMAP.md) mantengono rispettivamente checkpoint, ripresa e passi futuri.
 
+## 2026-11-12
+
+### Misura della leva energetica e sonda del dominio di exhaust
+
+- Eseguita la prova 15 prevista dall'handoff: 22 ricette sane, nell'inviluppo
+  e ripetibili entro ±2%, con capacità e limiti del condensatore registrati.
+  Secanti entro il 2,22% del riferimento; al +2% la combinazione energia-coppia
+  resta positiva, circa 0,412 MW.
+- Dichiarata prima dell'acquisizione la sonda 16, limitata alla sola energia
+  positiva di exhaust fino al 4%, con tutte le altre variabili fisse. Console
+  separata con fixture del dominio; nessuna modifica a sorgenti produttive o test.
+- Dodici ricette sane, nell'inviluppo e ripetibili: cambio di segno della
+  combinazione fra +3,5% e +4%. Al +3,5% l'accumulo energetico del nodo è circa
+  4,14 kW, ma la massa scende ancora di 0,1005 kg/s al primo checkpoint.
+- La perdita di outlet resta −1,157 MW; la somma degli accumuli energetici
+  fluidi diventa circa −0,920 MW. Il risultato non è un equilibrio né un nuovo
+  box di ricerca. Handoff verso bilanci accoppiati e verifica dell'intero ciclo.
+- Compilazione senza avvisi o errori; fixture, preflight, bilanci e replay
+  PASS. Evidenze congelate, baseline e punto +2% riprodotti esattamente.
+  R3 resta RED e M10 aperto.
+
 ## 2026-11-11
 
 ### Indagine sull'equilibrio integrato R3
